@@ -1,0 +1,2094 @@
+import { useState, useEffect, useRef } from "react";
+import "./App.css";
+import sarahImage from "./assets/sarah.png";
+import sarahSpeakingImage from "./assets/sarah-speaking.png";
+import { civicsQuestions } from "./questions";
+import { acceptedAnswers } from "./answers";
+import { civicsAnswers } from "./civicsAnswers";
+import { civicsQuestionsSpanish } from "./civicsQuestionsSpanish";
+import { apiFetch } from "./api";
+import { startAudioRecording, transcribeRecording } from "./audio";
+const readingSentences = [
+  {
+    english: "The United States Constitution is the supreme law of the land.",
+    spanish: "La Constitución de los Estados Unidos es la ley suprema del país."
+  },
+  {
+    english: "The President of the United States lives in the White House.",
+    spanish: "El Presidente de los Estados Unidos vive en la Casa Blanca."
+  },
+  {
+    english: "Citizens have the right to vote in federal elections.",
+    spanish: "Los ciudadanos tienen derecho a votar en las elecciones federales."
+  },
+  {
+    english: "The United States has fifty states.",
+    spanish: "Los Estados Unidos tienen cincuenta estados."
+  },
+  {
+    english: "The Constitution protects the rights of all citizens.",
+    spanish: "La Constitución protege los derechos de todos los ciudadanos."
+  },
+  {
+    english: "The American flag has fifty stars.",
+    spanish: "La bandera estadounidense tiene cincuenta estrellas."
+  },
+  {
+    english: "The American flag has thirteen stripes.",
+    spanish: "La bandera estadounidense tiene trece franjas."
+  },
+  {
+    english: "George Washington was the first President.",
+    spanish: "George Washington fue el primer Presidente."
+  },
+  {
+    english: "Abraham Lincoln was President during the Civil War.",
+    spanish: "Abraham Lincoln fue Presidente durante la Guerra Civil."
+  },
+  {
+    english: "The capital of the United States is Washington, D.C.",
+    spanish: "La capital de los Estados Unidos es Washington, D.C."
+  },
+  {
+    english: "The White House is in Washington, D.C.",
+    spanish: "La Casa Blanca está en Washington, D.C."
+  },
+  {
+    english: "Congress makes federal laws.",
+    spanish: "El Congreso hace las leyes federales."
+  },
+  {
+    english: "The President lives in the White House.",
+    spanish: "El Presidente vive en la Casa Blanca."
+  },
+  {
+    english: "Citizens can vote in elections.",
+    spanish: "Los ciudadanos pueden votar en las elecciones."
+  },
+  {
+    english: "People can vote for the President.",
+    spanish: "Las personas pueden votar por el Presidente."
+  },
+  {
+    english: "The Bill of Rights protects individual rights.",
+    spanish: "La Declaración de Derechos protege los derechos individuales."
+  },
+  {
+    english: "The United States is a country.",
+    spanish: "Los Estados Unidos son un país."
+  },
+  {
+    english: "California is a state.",
+    spanish: "California es un estado."
+  },
+  {
+    english: "Washington, D.C. is the capital.",
+    spanish: "Washington, D.C. es la capital."
+  },
+  {
+    english: "The President is the leader of the country.",
+    spanish: "El Presidente es el líder del país."
+  },
+  {
+    english: "Senators work in Congress.",
+    spanish: "Los senadores trabajan en el Congreso."
+  },
+  {
+    english: "The American flag is a symbol of the country.",
+    spanish: "La bandera estadounidense es un símbolo del país."
+  },
+  {
+    english: "Independence Day is July 4.",
+    spanish: "El Día de la Independencia es el 4 de julio."
+  },
+  {
+    english: "Thanksgiving is a national holiday.",
+    spanish: "El Día de Acción de Gracias es un feriado nacional."
+  },
+  {
+    english: "The President is elected by the people.",
+    spanish: "El Presidente es elegido por el pueblo."
+  },
+  {
+    english: "Citizens have rights and responsibilities.",
+    spanish: "Los ciudadanos tienen derechos y responsabilidades."
+  },
+  {
+    english: "The government protects the people.",
+    spanish: "El gobierno protege al pueblo."
+  },
+  {
+    english: "People live in every state.",
+    spanish: "Las personas viven en cada estado."
+  },
+  {
+    english: "The United States has a government.",
+    spanish: "Los Estados Unidos tienen un gobierno."
+  },
+  {
+    english: "The Constitution forms the government.",
+    spanish: "La Constitución forma el gobierno."
+  }
+];const writingSentences = [
+  {
+    english: "Adams was President.",
+    spanish: "Adams fue Presidente."
+  },
+  {
+    english: "Lincoln was President.",
+    spanish: "Lincoln fue Presidente."
+  },
+  {
+    english: "Washington was President.",
+    spanish: "Washington fue Presidente."
+  },
+  {
+    english: "Washington was the Father of Our Country.",
+    spanish: "Washington fue el Padre de Nuestro País."
+  },
+  {
+    english: "The President lives in the White House.",
+    spanish: "El Presidente vive en la Casa Blanca."
+  },
+  {
+    english: "The President lives in Washington.",
+    spanish: "El Presidente vive en Washington."
+  },
+  {
+    english: "Citizens can vote.",
+    spanish: "Los ciudadanos pueden votar."
+  },
+  {
+    english: "Citizens have rights.",
+    spanish: "Los ciudadanos tienen derechos."
+  },
+  {
+    english: "Citizens pay taxes.",
+    spanish: "Los ciudadanos pagan impuestos."
+  },
+  {
+    english: "People have the right to vote.",
+    spanish: "Las personas tienen el derecho de votar."
+  },
+  {
+    english: "People are free.",
+    spanish: "Las personas son libres."
+  },
+  {
+    english: "We have freedom of speech.",
+    spanish: "Tenemos libertad de expresión."
+  },
+  {
+    english: "Congress meets in Washington.",
+    spanish: "El Congreso se reúne en Washington."
+  },
+  {
+    english: "Senators work in Congress.",
+    spanish: "Los senadores trabajan en el Congreso."
+  },
+  {
+    english: "The United States is a country.",
+    spanish: "Los Estados Unidos es un país."
+  },
+  {
+    english: "The United States has fifty states.",
+    spanish: "Los Estados Unidos tiene cincuenta estados."
+  },
+  {
+    english: "Washington is the capital.",
+    spanish: "Washington es la capital."
+  },
+  {
+    english: "The capital is Washington, D.C.",
+    spanish: "La capital es Washington, D.C."
+  },
+  {
+    english: "The American flag is red, white, and blue.",
+    spanish: "La bandera estadounidense es roja, blanca y azul."
+  },
+  {
+    english: "The flag is red, white, and blue.",
+    spanish: "La bandera es roja, blanca y azul."
+  },
+  {
+    english: "The Civil War was a war.",
+    spanish: "La Guerra Civil fue una guerra."
+  },
+  {
+    english: "The Civil War was during Lincoln's time.",
+    spanish: "La Guerra Civil fue durante la época de Lincoln."
+  },
+  {
+    english: "American Indians lived here.",
+    spanish: "Los indígenas americanos vivieron aquí."
+  },
+  {
+    english: "The United States is north of Mexico.",
+    spanish: "Los Estados Unidos está al norte de México."
+  },
+  {
+    english: "Canada is north of the United States.",
+    spanish: "Canadá está al norte de los Estados Unidos."
+  },
+  {
+    english: "Mexico is south of the United States.",
+    spanish: "México está al sur de los Estados Unidos."
+  },
+  {
+    english: "Washington is in the United States.",
+    spanish: "Washington está en los Estados Unidos."
+  },
+  {
+    english: "California is a state.",
+    spanish: "California es un estado."
+  },
+  {
+    english: "Alaska is a state.",
+    spanish: "Alaska es un estado."
+  },
+  {
+    english: "Delaware is a state.",
+    spanish: "Delaware es un estado."
+  },
+  {
+    english: "New York City is a city.",
+    spanish: "Nueva York es una ciudad."
+  },
+  {
+    english: "The President can vote.",
+    spanish: "El Presidente puede votar."
+  },
+  {
+    english: "People can vote.",
+    spanish: "Las personas pueden votar."
+  },
+  {
+    english: "People want freedom.",
+    spanish: "Las personas quieren libertad."
+  },
+  {
+    english: "Citizens want freedom.",
+    spanish: "Los ciudadanos quieren libertad."
+  },
+  {
+    english: "The government is here.",
+    spanish: "El gobierno está aquí."
+  },
+  {
+    english: "The government can help people.",
+    spanish: "El gobierno puede ayudar a las personas."
+  },
+  {
+    english: "The President is elected.",
+    spanish: "El Presidente es elegido."
+  },
+  {
+    english: "The President was elected.",
+    spanish: "El Presidente fue elegido."
+  },
+  {
+    english: "We elect the President.",
+    spanish: "Elegimos al Presidente."
+  },
+  {
+    english: "We vote for the President.",
+    spanish: "Votamos por el Presidente."
+  },
+  {
+    english: "People vote in November.",
+    spanish: "Las personas votan en noviembre."
+  },
+  {
+    english: "The first President was Washington.",
+    spanish: "El primer Presidente fue Washington."
+  },
+  {
+    english: "Lincoln was the second President.",
+    spanish: "Lincoln fue el segundo Presidente."
+  },
+  {
+    english: "The largest state is Alaska.",
+    spanish: "El estado más grande es Alaska."
+  },
+  {
+    english: "The dollar bill is money.",
+    spanish: "El billete de dólar es dinero."
+  },
+  {
+    english: "The United States has one hundred Senators.",
+    spanish: "Los Estados Unidos tiene cien senadores."
+  },
+  {
+    english: "We celebrate Independence Day.",
+    spanish: "Celebramos el Día de la Independencia."
+  },
+  {
+    english: "We celebrate Thanksgiving.",
+    spanish: "Celebramos el Día de Acción de Gracias."
+  },
+  {
+    english: "We celebrate Presidents' Day.",
+    spanish: "Celebramos el Día de los Presidentes."
+  },
+  {
+    english: "We celebrate Memorial Day.",
+    spanish: "Celebramos el Día de los Caídos."
+  }
+];
+function Home({
+  onStartInterview,
+  onOpenPractice,
+  onOpenFeature,
+  onOpenProgress
+}) {
+    const [languageOpen, setLanguageOpen] = useState(false);
+      const [language, setLanguage] = useState("en");
+  return (
+    <div className="app home-ai">
+
+      {/* ================= HEADER ================= */}
+
+      <header className="home-new-header">
+
+        <div className="home-new-brand">
+          <span className="brand-main">CITIZENSHIP</span>
+          <span className="brand-ai">AI</span>
+        </div>
+
+        <div className="language-selector">
+  <div className="language-selector">
+ <button
+  className="home-language"
+  onClick={() => setLanguage(language === "en" ? "es" : "en")}
+>
+    {language === "en" ? "EN" : "ES"}
+    <span>⌄</span>
+  </button>
+</div>
+
+  {languageOpen && (
+    <div className="language-menu">
+      <button onClick={() => setLanguageOpen(false)}>
+        ENGLISH
+      </button>
+
+      <button onClick={() => setLanguageOpen(false)}>
+        ESPAÑOL
+      </button>
+    </div>
+  )}
+</div>
+
+      </header>
+
+
+      {/* ================= HERO ================= */}
+
+      <main className="home-new-content">
+
+        <section className="home-new-hero">
+
+          <div className="hero-glow"></div>
+
+          <div className="home-hero-copy">
+
+            <div className="home-status">
+              <span></span>
+              AI-POWERED CITIZENSHIP TRAINING
+            </div>
+
+            <h1>
+  {language === "en" ? (
+    <>
+      Your interview.
+      <strong>Your future.</strong>
+    </>
+  ) : (
+    <>
+      Tu entrevista.
+      <strong>Tu futuro.</strong>
+    </>
+  )}
+</h1>
+
+            <p>
+              Prepare for your U.S. citizenship interview
+              with personalized AI practice.
+            </p>
+
+          </div>
+
+
+          {/* AI ORB */}
+
+          <div className="ai-orb-container">
+
+            <div className="ai-orb-ring ring-one"></div>
+            <div className="ai-orb-ring ring-two"></div>
+            <div className="ai-orb-ring ring-three"></div>
+
+            <div className="ai-orb">
+
+              <div className="ai-orb-core">
+                ✦
+              </div>
+
+            </div>
+
+            <div className="ai-orb-label">
+              <span></span>
+              AI READY
+            </div>
+
+          </div>
+
+
+          {/* PRIMARY ACTION */}
+
+          <button
+            className="home-primary-button"
+            onClick={onStartInterview}
+          >
+
+            <div>
+              <small>START YOUR</small>
+              <strong>REAL INTERVIEW</strong>
+            </div>
+
+            <span className="primary-arrow">
+              →
+            </span>
+
+          </button>
+
+        </section>
+
+
+        {/* ================= QUICK PRACTICE ================= */}
+
+        <section className="home-new-section">
+
+          <div className="home-section-heading">
+
+            <div>
+              <small>QUICK PRACTICE</small>
+              <h2>Train with AI</h2>
+            </div>
+
+            <span className="section-live">
+              <i></i>
+              READY
+            </span>
+
+          </div>
+
+
+          <div className="home-practice-list">
+
+            <button
+              className="practice-feature-card civics-feature"
+              onClick={() => onOpenFeature("civics")}
+            >
+
+              <div className="feature-icon">
+                ◎
+              </div>
+
+              <div className="feature-text">
+                <small>CIVICS</small>
+                <h3>128 Questions</h3>
+                <p>Master the questions for your interview.</p>
+              </div>
+
+              <span className="feature-arrow">
+                →
+              </span>
+
+            </button>
+
+
+            <div className="practice-mini-grid">
+
+              <button
+                className="practice-mini-card"
+                onClick={() => onOpenFeature("reading")}
+              >
+
+                <div className="mini-icon">
+                  A
+                </div>
+
+                <div>
+                  <small>ENGLISH</small>
+                  <h3>Reading</h3>
+                </div>
+
+                <span>↗</span>
+
+              </button>
+
+
+              <button
+                className="practice-mini-card"
+                onClick={() => onOpenFeature("writing")}
+              >
+
+                <div className="mini-icon">
+                  ✎
+                </div>
+
+                <div>
+                  <small>ENGLISH</small>
+                  <h3>Writing</h3>
+                </div>
+
+                <span>↗</span>
+
+              </button>
+
+            </div>
+
+
+            <button
+              className="coach-feature-card"
+              onClick={() => onOpenFeature("coach")}
+            >
+
+              <div className="coach-feature-avatar">
+
+                <img
+                  src={sarahImage}
+                  alt="Sarah"
+                />
+
+              </div>
+
+              <div className="coach-feature-text">
+
+                <small>AI ENGLISH COACH</small>
+
+                <h3>
+                  Practice English with Sarah
+                </h3>
+
+                <p>
+                  Improve your confidence through conversation.
+                </p>
+
+              </div>
+
+              <span className="feature-arrow">
+                →
+              </span>
+
+            </button>
+
+          </div>
+
+        </section>
+
+
+        {/* ================= PREPARATION ================= */}
+
+        <section className="preparation-card">
+
+          <div className="preparation-header">
+
+            <div>
+              <small>YOUR PREPARATION</small>
+              <h2>Keep moving forward.</h2>
+            </div>
+
+            <div className="preparation-score">
+              <strong>0%</strong>
+              <span>READY</span>
+            </div>
+
+          </div>
+
+
+          <div className="preparation-progress">
+
+            <div
+              className="preparation-progress-fill"
+              style={{ width: "0%" }}
+            ></div>
+
+          </div>
+
+
+          <div className="preparation-items">
+
+            <div>
+              <span>Civics</span>
+              <strong>0%</strong>
+            </div>
+
+            <div>
+              <span>English</span>
+              <strong>0%</strong>
+            </div>
+
+            <div>
+              <span>Interview</span>
+              <strong>0%</strong>
+            </div>
+
+          </div>
+
+          <button
+            className="preparation-button"
+            onClick={onOpenProgress}
+          >
+            VIEW PROGRESS
+            <span>→</span>
+          </button>
+
+        </section>
+
+
+        {/* ================= USCIS ================= */}
+
+        <section className="home-uscis-card">
+
+          <div className="uscis-card-top">
+
+            <div className="uscis-card-icon">
+              U
+            </div>
+
+            <div>
+
+              <small>USCIS</small>
+
+              <h2>
+                Case Tracker
+              </h2>
+
+            </div>
+
+            <div className="uscis-live">
+              <span></span>
+              OFFICIAL
+            </div>
+
+          </div>
+
+
+          <p>
+            Check the latest status of your immigration case.
+          </p>
+
+
+          <button
+            onClick={() => onOpenFeature("uscisTracker")}
+          >
+            CHECK CASE STATUS
+            <span>→</span>
+          </button>
+
+        </section>
+
+
+        {/* ================= AI TIP ================= */}
+
+        <section className="home-ai-tip">
+
+          <div className="tip-symbol">
+            ✦
+          </div>
+
+          <div>
+
+            <small>AI COACHING</small>
+
+            <h3>
+              Build confidence one answer at a time.
+            </h3>
+
+            <p>
+              Practice regularly and let AI identify
+              the areas that need more attention.
+            </p>
+
+          </div>
+
+        </section>
+
+      </main>
+
+
+      {/* ================= BOTTOM NAV ================= */}
+
+      <nav className="home-new-nav">
+
+        <button className="home-nav-item active">
+
+          <span>⌂</span>
+          <strong>Home</strong>
+
+        </button>
+
+
+        <button
+          className="home-nav-item"
+          onClick={onOpenPractice}
+        >
+
+          <span>◎</span>
+          <strong>Practice</strong>
+
+        </button>
+
+
+        <button
+          className="home-nav-item"
+          onClick={onOpenProgress}
+        >
+
+          <span>◌</span>
+          <strong>Progress</strong>
+
+        </button>
+
+
+        <button
+          className="home-nav-item"
+          onClick={() => onOpenFeature("coach")}
+        >
+
+          <span>✦</span>
+          <strong>Coach</strong>
+
+        </button>
+
+      </nav>
+
+    </div>
+  );
+}
+
+// Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
+
+function RealInterview({ onExit }) {
+  const [questions] = useState(() => {
+    return [...civicsQuestions]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 10);
+  });
+
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(true);
+  const [answer, setAnswer] = useState("");
+  const [answerStatus, setAnswerStatus] = useState("");
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [incorrectAnswers, setIncorrectAnswers] = useState(0);
+  const [hasRetried, setHasRetried] = useState(false);
+  const [isInterviewComplete, setIsInterviewComplete] = useState(false);
+  const recorderRef = useRef(null);
+
+  const speakQuestion = (text, onFinished) => {
+    window.speechSynthesis.cancel();
+    const voices = window.speechSynthesis.getVoices();
+    const femaleVoice =
+      voices.find(
+        (v) =>
+          v.lang.startsWith("en") &&
+          /female|zira|samantha|aria|jenny|susan/i.test(v.name)
+      ) || voices.find((v) => v.lang.startsWith("en"));
+
+    const voice = new SpeechSynthesisUtterance(text);
+    voice.lang = "en-US";
+    voice.rate = 0.9;
+    voice.pitch = 1.1;
+
+    if (femaleVoice) {
+      voice.voice = femaleVoice;
+    }
+
+    let finished = false;
+    const finishSpeaking = () => {
+      if (finished) return;
+      finished = true;
+      setIsSpeaking(false);
+      if (onFinished) onFinished();
+    };
+
+    voice.onstart = () => setIsSpeaking(true);
+    voice.onend = () => finishSpeaking();
+    voice.onerror = () => finishSpeaking();
+
+    window.speechSynthesis.speak(voice);
+
+    const estimatedTime = Math.max(3000, text.length * 70);
+    setTimeout(() => {
+      finishSpeaking();
+    }, estimatedTime);
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      speakQuestion(`
+        Welcome. Thank you for being here today.
+        We are going to begin the civics portion of your naturalization interview.
+        ${questions[0].english}
+      `);
+    }, 500);
+
+    return () => {
+      clearTimeout(timer);
+      window.speechSynthesis.cancel();
+    };
+  }, [questions]);
+
+  const goToNextQuestion = () => {
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion >= questions.length) {
+      setIsSpeaking(true);
+      speakQuestion(`Thank you. That concludes this practice interview.`);
+      setIsInterviewComplete(true);
+      return;
+    }
+
+    setCurrentQuestion(nextQuestion);
+    setAnswer("");
+    setAnswerStatus("");
+    setHasRetried(false);
+
+    setTimeout(() => {
+      speakQuestion(questions[nextQuestion].english);
+    }, 300);
+  };
+
+  const handleSkip = () => {
+    setIncorrectAnswers((count) => count + 1);
+    setAnswerStatus("incorrect");
+    setHasRetried(false);
+    goToNextQuestion();
+  };
+
+  const evaluateInterviewAnswer = async (transcript) => {
+    setAnswer(transcript);
+    setAnswerStatus("evaluating");
+    try {
+      const response = await apiFetch("/evaluate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: questions[currentQuestion].english,
+          answer: transcript,
+          correctAnswer: acceptedAnswers[questions[currentQuestion].id],
+        }),
+      });
+
+      const result = await response.json();
+      setAnswerStatus(result.status);
+
+      if (result.status === "correct") setCorrectAnswers((count) => count + 1);
+      if (result.status === "incorrect" && hasRetried) {
+        setIncorrectAnswers((count) => count + 1);
+      }
+
+      const feedback = result.feedback || "";
+      if (result.action === "advance") {
+        speakQuestion(feedback, () => goToNextQuestion());
+      } else if (result.action === "retry") {
+        speakQuestion(`${feedback} Please answer the question again. ${questions[currentQuestion].english}`);
+      } else if (result.action === "repeat") {
+        if (hasRetried) {
+          setIncorrectAnswers((count) => count + 1);
+          speakQuestion(`${feedback} Let's move to the next question.`, () => goToNextQuestion());
+        } else {
+          setHasRetried(true);
+          speakQuestion(`${feedback} Let me ask you that again. ${questions[currentQuestion].english}`);
+        }
+      }
+    } catch (error) {
+      console.error("Evaluation error:", error);
+      setAnswerStatus("error");
+    }
+  };
+
+  const startListening = async () => {
+    try {
+      recorderRef.current = await startAudioRecording();
+    } catch (error) {
+      console.error("Microphone error:", error);
+      setAnswerStatus("error");
+      return;
+    }
+    setIsListening(true);
+    setIsSpeaking(false);
+    setAnswerStatus("");
+  };
+
+  const stopListening = async () => {
+    const recorder = recorderRef.current;
+    recorderRef.current = null;
+    setIsListening(false);
+    if (!recorder) return;
+
+    try {
+      const transcript = await transcribeRecording(await recorder.stop());
+      if (!transcript) throw new Error("No speech was detected.");
+      await evaluateInterviewAnswer(transcript);
+    } catch (error) {
+      console.error("Interview transcription error:", error);
+      setAnswerStatus("error");
+    }
+  };
+
+  if (isInterviewComplete) {
+    const scorePercentage = Math.round(
+      (correctAnswers / questions.length) * 100
+    );
+
+    return (
+      <div className="interview-screen">
+        <div className="results-card">
+          <div className="results-eyebrow">PRACTICE INTERVIEW COMPLETE</div>
+          <h1>Interview Complete</h1>
+          <div className="results-score">
+            {correctAnswers}
+            <span> / {questions.length}</span>
+          </div>
+          <div className="results-percentage">{scorePercentage}%</div>
+          <div className="results-stats">
+            <div className="result-stat correct">
+              <span>✓</span>
+              <strong>{correctAnswers}</strong>
+              <small>Correct</small>
+            </div>
+            <div className="result-stat incorrect">
+              <span>✕</span>
+              <strong>{incorrectAnswers}</strong>
+              <small>Incorrect</small>
+            </div>
+          </div>
+          <p className="results-message">
+            {scorePercentage >= 70
+              ? "Great job. Keep practicing to build confidence."
+              : "Keep practicing. You are making progress."}
+          </p>
+          <button
+            className="results-button"
+            onClick={() => window.location.reload()}
+          >
+            TRY AGAIN
+          </button>
+          <button className="results-secondary-button" onClick={onExit}>
+            BACK TO HOME
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="interview-screen">
+      <header className="interview-header">
+        <button className="back-button" onClick={onExit}>
+          ←
+        </button>
+        <div className="interview-brand">
+          CITIZENSHIP <span>AI</span>
+        </div>
+        <button className="more-button">•••</button>
+      </header>
+
+      <main className="interview-content">
+        {/* INTERFAZ HOLOGRÁFICA SUPREMA DE SARAH */}
+        <div className="sarah-ai-interface">
+          <div
+            className={`sarah-holo-card ${
+              isSpeaking
+                ? "active-speaking"
+                : isListening
+                ? "active-listening"
+                : ""
+            }`}
+          >
+            <div className="holo-scanner"></div>
+
+            <div className="sarah-avatar-wrapper">
+              <img
+                src={sarahImage}
+                alt="Sarah"
+                className="sarah-avatar sarah-normal"
+              />
+              <img
+                src={sarahSpeakingImage}
+                alt="Sarah speaking"
+                className="sarah-avatar sarah-speaking"
+              />
+            </div>
+
+            <div className="sarah-meta">
+              <div className="sarah-tag">AI IMMIGRATION OFFICER</div>
+              <h2>Sarah</h2>
+              <div className="sarah-live-status">
+                <span className="pulse-dot"></span>
+                {isSpeaking
+                  ? "SARAH IS SPEAKING..."
+                  : isListening
+                  ? "LISTENING TO YOU..."
+                  : "INTERVIEW IN PROGRESS"}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ÁREA DE PREGUNTA Y PROGRESO */}
+       {/* ÁREA DE PREGUNTA Y PROGRESO RE DISEÑADA */}
+        <div className="question-area">
+          
+          <div className="interview-top-hud">
+            <div className="hud-question-badge">
+              <span>QUESTION</span>
+              <strong>{String(currentQuestion + 1).padStart(2, "0")}</strong>
+              <small>/ {questions.length}</small>
+            </div>
+
+            <div className="hud-score-board">
+              <div className="hud-score correct">
+                <span className="dot"></span>
+                <span>CORRECT</span>
+                <strong>{correctAnswers}</strong>
+              </div>
+              <div className="hud-score incorrect">
+                <span className="dot"></span>
+                <span>INCORRECT</span>
+                <strong>{incorrectAnswers}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div className="hud-progress-track">
+            <div
+              className="hud-progress-fill"
+              style={{
+                width: `${((currentQuestion + 1) / questions.length) * 100}%`,
+              }}
+            ></div>
+          </div>
+
+          <div className="hud-question-content">
+            <div className="ai-turn-indicator">
+              {isSpeaking ? "✦ SARAH IS SPEAKING" : "✦ YOUR TURN TO SPEAK"}
+            </div>
+            <h2 className="question">{questions[currentQuestion].english}</h2>
+            <p className="question-spanish">{questions[currentQuestion].spanish}</p>
+          </div>
+
+          {answerStatus === "evaluating" && (
+            <div className="ai-thinking-panel">
+              <div className="ai-thinking-main">
+                <div className="ai-brain">
+                  <div className="brain-glow"></div>
+                  <span>✦</span>
+                </div>
+                <div className="ai-thinking-text">
+                  <div className="ai-thinking-title">
+                    AI IS THINKING<span className="thinking-dots">...</span>
+                  </div>
+                  <div className="ai-thinking-subtitle">
+                    Evaluating response patterns...
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {answer && (
+            <div className={`answer-preview ${answerStatus}`}>
+              <span>YOUR INPUT</span>
+              <p>{answer}</p>
+              <div className="answer-result">
+                {answerStatus === "evaluating" && "Evaluating..."}
+                {answerStatus === "correct" && "✓ Verified Correct"}
+                {answerStatus === "incorrect" && "✕ Needs Improvement"}
+                {answerStatus === "incomplete" && "! Incomplete Answer"}
+                {answerStatus === "error" && "Evaluation Error"}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* ÁREA DE CONTROL DE VOZ */}
+        <div className="voice-area">
+          <button
+            className={`mic-button ${isListening ? "listening" : ""}`}
+            onClick={isListening ? stopListening : startListening}
+            disabled={isSpeaking}
+          >
+            <span>🎙</span>
+          </button>
+
+          <div className="voice-label">
+            {isListening
+              ? "TAP THE MICROPHONE AGAIN TO STOP"
+              : isSpeaking
+              ? "SARAH IS SPEAKING..."
+              : "YOUR TURN — TAP TO SPEAK"}
+          </div>
+
+          <button
+            className="skip-button"
+            onClick={handleSkip}
+            disabled={isSpeaking || isListening}
+          >
+            <span>I DON'T KNOW / SKIP</span>
+            <span className="skip-icon">›</span>
+          </button>
+        </div>
+      </main>
+
+      <button className="end-interview" onClick={onExit}>
+        End interview
+      </button>
+    </div>
+  );
+}
+
+function App() {
+  // 1. TODOS LOS HOOKS (ESTADOS) VAN AQUÍ ARRIBA SIN EXCEPCIÓN
+  const [screen, setScreen] = useState("home");
+  const [coachMode, setCoachMode] = useState("welcome");
+  const [civicsIndex, setCivicsIndex] = useState(0);
+  const [uscisReceiptNumber, setUscisReceiptNumber] = useState("");
+  const [uscisCaseResult, setUscisCaseResult] = useState(null);
+  const [uscisLoading, setUscisLoading] = useState(false);
+  const [uscisError, setUscisError] = useState("");
+  
+  const [civicsViewed, setCivicsViewed] = useState(() => {
+    const saved = localStorage.getItem("civicsViewed");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const [coachListening, setCoachListening] = useState(false);
+  const [coachHistory, setCoachHistory] = useState([]);
+  const [coachReply, setCoachReply] = useState("");
+  const [coachThinking, setCoachThinking] = useState(false);
+  const coachRecorderRef = useRef(null);
+
+  const [isAIThinking, setIsAIThinking] = useState(false);
+  const [aiMessage, setAiMessage] = useState("");
+  const [isReading, setIsReading] = useState(false);
+  const [readingIndex, setReadingIndex] = useState(0);
+  const readingRecorderRef = useRef(null);
+  const [writingAnswer, setWritingAnswer] = useState("");
+  const [writingGoodCount, setWritingGoodCount] = useState(0);
+  const [writingNeedsPracticeCount, setWritingNeedsPracticeCount] = useState(0);
+  const [writingIndex, setWritingIndex] = useState(0);
+
+  const [readingOrder, setReadingOrder] = useState(() =>
+    [...readingSentences]
+      .map((_, index) => index)
+      .sort(() => Math.random() - 0.5)
+  );
+
+  // 2. TODOS LOS EFECTOS (USEEFFECT) VAN AQUÍ
+  const markCivicsViewed = (index) => {
+    setCivicsViewed((current) => {
+      if (current.includes(index)) return current;
+      const updated = [...current, index];
+      localStorage.setItem("civicsViewed", JSON.stringify(updated));
+      return updated;
+    });
+  };
+
+  useEffect(() => {
+    if (screen !== "civics") return;
+    const timer = setTimeout(() => {
+      setCivicsViewed((current) => {
+        if (current.includes(civicsIndex)) return current;
+        const updated = [...current, civicsIndex];
+        localStorage.setItem("civicsViewed", JSON.stringify(updated));
+        return updated;
+      });
+      window.speechSynthesis.cancel();
+      const speech = new SpeechSynthesisUtterance(
+        civicsQuestions[civicsIndex].english
+      );
+      speech.lang = "en-US";
+      speech.rate = 0.88;
+      speech.pitch = 1;
+      speech.volume = 1;
+      window.speechSynthesis.speak(speech);
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+      window.speechSynthesis.cancel();
+    };
+  }, [screen, civicsIndex]);
+
+  // Funciones auxiliares de soporte...
+  const playCorrectSound = () => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.frequency.value = 880;
+    oscillator.type = "sine";
+    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.35);
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.35);
+  };
+
+  const playIncorrectSound = () => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    oscillator.frequency.value = 220;
+    oscillator.type = "sine";
+    gainNode.gain.setValueAtTime(0.12, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.3);
+  };
+
+  const nextReadingSentence = () => {
+    setReadingIndex((currentIndex) => {
+      const nextIndex = currentIndex + 1;
+      if (nextIndex >= readingOrder.length) {
+        const newOrder = [...readingOrder].sort(() => Math.random() - 0.5);
+        setReadingOrder(newOrder);
+        return 0;
+      }
+      return nextIndex;
+    });
+    setAiMessage("");
+  };
+
+  const nextWritingSentence = () => {
+    setWritingAnswer("");
+    setWritingIndex((currentIndex) => {
+      const nextIndex = currentIndex + 1;
+      if (nextIndex >= writingSentences.length) return 0;
+      return nextIndex;
+    });
+    setAiMessage("");
+  };
+
+  const checkWriting = async () => {
+    if (!writingAnswer.trim()) {
+      setAiMessage("Please write your answer first.");
+      return;
+    }
+    setIsAIThinking(true);
+    setAiMessage("AI is evaluating your writing...");
+    try {
+      const response = await apiFetch("/evaluate-writing", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sentence: writingSentences[writingIndex].english,
+          answer: writingAnswer,
+        }),
+      });
+      const result = await response.json();
+      if (result.accuracy === "Excellent" || result.accuracy === "Good") {
+        setWritingGoodCount((count) => count + 1);
+      } else {
+        setWritingNeedsPracticeCount((count) => count + 1);
+      }
+      setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
+      setTimeout(() => {
+        nextWritingSentence();
+      }, 3000);
+    } catch (error) {
+      console.error("Writing evaluation error:", error);
+      setAiMessage("Unable to evaluate writing.");
+    } finally {
+      setIsAIThinking(false);
+    }
+  };
+
+  const speakCoachReply = (text) => {
+    if (!text) return;
+    window.speechSynthesis.cancel();
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "en-US";
+    speech.rate = 0.92;
+    speech.pitch = 1.05;
+    speech.volume = 1;
+    const voices = window.speechSynthesis.getVoices();
+    const femaleVoice =
+      voices.find(
+        (voice) =>
+          voice.lang.startsWith("en") &&
+          /female|zira|samantha|aria|jenny|susan/i.test(voice.name)
+      ) || voices.find((voice) => voice.lang.startsWith("en"));
+    if (femaleVoice) speech.voice = femaleVoice;
+    window.speechSynthesis.speak(speech);
+  };
+
+  const sendCoachMessage = async (message) => {
+    setCoachThinking(true);
+    try {
+      const response = await apiFetch("/coach", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, history: coachHistory }),
+      });
+      const result = await response.json();
+      setCoachReply(result.reply || "");
+      speakCoachReply(result.reply || "");
+      setCoachHistory((current) => [
+        ...current,
+        { role: "user", content: message },
+        { role: "assistant", content: result.reply || "" },
+      ]);
+    } catch (error) {
+      console.error("Coach AI error:", error);
+      setCoachReply("I'm having trouble connecting right now. Please try again.");
+    } finally {
+      setCoachThinking(false);
+    }
+  };
+
+  const startCoachListening = async () => {
+    try {
+      coachRecorderRef.current = await startAudioRecording();
+      setCoachListening(true);
+    } catch (error) {
+      console.error("Coach microphone error:", error);
+      setCoachReply("Please allow microphone access and try again.");
+    }
+  };
+
+  const stopCoachListening = async () => {
+    const recorder = coachRecorderRef.current;
+    coachRecorderRef.current = null;
+    setCoachListening(false);
+    if (!recorder) return;
+
+    try {
+      const transcript = await transcribeRecording(await recorder.stop());
+      if (!transcript) throw new Error("No speech was detected.");
+      await sendCoachMessage(transcript);
+    } catch (error) {
+      console.error("Coach transcription error:", error);
+      setCoachReply("I couldn't hear you. Please try again.");
+    }
+  };
+
+  const startReading = async () => {
+    try {
+      readingRecorderRef.current = await startAudioRecording();
+      setIsAIThinking(true);
+      setIsReading(true);
+      setAiMessage("Listening to your reading...");
+    } catch (error) {
+      console.error("Reading microphone error:", error);
+      setIsAIThinking(false);
+      setAiMessage("Please allow microphone access and try again.");
+    }
+  };
+
+  const stopReading = async () => {
+    const recorder = readingRecorderRef.current;
+    readingRecorderRef.current = null;
+    setIsReading(false);
+    if (!recorder) return;
+
+    try {
+      setAiMessage("AI is listening to your reading...");
+      const transcript = await transcribeRecording(await recorder.stop());
+      if (!transcript) {
+        setAiMessage("I couldn't hear your reading. Please try again.");
+        return;
+      }
+
+      const evaluationResponse = await apiFetch("/evaluate-reading", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sentence: readingSentences[readingIndex].english,
+          transcript,
+        }),
+      });
+
+      if (!evaluationResponse.ok) throw new Error("Reading evaluation failed");
+
+      const result = await evaluationResponse.json();
+      if (result.accuracy === "Excellent" || result.accuracy === "Good") {
+        playCorrectSound();
+      } else {
+        playIncorrectSound();
+      }
+
+      setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
+      setTimeout(nextReadingSentence, 3000);
+    } catch (error) {
+      console.error("Reading AI error:", error);
+      setAiMessage("Unable to evaluate reading.");
+    } finally {
+      setIsAIThinking(false);
+    }
+  };
+
+  // 3. LAS CONDICIONES DE RENDERIZADO (IF) VAN AQUÍ ABAJO, NUNCA ANTES DE LOS HOOKS
+  if (screen === "civics") {
+    // ... mantén tu código actual de civics aquí o déjalo tal cual lo tienes ...
+  }
+  if (screen === "practice") {
+    // ... mantén tu código actual de practice aquí ...
+  }
+  if (screen === "english") {
+    // ... mantén tu código actual de english aquí ...
+  }
+  if (screen === "reading") {
+    // ... mantén tu código actual de reading aquí ...
+  }
+  if (screen === "coach") {
+    if (coachMode === "conversation") {
+      return (
+        <div className="practice-screen coach-screen">
+          <header className="practice-header">
+            <button className="back-button" onClick={() => setCoachMode("welcome")}>
+              ← Coach
+            </button>
+            <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+          </header>
+          <main className="coach-conversation-content">
+            <div className="practice-eyebrow">AI ENGLISH COACH</div>
+            <div className="coach-conversation-card">
+              <div className="coach-conversation-avatar">
+                <img src={sarahImage} alt="Sarah" />
+              </div>
+              <div className="coach-conversation-status">
+                <span></span> SARAH IS READY
+              </div>
+              <div className="coach-message">
+                <div className="coach-message-label">SARAH</div>
+                <div className="coach-message-text">
+                  Hi! I'm Sarah. Let's practice English together. Tell me about yourself.
+                </div>
+              </div>
+              <div className="coach-response-area">
+                {coachReply && (
+                  <div className="coach-ai-reply">
+                    <div className="coach-ai-reply-label">SARAH</div>
+                    <div className="coach-ai-reply-text">{coachReply}</div>
+                  </div>
+                )}
+                <div className="coach-response-label">YOUR RESPONSE</div>
+                <button
+                  className={`coach-mic-button ${coachListening ? "listening" : ""}`}
+                  onClick={coachListening ? stopCoachListening : startCoachListening}
+                  disabled={coachThinking}
+                  type="button"
+                >
+                  <div className="coach-mic-icon-wrapper">
+                    <span className="mic-glyph">🎙</span>
+                  </div>
+                  <span className="coach-mic-text">
+                    {coachListening ? "Tap again when you finish speaking" : "Tap the microphone to speak"}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    }
+    return (
+      <div className="practice-screen coach-screen">
+        <header className="practice-header">
+          <button className="back-button" onClick={() => setScreen("practice")}>
+            ← Practice
+          </button>
+          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+        </header>
+        <main className="coach-content">
+          <div className="practice-eyebrow">AI ENGLISH COACH</div>
+          <h1>Speak with confidence.</h1>
+          <p className="practice-intro">Practice real English conversations with your AI coach.</p>
+          <div className="coach-card">
+            <div className="coach-avatar">
+              <img src={sarahImage} alt="AI English Coach" />
+            </div>
+            <div className="coach-status">
+              <span className="coach-status-dot"></span> AI COACH READY
+            </div>
+            <h2>Hi, I'm Sarah.</h2>
+            <p>Let's practice English together.</p>
+            <button
+              className="coach-start-button"
+              onClick={() => setCoachMode("conversation")}
+            >
+              Start Conversation
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+  // Control de pantallas de la aplicación
+  // Control de pantallas de la aplicación
+  if (screen === "civics") {
+    const currentQuestion = civicsQuestions[civicsIndex].english;
+    const currentQuestionSpanish = civicsQuestionsSpanish[civicsIndex];
+    const currentAnswers = civicsAnswers[civicsIndex];
+
+    return (
+      <div className="practice-screen civics-screen">
+        <header className="practice-header">
+          <button className="back-button" onClick={() => setScreen("practice")}>
+            ← Practice
+          </button>
+          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+        </header>
+        <main className="civics-content">
+          <div className="practice-eyebrow">CIVICS STUDY</div>
+          <h1>Civics.</h1>
+          <p className="practice-intro">Read and listen to the 2025 civics questions.</p>
+          <div className="civics-card">
+            <div className="civics-card-top">
+              <div className="civics-question-number">
+                QUESTION {String(civicsIndex + 1).padStart(2, "0")}<span> / 128</span>
+              </div>
+              <div className="civics-ai-status">
+                <span className="civics-ai-dot"></span> ENGLISH AUDIO
+              </div>
+            </div>
+            <div className="civics-question-section">
+              <div className="civics-language-label">ENGLISH</div>
+              <h2 className="civics-question-english">{currentQuestion}</h2>
+            </div>
+            <div className="civics-divider"></div>
+            <div className="civics-question-section spanish">
+              <div className="civics-language-label">ESPAÑOL</div>
+              <p className="civics-question-spanish">{currentQuestionSpanish}</p>
+            </div>
+            <div className="civics-divider"></div>
+            <div className="civics-answer-section">
+              <div className="civics-language-label">ACCEPTABLE ANSWERS</div>
+              <div className="civics-answers">
+                {currentAnswers.map((answer, index) => (
+                  <span key={index} className="civics-answer">{answer}</span>
+                ))}
+              </div>
+            </div>
+            <div className="civics-divider"></div>
+            <div className="civics-navigation">
+              <button
+                className="civics-nav-button"
+                onClick={() => {
+                  setCivicsIndex((currentIndex) =>
+                    currentIndex <= 0 ? civicsQuestions.length - 1 : currentIndex - 1
+                  );
+                }}
+              >
+                ← <span>Previous</span>
+              </button>
+              <div className="civics-progress">
+                {String(civicsIndex + 1).padStart(2, "0")}<span> / 128</span>
+              </div>
+              <button
+                className="civics-nav-button next"
+                onClick={() => {
+                  setCivicsIndex((currentIndex) => {
+                    const nextIndex =
+                      currentIndex >= civicsQuestions.length - 1 ? 0 : currentIndex + 1;
+                    markCivicsViewed(nextIndex);
+                    return nextIndex;
+                  });
+                }}
+              >
+                <span>Next</span> →
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (screen === "practice") {
+    return (
+      <div className="practice-screen">
+        <header className="practice-header">
+          <button className="back-button" onClick={() => setScreen("home")}>
+            ← Home
+          </button>
+          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+        </header>
+        <main className="practice-content">
+          <div className="practice-eyebrow">AI-POWERED CITIZENSHIP TRAINING</div>
+          <h1>Practice.</h1>
+          <p className="practice-intro">Choose how you want to prepare for your citizenship interview.</p>
+          <div className="practice-options">
+            <button className="practice-option" onClick={() => setScreen("civics")}>
+              <div className="practice-option-left">
+                <div className="practice-option-icon">◉</div>
+                <div className="practice-option-content">
+                  <h2>Civics</h2>
+                  <p>128 official questions</p>
+                </div>
+              </div>
+              <span className="practice-arrow">→</span>
+            </button>
+            <button className="practice-option" onClick={() => setScreen("english")}>
+              <div className="practice-option-left">
+                <div className="practice-option-icon">A</div>
+                <div className="practice-option-content">
+                  <h2>English</h2>
+                  <p>Reading & writing</p>
+                </div>
+              </div>
+              <span className="practice-arrow">→</span>
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (screen === "english") {
+    return (
+      <div className="practice-screen">
+        <header className="practice-header">
+          <button className="back-button" onClick={() => setScreen("practice")}>
+            ← Practice
+          </button>
+          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+        </header>
+        <main className="practice-content">
+          <div className="practice-eyebrow">ENGLISH PREPARATION</div>
+          <h1>English.</h1>
+          <p className="practice-intro">Practice the English skills needed for your citizenship interview.</p>
+          <div className="practice-options">
+            <button className="practice-option" onClick={() => setScreen("reading")}>
+              <div className="practice-option-left">
+                <div className="practice-option-icon">A</div>
+                <div className="practice-option-content">
+                  <h2>Reading</h2>
+                  <p>Practice reading sentences aloud.</p>
+                </div>
+              </div>
+              <span className="practice-arrow">→</span>
+            </button>
+            <button className="practice-option" onClick={() => setScreen("writing")}>
+              <div className="practice-option-left">
+                <div className="practice-option-icon">✎</div>
+                <div className="practice-option-content">
+                  <h2>Writing</h2>
+                  <p>Practice writing sentences correctly.</p>
+                </div>
+              </div>
+              <span className="practice-arrow">→</span>
+            </button>
+            <button className="practice-option" onClick={() => setScreen("coach")}>
+              <div className="practice-option-left">
+                <div className="practice-option-icon">✦</div>
+                <div className="practice-option-content">
+                  <h2>AI English Coach</h2>
+                  <p>Practice real English conversations with AI</p>
+                </div>
+              </div>
+              <span className="practice-arrow">→</span>
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (screen === "reading") {
+    return (
+      <div className="practice-screen">
+        <header className="practice-header">
+          <button className="back-button" onClick={() => setScreen("english")}>
+            ← English
+          </button>
+          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+        </header>
+        <main className="practice-content">
+          <div className="practice-eyebrow">ENGLISH · READING</div>
+          <h1>Reading.</h1>
+          <p className="practice-intro">Read the sentence aloud and practice your English.</p>
+          <div className="reading-card">
+            <div className="reading-label">READ THIS SENTENCE</div>
+            <div className="reading-sentence">{readingSentences[readingIndex].english}</div>
+            <div className="writing-spanish">{readingSentences[readingIndex].spanish}</div>
+            {aiMessage && (
+              <div className="ai-reading-feedback">
+                <div className="ai-reading-label">AI HEARD</div>
+                <div className="ai-reading-text">
+                  {aiMessage.replace('I heard: "', '').replace('"', '')}
+                </div>
+              </div>
+            )}
+            <button
+              className={`reading-button ${isReading ? "recording" : ""}`}
+              onClick={isReading ? stopReading : startReading}
+              disabled={isAIThinking && !isReading}
+              type="button"
+            >
+              {isReading ? "⏹ Stop & Evaluate" : "🎙 Start Reading"}
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (screen === "coach") {
+    if (coachMode === "conversation") {
+      return (
+        <div className="practice-screen coach-screen">
+          <header className="practice-header">
+            <button className="back-button" onClick={() => setCoachMode("welcome")}>
+              ← Coach
+            </button>
+            <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+          </header>
+          <main className="coach-conversation-content">
+            <div className="practice-eyebrow">AI ENGLISH COACH</div>
+            <div className="coach-conversation-card">
+              <div className="coach-conversation-avatar">
+                <img src={sarahImage} alt="Sarah" />
+              </div>
+              <div className="coach-conversation-status">
+                <span></span> SARAH IS READY
+              </div>
+              <div className="coach-message">
+                <div className="coach-message-label">SARAH</div>
+                <div className="coach-message-text">
+                  Hi! I'm Sarah. Let's practice English together. Tell me about yourself.
+                </div>
+              </div>
+              <div className="coach-response-area">
+                {coachReply && (
+                  <div className="coach-ai-reply">
+                    <div className="coach-ai-reply-label">SARAH</div>
+                    <div className="coach-ai-reply-text">{coachReply}</div>
+                  </div>
+                )}
+                <div className="coach-response-label">YOUR RESPONSE</div>
+                <button
+                  className={`coach-mic-button ${coachListening ? "listening" : ""}`}
+                  onClick={coachListening ? stopCoachListening : startCoachListening}
+                  disabled={coachThinking}
+                  type="button"
+                >
+                  <div className="coach-mic-icon-wrapper">
+                    <span className="mic-glyph">🎙</span>
+                  </div>
+                  <span className="coach-mic-text">
+                    {coachListening ? "Tap again when you finish speaking" : "Tap the microphone to speak"}
+                  </span>
+                </button>
+              </div>
+            </div>
+          </main>
+        </div>
+      );
+    }
+    return (
+      <div className="practice-screen coach-screen">
+        <header className="practice-header">
+          <button className="back-button" onClick={() => setScreen("practice")}>
+            ← Practice
+          </button>
+          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+        </header>
+        <main className="coach-content">
+          <div className="practice-eyebrow">AI ENGLISH COACH</div>
+          <h1>Speak with confidence.</h1>
+          <p className="practice-intro">Practice real English conversations with your AI coach.</p>
+          <div className="coach-card">
+            <div className="coach-avatar">
+              <img src={sarahImage} alt="AI English Coach" />
+            </div>
+            <div className="coach-status">
+              <span className="coach-status-dot"></span> AI COACH READY
+            </div>
+            <h2>Hi, I'm Sarah.</h2>
+            <p>Let's practice English together.</p>
+            <button
+              className="coach-start-button"
+              onClick={() => setCoachMode("conversation")}
+            >
+              Start Conversation
+            </button>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (screen === "writing") {
+    return (
+      <div className="writing-ai-screen">
+        <header className="writing-ai-header">
+          <button className="writing-back-button" onClick={() => setScreen("english")}>
+            ← <span>English</span>
+          </button>
+          <div className="writing-ai-brand">CITIZENSHIP <span>AI</span></div>
+        </header>
+        <main className="writing-ai-content">
+          <div className="writing-top-section">
+            <div>
+              <div className="writing-eyebrow">ENGLISH · WRITING DICTATION</div>
+              <h1 className="writing-ai-title">Writing <span>Practice.</span></h1>
+              <p className="writing-ai-intro">Listen carefully to Sarah and type the sentence in English.</p>
+            </div>
+            <div className="writing-ai-badge">
+              <div className="writing-ai-badge-icon">✎</div>
+              <div>
+                <strong>AI AUDIO DICTATION</strong>
+                <small>LISTENING & WRITING TEST</small>
+              </div>
+            </div>
+          </div>
+          <div className="writing-performance">
+            <div className="writing-performance-title">AI PERFORMANCE</div>
+            <div className="writing-performance-content">
+              <div className="performance-item good">
+                <div className="performance-dot"></div>
+                <div>
+                  <strong>{String(writingGoodCount).padStart(2, "0")}</strong>
+                  <span>GOOD</span>
+                </div>
+              </div>
+              <div className="performance-divider"></div>
+              <div className="performance-item needs">
+                <div className="performance-dot"></div>
+                <div>
+                  <strong>{String(writingNeedsPracticeCount).padStart(2, "0")}</strong>
+                  <span>NEEDS PRACTICE</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="writing-question-card">
+            <div className="writing-question-header">
+              <div className="writing-question-label">
+                <span>🔊</span> LISTEN & TYPE WHAT YOU HEAR
+              </div>
+              <div className="writing-progress">
+                {writingIndex + 1} / {writingSentences.length}
+              </div>
+            </div>
+            <div className="dictation-audio-prompt">
+              <button
+                className="dictation-speak-btn"
+                onClick={() => {
+                  window.speechSynthesis.cancel();
+                  const utterance = new SpeechSynthesisUtterance(writingSentences[writingIndex].english);
+                  utterance.lang = "en-US";
+                  utterance.rate = 0.85;
+                  window.speechSynthesis.speak(utterance);
+                }}
+                type="button"
+              >
+                <span className="speaker-icon">🔊</span>
+                <span>Click to Replay Audio</span>
+              </button>
+            </div>
+            <div className="writing-line"></div>
+            <div className="writing-translation-label">
+              <span>◎</span> SPANISH TRANSLATION (CONTEXT)
+            </div>
+            <div className="writing-big-spanish">
+              {writingSentences[writingIndex].spanish}
+            </div>
+          </div>
+          <textarea
+            className="writing-ai-input"
+            placeholder="Type what you hear in English..."
+            value={writingAnswer}
+            onChange={(e) => setWritingAnswer(e.target.value)}
+          />
+          <button
+            className="writing-ai-button"
+            onClick={checkWriting}
+            disabled={isAIThinking}
+          >
+            <span>✓</span>
+            {isAIThinking ? "Evaluating..." : "Check Writing"}
+          </button>
+          {aiMessage && (
+            <div className="writing-ai-evaluation">
+              <div className="writing-evaluation-label">AI EVALUATION</div>
+              <div className="writing-evaluation-text">{aiMessage}</div>
+            </div>
+          )}
+        </main>
+      </div>
+    );
+  }
+
+  if (screen === "uscisTracker") {
+    return (
+      <div className="app uscis-tracker-screen">
+        <main className="uscis-tracker-content">
+          <div className="uscis-tracker-page-header">
+            <span>USCIS</span>
+            <h1>Case Tracker</h1>
+            <p>Check the latest status of your immigration case.</p>
+          </div>
+          <section className="uscis-tracker-panel">
+            <div className="uscis-tracker-panel-label">CASE STATUS</div>
+            <h2>Enter your Receipt Number</h2>
+            <p className="uscis-tracker-help">
+              Your receipt number is usually 13 characters. Example: IOE1234567890
+            </p>
+            <input
+              type="text"
+              className="uscis-receipt-input"
+              placeholder="Enter Receipt Number"
+              value={uscisReceiptNumber}
+              onChange={(event) => {
+                setUscisReceiptNumber(event.target.value.toUpperCase());
+                setUscisError("");
+              }}
+            />
+            {uscisError && <p className="uscis-form-error" role="alert">{uscisError}</p>}
+            <button
+              className="uscis-check-button"
+              onClick={async () => {
+                const receipt = uscisReceiptNumber.replace(/[\s-]/g, "").toUpperCase();
+                if (!receipt) {
+                  setUscisError("Please enter your receipt number.");
+                  return;
+                }
+                if (!/^[A-Z]{3}\d{10}$/.test(receipt)) {
+                  setUscisError("Use 3 letters followed by 10 numbers, for example IOE1234567890.");
+                  return;
+                }
+                setUscisReceiptNumber(receipt);
+                setUscisLoading(true);
+                setUscisCaseResult(null);
+                setUscisError("");
+                try {
+                  const response = await apiFetch("/uscis-case-status", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ receiptNumber: receipt }),
+                  });
+                  const result = await response.json();
+                  if (!response.ok) {
+                    throw new Error(result.error || "Unable to check case status.");
+                  }
+                  const caseStatus = result.case_status;
+                  setUscisCaseResult({
+                    status: caseStatus?.current_case_status_text_en || "Status unavailable",
+                    description: caseStatus?.current_case_status_desc_en || "",
+                    receiptNumber: caseStatus?.receiptNumber || receipt,
+                    form: caseStatus?.formType || "Not available",
+                    lastUpdated: caseStatus?.modifiedDate || "Not available",
+                    history: [],
+                  });
+                } catch (error) {
+                  console.error("Case Tracker error:", error);
+                  setUscisError(error.message || "Unable to check case status.");
+                } finally {
+                  setUscisLoading(false);
+                }
+              }}
+            >
+              CHECK CASE STATUS <span>→</span>
+            </button>
+          </section>
+          {uscisLoading && <div className="uscis-loading">Checking case status...</div>}
+          {uscisCaseResult && (
+            <div className="uscis-case-result">
+              <div className="uscis-status-top">
+                <div className="uscis-status-icon">✓</div>
+                <div className="uscis-status-main">
+                  <div className="uscis-result-label">CASE STATUS</div>
+                  <h2>{uscisCaseResult.status}</h2>
+                  {uscisCaseResult.description && (
+                    <p className="uscis-result-description">{uscisCaseResult.description}</p>
+                  )}
+                </div>
+                <div className="uscis-official-badge">
+                  <span></span> OFFICIAL USCIS STATUS
+                </div>
+              </div>
+              <div className="uscis-result-info">
+                <div className="uscis-info-item">
+                  <span>RECEIPT NUMBER</span>
+                  <strong>{uscisCaseResult.receiptNumber}</strong>
+                </div>
+                <div className="uscis-info-item">
+                  <span>FORM</span>
+                  <strong>{uscisCaseResult.form}</strong>
+                </div>
+                <div className="uscis-info-item">
+                  <span>LAST UPDATED</span>
+                  <strong>{uscisCaseResult.lastUpdated}</strong>
+                </div>
+              </div>
+            </div>
+          )}
+          <button className="uscis-tracker-back" onClick={() => setScreen("home")}>
+            ← Back to Home
+          </button>
+        </main>
+      </div>
+    );
+  }
+
+  if (screen === "progress") {
+    return (
+      <div className="app progress-ai-screen">
+        <main className="progress-ai-content">
+          <div className="progress-ai-header">
+            <span>YOUR PERFORMANCE</span>
+            <h1>My Progress</h1>
+            <p>Track your citizenship preparation with AI.</p>
+          </div>
+          <section className="progress-ai-overview">
+            <div className="progress-ai-score">
+              <span>OVERALL PROGRESS</span>
+              <strong>0%</strong>
+              <p>Keep practicing to improve your score.</p>
+            </div>
+            <div className="progress-ai-bar">
+              <div className="progress-ai-fill" style={{ width: "0%" }}></div>
+            </div>
+          </section>
+          <section className="progress-ai-modules">
+            <div className="progress-ai-module">
+              <div className="progress-module-icon">◎</div>
+              <div>
+                <span>CIVICS</span>
+                <h2>128 Questions</h2>
+                <p>{civicsViewed.length} questions completed</p>
+              </div>
+              <strong>{Math.round((civicsViewed.length / 128) * 100)}%</strong>
+            </div>
+          </section>
+          <button className="progress-ai-back" onClick={() => setScreen("home")}>
+            ← Back to Home
+          </button>
+        </main>
+      </div>
+    );
+  }
+
+  if (screen === "interview") {
+    return <RealInterview onExit={() => setScreen("home")} />;
+  }
+
+  return (
+    <Home
+      onStartInterview={() => setScreen("interview")}
+      onOpenPractice={() => setScreen("practice")}
+      onOpenFeature={(feature) => setScreen(feature)}
+      onOpenProgress={() => setScreen("progress")}
+    />
+  );
+}
+export default App;
