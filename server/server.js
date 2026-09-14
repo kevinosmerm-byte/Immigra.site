@@ -30,9 +30,11 @@ const upload = multer({
     fileSize: 10 * 1024 * 1024
   }
 });
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Start the API even before AI credentials are configured. AI endpoints return
+// a clear 503 response until OPENAI_API_KEY is added in the hosting provider.
+const openai = process.env.OPENAI_API_KEY
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null;
 
 const MAX_TEXT_LENGTH = 5_000;
 const MAX_HISTORY_ITEMS = 12;
@@ -50,7 +52,7 @@ function readAnswer(value) {
 }
 
 function requireOpenAI(res) {
-  if (process.env.OPENAI_API_KEY) return true;
+  if (openai) return true;
   res.status(503).json({ error: "AI service is not configured." });
   return false;
 }
