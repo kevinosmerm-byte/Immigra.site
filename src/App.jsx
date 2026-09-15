@@ -9,6 +9,7 @@ import { civicsQuestionsSpanish } from "./civicsQuestionsSpanish";
 import { apiJson } from "./api";
 import { startAudioRecording, transcribeRecording } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
+import { getPracticeEvents, getPracticeSummary, recordPracticeEvent } from "./progress";
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
@@ -786,7 +787,7 @@ function Home({
 
 // Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
 
-function RealInterview({ onExit }) {
+function RealInterview({ onExit, onComplete }) {
   const [questions] = useState(() => {
     return [...civicsQuestions]
       .sort(() => Math.random() - 0.5)
@@ -803,6 +804,16 @@ function RealInterview({ onExit }) {
   const [hasRetried, setHasRetried] = useState(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   const recorderRef = useRef(null);
+  const completionReportedRef = useRef(false);
+
+  useEffect(() => {
+    if (!isInterviewComplete || completionReportedRef.current) return;
+    completionReportedRef.current = true;
+    onComplete?.({
+      score: Math.round((correctAnswers / questions.length) * 100),
+      outcome: "completed",
+    });
+  }, [isInterviewComplete, correctAnswers, questions.length, onComplete]);
 
   const speakQuestion = (text, onFinished) => {
     window.speechSynthesis.cancel();
@@ -1188,6 +1199,7 @@ function App() {
     const saved = readLocalJson("civicsViewed", []);
     return Array.isArray(saved) ? saved : [];
   });
+  const [practiceEvents, setPracticeEvents] = useState(() => getPracticeEvents());
 
   const [coachListening, setCoachListening] = useState(false);
   const [coachHistory, setCoachHistory] = useState([]);
@@ -1210,6 +1222,11 @@ function App() {
       .map((_, index) => index)
       .sort(() => Math.random() - 0.5)
   );
+  const practiceSummary = getPracticeSummary(practiceEvents, civicsViewed);
+
+  const recordPractice = (event) => {
+    setPracticeEvents(recordPracticeEvent(event));
+  };
 
   // 2. TODOS LOS EFECTOS (USEEFFECT) VAN AQUÍ
   const markCivicsViewed = (index) => {
@@ -1320,6 +1337,7 @@ function App() {
       } else {
         setWritingNeedsPracticeCount((count) => count + 1);
       }
+      recordPractice({ module: "writing", score: result.score, outcome: result.accuracy });
       setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
       setTimeout(() => {
         nextWritingSentence();
@@ -1366,6 +1384,7 @@ function App() {
         { role: "user", content: message },
         { role: "assistant", content: result.reply || "" },
       ]);
+      recordPractice({ module: "coach", outcome: "reply" });
     } catch (error) {
       console.error("Coach AI error:", error);
       setCoachReply(error.message || "I'm having trouble connecting right now. Please try again.");
@@ -1441,6 +1460,7 @@ function App() {
       } else {
         playIncorrectSound();
       }
+      recordPractice({ module: "reading", score: result.score, outcome: result.accuracy });
 
       setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
       setTimeout(nextReadingSentence, 3000);
@@ -2097,13 +2117,19 @@ function App() {
           </div>
           <section className="progress-ai-overview">
             <div className="progress-ai-score">
-              <span>OVERALL PROGRESS</span>
-              <strong>0%</strong>
-              <p>Keep practicing to improve your score.</p>
+              <span>PRACTICE READINESS</span>
+              <strong>{practiceSummary.readiness === null ? "—" : `${practiceSummary.readiness}%`}</strong>
+              <p>{practiceSummary.readiness === null ? "Complete a reading, writing, or interview practice to build your baseline." : "Based only on your measured Citizenship AI practice."}</p>
             </div>
             <div className="progress-ai-bar">
-              <div className="progress-ai-fill" style={{ width: "0%" }}></div>
+              <div className="progress-ai-fill" style={{ width: `${practiceSummary.readiness || 0}%` }}></div>
             </div>
+          </section>
+          <section className="progress-recommendation" aria-label="Recommended next practice">
+            <span>RECOMMENDED NEXT</span>
+            <h2>{practiceSummary.recommended.label}</h2>
+            <p>{practiceSummary.recommended.detail}</p>
+            <button onClick={() => setScreen(practiceSummary.recommended.key === "interview" ? "interview" : practiceSummary.recommended.key === "civics" ? "civics" : practiceSummary.recommended.key === "writing" ? "writing" : "reading")}>Start practice <span>→</span></button>
           </section>
           <section className="progress-ai-modules">
             <div className="progress-ai-module">
@@ -2115,6 +2141,17 @@ function App() {
               </div>
               <strong>{Math.round((civicsViewed.length / 128) * 100)}%</strong>
             </div>
+            {[{ label: "READING", data: practiceSummary.reading }, { label: "WRITING", data: practiceSummary.writing }, { label: "SARAH INTERVIEWS", data: practiceSummary.interview }].map(({ label, data }) => (
+              <div className="progress-ai-module progress-ai-module-measured" key={label}>
+                <div className="progress-module-icon">✦</div>
+                <div>
+                  <span>{label}</span>
+                  <h2>{data.attempts} practice {data.attempts === 1 ? "session" : "sessions"}</h2>
+                  <p>{data.score === null ? "No measured score yet" : `Average practice score: ${data.score}%`}</p>
+                </div>
+                <strong>{data.score === null ? "—" : `${data.score}%`}</strong>
+              </div>
+            ))}
           </section>
           <button className="progress-ai-back" onClick={() => setScreen("home")}>
             ← Back to Home
@@ -2125,7 +2162,12 @@ function App() {
   }
 
   if (screen === "interview") {
-    return <RealInterview onExit={() => setScreen("home")} />;
+    return (
+      <RealInterview
+        onExit={() => setScreen("home")}
+        onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
+      />
+    );
   }
 
   return (

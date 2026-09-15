@@ -22541,3 +22541,57 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   padding: 10px 0;
   white-space: nowrap;
 }
+
+/* Measured progress: uses the existing glass card language without changing navigation. */
+.progress-recommendation {
+  margin: 16px 0;
+  padding: 18px;
+  border: 1px solid rgba(85, 177, 255, 0.38);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(20, 55, 97, 0.86), rgba(12, 25, 52, 0.94));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 32px rgba(0, 0, 0, 0.2);
+}
+
+.progress-recommendation > span {
+  color: #5fceff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.progress-recommendation h2 {
+  margin: 7px 0 5px;
+  color: #fff;
+  font-size: 20px;
+}
+
+.progress-recommendation p {
+  margin: 0;
+  color: #b5c9e5;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.progress-recommendation button {
+  width: 100%;
+  min-height: 43px;
+  margin-top: 14px;
+  border: 1px solid rgba(86, 199, 255, 0.56);
+  border-radius: 12px;
+  background: rgba(39, 129, 219, 0.2);
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.progress-recommendation button span {
+  margin-left: 8px;
+  color: #61d9ff;
+}
+
+.progress-ai-module-measured .progress-module-icon {
+  color: #b38cff;
+}
