@@ -12,7 +12,10 @@ app.disable("x-powered-by");
 const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
   .split(",")
   .map((origin) => origin.trim())
-  .filter(Boolean);
+  .filter(Boolean);// The USCIS sandbox is the default until USCIS grants this app production
+// credentials and endpoints. Environment values can override these later.
+const USCIS_TOKEN_URL = process.env.USCIS_TOKEN_URL || "https://api-int.uscis.gov/oauth/accesstoken";
+const USCIS_API_URL = process.env.USCIS_API_URL || "https://api-int.uscis.gov/case-status";
 
 app.use(cors({
   origin(origin, callback) {
@@ -339,7 +342,7 @@ app.post("/coach", async (req, res) => {
     }
 
     const response = await openai.responses.create({
-      model: "gpt-5.6-luna",
+      model: OPENAI_TEXT_MODEL,
 
       instructions: `
 You are Sarah, an AI English Coach inside a U.S. citizenship preparation application.
@@ -397,11 +400,11 @@ app.post("/uscis-case-status", async (req, res) => {
       });
     }
 
-    if (!process.env.USCIS_CLIENT_ID || !process.env.USCIS_CLIENT_SECRET || !process.env.USCIS_TOKEN_URL || !process.env.USCIS_API_URL) {
+    if (!process.env.USCIS_CLIENT_ID || !process.env.USCIS_CLIENT_SECRET) {
       return res.status(503).json({ error: "USCIS case status is not configured yet." });
     }
 
-    const tokenResponse = await fetch(process.env.USCIS_TOKEN_URL, {
+    const tokenResponse = await fetch(USCIS_TOKEN_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
@@ -424,7 +427,7 @@ app.post("/uscis-case-status", async (req, res) => {
     }
 
     const caseResponse = await fetch(
-      `${process.env.USCIS_API_URL}/${encodeURIComponent(receiptNumber)}`,
+      `${USCIS_API_URL}/${encodeURIComponent(receiptNumber)}`,
       {
         method: "GET",
         headers: {
