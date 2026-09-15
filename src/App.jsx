@@ -8,10 +8,39 @@ import { civicsAnswers } from "./civicsAnswers";
 import { civicsQuestionsSpanish } from "./civicsQuestionsSpanish";
 import { apiJson } from "./api";
 import { startAudioRecording, transcribeRecording } from "./audio";
+import { LegalSettings, Onboarding } from "./LegalSettings";
+
+const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
+const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
+
+function readLocalValue(key, fallback = "") {
+  try {
+    return localStorage.getItem(key) || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function readLocalJson(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value ? JSON.parse(value) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function saveLocalValue(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // The application remains usable when browser storage is unavailable.
+  }
+}
 const readingSentences = [
   {
     english: "The United States Constitution is the supreme law of the land.",
-    spanish: "La Constitución de los Estados Unidos es la ley suprema del país."
+    spanish: "La ConstituciÃ³n de los Estados Unidos es la ley suprema del paÃ­s."
   },
   {
     english: "The President of the United States lives in the White House.",
@@ -27,7 +56,7 @@ const readingSentences = [
   },
   {
     english: "The Constitution protects the rights of all citizens.",
-    spanish: "La Constitución protege los derechos de todos los ciudadanos."
+    spanish: "La ConstituciÃ³n protege los derechos de todos los ciudadanos."
   },
   {
     english: "The American flag has fifty stars.",
@@ -51,7 +80,7 @@ const readingSentences = [
   },
   {
     english: "The White House is in Washington, D.C.",
-    spanish: "La Casa Blanca está en Washington, D.C."
+    spanish: "La Casa Blanca estÃ¡ en Washington, D.C."
   },
   {
     english: "Congress makes federal laws.",
@@ -71,11 +100,11 @@ const readingSentences = [
   },
   {
     english: "The Bill of Rights protects individual rights.",
-    spanish: "La Declaración de Derechos protege los derechos individuales."
+    spanish: "La DeclaraciÃ³n de Derechos protege los derechos individuales."
   },
   {
     english: "The United States is a country.",
-    spanish: "Los Estados Unidos son un país."
+    spanish: "Los Estados Unidos son un paÃ­s."
   },
   {
     english: "California is a state.",
@@ -87,7 +116,7 @@ const readingSentences = [
   },
   {
     english: "The President is the leader of the country.",
-    spanish: "El Presidente es el líder del país."
+    spanish: "El Presidente es el lÃ­der del paÃ­s."
   },
   {
     english: "Senators work in Congress.",
@@ -95,15 +124,15 @@ const readingSentences = [
   },
   {
     english: "The American flag is a symbol of the country.",
-    spanish: "La bandera estadounidense es un símbolo del país."
+    spanish: "La bandera estadounidense es un sÃ­mbolo del paÃ­s."
   },
   {
     english: "Independence Day is July 4.",
-    spanish: "El Día de la Independencia es el 4 de julio."
+    spanish: "El DÃ­a de la Independencia es el 4 de julio."
   },
   {
     english: "Thanksgiving is a national holiday.",
-    spanish: "El Día de Acción de Gracias es un feriado nacional."
+    spanish: "El DÃ­a de AcciÃ³n de Gracias es un feriado nacional."
   },
   {
     english: "The President is elected by the people.",
@@ -127,7 +156,7 @@ const readingSentences = [
   },
   {
     english: "The Constitution forms the government.",
-    spanish: "La Constitución forma el gobierno."
+    spanish: "La ConstituciÃ³n forma el gobierno."
   }
 ];const writingSentences = [
   {
@@ -144,7 +173,7 @@ const readingSentences = [
   },
   {
     english: "Washington was the Father of Our Country.",
-    spanish: "Washington fue el Padre de Nuestro País."
+    spanish: "Washington fue el Padre de Nuestro PaÃ­s."
   },
   {
     english: "The President lives in the White House.",
@@ -176,11 +205,11 @@ const readingSentences = [
   },
   {
     english: "We have freedom of speech.",
-    spanish: "Tenemos libertad de expresión."
+    spanish: "Tenemos libertad de expresiÃ³n."
   },
   {
     english: "Congress meets in Washington.",
-    spanish: "El Congreso se reúne en Washington."
+    spanish: "El Congreso se reÃºne en Washington."
   },
   {
     english: "Senators work in Congress.",
@@ -188,7 +217,7 @@ const readingSentences = [
   },
   {
     english: "The United States is a country.",
-    spanish: "Los Estados Unidos es un país."
+    spanish: "Los Estados Unidos es un paÃ­s."
   },
   {
     english: "The United States has fifty states.",
@@ -216,27 +245,27 @@ const readingSentences = [
   },
   {
     english: "The Civil War was during Lincoln's time.",
-    spanish: "La Guerra Civil fue durante la época de Lincoln."
+    spanish: "La Guerra Civil fue durante la Ã©poca de Lincoln."
   },
   {
     english: "American Indians lived here.",
-    spanish: "Los indígenas americanos vivieron aquí."
+    spanish: "Los indÃ­genas americanos vivieron aquÃ­."
   },
   {
     english: "The United States is north of Mexico.",
-    spanish: "Los Estados Unidos está al norte de México."
+    spanish: "Los Estados Unidos estÃ¡ al norte de MÃ©xico."
   },
   {
     english: "Canada is north of the United States.",
-    spanish: "Canadá está al norte de los Estados Unidos."
+    spanish: "CanadÃ¡ estÃ¡ al norte de los Estados Unidos."
   },
   {
     english: "Mexico is south of the United States.",
-    spanish: "México está al sur de los Estados Unidos."
+    spanish: "MÃ©xico estÃ¡ al sur de los Estados Unidos."
   },
   {
     english: "Washington is in the United States.",
-    spanish: "Washington está en los Estados Unidos."
+    spanish: "Washington estÃ¡ en los Estados Unidos."
   },
   {
     english: "California is a state.",
@@ -272,7 +301,7 @@ const readingSentences = [
   },
   {
     english: "The government is here.",
-    spanish: "El gobierno está aquí."
+    spanish: "El gobierno estÃ¡ aquÃ­."
   },
   {
     english: "The government can help people.",
@@ -308,11 +337,11 @@ const readingSentences = [
   },
   {
     english: "The largest state is Alaska.",
-    spanish: "El estado más grande es Alaska."
+    spanish: "El estado mÃ¡s grande es Alaska."
   },
   {
     english: "The dollar bill is money.",
-    spanish: "El billete de dólar es dinero."
+    spanish: "El billete de dÃ³lar es dinero."
   },
   {
     english: "The United States has one hundred Senators.",
@@ -320,29 +349,30 @@ const readingSentences = [
   },
   {
     english: "We celebrate Independence Day.",
-    spanish: "Celebramos el Día de la Independencia."
+    spanish: "Celebramos el DÃ­a de la Independencia."
   },
   {
     english: "We celebrate Thanksgiving.",
-    spanish: "Celebramos el Día de Acción de Gracias."
+    spanish: "Celebramos el DÃ­a de AcciÃ³n de Gracias."
   },
   {
     english: "We celebrate Presidents' Day.",
-    spanish: "Celebramos el Día de los Presidentes."
+    spanish: "Celebramos el DÃ­a de los Presidentes."
   },
   {
     english: "We celebrate Memorial Day.",
-    spanish: "Celebramos el Día de los Caídos."
+    spanish: "Celebramos el DÃ­a de los CaÃ­dos."
   }
 ];
 function Home({
   onStartInterview,
   onOpenPractice,
   onOpenFeature,
-  onOpenProgress
+  onOpenProgress,
+  onOpenSettings,
+  language,
+  onLanguageChange,
 }) {
-    const [languageOpen, setLanguageOpen] = useState(false);
-      const [language, setLanguage] = useState("en");
   return (
     <div className="app home-ai">
 
@@ -356,28 +386,16 @@ function Home({
         </div>
 
         <div className="language-selector">
-  <div className="language-selector">
- <button
-  className="home-language"
-  onClick={() => setLanguage(language === "en" ? "es" : "en")}
->
-    {language === "en" ? "EN" : "ES"}
-    <span>⌄</span>
-  </button>
-</div>
-
-  {languageOpen && (
-    <div className="language-menu">
-      <button onClick={() => setLanguageOpen(false)}>
-        ENGLISH
-      </button>
-
-      <button onClick={() => setLanguageOpen(false)}>
-        ESPAÑOL
-      </button>
-    </div>
-  )}
-</div>
+          <button
+            className="home-language"
+            onClick={() => onLanguageChange(language === "en" ? "es" : "en")}
+            aria-label="Change preferred language"
+          >
+            {language === "en" ? "EN" : "ES"}
+            <span>âŒ„</span>
+          </button>
+          <button className="home-settings-button" onClick={onOpenSettings} aria-label="Open Legal and Privacy Settings">âš™</button>
+        </div>
 
       </header>
 
@@ -411,9 +429,9 @@ function Home({
   )}
 </h1>
 
-            <p>
-              Prepare for your U.S. citizenship interview
-              with personalized AI practice.
+            <p>{language === "en"
+              ? "Prepare for your U.S. citizenship interview with personalized AI practice."
+              : "PrepÃ¡rate para tu entrevista de ciudadanÃ­a de EE. UU. con prÃ¡ctica personalizada de IA."}
             </p>
 
           </div>
@@ -430,7 +448,7 @@ function Home({
             <div className="ai-orb">
 
               <div className="ai-orb-core">
-                ✦
+                âœ¦
               </div>
 
             </div>
@@ -456,7 +474,7 @@ function Home({
             </div>
 
             <span className="primary-arrow">
-              →
+              â†’
             </span>
 
           </button>
@@ -491,7 +509,7 @@ function Home({
             >
 
               <div className="feature-icon">
-                ◎
+                â—Ž
               </div>
 
               <div className="feature-text">
@@ -501,7 +519,7 @@ function Home({
               </div>
 
               <span className="feature-arrow">
-                →
+                â†’
               </span>
 
             </button>
@@ -523,7 +541,7 @@ function Home({
                   <h3>Reading</h3>
                 </div>
 
-                <span>↗</span>
+                <span>â†—</span>
 
               </button>
 
@@ -534,7 +552,7 @@ function Home({
               >
 
                 <div className="mini-icon">
-                  ✎
+                  âœŽ
                 </div>
 
                 <div>
@@ -542,7 +560,7 @@ function Home({
                   <h3>Writing</h3>
                 </div>
 
-                <span>↗</span>
+                <span>â†—</span>
 
               </button>
 
@@ -578,7 +596,7 @@ function Home({
               </div>
 
               <span className="feature-arrow">
-                →
+                â†’
               </span>
 
             </button>
@@ -641,7 +659,7 @@ function Home({
             onClick={onOpenProgress}
           >
             VIEW PROGRESS
-            <span>→</span>
+            <span>â†’</span>
           </button>
 
         </section>
@@ -669,22 +687,20 @@ function Home({
 
             <div className="uscis-live">
               <span></span>
-              OFFICIAL
+              USCIS SANDBOX
             </div>
 
           </div>
 
 
-          <p>
-            Check the latest status of your immigration case.
-          </p>
+          <p>Practice checking a status response through the USCIS API Sandbox.</p>
 
 
           <button
             onClick={() => onOpenFeature("uscisTracker")}
           >
             CHECK CASE STATUS
-            <span>→</span>
+            <span>â†’</span>
           </button>
 
         </section>
@@ -695,7 +711,7 @@ function Home({
         <section className="home-ai-tip">
 
           <div className="tip-symbol">
-            ✦
+            âœ¦
           </div>
 
           <div>
@@ -724,7 +740,7 @@ function Home({
 
         <button className="home-nav-item active">
 
-          <span>⌂</span>
+          <span>âŒ‚</span>
           <strong>Home</strong>
 
         </button>
@@ -735,7 +751,7 @@ function Home({
           onClick={onOpenPractice}
         >
 
-          <span>◎</span>
+          <span>â—Ž</span>
           <strong>Practice</strong>
 
         </button>
@@ -746,7 +762,7 @@ function Home({
           onClick={onOpenProgress}
         >
 
-          <span>◌</span>
+          <span>â—Œ</span>
           <strong>Progress</strong>
 
         </button>
@@ -757,7 +773,7 @@ function Home({
           onClick={() => onOpenFeature("coach")}
         >
 
-          <span>✦</span>
+          <span>âœ¦</span>
           <strong>Coach</strong>
 
         </button>
@@ -768,7 +784,7 @@ function Home({
   );
 }
 
-// Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
+// Reemplaza la secciÃ³n del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este cÃ³digo completamente optimizado y rediseÃ±ado:
 
 function RealInterview({ onExit }) {
   const [questions] = useState(() => {
@@ -955,12 +971,12 @@ function RealInterview({ onExit }) {
           <div className="results-percentage">{scorePercentage}%</div>
           <div className="results-stats">
             <div className="result-stat correct">
-              <span>✓</span>
+              <span>âœ“</span>
               <strong>{correctAnswers}</strong>
               <small>Correct</small>
             </div>
             <div className="result-stat incorrect">
-              <span>✕</span>
+              <span>âœ•</span>
               <strong>{incorrectAnswers}</strong>
               <small>Incorrect</small>
             </div>
@@ -988,16 +1004,16 @@ function RealInterview({ onExit }) {
     <div className="interview-screen">
       <header className="interview-header">
         <button className="back-button" onClick={onExit}>
-          ←
+          â†
         </button>
         <div className="interview-brand">
           CITIZENSHIP <span>AI</span>
         </div>
-        <button className="more-button">•••</button>
+        <button className="more-button">â€¢â€¢â€¢</button>
       </header>
 
       <main className="interview-content">
-        {/* INTERFAZ HOLOGRÁFICA SUPREMA DE SARAH */}
+        {/* INTERFAZ HOLOGRÃFICA SUPREMA DE SARAH */}
         <div className="sarah-ai-interface">
           <div
             className={`sarah-holo-card ${
@@ -1038,8 +1054,8 @@ function RealInterview({ onExit }) {
           </div>
         </div>
 
-        {/* ÁREA DE PREGUNTA Y PROGRESO */}
-       {/* ÁREA DE PREGUNTA Y PROGRESO RE DISEÑADA */}
+        {/* ÃREA DE PREGUNTA Y PROGRESO */}
+       {/* ÃREA DE PREGUNTA Y PROGRESO RE DISEÃ‘ADA */}
         <div className="question-area">
           
           <div className="interview-top-hud">
@@ -1074,7 +1090,7 @@ function RealInterview({ onExit }) {
 
           <div className="hud-question-content">
             <div className="ai-turn-indicator">
-              {isSpeaking ? "✦ SARAH IS SPEAKING" : "✦ YOUR TURN TO SPEAK"}
+              {isSpeaking ? "âœ¦ SARAH IS SPEAKING" : "âœ¦ YOUR TURN TO SPEAK"}
             </div>
             <h2 className="question">{questions[currentQuestion].english}</h2>
             <p className="question-spanish">{questions[currentQuestion].spanish}</p>
@@ -1085,7 +1101,7 @@ function RealInterview({ onExit }) {
               <div className="ai-thinking-main">
                 <div className="ai-brain">
                   <div className="brain-glow"></div>
-                  <span>✦</span>
+                  <span>âœ¦</span>
                 </div>
                 <div className="ai-thinking-text">
                   <div className="ai-thinking-title">
@@ -1105,8 +1121,8 @@ function RealInterview({ onExit }) {
               <p>{answer}</p>
               <div className="answer-result">
                 {answerStatus === "evaluating" && "Evaluating..."}
-                {answerStatus === "correct" && "✓ Verified Correct"}
-                {answerStatus === "incorrect" && "✕ Needs Improvement"}
+                {answerStatus === "correct" && "âœ“ Verified Correct"}
+                {answerStatus === "incorrect" && "âœ• Needs Improvement"}
                 {answerStatus === "incomplete" && "! Incomplete Answer"}
                 {answerStatus === "error" && "Evaluation Error"}
               </div>
@@ -1114,14 +1130,14 @@ function RealInterview({ onExit }) {
           )}
         </div>
 
-        {/* ÁREA DE CONTROL DE VOZ */}
+        {/* ÃREA DE CONTROL DE VOZ */}
         <div className="voice-area">
           <button
             className={`mic-button ${isListening ? "listening" : ""}`}
             onClick={isListening ? stopListening : startListening}
             disabled={isSpeaking}
           >
-            <span>🎙</span>
+            <span>ðŸŽ™</span>
           </button>
 
           <div className="voice-label">
@@ -1129,7 +1145,7 @@ function RealInterview({ onExit }) {
               ? "TAP THE MICROPHONE AGAIN TO STOP"
               : isSpeaking
               ? "SARAH IS SPEAKING..."
-              : "YOUR TURN — TAP TO SPEAK"}
+              : "YOUR TURN â€” TAP TO SPEAK"}
           </div>
 
           <button
@@ -1138,7 +1154,7 @@ function RealInterview({ onExit }) {
             disabled={isSpeaking || isListening}
           >
             <span>I DON'T KNOW / SKIP</span>
-            <span className="skip-icon">›</span>
+            <span className="skip-icon">â€º</span>
           </button>
         </div>
       </main>
@@ -1151,18 +1167,26 @@ function RealInterview({ onExit }) {
 }
 
 function App() {
-  // 1. TODOS LOS HOOKS (ESTADOS) VAN AQUÍ ARRIBA SIN EXCEPCIÓN
-  const [screen, setScreen] = useState("home");
+  // 1. TODOS LOS HOOKS (ESTADOS) VAN AQUÃ ARRIBA SIN EXCEPCIÃ“N
+  const [screen, setScreen] = useState(() =>
+    window.location.hash === "#privacy" ? "settings" : "home"
+  );
   const [coachMode, setCoachMode] = useState("welcome");
   const [civicsIndex, setCivicsIndex] = useState(0);
   const [uscisReceiptNumber, setUscisReceiptNumber] = useState("");
   const [uscisCaseResult, setUscisCaseResult] = useState(null);
   const [uscisLoading, setUscisLoading] = useState(false);
   const [uscisError, setUscisError] = useState("");
+  const [language, setLanguage] = useState(() =>
+    readLocalValue(LANGUAGE_STORAGE_KEY, "en") === "es" ? "es" : "en"
+  );
+  const [onboardingComplete, setOnboardingComplete] = useState(
+    () => readLocalValue(ONBOARDING_STORAGE_KEY) === "complete"
+  );
   
   const [civicsViewed, setCivicsViewed] = useState(() => {
-    const saved = localStorage.getItem("civicsViewed");
-    return saved ? JSON.parse(saved) : [];
+    const saved = readLocalJson("civicsViewed", []);
+    return Array.isArray(saved) ? saved : [];
   });
 
   const [coachListening, setCoachListening] = useState(false);
@@ -1187,12 +1211,12 @@ function App() {
       .sort(() => Math.random() - 0.5)
   );
 
-  // 2. TODOS LOS EFECTOS (USEEFFECT) VAN AQUÍ
+  // 2. TODOS LOS EFECTOS (USEEFFECT) VAN AQUÃ
   const markCivicsViewed = (index) => {
     setCivicsViewed((current) => {
       if (current.includes(index)) return current;
       const updated = [...current, index];
-      localStorage.setItem("civicsViewed", JSON.stringify(updated));
+      saveLocalValue("civicsViewed", JSON.stringify(updated));
       return updated;
     });
   };
@@ -1203,7 +1227,7 @@ function App() {
       setCivicsViewed((current) => {
         if (current.includes(civicsIndex)) return current;
         const updated = [...current, civicsIndex];
-        localStorage.setItem("civicsViewed", JSON.stringify(updated));
+        saveLocalValue("civicsViewed", JSON.stringify(updated));
         return updated;
       });
       window.speechSynthesis.cancel();
@@ -1296,7 +1320,7 @@ function App() {
       } else {
         setWritingNeedsPracticeCount((count) => count + 1);
       }
-      setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
+      setAiMessage(`${result.score}% â€” ${result.accuracy}\n\n${result.feedback}`);
       setTimeout(() => {
         nextWritingSentence();
       }, 3000);
@@ -1344,7 +1368,7 @@ function App() {
       ]);
     } catch (error) {
       console.error("Coach AI error:", error);
-      setCoachReply("I'm having trouble connecting right now. Please try again.");
+      setCoachReply(error.message || "I'm having trouble connecting right now. Please try again.");
     } finally {
       setCoachThinking(false);
     }
@@ -1356,7 +1380,7 @@ function App() {
       setCoachListening(true);
     } catch (error) {
       console.error("Coach microphone error:", error);
-      setCoachReply("Please allow microphone access and try again.");
+      setCoachReply(error.message || "Please allow microphone access and try again.");
     }
   };
 
@@ -1372,7 +1396,7 @@ function App() {
       await sendCoachMessage(transcript);
     } catch (error) {
       console.error("Coach transcription error:", error);
-      setCoachReply("I couldn't hear you. Please try again.");
+      setCoachReply(error.message || "I couldn't hear you. Please try again.");
     }
   };
 
@@ -1385,7 +1409,7 @@ function App() {
     } catch (error) {
       console.error("Reading microphone error:", error);
       setIsAIThinking(false);
-      setAiMessage("Please allow microphone access and try again.");
+      setAiMessage(error.message || "Please allow microphone access and try again.");
     }
   };
 
@@ -1418,28 +1442,60 @@ function App() {
         playIncorrectSound();
       }
 
-      setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
+      setAiMessage(`${result.score}% â€” ${result.accuracy}\n\n${result.feedback}`);
       setTimeout(nextReadingSentence, 3000);
     } catch (error) {
       console.error("Reading AI error:", error);
-      setAiMessage("Unable to evaluate reading.");
+      setAiMessage(error.message || "Unable to evaluate reading.");
     } finally {
       setIsAIThinking(false);
     }
   };
 
-  // 3. LAS CONDICIONES DE RENDERIZADO (IF) VAN AQUÍ ABAJO, NUNCA ANTES DE LOS HOOKS
+  const setPreferredLanguage = (nextLanguage) => {
+    const value = nextLanguage === "es" ? "es" : "en";
+    setLanguage(value);
+    saveLocalValue(LANGUAGE_STORAGE_KEY, value);
+  };
+
+  const completeOnboarding = () => {
+    saveLocalValue(ONBOARDING_STORAGE_KEY, "complete");
+    setOnboardingComplete(true);
+  };
+
+  const restartOnboarding = () => {
+    try {
+      localStorage.removeItem(ONBOARDING_STORAGE_KEY);
+    } catch {
+      // Storage may be unavailable; state still permits the review.
+    }
+    setScreen("home");
+    setOnboardingComplete(false);
+  };
+
+  // 3. LAS CONDICIONES DE RENDERIZADO (IF) VAN AQUÃ ABAJO, NUNCA ANTES DE LOS HOOKS
+  if (!onboardingComplete && screen !== "settings") {
+    return <Onboarding language={language} onLanguageChange={setPreferredLanguage} onComplete={completeOnboarding} />;
+  }
+
+  if (screen === "settings") {
+    return <LegalSettings onBack={() => {
+      window.history.replaceState(null, "", window.location.pathname);
+      setScreen("home");
+    }} onRestartOnboarding={restartOnboarding} />;
+  }
+
   if (screen === "civics") {
-    // ... mantén tu código actual de civics aquí o déjalo tal cual lo tienes ...
+    // ... mantÃ©n tu cÃ³digo actual de civics aquÃ­ o dÃ©jalo tal cual lo tienes ...
   }
   if (screen === "practice") {
-    // ... mantén tu código actual de practice aquí ...
+    // ... mantÃ©n tu cÃ³digo actual de practice aquÃ­ ...
   }
   if (screen === "english") {
-    // ... mantén tu código actual de english aquí ...
+    // ... mantÃ©n tu cÃ³digo actual de english aquÃ­ ...
   }
   if (screen === "reading") {
-    // ... mantén tu código actual de reading aquí ...
+    // ... mantÃ©n tu cÃ³digo actual de reading aquÃ­ ...
   }
   if (screen === "coach") {
     if (coachMode === "conversation") {
@@ -1447,7 +1503,7 @@ function App() {
         <div className="practice-screen coach-screen">
           <header className="practice-header">
             <button className="back-button" onClick={() => setCoachMode("welcome")}>
-              ← Coach
+              â† Coach
             </button>
             <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
           </header>
@@ -1481,7 +1537,7 @@ function App() {
                   type="button"
                 >
                   <div className="coach-mic-icon-wrapper">
-                    <span className="mic-glyph">🎙</span>
+                    <span className="mic-glyph">ðŸŽ™</span>
                   </div>
                   <span className="coach-mic-text">
                     {coachListening ? "Tap again when you finish speaking" : "Tap the microphone to speak"}
@@ -1497,7 +1553,7 @@ function App() {
       <div className="practice-screen coach-screen">
         <header className="practice-header">
           <button className="back-button" onClick={() => setScreen("practice")}>
-            ← Practice
+            â† Practice
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
@@ -1525,8 +1581,8 @@ function App() {
       </div>
     );
   }
-  // Control de pantallas de la aplicación
-  // Control de pantallas de la aplicación
+  // Control de pantallas de la aplicaciÃ³n
+  // Control de pantallas de la aplicaciÃ³n
   if (screen === "civics") {
     const currentQuestion = civicsQuestions[civicsIndex].english;
     const currentQuestionSpanish = civicsQuestionsSpanish[civicsIndex];
@@ -1536,7 +1592,7 @@ function App() {
       <div className="practice-screen civics-screen">
         <header className="practice-header">
           <button className="back-button" onClick={() => setScreen("practice")}>
-            ← Practice
+            â† Practice
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
@@ -1559,7 +1615,7 @@ function App() {
             </div>
             <div className="civics-divider"></div>
             <div className="civics-question-section spanish">
-              <div className="civics-language-label">ESPAÑOL</div>
+              <div className="civics-language-label">ESPAÃ‘OL</div>
               <p className="civics-question-spanish">{currentQuestionSpanish}</p>
             </div>
             <div className="civics-divider"></div>
@@ -1581,7 +1637,7 @@ function App() {
                   );
                 }}
               >
-                ← <span>Previous</span>
+                â† <span>Previous</span>
               </button>
               <div className="civics-progress">
                 {String(civicsIndex + 1).padStart(2, "0")}<span> / 128</span>
@@ -1597,7 +1653,7 @@ function App() {
                   });
                 }}
               >
-                <span>Next</span> →
+                <span>Next</span> â†’
               </button>
             </div>
           </div>
@@ -1611,7 +1667,7 @@ function App() {
       <div className="practice-screen">
         <header className="practice-header">
           <button className="back-button" onClick={() => setScreen("home")}>
-            ← Home
+            â† Home
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
@@ -1622,13 +1678,13 @@ function App() {
           <div className="practice-options">
             <button className="practice-option" onClick={() => setScreen("civics")}>
               <div className="practice-option-left">
-                <div className="practice-option-icon">◉</div>
+                <div className="practice-option-icon">â—‰</div>
                 <div className="practice-option-content">
                   <h2>Civics</h2>
                   <p>128 official questions</p>
                 </div>
               </div>
-              <span className="practice-arrow">→</span>
+              <span className="practice-arrow">â†’</span>
             </button>
             <button className="practice-option" onClick={() => setScreen("english")}>
               <div className="practice-option-left">
@@ -1638,7 +1694,7 @@ function App() {
                   <p>Reading & writing</p>
                 </div>
               </div>
-              <span className="practice-arrow">→</span>
+              <span className="practice-arrow">â†’</span>
             </button>
           </div>
         </main>
@@ -1651,7 +1707,7 @@ function App() {
       <div className="practice-screen">
         <header className="practice-header">
           <button className="back-button" onClick={() => setScreen("practice")}>
-            ← Practice
+            â† Practice
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
@@ -1668,27 +1724,27 @@ function App() {
                   <p>Practice reading sentences aloud.</p>
                 </div>
               </div>
-              <span className="practice-arrow">→</span>
+              <span className="practice-arrow">â†’</span>
             </button>
             <button className="practice-option" onClick={() => setScreen("writing")}>
               <div className="practice-option-left">
-                <div className="practice-option-icon">✎</div>
+                <div className="practice-option-icon">âœŽ</div>
                 <div className="practice-option-content">
                   <h2>Writing</h2>
                   <p>Practice writing sentences correctly.</p>
                 </div>
               </div>
-              <span className="practice-arrow">→</span>
+              <span className="practice-arrow">â†’</span>
             </button>
             <button className="practice-option" onClick={() => setScreen("coach")}>
               <div className="practice-option-left">
-                <div className="practice-option-icon">✦</div>
+                <div className="practice-option-icon">âœ¦</div>
                 <div className="practice-option-content">
                   <h2>AI English Coach</h2>
                   <p>Practice real English conversations with AI</p>
                 </div>
               </div>
-              <span className="practice-arrow">→</span>
+              <span className="practice-arrow">â†’</span>
             </button>
           </div>
         </main>
@@ -1701,12 +1757,12 @@ function App() {
       <div className="practice-screen">
         <header className="practice-header">
           <button className="back-button" onClick={() => setScreen("english")}>
-            ← English
+            â† English
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
         <main className="practice-content">
-          <div className="practice-eyebrow">ENGLISH · READING</div>
+          <div className="practice-eyebrow">ENGLISH Â· READING</div>
           <h1>Reading.</h1>
           <p className="practice-intro">Read the sentence aloud and practice your English.</p>
           <div className="reading-card">
@@ -1727,7 +1783,7 @@ function App() {
               disabled={isAIThinking && !isReading}
               type="button"
             >
-              {isReading ? "⏹ Stop & Evaluate" : "🎙 Start Reading"}
+              {isReading ? "â¹ Stop & Evaluate" : "ðŸŽ™ Start Reading"}
             </button>
           </div>
         </main>
@@ -1741,7 +1797,7 @@ function App() {
         <div className="practice-screen coach-screen">
           <header className="practice-header">
             <button className="back-button" onClick={() => setCoachMode("welcome")}>
-              ← Coach
+              â† Coach
             </button>
             <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
           </header>
@@ -1775,7 +1831,7 @@ function App() {
                   type="button"
                 >
                   <div className="coach-mic-icon-wrapper">
-                    <span className="mic-glyph">🎙</span>
+                    <span className="mic-glyph">ðŸŽ™</span>
                   </div>
                   <span className="coach-mic-text">
                     {coachListening ? "Tap again when you finish speaking" : "Tap the microphone to speak"}
@@ -1791,7 +1847,7 @@ function App() {
       <div className="practice-screen coach-screen">
         <header className="practice-header">
           <button className="back-button" onClick={() => setScreen("practice")}>
-            ← Practice
+            â† Practice
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
@@ -1825,19 +1881,19 @@ function App() {
       <div className="writing-ai-screen">
         <header className="writing-ai-header">
           <button className="writing-back-button" onClick={() => setScreen("english")}>
-            ← <span>English</span>
+            â† <span>English</span>
           </button>
           <div className="writing-ai-brand">CITIZENSHIP <span>AI</span></div>
         </header>
         <main className="writing-ai-content">
           <div className="writing-top-section">
             <div>
-              <div className="writing-eyebrow">ENGLISH · WRITING DICTATION</div>
+              <div className="writing-eyebrow">ENGLISH Â· WRITING DICTATION</div>
               <h1 className="writing-ai-title">Writing <span>Practice.</span></h1>
               <p className="writing-ai-intro">Listen carefully to Sarah and type the sentence in English.</p>
             </div>
             <div className="writing-ai-badge">
-              <div className="writing-ai-badge-icon">✎</div>
+              <div className="writing-ai-badge-icon">âœŽ</div>
               <div>
                 <strong>AI AUDIO DICTATION</strong>
                 <small>LISTENING & WRITING TEST</small>
@@ -1867,7 +1923,7 @@ function App() {
           <div className="writing-question-card">
             <div className="writing-question-header">
               <div className="writing-question-label">
-                <span>🔊</span> LISTEN & TYPE WHAT YOU HEAR
+                <span>ðŸ”Š</span> LISTEN & TYPE WHAT YOU HEAR
               </div>
               <div className="writing-progress">
                 {writingIndex + 1} / {writingSentences.length}
@@ -1885,13 +1941,13 @@ function App() {
                 }}
                 type="button"
               >
-                <span className="speaker-icon">🔊</span>
+                <span className="speaker-icon">ðŸ”Š</span>
                 <span>Click to Replay Audio</span>
               </button>
             </div>
             <div className="writing-line"></div>
             <div className="writing-translation-label">
-              <span>◎</span> SPANISH TRANSLATION (CONTEXT)
+              <span>â—Ž</span> SPANISH TRANSLATION (CONTEXT)
             </div>
             <div className="writing-big-spanish">
               {writingSentences[writingIndex].spanish}
@@ -1908,7 +1964,7 @@ function App() {
             onClick={checkWriting}
             disabled={isAIThinking}
           >
-            <span>✓</span>
+            <span>âœ“</span>
             {isAIThinking ? "Evaluating..." : "Check Writing"}
           </button>
           {aiMessage && (
@@ -1928,8 +1984,8 @@ function App() {
         <main className="uscis-tracker-content">
           <div className="uscis-tracker-page-header">
             <span>USCIS</span>
-            <h1>Case Tracker</h1>
-            <p>Check the latest status of your immigration case.</p>
+            <h1>Case Tracker <small>Sandbox</small></h1>
+            <p>Practice using an official USCIS Sandbox API response. This is not a live production case tracker.</p>
           </div>
           <section className="uscis-tracker-panel">
             <div className="uscis-tracker-panel-label">CASE STATUS</div>
@@ -1987,14 +2043,14 @@ function App() {
                 }
               }}
             >
-              CHECK CASE STATUS <span>→</span>
+              CHECK CASE STATUS <span>â†’</span>
             </button>
           </section>
           {uscisLoading && <div className="uscis-loading">Checking case status...</div>}
           {uscisCaseResult && (
             <div className="uscis-case-result">
               <div className="uscis-status-top">
-                <div className="uscis-status-icon">✓</div>
+                <div className="uscis-status-icon">âœ“</div>
                 <div className="uscis-status-main">
                   <div className="uscis-result-label">CASE STATUS</div>
                   <h2>{uscisCaseResult.status}</h2>
@@ -2003,7 +2059,7 @@ function App() {
                   )}
                 </div>
                 <div className="uscis-official-badge">
-                  <span></span> OFFICIAL USCIS STATUS
+                  <span></span> USCIS API Â· SANDBOX
                 </div>
               </div>
               <div className="uscis-result-info">
@@ -2023,7 +2079,7 @@ function App() {
             </div>
           )}
           <button className="uscis-tracker-back" onClick={() => setScreen("home")}>
-            ← Back to Home
+            â† Back to Home
           </button>
         </main>
       </div>
@@ -2051,7 +2107,7 @@ function App() {
           </section>
           <section className="progress-ai-modules">
             <div className="progress-ai-module">
-              <div className="progress-module-icon">◎</div>
+              <div className="progress-module-icon">â—Ž</div>
               <div>
                 <span>CIVICS</span>
                 <h2>128 Questions</h2>
@@ -2061,7 +2117,7 @@ function App() {
             </div>
           </section>
           <button className="progress-ai-back" onClick={() => setScreen("home")}>
-            ← Back to Home
+            â† Back to Home
           </button>
         </main>
       </div>
@@ -2078,6 +2134,12 @@ function App() {
       onOpenPractice={() => setScreen("practice")}
       onOpenFeature={(feature) => setScreen(feature)}
       onOpenProgress={() => setScreen("progress")}
+      onOpenSettings={() => {
+        window.location.hash = "privacy";
+        setScreen("settings");
+      }}
+      language={language}
+      onLanguageChange={setPreferredLanguage}
     />
   );
 }
