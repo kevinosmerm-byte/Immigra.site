@@ -6,7 +6,7 @@ import { civicsQuestions } from "./questions";
 import { acceptedAnswers } from "./answers";
 import { civicsAnswers } from "./civicsAnswers";
 import { civicsQuestionsSpanish } from "./civicsQuestionsSpanish";
-import { apiFetch } from "./api";
+import { apiJson } from "./api";
 import { startAudioRecording, transcribeRecording } from "./audio";
 const readingSentences = [
   {
@@ -872,7 +872,7 @@ function RealInterview({ onExit }) {
     setAnswer(transcript);
     setAnswerStatus("evaluating");
     try {
-      const response = await apiFetch("/evaluate", {
+      const result = await apiJson("/evaluate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -882,7 +882,6 @@ function RealInterview({ onExit }) {
         }),
       });
 
-      const result = await response.json();
       setAnswerStatus(result.status);
 
       if (result.status === "correct") setCorrectAnswers((count) => count + 1);
@@ -1284,7 +1283,7 @@ function App() {
     setIsAIThinking(true);
     setAiMessage("AI is evaluating your writing...");
     try {
-      const response = await apiFetch("/evaluate-writing", {
+      const result = await apiJson("/evaluate-writing", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1292,7 +1291,6 @@ function App() {
           answer: writingAnswer,
         }),
       });
-      const result = await response.json();
       if (result.accuracy === "Excellent" || result.accuracy === "Good") {
         setWritingGoodCount((count) => count + 1);
       } else {
@@ -1332,12 +1330,11 @@ function App() {
   const sendCoachMessage = async (message) => {
     setCoachThinking(true);
     try {
-      const response = await apiFetch("/coach", {
+      const result = await apiJson("/coach", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message, history: coachHistory }),
       });
-      const result = await response.json();
       setCoachReply(result.reply || "");
       speakCoachReply(result.reply || "");
       setCoachHistory((current) => [
@@ -1406,7 +1403,7 @@ function App() {
         return;
       }
 
-      const evaluationResponse = await apiFetch("/evaluate-reading", {
+      const result = await apiJson("/evaluate-reading", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1415,9 +1412,6 @@ function App() {
         }),
       });
 
-      if (!evaluationResponse.ok) throw new Error("Reading evaluation failed");
-
-      const result = await evaluationResponse.json();
       if (result.accuracy === "Excellent" || result.accuracy === "Good") {
         playCorrectSound();
       } else {
@@ -1971,15 +1965,11 @@ function App() {
                 setUscisCaseResult(null);
                 setUscisError("");
                 try {
-                  const response = await apiFetch("/uscis-case-status", {
+                  const result = await apiJson("/uscis-case-status", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ receiptNumber: receipt }),
                   });
-                  const result = await response.json();
-                  if (!response.ok) {
-                    throw new Error(result.error || "Unable to check case status.");
-                  }
                   const caseStatus = result.case_status;
                   setUscisCaseResult({
                     status: caseStatus?.current_case_status_text_en || "Status unavailable",
