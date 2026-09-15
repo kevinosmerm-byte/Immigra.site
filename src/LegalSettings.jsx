@@ -5,10 +5,10 @@ const COPY = {
     welcome: "Welcome to Citizenship AI",
     choose: "Choose your preferred language",
     english: "English",
-    spanish: "EspaÃ±ol",
+    spanish: "Español",
     continue: "Continue",
     howItWorks: "Practice with purpose.",
-    howCopy: "Study civics, practice English reading and writing, and rehearse a simulated interview. AI feedback is educational practice supportâ€”not an immigration decision.",
+    howCopy: "Study civics, practice English reading and writing, and rehearse a simulated interview. AI feedback is educational practice support—not an immigration decision.",
     legal: "Before you begin",
     understand: "I Understand & Continue",
   },
@@ -16,12 +16,12 @@ const COPY = {
     welcome: "Bienvenido a Citizenship AI",
     choose: "Elige tu idioma preferido",
     english: "English",
-    spanish: "EspaÃ±ol",
+    spanish: "Español",
     continue: "Continuar",
-    howItWorks: "Practica con propÃ³sito.",
-    howCopy: "Estudia civismo, practica lectura y escritura en inglÃ©s y ensaya una entrevista simulada. Los comentarios de IA son apoyo educativo, no una decisiÃ³n migratoria.",
+    howItWorks: "Practica con propósito.",
+    howCopy: "Estudia civismo, practica lectura y escritura en inglés y ensaya una entrevista simulada. Los comentarios de IA son apoyo educativo, no una decisión migratoria.",
     legal: "Antes de comenzar",
-    understand: "Entiendo y continÃºo",
+    understand: "Entiendo y continúo",
   },
 };
 
@@ -100,7 +100,7 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
               <button className={language === "en" ? "selected" : ""} onClick={() => onLanguageChange("en")} aria-pressed={language === "en"}><strong>EN</strong>{copy.english}</button>
               <button className={language === "es" ? "selected" : ""} onClick={() => onLanguageChange("es")} aria-pressed={language === "es"}><strong>ES</strong>{copy.spanish}</button>
             </div>
-            <button className="onboarding-primary" onClick={() => setStep(1)}>{copy.continue} <span>â†’</span></button>
+            <button className="onboarding-primary" onClick={() => setStep(1)}>{copy.continue} <span>→</span></button>
           </section>
         )}
         {step === 1 && (
@@ -109,11 +109,11 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
             <h1 id="onboarding-title">{copy.howItWorks}</h1>
             <p className="onboarding-intro">{copy.howCopy}</p>
             <ul className="onboarding-feature-list">
-              <li><span>â—Ž</span> Civics study and explanations</li>
-              <li><span>âœŽ</span> English reading and writing practice</li>
-              <li><span>âœ¦</span> AI-supported practice feedback</li>
+              <li><span>◎</span> Civics study and explanations</li>
+              <li><span>✎</span> English reading and writing practice</li>
+              <li><span>✦</span> AI-supported practice feedback</li>
             </ul>
-            <button className="onboarding-primary" onClick={() => setStep(2)}>{copy.continue} <span>â†’</span></button>
+            <button className="onboarding-primary" onClick={() => setStep(2)}>{copy.continue} <span>→</span></button>
           </section>
         )}
         {step === 2 && (
@@ -121,7 +121,7 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
             <p className="settings-eyebrow">IMPORTANT INFORMATION</p>
             <h1 id="onboarding-title">{copy.legal}</h1>
             <LegalNotice />
-            <button className="onboarding-primary" onClick={onComplete}>{copy.understand} <span>â†’</span></button>
+            <button className="onboarding-primary" onClick={onComplete}>{copy.understand} <span>→</span></button>
           </section>
         )}
       </main>
@@ -142,7 +142,7 @@ export function LegalSettings({ onBack, onRestartOnboarding }) {
   return (
     <div className="app settings-screen">
       <header className="settings-header">
-        <button className="back-button" onClick={onBack}>â† Back to Home</button>
+        <button className="back-button" onClick={onBack}>← Back to Home</button>
         <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
       </header>
       <main className="settings-content">
@@ -157,7 +157,7 @@ export function LegalSettings({ onBack, onRestartOnboarding }) {
             return (
               <article key={section.id} className="legal-item">
                 <button onClick={() => setOpenSection(isOpen ? "" : section.id)} aria-expanded={isOpen} aria-controls={`legal-${section.id}`}>
-                  <span>{section.title}</span><span aria-hidden="true">{isOpen ? "âˆ’" : "+"}</span>
+                  <span>{section.title}</span><span aria-hidden="true">{isOpen ? "−" : "+"}</span>
                 </button>
                 {isOpen && <div id={`legal-${section.id}`} className="legal-item-body">{section.content}</div>}
               </article>
