@@ -2393,7 +2393,7 @@ button {
   border-radius: 18px;
 }
 
-/* Las dos imágenes ocupan exactamente el mismo espacio */
+/* Las dos imÃ¡genes ocupan exactamente el mismo espacio */
 
 .sarah-avatar-container .sarah-avatar {
   display: block;
@@ -2435,12 +2435,12 @@ button {
 
 
 /*
-   Alternamos rápidamente:
+   Alternamos rÃ¡pidamente:
 
    boca cerrada
-   ↓
+   â†“
    boca abierta
-   ↓
+   â†“
    boca cerrada
 */
 
@@ -2465,7 +2465,7 @@ button {
 
 
 /* =========================================
-   PEQUEÑO MOVIMIENTO DEL ROSTRO
+   PEQUEÃ‘O MOVIMIENTO DEL ROSTRO
    ========================================= */
 
 .sarah-avatar-container.speaking {
@@ -3754,7 +3754,7 @@ height: auto !important;
   }
 }
 /* =========================================================
-   CITIZENSHIP AI — GLOBAL DARK TEXTURED BACKGROUND
+   CITIZENSHIP AI â€” GLOBAL DARK TEXTURED BACKGROUND
    ========================================================= */
 
 html,
@@ -3902,7 +3902,7 @@ body::after {
   z-index: 1;
 }
 /* =========================================================
-   CITIZENSHIP AI — HOME PREMIUM ATMOSPHERE
+   CITIZENSHIP AI â€” HOME PREMIUM ATMOSPHERE
    ========================================================= */
 
 .app {
@@ -4000,7 +4000,7 @@ body::after {
   position: relative;
   z-index: 2;
 }/* =========================================================
-   REAL INTERVIEW — FEATURE CARD
+   REAL INTERVIEW â€” FEATURE CARD
    ========================================================= */
 
 .real-interview-card {
@@ -4169,7 +4169,7 @@ body::after {
     width: 100%;
   }
 }/* =========================================================
-   PRACTICE CARDS — PREMIUM AI STYLE
+   PRACTICE CARDS â€” PREMIUM AI STYLE
    ========================================================= */
 
 .practice-section {
@@ -4269,22 +4269,22 @@ body::after {
   border-color: rgba(80, 150, 220, 0.28) !important;
 }
 
-/* CIVICS — blue */
+/* CIVICS â€” blue */
 .practice-card:nth-child(1)::before {
   background: rgba(35, 130, 230, 0.13);
 }
 
-/* ENGLISH — neutral blue */
+/* ENGLISH â€” neutral blue */
 .practice-card:nth-child(2)::before {
   background: rgba(100, 150, 210, 0.08);
 }
 
-/* SPEAKING — AI purple */
+/* SPEAKING â€” AI purple */
 .practice-card:nth-child(3)::before {
   background: rgba(125, 75, 220, 0.13);
 }
 
-/* ADVANCED — stronger AI purple */
+/* ADVANCED â€” stronger AI purple */
 .practice-card:nth-child(4)::before {
   background: rgba(95, 65, 190, 0.12);
 }
@@ -4301,7 +4301,7 @@ body::after {
     padding: 17px 15px !important;
   }
 }/* =========================================================
-   CITIZENSHIP AI — GLOBAL PATRIOTIC BACKGROUND
+   CITIZENSHIP AI â€” GLOBAL PATRIOTIC BACKGROUND
    ========================================================= */
 
 html,
@@ -4375,7 +4375,7 @@ body::after {
 #root > * {
   background-color: transparent !important;
 }/* =========================================================
-   ALL APP SCREENS — USE THE SAME BACKGROUND
+   ALL APP SCREENS â€” USE THE SAME BACKGROUND
    ========================================================= */
 
 .app,
@@ -4411,7 +4411,7 @@ body::after {
       );
   }
 }/* =========================================================
-   CITIZENSHIP AI — REAL PATRIOTIC BACKGROUND
+   CITIZENSHIP AI â€” REAL PATRIOTIC BACKGROUND
    ========================================================= */
 
 .app {
@@ -4432,7 +4432,7 @@ body::after {
 .app::after {
   pointer-events: none;
 }/* =========================================================
-   INTERVIEW — FORCE GLOBAL BACKGROUND
+   INTERVIEW â€” FORCE GLOBAL BACKGROUND
    ========================================================= */
 
 .interview-screen {
@@ -4722,7 +4722,7 @@ body::after {
     font-size: 20px;
   }
 }/* =====================================================
-   PRACTICE — SHARED CITIZENSHIP BACKGROUND
+   PRACTICE â€” SHARED CITIZENSHIP BACKGROUND
    ===================================================== */
 
 .practice-screen {
@@ -4829,7 +4829,7 @@ body::after {
 
 }
 /* =====================================================
-   CITIZENSHIP AI — MOBILE READING EXPERIENCE
+   CITIZENSHIP AI â€” MOBILE READING EXPERIENCE
    ===================================================== */
 
 .reading-card {
@@ -4897,7 +4897,7 @@ body::after {
 }
 
 .reading-label::before {
-  content: "✦";
+  content: "âœ¦";
 
   display: flex;
   align-items: center;
@@ -4996,7 +4996,7 @@ body::after {
 /* microphone icon */
 
 .reading-button::before {
-  content: "🎙";
+  content: "ðŸŽ™";
 
   font-size: 34px;
 
@@ -5155,7 +5155,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Fondo decorativo con textura patriótica sutil */
+/* Fondo decorativo con textura patriÃ³tica sutil */
 .app-container {
   position: relative;
   width: 100%;
@@ -5285,7 +5285,7 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Sección de Traducción y Feedback de IA */
+/* SecciÃ³n de TraducciÃ³n y Feedback de IA */
 .feedback-section {
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   padding-top: 1.5rem;
@@ -5340,7 +5340,7 @@ body {
   justify-content: center;
 }
 
-/* Onda de pulso animada alrededor del botón */
+/* Onda de pulso animada alrededor del botÃ³n */
 .mic-button-wrapper::before {
   content: '';
   position: absolute;
@@ -5407,7 +5407,7 @@ body {
   }
 }
 
-/* Animación de entrada para los elementos */
+/* AnimaciÃ³n de entrada para los elementos */
 @keyframes fade-in-up {
   from {
     opacity: 0;
@@ -5568,7 +5568,7 @@ body {
   white-space: pre-line;
 }
 /* =========================================
-   CITIZENSHIP AI — WRITING EXPERIENCE
+   CITIZENSHIP AI â€” WRITING EXPERIENCE
    ========================================= */
 
 .writing-ai-screen {
@@ -6210,7 +6210,7 @@ body {
   }
 }
 /* =========================================
-   CITIZENSHIP AI — BOTTOM NAVIGATION
+   CITIZENSHIP AI â€” BOTTOM NAVIGATION
    ========================================= */
 
 .bottom-nav {
@@ -6367,7 +6367,7 @@ body {
     font-size: 18px;
   }
 }/* =========================================
-   HOME — COMPACT PROGRESS
+   HOME â€” COMPACT PROGRESS
    ========================================= */
 
 .progress-card {
@@ -6424,7 +6424,7 @@ body {
     0 0 18px rgba(120, 110, 255, 0.35);
 }
 /* =========================================
-   CITIZENSHIP AI — HOME EXPERIENCE
+   CITIZENSHIP AI â€” HOME EXPERIENCE
    ========================================= */
 
 .home-ai {
@@ -7490,7 +7490,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — SPATIAL THINKING CORE
+   CITIZENSHIP AI â€” SPATIAL THINKING CORE
    ========================================================= */
 
 .ai-wave {
@@ -7997,7 +7997,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — SPATIAL THINKING CORE
+   CITIZENSHIP AI â€” SPATIAL THINKING CORE
    ========================================================= */
 
 .ai-wave {
@@ -8881,7 +8881,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — PRACTICE CARDS
+   CITIZENSHIP AI â€” PRACTICE CARDS
    ========================================================= */
 
 .practice-grid {
@@ -9161,7 +9161,7 @@ body {
     bottom: 20px;
   }
 }/* =========================================================
-   CITIZENSHIP AI — PRACTICE / PREMIUM AI CARDS
+   CITIZENSHIP AI â€” PRACTICE / PREMIUM AI CARDS
    ========================================================= */
 
 .practice-grid {
@@ -9515,7 +9515,7 @@ body {
 
 }
 /* =========================================================
-   CITIZENSHIP AI — PRACTICE SCREEN
+   CITIZENSHIP AI â€” PRACTICE SCREEN
    PREMIUM AI OPTIONS
    ========================================================= */
 
@@ -9734,7 +9734,7 @@ body {
 
 
 /* =========================================================
-   TITLE — MUCH BIGGER
+   TITLE â€” MUCH BIGGER
    ========================================================= */
 
 .practice-option-content h2 {
@@ -9877,7 +9877,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — ENGLISH SCREEN
+   CITIZENSHIP AI â€” ENGLISH SCREEN
    PREMIUM AI CARDS
    ========================================================= */
 
@@ -10177,7 +10177,7 @@ body {
 
 
 /* =========================================================
-   AI COACH — FULL WIDTH
+   AI COACH â€” FULL WIDTH
    ========================================================= */
 
 .english-option:nth-child(3) {
@@ -10215,7 +10215,7 @@ body {
   z-index: 9999 !important;
 }
 /* =========================================================
-   CIVICS AI — PREMIUM GLASS CARD
+   CIVICS AI â€” PREMIUM GLASS CARD
    ========================================================= */
 
 .civics-screen {
@@ -10579,7 +10579,7 @@ body {
     text-align: center;
   }
 }/* =========================================================
-   CIVICS AI — PREMIUM GLASS CARD
+   CIVICS AI â€” PREMIUM GLASS CARD
    ========================================================= */
 
 .civics-screen {
@@ -11420,7 +11420,7 @@ body {
     font-size: 26px;
   }
 }/* ================================
-   AI COACH · CONVERSATION
+   AI COACH Â· CONVERSATION
 ================================ */
 
 .coach-conversation-content {
@@ -11605,7 +11605,7 @@ body {
     transform: scale(1.08);
   }
 }/* =========================================================
-   REAL INTERVIEW — FINAL PREMIUM LOOK
+   REAL INTERVIEW â€” FINAL PREMIUM LOOK
    ========================================================= */
 
 .interview-screen {
@@ -11893,7 +11893,7 @@ body {
     font-size: 10px !important;
   }
 }/* =========================================================
-   CITIZENSHIP AI — STRONG AI VISUAL
+   CITIZENSHIP AI â€” STRONG AI VISUAL
    ========================================================= */
 
 .interview-screen .ai-thinking-panel {
@@ -12042,7 +12042,7 @@ body {
 
 
 /* =========================================================
-   AI CLOUD — MUCH MORE VISIBLE
+   AI CLOUD â€” MUCH MORE VISIBLE
    ========================================================= */
 
 .interview-screen .ai-thinking-cloud {
@@ -12113,7 +12113,7 @@ body {
 
 
 /* =========================================================
-   MICROPHONE — CENTER OF THE AI
+   MICROPHONE â€” CENTER OF THE AI
    ========================================================= */
 
 .interview-screen .ai-thinking-cloud .mic-button {
@@ -12223,7 +12223,7 @@ body {
     padding: 20px !important;
   }
 }/* =========================================================
-   QUICK PRACTICE — AI CARDS
+   QUICK PRACTICE â€” AI CARDS
    ========================================================= */
 
 .quick-practice-ai {
@@ -12379,7 +12379,7 @@ body {
     min-height: 125px;
   }
 }/* =========================================================
-   MY PROGRESS — MOBILE FIRST AI DESIGN
+   MY PROGRESS â€” MOBILE FIRST AI DESIGN
    ========================================================= */
 
 .progress-ai-screen {
@@ -13419,7 +13419,7 @@ body {
     font-size: 14px;
   }
 }/* =========================================================
-   USCIS CASE TRACKER — AI HOME CARD
+   USCIS CASE TRACKER â€” AI HOME CARD
    ========================================================= */
 
 .uscis-tracker-home {
@@ -13606,7 +13606,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — UNIFIED NAVY / BLUE AI THEME
+   CITIZENSHIP AI â€” UNIFIED NAVY / BLUE AI THEME
    ========================================================= */
 
 :root {
@@ -13840,7 +13840,7 @@ body {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 }/* =========================================================
-   USCIS CASE TRACKER — PAGE
+   USCIS CASE TRACKER â€” PAGE
    ========================================================= */
 
 .uscis-tracker-screen {
@@ -14151,7 +14151,7 @@ body {
     height: 54px;
   }
 }/* =========================================
-   USCIS CASE TRACKER — PREMIUM AI DESIGN
+   USCIS CASE TRACKER â€” PREMIUM AI DESIGN
    ========================================= */
 
 .uscis-case-result {
@@ -14441,8 +14441,8 @@ body {
     margin-bottom: 12px;
   }
 }/* =========================================================
-   CITIZENSHIP AI — MOBILE HOME REDESIGN
-   Visual update only — does not change app logic
+   CITIZENSHIP AI â€” MOBILE HOME REDESIGN
+   Visual update only â€” does not change app logic
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -14687,7 +14687,7 @@ body {
     }
   }
 }/* =========================================================
-   CITIZENSHIP AI — HOME REDESIGN
+   CITIZENSHIP AI â€” HOME REDESIGN
    Mobile first / Premium AI interface
    ========================================================= */
 
@@ -15618,7 +15618,7 @@ body {
     width: calc(100% - 18px);
   }
 }/* =========================================================
-   CITIZENSHIP AI — NEW HOME
+   CITIZENSHIP AI â€” NEW HOME
    Premium mobile-first interface
    ========================================================= */
 
@@ -16295,7 +16295,7 @@ body {
     width: 520px;
   }
 }/* =========================================================
-   CITIZENSHIP AI — HOME / CLEAN PREMIUM
+   CITIZENSHIP AI â€” HOME / CLEAN PREMIUM
    ========================================================= */
 
 .home-new-header {
@@ -17043,7 +17043,7 @@ body {
     min-height: 540px;
   }
 }/* ==========================================================================
-   CITIZENSHIP AI — MODERN FUTURISTIC DESIGN SYSTEM
+   CITIZENSHIP AI â€” MODERN FUTURISTIC DESIGN SYSTEM
    ========================================================================== */
 
 :root {
@@ -17146,6 +17146,114 @@ body {
   border-color: var(--accent-cyan);
   box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
 }
+
+.language-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.home-settings-button {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%;
+  color: var(--text-main);
+  background: var(--bg-surface);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.home-settings-button:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 14px rgba(83, 181, 255, 0.24);
+}
+
+.onboarding-screen,
+.settings-screen {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(85, 97, 255, 0.28), transparent 32%),
+    radial-gradient(circle at 5% 75%, rgba(17, 151, 255, 0.2), transparent 38%),
+    linear-gradient(150deg, #040b1a, #0a1831 52%, #09091d);
+}
+
+.onboarding-screen {
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  box-sizing: border-box;
+}
+
+.onboarding-card {
+  width: min(100%, 520px);
+  padding: clamp(28px, 7vw, 46px);
+  border: 1px solid rgba(164, 198, 255, 0.22);
+  border-radius: 28px;
+  background: linear-gradient(145deg, rgba(16, 30, 61, 0.9), rgba(7, 13, 31, 0.94));
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.42), inset 0 1px rgba(255,255,255,0.08);
+}
+
+.onboarding-brand {
+  margin-bottom: 28px;
+  color: #f4f7ff;
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.onboarding-brand span { color: #65bcff; }
+
+.onboarding-progress { display: flex; gap: 7px; margin-bottom: 31px; }
+.onboarding-progress span { height: 4px; flex: 1; border-radius: 99px; background: rgba(255,255,255,0.14); }
+.onboarding-progress span.active { background: linear-gradient(90deg, #4cc4ff, #8b7cff); box-shadow: 0 0 13px rgba(91, 175, 255, 0.65); }
+
+.settings-eyebrow { margin: 0 0 10px; color: #77c7ff; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.15em; }
+.onboarding-card h1, .settings-content h1 { margin: 0; color: #fff; font-size: clamp(1.8rem, 6vw, 2.55rem); line-height: 1.08; }
+.onboarding-intro, .settings-intro { color: rgba(226, 237, 255, 0.75); line-height: 1.6; }
+.settings-public-link { margin: -5px 0 24px; color: rgba(226, 237, 255, 0.62); font-size: 0.82rem; }.settings-public-link a { color: #86ccff; }
+
+.language-choice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 28px 0 22px; }
+.language-choice-grid button {
+  min-height: 86px;
+  padding: 16px;
+  border: 1px solid rgba(173, 204, 255, 0.2);
+  border-radius: 18px;
+  color: #eaf4ff;
+  background: rgba(255,255,255,0.055);
+  cursor: pointer;
+}
+.language-choice-grid button strong { display: block; margin-bottom: 7px; color: #80cbff; font-size: 1.1rem; }
+.language-choice-grid button.selected { border-color: #67bfff; background: rgba(50, 140, 255, 0.17); box-shadow: 0 0 24px rgba(59, 148, 255, 0.2); }
+
+.onboarding-primary, .settings-secondary-button, .legal-action-button {
+  width: 100%;
+  min-height: 53px;
+  border: 0;
+  border-radius: 15px;
+  color: #fff;
+  background: linear-gradient(105deg, #168cf0, #6758e8);
+  box-shadow: 0 12px 30px rgba(49, 105, 255, 0.3);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+}
+.onboarding-primary span { margin-left: 8px; font-size: 1.2em; }
+.onboarding-feature-list { display: grid; gap: 15px; margin: 28px 0; padding: 0; color: #e4eeff; list-style: none; }
+.onboarding-feature-list span { display: inline-grid; width: 27px; height: 27px; margin-right: 9px; place-items: center; border-radius: 8px; color: #8ed4ff; background: rgba(76, 172, 255, 0.14); }
+.onboarding-legal-copy { margin: 24px 0; padding: 17px; border: 1px solid rgba(124, 174, 255, 0.18); border-radius: 16px; background: rgba(2, 7, 20, 0.32); color: rgba(229, 239, 255, 0.82); font-size: 0.9rem; line-height: 1.55; }
+.onboarding-legal-copy p { margin: 0 0 14px; }.onboarding-legal-copy p:last-child { margin-bottom: 0; }
+
+.settings-header { display: flex; align-items: center; justify-content: space-between; padding: 18px clamp(16px, 5vw, 42px); border-bottom: 1px solid rgba(181, 214, 255, 0.12); background: rgba(4, 11, 27, 0.72); backdrop-filter: blur(16px); }
+.settings-header .back-button { color: #ddebff; border: 0; background: transparent; cursor: pointer; font-weight: 700; }
+.settings-content { width: min(100% - 32px, 720px); margin: 0 auto; padding: 45px 0 75px; }
+.settings-notice { display: flex; gap: 12px; margin: 26px 0; padding: 16px; border: 1px solid rgba(112, 187, 255, 0.23); border-radius: 16px; background: rgba(27, 86, 154, 0.14); color: #dceeff; line-height: 1.5; }
+.settings-notice span { display: grid; flex: 0 0 23px; height: 23px; place-items: center; border-radius: 50%; color: #051223; background: #77c8ff; font-weight: 900; }.settings-notice p { margin: 0; }
+.legal-accordion { display: grid; gap: 10px; }.legal-item { overflow: hidden; border: 1px solid rgba(176, 205, 255, 0.14); border-radius: 15px; background: rgba(8, 18, 42, 0.66); }.legal-item > button, .legal-static-title { width: 100%; display: flex; justify-content: space-between; padding: 18px; border: 0; color: #f0f6ff; background: transparent; text-align: left; font-size: 0.98rem; font-weight: 800; cursor: pointer; }.legal-item-body { padding: 0 18px 20px; color: rgba(224, 236, 255, 0.76); font-size: 0.92rem; line-height: 1.6; }.legal-item-body a { color: #86ccff; }.legal-item-body p:first-child { margin-top: 0; }.legal-action-button { width: auto; min-height: 42px; padding: 0 16px; background: rgba(54, 143, 242, 0.24); box-shadow: none; }.legal-success { color: #8ae2b0; }.settings-secondary-button { margin-top: 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(181, 214, 255, 0.18); box-shadow: none; }
+
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #83cfff; outline-offset: 3px; }
+
+@media (max-width: 430px) { .settings-header .practice-brand { font-size: 0.75rem; } .onboarding-card { border-radius: 22px; } }
 
 /* ==========================================================================
    HOME & HERO SECTION
@@ -18793,7 +18901,7 @@ body {
 .home-nav-item.active span {
   transform: translateY(-1px);
 }/* ==========================================
-   CORRECCIÓN DE DISEÑO: WRITING HEADER
+   CORRECCIÃ“N DE DISEÃ‘O: WRITING HEADER
    ========================================== */
 
 .writing-top-section {
@@ -18840,7 +18948,7 @@ body {
     align-self: auto;
   }
 }/* ==========================================
-   CORRECCIÓN DEFINITIVA: WRITING HEADER
+   CORRECCIÃ“N DEFINITIVA: WRITING HEADER
    ========================================== */
 
 .writing-ai-content {
@@ -18895,7 +19003,7 @@ body {
     width: auto;
   }
 }/* ==========================================
-   SARAH REAL INTERVIEW — HERO AI STYLING
+   SARAH REAL INTERVIEW â€” HERO AI STYLING
    ========================================== */
 
 .interview-screen {
@@ -18991,7 +19099,7 @@ body {
   opacity: 0;
 }
 
-/* OVERLAY DE INFORMACIÓN DE SARAH */
+/* OVERLAY DE INFORMACIÃ“N DE SARAH */
 .sarah-overlay {
   position: relative;
   z-index: 1;
@@ -19136,7 +19244,7 @@ body {
   opacity: 0;
 }
 
-/* INFORMACIÓN DE SARAH */
+/* INFORMACIÃ“N DE SARAH */
 .sarah-info {
   display: flex;
   flex-direction: column;
@@ -19174,7 +19282,7 @@ body {
   width: fit-content;
 }
 
-/* ÁREA DE PREGUNTA */
+/* ÃREA DE PREGUNTA */
 .question-area {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
@@ -19206,7 +19314,7 @@ body {
   line-height: 1.3;
 }
 
-/* ÁREA DE VOZ Y MICRÓFONO */
+/* ÃREA DE VOZ Y MICRÃ“FONO */
 .voice-area {
   display: flex;
   flex-direction: column;
@@ -19336,7 +19444,7 @@ body {
     min-height: 125px;
   }
 }/* =========================================================
-   MY PROGRESS — MOBILE FIRST AI DESIGN
+   MY PROGRESS â€” MOBILE FIRST AI DESIGN
    ========================================================= */
 
 .progress-ai-screen {
@@ -19671,7 +19779,7 @@ body {
     font-size: 14px;
   }
 }/* =========================================================
-   USCIS CASE TRACKER — AI HOME CARD
+   USCIS CASE TRACKER â€” AI HOME CARD
    ========================================================= */
 
 .uscis-tracker-home {
@@ -19858,7 +19966,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — UNIFIED NAVY / BLUE AI THEME
+   CITIZENSHIP AI â€” UNIFIED NAVY / BLUE AI THEME
    ========================================================= */
 
 :root {
@@ -20092,7 +20200,7 @@ body {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
 }/* =========================================================
-   USCIS CASE TRACKER — PAGE
+   USCIS CASE TRACKER â€” PAGE
    ========================================================= */
 
 .uscis-tracker-screen {
@@ -20403,7 +20511,7 @@ body {
     height: 54px;
   }
 }/* =========================================
-   USCIS CASE TRACKER — PREMIUM AI DESIGN
+   USCIS CASE TRACKER â€” PREMIUM AI DESIGN
    ========================================= */
 
 .uscis-case-result {
@@ -20693,8 +20801,8 @@ body {
     margin-bottom: 12px;
   }
 }/* =========================================================
-   CITIZENSHIP AI — MOBILE HOME REDESIGN
-   Visual update only — does not change app logic
+   CITIZENSHIP AI â€” MOBILE HOME REDESIGN
+   Visual update only â€” does not change app logic
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -20939,7 +21047,7 @@ body {
     }
   }
 }/* =========================================================
-   CITIZENSHIP AI — HOME REDESIGN
+   CITIZENSHIP AI â€” HOME REDESIGN
    Mobile first / Premium AI interface
    ========================================================= */
 
@@ -21872,7 +21980,7 @@ body {
 }
 
 /* =========================================================
-   CITIZENSHIP AI — FINAL HOME VISUAL SYSTEM
+   CITIZENSHIP AI â€” FINAL HOME VISUAL SYSTEM
    Home-only overrides. Other screens are intentionally untouched.
    ========================================================= */
 
@@ -22423,4 +22531,13 @@ body {
     min-height: 62px;
     font-size: 13px;
   }
+}
+
+/* Settings has a textual back action, unlike the compact icon buttons used elsewhere. */
+.settings-header .back-button {
+  display: inline-flex;
+  width: auto;
+  min-width: max-content;
+  padding: 10px 0;
+  white-space: nowrap;
 }
