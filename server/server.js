@@ -38,6 +38,9 @@ const openai = process.env.OPENAI_API_KEY
 
 const MAX_TEXT_LENGTH = 5_000;
 const MAX_HISTORY_ITEMS = 12;
+// Use a public API model by default. It can be changed in Render without a
+// code deployment by setting OPENAI_TEXT_MODEL.
+const OPENAI_TEXT_MODEL = process.env.OPENAI_TEXT_MODEL || "gpt-4o-mini";
 
 function readText(value, maxLength = MAX_TEXT_LENGTH) {
   if (typeof value !== "string") return "";
@@ -83,7 +86,7 @@ app.post("/evaluate", async (req, res) => {
     }
 
     const response = await openai.responses.create({
-      model: "gpt-5.6-luna",
+      model: OPENAI_TEXT_MODEL,
       instructions: `
 You are an evaluator for a U.S. naturalization interview practice application.
 
@@ -155,7 +158,7 @@ app.post("/evaluate-writing", async (req, res) => {
     }
 
     const response = await openai.responses.create({
-      model: "gpt-5.6-luna",
+      model: OPENAI_TEXT_MODEL,
 
       instructions: `
 You are an English writing evaluator for a U.S. naturalization interview practice application.
@@ -273,7 +276,7 @@ app.post("/evaluate-reading", async (req, res) => {
     }
 
     const response = await openai.responses.create({
-      model: "gpt-5.6-luna",
+      model: OPENAI_TEXT_MODEL,
 
       instructions: `
 You are an English reading evaluator for a U.S. naturalization interview practice application.
