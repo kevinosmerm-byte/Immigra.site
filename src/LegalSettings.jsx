@@ -48,7 +48,7 @@ const legalSections = [
     content: (
       <>
         <p><strong>Last reviewed: September 15, 2026.</strong> This policy describes the behavior of the current Citizenship AI application build.</p>
-        <p>Citizenship AI does not create user accounts and this codebase does not include a database. The app stores only your onboarding completion, language preference, microphone-disclosure choice, viewed civics-question progress, and on-device practice results (practice type, score, outcome, and time) in your browser&apos;s local storage. It does not store your raw answers or audio recordings for this progress feature. You can clear that data from Data &amp; Account Controls below.</p>
+        <p>Citizenship AI does not create user accounts and this codebase does not include a database. The app stores only your onboarding completion, language preference, microphone-disclosure choice, viewed civics-question progress, on-device practice results (practice type, score, outcome, and time), and weekly Free-plan AI-credit counters in your browser&apos;s local storage. It does not store your raw answers or audio recordings for these features. You can clear that data from Data &amp; Account Controls below.</p>
         <p>When you request AI feedback, your practice answer, writing, or active conversation is sent through Citizenship AI&apos;s server to OpenAI to generate that response. When you use voice practice, your recording is sent through Citizenship AI&apos;s server to OpenAI only for the active transcription request. The application is designed not to retain recordings, transcripts, practice answers, or AI conversations after the request completes; third-party provider retention and security practices are governed by their own terms.</p>
         <p>If you use Case Tracker, your receipt number is sent to Citizenship AI&apos;s server and then to USCIS only to make that active status request. The application is designed not to save receipt numbers. The site is hosted using Cloudflare Pages and Render; those providers may process standard technical request logs required to operate and secure their services. To protect the service from abuse, the server may temporarily use an IP address to limit excessive requests. This codebase does not implement application analytics or advertising tracking.</p>
       </>
@@ -149,7 +149,7 @@ export function LegalSettings({ onBack, onRestartOnboarding }) {
 
   const clearLocalData = () => {
     if (!window.confirm("Clear this device's Citizenship AI preferences and civics progress? This cannot be undone.")) return;
-    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", "citizenshipai.microphone-notice.v1", "citizenshipai.practice-events.v1"].forEach((key) => localStorage.removeItem(key));
+    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", "citizenshipai.microphone-notice.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1"].forEach((key) => localStorage.removeItem(key));
     setCleared(true);
   };
 
@@ -180,7 +180,7 @@ export function LegalSettings({ onBack, onRestartOnboarding }) {
           <article className="legal-item open">
             <div className="legal-static-title">Data &amp; Account Controls</div>
             <div className="legal-item-body">
-              <p>This version has no user accounts and no server-side account data to download or delete. You can remove local preferences, civics progress, and on-device practice results from this device.</p>
+              <p>This version has no user accounts and no server-side account data to download or delete. You can remove local preferences, civics progress, on-device practice results, and Free-plan AI-credit counters from this device.</p>
               <button className="legal-action-button" onClick={clearLocalData}>Clear local app data</button>
               {cleared && <p className="legal-success" role="status">Local data was cleared. Onboarding will appear on your next launch.</p>}
             </div>

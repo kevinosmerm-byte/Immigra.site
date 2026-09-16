@@ -10,6 +10,7 @@ import { apiJson } from "./api";
 import { startAudioRecording, transcribeRecording } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
 import { getPracticeEvents, getPracticeSummary, recordPracticeEvent } from "./progress";
+import { FREE_AI_LIMITS, canUseAiFeature, getAiUsageSummary, recordAiUsage } from "./access";
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
@@ -18,6 +19,12 @@ const PRACTICE_MODULE_NAMES = {
   writing: "Writing practice",
   interview: "Sarah interview",
   coach: "Sarah coaching",
+};
+const AI_FEATURE_NAMES = {
+  reading: "Reading evaluation",
+  writing: "Writing evaluation",
+  coach: "Sarah coaching",
+  interview: "Sarah interview",
 };
 
 function readLocalValue(key, fallback = "") {
@@ -1241,6 +1248,8 @@ function App() {
     return Array.isArray(saved) ? saved : [];
   });
   const [practiceEvents, setPracticeEvents] = useState(() => getPracticeEvents());
+  const [aiUsage, setAiUsage] = useState(() => getAiUsageSummary());
+  const [usageLimitFeature, setUsageLimitFeature] = useState(null);
 
   const [coachListening, setCoachListening] = useState(false);
   const [coachHistory, setCoachHistory] = useState([]);
@@ -1269,8 +1278,29 @@ function App() {
     setPracticeEvents(recordPracticeEvent(event));
   };
 
+  const canStartAiFeature = (feature) => {
+    if (canUseAiFeature(feature)) return true;
+    setUsageLimitFeature(feature);
+    setScreen("free-limit");
+    return false;
+  };
+
+  const recordAiFeatureUsage = (feature) => {
+    setAiUsage(recordAiUsage(feature));
+  };
+
+  const startInterview = () => {
+    if (!canStartAiFeature("interview")) return;
+    recordAiFeatureUsage("interview");
+    setScreen("interview");
+  };
+
   const openPracticeModule = (key) => {
-    setScreen(key === "interview" ? "interview" : key === "civics" ? "civics" : key === "writing" ? "writing" : "reading");
+    if (key === "interview") {
+      startInterview();
+      return;
+    }
+    setScreen(key === "civics" ? "civics" : key === "writing" ? "writing" : "reading");
   };
 
   const recentPractice = [...practiceEvents].slice(-5).reverse();
@@ -1368,6 +1398,7 @@ function App() {
       setAiMessage("Please write your answer first.");
       return;
     }
+    if (!canStartAiFeature("writing")) return;
     setIsAIThinking(true);
     setAiMessage("AI is evaluating your writing...");
     try {
@@ -1384,6 +1415,7 @@ function App() {
       } else {
         setWritingNeedsPracticeCount((count) => count + 1);
       }
+      recordAiFeatureUsage("writing");
       recordPractice({ module: "writing", score: result.score, outcome: result.accuracy });
       setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
       setTimeout(() => {
@@ -1417,6 +1449,7 @@ function App() {
   };
 
   const sendCoachMessage = async (message) => {
+    if (!canStartAiFeature("coach")) return;
     setCoachThinking(true);
     try {
       const result = await apiJson("/coach", {
@@ -1431,6 +1464,7 @@ function App() {
         { role: "user", content: message },
         { role: "assistant", content: result.reply || "" },
       ]);
+      recordAiFeatureUsage("coach");
       recordPractice({ module: "coach", outcome: "reply" });
     } catch (error) {
       console.error("Coach AI error:", error);
@@ -1441,6 +1475,7 @@ function App() {
   };
 
   const startCoachListening = async () => {
+    if (!canStartAiFeature("coach")) return;
     try {
       coachRecorderRef.current = await startAudioRecording();
       setCoachListening(true);
@@ -1467,6 +1502,7 @@ function App() {
   };
 
   const startReading = async () => {
+    if (!canStartAiFeature("reading")) return;
     try {
       readingRecorderRef.current = await startAudioRecording();
       setIsAIThinking(true);
@@ -1507,6 +1543,7 @@ function App() {
       } else {
         playIncorrectSound();
       }
+      recordAiFeatureUsage("reading");
       recordPractice({ module: "reading", score: result.score, outcome: result.accuracy });
 
       setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
@@ -2153,6 +2190,25 @@ function App() {
     );
   }
 
+  if (screen === "free-limit") {
+    const feature = usageLimitFeature || "coach";
+    const limit = FREE_AI_LIMITS[feature];
+    return (
+      <div className="app access-limit-screen">
+        <main className="access-limit-card">
+          <div className="access-limit-orb">✦</div>
+          <p className="settings-eyebrow">FREE PRACTICE CREDIT</p>
+          <h1>You&apos;ve used this week&apos;s {AI_FEATURE_NAMES[feature].toLowerCase()} credits.</h1>
+          <p>Your Free plan includes {limit} {AI_FEATURE_NAMES[feature].toLowerCase()} {limit === 1 ? "session" : "sessions"} each week. Civics study remains available anytime.</p>
+          <div className="access-limit-note"><span>PRO ACCESS</span><p>Pro access is being prepared for learners who want more AI practice. It is not a legal service or an immigration benefit.</p></div>
+          <a className="access-limit-primary" href="mailto:info@citizenshipai.us?subject=Citizenship%20AI%20Pro%20access">Ask about Pro access <span>→</span></a>
+          <button className="access-limit-secondary" onClick={() => setScreen("civics")}>Continue with Civics</button>
+          <button className="access-limit-back" onClick={() => setScreen("home")}>← Back to Home</button>
+        </main>
+      </div>
+    );
+  }
+
   if (screen === "progress") {
     return (
       <div className="app progress-ai-screen">
@@ -2193,6 +2249,19 @@ function App() {
                 </li>
               ))}
             </ol>
+          </section>
+          <section className="progress-free-credits" aria-label="Free AI practice credits">
+            <div>
+              <span>FREE PLAN</span>
+              <h2>AI practice credits</h2>
+              <p>Credits renew weekly on this device. Civics study is always available.</p>
+            </div>
+            <ul>
+              {Object.entries(FREE_AI_LIMITS).map(([feature, limit]) => {
+                const usage = aiUsage.features[feature];
+                return <li key={feature}><span>{AI_FEATURE_NAMES[feature]}</span><strong>{usage.remaining} <small>/ {limit} left</small></strong></li>;
+              })}
+            </ul>
           </section>
           <section className="progress-ai-modules">
             <div className="progress-ai-module">
@@ -2262,7 +2331,7 @@ function App() {
 
   return (
     <Home
-      onStartInterview={() => setScreen("interview")}
+      onStartInterview={startInterview}
       onOpenPractice={() => setScreen("practice")}
       onOpenFeature={(feature) => setScreen(feature)}
       onOpenProgress={() => setScreen("progress")}

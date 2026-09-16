@@ -22762,3 +22762,57 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .progress-recent-practice li small { display: block; margin-top: 3px; color: #90a6c8; font-size: 10px; }
 .progress-recent-practice li > span { max-width: 86px; overflow: hidden; color: #aebdda; font-size: 10px; text-align: right; text-overflow: ellipsis; white-space: nowrap; }
 .progress-recent-practice li > .progress-history-good { color: #7ee5ad; }
+
+/* Usage visibility is intentionally calm: it supports a future Pro plan without interrupting study. */
+.progress-free-credits {
+  display: grid;
+  gap: 16px;
+  margin: 16px 0;
+  padding: 18px;
+  border: 1px solid rgba(96, 199, 255, 0.23);
+  border-radius: 18px;
+  background: rgba(10, 29, 60, 0.78);
+}
+
+.progress-free-credits > div > span {
+  color: #72d3ff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.progress-free-credits h2 { margin: 7px 0 5px; color: #fff; font-size: 19px; }
+.progress-free-credits p { margin: 0; color: #aebfdd; font-size: 12px; line-height: 1.45; }
+.progress-free-credits ul { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.progress-free-credits li { display: flex; flex-direction: column; gap: 5px; padding: 10px; border-radius: 11px; background: rgba(255,255,255,0.04); }
+.progress-free-credits li > span { color: #a7bbdc; font-size: 10px; }
+.progress-free-credits li strong { color: #eaf8ff; font-size: 14px; }.progress-free-credits li strong small { color: #8fa9cc; font-size: 10px; font-weight: 600; }
+
+.access-limit-screen {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  background: radial-gradient(circle at 80% 5%, rgba(97, 89, 225, 0.35), transparent 34%), linear-gradient(150deg, #050b1c, #101c42);
+}
+
+.access-limit-card {
+  width: min(100%, 510px);
+  padding: clamp(28px, 7vw, 46px);
+  border: 1px solid rgba(142, 185, 255, 0.26);
+  border-radius: 27px;
+  background: linear-gradient(145deg, rgba(17, 33, 71, 0.94), rgba(6, 12, 31, 0.97));
+  box-shadow: 0 28px 80px rgba(0,0,0,0.45);
+  text-align: center;
+}
+
+.access-limit-orb { display: grid; width: 54px; height: 54px; margin: 0 auto 22px; place-items: center; border-radius: 18px; color: #b69cff; background: rgba(159, 126, 255, 0.16); box-shadow: 0 0 28px rgba(130, 104, 255, 0.27); font-size: 25px; }
+.access-limit-card h1 { margin: 0; color: #fff; font-size: clamp(1.8rem, 6vw, 2.45rem); line-height: 1.12; }
+.access-limit-card > p { margin: 17px 0 0; color: #c3d0e5; line-height: 1.55; }
+.access-limit-note { margin: 23px 0; padding: 15px; border: 1px solid rgba(171, 150, 255, 0.22); border-radius: 15px; background: rgba(91, 66, 178, 0.13); text-align: left; }
+.access-limit-note span { color: #c5b4ff; font-size: 10px; font-weight: 800; letter-spacing: 0.13em; }.access-limit-note p { margin: 7px 0 0; color: #cbd3ec; font-size: 12px; line-height: 1.45; }
+.access-limit-primary, .access-limit-secondary, .access-limit-back { display: block; width: 100%; box-sizing: border-box; border-radius: 14px; font: inherit; font-size: 13px; font-weight: 800; text-decoration: none; cursor: pointer; }
+.access-limit-primary { padding: 15px; color: #fff; background: linear-gradient(105deg, #227fe5, #7164e9); }.access-limit-primary span { margin-left: 8px; }
+.access-limit-secondary { margin-top: 10px; padding: 14px; border: 1px solid rgba(139, 195, 255, 0.28); color: #dcefff; background: rgba(255,255,255,0.055); }
+.access-limit-back { margin-top: 16px; border: 0; color: #aabbd6; background: transparent; }
