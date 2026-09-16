@@ -79,6 +79,16 @@ export function getPracticeSummary(events = getPracticeEvents(), civicsViewed = 
   const recommended = candidates.find((item) => item.data.attempts === 0)
     || candidates.filter((item) => item.data.score !== null).sort((a, b) => a.data.score - b.data.score)[0]
     || candidates[3];
+  const plan = [...candidates]
+    .sort((a, b) => {
+      const aUnmeasured = a.data.attempts === 0 ? 0 : 1;
+      const bUnmeasured = b.data.attempts === 0 ? 0 : 1;
+      if (aUnmeasured !== bUnmeasured) return aUnmeasured - bUnmeasured;
+      if (a.data.score === null && b.data.score !== null) return -1;
+      if (a.data.score !== null && b.data.score === null) return 1;
+      return (a.data.score ?? 0) - (b.data.score ?? 0);
+    })
+    .slice(0, 3);
 
-  return { readiness, civics, reading, writing, interview, coach, recommended };
+  return { readiness, civics, reading, writing, interview, coach, recommended, plan };
 }

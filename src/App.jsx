@@ -13,6 +13,12 @@ import { getPracticeEvents, getPracticeSummary, recordPracticeEvent } from "./pr
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
+const PRACTICE_MODULE_NAMES = {
+  reading: "Reading practice",
+  writing: "Writing practice",
+  interview: "Sarah interview",
+  coach: "Sarah coaching",
+};
 
 function readLocalValue(key, fallback = "") {
   try {
@@ -1263,6 +1269,12 @@ function App() {
     setPracticeEvents(recordPracticeEvent(event));
   };
 
+  const openPracticeModule = (key) => {
+    setScreen(key === "interview" ? "interview" : key === "civics" ? "civics" : key === "writing" ? "writing" : "reading");
+  };
+
+  const recentPractice = [...practiceEvents].slice(-5).reverse();
+
   // 2. TODOS LOS EFECTOS (USEEFFECT) VAN AQUÍ
   const markCivicsViewed = (index) => {
     setCivicsViewed((current) => {
@@ -2164,7 +2176,23 @@ function App() {
             <span>RECOMMENDED NEXT</span>
             <h2>{practiceSummary.recommended.label}</h2>
             <p>{practiceSummary.recommended.detail}</p>
-            <button onClick={() => setScreen(practiceSummary.recommended.key === "interview" ? "interview" : practiceSummary.recommended.key === "civics" ? "civics" : practiceSummary.recommended.key === "writing" ? "writing" : "reading")}>Start practice <span>→</span></button>
+            <button onClick={() => openPracticeModule(practiceSummary.recommended.key)}>Start practice <span>→</span></button>
+          </section>
+          <section className="progress-personal-plan" aria-label="Personal study plan">
+            <span>PERSONAL STUDY PLAN</span>
+            <h2>{practiceSummary.readiness === null ? "Build your first baseline" : "Your next three focus areas"}</h2>
+            <p>{practiceSummary.readiness === null ? "Complete these short activities so Citizenship AI can tailor your next recommendation." : "The plan prioritizes areas without a baseline first, then the areas that need the most practice."}</p>
+            <ol>
+              {practiceSummary.plan.map((item, index) => (
+                <li key={item.key}>
+                  <span>{index + 1}</span>
+                  <button onClick={() => openPracticeModule(item.key)}>
+                    <strong>{item.label}</strong>
+                    <small>{item.detail}</small>
+                  </button>
+                </li>
+              ))}
+            </ol>
           </section>
           <section className="progress-ai-modules">
             <div className="progress-ai-module">
@@ -2187,6 +2215,28 @@ function App() {
                 <strong>{data.score === null ? "—" : `${data.score}%`}</strong>
               </div>
             ))}
+          </section>
+          <section className="progress-recent-practice" aria-label="Recent practice">
+            <div>
+              <span>YOUR HISTORY</span>
+              <h2>Recent practice</h2>
+            </div>
+            {recentPractice.length === 0 ? (
+              <p className="progress-empty-history">Your completed reading, writing, interview, and coaching sessions will appear here.</p>
+            ) : (
+              <ul>
+                {recentPractice.map((event) => (
+                  <li key={`${event.module}-${event.at}`}>
+                    <div className="progress-history-icon">{event.module === "interview" ? "✦" : event.module === "writing" ? "✎" : event.module === "reading" ? "A" : "◎"}</div>
+                    <div>
+                      <strong>{PRACTICE_MODULE_NAMES[event.module]}</strong>
+                      <small>{new Date(event.at).toLocaleDateString(undefined, { month: "short", day: "numeric" })} · {event.score === null ? "Completed" : `${event.score}%`}</small>
+                    </div>
+                    <span className={event.score !== null && event.score >= 70 ? "progress-history-good" : ""}>{event.outcome}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
           <button className="progress-ai-back" onClick={() => setScreen("home")}>
             ← Back to Home
