@@ -2276,6 +2276,12 @@ function App() {
   if (screen === "free-limit") {
     const feature = usageLimitFeature || "coach";
     const limit = FREE_AI_LIMITS[feature];
+    const continueFreePractice = () => {
+      // Payments are not enabled yet. Keep the Pro message visible without
+      // turning it into a dead end for a learner who needs to keep practicing.
+      setUsageLimitFeature(null);
+      setScreen(feature === "interview" ? "interview" : feature === "coach" ? "coach" : feature === "writing" ? "writing" : "reading");
+    };
     return (
       <div className="app access-limit-screen">
         <main className="access-limit-card">
@@ -2283,8 +2289,8 @@ function App() {
           <p className="settings-eyebrow">FREE PRACTICE CREDIT</p>
           <h1>You&apos;ve used this week&apos;s {AI_FEATURE_NAMES[feature].toLowerCase()} credits.</h1>
           <p>Your Free plan includes {limit} {AI_FEATURE_NAMES[feature].toLowerCase()} {limit === 1 ? "session" : "sessions"} each week. Civics study remains available anytime.</p>
-          <div className="access-limit-note"><span>PRO ACCESS</span><p>Pro access is being prepared for learners who want more AI practice. It is not a legal service or an immigration benefit.</p></div>
-          <a className="access-limit-primary" href="mailto:info@citizenshipai.us?subject=Citizenship%20AI%20Pro%20access">Ask about Pro access <span>→</span></a>
+          <div className="access-limit-note"><span>PRO ACCESS · COMING SOON</span><p>Pro access is being prepared for learners who want more AI practice. Until subscriptions are available, you can continue practicing at no cost. It is not a legal service or an immigration benefit.</p></div>
+          <button type="button" className="access-limit-primary" onClick={continueFreePractice}>Continue practicing for free <span>→</span></button>
           <button className="access-limit-secondary" onClick={() => setScreen("civics")}>Continue with Civics</button>
           <button className="access-limit-back" onClick={() => setScreen("home")}>← Back to Home</button>
         </main>
