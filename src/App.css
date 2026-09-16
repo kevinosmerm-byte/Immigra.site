@@ -14386,6 +14386,108 @@ body {
   background: rgba(4, 15, 31, 0.35);
 }
 
+/* Clearly separate USCIS-supplied facts from Citizenship AI education. */
+.uscis-calculated-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.uscis-calculated-grid > div,
+.uscis-case-intelligence,
+.uscis-monitoring-pending {
+  border: 1px solid rgba(126, 101, 245, 0.26);
+  background: linear-gradient(135deg, rgba(79, 59, 176, 0.16), rgba(8, 22, 48, 0.66));
+  border-radius: 16px;
+}
+
+.uscis-calculated-grid > div {
+  padding: 16px;
+}
+
+.uscis-calculated-grid span,
+.uscis-section-eyebrow {
+  display: block;
+  color: #9da7ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+}
+
+.uscis-calculated-grid strong {
+  display: block;
+  margin: 7px 0 3px;
+  color: #f6f5ff;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.uscis-calculated-grid small {
+  color: #aab7cf;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.uscis-case-intelligence {
+  margin-top: 24px;
+  padding: 22px;
+}
+
+.uscis-case-intelligence h3,
+.uscis-history h3 {
+  margin: 7px 0 8px;
+  color: #f3f6ff;
+  font-size: 18px;
+}
+
+.uscis-case-intelligence > p,
+.uscis-next-step p {
+  margin: 0;
+  color: #bdc8df;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.uscis-next-step {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(4, 15, 35, 0.46);
+  border-left: 2px solid #8d8bff;
+}
+
+.uscis-next-step strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #c9d5ff;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.uscis-case-intelligence > small {
+  display: block;
+  margin-top: 14px;
+  color: #8fa2c2;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.uscis-monitoring-pending {
+  display: grid;
+  gap: 5px;
+  margin-top: 20px;
+  padding: 15px 16px;
+  color: #b8c5df;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.uscis-monitoring-pending strong {
+  color: #e9edff;
+  font-size: 12px;
+}
+
 /* MOBILE */
 
 @media (max-width: 700px) {
@@ -14439,6 +14541,14 @@ body {
 
   .uscis-history-header {
     margin-bottom: 12px;
+  }
+
+  .uscis-calculated-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .uscis-case-intelligence {
+    padding: 18px;
   }
 }/* =========================================================
    CITIZENSHIP AI — MOBILE HOME REDESIGN

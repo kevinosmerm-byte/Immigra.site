@@ -11,6 +11,7 @@ import { startAudioRecording, transcribeRecording } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
 import { getPracticeEvents, getPracticeSummary, recordPracticeEvent } from "./progress";
 import { FREE_AI_LIMITS, canUseAiFeature, getAiUsageSummary, recordAiUsage } from "./access";
+import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
@@ -25,6 +26,40 @@ const AI_FEATURE_NAMES = {
   writing: "Writing evaluation",
   coach: "Sarah coaching",
   interview: "Sarah interview",
+};
+const CASE_TRACKER_COPY = {
+  en: {
+    uscIs: "USCIS", title: "Case Tracker", sandbox: "Sandbox",
+    header: "Practice using an official USCIS Sandbox API response. This is not a live production case tracker.",
+    label: "USCIS SANDBOX · TEST DATA ONLY", enter: "Enter a Sandbox receipt number",
+    help: "Use an official USCIS Sandbox test receipt number. This environment does not check a live USCIS case.",
+    placeholder: "Sandbox receipt number", missing: "Please enter your receipt number.",
+    invalid: "Use 3 letters followed by 10 numbers, for example IOE1234567890.", check: "CHECK SANDBOX STATUS",
+    active: "Sandbox mode is active", privacy: "Citizenship AI does not save your receipt number or create case monitoring in this version.",
+    loading: "Checking official Sandbox status...", unavailable: "Status unavailable", official: "OFFICIAL USCIS STATUS",
+    receipt: "RECEIPT NUMBER", testReceipt: "SANDBOX TEST RECEIPT", form: "FORM", updated: "LAST UPDATED", unavailableShort: "Not available",
+    daysStatus: "DAYS IN CURRENT STATUS", daysReceived: "DAYS SINCE RECEIVED", calculatedStatus: "Calculated from USCIS last updated date",
+    calculatedReceived: "Calculated from the official received date", intelligence: "CITIZENSHIP AI EXPLANATION", next: "WHAT SHOULD I DO NOW",
+    educational: "Educational information only — not legal advice or an outcome prediction.", history: "OFFICIAL HISTORY", events: "Case events",
+    noHistory: "USCIS did not provide a historical event timeline in this Sandbox response. Citizenship AI will not create or infer events.",
+    monitoringTitle: "Case monitoring is not available yet.", monitoring: "It requires secure accounts, encrypted case storage, user controls, and USCIS Production approval.", back: "← Back to Home",
+  },
+  es: {
+    uscIs: "USCIS", title: "Seguimiento del caso", sandbox: "Sandbox",
+    header: "Practica con una respuesta oficial de la API Sandbox de USCIS. No es un rastreador de casos de producción en vivo.",
+    label: "USCIS SANDBOX · SOLO DATOS DE PRUEBA", enter: "Ingresa un número de recibo Sandbox",
+    help: "Usa un número de recibo oficial de prueba de USCIS Sandbox. Este entorno no consulta un caso real de USCIS.",
+    placeholder: "Número de recibo Sandbox", missing: "Ingresa tu número de recibo.",
+    invalid: "Usa 3 letras seguidas de 10 números, por ejemplo IOE1234567890.", check: "CONSULTAR ESTADO SANDBOX",
+    active: "El modo Sandbox está activo", privacy: "Citizenship AI no guarda tu número de recibo ni crea monitoreo de casos en esta versión.",
+    loading: "Consultando el estado oficial de Sandbox...", unavailable: "Estado no disponible", official: "ESTADO OFICIAL DE USCIS",
+    receipt: "NÚMERO DE RECIBO", testReceipt: "RECIBO DE PRUEBA SANDBOX", form: "FORMULARIO", updated: "ÚLTIMA ACTUALIZACIÓN", unavailableShort: "No disponible",
+    daysStatus: "DÍAS EN EL ESTADO ACTUAL", daysReceived: "DÍAS DESDE LA RECEPCIÓN", calculatedStatus: "Calculado desde la fecha de actualización de USCIS",
+    calculatedReceived: "Calculado desde la fecha oficial de recepción", intelligence: "EXPLICACIÓN DE CITIZENSHIP AI", next: "¿QUÉ DEBO HACER AHORA?",
+    educational: "Información educativa únicamente; no es asesoría legal ni una predicción del resultado.", history: "HISTORIAL OFICIAL", events: "Eventos del caso",
+    noHistory: "USCIS no proporcionó una línea de tiempo de eventos en esta respuesta Sandbox. Citizenship AI no creará ni inferirá eventos.",
+    monitoringTitle: "El monitoreo del caso aún no está disponible.", monitoring: "Requiere cuentas seguras, almacenamiento cifrado de casos, controles de usuario y aprobación de USCIS para Producción.", back: "← Volver al inicio",
+  },
 };
 
 function readLocalValue(key, fallback = "") {
@@ -1242,6 +1277,7 @@ function App() {
   const [onboardingComplete, setOnboardingComplete] = useState(
     () => readLocalValue(ONBOARDING_STORAGE_KEY) === "complete"
   );
+  const trackerCopy = CASE_TRACKER_COPY[language];
   
   const [civicsViewed, setCivicsViewed] = useState(() => {
     const saved = readLocalJson("civicsViewed", []);
@@ -2087,20 +2123,20 @@ function App() {
       <div className="app uscis-tracker-screen">
         <main className="uscis-tracker-content">
           <div className="uscis-tracker-page-header">
-            <span>USCIS</span>
-            <h1>Case Tracker <small>Sandbox</small></h1>
-            <p>Practice using an official USCIS Sandbox API response. This is not a live production case tracker.</p>
+            <span>{trackerCopy.uscIs}</span>
+            <h1>{trackerCopy.title} <small>{trackerCopy.sandbox}</small></h1>
+            <p>{trackerCopy.header}</p>
           </div>
           <section className="uscis-tracker-panel">
-            <div className="uscis-tracker-panel-label">CASE STATUS</div>
-            <h2>Enter your Receipt Number</h2>
+            <div className="uscis-tracker-panel-label">{trackerCopy.label}</div>
+            <h2>{trackerCopy.enter}</h2>
             <p className="uscis-tracker-help">
-              Your receipt number is usually 13 characters. Example: IOE1234567890
+              {trackerCopy.help}
             </p>
             <input
               type="text"
               className="uscis-receipt-input"
-              placeholder="Enter Receipt Number"
+              placeholder={trackerCopy.placeholder}
               value={uscisReceiptNumber}
               onChange={(event) => {
                 setUscisReceiptNumber(event.target.value.toUpperCase());
@@ -2113,11 +2149,11 @@ function App() {
               onClick={async () => {
                 const receipt = uscisReceiptNumber.replace(/[\s-]/g, "").toUpperCase();
                 if (!receipt) {
-                  setUscisError("Please enter your receipt number.");
+                  setUscisError(trackerCopy.missing);
                   return;
                 }
                 if (!/^[A-Z]{3}\d{10}$/.test(receipt)) {
-                  setUscisError("Use 3 letters followed by 10 numbers, for example IOE1234567890.");
+                  setUscisError(trackerCopy.invalid);
                   return;
                 }
                 setUscisReceiptNumber(receipt);
@@ -2130,14 +2166,22 @@ function App() {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ receiptNumber: receipt }),
                   });
-                  const caseStatus = result.case_status;
+                  const caseStatus = result.case_status || {};
+                  const tracker = result.tracker || {};
                   setUscisCaseResult({
-                    status: caseStatus?.current_case_status_text_en || "Status unavailable",
-                    description: caseStatus?.current_case_status_desc_en || "",
-                    receiptNumber: caseStatus?.receiptNumber || receipt,
-                    form: caseStatus?.formType || "Not available",
-                    lastUpdated: caseStatus?.modifiedDate || "Not available",
-                    history: [],
+                    status: language === "es"
+                      ? caseStatus.current_case_status_text_es || caseStatus.current_case_status_text_en || trackerCopy.unavailable
+                      : caseStatus.current_case_status_text_en || trackerCopy.unavailable,
+                    description: language === "es"
+                      ? caseStatus.current_case_status_desc_es || caseStatus.current_case_status_desc_en || ""
+                      : caseStatus.current_case_status_desc_en || "",
+                    receiptNumber: tracker.maskedReceiptNumber || caseStatus.receiptNumber || receipt,
+                    form: caseStatus.formType || "Not available",
+                    lastUpdated: caseStatus.modifiedDate || "",
+                    receivedDate: caseStatus.receivedDate || "",
+                    environment: tracker.environment || "sandbox",
+                    isTestData: tracker.isTestData !== false,
+                    checkedAt: tracker.checkedAt || new Date().toISOString(),
                   });
                 } catch (error) {
                   console.error("Case Tracker error:", error);
@@ -2147,43 +2191,69 @@ function App() {
                 }
               }}
             >
-              CHECK CASE STATUS <span>→</span>
+              {trackerCopy.check} <span>→</span>
             </button>
           </section>
-          {uscisLoading && <div className="uscis-loading">Checking case status...</div>}
-          {uscisCaseResult && (
-            <div className="uscis-case-result">
+          <div className="uscis-official-note" role="note">
+            <span>●</span>
+            <div><strong>{trackerCopy.active}</strong><p>{trackerCopy.privacy}</p></div>
+          </div>
+          {uscisLoading && <div className="uscis-loading" role="status">{trackerCopy.loading}</div>}
+          {uscisCaseResult && (() => {
+            const guidance = getCaseGuidance(uscisCaseResult.status, language);
+            const daysInStatus = daysSinceOfficialDate(uscisCaseResult.lastUpdated);
+            const daysSinceReceived = daysSinceOfficialDate(uscisCaseResult.receivedDate);
+            const formatDate = (value) => formatOfficialDate(value, language) || value || trackerCopy.unavailableShort;
+            return <div className="uscis-case-result">
               <div className="uscis-status-top">
                 <div className="uscis-status-icon">✓</div>
                 <div className="uscis-status-main">
-                  <div className="uscis-result-label">CASE STATUS</div>
+                  <div className="uscis-result-label">{trackerCopy.official}</div>
                   <h2>{uscisCaseResult.status}</h2>
                   {uscisCaseResult.description && (
                     <p className="uscis-result-description">{uscisCaseResult.description}</p>
                   )}
                 </div>
                 <div className="uscis-official-badge">
-                  <span></span> USCIS API · SANDBOX
+                  <span></span> USCIS API · {uscisCaseResult.environment.toUpperCase()}
                 </div>
               </div>
               <div className="uscis-result-info">
                 <div className="uscis-info-item">
-                  <span>RECEIPT NUMBER</span>
+                  <span>{uscisCaseResult.isTestData ? trackerCopy.testReceipt : trackerCopy.receipt}</span>
                   <strong>{uscisCaseResult.receiptNumber}</strong>
                 </div>
                 <div className="uscis-info-item">
-                  <span>FORM</span>
+                  <span>{trackerCopy.form}</span>
                   <strong>{uscisCaseResult.form}</strong>
                 </div>
                 <div className="uscis-info-item">
-                  <span>LAST UPDATED</span>
-                  <strong>{uscisCaseResult.lastUpdated}</strong>
+                  <span>{trackerCopy.updated}</span>
+                  <strong>{formatDate(uscisCaseResult.lastUpdated)}</strong>
                 </div>
               </div>
+              {(daysInStatus !== null || daysSinceReceived !== null) && (
+                <div className="uscis-calculated-grid" aria-label="Educational date calculations">
+                  {daysInStatus !== null && <div><span>{trackerCopy.daysStatus}</span><strong>{daysInStatus}</strong><small>{trackerCopy.calculatedStatus}</small></div>}
+                  {daysSinceReceived !== null && <div><span>{trackerCopy.daysReceived}</span><strong>{daysSinceReceived}</strong><small>{trackerCopy.calculatedReceived}</small></div>}
+                </div>
+              )}
+              <section className="uscis-case-intelligence" aria-labelledby="case-intelligence-title">
+                <div className="uscis-section-eyebrow">{trackerCopy.intelligence}</div>
+                <h3 id="case-intelligence-title">{guidance.title}</h3>
+                <p>{guidance.explanation}</p>
+                <div className="uscis-next-step"><strong>{trackerCopy.next}</strong><p>{guidance.next}</p></div>
+                <small>{trackerCopy.educational}</small>
+              </section>
+              <section className="uscis-history" aria-labelledby="official-history-title">
+                <div className="uscis-history-header"><div><div className="uscis-section-eyebrow">{trackerCopy.history}</div><h3 id="official-history-title">{trackerCopy.events}</h3></div></div>
+                <div className="uscis-history-empty">{trackerCopy.noHistory}</div>
+              </section>
+              <div className="uscis-monitoring-pending"><strong>{trackerCopy.monitoringTitle}</strong><span>{trackerCopy.monitoring}</span></div>
             </div>
-          )}
+          })()}
           <button className="uscis-tracker-back" onClick={() => setScreen("home")}>
-            ← Back to Home
+            {trackerCopy.back}
           </button>
         </main>
       </div>
