@@ -1095,101 +1095,81 @@ function RealInterview({ onExit, onComplete, onReview }) {
   }
 
   return (
-    <div className="interview-screen">
+    <div className={`interview-screen live-interview-screen ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
       <header className="interview-header">
-        <button className="back-button" onClick={onExit}>
-          ←
+        <button className="back-button interview-exit-button" onClick={onExit} aria-label="Exit practice interview">
+          <span>×</span> Exit
         </button>
         <div className="interview-brand">
-          CITIZENSHIP <span>AI</span>
+          <strong>CITIZENSHIP <span>AI</span></strong>
+          <small>LIVE PRACTICE INTERVIEW</small>
         </div>
-        <button className="more-button">•••</button>
+        <button
+          className="more-button interview-repeat-button"
+          onClick={() => speakQuestion(questions[currentQuestion].english)}
+          aria-label="Repeat Sarah's question"
+          title="Repeat question"
+        >
+          ↻
+        </button>
       </header>
 
       <main className="interview-content">
-        {/* INTERFAZ HOLOGRÁFICA SUPREMA DE SARAH */}
-        <div className="sarah-ai-interface">
-          <div
-            className={`sarah-holo-card ${
-              isSpeaking
-                ? "active-speaking"
-                : isListening
-                ? "active-listening"
-                : ""
-            }`}
-          >
-            <div className="holo-scanner"></div>
-
-            <div className="sarah-avatar-wrapper">
+        <section className="sarah-live-stage" aria-label="Sarah, AI practice interviewer">
+          <div className="live-stage-media" aria-hidden="true">
+            <div className="live-stage-motion-frame">
               <img
                 src={sarahImage}
-                alt="Sarah"
-                className="sarah-avatar sarah-normal"
+                alt=""
+                className="live-sarah-image live-sarah-resting"
               />
               <img
                 src={sarahSpeakingImage}
-                alt="Sarah speaking"
-                className="sarah-avatar sarah-speaking"
+                alt=""
+                className="live-sarah-image live-sarah-speaking"
               />
             </div>
-
-            <div className="sarah-meta">
-              <div className="sarah-tag">AI IMMIGRATION OFFICER</div>
-              <h2>Sarah</h2>
-              <div className="sarah-live-status">
-                <span className="pulse-dot"></span>
-                {isSpeaking
-                  ? "SARAH IS SPEAKING..."
-                  : isListening
-                  ? "LISTENING TO YOU..."
-                  : "INTERVIEW IN PROGRESS"}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ÁREA DE PREGUNTA Y PROGRESO */}
-       {/* ÁREA DE PREGUNTA Y PROGRESO RE DISEÑADA */}
-        <div className="question-area">
-          
-          <div className="interview-top-hud">
-            <div className="hud-question-badge">
-              <span>QUESTION</span>
-              <strong>{String(currentQuestion + 1).padStart(2, "0")}</strong>
-              <small>/ {questions.length}</small>
-            </div>
-
-            <div className="hud-score-board">
-              <div className="hud-score correct">
-                <span className="dot"></span>
-                <span>CORRECT</span>
-                <strong>{correctAnswers}</strong>
-              </div>
-              <div className="hud-score incorrect">
-                <span className="dot"></span>
-                <span>INCORRECT</span>
-                <strong>{incorrectAnswers}</strong>
-              </div>
-            </div>
+            <div className="live-stage-mask"></div>
           </div>
 
-          <div className="hud-progress-track">
-            <div
-              className="hud-progress-fill"
-              style={{
-                width: `${((currentQuestion + 1) / questions.length) * 100}%`,
-              }}
-            ></div>
+          <div className="live-stage-topbar">
+            <div className="live-agent-badge">
+              <span className="live-dot"></span>
+              <div><strong>Sarah AI</strong><small>Practice interviewer</small></div>
+            </div>
+            <span className="live-practice-badge">INDEPENDENT PRACTICE</span>
           </div>
 
-          <div className="hud-question-content">
-            <div className="ai-turn-indicator">
-              {isSpeaking ? "✦ SARAH IS SPEAKING" : "✦ YOUR TURN TO SPEAK"}
+          <div className="live-stage-presence">
+            <span>AI INTERVIEW COACH</span>
+            <strong>Sarah</strong>
+            <small>{isSpeaking ? "Speaking with you" : isListening ? "Listening to your answer" : "Ready for your response"}</small>
+          </div>
+
+          <section className="live-question-card" aria-live="polite">
+            <div className="live-question-header">
+              <div className="ai-turn-indicator">
+                <span className="live-sound-icon">⌁</span>
+                {isSpeaking ? "SARAH IS SPEAKING" : isListening ? "SARAH IS LISTENING" : "YOUR TURN"}
+              </div>
+              <span>QUESTION {currentQuestion + 1} / {questions.length}</span>
             </div>
             <h2 className="question">{questions[currentQuestion].english}</h2>
             <p className="question-spanish">{questions[currentQuestion].spanish}</p>
-          </div>
+            <div className="live-progress-dots" aria-label={`Question ${currentQuestion + 1} of ${questions.length}`}>
+              {questions.map((_, index) => <span key={index} className={index <= currentQuestion ? "active" : ""}></span>)}
+            </div>
+          </section>
 
+          <div className="live-voice-status" aria-live="polite">
+            <div className="live-voice-bars" aria-hidden="true">
+              {Array.from({ length: 8 }, (_, index) => <span key={index}></span>)}
+            </div>
+            <span>{isSpeaking ? "Sarah is speaking…" : isListening ? "Listening… tap again when you finish" : "Tap the microphone when you are ready"}</span>
+          </div>
+        </section>
+
+        <section className="live-answer-feedback" aria-live="polite">
           {answerStatus === "evaluating" && (
             <div className="ai-thinking-panel">
               <div className="ai-thinking-main">
@@ -1222,40 +1202,30 @@ function RealInterview({ onExit, onComplete, onReview }) {
               </div>
             </div>
           )}
-        </div>
+        </section>
 
-        {/* ÁREA DE CONTROL DE VOZ */}
-        <div className="voice-area">
+        <section className="live-interview-controls" aria-label="Interview controls">
           <button
-            className={`mic-button ${isListening ? "listening" : ""}`}
+            className={`mic-button live-mic-button ${isListening ? "listening" : ""}`}
             onClick={isListening ? stopListening : startListening}
             disabled={isSpeaking}
+            aria-label={isListening ? "Stop recording answer" : "Start recording answer"}
           >
             <span>🎙</span>
           </button>
-
-          <div className="voice-label">
-            {isListening
-              ? "TAP THE MICROPHONE AGAIN TO STOP"
-              : isSpeaking
-              ? "SARAH IS SPEAKING..."
-              : "YOUR TURN — TAP TO SPEAK"}
-          </div>
-
           <button
-            className="skip-button"
+            className="skip-button live-skip-button"
             onClick={handleSkip}
             disabled={isSpeaking || isListening}
           >
-            <span>I DON'T KNOW / SKIP</span>
-            <span className="skip-icon">›</span>
+            I don&apos;t know / Skip
           </button>
-        </div>
+          <div className="live-score-summary" aria-label="Current score">
+            <span><i className="correct-dot"></i>{correctAnswers} correct</span>
+            <span><i className="incorrect-dot"></i>{incorrectAnswers} missed</span>
+          </div>
+        </section>
       </main>
-
-      <button className="end-interview" onClick={onExit}>
-        End interview
-      </button>
     </div>
   );
 }
