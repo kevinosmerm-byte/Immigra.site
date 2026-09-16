@@ -22595,3 +22595,80 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .progress-ai-module-measured .progress-module-icon {
   color: #b38cff;
 }
+
+/* The interview result now turns mistakes into an immediate, focused study path. */
+.interview-review-plan {
+  margin: 0 auto 22px;
+  padding: 18px;
+  border: 1px solid rgba(84, 177, 255, 0.3);
+  border-radius: 17px;
+  background: linear-gradient(135deg, rgba(18, 52, 95, 0.54), rgba(13, 18, 43, 0.72));
+  text-align: left;
+}
+
+.interview-review-plan > span {
+  color: #70d2ff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+}
+
+.interview-review-plan h2 {
+  margin: 7px 0 6px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.interview-review-plan p {
+  margin: 0;
+  color: #b9c9e3;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.interview-review-plan ol {
+  display: grid;
+  gap: 9px;
+  margin: 15px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.interview-review-plan li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 9px;
+  align-items: start;
+  color: #e7efff;
+  font-size: 12px;
+  line-height: 1.38;
+}
+
+.interview-review-plan li span {
+  padding: 3px 6px;
+  border-radius: 6px;
+  color: #75d2ff;
+  background: rgba(91, 183, 255, 0.16);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.interview-review-plan .interview-review-more {
+  display: block;
+  color: #91a7c8;
+  font-style: italic;
+}
+
+.results-focus-button {
+  width: min(360px, 100%);
+  margin-bottom: 12px;
+  padding: 15px 22px;
+  border: 1px solid rgba(87, 202, 255, 0.62);
+  border-radius: 999px;
+  color: #eaf8ff;
+  background: rgba(42, 143, 225, 0.18);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}

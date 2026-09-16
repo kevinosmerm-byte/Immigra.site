@@ -787,7 +787,7 @@ function Home({
 
 // Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
 
-function RealInterview({ onExit, onComplete }) {
+function RealInterview({ onExit, onComplete, onReview }) {
   const [questions] = useState(() => {
     return [...civicsQuestions]
       .sort(() => Math.random() - 0.5)
@@ -801,10 +801,19 @@ function RealInterview({ onExit, onComplete }) {
   const [answerStatus, setAnswerStatus] = useState("");
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [incorrectAnswers, setIncorrectAnswers] = useState(0);
+  const [missedQuestions, setMissedQuestions] = useState([]);
   const [hasRetried, setHasRetried] = useState(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   const recorderRef = useRef(null);
   const completionReportedRef = useRef(false);
+
+  const addMissedQuestion = (question) => {
+    setMissedQuestions((current) => (
+      current.some((item) => item.id === question.id)
+        ? current
+        : [...current, { id: question.id, english: question.english }]
+    ));
+  };
 
   useEffect(() => {
     if (!isInterviewComplete || completionReportedRef.current) return;
@@ -890,6 +899,7 @@ function RealInterview({ onExit, onComplete }) {
 
   const handleSkip = () => {
     setIncorrectAnswers((count) => count + 1);
+    addMissedQuestion(questions[currentQuestion]);
     setAnswerStatus("incorrect");
     setHasRetried(false);
     goToNextQuestion();
@@ -914,6 +924,7 @@ function RealInterview({ onExit, onComplete }) {
       if (result.status === "correct") setCorrectAnswers((count) => count + 1);
       if (result.status === "incorrect" && hasRetried) {
         setIncorrectAnswers((count) => count + 1);
+        addMissedQuestion(questions[currentQuestion]);
       }
 
       const feedback = result.feedback || "";
@@ -924,6 +935,7 @@ function RealInterview({ onExit, onComplete }) {
       } else if (result.action === "repeat") {
         if (hasRetried) {
           setIncorrectAnswers((count) => count + 1);
+          addMissedQuestion(questions[currentQuestion]);
           speakQuestion(`${feedback} Let's move to the next question.`, () => goToNextQuestion());
         } else {
           setHasRetried(true);
@@ -969,6 +981,11 @@ function RealInterview({ onExit, onComplete }) {
     const scorePercentage = Math.round(
       (correctAnswers / questions.length) * 100
     );
+    const reviewMessage = scorePercentage >= 90
+      ? "Strong civics practice. Keep reviewing the questions below so the information stays fresh."
+      : scorePercentage >= 70
+      ? "You have a solid foundation. Review the questions below, then try another session."
+      : "Build confidence one question at a time. Start by reviewing the questions below.";
 
     return (
       <div className="interview-screen">
@@ -997,6 +1014,24 @@ function RealInterview({ onExit, onComplete }) {
               ? "Great job. Keep practicing to build confidence."
               : "Keep practicing. You are making progress."}
           </p>
+          <section className="interview-review-plan" aria-label="Your focused review plan">
+            <span>YOUR NEXT FOCUS</span>
+            <h2>{missedQuestions.length ? `${missedQuestions.length} question${missedQuestions.length === 1 ? "" : "s"} to revisit` : "Keep your momentum"}</h2>
+            <p>{missedQuestions.length ? reviewMessage : "You did not skip or miss a question in this session. Try another randomized interview to keep building consistency."}</p>
+            {missedQuestions.length > 0 && (
+              <ol>
+                {missedQuestions.slice(0, 3).map((question) => (
+                  <li key={question.id}><span>Q{question.id}</span>{question.english}</li>
+                ))}
+                {missedQuestions.length > 3 && <li className="interview-review-more">+ {missedQuestions.length - 3} more question{missedQuestions.length - 3 === 1 ? "" : "s"} to review</li>}
+              </ol>
+            )}
+          </section>
+          {missedQuestions.length > 0 && (
+            <button className="results-focus-button" onClick={() => onReview?.(missedQuestions.map((question) => question.id))}>
+              REVIEW MISSED QUESTIONS
+            </button>
+          )}
           <button
             className="results-button"
             onClick={() => window.location.reload()}
@@ -2166,6 +2201,11 @@ function App() {
       <RealInterview
         onExit={() => setScreen("home")}
         onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
+        onReview={(questionIds) => {
+          const firstMissedIndex = civicsQuestions.findIndex((question) => question.id === questionIds[0]);
+          if (firstMissedIndex >= 0) setCivicsIndex(firstMissedIndex);
+          setScreen("civics");
+        }}
       />
     );
   }
