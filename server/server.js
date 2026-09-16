@@ -3,19 +3,18 @@ import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI from "openai";
 import multer from "multer";
+import { fetchUscisCaseStatus, getUscisConfig, maskReceiptNumber } from "./uscisService.js";
 
 dotenv.config();
 
 const app = express();
 app.disable("x-powered-by");
+app.set("trust proxy", 1);
 
 const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
   .split(",")
   .map((origin) => origin.trim())
-  .filter(Boolean);// The USCIS sandbox is the default until USCIS grants this app production
-// credentials and endpoints. Environment values can override these later.
-const USCIS_TOKEN_URL = process.env.USCIS_TOKEN_URL || "https://api-int.uscis.gov/oauth/accesstoken";
-const USCIS_API_URL = process.env.USCIS_API_URL || "https://api-int.uscis.gov/case-status";
+  .filter(Boolean);
 
 app.use(cors({
   origin(origin, callback) {
@@ -44,6 +43,61 @@ const MAX_HISTORY_ITEMS = 12;
 // Use a public API model by default. It can be changed in Render without a
 // code deployment by setting OPENAI_TEXT_MODEL.
 const OPENAI_TEXT_MODEL = process.env.OPENAI_TEXT_MODEL || "gpt-4o-mini";
+const rateLimitBuckets = new Map();
+const uscisManualRefreshes = new Map();
+const configuredUscisCooldown = Number(process.env.USCIS_MANUAL_COOLDOWN_SECONDS || 60);
+const USCIS_MANUAL_COOLDOWN_MS = Math.max(15, Number.isFinite(configuredUscisCooldown) ? configuredUscisCooldown : 60) * 1000;
+
+function requestRateLimit(name, limit, windowMs) {
+  return (req, res, next) => {
+    const forwardedIp = req.get("cf-connecting-ip") || req.ip || "unknown";
+    const key = `${name}:${forwardedIp}`;
+    const now = Date.now();
+    if (rateLimitBuckets.size > 1_000) {
+      for (const [bucketKey, bucket] of rateLimitBuckets) {
+        if (now - bucket.startedAt >= windowMs) rateLimitBuckets.delete(bucketKey);
+      }
+    }
+    const existing = rateLimitBuckets.get(key);
+    const active = existing && now - existing.startedAt < windowMs
+      ? existing
+      : { startedAt: now, count: 0 };
+
+    active.count += 1;
+    rateLimitBuckets.set(key, active);
+
+    if (active.count > limit) {
+      const retryAfterSeconds = Math.max(1, Math.ceil((windowMs - (now - active.startedAt)) / 1000));
+      res.set("Retry-After", String(retryAfterSeconds));
+      return res.status(429).json({ error: "Too many requests. Please wait a few minutes and try again." });
+    }
+
+    next();
+  };
+}
+
+const aiRateLimit = requestRateLimit("ai", 30, 10 * 60 * 1000);
+const transcriptionRateLimit = requestRateLimit("transcription", 10, 10 * 60 * 1000);
+const uscisRateLimit = requestRateLimit("uscis", 15, 10 * 60 * 1000);
+
+function enforceUscisManualCooldown(req, res) {
+  const requester = req.get("cf-connecting-ip") || req.ip || "unknown";
+  const now = Date.now();
+  const nextAllowedAt = uscisManualRefreshes.get(requester) || 0;
+  if (nextAllowedAt > now) {
+    const retryAfterSeconds = Math.max(1, Math.ceil((nextAllowedAt - now) / 1000));
+    res.set("Retry-After", String(retryAfterSeconds));
+    res.status(429).json({ error: `Please wait ${retryAfterSeconds} seconds before checking again.` });
+    return false;
+  }
+  uscisManualRefreshes.set(requester, now + USCIS_MANUAL_COOLDOWN_MS);
+  if (uscisManualRefreshes.size > 1_000) {
+    for (const [key, allowedAt] of uscisManualRefreshes) {
+      if (allowedAt <= now) uscisManualRefreshes.delete(key);
+    }
+  }
+  return true;
+}
 
 function readText(value, maxLength = MAX_TEXT_LENGTH) {
   if (typeof value !== "string") return "";
@@ -78,7 +132,7 @@ function safeHistory(history) {
   });
 }
 
-app.post("/evaluate", async (req, res) => {
+app.post("/evaluate", aiRateLimit, async (req, res) => {
   try {
     if (!requireOpenAI(res)) return;
     const question = readText(req.body?.question, 1_000);
@@ -151,7 +205,7 @@ res.json(result);
     });
   }
 });
-app.post("/evaluate-writing", async (req, res) => {
+app.post("/evaluate-writing", aiRateLimit, async (req, res) => {
   try {
     if (!requireOpenAI(res)) return;
     const sentence = readText(req.body?.sentence, 1_000);
@@ -218,7 +272,7 @@ ${answer}
     });
   }
 });
-app.post("/transcribe", upload.single("audio"), async (req, res) => {
+app.post("/transcribe", transcriptionRateLimit, upload.single("audio"), async (req, res) => {
   try {
     if (!requireOpenAI(res)) return;
     if (!req.file) {
@@ -269,7 +323,7 @@ app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-app.post("/evaluate-reading", async (req, res) => {
+app.post("/evaluate-reading", aiRateLimit, async (req, res) => {
   try {
     if (!requireOpenAI(res)) return;
     const sentence = readText(req.body?.sentence, 1_000);
@@ -332,7 +386,7 @@ ${transcript}
     });
   }
 });
-app.post("/coach", async (req, res) => {
+app.post("/coach", aiRateLimit, async (req, res) => {
   try {
     if (!requireOpenAI(res)) return;
     const message = readText(req.body?.message, 2_000);
@@ -390,7 +444,7 @@ ${message}
     });
   }
 });
-app.post("/uscis-case-status", async (req, res) => {
+app.post("/uscis-case-status", uscisRateLimit, async (req, res) => {
   try {
     const receiptNumber = readText(req.body?.receiptNumber, 13).toUpperCase();
 
@@ -400,58 +454,28 @@ app.post("/uscis-case-status", async (req, res) => {
       });
     }
 
-    if (!process.env.USCIS_CLIENT_ID || !process.env.USCIS_CLIENT_SECRET) {
-      return res.status(503).json({ error: "USCIS case status is not configured yet." });
-    }
-
-    const tokenResponse = await fetch(USCIS_TOKEN_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: new URLSearchParams({
-        grant_type: "client_credentials",
-        client_id: process.env.USCIS_CLIENT_ID,
-        client_secret: process.env.USCIS_CLIENT_SECRET
-      })
+    const config = getUscisConfig();
+    if (!enforceUscisManualCooldown(req, res)) return;
+    const result = await fetchUscisCaseStatus(receiptNumber);
+    console.info("USCIS case lookup", {
+      environment: config.mode,
+      sandboxTestData: config.isSandbox,
+      receipt: maskReceiptNumber(receiptNumber),
+      success: true,
+      traceId: result.tracker.traceId,
     });
-
-    const tokenData = await tokenResponse.json();
-
-    if (!tokenResponse.ok) {
-      console.error("USCIS token error:", tokenData);
-
-      return res.status(tokenResponse.status).json({
-        error: "Unable to authenticate with USCIS."
-      });
-    }
-
-    const caseResponse = await fetch(
-      `${USCIS_API_URL}/${encodeURIComponent(receiptNumber)}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${tokenData.access_token}`,
-          Accept: "application/json"
-        }
-      }
-    );
-
-    const caseData = await caseResponse.json();
-
-    if (!caseResponse.ok) {
-      console.error("USCIS case error:", caseData);
-
-      return res.status(caseResponse.status).json(caseData);
-    }
-
-    res.json(caseData);
+    res.json(result);
 
   } catch (error) {
-    console.error("USCIS API error:", error);
-
-    res.status(500).json({
-      error: "Unable to connect to USCIS."
+    console.error("USCIS case lookup failed", {
+      status: error.status || 500,
+      traceId: error.traceId,
+      message: error.message,
+    });
+    res.status(error.status || 500).json({
+      error: error.message === "USCIS_ENV must be sandbox or production."
+        ? "USCIS environment is not configured correctly."
+        : error.message || "We couldn't check USCIS right now. Please try again later.",
     });
   }
 });
