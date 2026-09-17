@@ -43,6 +43,13 @@ const MAX_HISTORY_ITEMS = 12;
 // Use a public API model by default. It can be changed in Render without a
 // code deployment by setting OPENAI_TEXT_MODEL.
 const OPENAI_TEXT_MODEL = process.env.OPENAI_TEXT_MODEL || "gpt-4o-mini";
+const DID_API_KEY = process.env.DID_API_KEY?.trim();
+const DID_AGENT_ID = process.env.DID_AGENT_ID?.trim();
+const DID_ALLOWED_ORIGINS = (process.env.DID_ALLOWED_ORIGINS || "")
+  .split(",")
+  .map((origin) => origin.trim().replace(/\/$/, ""))
+  .filter(Boolean);
+const DID_CLIENT_KEY_TTL_SECONDS = 300;
 const rateLimitBuckets = new Map();
 const uscisManualRefreshes = new Map();
 const configuredUscisCooldown = Number(process.env.USCIS_MANUAL_COOLDOWN_SECONDS || 60);
@@ -79,6 +86,7 @@ function requestRateLimit(name, limit, windowMs) {
 const aiRateLimit = requestRateLimit("ai", 30, 10 * 60 * 1000);
 const transcriptionRateLimit = requestRateLimit("transcription", 10, 10 * 60 * 1000);
 const uscisRateLimit = requestRateLimit("uscis", 15, 10 * 60 * 1000);
+const avatarSessionRateLimit = requestRateLimit("avatar-session", 6, 10 * 60 * 1000);
 
 function enforceUscisManualCooldown(req, res) {
   const requester = req.get("cf-connecting-ip") || req.ip || "unknown";
@@ -115,6 +123,17 @@ function requireOpenAI(res) {
   if (openai) return true;
   res.status(503).json({ error: "AI service is not configured." });
   return false;
+}
+
+function getDidConfiguration() {
+  return {
+    configured: Boolean(DID_API_KEY && DID_AGENT_ID && DID_ALLOWED_ORIGINS.length),
+    agentId: DID_AGENT_ID || null,
+  };
+}
+
+function normalizeOrigin(origin) {
+  return typeof origin === "string" ? origin.trim().replace(/\/$/, "") : "";
 }
 
 function parseModelJson(output) {
@@ -444,6 +463,61 @@ ${message}
     });
   }
 });
+// D-ID is optional. Its private API key stays on this server; browsers receive
+// only a short-lived client key after the server verifies their exact origin.
+app.get("/avatar/status", (req, res) => {
+  res.set("Cache-Control", "no-store");
+  res.json({ provider: "d-id", configured: getDidConfiguration().configured });
+});
+
+app.post("/avatar/session", avatarSessionRateLimit, async (req, res) => {
+  try {
+    const config = getDidConfiguration();
+    if (!config.configured) {
+      return res.status(503).json({ error: "The live avatar pilot is not configured yet." });
+    }
+
+    const requestOrigin = normalizeOrigin(req.get("origin"));
+    if (!requestOrigin || !DID_ALLOWED_ORIGINS.includes(requestOrigin)) {
+      return res.status(403).json({ error: "This origin is not permitted to start an avatar session." });
+    }
+
+    const didResponse = await fetch(
+      `https://api.d-id.com/agents/${encodeURIComponent(config.agentId)}/client-keys`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${Buffer.from(DID_API_KEY, "utf8").toString("base64")}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          allowed_domains: DID_ALLOWED_ORIGINS,
+          name: "citizenshipai-live-practice",
+          ttl_seconds: DID_CLIENT_KEY_TTL_SECONDS,
+        }),
+      }
+    );
+
+    const didPayload = await didResponse.json().catch(() => ({}));
+    if (!didResponse.ok || !didPayload.client_key) {
+      console.error("D-ID client-key request failed", { status: didResponse.status });
+      return res.status(502).json({ error: "The live avatar service could not start. Please continue with the standard practice interview." });
+    }
+
+    res.set("Cache-Control", "no-store");
+    return res.json({
+      provider: "d-id",
+      agentId: config.agentId,
+      clientKey: didPayload.client_key,
+      expiresInSeconds: DID_CLIENT_KEY_TTL_SECONDS,
+    });
+  } catch (error) {
+    console.error("D-ID avatar session error", { message: error.message });
+    return res.status(502).json({ error: "The live avatar service could not start. Please continue with the standard practice interview." });
+  }
+});
+
 app.post("/uscis-case-status", uscisRateLimit, async (req, res) => {
   try {
     const receiptNumber = readText(req.body?.receiptNumber, 13).toUpperCase();
