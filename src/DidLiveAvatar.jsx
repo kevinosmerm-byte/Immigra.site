@@ -40,7 +40,7 @@ export function DidLiveAvatar() {
       const script = document.createElement("script");
       script.type = "module";
       script.src = DID_AGENT_SCRIPT;
-      script.dataset.mode = "full";
+      script.dataset.name = "did-agent"; script.dataset.mode = "full"; script.dataset.openMode = "expanded"; script.dataset.autoConnect = "true"; script.dataset.track = "false";
       script.dataset.targetId = targetId;
       script.dataset.clientKey = session.clientKey;
       script.dataset.agentId = session.agentId;
