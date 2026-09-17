@@ -11,7 +11,8 @@ import { startAudioRecording, transcribeRecording } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
 import { getPracticeEvents, getPracticeSummary, recordPracticeEvent } from "./progress";
 import { FREE_AI_LIMITS, canUseAiFeature, getAiUsageSummary, recordAiUsage } from "./access";
-import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";
+import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
+
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
@@ -1115,7 +1116,7 @@ function RealInterview({ onExit, onComplete, onReview }) {
       </header>
 
       <main className="interview-content">
-        <section className="sarah-live-stage" aria-label="Sarah, AI practice interviewer">
+        <DidLiveAvatar /><section className="sarah-live-stage" aria-label="Sarah, AI practice interviewer">
           <div className="live-stage-media" aria-hidden="true">
             <div className="live-stage-motion-frame">
               <img
