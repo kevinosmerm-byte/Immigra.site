@@ -4,9 +4,8 @@ import { apiJson } from "./api";
 const DID_AGENT_SCRIPT = "https://agent.d-id.com/v2/index.js";
 
 export function DidLiveAvatar() {
-  const hostRef = useRef(null);
   const scriptRef = useRef(null);
-  const portalRef = useRef(null);
+  const widgetRef = useRef(null);
   const observerRef = useRef(null);
   const [state, setState] = useState("idle");
   const [message, setMessage] = useState("");
@@ -17,12 +16,8 @@ export function DidLiveAvatar() {
     observerRef.current = null;
     scriptRef.current?.remove();
     scriptRef.current = null;
-    portalRef.current?.remove();
-    portalRef.current = null;
-    if (hostRef.current) {
-      hostRef.current.replaceChildren();
-      hostRef.current.style.removeProperty("min-height");
-    }
+    widgetRef.current?.remove();
+    widgetRef.current = null;
     setState("idle");
     setMessage("");
   };
@@ -40,51 +35,37 @@ export function DidLiveAvatar() {
         throw new Error("The live avatar service did not return a secure session.");
       }
 
-      const host = hostRef.current;
-      if (!host) throw new Error("The live video area is not ready.");
-      const targetId = "did-live-avatar-stage";
-      host.id = targetId;
-      host.replaceChildren();
-      host.style.minHeight = "480px";
-
-      const knownTargets = new Set(document.querySelectorAll(".didagent_target"));
-      const mountEmbed = () => {
-        const target = [...document.querySelectorAll(".didagent_target")]
-          .find((candidate) => !knownTargets.has(candidate));
-        if (!target) return false;
-
+      const knownWidgets = new Set(document.querySelectorAll(".didagent_target"));
+      const rememberWidget = () => {
+        const widget = [...document.querySelectorAll(".didagent_target")]
+          .find((candidate) => !knownWidgets.has(candidate));
+        if (!widget) return false;
+        widgetRef.current = widget;
         observerRef.current?.disconnect();
         observerRef.current = null;
-        target.classList.add("did-live-avatar-embedded");
-        target.style.width = "100%";
-        target.style.height = "min(70vh, 680px)";
-        target.style.minHeight = "480px";
-        target.style.position = "relative";
-        host.replaceChildren(target);
-        portalRef.current = target;
         return true;
       };
 
-      observerRef.current = new MutationObserver(mountEmbed);
+      observerRef.current = new MutationObserver(rememberWidget);
       observerRef.current.observe(document.body, { childList: true, subtree: true });
 
       const script = document.createElement("script");
       script.type = "module";
       script.src = DID_AGENT_SCRIPT;
       script.dataset.name = "did-agent";
-      script.dataset.mode = "full";
+      script.dataset.mode = "fabio";
+      script.dataset.position = "right";
       script.dataset.openMode = "expanded";
       script.dataset.autoConnect = "true";
       script.dataset.track = "false";
-      script.dataset.targetId = targetId;
       script.dataset.clientKey = session.clientKey;
       script.dataset.agentId = session.agentId;
       script.dataset.showRestartButton = "false";
       script.dataset.showAgentName = "false";
       script.addEventListener("load", () => {
-        mountEmbed();
+        rememberWidget();
         setState("active");
-        setMessage("Sarah is ready. Use the live panel to begin a video conversation.");
+        setMessage("Sarah is connected. Use the live video panel to practice your conversation.");
       });
       script.addEventListener("error", () => {
         reset();
@@ -127,7 +108,6 @@ export function DidLiveAvatar() {
 
       <p className={state === "error" ? "did-live-avatar-status error" : "did-live-avatar-status"} role="status">{message}</p>
       {state === "active" && <button type="button" className="did-live-avatar-close" onClick={reset}>RETURN TO STANDARD INTERVIEW</button>}
-      <div ref={hostRef} className="did-live-avatar-mount" />
     </section>
   );
 }
