@@ -23356,3 +23356,110 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .live-stage-mask::after {
   display: none;
 }
+
+
+/* D-ID live interview always keeps Sarah visible while the provider connects or is unavailable. */
+.did-live-stage {
+  position: relative;
+  width: 100%;
+  min-height: min(76vh, 760px);
+  overflow: hidden;
+  border-radius: 28px;
+  background: #07152b;
+}
+
+.did-live-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  z-index: 0;
+}
+
+.did-live-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 48%, rgba(2, 10, 25, 0.72) 100%);
+}
+
+.did-live-fallback-label {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 2;
+  display: grid;
+  gap: 5px;
+  padding: 12px 15px;
+  border: 1px solid rgba(118, 195, 255, 0.34);
+  border-radius: 14px;
+  background: rgba(3, 13, 31, 0.68);
+  backdrop-filter: blur(12px);
+}
+
+.did-live-fallback-label span {
+  color: #63dfa7;
+  font-size: 9px;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+}
+
+.did-live-fallback-label strong {
+  color: #fff;
+  font-size: 13px;
+}
+
+.did-live-agent-container {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.did-live-agent-container:empty {
+  pointer-events: none;
+}
+
+.did-live-avatar-recovery {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px 0;
+}
+
+.did-live-avatar-recovery p {
+  margin: 0;
+  color: #b8c9e4;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.did-live-avatar-recovery.error p {
+  color: #ffd2d8;
+}
+
+.did-live-avatar-recovery button {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+@media (max-width: 480px) {
+  .did-live-stage {
+    min-height: 68vh;
+    border-radius: 22px;
+  }
+
+  .did-live-avatar-recovery {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
