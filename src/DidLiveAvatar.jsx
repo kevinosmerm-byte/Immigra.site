@@ -55,8 +55,9 @@ export function DidLiveAvatar({ autoStart = false }) {
       script.type = "module";
       script.src = DID_AGENT_SCRIPT;
       script.dataset.name = "did-agent";
-      script.dataset.mode = "fabio";
-      script.dataset.position = "right";
+      script.dataset.mode = "full";
+      script.dataset.targetId = "did-live-agent-container";
+      script.dataset.orientation = "vertical";
       script.dataset.openMode = "expanded";
       script.dataset.autoConnect = "true";
       script.dataset.track = "false";
@@ -133,6 +134,12 @@ export function DidLiveAvatar({ autoStart = false }) {
         </div>
       )}
 
+      <div
+        id="did-live-agent-container"
+        className="did-live-agent-container"
+        aria-label="Sarah live video interview"
+        style={{ width: "100%", minHeight: "min(76vh, 760px)", borderRadius: "28px", overflow: "hidden" }}
+      ></div>
       <p className={state === "error" ? "did-live-avatar-status error" : "did-live-avatar-status"} role="status">{message}</p>
       {state === "active" && <button type="button" className="did-live-avatar-close" onClick={reset}>RETURN TO STANDARD INTERVIEW</button>}
     </section>
