@@ -23346,3 +23346,13 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
     min-height: 380px;
   }
 }
+
+
+/* Keep Sarah's classic portrait natural and unobstructed. */
+.live-stage-mask {
+  background: transparent;
+}
+
+.live-stage-mask::after {
+  display: none;
+}
