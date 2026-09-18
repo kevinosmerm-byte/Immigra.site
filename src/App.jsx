@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
-import kevinImage from "./assets/ChatGPT Image 16 sept 2026, 18_55_04.png";
+import kevinImage from "./assets/kevin-cinematic.png";
 import { civicsQuestions } from "./questions";
 import { acceptedAnswers } from "./answers";
 import { civicsAnswers } from "./civicsAnswers";
@@ -898,9 +898,10 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     window.speechSynthesis.cancel();
     const voices = window.speechSynthesis.getVoices();
     const englishVoices = voices.filter((v) => v.lang.startsWith("en"));
+    const americanEnglishVoices = englishVoices.filter((v) => /^en-US$/i.test(v.lang));
     const preferredVoice = isKevin
-      ? englishVoices.find((v) => /diego|jorge|carlos|antonio|latin|spanish|male|david|mark/i.test(`${v.name} ${v.lang}`))
-        || englishVoices.find((v) => !/female|zira|samantha|aria|jenny|susan/i.test(v.name))
+      ? americanEnglishVoices.find((v) => /david|mark|guy|ryan|christopher|matthew|joey|fred|alex/i.test(v.name))
+        || americanEnglishVoices[0]
         || englishVoices[0]
       : englishVoices.find((v) => /female|zira|samantha|aria|jenny|susan/i.test(v.name))
         || englishVoices[0];
