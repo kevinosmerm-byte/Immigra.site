@@ -518,41 +518,84 @@ app.post("/avatar/session", avatarSessionRateLimit, async (req, res) => {
   }
 });
 
-app.post("/uscis-case-status", uscisRateLimit, async (req, res) => {
-  try {
-    const receiptNumber = readText(req.body?.receiptNumber, 13).toUpperCase();
+function classifyUscisFailure(error) {
+  const status = Number(error?.status) || 500;
+  if (status === 401 || status === 403) return "authentication";
+  if (status === 404) return "not_found";
+  if (status === 429) return "rate_limited";
+  if (status === 503) return "configuration";
+  return status >= 500 ? "upstream_or_server" : "request";
+}
 
+function logUscisAuditEvent(event, details = {}) {
+  const record = {
+    timestamp: new Date().toISOString(),
+    event,
+    ...details,
+  };
+  const writer = event === "case_lookup_failed" ? console.error : console.info;
+  writer("USCIS_CASE_LOOKUP_AUDIT", record);
+}
+
+app.post("/uscis-case-status", uscisRateLimit, async (req, res) => {
+  const startedAt = Date.now();
+  const receiptNumber = readText(req.body?.receiptNumber, 13).toUpperCase();
+  let config = null;
+  res.set("Cache-Control", "no-store");
+
+  try {
     if (!/^[A-Z]{3}\d{10}$/.test(receiptNumber)) {
       return res.status(400).json({
         error: "Enter a valid 13-character USCIS receipt number."
       });
     }
 
-    const config = getUscisConfig();
-    if (!enforceUscisManualCooldown(req, res)) return;
-    const result = await fetchUscisCaseStatus(receiptNumber);
-    console.info("USCIS case lookup", {
+    config = getUscisConfig();
+    const auditContext = {
       environment: config.mode,
       sandboxTestData: config.isSandbox,
       receipt: maskReceiptNumber(receiptNumber),
-      success: true,
+    };
+    logUscisAuditEvent("case_lookup_started", auditContext);
+
+    if (!enforceUscisManualCooldown(req, res)) {
+      logUscisAuditEvent("case_lookup_failed", {
+        ...auditContext,
+        httpStatus: 429,
+        category: "rate_limited",
+        durationMs: Date.now() - startedAt,
+      });
+      return;
+    }
+
+    const result = await fetchUscisCaseStatus(receiptNumber);
+    logUscisAuditEvent("case_lookup_success", {
+      ...auditContext,
+      httpStatus: 200,
+      durationMs: Date.now() - startedAt,
       traceId: result.tracker.traceId,
     });
     res.json(result);
 
   } catch (error) {
-    console.error("USCIS case lookup failed", {
-      status: error.status || 500,
+    const status = error.status || 500;
+    logUscisAuditEvent("case_lookup_failed", {
+      environment: config?.mode || "unconfigured",
+      sandboxTestData: config?.isSandbox ?? null,
+      receipt: receiptNumber ? maskReceiptNumber(receiptNumber) : "not_provided",
+      httpStatus: status,
+      category: classifyUscisFailure(error),
+      durationMs: Date.now() - startedAt,
       traceId: error.traceId,
-      message: error.message,
     });
-    res.status(error.status || 500).json({
+    res.status(status).json({
       error: error.message === "USCIS_ENV must be sandbox or production."
         ? "USCIS environment is not configured correctly."
         : error.message || "We couldn't check USCIS right now. Please try again later.",
     });
   }
 });
+
 app.use((error, req, res, _next) => {
   if (error.type === "entity.too.large" || error.status === 413 || error.statusCode === 413) {
     return res.status(413).json({ error: "Request body must be 256 KB or smaller." });
