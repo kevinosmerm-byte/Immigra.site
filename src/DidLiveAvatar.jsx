@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { apiJson } from "./api";
 
 const DID_AGENT_SCRIPT = "https://agent.d-id.com/v2/index.js";
+const DID_CONSENT_KEY = "citizenshipai.did-avatar-consent.v1";
 
-export function DidLiveAvatar() {
+export function DidLiveAvatar({ autoStart = false }) {
   const scriptRef = useRef(null);
   const widgetRef = useRef(null);
   const observerRef = useRef(null);
+  const autoStartedRef = useRef(false);
   const [state, setState] = useState("idle");
   const [message, setMessage] = useState("");
   const [showNotice, setShowNotice] = useState(false);
@@ -82,6 +84,28 @@ export function DidLiveAvatar() {
     }
   };
 
+  useEffect(() => {
+    if (!autoStart || autoStartedRef.current) return;
+    autoStartedRef.current = true;
+    let consentGranted = false;
+    try {
+      consentGranted = localStorage.getItem(DID_CONSENT_KEY) === "accepted";
+    } catch {
+      consentGranted = false;
+    }
+    if (consentGranted) connect();
+    else setShowNotice(true);
+  }, [autoStart]);
+
+  const acceptAndConnect = () => {
+    try {
+      localStorage.setItem(DID_CONSENT_KEY, "accepted");
+    } catch {
+      // Continue for this session when browser storage is unavailable.
+    }
+    connect();
+  };
+
   return (
     <section className="did-live-avatar" aria-label="Optional live Sarah avatar">
       {state !== "active" && (
@@ -89,9 +113,12 @@ export function DidLiveAvatar() {
           <span>LIVE AVATAR BETA</span>
           <strong>Meet Sarah in live video</strong>
           <p>Optional animated video practice powered by D-ID. Your standard interview remains available at all times.</p>
-          <button type="button" onClick={() => setShowNotice(true)} disabled={state === "connecting"}>
-            {state === "connecting" ? "CONNECTING…" : "CONNECT LIVE AVATAR"}
-          </button>
+          {!autoStart && (
+            <button type="button" onClick={() => setShowNotice(true)} disabled={state === "connecting"}>
+              {state === "connecting" ? "CONNECTING…" : "CONNECT LIVE AVATAR"}
+            </button>
+          )}
+          {autoStart && state === "connecting" && <p>CONNECTING SARAH…</p>}
         </div>
       )}
 
@@ -101,7 +128,7 @@ export function DidLiveAvatar() {
           <p>Sarah's live video is provided by D-ID. Connecting requests a temporary, domain-restricted session key. D-ID will process the live conversation content and any microphone or camera input that you choose to provide in its panel. This feature is optional and is not legal advice.</p>
           <div>
             <button type="button" onClick={() => setShowNotice(false)}>NOT NOW</button>
-            <button type="button" onClick={connect}>I UNDERSTAND & CONNECT</button>
+            <button type="button" onClick={acceptAndConnect}>I UNDERSTAND & CONNECT</button>
           </div>
         </div>
       )}
