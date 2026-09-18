@@ -871,6 +871,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const [interviewer, setInterviewer] = useState("sarah");
   const recorderRef = useRef(null);
   const completionReportedRef = useRef(false);
+  const speechRequestRef = useRef(0);
 
   const isKevin = interviewer === "kevin";
   const interviewerName = isKevin ? "Kevin" : "Sarah";
@@ -895,6 +896,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   }, [isInterviewComplete, correctAnswers, questions.length, onComplete]);
 
   const speakQuestion = (text, onFinished, selectedInterviewer = interviewer) => {
+    const requestId = ++speechRequestRef.current;
     window.speechSynthesis.cancel();
     const voiceIsKevin = selectedInterviewer === "kevin";
     const voices = window.speechSynthesis.getVoices();
@@ -918,7 +920,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
 
     let finished = false;
     const finishSpeaking = () => {
-      if (finished) return;
+      if (finished || requestId !== speechRequestRef.current) return;
       finished = true;
       setIsSpeaking(false);
       if (onFinished) onFinished();
