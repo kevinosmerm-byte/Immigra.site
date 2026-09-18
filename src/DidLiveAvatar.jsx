@@ -6,14 +6,23 @@ const DID_AGENT_SCRIPT = "https://agent.d-id.com/v2/index.js";
 export function DidLiveAvatar() {
   const hostRef = useRef(null);
   const scriptRef = useRef(null);
+  const portalRef = useRef(null);
+  const observerRef = useRef(null);
   const [state, setState] = useState("idle");
   const [message, setMessage] = useState("");
   const [showNotice, setShowNotice] = useState(false);
 
   const reset = () => {
+    observerRef.current?.disconnect();
+    observerRef.current = null;
     scriptRef.current?.remove();
     scriptRef.current = null;
-    hostRef.current?.replaceChildren();
+    portalRef.current?.remove();
+    portalRef.current = null;
+    if (hostRef.current) {
+      hostRef.current.replaceChildren();
+      hostRef.current.style.removeProperty("min-height");
+    }
     setState("idle");
     setMessage("");
   };
@@ -36,17 +45,44 @@ export function DidLiveAvatar() {
       const targetId = "did-live-avatar-stage";
       host.id = targetId;
       host.replaceChildren();
+      host.style.minHeight = "480px";
+
+      const knownTargets = new Set(document.querySelectorAll(".didagent_target"));
+      const mountEmbed = () => {
+        const target = [...document.querySelectorAll(".didagent_target")]
+          .find((candidate) => !knownTargets.has(candidate));
+        if (!target) return false;
+
+        observerRef.current?.disconnect();
+        observerRef.current = null;
+        target.classList.add("did-live-avatar-embedded");
+        target.style.width = "100%";
+        target.style.height = "min(70vh, 680px)";
+        target.style.minHeight = "480px";
+        target.style.position = "relative";
+        host.replaceChildren(target);
+        portalRef.current = target;
+        return true;
+      };
+
+      observerRef.current = new MutationObserver(mountEmbed);
+      observerRef.current.observe(document.body, { childList: true, subtree: true });
 
       const script = document.createElement("script");
       script.type = "module";
       script.src = DID_AGENT_SCRIPT;
-      script.dataset.name = "did-agent"; script.dataset.mode = "full"; script.dataset.openMode = "expanded"; script.dataset.autoConnect = "true"; script.dataset.track = "false";
+      script.dataset.name = "did-agent";
+      script.dataset.mode = "full";
+      script.dataset.openMode = "expanded";
+      script.dataset.autoConnect = "true";
+      script.dataset.track = "false";
       script.dataset.targetId = targetId;
       script.dataset.clientKey = session.clientKey;
       script.dataset.agentId = session.agentId;
       script.dataset.showRestartButton = "false";
       script.dataset.showAgentName = "false";
       script.addEventListener("load", () => {
+        mountEmbed();
         setState("active");
         setMessage("Sarah is ready. Use the live panel to begin a video conversation.");
       });
@@ -58,6 +94,8 @@ export function DidLiveAvatar() {
       document.body.append(script);
       scriptRef.current = script;
     } catch (error) {
+      observerRef.current?.disconnect();
+      observerRef.current = null;
       setState("error");
       setMessage(error.message || "Sarah's live video could not start. Please try again later.");
     }
