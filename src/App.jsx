@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
+import kevinImage from "./assets/ChatGPT Image 16 sept 2026, 18_55_04.png";
 import { civicsQuestions } from "./questions";
 import { acceptedAnswers } from "./answers";
 import { civicsAnswers } from "./civicsAnswers";
@@ -867,8 +868,14 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const [missedQuestions, setMissedQuestions] = useState([]);
   const [hasRetried, setHasRetried] = useState(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
+  const [interviewer, setInterviewer] = useState("sarah");
   const recorderRef = useRef(null);
   const completionReportedRef = useRef(false);
+
+  const isKevin = interviewer === "kevin";
+  const interviewerName = isKevin ? "Kevin" : "Sarah";
+  const interviewerImage = isKevin ? kevinImage : sarahImage;
+  const interviewerSpeakingImage = isKevin ? kevinImage : sarahSpeakingImage;
 
   const addMissedQuestion = (question) => {
     setMissedQuestions((current) => (
@@ -890,20 +897,21 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const speakQuestion = (text, onFinished) => {
     window.speechSynthesis.cancel();
     const voices = window.speechSynthesis.getVoices();
-    const femaleVoice =
-      voices.find(
-        (v) =>
-          v.lang.startsWith("en") &&
-          /female|zira|samantha|aria|jenny|susan/i.test(v.name)
-      ) || voices.find((v) => v.lang.startsWith("en"));
+    const englishVoices = voices.filter((v) => v.lang.startsWith("en"));
+    const preferredVoice = isKevin
+      ? englishVoices.find((v) => /diego|jorge|carlos|antonio|latin|spanish|male|david|mark/i.test(`${v.name} ${v.lang}`))
+        || englishVoices.find((v) => !/female|zira|samantha|aria|jenny|susan/i.test(v.name))
+        || englishVoices[0]
+      : englishVoices.find((v) => /female|zira|samantha|aria|jenny|susan/i.test(v.name))
+        || englishVoices[0];
 
     const voice = new SpeechSynthesisUtterance(text);
     voice.lang = "en-US";
-    voice.rate = 0.9;
-    voice.pitch = 1.1;
+    voice.rate = isKevin ? 0.88 : 0.9;
+    voice.pitch = isKevin ? 0.86 : 1.1;
 
-    if (femaleVoice) {
-      voice.voice = femaleVoice;
+    if (preferredVoice) {
+      voice.voice = preferredVoice;
     }
 
     let finished = false;
@@ -1130,7 +1138,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   }
 
   return (
-    <div className={`interview-screen live-interview-screen ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
+    <div className={`interview-screen live-interview-screen interviewer-${interviewer} ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
       <header className="interview-header">
         <button className="back-button interview-exit-button" onClick={onExit} aria-label="Exit practice interview">
           <span>×</span> Exit
@@ -1142,7 +1150,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
         <button
           className="more-button interview-repeat-button"
           onClick={() => speakQuestion(questions[currentQuestion].english)}
-          aria-label="Repeat Sarah's question"
+          aria-label={`Repeat ${interviewerName}'s question`}
           title="Repeat question"
         >
           ↻
@@ -1150,16 +1158,16 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       </header>
 
       <main className="interview-content">
-        <section className="sarah-live-stage" aria-label="Sarah, AI practice interviewer">
+        <section className="sarah-live-stage" aria-label={`${interviewerName}, AI practice interviewer`}>
           <div className="live-stage-media" aria-hidden="true">
-            <div className="live-stage-motion-frame">
+            <div className={`live-stage-motion-frame ${isKevin ? "kevin-motion-frame" : ""}`}>
               <img
-                src={sarahImage}
+                src={interviewerImage}
                 alt=""
                 className="live-sarah-image live-sarah-resting"
               />
               <img
-                src={sarahSpeakingImage}
+                src={interviewerSpeakingImage}
                 alt=""
                 className="live-sarah-image live-sarah-speaking"
               />
@@ -1170,14 +1178,18 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
           <div className="live-stage-topbar">
             <div className="live-agent-badge">
               <span className="live-dot"></span>
-              <div><strong>Sarah AI</strong><small>Practice interviewer</small></div>
+              <div><strong>{interviewerName} AI</strong><small>Practice interviewer</small></div>
+            </div>
+            <div className="live-interviewer-selector" role="group" aria-label="Choose your interview officer">
+              <button type="button" className={!isKevin ? "active" : ""} aria-pressed={!isKevin} onClick={() => { window.speechSynthesis.cancel(); setIsSpeaking(false); setInterviewer("sarah"); }}>Sarah</button>
+              <button type="button" className={isKevin ? "active" : ""} aria-pressed={isKevin} onClick={() => { window.speechSynthesis.cancel(); setIsSpeaking(false); setInterviewer("kevin"); }}>Kevin</button>
             </div>
             <span className="live-practice-badge">INDEPENDENT PRACTICE</span>
           </div>
 
           <div className="live-stage-presence">
             <span>AI INTERVIEW COACH</span>
-            <strong>Sarah</strong>
+            <strong>{interviewerName}</strong>
             <small>{isSpeaking ? "Speaking with you" : isListening ? "Listening to your answer" : "Ready for your response"}</small>
           </div>
 
@@ -1185,7 +1197,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
             <div className="live-question-header">
               <div className="ai-turn-indicator">
                 <span className="live-sound-icon">⌁</span>
-                {isSpeaking ? "SARAH IS SPEAKING" : isListening ? "SARAH IS LISTENING" : "YOUR TURN"}
+                {isSpeaking ? `${interviewerName.toUpperCase()} IS SPEAKING` : isListening ? `${interviewerName.toUpperCase()} IS LISTENING` : "YOUR TURN"}
               </div>
               <span>QUESTION {currentQuestion + 1} / {questions.length}</span>
             </div>
@@ -1200,7 +1212,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
             <div className="live-voice-bars" aria-hidden="true">
               {Array.from({ length: 8 }, (_, index) => <span key={index}></span>)}
             </div>
-            <span>{isSpeaking ? "Sarah is speaking…" : isListening ? "Listening… tap again when you finish" : "Tap the microphone when you are ready"}</span>
+            <span>{isSpeaking ? `${interviewerName} is speaking…` : isListening ? "Listening… tap again when you finish" : "Tap the microphone when you are ready"}</span>
           </div>
         </section>
 
