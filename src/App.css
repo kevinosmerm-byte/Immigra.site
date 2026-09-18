@@ -23576,3 +23576,53 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
     display: none;
   }
 }
+
+/* === Mobile interview overflow guard === */
+.live-question-card,
+.live-question-card .question,
+.live-question-card .question-spanish {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 700px) {
+  .live-stage-topbar {
+    right: 10px;
+    left: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+  }
+
+  .live-agent-badge {
+    min-width: 0;
+    max-width: calc(100% - 126px);
+  }
+
+  .live-agent-badge div,
+  .live-agent-badge strong,
+  .live-agent-badge small {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .live-interviewer-selector {
+    order: 2;
+    margin-left: auto;
+    flex: 0 0 auto;
+  }
+
+  .live-practice-badge {
+    display: none;
+  }
+
+  .live-question-card {
+    right: 10px;
+    left: 10px;
+    width: auto;
+  }
+}
