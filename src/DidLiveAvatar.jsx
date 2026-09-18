@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { apiJson } from "./api";
+import sarahImage from "./assets/sarah.png";
 
 const DID_AGENT_SCRIPT = "https://agent.d-id.com/v2/index.js";
 const DID_CONSENT_KEY = "citizenshipai.did-avatar-consent.v1";
+const DID_TARGET_ID = "did-live-agent-container";
 
 export function DidLiveAvatar({ autoStart = false }) {
   const scriptRef = useRef(null);
@@ -13,13 +15,18 @@ export function DidLiveAvatar({ autoStart = false }) {
   const [message, setMessage] = useState("");
   const [showNotice, setShowNotice] = useState(false);
 
-  const reset = () => {
+  const clearEmbed = () => {
     observerRef.current?.disconnect();
     observerRef.current = null;
     scriptRef.current?.remove();
     scriptRef.current = null;
     widgetRef.current?.remove();
     widgetRef.current = null;
+    document.getElementById(DID_TARGET_ID)?.replaceChildren();
+  };
+
+  const reset = () => {
+    clearEmbed();
     setState("idle");
     setMessage("");
   };
@@ -27,6 +34,7 @@ export function DidLiveAvatar({ autoStart = false }) {
   useEffect(() => reset, []);
 
   const connect = async () => {
+    clearEmbed();
     setShowNotice(false);
     setState("connecting");
     setMessage("Requesting Sarah's secure live session…");
@@ -56,7 +64,7 @@ export function DidLiveAvatar({ autoStart = false }) {
       script.src = DID_AGENT_SCRIPT;
       script.dataset.name = "did-agent";
       script.dataset.mode = "full";
-      script.dataset.targetId = "did-live-agent-container";
+      script.dataset.targetId = DID_TARGET_ID;
       script.dataset.orientation = "vertical";
       script.dataset.openMode = "expanded";
       script.dataset.autoConnect = "true";
@@ -68,18 +76,17 @@ export function DidLiveAvatar({ autoStart = false }) {
       script.addEventListener("load", () => {
         rememberWidget();
         setState("active");
-        setMessage("Sarah is connected. Use the live video panel to practice your conversation.");
+        setMessage("Sarah's live panel is ready. If D-ID is busy or the video stays blank, retry the connection below.");
       });
       script.addEventListener("error", () => {
-        reset();
+        clearEmbed();
         setState("error");
-        setMessage("Sarah's live video could not load. Your regular practice interview is still available.");
+        setMessage("D-ID could not load Sarah's live video. Please retry, or continue with the standard interview.");
       });
       document.body.append(script);
       scriptRef.current = script;
     } catch (error) {
-      observerRef.current?.disconnect();
-      observerRef.current = null;
+      clearEmbed();
       setState("error");
       setMessage(error.message || "Sarah's live video could not start. Please try again later.");
     }
@@ -134,14 +141,33 @@ export function DidLiveAvatar({ autoStart = false }) {
         </div>
       )}
 
-      <div
-        id="did-live-agent-container"
-        className="did-live-agent-container"
-        aria-label="Sarah live video interview"
-        style={{ width: "100%", minHeight: "min(76vh, 760px)", borderRadius: "28px", overflow: "hidden" }}
-      ></div>
-      <p className={state === "error" ? "did-live-avatar-status error" : "did-live-avatar-status"} role="status">{message}</p>
-      {state === "active" && <button type="button" className="did-live-avatar-close" onClick={reset}>RETURN TO STANDARD INTERVIEW</button>}
+      <div className={`did-live-stage ${state}`}>
+        <img
+          className="did-live-fallback"
+          src={sarahImage}
+          alt="Sarah, AI practice interviewer"
+        />
+        <div className="did-live-fallback-label">
+          <span>● SARAH AI</span>
+          <strong>{state === "connecting" ? "Connecting live video…" : "Live interview standby"}</strong>
+        </div>
+        <div
+          id={DID_TARGET_ID}
+          className="did-live-agent-container"
+          aria-label="Sarah live video interview"
+        ></div>
+      </div>
+
+      <div className={state === "error" ? "did-live-avatar-recovery error" : "did-live-avatar-recovery"} role="status">
+        {message && <p>{message}</p>}
+        {(state === "active" || state === "error") && (
+          <button type="button" onClick={connect}>RETRY LIVE VIDEO</button>
+        )}
+      </div>
+
+      {(state === "active" || state === "error") && (
+        <button type="button" className="did-live-avatar-close" onClick={reset}>RETURN TO STANDARD INTERVIEW</button>
+      )}
     </section>
   );
 }
