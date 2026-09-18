@@ -416,6 +416,7 @@ const readingSentences = [
 ];
 function Home({
   onStartInterview,
+  onStartCivicsInterview,
   onOpenPractice,
   onOpenFeature,
   onOpenProgress,
@@ -513,21 +514,26 @@ function Home({
 
           {/* PRIMARY ACTION */}
 
-          <button
-            className="home-primary-button"
-            onClick={onStartInterview}
-          >
-
-            <div>
-              <small>START YOUR</small>
-              <strong>REAL INTERVIEW</strong>
-            </div>
-
-            <span className="primary-arrow">
-              →
-            </span>
-
-          </button>
+          <div className="home-interview-actions" style={{ display: "grid", gap: "12px", width: "100%" }}>
+            <button className="home-primary-button" onClick={onStartInterview}>
+              <div>
+                <small>{language === "en" ? "COMPLETE SIMULATION" : "SIMULACIÓN COMPLETA"}</small>
+                <strong>{language === "en" ? "REAL INTERVIEW" : "ENTREVISTA REAL"}</strong>
+              </div>
+              <span className="primary-arrow">→</span>
+            </button>
+            <button
+              className="home-primary-button home-civics-live-button"
+              onClick={onStartCivicsInterview}
+              style={{ background: "linear-gradient(135deg, #0b78d0, #5b55e7)" }}
+            >
+              <div>
+                <small>{language === "en" ? "SARAH LIVE VIDEO" : "VIDEO EN VIVO CON SARAH"}</small>
+                <strong>{language === "en" ? "CIVICS INTERVIEW" : "ENTREVISTA CÍVICA"}</strong>
+              </div>
+              <span className="primary-arrow">→</span>
+            </button>
+          </div>
 
         </section>
 
@@ -836,11 +842,19 @@ function Home({
 
 // Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
 
-function RealInterview({ onExit, onComplete, onReview }) {
+const n400InterviewQuestions = [
+  { id: "n400-name", type: "n400", english: "Please state your full legal name.", spanish: "Indique su nombre legal completo.", correctAnswer: "A clear answer that matches the applicant's own Form N-400 information." },
+  { id: "n400-address", type: "n400", english: "What is your current home address?", spanish: "¿Cuál es su domicilio actual?", correctAnswer: "A clear answer that matches the applicant's own Form N-400 information." },
+  { id: "n400-residence", type: "n400", english: "How long have you lived at your current address?", spanish: "¿Cuánto tiempo ha vivido en su domicilio actual?", correctAnswer: "A clear answer based on the applicant's own history and Form N-400." },
+  { id: "n400-travel", type: "n400", english: "Have you taken any trips outside the United States during the last five years?", spanish: "¿Ha realizado viajes fuera de Estados Unidos durante los últimos cinco años?", correctAnswer: "A clear and complete answer based on the applicant's own travel history and Form N-400." },
+  { id: "n400-oath", type: "n400", english: "Are you willing to take the Oath of Allegiance to the United States?", spanish: "¿Está dispuesto a prestar el Juramento de Lealtad a Estados Unidos?", correctAnswer: "A direct answer that reflects the applicant's own understanding and intent." },
+];
+
+function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const [questions] = useState(() => {
-    return [...civicsQuestions]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 10);
+    const shuffledCivics = [...civicsQuestions].sort(() => Math.random() - 0.5);
+    if (mode === "civics") return shuffledCivics.slice(0, 10);
+    return [...n400InterviewQuestions, ...shuffledCivics.slice(0, 5)];
   });
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -916,7 +930,7 @@ function RealInterview({ onExit, onComplete, onReview }) {
     const timer = setTimeout(() => {
       speakQuestion(`
         Welcome. Thank you for being here today.
-        We are going to begin the civics portion of your naturalization interview.
+        ${mode === "civics" ? "We are going to begin your civics interview practice." : "We are going to practice Form N-400 questions followed by civics questions."}
         ${questions[0].english}
       `);
     }, 500);
@@ -964,7 +978,7 @@ function RealInterview({ onExit, onComplete, onReview }) {
         body: JSON.stringify({
           question: questions[currentQuestion].english,
           answer: transcript,
-          correctAnswer: acceptedAnswers[questions[currentQuestion].id],
+          correctAnswer: questions[currentQuestion].correctAnswer || acceptedAnswers[questions[currentQuestion].id],
         }),
       });
 
@@ -1103,7 +1117,7 @@ function RealInterview({ onExit, onComplete, onReview }) {
         </button>
         <div className="interview-brand">
           <strong>CITIZENSHIP <span>AI</span></strong>
-          <small>LIVE PRACTICE INTERVIEW</small>
+          <small>{mode === "civics" ? "LIVE CIVICS INTERVIEW" : "LIVE N-400 + CIVICS INTERVIEW"}</small>
         </div>
         <button
           className="more-button interview-repeat-button"
@@ -1116,7 +1130,7 @@ function RealInterview({ onExit, onComplete, onReview }) {
       </header>
 
       <main className="interview-content">
-        <DidLiveAvatar /><section className="sarah-live-stage" aria-label="Sarah, AI practice interviewer">
+        <DidLiveAvatar autoStart /><section className="sarah-live-stage" aria-label="Sarah, AI practice interviewer">
           <div className="live-stage-media" aria-hidden="true">
             <div className="live-stage-motion-frame">
               <img
@@ -1237,6 +1251,7 @@ function App() {
     window.location.hash === "#privacy" ? "settings" : "home"
   );
   const [coachMode, setCoachMode] = useState("welcome");
+  const [interviewMode, setInterviewMode] = useState("full");
   const [civicsIndex, setCivicsIndex] = useState(0);
   const [uscisReceiptNumber, setUscisReceiptNumber] = useState("");
   const [uscisCaseResult, setUscisCaseResult] = useState(null);
@@ -1285,18 +1300,14 @@ function App() {
     setPracticeEvents(recordPracticeEvent(event));
   };
 
-  const canStartAiFeature = (feature) => {
-    if (canUseAiFeature(feature)) return true;
-    setUsageLimitFeature(feature);
-    setScreen("free-limit");
-    return false;
-  };
+  const canStartAiFeature = () => true;
 
   const recordAiFeatureUsage = (feature) => {
     setAiUsage(recordAiUsage(feature));
   };
 
-  const startInterview = () => {
+  const startInterview = (mode = "full") => {
+    setInterviewMode(mode);
     if (!canStartAiFeature("interview")) return;
     recordAiFeatureUsage("interview");
     setScreen("interview");
@@ -2310,18 +2321,13 @@ function App() {
               ))}
             </ol>
           </section>
-          <section className="progress-free-credits" aria-label="Free AI practice credits">
+          <section className="progress-free-credits" aria-label="Unlimited launch access">
             <div>
-              <span>FREE PLAN</span>
-              <h2>AI practice credits</h2>
-              <p>Credits renew weekly on this device. Civics study is always available.</p>
+              <span>LAUNCH ACCESS</span>
+              <h2>Unlimited AI practice</h2>
+              <p>All practice modes are currently available without limits while subscriptions are being prepared.</p>
             </div>
-            <ul>
-              {Object.entries(FREE_AI_LIMITS).map(([feature, limit]) => {
-                const usage = aiUsage.features[feature];
-                return <li key={feature}><span>{AI_FEATURE_NAMES[feature]}</span><strong>{usage.remaining} <small>/ {limit} left</small></strong></li>;
-              })}
-            </ul>
+            <p className="progress-empty-history">No practice limits or payments are active.</p>
           </section>
           <section className="progress-ai-modules">
             <div className="progress-ai-module">
@@ -2378,6 +2384,7 @@ function App() {
   if (screen === "interview") {
     return (
       <RealInterview
+        mode={interviewMode}
         onExit={() => setScreen("home")}
         onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
         onReview={(questionIds) => {
@@ -2391,7 +2398,8 @@ function App() {
 
   return (
     <Home
-      onStartInterview={startInterview}
+      onStartInterview={() => startInterview("full")}
+      onStartCivicsInterview={() => startInterview("civics")}
       onOpenPractice={() => setScreen("practice")}
       onOpenFeature={(feature) => setScreen(feature)}
       onOpenProgress={() => setScreen("progress")}
