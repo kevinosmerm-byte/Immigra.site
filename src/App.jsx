@@ -517,7 +517,7 @@ function Home({
           <div className="home-interview-actions" style={{ display: "grid", gap: "12px", width: "100%" }}>
             <button className="home-primary-button" onClick={onStartInterview}>
               <div>
-                <small>{language === "en" ? "COMPLETE SIMULATION" : "SIMULACIÓN COMPLETA"}</small>
+                <small>{language === "en" ? "SARAH LIVE VIDEO" : "VIDEO EN VIVO CON SARAH"}</small>
                 <strong>{language === "en" ? "REAL INTERVIEW" : "ENTREVISTA REAL"}</strong>
               </div>
               <span className="primary-arrow">→</span>
@@ -528,7 +528,7 @@ function Home({
               style={{ background: "linear-gradient(135deg, #0b78d0, #5b55e7)" }}
             >
               <div>
-                <small>{language === "en" ? "SARAH LIVE VIDEO" : "VIDEO EN VIVO CON SARAH"}</small>
+                <small>{language === "en" ? "CLASSIC SARAH PRACTICE" : "PRÁCTICA CLÁSICA CON SARAH"}</small>
                 <strong>{language === "en" ? "CIVICS INTERVIEW" : "ENTREVISTA CÍVICA"}</strong>
               </div>
               <span className="primary-arrow">→</span>
@@ -927,6 +927,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   };
 
   useEffect(() => {
+    if (mode === "full") return undefined;
     const timer = setTimeout(() => {
       speakQuestion(`
         Welcome. Thank you for being here today.
@@ -1109,6 +1110,25 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     );
   }
 
+  if (mode === "full") {
+    return (
+      <div className="interview-screen live-interview-screen live-avatar-only-screen">
+        <header className="interview-header">
+          <button className="back-button interview-exit-button" onClick={onExit} aria-label="Exit live interview">
+            <span>×</span> Exit
+          </button>
+          <div className="interview-brand">
+            <strong>CITIZENSHIP <span>AI</span></strong>
+            <small>LIVE N-400 + CIVICS INTERVIEW</small>
+          </div>
+        </header>
+        <main className="interview-content live-avatar-only-content">
+          <DidLiveAvatar autoStart />
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className={`interview-screen live-interview-screen ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
       <header className="interview-header">
@@ -1130,7 +1150,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       </header>
 
       <main className="interview-content">
-        <DidLiveAvatar autoStart /><section className="sarah-live-stage" aria-label="Sarah, AI practice interviewer">
+        <section className="sarah-live-stage" aria-label="Sarah, AI practice interviewer">
           <div className="live-stage-media" aria-hidden="true">
             <div className="live-stage-motion-frame">
               <img
