@@ -1928,7 +1928,7 @@ function App() {
             <div className="reading-sentence">{readingSentences[readingIndex].english}</div>
             <div className="writing-spanish">{readingSentences[readingIndex].spanish}</div>
             {aiMessage && (
-              <div className="ai-reading-feedback">
+              <div className="ai-reading-feedback" role="status" aria-live="polite">
                 <div className="ai-reading-label">AI HEARD</div>
                 <div className="ai-reading-text">
                   {aiMessage.replace('I heard: "', '').replace('"', '')}
@@ -2111,10 +2111,15 @@ function App() {
               {writingSentences[writingIndex].spanish}
             </div>
           </div>
+          <label className="sr-only" htmlFor="writing-practice-answer">
+            Type the English sentence you hear
+          </label>
           <textarea
+            id="writing-practice-answer"
             className="writing-ai-input"
             placeholder="Type what you hear in English..."
             value={writingAnswer}
+            aria-busy={isAIThinking}
             onChange={(e) => setWritingAnswer(e.target.value)}
           />
           <button
@@ -2126,7 +2131,7 @@ function App() {
             {isAIThinking ? "Evaluating..." : "Check Writing"}
           </button>
           {aiMessage && (
-            <div className="writing-ai-evaluation">
+            <div className="writing-ai-evaluation" role="status" aria-live="polite">
               <div className="writing-evaluation-label">AI EVALUATION</div>
               <div className="writing-evaluation-text">{aiMessage}</div>
             </div>
