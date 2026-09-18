@@ -1671,8 +1671,9 @@ function App() {
               <div className="coach-conversation-avatar">
                 <img src={sarahImage} alt="Sarah" />
               </div>
-              <div className="coach-conversation-status">
-                <span></span> SARAH IS READY
+              <div className="coach-conversation-status" role="status" aria-live="polite">
+                <span></span>
+                {coachListening ? "LISTENING TO YOU" : coachThinking ? "SARAH IS THINKING" : "SARAH IS READY"}
               </div>
               <div className="coach-message">
                 <div className="coach-message-label">SARAH</div>
@@ -1682,7 +1683,7 @@ function App() {
               </div>
               <div className="coach-response-area">
                 {coachReply && (
-                  <div className="coach-ai-reply">
+                  <div className="coach-ai-reply" role="status" aria-live="polite">
                     <div className="coach-ai-reply-label">SARAH</div>
                     <div className="coach-ai-reply-text">{coachReply}</div>
                   </div>
@@ -1692,13 +1693,18 @@ function App() {
                   className={`coach-mic-button ${coachListening ? "listening" : ""}`}
                   onClick={coachListening ? stopCoachListening : startCoachListening}
                   disabled={coachThinking}
+                  aria-busy={coachThinking}
                   type="button"
                 >
                   <div className="coach-mic-icon-wrapper">
                     <span className="mic-glyph">🎙</span>
                   </div>
                   <span className="coach-mic-text">
-                    {coachListening ? "Tap again when you finish speaking" : "Tap the microphone to speak"}
+                    {coachThinking
+                      ? "Sarah is preparing a response..."
+                      : coachListening
+                        ? "Tap again when you finish speaking"
+                        : "Tap the microphone to speak"}
                   </span>
                 </button>
               </div>
