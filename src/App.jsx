@@ -894,12 +894,13 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     });
   }, [isInterviewComplete, correctAnswers, questions.length, onComplete]);
 
-  const speakQuestion = (text, onFinished) => {
+  const speakQuestion = (text, onFinished, selectedInterviewer = interviewer) => {
     window.speechSynthesis.cancel();
+    const voiceIsKevin = selectedInterviewer === "kevin";
     const voices = window.speechSynthesis.getVoices();
     const englishVoices = voices.filter((v) => v.lang.startsWith("en"));
     const americanEnglishVoices = englishVoices.filter((v) => /^en-US$/i.test(v.lang));
-    const preferredVoice = isKevin
+    const preferredVoice = voiceIsKevin
       ? americanEnglishVoices.find((v) => /david|mark|guy|ryan|christopher|matthew|joey|fred|alex/i.test(v.name))
         || americanEnglishVoices[0]
         || englishVoices[0]
@@ -908,8 +909,8 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
 
     const voice = new SpeechSynthesisUtterance(text);
     voice.lang = "en-US";
-    voice.rate = isKevin ? 0.88 : 0.9;
-    voice.pitch = isKevin ? 0.86 : 1.1;
+    voice.rate = voiceIsKevin ? 0.88 : 0.9;
+    voice.pitch = voiceIsKevin ? 0.86 : 1.1;
 
     if (preferredVoice) {
       voice.voice = preferredVoice;
@@ -1182,8 +1183,8 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
               <div><strong>{interviewerName} AI</strong><small>Practice interviewer</small></div>
             </div>
             <div className="live-interviewer-selector" role="group" aria-label="Choose your interview officer">
-              <button type="button" className={!isKevin ? "active" : ""} aria-pressed={!isKevin} onClick={() => { window.speechSynthesis.cancel(); setIsSpeaking(false); setInterviewer("sarah"); }}>Sarah</button>
-              <button type="button" className={isKevin ? "active" : ""} aria-pressed={isKevin} onClick={() => { window.speechSynthesis.cancel(); setIsSpeaking(false); setInterviewer("kevin"); }}>Kevin</button>
+              <button type="button" className={!isKevin ? "active" : ""} aria-pressed={!isKevin} onClick={() => { setInterviewer("sarah"); speakQuestion(questions[currentQuestion].english, undefined, "sarah"); }}>Sarah</button>
+              <button type="button" className={isKevin ? "active" : ""} aria-pressed={isKevin} onClick={() => { setInterviewer("kevin"); speakQuestion(questions[currentQuestion].english, undefined, "kevin"); }}>Kevin</button>
             </div>
             <span className="live-practice-badge">INDEPENDENT PRACTICE</span>
           </div>
