@@ -23851,3 +23851,12 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
     min-height: 58px;
   }
 }
+
+     
+/* Keep the immersive call as one full-width flex item. */
+.coach-video-call-content > .coach-video-call-card {
+  width: 100%;
+  max-width: 100%;
+  flex: 0 0 auto;
+  align-self: stretch;
+}
