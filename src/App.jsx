@@ -520,7 +520,10 @@ function Home({
           {/* PRIMARY ACTION */}
 
           <div className="home-interview-actions" style={{ display: "grid", gap: "12px", width: "100%" }}>
-            <button className="home-primary-button" onClick={onStartInterview}>
+            <button className="home-primary-button home-real-interview-button" onClick={onStartInterview}>
+              <span className="home-action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10 5-3v10l-5-3z"/></svg>
+              </span>
               <div>
                 <small>{language === "en" ? "SARAH LIVE VIDEO" : "VIDEO EN VIVO CON SARAH"}</small>
                 <strong>{language === "en" ? "REAL INTERVIEW" : "ENTREVISTA REAL"}</strong>
@@ -531,6 +534,9 @@ function Home({
               className="home-primary-button home-civics-live-button"
               onClick={onStartCivicsInterview}
             >
+              <span className="home-action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+              </span>
               <div>
                 <small>{language === "en" ? "CLASSIC SARAH PRACTICE" : "PRÁCTICA CLÁSICA CON SARAH"}</small>
                 <strong>{language === "en" ? "CIVICS INTERVIEW" : "ENTREVISTA CÍVICA"}</strong>
@@ -541,6 +547,9 @@ function Home({
               className="home-primary-button home-immigration-primary-button"
               onClick={onOpenImmigrationHelp}
             >
+              <span className="home-action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3 20 7v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
+              </span>
               <div>
                 <small>{language === "en" ? "OFFICIAL U.S. RESOURCES" : "RECURSOS OFICIALES DE EE. UU."}</small>
                 <strong>{language === "en" ? "IMMIGRATION HELP" : "AYUDA MIGRATORIA"}</strong>
@@ -548,9 +557,12 @@ function Home({
               <span className="primary-arrow">→</span>
             </button>
             <button className="home-primary-button home-podcast-primary-button" onClick={onOpenPodcasts}>
+              <span className="home-action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg>
+              </span>
               <div>
                 <small><i className="home-podcast-live-dot"></i>{language === "en" ? "LIVE AUDIO · ENGLISH + ESPAÑOL" : "AUDIO EN VIVO · ENGLISH + ESPAÑOL"}</small>
-                <strong>🎙️ {language === "en" ? "LIVE PODCASTS" : "PODCASTS EN VIVO"}</strong>
+                <strong>{language === "en" ? "LIVE PODCASTS" : "PODCASTS EN VIVO"}</strong>
               </div>
               <span className="primary-arrow">→</span>
             </button>
