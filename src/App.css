@@ -23860,3 +23860,33 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   flex: 0 0 auto;
   align-self: stretch;
 }
+
+   
+/* AI Coach message safety: one readable caption above the call controls. */
+.coach-video-call-card .coach-message {
+  max-height: 190px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+}
+
+.coach-video-call-card .coach-message-text {
+  max-width: 100%;
+  line-height: 1.45;
+}
+
+.coach-video-call-card .coach-response-area {
+  max-height: 86px;
+}
+
+@media (max-width: 640px) {
+  .coach-video-call-card .coach-message {
+    max-height: 170px;
+    bottom: 96px;
+  }
+
+  .coach-video-call-card .coach-response-area {
+    max-height: 76px;
+  }
+}
