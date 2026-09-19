@@ -1164,17 +1164,38 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       <main className="interview-content">
         <section className="sarah-live-stage" aria-label={`${interviewerName}, AI practice interviewer`}>
           <div className="live-stage-media" aria-hidden="true">
-            <div className={`live-stage-motion-frame ${isKevin ? "kevin-motion-frame" : ""}`}>
-              <img
-                src={interviewerImage}
-                alt=""
-                className="live-sarah-image live-sarah-resting"
-              />
-              <img
-                src={interviewerSpeakingImage}
-                alt=""
-                className="live-sarah-image live-sarah-speaking"
-              />
+            <div className={`live-stage-motion-frame ${isKevin ? "kevin-motion-frame" : "sarah-video-frame"}`}>
+              {isKevin ? (
+                <>
+                  <img src={interviewerImage} alt="" className="live-sarah-image live-sarah-resting" />
+                  <img src={interviewerSpeakingImage} alt="" className="live-sarah-image live-sarah-speaking" />
+                </>
+              ) : (
+                <>
+                  <video
+                    src="/sarah-listening.mp4"
+                    poster={sarahImage}
+                    className="live-sarah-video live-sarah-resting"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    aria-hidden="true"
+                  />
+                  <video
+                    src="/sarah-speaking.mp4"
+                    poster={sarahSpeakingImage}
+                    className="live-sarah-video live-sarah-speaking"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    aria-hidden="true"
+                  />
+                </>
+              )}
             </div>
             <div className="live-stage-mask"></div>
           </div>
@@ -1313,6 +1334,7 @@ function App() {
   const [coachHistory, setCoachHistory] = useState([]);
   const [coachReply, setCoachReply] = useState("");
   const [coachThinking, setCoachThinking] = useState(false);
+  const [coachSpeaking, setCoachSpeaking] = useState(false);
   const coachRecorderRef = useRef(null);
 
   const [isAIThinking, setIsAIThinking] = useState(false);
@@ -1486,6 +1508,7 @@ function App() {
   const speakCoachReply = (text) => {
     if (!text) return;
     window.speechSynthesis.cancel();
+    setCoachSpeaking(false);
     const speech = new SpeechSynthesisUtterance(text);
     speech.lang = "en-US";
     speech.rate = 0.92;
@@ -1499,6 +1522,9 @@ function App() {
           /female|zira|samantha|aria|jenny|susan/i.test(voice.name)
       ) || voices.find((voice) => voice.lang.startsWith("en"));
     if (femaleVoice) speech.voice = femaleVoice;
+    speech.onstart = () => setCoachSpeaking(true);
+    speech.onend = () => setCoachSpeaking(false);
+    speech.onerror = () => setCoachSpeaking(false);
     window.speechSynthesis.speak(speech);
   };
 
@@ -1668,8 +1694,9 @@ function App() {
           <main className="coach-conversation-content">
             <div className="practice-eyebrow">AI ENGLISH COACH</div>
             <div className="coach-conversation-card">
-              <div className="coach-conversation-avatar">
-                <img src={sarahImage} alt="Sarah" />
+              <div className={`coach-conversation-avatar ${coachSpeaking ? "speaking" : "listening"}`} aria-label={coachSpeaking ? "Sarah speaking" : "Sarah listening"}>
+                <video src="/sarah-listening.mp4" poster={sarahImage} className="coach-avatar-video coach-avatar-listening" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+                <video src="/sarah-speaking.mp4" poster={sarahSpeakingImage} className="coach-avatar-video coach-avatar-speaking" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
               </div>
               <div className="coach-conversation-status" role="status" aria-live="polite">
                 <span></span>
@@ -1727,7 +1754,16 @@ function App() {
           <p className="practice-intro">Practice real English conversations with your AI coach.</p>
           <div className="coach-card">
             <div className="coach-avatar">
-              <img src={sarahImage} alt="AI English Coach" />
+              <video
+                src="/sarah-listening.mp4"
+                poster={sarahImage}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label="Sarah, AI English Coach, ready to listen"
+              />
             </div>
             <div className="coach-status">
               <span className="coach-status-dot"></span> AI COACH READY
