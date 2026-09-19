@@ -1682,100 +1682,44 @@ function App() {
     // ... mantén tu código actual de reading aquí ...
   }
   if (screen === "coach") {
-    if (coachMode === "conversation") {
-      return (
-        <div className="practice-screen coach-screen">
-          <header className="practice-header">
-            <button className="back-button" onClick={() => setCoachMode("welcome")}>
-              ← Coach
-            </button>
-            <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
-          </header>
-          <main className="coach-conversation-content">
-            <div className="practice-eyebrow">AI ENGLISH COACH</div>
-            <div className="coach-conversation-card">
-              <div className={`coach-conversation-avatar ${coachSpeaking ? "speaking" : "listening"}`} aria-label={coachSpeaking ? "Sarah speaking" : "Sarah listening"}>
-                <video src="/sarah-listening.mp4" poster={sarahImage} className="coach-avatar-video coach-avatar-listening" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
-                <video src="/sarah-speaking.mp4" poster={sarahSpeakingImage} className="coach-avatar-video coach-avatar-speaking" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
-              </div>
-              <div className="coach-conversation-status" role="status" aria-live="polite">
-                <span></span>
-                {coachListening ? "LISTENING TO YOU" : coachThinking ? "SARAH IS THINKING" : "SARAH IS READY"}
-              </div>
-              <div className="coach-message">
-                <div className="coach-message-label">SARAH</div>
-                <div className="coach-message-text">
-                  Hi! I'm Sarah. Let's practice English together. Tell me about yourself.
-                </div>
-              </div>
-              <div className="coach-response-area">
-                {coachReply && (
-                  <div className="coach-ai-reply" role="status" aria-live="polite">
-                    <div className="coach-ai-reply-label">SARAH</div>
-                    <div className="coach-ai-reply-text">{coachReply}</div>
-                  </div>
-                )}
-                <div className="coach-response-label">YOUR RESPONSE</div>
-                <button
-                  className={`coach-mic-button ${coachListening ? "listening" : ""}`}
-                  onClick={coachListening ? stopCoachListening : startCoachListening}
-                  disabled={coachThinking}
-                  aria-busy={coachThinking}
-                  type="button"
-                >
-                  <div className="coach-mic-icon-wrapper">
-                    <span className="mic-glyph">🎙</span>
-                  </div>
-                  <span className="coach-mic-text">
-                    {coachThinking
-                      ? "Sarah is preparing a response..."
-                      : coachListening
-                        ? "Tap again when you finish speaking"
-                        : "Tap the microphone to speak"}
-                  </span>
-                </button>
-              </div>
-            </div>
-          </main>
-        </div>
-      );
-    }
+    const conversationStarted = coachMode === "conversation";
     return (
-      <div className="practice-screen coach-screen">
+      <div className="practice-screen coach-screen coach-video-call-screen">
         <header className="practice-header">
-          <button className="back-button" onClick={() => setScreen("practice")}>
-            ← Practice
-          </button>
+          <button className="back-button" onClick={() => { setCoachMode("welcome"); setScreen("practice"); }}>← Practice</button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
-        <main className="coach-content">
-          <div className="practice-eyebrow">AI ENGLISH COACH</div>
-          <h1>Speak with confidence.</h1>
-          <p className="practice-intro">Practice real English conversations with your AI coach.</p>
-          <div className="coach-card">
-            <div className="coach-avatar">
-              <video
-                src="/sarah-listening.mp4"
-                poster={sarahImage}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-label="Sarah, AI English Coach, ready to listen"
-              />
+        <main className="coach-conversation-content coach-video-call-content">
+          <div className="practice-eyebrow">AI ENGLISH COACH · VIDEO PRACTICE</div>
+          <div className={"coach-conversation-card coach-video-call-card " + (conversationStarted ? "started" : "ready")}>
+            <div className={"coach-conversation-avatar " + (coachSpeaking ? "speaking" : "listening")} aria-label={coachSpeaking ? "Sarah speaking" : "Sarah ready to listen"}>
+              <video src="/sarah-listening.mp4" poster={sarahImage} className="coach-avatar-video coach-avatar-listening" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+              <video src="/sarah-speaking.mp4" poster={sarahSpeakingImage} className="coach-avatar-video coach-avatar-speaking" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
+              <div className="coach-video-call-overlay" aria-hidden="true"></div>
+              <div className="coach-video-call-identity"><span></span><div><strong>Sarah AI</strong><small>English conversation coach</small></div></div>
             </div>
-            <div className="coach-status">
-              <span className="coach-status-dot"></span> AI COACH READY
+            <div className="coach-conversation-status" role="status" aria-live="polite">
+              <span></span>
+              {!conversationStarted ? "SARAH IS READY" : coachListening ? "LISTENING TO YOU" : coachThinking ? "SARAH IS THINKING" : coachSpeaking ? "SARAH IS SPEAKING" : "CONVERSATION ACTIVE"}
             </div>
-            <h2>Hi, I'm Sarah.</h2>
-            <p>Let's practice English together.</p>
-            <button
-              className="coach-start-button"
-              onClick={() => setCoachMode("conversation")}
-            >
-              Start Conversation
-            </button>
+            <div className="coach-message">
+              <div className="coach-message-label">SARAH</div>
+              <div className="coach-message-text">{conversationStarted ? "Hi! I'm Sarah. Let's practice English together. Tell me about yourself." : "Ready when you are. Start the conversation and practice English with me naturally."}</div>
+            </div>
+            <div className="coach-response-area">
+              {coachReply && conversationStarted && <div className="coach-ai-reply" role="status" aria-live="polite"><div className="coach-ai-reply-label">SARAH</div><div className="coach-ai-reply-text">{coachReply}</div></div>}
+              {!conversationStarted ? (
+                <button className="coach-start-button coach-call-start-button" onClick={() => setCoachMode("conversation")} type="button"><span className="coach-call-icon">▶</span>Start Conversation</button>
+              ) : (
+                <>
+                  <div className="coach-response-label">YOUR RESPONSE</div>
+                  <button className={"coach-mic-button " + (coachListening ? "listening" : "")} onClick={coachListening ? stopCoachListening : startCoachListening} disabled={coachThinking} aria-busy={coachThinking} type="button">
+                    <div className="coach-mic-icon-wrapper"><span className="mic-glyph">🎙</span></div>
+                    <span className="coach-mic-text">{coachThinking ? "Sarah is preparing a response..." : coachListening ? "Tap again when you finish speaking" : "Tap the microphone to speak"}</span>
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         </main>
       </div>
