@@ -536,6 +536,16 @@ function Home({
               </div>
               <span className="primary-arrow">→</span>
             </button>
+            <button
+              className="home-primary-button home-immigration-primary-button"
+              onClick={onOpenImmigrationHelp}
+            >
+              <div>
+                <small>{language === "en" ? "OFFICIAL U.S. RESOURCES" : "RECURSOS OFICIALES DE EE. UU."}</small>
+                <strong>{language === "en" ? "IMMIGRATION HELP" : "AYUDA MIGRATORIA"}</strong>
+              </div>
+              <span className="primary-arrow">→</span>
+            </button>
           </div>
 
         </section>
