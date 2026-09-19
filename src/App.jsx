@@ -1167,19 +1167,15 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
               {isKevin ? (
                 <>
                   <video
-                    src="/kevin-speaking.mp4"
+                    src="/kevin-listening.mp4"
                     poster={kevinImage}
                     className="live-sarah-video live-sarah-resting"
+                    autoPlay
                     muted
                     loop
                     playsInline
                     preload="auto"
                     aria-hidden="true"
-                    onLoadedMetadata={(event) => {
-                      const neutralMoment = Math.min(0.35, event.currentTarget.duration || 0.35);
-                      event.currentTarget.currentTime = neutralMoment;
-                      event.currentTarget.pause();
-                    }}
                   />
                   <video
                     src="/kevin-speaking.mp4"
