@@ -24864,3 +24864,44 @@ select { font: inherit; }
   .coach-start-button,
   .coach-mic-button { transition: none !important; }
 }
+
+/* Last-resort recovery prevents an unrecoverable blank screen. */
+.app-recovery-screen {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  box-sizing: border-box;
+  color: #f7fbff;
+  background: radial-gradient(circle at 50% 10%, rgba(47, 151, 255, .2), transparent 38%), #020815;
+}
+
+.app-recovery-card {
+  width: min(100%, 480px);
+  padding: 28px;
+  border: 1px solid rgba(116, 192, 244, .24);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(14, 36, 68, .95), rgba(5, 17, 38, .97));
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .4), inset 0 1px 0 rgba(255, 255, 255, .07);
+  text-align: center;
+}
+
+.app-recovery-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  place-items: center;
+  border: 1px solid rgba(54, 210, 255, .42);
+  border-radius: 15px;
+  color: #3bd8ff;
+  background: rgba(34, 177, 230, .1);
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.app-recovery-card > p:first-of-type { color: #3bd8ff; font-size: 10px; font-weight: 900; letter-spacing: .17em; }
+.app-recovery-card h1 { margin: 10px 0; font-size: clamp(30px, 8vw, 44px); letter-spacing: -.04em; }
+.app-recovery-card p { color: #9db0ca; line-height: 1.55; }
+.app-recovery-card button { width: 100%; min-height: 50px; margin: 14px 0; border: 1px solid rgba(94, 206, 255, .35); border-radius: 14px; color: #fff; background: linear-gradient(110deg, #167fdb, #5a62e8); font-weight: 850; cursor: pointer; }
+.app-recovery-card small { display: block; color: #748aa9; line-height: 1.45; }

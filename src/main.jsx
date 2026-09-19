@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
+import AppErrorBoundary from './AppErrorBoundary.jsx'
 import { PodcastProvider } from './PodcastPlayer.jsx'
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
@@ -14,8 +15,10 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <PodcastProvider>
-      <App />
-    </PodcastProvider>
+    <AppErrorBoundary>
+      <PodcastProvider>
+        <App />
+      </PodcastProvider>
+    </AppErrorBoundary>
   </StrictMode>,
 )
