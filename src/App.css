@@ -24121,3 +24121,54 @@ select {
     font-size: 25px;
   }
 }
+
+/* Unified AI-gradient system for the three primary Home actions. */
+.home-new-hero {
+  padding-bottom: 10px !important;
+}
+
+.home-interview-actions {
+  gap: 8px !important;
+}
+
+.home-interview-actions .home-primary-button {
+  border: 1px solid rgba(116, 220, 255, .42);
+  color: #fff;
+  box-shadow: 0 12px 28px rgba(27, 111, 219, .22), inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+
+.home-interview-actions .home-primary-button:first-child {
+  background: linear-gradient(105deg, #0799c7 0%, #3388ee 100%);
+}
+
+.home-interview-actions .home-civics-live-button {
+  background: linear-gradient(105deg, #167fdb 0%, #5a62e8 100%);
+}
+
+.home-interview-actions .home-immigration-primary-button {
+  background: linear-gradient(105deg, #176dac 0%, #514ebd 100%);
+}
+
+.home-interview-actions .home-primary-button small,
+.home-interview-actions .home-primary-button strong,
+.home-interview-actions .home-primary-button > span {
+  color: #fff;
+}
+
+.home-interview-actions .home-primary-button small {
+  opacity: .78;
+}
+
+.quick-practice-ai {
+  margin-top: 8px !important;
+}
+
+@media (max-width: 700px) {
+  .home-new-hero {
+    padding-bottom: 7px !important;
+  }
+
+  .quick-practice-ai {
+    margin-top: 7px !important;
+  }
+}

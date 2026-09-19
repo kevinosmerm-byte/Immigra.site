@@ -528,7 +528,6 @@ function Home({
             <button
               className="home-primary-button home-civics-live-button"
               onClick={onStartCivicsInterview}
-              style={{ background: "linear-gradient(135deg, #0b78d0, #5b55e7)" }}
             >
               <div>
                 <small>{language === "en" ? "CLASSIC SARAH PRACTICE" : "PRÁCTICA CLÁSICA CON SARAH"}</small>
