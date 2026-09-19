@@ -23890,3 +23890,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
     max-height: 76px;
   }
 }
+
+
+/* Keep Kevin videos visually stable; retain only their natural recorded motion. */
+.interviewer-kevin .kevin-motion-frame {
+  animation: none !important;
+}
