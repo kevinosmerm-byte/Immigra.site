@@ -1704,12 +1704,11 @@ function App() {
             </div>
             <div className="coach-message">
               <div className="coach-message-label">SARAH</div>
-              <div className="coach-message-text">{conversationStarted ? "Hi! I'm Sarah. Let's practice English together. Tell me about yourself." : "Ready when you are. Start the conversation and practice English with me naturally."}</div>
+              <div className="coach-message-text">{conversationStarted ? (coachReply || "Hi! I'm Sarah. Let's practice English together. Tell me about yourself.") : "Ready when you are. Start the conversation and practice English with me naturally."}</div>
             </div>
             <div className="coach-response-area">
-              {coachReply && conversationStarted && <div className="coach-ai-reply" role="status" aria-live="polite"><div className="coach-ai-reply-label">SARAH</div><div className="coach-ai-reply-text">{coachReply}</div></div>}
               {!conversationStarted ? (
-                <button className="coach-start-button coach-call-start-button" onClick={() => setCoachMode("conversation")} type="button"><span className="coach-call-icon">▶</span>Start Conversation</button>
+                <button className="coach-start-button coach-call-start-button" onClick={() => { setCoachReply(""); setCoachMode("conversation"); speakCoachReply("Hi! I'm Sarah. Let's practice English together. Tell me about yourself."); }} type="button"><span className="coach-call-icon">▶</span>Start Conversation</button>
               ) : (
                 <>
                   <div className="coach-response-label">YOUR RESPONSE</div>
