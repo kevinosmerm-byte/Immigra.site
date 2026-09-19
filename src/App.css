@@ -23626,3 +23626,75 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
     width: auto;
   }
 }
+
+
+/* ===== SARAH STATE VIDEOS: CIVICS INTERVIEW + AI ENGLISH COACH ===== */
+.sarah-video-frame {
+  animation: none;
+  background: #07111e;
+}
+
+.live-stage-motion-frame .live-sarah-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.sarah-video-frame .live-sarah-resting {
+  opacity: 1;
+}
+
+.sarah-speaking-live .sarah-video-frame .live-sarah-resting {
+  opacity: 0;
+  transform: none;
+}
+
+.sarah-speaking-live .sarah-video-frame .live-sarah-speaking {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+.coach-avatar video,
+.coach-conversation-avatar video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.coach-conversation-avatar {
+  position: relative;
+  background: #07111e;
+}
+
+.coach-conversation-avatar .coach-avatar-video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.coach-conversation-avatar.listening .coach-avatar-listening,
+.coach-conversation-avatar.speaking .coach-avatar-speaking {
+  opacity: 1;
+}
+
+.coach-conversation-avatar.speaking {
+  box-shadow:
+    0 0 0 7px rgba(46, 202, 255, 0.08),
+    0 0 42px rgba(46, 202, 255, 0.32);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-stage-motion-frame .live-sarah-video,
+  .coach-conversation-avatar .coach-avatar-video {
+    transition: none;
+  }
+}
