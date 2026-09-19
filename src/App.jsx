@@ -1169,8 +1169,8 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   return (
     <div className={`interview-screen live-interview-screen interviewer-${interviewer} ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
       <header className="interview-header">
-        <button className="back-button interview-exit-button" onClick={onExit} aria-label="Exit practice interview">
-          <span>×</span> Exit
+        <button className="back-button interview-exit-button" onClick={onExit} aria-label="Exit practice interview" title="Exit interview">
+          <span aria-hidden="true">×</span>
         </button>
         <div className="interview-brand">
           <strong>CITIZENSHIP <span>AI</span></strong>
