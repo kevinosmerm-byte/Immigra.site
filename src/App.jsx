@@ -876,7 +876,6 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const isKevin = interviewer === "kevin";
   const interviewerName = isKevin ? "Kevin" : "Sarah";
   const interviewerImage = isKevin ? kevinImage : sarahImage;
-  const interviewerSpeakingImage = isKevin ? kevinImage : sarahSpeakingImage;
 
   const addMissedQuestion = (question) => {
     setMissedQuestions((current) => (
@@ -1164,11 +1163,35 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       <main className="interview-content">
         <section className="sarah-live-stage" aria-label={`${interviewerName}, AI practice interviewer`}>
           <div className="live-stage-media" aria-hidden="true">
-            <div className={`live-stage-motion-frame ${isKevin ? "kevin-motion-frame" : "sarah-video-frame"}`}>
+            <div className={`live-stage-motion-frame sarah-video-frame ${isKevin ? "kevin-motion-frame" : ""}`}>
               {isKevin ? (
                 <>
-                  <img src={interviewerImage} alt="" className="live-sarah-image live-sarah-resting" />
-                  <img src={interviewerSpeakingImage} alt="" className="live-sarah-image live-sarah-speaking" />
+                  <video
+                    src="/kevin-speaking.mp4"
+                    poster={kevinImage}
+                    className="live-sarah-video live-sarah-resting"
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    aria-hidden="true"
+                    onLoadedMetadata={(event) => {
+                      const neutralMoment = Math.min(0.35, event.currentTarget.duration || 0.35);
+                      event.currentTarget.currentTime = neutralMoment;
+                      event.currentTarget.pause();
+                    }}
+                  />
+                  <video
+                    src="/kevin-speaking.mp4"
+                    poster={kevinImage}
+                    className="live-sarah-video live-sarah-speaking"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    aria-hidden="true"
+                  />
                 </>
               ) : (
                 <>
