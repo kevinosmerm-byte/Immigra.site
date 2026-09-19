@@ -24172,3 +24172,18 @@ select {
     margin-top: 7px !important;
   }
 }
+
+/* Remove compounded flex gap + legacy section margin below the main CTAs. */
+.home-new-content {
+  gap: 12px !important;
+}
+
+.home-new-hero + .home-new-section {
+  margin-top: 0 !important;
+}
+
+@media (max-width: 700px) {
+  .home-new-content {
+    gap: 8px !important;
+  }
+}
