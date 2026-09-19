@@ -11,6 +11,7 @@ import { apiJson } from "./api";
 import { startAudioRecording, transcribeRecording } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
 import { getPracticeEvents, getPracticeSummary, recordPracticeEvent } from "./progress";
+import { PodcastLibrary } from "./PodcastPlayer";
 import { FREE_AI_LIMITS, canUseAiFeature, getAiUsageSummary, recordAiUsage } from "./access";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
 import ImmigrationHelp from "./ImmigrationHelp";
@@ -424,6 +425,7 @@ function Home({
   onOpenProgress,
   onOpenSettings,
   onOpenImmigrationHelp,
+  onOpenPodcasts,
   language,
   onLanguageChange,
 }) {
@@ -542,6 +544,13 @@ function Home({
               <div>
                 <small>{language === "en" ? "OFFICIAL U.S. RESOURCES" : "RECURSOS OFICIALES DE EE. UU."}</small>
                 <strong>{language === "en" ? "IMMIGRATION HELP" : "AYUDA MIGRATORIA"}</strong>
+              </div>
+              <span className="primary-arrow">→</span>
+            </button>
+            <button className="home-primary-button home-podcast-primary-button" onClick={onOpenPodcasts}>
+              <div>
+                <small><i className="home-podcast-live-dot"></i>{language === "en" ? "LIVE AUDIO · ENGLISH + ESPAÑOL" : "AUDIO EN VIVO · ENGLISH + ESPAÑOL"}</small>
+                <strong>🎙️ {language === "en" ? "LIVE PODCASTS" : "PODCASTS EN VIVO"}</strong>
               </div>
               <span className="primary-arrow">→</span>
             </button>
@@ -1717,6 +1726,10 @@ function App() {
     return <ImmigrationHelp language={language} onLanguageChange={setPreferredLanguage} onBack={() => setScreen("home")} />;
   }
 
+  if (screen === "podcasts") {
+    return <PodcastLibrary onBack={() => setScreen("home")} />;
+  }
+
   if (screen === "civics") {
     // ... mantén tu código actual de civics aquí o déjalo tal cual lo tienes ...
   }
@@ -2393,6 +2406,7 @@ function App() {
       onOpenFeature={(feature) => setScreen(feature)}
       onOpenProgress={() => setScreen("progress")}
       onOpenImmigrationHelp={() => setScreen("immigrationHelp")}
+      onOpenPodcasts={() => setScreen("podcasts")}
       onOpenSettings={() => {
         window.location.hash = "privacy";
         setScreen("settings");
