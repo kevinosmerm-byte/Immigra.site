@@ -23923,3 +23923,167 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .immigration-detail-wrap{display:grid;min-height:calc(100vh - 62px);place-items:center}.immigration-detail-card,.immigration-leaving-card{width:min(100%,600px);padding:clamp(24px,6vw,42px);box-sizing:border-box;border:1px solid rgba(103,180,255,.33);border-radius:26px;background:linear-gradient(150deg,rgba(15,38,79,.96),rgba(6,14,36,.98));box-shadow:0 30px 80px rgba(0,0,0,.4)}.immigration-detail-icon,.immigration-leaving-icon{display:grid;width:58px;height:58px;place-items:center;border-radius:17px;color:#78ddff;background:rgba(59,168,235,.13);font-size:25px}.immigration-agency,.immigration-leaving-card>span{display:block;margin-top:20px;color:#77d7ff;font-size:9px;font-weight:850;letter-spacing:.15em}.immigration-detail-card h1,.immigration-leaving-card h1{margin:9px 0 12px;color:#fff;font-size:clamp(29px,6vw,46px);line-height:1.07}.immigration-detail-card>p,.immigration-leaving-card>p{color:#b6c7e1;line-height:1.55}.immigration-detail-card aside{margin:21px 0;padding:15px;border:1px solid rgba(255,189,92,.28);border-radius:14px;background:rgba(111,65,17,.16)}.immigration-detail-card aside strong{color:#ffd18a;font-size:9px;letter-spacing:.13em}.immigration-detail-card aside p{margin:7px 0 0;color:#d7c39f;font-size:12px;line-height:1.45}.official-government-badge{display:inline-flex;margin:10px 0;padding:8px 10px;border:1px solid rgba(80,216,160,.28);border-radius:99px;color:#72e0ad;background:rgba(64,190,137,.07);font-size:9px;font-weight:850}.immigration-detail-card>small{display:block;color:#8199ba;font-size:9px}.immigration-continue,.immigration-leaving-card>a{width:100%;min-height:52px;margin-top:22px;display:flex;align-items:center;justify-content:space-between;padding:0 17px;box-sizing:border-box;border:0;border-radius:14px;color:#051425;background:linear-gradient(105deg,#22d3ee,#60a5fa);font-size:11px;font-weight:900;text-decoration:none;cursor:pointer}.immigration-legal-line{font-size:10px!important;text-align:center}.immigration-destination{margin:17px 0;padding:13px;border:1px solid rgba(110,180,255,.28);border-radius:12px;color:#8bdcff;background:rgba(27,116,194,.09);font-size:14px;font-weight:800;text-align:center}.immigration-independent{font-size:11px}.immigration-leaving-card>button{width:100%;margin-top:10px;padding:13px;border:1px solid rgba(143,177,225,.25);border-radius:13px;color:#c3d3ea;background:rgba(255,255,255,.04);font-weight:800;cursor:pointer}
 @media(max-width:620px){.immigration-featured-grid{grid-template-columns:1fr 1fr}.immigration-resource-card.featured{min-height:164px;display:block}.immigration-resource-card.featured .immigration-resource-copy{display:block;margin-top:11px}.immigration-resource-card.featured .immigration-resource-arrow{display:none}.immigration-help-content{padding-inline:13px}.immigration-help-header{padding-inline:12px}.immigration-help-header strong{font-size:10px}.immigration-resource-card{padding:13px;grid-template-columns:38px 1fr auto}.immigration-resource-icon{width:38px;height:38px}.immigration-urgent{padding:14px}}
 @media(max-width:380px){.immigration-featured-grid{grid-template-columns:1fr}.immigration-resource-card.featured{min-height:135px}.immigration-help-header button{font-size:9px}}
+
+/* ===== MOBILE UX CONSISTENCY PASS =====
+   Keep typography, spacing and primary actions predictable across modules. */
+:root {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+html,
+body,
+#root,
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+.home-interview-actions {
+  gap: 10px !important;
+  margin-top: 18px;
+}
+
+.home-interview-actions .home-primary-button {
+  width: 100%;
+  min-height: 57px;
+  margin-top: 0 !important;
+  padding: 0 20px;
+  font-family: inherit;
+}
+
+.home-interview-actions .home-primary-button small {
+  display: block;
+  margin: 0 0 3px;
+  color: inherit;
+  font-size: .65rem;
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: .1em;
+  opacity: .8;
+}
+
+.home-interview-actions .home-primary-button strong {
+  display: block;
+  color: inherit;
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: .02em;
+}
+
+.home-immigration-primary-button {
+  border: 1px solid rgba(91, 222, 255, .62);
+}
+
+@media (max-width: 700px) {
+  .home-ai-hero,
+  .home-new-hero {
+    padding-bottom: 14px !important;
+  }
+
+  .home-interview-actions {
+    gap: 8px !important;
+    margin-top: 14px;
+  }
+
+  .home-interview-actions .home-primary-button {
+    min-height: 54px;
+    padding-inline: 16px;
+  }
+
+  .quick-practice-ai {
+    margin-top: 14px !important;
+  }
+
+  .quick-practice-card:first-child {
+    min-height: 126px !important;
+  }
+}
+
+/* On phones the interview controls must remain in the first viewport. */
+@media (max-width: 480px) {
+  .live-interview-screen {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .live-interview-screen .interview-content {
+    gap: 8px;
+    padding: 0 9px 14px;
+  }
+
+  .sarah-live-stage {
+    min-height: min(530px, calc(100svh - 250px));
+  }
+
+  .live-question-card {
+    bottom: 62px;
+    padding: 11px 12px 9px;
+  }
+
+  .live-question-card .question {
+    margin: 7px 0 4px;
+    font-size: clamp(15px, 4.3vw, 17px);
+    line-height: 1.2;
+  }
+
+  .live-question-card .question-spanish {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 10px;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .live-progress-dots {
+    margin-top: 7px;
+  }
+
+  .live-voice-status {
+    bottom: 9px;
+    gap: 3px;
+  }
+
+  .live-interview-controls {
+    gap: 7px 10px;
+    padding: 9px;
+    border-radius: 16px;
+  }
+
+  .live-interview-controls .live-mic-button {
+    width: 54px;
+    height: 54px;
+  }
+
+  .live-interview-controls .live-skip-button {
+    min-height: 42px;
+  }
+
+  .coach-video-call-card {
+    min-height: calc(100svh - 105px);
+  }
+
+  .coach-video-call-card .coach-message {
+    max-height: 142px;
+    bottom: 88px;
+    padding: 13px 14px;
+  }
+
+  .coach-video-call-card .coach-response-area {
+    bottom: 11px;
+  }
+
+  .coach-video-call-card .coach-start-button,
+  .coach-video-call-card .coach-mic-button {
+    min-height: 54px;
+  }
+}
