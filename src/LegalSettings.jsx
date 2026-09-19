@@ -16,8 +16,8 @@ const COPY = {
     features: ["Civics study and explanations", "English reading and writing practice", "AI-supported practice feedback"],
     legalNotice: [
       "Citizenship AI is an independent educational practice tool. It is not affiliated with, endorsed by, or operated by USCIS or any U.S. government agency.",
-      "It does not provide legal advice. AI-generated feedback may contain errors. Practice questions and simulated interviews do not guarantee what an immigration officer will ask or the outcome of a naturalization application or interview.",
-      "Verify current immigration requirements through official USCIS sources.",
+      "It does not provide legal advice, determine immigration eligibility, recommend a legal strategy, prepare or file applications, or represent users before USCIS. AI-generated feedback may contain errors, and simulated practice does not guarantee interview questions or outcomes.",
+      "Always verify current requirements directly through official USCIS sources. For advice about your circumstances, forms, eligibility, deadlines, or immigration options, consult a licensed immigration attorney or a Department of Justice-accredited representative.",
     ],
   },
   es: {
@@ -35,8 +35,8 @@ const COPY = {
     features: ["Estudio y explicaciones de civismo", "Práctica de lectura y escritura en inglés", "Comentarios de práctica asistidos por IA"],
     legalNotice: [
       "Citizenship AI es una herramienta educativa independiente para practicar. No está afiliada, respaldada ni operada por USCIS ni por ninguna agencia del gobierno de Estados Unidos.",
-      "No brinda asesoría legal. Los comentarios generados por IA pueden contener errores. Las preguntas de práctica y las entrevistas simuladas no garantizan lo que preguntará un oficial de inmigración ni el resultado de una solicitud o entrevista de naturalización.",
-      "Verifica los requisitos migratorios vigentes mediante fuentes oficiales de USCIS.",
+      "No brinda asesoría legal, no determina elegibilidad migratoria, no recomienda estrategias legales, no prepara ni presenta solicitudes y no representa a usuarios ante USCIS. La IA puede cometer errores y la práctica simulada no garantiza preguntas ni resultados.",
+      "Verifica siempre los requisitos vigentes directamente en fuentes oficiales de USCIS. Para recibir orientación sobre tu situación, formularios, elegibilidad, plazos u opciones migratorias, consulta a un abogado de inmigración autorizado o a un representante acreditado por el Departamento de Justicia.",
     ],
   },
 };
@@ -47,8 +47,8 @@ const legalSections = [
     title: "Privacy Policy",
     content: (
       <>
-        <p><strong>Last reviewed: September 15, 2026.</strong> This policy describes the behavior of the current Citizenship AI application build.</p>
-        <p>Citizenship AI does not create user accounts and this codebase does not include a database. The app stores only your onboarding completion, language preference, microphone-disclosure choice, viewed civics-question progress, on-device practice results (practice type, score, outcome, and time), and weekly Free-plan AI-credit counters in your browser&apos;s local storage. It does not store your raw answers or audio recordings for these features. You can clear that data from Data &amp; Account Controls below.</p>
+        <p><strong>Last reviewed: September 19, 2026.</strong> This policy describes the behavior of the current Citizenship AI application build.</p>
+        <p>Citizenship AI does not create user accounts and this codebase does not include a database. The app stores only your onboarding completion, language preference, microphone-disclosure choice, D-ID live-avatar consent choice, viewed civics-question progress, on-device practice results (practice type, score, outcome, and time), and local AI-usage history in your browser&apos;s local storage. Practice limits and payments are not currently active. The app does not store your raw answers or audio recordings for these features. You can clear this local data from Data &amp; Account Controls below.</p>
         <p>When you request AI feedback, your practice answer, writing, or active conversation is sent through Citizenship AI&apos;s server to OpenAI to generate that response. When you use voice practice, your recording is sent through Citizenship AI&apos;s server to OpenAI only for the active transcription request. The application is designed not to retain recordings, transcripts, practice answers, or AI conversations after the request completes; third-party provider retention and security practices are governed by their own terms.</p>
         <p>If you choose Live Avatar Beta, Citizenship AI requests a temporary, domain-restricted D-ID session credential from its server. D-ID receives and processes the live session content and any microphone or camera input you choose to provide through its panel. The application does not store the client key; it is used in memory only for the active short-lived session. D-ID's own retention and security practices are governed by its terms.</p><p>If you use Case Tracker, your receipt number is sent to Citizenship AI&apos;s server and then to USCIS only to make that active status request. This build is configured for the USCIS Sandbox, not live Production case data. The application does not save receipt numbers or case details. For security diagnostics, the server may create a short operational log containing the time, Sandbox environment, a masked receipt number, request outcome, and any USCIS trace ID; it does not intentionally log the full receipt number or case response. The site is hosted using Cloudflare Pages and Render; those providers may process standard technical request logs required to operate and secure their services. To protect the service from abuse, the server may temporarily use an IP address to limit excessive requests. This codebase does not implement application analytics or advertising tracking.</p>
       </>
@@ -59,8 +59,10 @@ const legalSections = [
     title: "Terms of Use",
     content: (
       <>
-        <p>Citizenship AI is an independent educational practice tool for people preparing for the U.S. naturalization process. Use it only for lawful, personal study. Do not submit sensitive documents, passwords, Social Security numbers, A-Numbers, or other unnecessary personal information.</p>
-        <p>Availability, speech recognition, AI feedback, and the USCIS Sandbox connection may be interrupted or inaccurate. You are responsible for verifying current requirements and for deciding whether to seek advice from a qualified immigration professional.</p>
+        <p>Citizenship AI is an independent educational practice tool for people preparing for the U.S. naturalization process. It does not provide legal advice, determine immigration eligibility, recommend a legal strategy, prepare or file applications, or represent users before USCIS or any government agency. Use it only for lawful, personal study. Do not submit sensitive documents, passwords, Social Security numbers, A-Numbers, or other unnecessary personal information.</p>
+        <p>Availability, speech recognition, translations, AI feedback, external links, and the USCIS Sandbox connection may be interrupted, incomplete, inaccurate, or outdated. You are responsible for verifying current requirements directly with USCIS before relying on information for an immigration decision.</p>
+        <p>Immigration Help is an educational directory of external resources. Listing or linking to a resource does not constitute an endorsement, referral, legal representation, or guarantee of its services. The podcasts are prerecorded educational audio, not live broadcasts or official USCIS programming.</p>
+        <p>If you need advice about your circumstances, forms, eligibility, deadlines, evidence, or immigration options, consult a licensed immigration attorney or a representative accredited by the U.S. Department of Justice.</p>
       </>
     ),
   },
@@ -71,6 +73,7 @@ const legalSections = [
       <>
         <p>AI-generated feedback can be incomplete, incorrect, or outdated. It is provided to help you practice English and civics concepts, not to assess legal eligibility, predict an interview outcome, or replace professional advice.</p>
         <p>Simulated interviews and practice questions do not guarantee the questions an immigration officer will ask or the result of any naturalization application or interview.</p>
+        <p>Do not use an AI response as the basis for filing a form, missing a deadline, selecting an immigration benefit, or making another legal decision. Verify the information with USCIS and seek authorized professional help when appropriate.</p>
       </>
     ),
   },
@@ -80,7 +83,18 @@ const legalSections = [
     content: (
       <>
         <p>Citizenship AI is not affiliated with, endorsed by, sponsored by, operated by, or a representative of USCIS, the U.S. Department of Homeland Security, or any U.S. government agency.</p>
+        <p>Names, links, questions, and information derived from publicly available government sources are used for educational reference. Their availability does not imply government endorsement of Citizenship AI. Not every item found on a government website is necessarily free of third-party rights, and Citizenship AI does not claim that all application content is in the public domain.</p>
         <p>Always verify current immigration information directly with <a href="https://www.uscis.gov/citizenship" target="_blank" rel="noreferrer">official USCIS sources</a>.</p>
+      </>
+    ),
+  },
+  {
+    id: "sources",
+    title: "Information Sources & Professional Help",
+    content: (
+      <>
+        <p>Educational information is drawn from publicly available sources, with priority given to official U.S. government materials. Citizenship AI may summarize, translate, reorganize, or explain that information for study purposes. Summaries and translations may contain errors or become outdated, and the official English-language source controls when requirements or instructions differ.</p>
+        <p>For current forms, fees, filing instructions, eligibility rules, deadlines, and case-specific requirements, use <a href="https://www.uscis.gov" target="_blank" rel="noreferrer">USCIS.gov</a>. For legal advice, use a licensed immigration attorney or a Department of Justice-accredited representative. Learn how to find authorized help through <a href="https://www.uscis.gov/avoid-scams/find-legal-services" target="_blank" rel="noreferrer">USCIS legal-services guidance</a>.</p>
       </>
     ),
   },
@@ -149,7 +163,7 @@ export function LegalSettings({ onBack, onRestartOnboarding }) {
 
   const clearLocalData = () => {
     if (!window.confirm("Clear this device's Citizenship AI preferences and civics progress? This cannot be undone.")) return;
-    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", "citizenshipai.microphone-notice.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1"].forEach((key) => localStorage.removeItem(key));
+    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1"].forEach((key) => localStorage.removeItem(key));
     setCleared(true);
   };
 
@@ -180,7 +194,7 @@ export function LegalSettings({ onBack, onRestartOnboarding }) {
           <article className="legal-item open">
             <div className="legal-static-title">Data &amp; Account Controls</div>
             <div className="legal-item-body">
-              <p>This version has no user accounts and no server-side account data to download or delete. You can remove local preferences, civics progress, on-device practice results, and Free-plan AI-credit counters from this device.</p>
+              <p>This version has no user accounts and no server-side account data to download or delete. You can remove local preferences, consent choices, civics progress, on-device practice results, and local AI-usage history from this device.</p>
               <button className="legal-action-button" onClick={clearLocalData}>Clear local app data</button>
               {cleared && <p className="legal-success" role="status">Local data was cleared. Onboarding will appear on your next launch.</p>}
             </div>
