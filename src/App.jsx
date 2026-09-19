@@ -794,21 +794,6 @@ function Home({
 
         </section>
 
-        <section className="home-immigration-help-card">
-          <div className="home-immigration-help-icon">🛟</div>
-          <div className="home-immigration-help-copy">
-            <small>{language === "en" ? "OFFICIAL U.S. RESOURCES" : "RECURSOS OFICIALES DE EE. UU."}</small>
-            <h2>{language === "en" ? "Immigration Help" : "Ayuda Migratoria"}</h2>
-            <p>{language === "en"
-              ? "Case tools, court information, forms, fees, travel records, visas and legal-help resources."
-              : "Herramientas de casos, corte, formularios, tarifas, viajes, visas y recursos de ayuda legal."}</p>
-          </div>
-          <button onClick={onOpenImmigrationHelp}>
-            {language === "en" ? "EXPLORE RESOURCES" : "EXPLORAR RECURSOS"}<span>→</span>
-          </button>
-        </section>
-
-
         {/* ================= AI TIP ================= */}
 
         <section className="home-ai-tip">
@@ -878,6 +863,18 @@ function Home({
 
           <span>✦</span>
           <strong>Coach</strong>
+
+        </button>
+
+        <button
+          className="home-nav-item home-nav-help"
+          onClick={onOpenImmigrationHelp}
+        >
+
+          <span aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="m6.4 6.4 3.5 3.5m4.2 4.2 3.5 3.5m0-11.2-3.5 3.5m-4.2 4.2-3.5 3.5"/></svg>
+          </span>
+          <strong>{language === "en" ? "Help" : "Ayuda"}</strong>
 
         </button>
 

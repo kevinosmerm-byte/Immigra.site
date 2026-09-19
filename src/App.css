@@ -24509,3 +24509,44 @@ select {
   .home-interview-actions .home-action-icon { width: 41px; height: 41px; border-radius: 12px; font-size: 19px; }
   .home-interview-actions .home-primary-button > .primary-arrow { width: 30px; height: 30px; }
 }
+
+/* Five-item Home dock, including permanent Immigration Help access. */
+.home-new-nav {
+  max-width: 560px;
+  padding-inline: 10px;
+}
+
+.home-new-nav .home-nav-item {
+  min-width: 0;
+  padding-inline: 8px;
+}
+
+.home-new-nav .home-nav-item > span {
+  display: grid;
+  width: 22px;
+  height: 22px;
+  place-items: center;
+}
+
+.home-new-nav .home-nav-item svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.home-new-nav .home-nav-help { color: #8b9fbd; }
+.home-new-nav .home-nav-help:hover,
+.home-new-nav .home-nav-help:focus-visible {
+  color: #79d9ff;
+  background: rgba(38, 164, 233, .08);
+}
+
+@media (max-width: 430px) {
+  .home-new-nav { width: calc(100% - 20px); bottom: 10px; padding: 7px 6px; }
+  .home-new-nav .home-nav-item { padding: 7px 3px; }
+  .home-new-nav .home-nav-item strong { font-size: 8px; letter-spacing: .025em; }
+}
