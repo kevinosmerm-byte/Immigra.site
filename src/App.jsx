@@ -13,6 +13,7 @@ import { LegalSettings, Onboarding } from "./LegalSettings";
 import { getPracticeEvents, getPracticeSummary, recordPracticeEvent } from "./progress";
 import { FREE_AI_LIMITS, canUseAiFeature, getAiUsageSummary, recordAiUsage } from "./access";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
+import ImmigrationHelp from "./ImmigrationHelp";
 
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
@@ -422,6 +423,7 @@ function Home({
   onOpenFeature,
   onOpenProgress,
   onOpenSettings,
+  onOpenImmigrationHelp,
   language,
   onLanguageChange,
 }) {
@@ -760,6 +762,20 @@ function Home({
             <span>→</span>
           </button>
 
+        </section>
+
+        <section className="home-immigration-help-card">
+          <div className="home-immigration-help-icon">🛟</div>
+          <div className="home-immigration-help-copy">
+            <small>{language === "en" ? "OFFICIAL U.S. RESOURCES" : "RECURSOS OFICIALES DE EE. UU."}</small>
+            <h2>{language === "en" ? "Immigration Help" : "Ayuda Migratoria"}</h2>
+            <p>{language === "en"
+              ? "Case tools, court information, forms, fees, travel records, visas and legal-help resources."
+              : "Herramientas de casos, corte, formularios, tarifas, viajes, visas y recursos de ayuda legal."}</p>
+          </div>
+          <button onClick={onOpenImmigrationHelp}>
+            {language === "en" ? "EXPLORE RESOURCES" : "EXPLORAR RECURSOS"}<span>→</span>
+          </button>
         </section>
 
 
@@ -1688,6 +1704,10 @@ function App() {
     }} onRestartOnboarding={restartOnboarding} />;
   }
 
+  if (screen === "immigrationHelp") {
+    return <ImmigrationHelp language={language} onLanguageChange={setPreferredLanguage} onBack={() => setScreen("home")} />;
+  }
+
   if (screen === "civics") {
     // ... mantén tu código actual de civics aquí o déjalo tal cual lo tienes ...
   }
@@ -2363,6 +2383,7 @@ function App() {
       onOpenPractice={() => setScreen("practice")}
       onOpenFeature={(feature) => setScreen(feature)}
       onOpenProgress={() => setScreen("progress")}
+      onOpenImmigrationHelp={() => setScreen("immigrationHelp")}
       onOpenSettings={() => {
         window.location.hash = "privacy";
         setScreen("settings");
