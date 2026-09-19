@@ -23698,3 +23698,22 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
     transition: none;
   }
 }
+
+
+/* ===== AI ENGLISH COACH: SINGLE-SCREEN VIDEO CALL ===== */
+.coach-video-call-content { width: min(100%, 680px); margin: 0 auto; padding-bottom: 48px; }
+.coach-video-call-card { overflow: hidden; padding: 0 0 20px; border: 1px solid rgba(92,177,255,.34); border-radius: 26px; background: linear-gradient(155deg,rgba(8,27,57,.97),rgba(4,12,31,.98)); box-shadow: 0 26px 70px rgba(0,0,0,.42),0 0 42px rgba(36,137,235,.1); }
+.coach-video-call-card .coach-conversation-avatar { position: relative; width: 100%; height: min(62vh,620px); min-height: 420px; margin: 0; overflow: hidden; border-radius: 25px 25px 0 0; background: #07111e; }
+.coach-video-call-card .coach-avatar-video { object-position: center 18%; }
+.coach-video-call-overlay { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(180deg,rgba(2,9,24,.08) 52%,rgba(2,9,24,.74) 100%); }
+.coach-video-call-identity { position: absolute; left: 18px; bottom: 18px; z-index: 3; display: flex; align-items: center; gap: 10px; padding: 10px 13px; border: 1px solid rgba(126,205,255,.35); border-radius: 14px; background: rgba(3,14,34,.68); backdrop-filter: blur(14px); }
+.coach-video-call-identity > span { width: 8px; height: 8px; border-radius: 50%; background: #47e6a1; box-shadow: 0 0 12px rgba(71,230,161,.85); }
+.coach-video-call-identity strong,.coach-video-call-identity small { display: block; }
+.coach-video-call-identity strong { color: #fff; font-size: 13px; }
+.coach-video-call-identity small { margin-top: 2px; color: #a8bad6; font-size: 9px; }
+.coach-video-call-card .coach-conversation-status,.coach-video-call-card .coach-message,.coach-video-call-card .coach-response-area { margin-right: 20px; margin-left: 20px; }
+.coach-video-call-card .coach-conversation-status { margin-top: 17px; }
+.coach-call-start-button { width: 100%; min-height: 58px; display: flex; align-items: center; justify-content: center; gap: 11px; border: 1px solid rgba(100,221,255,.7); border-radius: 15px; background: linear-gradient(105deg,#168ce8,#655de9); box-shadow: 0 14px 32px rgba(36,116,232,.3); color: #fff; font-size: 13px; font-weight: 850; letter-spacing: .04em; cursor: pointer; }
+.coach-call-start-button:hover { transform: translateY(-1px); box-shadow: 0 17px 38px rgba(36,116,232,.38); }
+.coach-call-icon { display: grid; width: 30px; height: 30px; place-items: center; border-radius: 50%; background: rgba(255,255,255,.16); font-size: 11px; }
+@media (max-width: 600px) { .coach-video-call-content { padding: 10px 12px 36px; } .coach-video-call-card { border-radius: 22px; } .coach-video-call-card .coach-conversation-avatar { height: min(58vh,540px); min-height: 390px; border-radius: 21px 21px 0 0; } .coach-video-call-card .coach-conversation-status,.coach-video-call-card .coach-message,.coach-video-call-card .coach-response-area { margin-right: 14px; margin-left: 14px; } }
