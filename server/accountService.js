@@ -11,6 +11,9 @@ const supabase = supabaseUrl && supabaseSecretKey
     })
   : null;
 const STALE_AI_SESSION_HOURS = Math.max(1, Number(process.env.AI_SESSION_STALE_HOURS) || 6);
+const FEATURE_AVAILABILITY_CACHE_MS = 30_000;
+const featureAvailabilityCache = new Map();
+const disabledAiFeatures = new Set((process.env.DISABLED_AI_FEATURES || "").split(",").map((item) => item.trim()).filter(Boolean));
 
 export function getAccountConfiguration() {
   return {
@@ -28,6 +31,28 @@ export function getPublicAccountConfiguration() {
     url: supabaseUrl || "",
     publishableKey: publishableKey || "",
   };
+}
+
+export async function isAiFeatureEnabled(feature) {
+  if (!getAiFeatureConfig(feature) || disabledAiFeatures.has(feature)) return false;
+  if (!supabase) return true;
+  const cached = featureAvailabilityCache.get(feature);
+  if (cached && cached.expiresAt > Date.now()) return cached.enabled;
+  const { data, error } = await supabase
+    .from("ai_feature_config")
+    .select("enabled")
+    .eq("feature", feature)
+    .maybeSingle();
+  if (error) {
+    console.error("Remote AI feature configuration unavailable; using the local enabled state", {
+      feature,
+      code: error.code || "",
+    });
+    return true;
+  }
+  const enabled = data?.enabled !== false;
+  featureAvailabilityCache.set(feature, { enabled, expiresAt: Date.now() + FEATURE_AVAILABILITY_CACHE_MS });
+  return enabled;
 }
 
 function bearerToken(req) {

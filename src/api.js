@@ -21,11 +21,11 @@ const METERED_AI_PATHS = new Set([
 ]);
 
 export function setAiRequestContext(context) {
-  aiRequestContext = context?.sessionId && context?.accessToken
+  aiRequestContext = context?.feature || (context?.sessionId && context?.accessToken)
     ? {
-        sessionId: context.sessionId,
-        accessToken: context.accessToken,
-        feature: context.feature || "",
+        sessionId: context?.sessionId || "",
+        accessToken: context?.accessToken || "",
+        feature: context?.feature || "",
       }
     : null;
 }
@@ -39,8 +39,8 @@ export function apiFetch(path, options) {
   const headers = new Headers(options?.headers || {});
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
   if (aiRequestContext && METERED_AI_PATHS.has(normalizedPath)) {
-    headers.set("Authorization", `Bearer ${aiRequestContext.accessToken}`);
-    headers.set("X-Citizenship-AI-Session", aiRequestContext.sessionId);
+    if (aiRequestContext.accessToken) headers.set("Authorization", `Bearer ${aiRequestContext.accessToken}`);
+    if (aiRequestContext.sessionId) headers.set("X-Citizenship-AI-Session", aiRequestContext.sessionId);
     if (aiRequestContext.feature) headers.set("X-Citizenship-AI-Feature", aiRequestContext.feature);
   }
   return fetch(apiUrl(path), { ...options, headers });

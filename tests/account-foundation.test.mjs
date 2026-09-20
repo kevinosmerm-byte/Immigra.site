@@ -102,6 +102,24 @@ test("subscription entitlements are provider-neutral, ordered, and server-only",
   assert.doesNotMatch(routes, /applyVerifiedEntitlementEvent|providerEventId/);
 });
 
+test("costly AI endpoints honor remote and emergency feature switches", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+  const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
+  const api = await readFile(new URL("../src/api.js", import.meta.url), "utf8");
+  const promotion = await readFile(new URL("../src/PromotionAccess.jsx", import.meta.url), "utf8");
+
+  assert.match(service, /DISABLED_AI_FEATURES/);
+  assert.match(service, /from\("ai_feature_config"\)[\s\S]*select\("enabled"\)/);
+  assert.match(server, /requireAiFeature\("classicInterview"\)/);
+  assert.match(server, /requireAiFeature\("writing"\)/);
+  assert.match(server, /requireAiFeature\("coach"\)/);
+  assert.match(server, /requireAiFeature\("realInterview"\)/);
+  assert.match(server, /feature_check_unavailable/);
+  assert.match(api, /X-Citizenship-AI-Feature/);
+  assert.match(promotion, /setAiRequestContext\(\{ feature \}\)/);
+});
+
 test("session completion aggregates trusted server usage events", async () => {
   const { readFile } = await import("node:fs/promises");
   const accountService = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");

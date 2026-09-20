@@ -86,7 +86,7 @@ export function PromotionAccessProvider({ children }) {
         console.warn("Account usage could not be recorded; promotional access continues.", error?.message);
       }
     } else {
-      setAiRequestContext(null);
+      setAiRequestContext({ feature });
     }
     recordAiSessionStart(feature);
     continuation(serverSession);

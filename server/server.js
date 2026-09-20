@@ -6,7 +6,7 @@ import multer from "multer";
 import { createHmac } from "node:crypto";
 import { fetchUscisCaseStatus, getUscisConfig, maskReceiptNumber } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
-import { attachOptionalAiSession, consumeDistributedRateLimit, recordAiUsageEvent } from "./accountService.js";
+import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, recordAiUsageEvent } from "./accountService.js";
 
 dotenv.config();
 
@@ -123,6 +123,23 @@ const uscisRateLimit = requestRateLimit("uscis", 15, 10 * 60 * 1000);
 const avatarSessionRateLimit = requestRateLimit("avatar-session", 6, 10 * 60 * 1000);
 const accountRateLimit = requestRateLimit("account", 30, 10 * 60 * 1000);
 
+function requireAiFeature(defaultFeature, allowedFeatures = [defaultFeature]) {
+  return async (req, res, next) => {
+    const requested = (req.get("x-citizenship-ai-feature") || "").trim();
+    const feature = allowedFeatures.includes(requested) ? requested : defaultFeature;
+    try {
+      if (!await isAiFeatureEnabled(feature)) {
+        return res.status(503).json({ error: "This AI practice is temporarily unavailable.", code: "feature_unavailable" });
+      }
+    } catch (error) {
+      console.error("AI feature availability check failed", { feature, message: error.message, cause: error.cause?.code });
+      return res.status(503).json({ error: "This AI practice is temporarily unavailable.", code: "feature_check_unavailable" });
+    }
+    req.aiFeature = feature;
+    return next();
+  };
+}
+
 function enforceUscisManualCooldown(req, res) {
   const requester = req.get("cf-connecting-ip") || req.ip || "unknown";
   const now = Date.now();
@@ -205,7 +222,7 @@ async function recordProviderUsage(req, { provider, model, usage, transcriptionS
   }
 }
 
-app.post("/evaluate", aiRateLimit, async (req, res) => {
+app.post("/evaluate", requireAiFeature("classicInterview"), aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
@@ -283,7 +300,7 @@ res.json(result);
     });
   }
 });
-app.post("/evaluate-writing", aiRateLimit, async (req, res) => {
+app.post("/evaluate-writing", requireAiFeature("writing"), aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
@@ -355,7 +372,7 @@ ${answer}
     });
   }
 });
-app.post("/transcribe", transcriptionRateLimit, upload.single("audio"), async (req, res) => {
+app.post("/transcribe", requireAiFeature("speaking", ["speaking", "coach", "classicInterview", "realInterview"]), transcriptionRateLimit, upload.single("audio"), async (req, res) => {
   let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
@@ -416,7 +433,7 @@ app.get("/health", (req, res) => {
 app.use("/account", accountRateLimit, accountRoutes);
 app.use("/api/account", accountRateLimit, accountRoutes);
 
-app.post("/evaluate-reading", aiRateLimit, async (req, res) => {
+app.post("/evaluate-reading", requireAiFeature("speaking"), aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
@@ -484,7 +501,7 @@ ${transcript}
     });
   }
 });
-app.post("/coach", aiRateLimit, async (req, res) => {
+app.post("/coach", requireAiFeature("coach"), aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
@@ -554,7 +571,7 @@ app.get("/avatar/status", (req, res) => {
   res.json({ provider: "d-id", configured: getDidConfiguration().configured });
 });
 
-app.post("/avatar/session", avatarSessionRateLimit, async (req, res) => {
+app.post("/avatar/session", requireAiFeature("realInterview"), avatarSessionRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
     const config = getDidConfiguration();
