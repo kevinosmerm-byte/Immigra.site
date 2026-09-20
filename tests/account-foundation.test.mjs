@@ -147,6 +147,8 @@ test("rate limits are shared atomically without storing raw IP addresses", async
   assert.match(server, /createHmac\("sha256"/);
   assert.match(server, /consumeDistributedRateLimit/);
   assert.doesNotMatch(sql, /ip_address|raw_ip/i);
+  assert.match(server, /causeCode: error\.cause\?\.code/);
+  assert.match(server, /causeMessage: error\.cause\?\.message/);
 });
 
 test("expired distributed rate-limit windows are cleaned in bounded batches", async () => {

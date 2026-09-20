@@ -86,7 +86,12 @@ function requestRateLimit(name, limit, windowMs) {
         return next();
       }
     } catch (error) {
-      console.error("Shared rate limit unavailable; using local fallback", { bucket: name, message: error.message });
+      console.error("Shared rate limit unavailable; using local fallback", {
+        bucket: name,
+        message: error.message,
+        causeCode: error.cause?.code || "",
+        causeMessage: error.cause?.message || "",
+      });
     }
 
     if (rateLimitBuckets.size > 1_000) {
