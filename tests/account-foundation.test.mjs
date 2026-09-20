@@ -87,6 +87,21 @@ test("reward credits require a server-verified, idempotent provider callback", a
   assert.doesNotMatch(routes, /grantVerifiedRewardCredit|reward_credit_granted/);
 });
 
+test("subscription entitlements are provider-neutral, ordered, and server-only", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const sql = await readFile(new URL("../supabase/migrations/202609200006_verified_entitlements.sql", import.meta.url), "utf8");
+  const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+  const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
+
+  assert.match(sql, /unique \(provider, provider_event_id\)/);
+  assert.match(sql, /excluded\.provider_event_at >= public\.entitlements\.provider_event_at/);
+  assert.match(sql, /on conflict \(provider, provider_event_id\) do nothing/);
+  assert.match(sql, /revoke all on function public\.apply_verified_entitlement_event[\s\S]*from public, anon, authenticated/);
+  assert.match(sql, /to service_role/);
+  assert.match(service, /applyVerifiedEntitlementEvent/);
+  assert.doesNotMatch(routes, /applyVerifiedEntitlementEvent|providerEventId/);
+});
+
 test("session completion aggregates trusted server usage events", async () => {
   const { readFile } = await import("node:fs/promises");
   const accountService = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");

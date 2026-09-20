@@ -278,3 +278,24 @@ export async function grantVerifiedRewardCredit({ userId, feature, verificationI
   throwDatabaseError(error, "Unable to grant verified reward credit.");
   return data;
 }
+
+// Payment SDKs never set entitlements directly. A future verified provider
+// webhook adapter translates its event into this provider-neutral contract.
+export async function applyVerifiedEntitlementEvent(event) {
+  if (!supabase) throw new Error("Account service is not configured.");
+  const { data, error } = await supabase.rpc("apply_verified_entitlement_event", {
+    p_provider: event.provider,
+    p_provider_event_id: event.providerEventId,
+    p_user_id: event.userId,
+    p_event_type: event.eventType,
+    p_tier: event.tier,
+    p_status: event.status,
+    p_provider_customer_id: event.providerCustomerId || null,
+    p_provider_entitlement_id: event.providerEntitlementId || null,
+    p_period_start: event.periodStart || null,
+    p_period_end: event.periodEnd || null,
+    p_occurred_at: event.occurredAt,
+  });
+  throwDatabaseError(error, "Unable to apply verified entitlement event.");
+  return data;
+}
