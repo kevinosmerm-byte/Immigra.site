@@ -77,3 +77,12 @@ test("active AI sessions are finalized when the app page is hidden", async () =>
   assert.match(promotion, /addEventListener\("pagehide"/);
   assert.match(promotion, /keepalive: true/);
 });
+
+test("abandoned sessions are reconciled without giving back consumed provider usage", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const accountService = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+
+  assert.match(accountService, /reconcileStaleAiSessions\(userId\)/);
+  assert.match(accountService, /event_name", "ai_provider_request"/);
+  assert.match(accountService, /outcome: count > 0 \? "completed" : "refunded"/);
+});

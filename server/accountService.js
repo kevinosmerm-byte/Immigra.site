@@ -9,6 +9,7 @@ const supabase = supabaseUrl && supabaseSecretKey
       auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false },
     })
   : null;
+const STALE_AI_SESSION_HOURS = Math.max(1, Number(process.env.AI_SESSION_STALE_HOURS) || 6);
 
 export function getAccountConfiguration() {
   return {
@@ -104,6 +105,7 @@ export async function getUsageSnapshot(userId) {
 }
 
 export async function startAiSession({ userId, feature, idempotencyKey }) {
+  await reconcileStaleAiSessions(userId);
   const { data, error } = await supabase.rpc("start_ai_session", {
     p_user_id: userId,
     p_feature: feature,
@@ -111,6 +113,33 @@ export async function startAiSession({ userId, feature, idempotencyKey }) {
   });
   throwDatabaseError(error, "Unable to start AI session.");
   return data;
+}
+
+export async function reconcileStaleAiSessions(userId) {
+  const staleBefore = new Date(Date.now() - STALE_AI_SESSION_HOURS * 60 * 60 * 1000).toISOString();
+  const { data: sessions, error } = await supabase
+    .from("ai_sessions")
+    .select("id")
+    .eq("user_id", userId)
+    .in("status", ["reserved", "started"])
+    .lt("started_at", staleBefore)
+    .limit(20);
+  throwDatabaseError(error, "Unable to reconcile abandoned AI sessions.");
+
+  for (const session of sessions || []) {
+    const { count, error: countError } = await supabase
+      .from("usage_events")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .eq("session_id", session.id)
+      .eq("event_name", "ai_provider_request");
+    throwDatabaseError(countError, "Unable to inspect abandoned AI session usage.");
+    await finishAiSession({
+      userId,
+      sessionId: session.id,
+      outcome: count > 0 ? "completed" : "refunded",
+    });
+  }
 }
 
 export async function finishAiSession({ userId, sessionId, outcome }) {
