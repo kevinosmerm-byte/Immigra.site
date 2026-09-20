@@ -57,3 +57,13 @@ test("provider usage metering stores technical metadata without user content", a
   assert.match(server, /response\.usage/);
   assert.match(server, /provider: "d-id"/);
 });
+
+test("session completion aggregates trusted server usage events", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const accountService = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+  const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
+
+  assert.match(accountService, /eq\("event_name", "ai_provider_request"\)/);
+  assert.match(accountService, /total\.requestCount/);
+  assert.doesNotMatch(routes, /req\.body\.telemetry/);
+});

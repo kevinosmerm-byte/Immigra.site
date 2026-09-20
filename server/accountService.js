@@ -113,12 +113,29 @@ export async function startAiSession({ userId, feature, idempotencyKey }) {
   return data;
 }
 
-export async function finishAiSession({ userId, sessionId, outcome, telemetry }) {
+export async function finishAiSession({ userId, sessionId, outcome }) {
+  const { data: events, error: eventsError } = await supabase
+    .from("usage_events")
+    .select("metadata")
+    .eq("user_id", userId)
+    .eq("session_id", sessionId)
+    .eq("event_name", "ai_provider_request");
+  throwDatabaseError(eventsError, "Unable to summarize AI usage.");
+  const telemetry = (events || []).reduce((total, event) => {
+    const metadata = event?.metadata || {};
+    total.requestCount += Math.max(0, Number(metadata.requestCount) || 0);
+    total.inputTokens += Math.max(0, Number(metadata.inputTokens) || 0);
+    total.outputTokens += Math.max(0, Number(metadata.outputTokens) || 0);
+    total.transcriptionSeconds += Math.max(0, Number(metadata.transcriptionSeconds) || 0);
+    if (!total.provider && metadata.provider) total.provider = String(metadata.provider).slice(0, 40);
+    if (!total.model && metadata.model) total.model = String(metadata.model).slice(0, 80);
+    return total;
+  }, { provider: "", model: "", requestCount: 0, inputTokens: 0, outputTokens: 0, transcriptionSeconds: 0 });
   const { data, error } = await supabase.rpc("finish_ai_session", {
     p_user_id: userId,
     p_session_id: sessionId,
     p_outcome: outcome,
-    p_telemetry: telemetry || {},
+    p_telemetry: telemetry,
   });
   throwDatabaseError(error, "Unable to finish AI session.");
   return data;

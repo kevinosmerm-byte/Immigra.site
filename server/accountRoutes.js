@@ -64,20 +64,9 @@ router.post("/sessions/:sessionId/finish", async (req, res) => {
     return res.status(400).json({ error: "Invalid session result.", code: "invalid_session_result" });
   }
 
-  const telemetry = req.body?.telemetry && typeof req.body.telemetry === "object"
-    ? {
-        provider: String(req.body.telemetry.provider || "").slice(0, 40),
-        model: String(req.body.telemetry.model || "").slice(0, 80),
-        requestCount: Math.max(0, Math.min(500, Number(req.body.telemetry.requestCount) || 0)),
-        inputTokens: Math.max(0, Number(req.body.telemetry.inputTokens) || 0),
-        outputTokens: Math.max(0, Number(req.body.telemetry.outputTokens) || 0),
-        transcriptionSeconds: Math.max(0, Number(req.body.telemetry.transcriptionSeconds) || 0),
-      }
-    : {};
-
   try {
     res.set("Cache-Control", "no-store");
-    res.json(await finishAiSession({ userId: req.account.userId, sessionId, outcome, telemetry }));
+    res.json(await finishAiSession({ userId: req.account.userId, sessionId, outcome }));
   } catch (error) {
     console.error("AI session finish error", { sessionId, message: error.message, cause: error.cause?.code });
     res.status(503).json({ error: "The AI session result could not be saved.", code: "session_finish_unavailable" });

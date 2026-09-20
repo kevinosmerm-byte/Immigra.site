@@ -1313,7 +1313,17 @@ function App() {
     return Array.isArray(saved) ? saved : [];
   });
   const [practiceEvents, setPracticeEvents] = useState(() => getPracticeEvents());
-  const { requestAiSession } = usePromotionAccess();
+  const { requestAiSession, finishActiveAiSession } = usePromotionAccess();
+  const finishActiveAiSessionRef = useRef(finishActiveAiSession);
+  useEffect(() => {
+    finishActiveAiSessionRef.current = finishActiveAiSession;
+  }, [finishActiveAiSession]);
+
+  useEffect(() => {
+    if (!["interview", "writing", "coach", "reading"].includes(screen)) {
+      finishActiveAiSessionRef.current("completed");
+    }
+  }, [screen]);
 
   useEffect(() => {
     document.body.dataset.appScreen = screen;

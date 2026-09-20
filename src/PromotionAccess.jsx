@@ -30,11 +30,25 @@ const COPY = {
 };
 
 export function PromotionAccessProvider({ children }) {
-  const { session, usage: accountUsage, startAiSession } = useAccount();
+  const { session, usage: accountUsage, startAiSession, finishAiSession } = useAccount();
   const [pending, setPending] = useState(null);
   const continuationRef = useRef(null);
+  const activeSessionRef = useRef(null);
+
+  const finishActiveAiSession = async (outcome = "completed") => {
+    const active = activeSessionRef.current;
+    activeSessionRef.current = null;
+    setAiRequestContext(null);
+    if (!active?.sessionId) return;
+    try {
+      await finishAiSession(active.sessionId, outcome);
+    } catch (error) {
+      console.warn("Account session result could not be saved.", error?.message);
+    }
+  };
 
   const beginSession = async (feature, continuation) => {
+    await finishActiveAiSession("completed");
     let serverSession = null;
     if (session) {
       try {
@@ -44,6 +58,7 @@ export function PromotionAccessProvider({ children }) {
           accessToken: session.access_token,
           feature,
         });
+        activeSessionRef.current = { sessionId: serverSession?.sessionId, feature };
       } catch (error) {
         setAiRequestContext(null);
         console.warn("Account usage could not be recorded; promotional access continues.", error?.message);
@@ -92,7 +107,7 @@ export function PromotionAccessProvider({ children }) {
   } : localUsage;
 
   return (
-    <PromotionAccessContext.Provider value={{ requestAiSession, getAiUsageSummary }}>
+    <PromotionAccessContext.Provider value={{ requestAiSession, finishActiveAiSession, getAiUsageSummary }}>
       {children}
       {pending && feature && (
         <div className="promotion-access-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
