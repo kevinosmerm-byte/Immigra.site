@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import OpenAI from "openai";
 import multer from "multer";
 import { fetchUscisCaseStatus, getUscisConfig, maskReceiptNumber } from "./uscisService.js";
+import accountRoutes from "./accountRoutes.js";
 
 dotenv.config();
 
@@ -87,6 +88,7 @@ const aiRateLimit = requestRateLimit("ai", 30, 10 * 60 * 1000);
 const transcriptionRateLimit = requestRateLimit("transcription", 10, 10 * 60 * 1000);
 const uscisRateLimit = requestRateLimit("uscis", 15, 10 * 60 * 1000);
 const avatarSessionRateLimit = requestRateLimit("avatar-session", 6, 10 * 60 * 1000);
+const accountRateLimit = requestRateLimit("account", 30, 10 * 60 * 1000);
 
 function enforceUscisManualCooldown(req, res) {
   const requester = req.get("cf-connecting-ip") || req.ip || "unknown";
@@ -341,6 +343,10 @@ app.get("/", (req, res) => {
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
+
+// Account and AI-session accounting are introduced behind configuration. The
+// current launch promotion remains available until Supabase is configured.
+app.use("/account", accountRateLimit, accountRoutes);
 
 app.post("/evaluate-reading", aiRateLimit, async (req, res) => {
   try {
