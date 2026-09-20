@@ -25758,3 +25758,145 @@ select { font: inherit; }
   .reading-card .reading-button { height: 56px; min-height: 56px; margin-top: 12px; grid-template-columns: 38px minmax(0,1fr) 28px; }
   .reading-button-icon { width: 36px; height: 36px; border-radius: 11px; }
 }
+
+/* Writing practice: align every surface and control with the premium Home UI. */
+.writing-ai-content {
+  width: min(100% - 24px, 790px);
+}
+
+.writing-ai-badge,
+.writing-performance,
+.writing-question-card,
+.writing-ai-input {
+  border: 1px solid rgba(103, 177, 238, .21);
+  background: linear-gradient(145deg, rgba(13, 37, 72, .95), rgba(5, 18, 41, .97));
+  box-shadow: 0 16px 38px rgba(0,0,0,.26), inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.writing-ai-badge {
+  padding: 9px 11px;
+  border-radius: 14px;
+}
+
+.writing-ai-badge-icon {
+  border: 1px solid rgba(54, 214, 255, .35);
+  border-radius: 11px;
+  color: #39dcff;
+  background: rgba(22, 166, 222, .1);
+}
+
+.writing-performance {
+  padding: 13px 15px;
+  border-radius: 17px;
+  gap: 9px;
+}
+
+.writing-performance-title { color: #6f8aa9; font-size: .56rem; letter-spacing: .13em; }
+.performance-item strong { color: #f8fbff; }
+.performance-item span { color: #7388a6; }
+.performance-divider { background: rgba(108, 171, 229, .14); }
+
+.writing-question-card {
+  padding: 16px;
+  border-radius: 19px;
+  background:
+    radial-gradient(circle at 6% 4%, rgba(42, 122, 255, .12), transparent 28%),
+    linear-gradient(145deg, rgba(13, 39, 77, .97), rgba(5, 19, 44, .98));
+}
+
+.writing-question-header {
+  padding-bottom: 11px;
+  border-bottom: 1px solid rgba(104, 169, 229, .14);
+}
+
+.writing-question-label { color: #3bddff; font-size: .62rem; }
+.writing-progress { padding: 6px 9px; border: 1px solid rgba(100, 178, 241, .24); border-radius: 9px; color: #9fb5d2; background: rgba(255,255,255,.025); font-size: .65rem; }
+
+.dictation-audio-prompt { margin: 12px 0; }
+
+.dictation-speak-btn {
+  display: grid;
+  grid-template-columns: 38px minmax(0,1fr) 27px;
+  align-items: center;
+  gap: 9px;
+  width: min(100%, 310px);
+  min-height: 54px;
+  padding: 7px 8px;
+  border: 1px solid rgba(67, 203, 255, .3);
+  border-radius: 14px;
+  color: #f7fbff;
+  background: linear-gradient(110deg, rgba(16, 67, 117, .94), rgba(13, 42, 86, .96));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.09), 0 9px 22px rgba(0,70,150,.18);
+  text-align: left;
+}
+
+.dictation-speak-btn .speaker-icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid rgba(53, 217, 255, .34);
+  border-radius: 11px;
+  color: #38dcff;
+  background: rgba(20, 167, 220, .1);
+}
+
+.dictation-speak-btn .speaker-icon svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.dictation-replay-copy small { display: block; color: #68dff8; font-size: .5rem; font-weight: 850; letter-spacing: .12em; }
+.dictation-replay-copy strong { display: block; margin-top: 2px; color: #fff; font-size: .75rem; }
+.dictation-replay-arrow { display: grid; width: 26px; height: 26px; place-items: center; border: 1px solid rgba(111,189,245,.2); border-radius: 8px; color: #a8dff5; background: rgba(255,255,255,.035); }
+
+.dictation-speak-btn:hover,
+.dictation-speak-btn:focus-visible { border-color: rgba(56, 218, 255, .65); background: linear-gradient(110deg, rgba(20, 83, 143, .98), rgba(20, 52, 105, .98)); outline: none; transform: translateY(-1px); }
+
+.writing-line { margin: 12px 0; background: rgba(104, 169, 229, .14); }
+.writing-translation-label { color: #36dafe; font-size: .56rem; }
+.writing-big-spanish { margin: 8px 0 0; color: #a4b5cc; font-size: .84rem; font-style: italic; }
+
+.writing-ai-input {
+  min-height: 68px;
+  padding: 13px 15px;
+  border-radius: 16px;
+  color: #f7fbff;
+  resize: none;
+}
+.writing-ai-input::placeholder { color: #7186a4; }
+.writing-ai-input:focus { border-color: rgba(55, 215, 255, .58); box-shadow: 0 0 0 3px rgba(39, 191, 244, .08), inset 0 1px 0 rgba(255,255,255,.07); outline: none; }
+
+.writing-ai-button {
+  display: grid;
+  grid-template-columns: 40px minmax(0,1fr) 29px;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 60px;
+  margin-top: 10px;
+  padding: 8px 9px;
+  border: 1px solid rgba(76, 199, 249, .32);
+  border-radius: 15px;
+  color: #f8fbff;
+  background: linear-gradient(110deg, rgba(20, 102, 178, .96), rgba(73, 75, 197, .96));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.13), 0 11px 27px rgba(15, 72, 169, .22);
+  text-align: left;
+}
+
+.writing-check-icon { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgba(117, 222, 255, .3); border-radius: 12px; color: #c7f6ff; background: rgba(255,255,255,.07); font-size: 1rem; }
+.writing-check-copy small { display: block; color: #8be8fa; font-size: .51rem; font-weight: 850; letter-spacing: .12em; }
+.writing-check-copy strong { display: block; margin-top: 2px; color: #fff; font-size: .8rem; }
+.writing-check-arrow { display: grid; width: 27px; height: 27px; place-items: center; border: 1px solid rgba(184, 218, 255, .2); border-radius: 9px; color: #d7efff; background: rgba(255,255,255,.045); }
+
+.writing-ai-button:hover:not(:disabled),
+.writing-ai-button:focus-visible { border-color: rgba(79, 218, 255, .68); background: linear-gradient(110deg, rgba(24, 125, 209, .98), rgba(83, 83, 218, .98)); outline: none; transform: translateY(-1px); }
+
+@media (max-width: 620px) {
+  .writing-ai-content { padding-top: 10px; padding-bottom: 14px; }
+  .writing-top-section { margin-bottom: 8px; }
+  .writing-ai-title { font-size: clamp(1.8rem, 8vw, 2.35rem); }
+  .writing-ai-intro { font-size: .74rem; line-height: 1.35; }
+  .writing-ai-badge { display: none; }
+  .writing-question-card { padding: 13px; border-radius: 17px; }
+  .writing-performance { padding: 10px 12px; }
+  .dictation-speak-btn { min-height: 50px; }
+  .writing-ai-input { min-height: 58px; }
+  .writing-ai-button { min-height: 56px; }
+}

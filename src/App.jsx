@@ -2060,8 +2060,9 @@ function App() {
                 })}
                 type="button"
               >
-                <span className="speaker-icon">🔊</span>
-                <span>Click to Replay Audio</span>
+                <span className="speaker-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10" /></svg></span>
+                <span className="dictation-replay-copy"><small>AUDIO PROMPT</small><strong>Replay Sentence</strong></span>
+                <span className="dictation-replay-arrow" aria-hidden="true">→</span>
               </button>
             </div>
             <div className="writing-line"></div>
@@ -2088,8 +2089,9 @@ function App() {
             onClick={checkWriting}
             disabled={isAIThinking}
           >
-            <span>✓</span>
-            {isAIThinking ? "Evaluating..." : "Check Writing"}
+            <span className="writing-check-icon" aria-hidden="true">✓</span>
+            <span className="writing-check-copy"><small>{isAIThinking ? "AI IS REVIEWING" : "READY TO REVIEW"}</small><strong>{isAIThinking ? "Evaluating..." : "Check Writing"}</strong></span>
+            <span className="writing-check-arrow" aria-hidden="true">→</span>
           </button>
           {aiMessage && (
             <div className="writing-ai-evaluation" role="status" aria-live="polite">
