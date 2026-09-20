@@ -33,3 +33,14 @@ test("public account configuration never exposes the server secret", async () =>
   if (previousSecret === undefined) delete process.env.SUPABASE_SECRET_KEY; else process.env.SUPABASE_SECRET_KEY = previousSecret;
   if (previousPublic === undefined) delete process.env.VITE_SUPABASE_PUBLISHABLE_KEY; else process.env.VITE_SUPABASE_PUBLISHABLE_KEY = previousPublic;
 });
+
+test("AI API requests can carry a server-verified account session", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const api = await readFile(new URL("../src/api.js", import.meta.url), "utf8");
+  const server = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+
+  assert.match(api, /X-Citizenship-AI-Session/);
+  assert.match(api, /Authorization/);
+  assert.match(server, /eq\("user_id", authData\.user\.id\)/);
+  assert.match(server, /X-Citizenship-AI-Session-Verified/);
+});

@@ -2,6 +2,7 @@ import { createContext, useContext, useRef, useState } from "react";
 import { getAiFeatureConfig, PROMOTION_ACCESS_CONFIG } from "../shared/featureAccessConfig.js";
 import { getAiUsageSummary, recordAiSessionStart, shouldShowPromotionNotice } from "./access.js";
 import { useAccount } from "./Account.jsx";
+import { setAiRequestContext } from "./api.js";
 
 const PromotionAccessContext = createContext(null);
 
@@ -38,9 +39,17 @@ export function PromotionAccessProvider({ children }) {
     if (session) {
       try {
         serverSession = await startAiSession(feature);
+        setAiRequestContext({
+          sessionId: serverSession?.sessionId,
+          accessToken: session.access_token,
+          feature,
+        });
       } catch (error) {
+        setAiRequestContext(null);
         console.warn("Account usage could not be recorded; promotional access continues.", error?.message);
       }
+    } else {
+      setAiRequestContext(null);
     }
     recordAiSessionStart(feature);
     continuation(serverSession);

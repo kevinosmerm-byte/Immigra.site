@@ -53,6 +53,43 @@ export async function requireAccount(req, res, next) {
   next();
 }
 
+export async function attachOptionalAiSession(req, res, next) {
+  const sessionId = (req.get("x-citizenship-ai-session") || "").trim();
+  if (!sessionId) return next();
+  if (!/^[0-9a-f-]{36}$/i.test(sessionId) || !supabase) {
+    return res.status(401).json({ error: "The AI session is invalid.", code: "invalid_ai_session" });
+  }
+
+  const token = bearerToken(req);
+  if (!token) {
+    return res.status(401).json({ error: "Sign in is required for this AI session.", code: "authentication_required" });
+  }
+
+  const { data: authData, error: authError } = await supabase.auth.getUser(token);
+  if (authError || !authData?.user?.id) {
+    return res.status(401).json({ error: "Your session is invalid or expired.", code: "invalid_session" });
+  }
+
+  const { data: aiSession, error } = await supabase
+    .from("ai_sessions")
+    .select("id, feature, status")
+    .eq("id", sessionId)
+    .eq("user_id", authData.user.id)
+    .maybeSingle();
+  if (error || !aiSession || !["reserved", "started"].includes(aiSession.status)) {
+    return res.status(403).json({ error: "The AI session is not active.", code: "inactive_ai_session" });
+  }
+
+  const requestedFeature = (req.get("x-citizenship-ai-feature") || "").trim();
+  if (requestedFeature && requestedFeature !== aiSession.feature) {
+    return res.status(403).json({ error: "The AI session does not match this feature.", code: "ai_session_feature_mismatch" });
+  }
+
+  req.aiSession = { id: aiSession.id, feature: aiSession.feature, userId: authData.user.id };
+  res.set("X-Citizenship-AI-Session-Verified", "true");
+  return next();
+}
+
 function throwDatabaseError(error, fallback) {
   if (!error) return;
   const wrapped = new Error(fallback);

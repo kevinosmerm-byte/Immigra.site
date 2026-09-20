@@ -5,6 +5,7 @@ import OpenAI from "openai";
 import multer from "multer";
 import { fetchUscisCaseStatus, getUscisConfig, maskReceiptNumber } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
+import { attachOptionalAiSession } from "./accountService.js";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(cors({
   }
 }));
 app.use(express.json({ limit: "256kb" }));
+app.use(attachOptionalAiSession);
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {

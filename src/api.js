@@ -10,6 +10,25 @@ const configuredBaseUrl = Capacitor.isNativePlatform()
   ? import.meta.env.VITE_API_BASE_URL || "/api"
   : "/api";
 const API_BASE_URL = configuredBaseUrl.replace(/\/$/, "");
+let aiRequestContext = null;
+const METERED_AI_PATHS = new Set([
+  "/evaluate",
+  "/evaluate-writing",
+  "/transcribe",
+  "/evaluate-reading",
+  "/coach",
+  "/avatar/session",
+]);
+
+export function setAiRequestContext(context) {
+  aiRequestContext = context?.sessionId && context?.accessToken
+    ? {
+        sessionId: context.sessionId,
+        accessToken: context.accessToken,
+        feature: context.feature || "",
+      }
+    : null;
+}
 
 export function apiUrl(path) {
   const normalizedPath = path.startsWith("/") ? path : `/${path}`;
@@ -17,7 +36,14 @@ export function apiUrl(path) {
 }
 
 export function apiFetch(path, options) {
-  return fetch(apiUrl(path), options);
+  const headers = new Headers(options?.headers || {});
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  if (aiRequestContext && METERED_AI_PATHS.has(normalizedPath)) {
+    headers.set("Authorization", `Bearer ${aiRequestContext.accessToken}`);
+    headers.set("X-Citizenship-AI-Session", aiRequestContext.sessionId);
+    if (aiRequestContext.feature) headers.set("X-Citizenship-AI-Feature", aiRequestContext.feature);
+  }
+  return fetch(apiUrl(path), { ...options, headers });
 }
 
 export async function apiJson(path, options) {
