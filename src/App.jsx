@@ -15,6 +15,7 @@ import { usePromotionAccess } from "./PromotionAccess.jsx";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
 import ImmigrationHelp from "./ImmigrationHelp";
 import { speakAppText, stopAppSpeech } from "./speech";
+import { AccountButton, AccountSheet } from "./Account.jsx";
 
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
@@ -419,6 +420,7 @@ function Home({
   onOpenSettings,
   onOpenImmigrationHelp,
   onOpenPodcasts,
+  onOpenAccount,
   language,
   onLanguageChange,
 }) {
@@ -435,6 +437,7 @@ function Home({
         </div>
 
         <div className="language-selector">
+          <AccountButton language={language} onClick={onOpenAccount} />
           <button
             className="home-language"
             onClick={() => onLanguageChange(language === "en" ? "es" : "en")}
@@ -1302,6 +1305,7 @@ function App() {
   const [onboardingComplete, setOnboardingComplete] = useState(
     () => readLocalValue(ONBOARDING_STORAGE_KEY) === "complete"
   );
+  const [accountOpen, setAccountOpen] = useState(false);
   const trackerCopy = CASE_TRACKER_COPY[language];
   
   const [civicsViewed, setCivicsViewed] = useState(() => {
@@ -2378,6 +2382,7 @@ function App() {
   }
 
   return (
+    <>
     <Home
       onStartInterview={() => startInterview("full")}
       onStartCivicsInterview={() => startInterview("civics")}
@@ -2389,6 +2394,7 @@ function App() {
       onOpenProgress={() => setScreen("progress")}
       onOpenImmigrationHelp={() => setScreen("immigrationHelp")}
       onOpenPodcasts={() => setScreen("podcasts")}
+      onOpenAccount={() => setAccountOpen(true)}
       onOpenSettings={() => {
         window.location.hash = "privacy";
         setScreen("settings");
@@ -2396,6 +2402,8 @@ function App() {
       language={language}
       onLanguageChange={setPreferredLanguage}
     />
+    {accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}
+    </>
   );
 }
 export default App;

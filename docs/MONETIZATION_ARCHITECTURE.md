@@ -9,7 +9,7 @@ This matches the current React + Capacitor + Express architecture and keeps Goog
 ## Phases
 
 1. **Central configuration — complete.** AI features and introductory limits live in `shared/featureAccessConfig.js`.
-2. **Account foundation — prepared.** Supabase is optional until credentials are configured. The app remains usable during launch promotion.
+2. **Account foundation — active.** Supabase is configured, and the optional email-link account UI preserves anonymous promotional access and local progress.
 3. **Durable usage ledger — prepared.** The migration creates profiles, entitlements, feature configuration, sessions, rewards and privacy-conscious usage events.
 4. **Endpoint protection — next.** AI calls will require an authenticated, active `ai_session_id`. Existing AI behavior remains unchanged until authentication UX is ready.
 5. **Quota UI — promotional version complete.** The current sheet informs users of future Pro pricing and permits continued promotional access.
@@ -70,4 +70,3 @@ Store purchases are adapters, not business logic. Verified Google Play, App Stor
 - Reward callbacks and subscription webhooks need signature verification and replay protection.
 - Account deletion/export workflows and legal copy must be completed before public account signup.
 - Database migration and RLS tests must run against the actual Supabase project before enforcement.
-

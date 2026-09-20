@@ -25251,6 +25251,43 @@ select { font: inherit; }
 @keyframes promotion-fade-in { from { opacity: 0; } }
 @keyframes promotion-sheet-in { from { opacity: 0; transform: translateY(24px) scale(.98); } }
 
+/* Optional accounts: compact Home control and a premium, mobile-first sheet. */
+.home-account-button {
+  display: grid; place-items: center; width: 34px; height: 34px; padding: 0;
+  border: 1px solid rgba(122, 183, 255, .28); border-radius: 50%;
+  color: #a9c7e9; background: rgba(7, 22, 44, .72); cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06); transition: .2s ease;
+}
+.home-account-button:hover { color: #fff; border-color: rgba(45, 220, 255, .7); transform: translateY(-1px); }
+.home-account-button.signed-in { color: #041321; border-color: #35e4ca; background: #35e4ca; box-shadow: 0 0 16px rgba(53,228,202,.25); }
+.account-backdrop { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: end center; padding: 16px; background: rgba(0,5,15,.74); backdrop-filter: blur(12px); animation: promotion-fade-in .2s ease-out; }
+.account-sheet { position: relative; width: min(100%, 460px); padding: 28px; overflow: hidden; border: 1px solid rgba(73,187,255,.32); border-radius: 28px; color: #eef7ff; background: linear-gradient(155deg, rgba(13,37,72,.98), rgba(4,15,34,.99) 65%); box-shadow: 0 24px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08); animation: promotion-sheet-in .3s cubic-bezier(.2,.8,.2,1); }
+.account-sheet::before { content:""; position:absolute; width:230px; height:230px; right:-100px; top:-130px; border-radius:50%; background:rgba(20,191,255,.13); filter:blur(24px); pointer-events:none; }
+.account-close { position:absolute; top:14px; right:14px; width:34px; height:34px; border:1px solid rgba(151,194,241,.18); border-radius:50%; color:#a9bdd5; background:rgba(3,12,28,.62); font-size:20px; cursor:pointer; }
+.account-mark { display:grid; place-items:center; width:50px; height:50px; margin-bottom:18px; border:1px solid #27d9ff; border-radius:16px; color:#35e4ff; background:linear-gradient(145deg,rgba(28,161,230,.24),rgba(74,75,221,.2)); box-shadow:0 0 24px rgba(30,192,255,.14); font-size:24px; }
+.account-eyebrow { margin:0 0 8px; color:#37ddf8; font-size:.65rem; font-weight:900; letter-spacing:.13em; }
+.account-sheet h2 { margin:0; max-width:360px; font-size:clamp(1.55rem,6vw,2rem); line-height:1.08; letter-spacing:-.035em; }
+.account-intro { margin:12px 0 22px; color:#9fb0c7; font-size:.84rem; line-height:1.55; }
+.account-label { display:block; margin:0 0 8px; color:#bcd0e7; font-size:.68rem; font-weight:850; letter-spacing:.08em; text-transform:uppercase; }
+.account-input { box-sizing:border-box; width:100%; height:50px; padding:0 15px; border:1px solid rgba(124,178,237,.28); border-radius:14px; outline:0; color:#fff; background:rgba(2,12,28,.72); font:inherit; }
+.account-input:focus { border-color:#32d8ff; box-shadow:0 0 0 3px rgba(50,216,255,.1); }
+.account-primary { display:flex; align-items:center; justify-content:space-between; width:100%; min-height:50px; margin-top:12px; padding:0 17px; border:1px solid rgba(72,218,255,.65); border-radius:15px; color:#f7fbff; background:linear-gradient(100deg,#1264a5,#4d49c5); box-shadow:0 10px 28px rgba(12,82,176,.24), inset 0 1px 0 rgba(255,255,255,.16); font-size:.73rem; font-weight:900; letter-spacing:.035em; cursor:pointer; }
+.account-primary.secondary { background:rgba(20,61,106,.7); }
+.account-primary:disabled { opacity:.58; cursor:wait; }
+.account-primary b { display:grid; place-items:center; width:27px; height:27px; border:1px solid rgba(255,255,255,.18); border-radius:50%; }
+.account-message,.account-identity,.account-access { margin:16px 0; padding:15px; border:1px solid rgba(110,172,235,.2); border-radius:16px; color:#b8c9dd; background:rgba(7,25,51,.68); font-size:.82rem; line-height:1.5; }
+.account-identity,.account-access { display:grid; gap:5px; }
+.account-identity span,.account-access span { color:#35dff8; font-size:.59rem; font-weight:900; letter-spacing:.12em; }
+.account-identity strong,.account-access strong { overflow:hidden; color:#fff; text-overflow:ellipsis; }
+.account-access small { color:#79d9bf; }
+.account-status { margin:12px 3px 0; font-size:.76rem; line-height:1.45; }
+.account-status.sent { color:#70e2bd; }.account-status.error { color:#ff91a3; }
+.account-note { margin:18px 4px 0; color:#71849d; font-size:.66rem; line-height:1.5; text-align:center; }
+.account-loading { width:28px; height:28px; margin:28px auto; border:2px solid rgba(255,255,255,.12); border-top-color:#38dfff; border-radius:50%; animation:account-spin .8s linear infinite; }
+@keyframes account-spin { to { transform:rotate(360deg); } }
+@media (min-width: 620px) { .account-backdrop { place-items:center; }.account-sheet { padding:34px; } }
+@media (max-width: 430px) { .account-backdrop { padding:8px; }.account-sheet { padding:26px 19px max(20px,env(safe-area-inset-bottom)); border-radius:24px; } }
+
 @media (max-height: 720px) and (max-width: 620px) {
   .practice-content { padding-top: 10px; }
   .practice-intro { margin-bottom: 10px; }
