@@ -30,10 +30,19 @@ const COPY = {
 };
 
 export function PromotionAccessProvider({ children }) {
-  const { session, usage: accountUsage, startAiSession, finishAiSession } = useAccount();
+  const { session, usage: accountUsage, startAiSession, finishAiSession, recordAccountEvent } = useAccount();
   const [pending, setPending] = useState(null);
   const continuationRef = useRef(null);
   const activeSessionRef = useRef(null);
+  const lastNoticeRef = useRef("");
+
+  useEffect(() => {
+    if (!pending || !session?.access_token) return;
+    const noticeKey = `${pending.feature}:${session.user?.id || "account"}`;
+    if (lastNoticeRef.current === noticeKey) return;
+    lastNoticeRef.current = noticeKey;
+    recordAccountEvent("paywall_viewed", pending.feature).catch(() => {});
+  }, [pending, recordAccountEvent, session?.access_token, session?.user?.id]);
 
   const finishActiveAiSession = async (outcome = "completed", options = {}) => {
     const active = activeSessionRef.current;

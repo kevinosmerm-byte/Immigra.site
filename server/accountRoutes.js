@@ -7,6 +7,7 @@ import {
   getAccountConfiguration,
   getPublicAccountConfiguration,
   getUsageSnapshot,
+  recordProductEvent,
   requireAccount,
   startAiSession,
 } from "./accountService.js";
@@ -26,6 +27,24 @@ router.get("/public-config", (_req, res) => {
 });
 
 router.use(requireAccount);
+
+router.post("/events", async (req, res) => {
+  try {
+    await recordProductEvent({
+      userId: req.account.userId,
+      eventName: typeof req.body?.eventName === "string" ? req.body.eventName.trim() : "",
+      feature: typeof req.body?.feature === "string" ? req.body.feature.trim() : "",
+    });
+    return res.status(204).end();
+  } catch (error) {
+    const unsupported = error.message === "Unsupported product event.";
+    if (!unsupported) console.error("Product event error", { message: error.message, cause: error.cause?.code });
+    return res.status(unsupported ? 400 : 503).json({
+      error: unsupported ? "Unsupported product event." : "Product analytics are temporarily unavailable.",
+      code: unsupported ? "invalid_product_event" : "analytics_unavailable",
+    });
+  }
+});
 
 router.get("/usage", async (req, res) => {
   try {

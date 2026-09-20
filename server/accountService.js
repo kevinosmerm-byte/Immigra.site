@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
+import { getAiFeatureConfig } from "../shared/featureAccessConfig.js";
 
 const supabaseUrl = process.env.SUPABASE_URL?.trim();
 const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY?.trim();
@@ -239,4 +240,27 @@ export async function recordAiUsageEvent({ aiSession, provider, model, usage = {
     metadata,
   });
   throwDatabaseError(error, "Unable to record AI provider usage.");
+}
+
+const PRODUCT_EVENT_NAMES = new Set([
+  "paywall_viewed",
+  "upgrade_started",
+  "rewarded_ad_offered",
+  "rewarded_ad_started",
+  "rewarded_ad_completed",
+  "subscription_activated",
+]);
+
+export async function recordProductEvent({ userId, eventName, feature }) {
+  if (!supabase || !userId || !PRODUCT_EVENT_NAMES.has(eventName)) {
+    throw new Error("Unsupported product event.");
+  }
+  const normalizedFeature = getAiFeatureConfig(feature) ? feature : null;
+  const { error } = await supabase.from("usage_events").insert({
+    user_id: userId,
+    event_name: eventName,
+    feature: normalizedFeature,
+    metadata: {},
+  });
+  throwDatabaseError(error, "Unable to record product event.");
 }

@@ -121,6 +121,16 @@ export function AccountProvider({ children }) {
       loadUsage(session.access_token);
       return result;
     },
+    recordAccountEvent: async (eventName, feature) => {
+      if (!session?.access_token) return false;
+      const response = await fetch("/api/account/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ eventName, feature }),
+        keepalive: true,
+      });
+      return response.ok;
+    },
     exportAccountData: async () => {
       if (!session?.access_token) return null;
       const response = await fetch("/api/account/export", {

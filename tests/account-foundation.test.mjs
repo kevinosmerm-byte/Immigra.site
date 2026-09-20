@@ -58,6 +58,20 @@ test("provider usage metering stores technical metadata without user content", a
   assert.match(server, /provider: "d-id"/);
 });
 
+test("product analytics are authenticated, allowlisted, and content-free", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+  const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
+  const promotion = await readFile(new URL("../src/PromotionAccess.jsx", import.meta.url), "utf8");
+
+  assert.match(routes, /router\.use\(requireAccount\)[\s\S]*router\.post\("\/events"/);
+  assert.match(service, /PRODUCT_EVENT_NAMES/);
+  assert.match(service, /"paywall_viewed"/);
+  assert.match(service, /metadata: \{\}/);
+  assert.doesNotMatch(service, /conversationText|receiptNumber|audioBlob|transcriptText/);
+  assert.match(promotion, /recordAccountEvent\("paywall_viewed", pending\.feature\)/);
+});
+
 test("session completion aggregates trusted server usage events", async () => {
   const { readFile } = await import("node:fs/promises");
   const accountService = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
