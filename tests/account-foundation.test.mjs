@@ -120,6 +120,20 @@ test("costly AI endpoints honor remote and emergency feature switches", async ()
   assert.match(promotion, /setAiRequestContext\(\{ feature \}\)/);
 });
 
+test("direct provider calls require an authorized session after promotion ends", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+  const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
+
+  assert.match(service, /PROMOTION_ACCESS_OVERRIDE/);
+  assert.match(service, /eq\("key", "launch_promotion"\)/);
+  assert.match(service, /allowContinueWithoutPayment/);
+  assert.match(server, /requireAuthorizedAiAccess/);
+  assert.match(server, /req\.aiSession\?\.id/);
+  assert.match(server, /code: "ai_session_required"/);
+  assert.equal((server.match(/requireAuthorizedAiAccess, (?:aiRateLimit|transcriptionRateLimit|avatarSessionRateLimit)/g) || []).length, 6);
+});
+
 test("session completion aggregates trusted server usage events", async () => {
   const { readFile } = await import("node:fs/promises");
   const accountService = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");

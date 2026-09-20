@@ -14,6 +14,7 @@ const STALE_AI_SESSION_HOURS = Math.max(1, Number(process.env.AI_SESSION_STALE_H
 const FEATURE_AVAILABILITY_CACHE_MS = 30_000;
 const featureAvailabilityCache = new Map();
 const disabledAiFeatures = new Set((process.env.DISABLED_AI_FEATURES || "").split(",").map((item) => item.trim()).filter(Boolean));
+let promotionAccessCache = null;
 
 export function getAccountConfiguration() {
   return {
@@ -53,6 +54,28 @@ export async function isAiFeatureEnabled(feature) {
   const enabled = data?.enabled !== false;
   featureAvailabilityCache.set(feature, { enabled, expiresAt: Date.now() + FEATURE_AVAILABILITY_CACHE_MS });
   return enabled;
+}
+
+export async function isPromotionalAiAccessAllowed() {
+  const override = (process.env.PROMOTION_ACCESS_OVERRIDE || "").trim().toLowerCase();
+  if (override === "enabled") return true;
+  if (override === "disabled") return false;
+  if (!supabase) return true;
+  if (promotionAccessCache && promotionAccessCache.expiresAt > Date.now()) {
+    return promotionAccessCache.allowed;
+  }
+  const { data, error } = await supabase
+    .from("app_settings")
+    .select("value")
+    .eq("key", "launch_promotion")
+    .maybeSingle();
+  if (error) {
+    console.error("Promotion access configuration unavailable; preserving launch access", { code: error.code || "" });
+    return true;
+  }
+  const allowed = data?.value?.active === true && data?.value?.allowContinueWithoutPayment === true;
+  promotionAccessCache = { allowed, expiresAt: Date.now() + FEATURE_AVAILABILITY_CACHE_MS };
+  return allowed;
 }
 
 function bearerToken(req) {

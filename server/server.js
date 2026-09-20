@@ -6,7 +6,7 @@ import multer from "multer";
 import { createHmac } from "node:crypto";
 import { fetchUscisCaseStatus, getUscisConfig, maskReceiptNumber } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
-import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, recordAiUsageEvent } from "./accountService.js";
+import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, isPromotionalAiAccessAllowed, recordAiUsageEvent } from "./accountService.js";
 
 dotenv.config();
 
@@ -140,6 +140,20 @@ function requireAiFeature(defaultFeature, allowedFeatures = [defaultFeature]) {
   };
 }
 
+async function requireAuthorizedAiAccess(req, res, next) {
+  if (req.aiSession?.id) return next();
+  try {
+    if (await isPromotionalAiAccessAllowed()) return next();
+  } catch (error) {
+    console.error("Promotion access check failed", { message: error.message, cause: error.cause?.code });
+    return res.status(503).json({ error: "AI access could not be verified.", code: "access_check_unavailable" });
+  }
+  return res.status(403).json({
+    error: "Start an authorized AI practice session before using this feature.",
+    code: "ai_session_required",
+  });
+}
+
 function enforceUscisManualCooldown(req, res) {
   const requester = req.get("cf-connecting-ip") || req.ip || "unknown";
   const now = Date.now();
@@ -222,7 +236,7 @@ async function recordProviderUsage(req, { provider, model, usage, transcriptionS
   }
 }
 
-app.post("/evaluate", requireAiFeature("classicInterview"), aiRateLimit, async (req, res) => {
+app.post("/evaluate", requireAiFeature("classicInterview"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
@@ -300,7 +314,7 @@ res.json(result);
     });
   }
 });
-app.post("/evaluate-writing", requireAiFeature("writing"), aiRateLimit, async (req, res) => {
+app.post("/evaluate-writing", requireAiFeature("writing"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
@@ -372,7 +386,7 @@ ${answer}
     });
   }
 });
-app.post("/transcribe", requireAiFeature("speaking", ["speaking", "coach", "classicInterview", "realInterview"]), transcriptionRateLimit, upload.single("audio"), async (req, res) => {
+app.post("/transcribe", requireAiFeature("speaking", ["speaking", "coach", "classicInterview", "realInterview"]), requireAuthorizedAiAccess, transcriptionRateLimit, upload.single("audio"), async (req, res) => {
   let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
@@ -433,7 +447,7 @@ app.get("/health", (req, res) => {
 app.use("/account", accountRateLimit, accountRoutes);
 app.use("/api/account", accountRateLimit, accountRoutes);
 
-app.post("/evaluate-reading", requireAiFeature("speaking"), aiRateLimit, async (req, res) => {
+app.post("/evaluate-reading", requireAiFeature("speaking"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
@@ -501,7 +515,7 @@ ${transcript}
     });
   }
 });
-app.post("/coach", requireAiFeature("coach"), aiRateLimit, async (req, res) => {
+app.post("/coach", requireAiFeature("coach"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
@@ -571,7 +585,7 @@ app.get("/avatar/status", (req, res) => {
   res.json({ provider: "d-id", configured: getDidConfiguration().configured });
 });
 
-app.post("/avatar/session", requireAiFeature("realInterview"), avatarSessionRateLimit, async (req, res) => {
+app.post("/avatar/session", requireAiFeature("realInterview"), requireAuthorizedAiAccess, avatarSessionRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
     const config = getDidConfiguration();
