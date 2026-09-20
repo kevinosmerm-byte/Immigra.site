@@ -19,6 +19,7 @@ android/keystore.properties
 android/app/*.jks
 android/app/*.keystore
 *.aab
+*.idsig
 
 # Local secrets and deployment configuration
 .env
