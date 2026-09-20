@@ -306,3 +306,16 @@ test("automatic session closure refunds empty sessions and completes used sessio
   assert.match(promotion, /finishActiveAiSession\("auto"\)/);
   assert.match(app, /finishActiveAiSessionRef\.current\("auto"\)/);
 });
+
+test("explicit server access denials cannot fall through into an AI feature", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
+  const promotion = await readFile(new URL("../src/PromotionAccess.jsx", import.meta.url), "utf8");
+
+  assert.match(account, /response\.status === 403 && decision\.allowed === false/);
+  assert.match(account, /accessError\.decision = decision/);
+  assert.match(promotion, /error\?\.decision\?\.allowed === false/);
+  assert.match(promotion, /blocked: true/);
+  assert.match(promotion, /pending\.blocked \? blockedTitle : copy\.title/);
+  assert.match(promotion, /!pending\.blocked && <button className="promotion-access-continue"/);
+});

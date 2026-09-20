@@ -16,6 +16,10 @@ const COPY = {
     continue: "CONTINUE FREE DURING PROMOTION",
     note: "Your Civics study tools, podcasts and educational resources remain free.",
     close: "Not now",
+    unavailableTitle: "This AI practice is currently unavailable",
+    unavailableBody: "New sessions are paused right now. Your free study tools remain available while access is restored.",
+    quotaTitle: "You've completed your included AI practices",
+    quotaBody: "More AI practice will be available through Citizenship AI Pro or an eligible rewarded session.",
   },
   es: {
     eyebrow: "PROMOCIÓN DE LANZAMIENTO",
@@ -26,6 +30,10 @@ const COPY = {
     continue: "CONTINUAR GRATIS DURANTE LA PROMOCIÓN",
     note: "Las preguntas cívicas, podcasts y recursos educativos permanecen gratis.",
     close: "Ahora no",
+    unavailableTitle: "Esta práctica con IA no está disponible ahora",
+    unavailableBody: "Las sesiones nuevas están pausadas. Tus herramientas gratuitas de estudio siguen disponibles mientras restablecemos el acceso.",
+    quotaTitle: "Completaste tus prácticas de IA incluidas",
+    quotaBody: "Habrá más práctica con IA mediante Citizenship AI Pro o una sesión con recompensa elegible.",
   },
 };
 
@@ -69,7 +77,7 @@ export function PromotionAccessProvider({ children }) {
     return () => window.removeEventListener("pagehide", finishBeforeLeaving);
   }, [finishAiSession]);
 
-  const beginSession = async (feature, continuation) => {
+  const beginSession = async (feature, continuation, language = "en") => {
     await finishActiveAiSession("auto");
     let serverSession = null;
     if (session) {
@@ -83,6 +91,18 @@ export function PromotionAccessProvider({ children }) {
         activeSessionRef.current = { sessionId: serverSession?.sessionId, feature };
       } catch (error) {
         setAiRequestContext(null);
+        if (error?.decision?.allowed === false) {
+          continuationRef.current = null;
+          setPending({
+            feature,
+            language: language === "es" ? "es" : "en",
+            blocked: true,
+            reason: error.decision.reason,
+            canWatchAd: Boolean(error.decision.canWatchAd),
+            canUpgrade: Boolean(error.decision.canUpgrade),
+          });
+          return;
+        }
         console.warn("Account usage could not be recorded; promotional access continues.", error?.message);
       }
     } else {
@@ -99,11 +119,11 @@ export function PromotionAccessProvider({ children }) {
       return;
     }
     if (PROMOTION_ACCESS_CONFIG.promotionActive && shouldShowPromotionNotice(feature)) {
-      continuationRef.current = () => beginSession(feature, continuation);
+      continuationRef.current = () => beginSession(feature, continuation, language);
       setPending({ feature, language: language === "es" ? "es" : "en" });
       return;
     }
-    beginSession(feature, continuation);
+    beginSession(feature, continuation, language);
   };
 
   const close = () => {
@@ -119,6 +139,8 @@ export function PromotionAccessProvider({ children }) {
   };
 
   const copy = pending ? COPY[pending.language] : COPY.en;
+  const blockedTitle = pending?.reason === "quota_exhausted" ? copy.quotaTitle : copy.unavailableTitle;
+  const blockedBody = pending?.reason === "quota_exhausted" ? copy.quotaBody : copy.unavailableBody;
   const feature = pending ? getAiFeatureConfig(pending.feature) : null;
   const localUsage = pending ? getAiUsageSummary().features[pending.feature] : null;
   const remoteUsage = pending ? accountUsage?.features?.[pending.feature] : null;
@@ -137,14 +159,14 @@ export function PromotionAccessProvider({ children }) {
             <button className="promotion-access-close" onClick={close} type="button" aria-label={copy.close}>×</button>
             <div className="promotion-access-orb" aria-hidden="true">✦</div>
             <p className="promotion-access-eyebrow">{copy.eyebrow}</p>
-            <h2 id="promotion-access-title">{copy.title}</h2>
+            <h2 id="promotion-access-title">{pending.blocked ? blockedTitle : copy.title}</h2>
             <div className="promotion-access-feature"><span>{feature.label}</span><strong>{usage?.limit || 2} / {usage?.limit || 2}</strong></div>
-            <p className="promotion-access-body">{copy.body}</p>
+            <p className="promotion-access-body">{pending.blocked ? blockedBody : copy.body}</p>
             <div className="promotion-access-pro" aria-label={copy.pro}>
               <span>PRO</span><div><strong>{copy.pro}</strong><small>{copy.proDetail}</small></div>
             </div>
-            <div className="promotion-access-divider"><span></span><small>LAUNCH ACCESS</small><span></span></div>
-            <button className="promotion-access-continue" onClick={continuePromotion} type="button"><span>{copy.continue}</span><b>→</b></button>
+            {!pending.blocked && <div className="promotion-access-divider"><span></span><small>LAUNCH ACCESS</small><span></span></div>}
+            {!pending.blocked && <button className="promotion-access-continue" onClick={continuePromotion} type="button"><span>{copy.continue}</span><b>→</b></button>}
             <p className="promotion-access-note">{copy.note}</p>
           </section>
         </div>

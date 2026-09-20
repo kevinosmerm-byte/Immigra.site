@@ -104,6 +104,11 @@ export function AccountProvider({ children }) {
         body: JSON.stringify({ feature, idempotencyKey: crypto.randomUUID() }),
       });
       const decision = await response.json().catch(() => ({}));
+      if (response.status === 403 && decision.allowed === false) {
+        const accessError = new Error(decision.reason || "AI session unavailable");
+        accessError.decision = decision;
+        throw accessError;
+      }
       if (!response.ok || !decision.allowed) throw new Error(decision.error || decision.reason || "AI session unavailable");
       loadUsage(session.access_token);
       return decision;
