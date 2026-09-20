@@ -201,6 +201,7 @@ async function recordProviderUsage(req, { provider, model, usage, transcriptionS
 }
 
 app.post("/evaluate", aiRateLimit, async (req, res) => {
+  let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
     const question = readText(req.body?.question, 1_000);
@@ -210,6 +211,7 @@ app.post("/evaluate", aiRateLimit, async (req, res) => {
       return res.status(400).json({ error: "Question, answer, and accepted answers are required." });
     }
 
+    providerAttempted = true;
     const response = await openai.responses.create({
       model: OPENAI_TEXT_MODEL,
       max_output_tokens: MAX_AI_OUTPUT_TOKENS,
@@ -267,6 +269,7 @@ if (!result.action) {
 
 res.json(result);
   } catch (error) {
+    if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
     console.error(error);
 
     res.status(500).json({
@@ -276,6 +279,7 @@ res.json(result);
   }
 });
 app.post("/evaluate-writing", aiRateLimit, async (req, res) => {
+  let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
     const sentence = readText(req.body?.sentence, 1_000);
@@ -284,6 +288,7 @@ app.post("/evaluate-writing", aiRateLimit, async (req, res) => {
       return res.status(400).json({ error: "Sentence and answer are required." });
     }
 
+    providerAttempted = true;
     const response = await openai.responses.create({
       model: OPENAI_TEXT_MODEL,
       max_output_tokens: MAX_AI_OUTPUT_TOKENS,
@@ -337,6 +342,7 @@ ${answer}
     res.json(result);
 
   } catch (error) {
+    if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
     console.error("Writing evaluation error:", error);
 
     res.status(500).json({
@@ -345,6 +351,7 @@ ${answer}
   }
 });
 app.post("/transcribe", transcriptionRateLimit, upload.single("audio"), async (req, res) => {
+  let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
     if (!req.file) {
@@ -367,6 +374,7 @@ app.post("/transcribe", transcriptionRateLimit, upload.single("audio"), async (r
       }
     );
 
+    providerAttempted = true;
     const transcription = await openai.audio.transcriptions.create({
       file: audioFile,
       model: "gpt-4o-mini-transcribe",
@@ -380,6 +388,7 @@ app.post("/transcribe", transcriptionRateLimit, upload.single("audio"), async (r
     });
 
   } catch (error) {
+    if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: "gpt-4o-mini-transcribe" }).catch(() => {});
     console.error("Reading transcription error:", error);
 
     res.status(500).json({
@@ -403,6 +412,7 @@ app.use("/account", accountRateLimit, accountRoutes);
 app.use("/api/account", accountRateLimit, accountRoutes);
 
 app.post("/evaluate-reading", aiRateLimit, async (req, res) => {
+  let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
     const sentence = readText(req.body?.sentence, 1_000);
@@ -411,6 +421,7 @@ app.post("/evaluate-reading", aiRateLimit, async (req, res) => {
       return res.status(400).json({ error: "Sentence and transcript are required." });
     }
 
+    providerAttempted = true;
     const response = await openai.responses.create({
       model: OPENAI_TEXT_MODEL,
       max_output_tokens: MAX_AI_OUTPUT_TOKENS,
@@ -460,6 +471,7 @@ ${transcript}
     res.json(result);
 
   } catch (error) {
+    if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
     console.error("Reading evaluation error:", error);
 
     res.status(500).json({
@@ -468,6 +480,7 @@ ${transcript}
   }
 });
 app.post("/coach", aiRateLimit, async (req, res) => {
+  let providerAttempted = false;
   try {
     if (!requireOpenAI(res)) return;
     const message = readText(req.body?.message, 2_000);
@@ -476,6 +489,7 @@ app.post("/coach", aiRateLimit, async (req, res) => {
       return res.status(400).json({ error: "A message is required." });
     }
 
+    providerAttempted = true;
     const response = await openai.responses.create({
       model: OPENAI_TEXT_MODEL,
       max_output_tokens: MAX_AI_OUTPUT_TOKENS,
@@ -520,6 +534,7 @@ ${message}
     res.json(result);
 
   } catch (error) {
+    if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
     console.error("Coach AI error:", error);
 
     res.status(500).json({
@@ -535,6 +550,7 @@ app.get("/avatar/status", (req, res) => {
 });
 
 app.post("/avatar/session", avatarSessionRateLimit, async (req, res) => {
+  let providerAttempted = false;
   try {
     const config = getDidConfiguration();
     if (!config.configured) {
@@ -546,6 +562,7 @@ app.post("/avatar/session", avatarSessionRateLimit, async (req, res) => {
       return res.status(403).json({ error: "This origin is not permitted to start an avatar session." });
     }
 
+    providerAttempted = true;
     const didResponse = await fetch(
       `https://api.d-id.com/agents/${encodeURIComponent(config.agentId)}/client-keys`,
       {
@@ -566,6 +583,7 @@ app.post("/avatar/session", avatarSessionRateLimit, async (req, res) => {
 
     const didPayload = await didResponse.json().catch(() => ({}));
     if (!didResponse.ok || !didPayload.client_key) {
+      await recordProviderUsage(req, { provider: "d-id", model: "agents-client-key" });
       console.error("D-ID client-key request failed", { status: didResponse.status });
       return res.status(502).json({ error: "The live avatar service could not start. Please continue with the standard practice interview." });
     }
@@ -580,6 +598,7 @@ app.post("/avatar/session", avatarSessionRateLimit, async (req, res) => {
       expiresInSeconds: DID_CLIENT_KEY_TTL_SECONDS,
     });
   } catch (error) {
+    if (providerAttempted) await recordProviderUsage(req, { provider: "d-id", model: "agents-client-key" }).catch(() => {});
     console.error("D-ID avatar session error", { message: error.message });
     return res.status(502).json({ error: "The live avatar service could not start. Please continue with the standard practice interview." });
   }

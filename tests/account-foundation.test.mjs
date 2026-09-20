@@ -180,3 +180,13 @@ test("paid and external providers have bounded waits and retries", async () => {
   assert.match(server, /AbortSignal\.timeout\(15_000\)/);
   assert.equal((uscis.match(/signal: AbortSignal\.timeout\(USCIS_REQUEST_TIMEOUT_MS\)/g) || []).length, 2);
 });
+
+test("failed provider attempts remain visible in cost telemetry", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
+
+  assert.equal((server.match(/let providerAttempted = false/g) || []).length, 6);
+  assert.equal((server.match(/if \(providerAttempted\) await recordProviderUsage/g) || []).length, 6);
+  assert.match(server, /provider: "d-id", model: "agents-client-key"/);
+  assert.match(server, /model: "gpt-4o-mini-transcribe"/);
+});
