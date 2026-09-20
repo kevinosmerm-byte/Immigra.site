@@ -17,6 +17,7 @@ This matches the current React + Capacitor + Express architecture and keeps Goog
 7. **Subscriptions — future.** Provider webhooks will update `entitlements`; app code only asks whether Pro is active.
 8. **Cost telemetry — active.** Provider, model, token totals, request count and transcription duration are recorded without conversation or audio content.
    Text responses are capped at 220 output tokens by default (server-configurable, hard ceiling 600), and microphone clips stop automatically after 45 seconds.
+   OpenAI requests time out after 30 seconds with at most one SDK retry; D-ID and USCIS requests time out after 15 seconds.
 9. **Abuse and recovery testing — required before enforcement.** Test rapid starts, replayed keys, expired tokens, failed AI providers and refunds.
 
 ## Session boundaries

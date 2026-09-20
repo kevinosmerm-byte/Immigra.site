@@ -170,3 +170,13 @@ test("AI responses and microphone recordings have explicit cost ceilings", async
   assert.match(audio, /MAX_RECORDING_DURATION_MS = 45_000/);
   assert.match(audio, /automaticStopTimer = window\.setTimeout/);
 });
+
+test("paid and external providers have bounded waits and retries", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
+  const uscis = await readFile(new URL("../server/uscisService.js", import.meta.url), "utf8");
+
+  assert.match(server, /timeout: 30_000, maxRetries: 1/);
+  assert.match(server, /AbortSignal\.timeout\(15_000\)/);
+  assert.equal((uscis.match(/signal: AbortSignal\.timeout\(USCIS_REQUEST_TIMEOUT_MS\)/g) || []).length, 2);
+});

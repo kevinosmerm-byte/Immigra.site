@@ -2,6 +2,7 @@ const SANDBOX_DEFAULTS = {
   tokenUrl: "https://api-int.uscis.gov/oauth/accesstoken",
   apiUrl: "https://api-int.uscis.gov/case-status",
 };
+const USCIS_REQUEST_TIMEOUT_MS = 15_000;
 
 let cachedToken = null;
 
@@ -83,6 +84,7 @@ async function requestAccessToken(config, fetchImpl) {
       client_id: config.clientId,
       client_secret: config.clientSecret,
     }),
+    signal: AbortSignal.timeout(USCIS_REQUEST_TIMEOUT_MS),
   });
   const payload = await response.json().catch(() => ({}));
   if (!response.ok || !asText(payload.access_token)) {
@@ -112,6 +114,7 @@ export async function fetchUscisCaseStatus(receiptNumber, { environment = proces
   const response = await fetchImpl(`${config.apiUrl.replace(/\/$/, "")}/${encodeURIComponent(receiptNumber)}`, {
     method: "GET",
     headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
+    signal: AbortSignal.timeout(USCIS_REQUEST_TIMEOUT_MS),
   });
   const payload = await response.json().catch(() => ({}));
   const traceId = response.headers?.get?.("x-trace-id") || response.headers?.get?.("trace-id") || "";

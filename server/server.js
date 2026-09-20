@@ -39,7 +39,7 @@ const upload = multer({
 // Start the API even before AI credentials are configured. AI endpoints return
 // a clear 503 response until OPENAI_API_KEY is added in the hosting provider.
 const openai = process.env.OPENAI_API_KEY
-  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY, timeout: 30_000, maxRetries: 1 })
   : null;
 
 const MAX_TEXT_LENGTH = 5_000;
@@ -560,6 +560,7 @@ app.post("/avatar/session", avatarSessionRateLimit, async (req, res) => {
           name: "citizenshipai-live-practice",
           ttl_seconds: DID_CLIENT_KEY_TTL_SECONDS,
         }),
+        signal: AbortSignal.timeout(15_000),
       }
     );
 
