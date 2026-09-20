@@ -1701,7 +1701,11 @@ function App() {
             </div>
             <div className="coach-response-area">
               {!conversationStarted ? (
-                <button className="coach-start-button coach-call-start-button" onClick={() => { setCoachReply(""); setCoachMode("conversation"); speakCoachReply("Hi! I'm Sarah. Let's practice English together. Tell me about yourself."); }} type="button"><span className="coach-call-icon">▶</span>Start Conversation</button>
+                <button className="coach-start-button coach-call-start-button" onClick={() => { setCoachReply(""); setCoachMode("conversation"); speakCoachReply("Hi! I'm Sarah. Let's practice English together. Tell me about yourself."); }} type="button">
+                  <span className="coach-call-icon" aria-hidden="true">▶</span>
+                  <span className="coach-call-copy"><small>AI ENGLISH COACH</small><strong>Start conversation</strong></span>
+                  <span className="coach-call-arrow" aria-hidden="true">→</span>
+                </button>
               ) : (
                 <>
                   <div className="coach-response-label">YOUR RESPONSE</div>
