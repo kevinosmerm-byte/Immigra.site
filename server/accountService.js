@@ -147,6 +147,11 @@ export async function consumeDistributedRateLimit({ bucket, subjectHash, limit, 
     p_window_seconds: windowSeconds,
   });
   throwDatabaseError(error, "Unable to consume shared rate limit.");
+  if (!data) {
+    const missingResult = new Error("Unable to consume shared rate limit.");
+    missingResult.cause = { code: "empty_rate_limit_result", message: "Supabase returned no rate-limit result." };
+    throw missingResult;
+  }
   return data;
 }
 
