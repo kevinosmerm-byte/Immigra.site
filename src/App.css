@@ -24668,6 +24668,83 @@ button.premium-action-button {
   .premium-action-icon { width: 40px; height: 40px; border-radius: 12px; }
 }
 
+/* Civics interview: premium controls, higher portrait crop, no legacy Kevin poster. */
+.live-stage-motion-frame .live-sarah-video {
+  object-position: center 32%;
+  background: #07111e;
+}
+
+.interviewer-kevin .live-stage-motion-frame .live-sarah-video {
+  object-position: center 28%;
+}
+
+.live-interview-controls {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  padding: 9px;
+  background: linear-gradient(145deg, rgba(9,27,54,.78), rgba(3,13,31,.66));
+}
+
+.live-interview-controls button.premium-action-button {
+  min-width: 0;
+  min-height: 66px;
+  grid-template-columns: 40px minmax(0,1fr) 30px;
+  gap: 9px;
+  margin: 0;
+  padding: 8px 9px;
+  border-color: rgba(130,189,244,.2);
+  border-radius: 17px;
+  background: linear-gradient(110deg, rgba(17,43,76,.94), rgba(8,24,52,.94));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 8px 24px rgba(0,0,0,.16);
+}
+
+.live-interview-controls button.live-mic-button {
+  --premium-action-accent: #35d7ff;
+  width: 100%;
+  height: auto;
+  font-size: inherit;
+}
+
+.live-interview-controls button.live-skip-button {
+  --premium-action-accent: #7f8dff;
+  min-height: 66px;
+  color: #f8fbff;
+  font-size: inherit;
+}
+
+.live-interview-controls .premium-action-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+}
+
+.live-interview-controls .premium-action-icon svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.live-interview-controls .premium-action-copy strong { font-size: 13px; }
+.live-interview-controls .premium-action-copy small { font-size: 7px; }
+.live-interview-controls .live-mic-button.listening {
+  background: linear-gradient(110deg, rgba(13,91,86,.96), rgba(8,43,58,.96));
+}
+.live-interview-controls button.premium-action-button:disabled {
+  opacity: .48;
+  filter: saturate(.65);
+  cursor: not-allowed;
+}
+.live-score-summary { grid-column: 1 / -1; }
+
+@media (max-width: 390px) {
+  .live-interview-controls { grid-template-columns: 1fr; }
+  .live-score-summary { grid-column: 1; }
+}
+
 /* ===== PREMIUM CROSS-SCREEN CONSISTENCY =====
    Extends the Home visual language without changing application behavior. */
 :root {
@@ -25026,3 +25103,20 @@ select { font: inherit; }
 .app-recovery-card p { color: #9db0ca; line-height: 1.55; }
 .app-recovery-card button { width: 100%; min-height: 50px; margin: 14px 0; border: 1px solid rgba(94, 206, 255, .35); border-radius: 14px; color: #fff; background: linear-gradient(110deg, #167fdb, #5a62e8); font-weight: 850; cursor: pointer; }
 .app-recovery-card small { display: block; color: #748aa9; line-height: 1.45; }
+
+/* Final mobile precedence for the reusable premium interview actions. */
+@media (max-width: 620px) {
+  .live-interview-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .live-interview-controls button.live-mic-button,
+  .live-interview-controls button.live-skip-button {
+    width: 100%;
+    height: auto;
+    min-height: 66px;
+  }
+}
+
+@media (max-width: 390px) {
+  .live-interview-controls { grid-template-columns: 1fr; }
+}

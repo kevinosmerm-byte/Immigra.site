@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
-import kevinImage from "./assets/kevin-cinematic.png";
 import { civicsQuestions } from "./questions";
 import { acceptedAnswers } from "./answers";
 import { civicsAnswers } from "./civicsAnswers";
@@ -860,8 +859,6 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
 
   const isKevin = interviewer === "kevin";
   const interviewerName = isKevin ? "Kevin" : "Sarah";
-  const interviewerImage = isKevin ? kevinImage : sarahImage;
-
   const addMissedQuestion = (question) => {
     setMissedQuestions((current) => (
       current.some((item) => item.id === question.id)
@@ -1127,7 +1124,6 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
                 <>
                   <video
                     src="/kevin-listening.mp4"
-                    poster={kevinImage}
                     className="live-sarah-video live-sarah-resting"
                     autoPlay
                     muted
@@ -1138,7 +1134,6 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
                   />
                   <video
                     src="/kevin-speaking.mp4"
-                    poster={kevinImage}
                     className="live-sarah-video live-sarah-speaking"
                     autoPlay
                     muted
@@ -1256,19 +1251,31 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
 
         <section className="live-interview-controls" aria-label="Interview controls">
           <button
-            className={`mic-button live-mic-button ${isListening ? "listening" : ""}`}
+            className={`premium-action-button live-mic-button ${isListening ? "listening" : ""}`}
             onClick={isListening ? stopListening : startListening}
             disabled={isSpeaking}
             aria-label={isListening ? "Stop recording answer" : "Start recording answer"}
           >
-            <span>🎙</span>
+            <span className="premium-action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg>
+            </span>
+            <span className="premium-action-copy">
+              <small>{isListening ? "RECORDING" : "YOUR TURN"}</small>
+              <strong>{isListening ? "Finish answer" : "Answer"}</strong>
+            </span>
+            <span className="premium-action-arrow" aria-hidden="true">{isListening ? "■" : "→"}</span>
           </button>
           <button
-            className="skip-button live-skip-button"
+            className="premium-action-button live-skip-button"
             onClick={handleSkip}
             disabled={isSpeaking || isListening}
           >
-            I don&apos;t know / Skip
+            <span className="premium-action-icon" aria-hidden="true">?</span>
+            <span className="premium-action-copy">
+              <small>NOT SURE</small>
+              <strong>I don&apos;t know</strong>
+            </span>
+            <span className="premium-action-arrow" aria-hidden="true">→</span>
           </button>
           <div className="live-score-summary" aria-label="Current score">
             <span><i className="correct-dot"></i>{correctAnswers} correct</span>
