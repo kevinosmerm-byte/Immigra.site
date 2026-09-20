@@ -72,6 +72,21 @@ test("product analytics are authenticated, allowlisted, and content-free", async
   assert.match(promotion, /recordAccountEvent\("paywall_viewed", pending\.feature\)/);
 });
 
+test("reward credits require a server-verified, idempotent provider callback", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const sql = await readFile(new URL("../supabase/migrations/202609200005_verified_reward_credits.sql", import.meta.url), "utf8");
+  const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+  const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
+
+  assert.match(sql, /security definer/);
+  assert.match(sql, /on conflict \(verification_id\) do nothing/);
+  assert.match(sql, /rewarded_ads_enabled/);
+  assert.match(sql, /revoke all on function public\.grant_verified_reward_credit[\s\S]*from public, anon, authenticated/);
+  assert.match(sql, /grant execute[\s\S]*to service_role/);
+  assert.match(service, /grantVerifiedRewardCredit/);
+  assert.doesNotMatch(routes, /grantVerifiedRewardCredit|reward_credit_granted/);
+});
+
 test("session completion aggregates trusted server usage events", async () => {
   const { readFile } = await import("node:fs/promises");
   const accountService = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");

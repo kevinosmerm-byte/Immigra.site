@@ -264,3 +264,17 @@ export async function recordProductEvent({ userId, eventName, feature }) {
   });
   throwDatabaseError(error, "Unable to record product event.");
 }
+
+// This is intentionally not exposed by an account route. A future AdMob SSV
+// verifier may call it only after validating the provider-signed callback.
+export async function grantVerifiedRewardCredit({ userId, feature, verificationId, provider }) {
+  if (!supabase) throw new Error("Account service is not configured.");
+  const { data, error } = await supabase.rpc("grant_verified_reward_credit", {
+    p_user_id: userId,
+    p_feature: feature,
+    p_verification_id: verificationId,
+    p_provider: provider,
+  });
+  throwDatabaseError(error, "Unable to grant verified reward credit.");
+  return data;
+}
