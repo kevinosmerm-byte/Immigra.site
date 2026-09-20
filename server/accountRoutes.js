@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { randomUUID } from "node:crypto";
 import {
+  exportAccountData,
   finishAiSession,
   getAccountConfiguration,
   getPublicAccountConfiguration,
@@ -32,6 +33,21 @@ router.get("/usage", async (req, res) => {
   } catch (error) {
     console.error("Account usage error", { message: error.message, cause: error.cause?.code });
     res.status(503).json({ error: "AI usage is temporarily unavailable.", code: "usage_unavailable" });
+  }
+});
+
+router.get("/export", async (req, res) => {
+  try {
+    const payload = await exportAccountData(req.account.userId);
+    res.set({
+      "Cache-Control": "no-store",
+      "Content-Disposition": `attachment; filename="citizenship-ai-account-${new Date().toISOString().slice(0, 10)}.json"`,
+      "Content-Type": "application/json; charset=utf-8",
+    });
+    res.send(JSON.stringify(payload, null, 2));
+  } catch (error) {
+    console.error("Account export error", { message: error.message, cause: error.cause?.code });
+    res.status(503).json({ error: "Your account data could not be exported.", code: "export_unavailable" });
   }
 });
 

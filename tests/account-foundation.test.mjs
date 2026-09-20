@@ -107,3 +107,18 @@ test("usage snapshots aggregate provider units without embedding prices", async 
   assert.match(sql, /sum\(s\.transcription_seconds\)/);
   assert.doesNotMatch(sql, /\$\d|usd|unit_price/i);
 });
+
+test("account exports are authenticated, bounded, and omit private content", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
+  const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+  const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
+
+  assert.match(routes, /router\.use\(requireAccount\)[\s\S]*router\.get\("\/export"/);
+  assert.match(routes, /Content-Disposition/);
+  assert.match(service, /exportAccountData/);
+  assert.match(service, /\.limit\(1000\)/);
+  assert.doesNotMatch(service, /conversation_text|audio_blob|transcript_text/i);
+  assert.match(account, /DOWNLOAD MY DATA/);
+  assert.match(account, /DESCARGAR MIS DATOS/);
+});

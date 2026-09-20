@@ -21,7 +21,7 @@ const COPY = {
     sent: "Check your email. We sent you a secure sign-in link.", signedIn: "SIGNED IN", signOut: "SIGN OUT", close: "Close account panel",
     optional: "Optional during the launch promotion. You can continue using the app without signing in.", unavailable: "Accounts are being prepared. You can continue using the app normally.",
     error: "We could not send the sign-in link. Please try again.", usage: "AI ACCESS", promotion: "Launch promotion active", free: "Free account",
-    usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests",
+    usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.",
   },
   es: {
     account: "Cuenta", title: "Tu cuenta de Citizenship AI", intro: "Inicia sesión para conectar de forma segura los futuros límites de IA y suscripciones entre tus dispositivos.",
@@ -29,7 +29,7 @@ const COPY = {
     sent: "Revisa tu correo. Te enviamos un enlace seguro para iniciar sesión.", signedIn: "SESIÓN INICIADA", signOut: "CERRAR SESIÓN", close: "Cerrar panel de cuenta",
     optional: "Es opcional durante la promoción de lanzamiento. Puedes continuar usando la aplicación sin iniciar sesión.", unavailable: "Las cuentas se están preparando. Puedes continuar usando la aplicación normalmente.",
     error: "No pudimos enviar el enlace. Inténtalo nuevamente.", usage: "ACCESO A IA", promotion: "Promoción de lanzamiento activa", free: "Cuenta gratuita",
-    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles", requests: "solicitudes al proveedor",
+    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles", requests: "solicitudes al proveedor", exportData: "DESCARGAR MIS DATOS", exporting: "PREPARANDO…", exportError: "No pudimos preparar los datos de tu cuenta. Inténtalo nuevamente.",
   },
 };
 
@@ -121,6 +121,14 @@ export function AccountProvider({ children }) {
       loadUsage(session.access_token);
       return result;
     },
+    exportAccountData: async () => {
+      if (!session?.access_token) return null;
+      const response = await fetch("/api/account/export", {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      if (!response.ok) throw new Error("Account export unavailable");
+      return response.blob();
+    },
   }), [client, session, loading, usage]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
@@ -143,11 +151,13 @@ export function AccountButton({ language = "en", onClick }) {
 }
 
 export function AccountSheet({ language = "en", onClose }) {
-  const { configured, session, loading, usage, sendMagicLink, signOut } = useAccount();
+  const { configured, session, loading, usage, sendMagicLink, signOut, exportAccountData } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState(false);
   const usageFeatures = usage?.features
     ? Object.entries(usage.features).filter(([, item]) => item?.enabled)
     : [];
@@ -159,6 +169,27 @@ export function AccountSheet({ language = "en", onClose }) {
     const { error } = await sendMagicLink(email.trim());
     setStatus(error ? "error" : "sent");
     setSubmitting(false);
+  };
+
+  const downloadAccountData = async () => {
+    if (exporting) return;
+    setExporting(true); setExportError(false);
+    try {
+      const blob = await exportAccountData();
+      if (!blob) throw new Error("Account export unavailable");
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `citizenship-ai-account-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      setExportError(true);
+    } finally {
+      setExporting(false);
+    }
   };
 
   return (
@@ -194,6 +225,10 @@ export function AccountSheet({ language = "en", onClose }) {
                 })}
               </div>
             )}
+            <button className="account-primary account-export" onClick={downloadAccountData} disabled={exporting} type="button">
+              <span>{exporting ? copy.exporting : copy.exportData}</span><b>↓</b>
+            </button>
+            {exportError && <p className="account-status error">{copy.exportError}</p>}
             <button className="account-primary secondary" onClick={signOut} type="button">{copy.signOut}<b>→</b></button>
           </>
         ) : (

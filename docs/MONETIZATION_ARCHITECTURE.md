@@ -11,11 +11,11 @@ This matches the current React + Capacitor + Express architecture and keeps Goog
 1. **Central configuration — complete.** AI features and introductory limits live in `shared/featureAccessConfig.js`.
 2. **Account foundation — active.** Supabase is configured, and the optional email-link account UI preserves anonymous promotional access and local progress.
 3. **Durable usage ledger — prepared.** The migration creates profiles, entitlements, feature configuration, sessions, rewards and privacy-conscious usage events.
-4. **Endpoint protection — next.** AI calls will require an authenticated, active `ai_session_id`. Existing AI behavior remains unchanged until authentication UX is ready.
+4. **Endpoint protection — complete.** Signed-in AI calls carry an authenticated, active `ai_session_id`, and the server verifies ownership and feature matching before provider work.
 5. **Quota UI — promotional version complete.** The current sheet informs users of future Pro pricing and permits continued promotional access.
 6. **Rewarded ads — future.** AdMob server-side verification will grant credits; the client will never grant its own reward.
 7. **Subscriptions — future.** Provider webhooks will update `entitlements`; app code only asks whether Pro is active.
-8. **Cost telemetry — schema prepared.** Record model, token totals, request count and transcription duration without conversation or audio content.
+8. **Cost telemetry — active.** Provider, model, token totals, request count and transcription duration are recorded without conversation or audio content.
 9. **Abuse and recovery testing — required before enforcement.** Test rapid starts, replayed keys, expired tokens, failed AI providers and refunds.
 
 ## Session boundaries
@@ -65,8 +65,7 @@ Store purchases are adapters, not business logic. Verified Google Play, App Stor
 
 ## Security risks still open
 
-- AI endpoints are not yet bound to server sessions; UI-only checks can currently be bypassed.
 - The in-memory IP limiter is not shared across multiple Render instances.
 - Reward callbacks and subscription webhooks need signature verification and replay protection.
-- Account deletion/export workflows and legal copy must be completed before public account signup.
+- Account export is available; verified account deletion and its legal copy still need completion before paid launch.
 - Database migration and RLS tests must run against the actual Supabase project before enforcement.

@@ -104,6 +104,34 @@ export async function getUsageSnapshot(userId) {
   return data;
 }
 
+export async function exportAccountData(userId) {
+  const [profileResult, entitlementResult, sessionsResult, rewardsResult] = await Promise.all([
+    supabase.from("user_profiles").select("created_at, updated_at").eq("user_id", userId).maybeSingle(),
+    supabase.from("entitlements").select("tier, status, provider, period_start, period_end, updated_at").eq("user_id", userId).maybeSingle(),
+    supabase.from("ai_sessions")
+      .select("id, feature, source, status, started_at, completed_at, failed_at, request_count, input_tokens, output_tokens, transcription_seconds, provider, model")
+      .eq("user_id", userId).order("started_at", { ascending: false }).limit(1000),
+    supabase.from("reward_credits")
+      .select("feature, source, credits_granted, credits_remaining, created_at, expires_at, consumed_at")
+      .eq("user_id", userId).order("created_at", { ascending: false }).limit(1000),
+  ]);
+
+  throwDatabaseError(profileResult.error, "Unable to export account profile.");
+  throwDatabaseError(entitlementResult.error, "Unable to export account entitlement.");
+  throwDatabaseError(sessionsResult.error, "Unable to export AI sessions.");
+  throwDatabaseError(rewardsResult.error, "Unable to export reward credits.");
+
+  return {
+    exportedAt: new Date().toISOString(),
+    accountId: userId,
+    profile: profileResult.data || null,
+    entitlement: entitlementResult.data || null,
+    aiSessions: sessionsResult.data || [],
+    rewardCredits: rewardsResult.data || [],
+    privacyNote: "This export contains account and technical usage records only. Citizenship AI does not include conversation, recording, or transcript content in its usage ledger.",
+  };
+}
+
 export async function startAiSession({ userId, feature, idempotencyKey }) {
   await reconcileStaleAiSessions(userId);
   const { data, error } = await supabase.rpc("start_ai_session", {
