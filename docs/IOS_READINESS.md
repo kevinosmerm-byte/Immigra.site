@@ -15,6 +15,8 @@
 - Export-compliance declaration added for standard/exempt encryption use
 - Server-authoritative AI sessions, quotas, remote feature controls and launch-promotion controls verified in production
 - Reward-credit and provider-neutral subscription foundations prepared, with advertising and payments intentionally inactive
+- App-level `PrivacyInfo.xcprivacy` included in the iOS target with no tracking and conservative data-use declarations
+- Repeatable `npm run verify:ios` validation for bundle ID, version, privacy manifest, permissions and App Store icon
 
 ## Repeatable sync workflow
 
