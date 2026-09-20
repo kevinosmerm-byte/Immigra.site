@@ -163,7 +163,7 @@ export function LegalSettings({ onBack, onRestartOnboarding }) {
 
   const clearLocalData = () => {
     if (!window.confirm("Clear this device's Citizenship AI preferences and civics progress? This cannot be undone.")) return;
-    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1"].forEach((key) => localStorage.removeItem(key));
+    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1", "citizenshipai.ai-sessions.promo.v1"].forEach((key) => localStorage.removeItem(key));
     setCleared(true);
   };
 

@@ -25077,6 +25077,180 @@ select { font: inherit; }
   .podcast-library { padding-top: 17px; }
 }
 
+/* Launch promotion access notice. This is intentionally a soft gate: learners
+   can keep practicing while subscriptions are not yet available. */
+.promotion-access-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: grid;
+  place-items: end center;
+  padding: 18px;
+  background: rgba(0, 7, 20, .72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: promotion-fade-in .2s ease-out;
+}
+
+.promotion-access-sheet {
+  position: relative;
+  width: min(100%, 470px);
+  overflow: hidden;
+  padding: 30px 24px max(22px, env(safe-area-inset-bottom));
+  border: 1px solid rgba(83, 211, 255, .34);
+  border-radius: 28px;
+  color: #f7fbff;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(14, 215, 246, .14), transparent 35%),
+    radial-gradient(circle at 100% 100%, rgba(100, 70, 246, .17), transparent 42%),
+    linear-gradient(155deg, rgba(10, 31, 62, .99), rgba(4, 14, 34, .99));
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .58), inset 0 1px rgba(255, 255, 255, .08);
+  animation: promotion-sheet-in .32s cubic-bezier(.2, .8, .2, 1);
+}
+
+.promotion-access-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(156, 190, 232, .22);
+  border-radius: 50%;
+  color: #afbdd2;
+  background: rgba(255, 255, 255, .045);
+  font: 400 22px/1 inherit;
+}
+
+.promotion-access-orb {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 20px;
+  place-items: center;
+  border: 1px solid rgba(55, 222, 255, .58);
+  border-radius: 17px;
+  color: #68edff;
+  background: linear-gradient(145deg, rgba(12, 191, 230, .2), rgba(86, 65, 220, .18));
+  box-shadow: 0 0 30px rgba(21, 207, 244, .13), inset 0 1px rgba(255, 255, 255, .12);
+  font-size: 1.35rem;
+}
+
+.promotion-access-eyebrow {
+  margin: 0 0 8px;
+  color: #38ddff;
+  font-size: .67rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.promotion-access-sheet h2 {
+  max-width: 390px;
+  margin: 0;
+  font-size: clamp(1.48rem, 5.5vw, 2rem);
+  line-height: 1.07;
+  letter-spacing: -.035em;
+}
+
+.promotion-access-feature {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 20px 0 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(105, 179, 240, .2);
+  border-radius: 14px;
+  color: #dbeaff;
+  background: rgba(9, 29, 57, .72);
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.promotion-access-feature strong { color: #42e4ff; font-size: .72rem; letter-spacing: .08em; }
+.promotion-access-body { margin: 0; color: #a9b8cd; font-size: .82rem; line-height: 1.55; }
+
+.promotion-access-pro {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid rgba(130, 100, 255, .28);
+  border-radius: 16px;
+  background: linear-gradient(120deg, rgba(52, 126, 225, .13), rgba(101, 57, 218, .16));
+}
+
+.promotion-access-pro > span {
+  padding: 7px 8px;
+  border-radius: 9px;
+  color: #07152c;
+  background: linear-gradient(135deg, #4be7ff, #7780ff);
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+}
+
+.promotion-access-pro div { display: grid; gap: 4px; }
+.promotion-access-pro strong { color: #f4f8ff; font-size: .75rem; letter-spacing: .04em; }
+.promotion-access-pro small { color: #899bb5; font-size: .65rem; line-height: 1.35; }
+
+.promotion-access-divider { display: flex; align-items: center; gap: 10px; margin: 18px 0 14px; }
+.promotion-access-divider span { height: 1px; flex: 1; background: rgba(123, 163, 213, .16); }
+.promotion-access-divider small { color: #71839d; font-size: .55rem; font-weight: 800; letter-spacing: .14em; }
+
+.promotion-access-continue {
+  display: flex;
+  width: 100%;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 18px;
+  border: 1px solid rgba(81, 226, 255, .5);
+  border-radius: 16px;
+  color: #fff;
+  background: linear-gradient(115deg, #137cbd 0%, #2868ce 52%, #574dcc 100%);
+  box-shadow: 0 14px 30px rgba(22, 88, 186, .27), inset 0 1px rgba(255, 255, 255, .16);
+  font: 800 .72rem/1.2 inherit;
+  letter-spacing: .035em;
+  text-align: left;
+}
+
+.promotion-access-continue b {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 10px;
+  background: rgba(2, 15, 44, .18);
+  font-size: 1rem;
+}
+
+.promotion-access-note { margin: 12px 5px 0; color: #71839c; font-size: .63rem; line-height: 1.45; text-align: center; }
+
+@media (min-width: 640px) {
+  .promotion-access-backdrop { place-items: center; }
+}
+
+@media (max-width: 420px) {
+  .promotion-access-backdrop { padding: 10px; }
+  .promotion-access-sheet { padding: 26px 18px max(18px, env(safe-area-inset-bottom)); border-radius: 24px; }
+  .promotion-access-orb { margin-bottom: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promotion-access-backdrop,
+  .promotion-access-sheet { animation: none; }
+}
+
+@keyframes promotion-fade-in { from { opacity: 0; } }
+@keyframes promotion-sheet-in { from { opacity: 0; transform: translateY(24px) scale(.98); } }
+
 @media (max-height: 720px) and (max-width: 620px) {
   .practice-content { padding-top: 10px; }
   .practice-intro { margin-bottom: 10px; }

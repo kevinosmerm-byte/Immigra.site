@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 import AppErrorBoundary from './AppErrorBoundary.jsx'
 import { PodcastProvider } from './PodcastPlayer.jsx'
+import { PromotionAccessProvider } from './PromotionAccess.jsx'
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
@@ -16,9 +17,11 @@ if ('serviceWorker' in navigator && import.meta.env.PROD) {
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AppErrorBoundary>
-      <PodcastProvider>
-        <App />
-      </PodcastProvider>
+      <PromotionAccessProvider>
+        <PodcastProvider>
+          <App />
+        </PodcastProvider>
+      </PromotionAccessProvider>
     </AppErrorBoundary>
   </StrictMode>,
 )
