@@ -38,7 +38,7 @@ const COPY = {
 };
 
 export function PromotionAccessProvider({ children }) {
-  const { session, usage: accountUsage, startAiSession, finishAiSession, recordAccountEvent } = useAccount();
+  const { session, usage: accountUsage, promotionAccess, startAiSession, finishAiSession, recordAccountEvent } = useAccount();
   const [pending, setPending] = useState(null);
   const continuationRef = useRef(null);
   const activeSessionRef = useRef(null);
@@ -118,7 +118,12 @@ export function PromotionAccessProvider({ children }) {
       continuation();
       return;
     }
-    if (PROMOTION_ACCESS_CONFIG.promotionActive && shouldShowPromotionNotice(feature)) {
+    if (!session && promotionAccess === false) {
+      continuationRef.current = null;
+      setPending({ feature, language: language === "es" ? "es" : "en", blocked: true, reason: "account_required" });
+      return;
+    }
+    if (PROMOTION_ACCESS_CONFIG.promotionActive && promotionAccess !== false && shouldShowPromotionNotice(feature)) {
       continuationRef.current = () => beginSession(feature, continuation, language);
       setPending({ feature, language: language === "es" ? "es" : "en" });
       return;

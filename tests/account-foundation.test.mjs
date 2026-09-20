@@ -319,3 +319,16 @@ test("explicit server access denials cannot fall through into an AI feature", as
   assert.match(promotion, /pending\.blocked \? blockedTitle : copy\.title/);
   assert.match(promotion, /!pending\.blocked && <button className="promotion-access-continue"/);
 });
+
+test("the client follows the remote launch-promotion switch without a new release", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
+  const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
+  const promotion = await readFile(new URL("../src/PromotionAccess.jsx", import.meta.url), "utf8");
+
+  assert.match(routes, /promotionAccess: await isPromotionalAiAccessAllowed\(\)/);
+  assert.match(account, /setPromotionAccess\(config\?\.promotionAccess !== false\)/);
+  assert.match(account, /usage, promotionAccess/);
+  assert.match(promotion, /!session && promotionAccess === false/);
+  assert.match(promotion, /reason: "account_required"/);
+});

@@ -43,6 +43,7 @@ export function AccountProvider({ children }) {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [usage, setUsage] = useState(null);
+  const [promotionAccess, setPromotionAccess] = useState(true);
 
   const loadUsage = async (accessToken) => {
     if (!accessToken) { setUsage(null); return null; }
@@ -58,16 +59,16 @@ export function AccountProvider({ children }) {
   };
 
   useEffect(() => {
-    if (client || (browserSupabaseUrl && browserSupabaseKey)) return;
     let active = true;
     fetch("/api/account/public-config", { cache: "no-store" })
       .then((response) => response.ok ? response.json() : null)
       .then((config) => {
         if (!active) return;
-        setClient(createAccountClient(config?.url, config?.publishableKey));
-        if (!config?.configured) setLoading(false);
+        setPromotionAccess(config?.promotionAccess !== false);
+        if (!client) setClient(createAccountClient(config?.url, config?.publishableKey));
+        if (!client && !config?.configured) setLoading(false);
       })
-      .catch(() => { if (active) setLoading(false); });
+      .catch(() => { if (active && !client) setLoading(false); });
     return () => { active = false; };
   }, [client]);
 
@@ -90,7 +91,7 @@ export function AccountProvider({ children }) {
   }, [session?.access_token]);
 
   const value = useMemo(() => ({
-    configured: Boolean(client), session, loading, usage,
+    configured: Boolean(client), session, loading, usage, promotionAccess,
     sendMagicLink: (email) => client.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` },
@@ -155,7 +156,7 @@ export function AccountProvider({ children }) {
       await client.auth.signOut({ scope: "local" });
       return true;
     },
-  }), [client, session, loading, usage]);
+  }), [client, session, loading, usage, promotionAccess]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 }

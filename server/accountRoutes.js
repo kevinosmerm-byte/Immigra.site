@@ -7,6 +7,7 @@ import {
   getAccountConfiguration,
   getPublicAccountConfiguration,
   getUsageSnapshot,
+  isPromotionalAiAccessAllowed,
   recordProductEvent,
   requireAccount,
   startAiSession,
@@ -21,9 +22,12 @@ router.get("/status", (_req, res) => {
   res.json(getAccountConfiguration());
 });
 
-router.get("/public-config", (_req, res) => {
+router.get("/public-config", async (_req, res) => {
   res.set("Cache-Control", "no-store");
-  res.json(getPublicAccountConfiguration());
+  res.json({
+    ...getPublicAccountConfiguration(),
+    promotionAccess: await isPromotionalAiAccessAllowed(),
+  });
 });
 
 router.use(requireAccount);
