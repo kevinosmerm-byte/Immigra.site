@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { getAiFeatureConfig, PROMOTION_ACCESS_CONFIG } from "../shared/featureAccessConfig.js";
 import { getAiUsageSummary, recordAiSessionStart, shouldShowPromotionNotice } from "./access.js";
 import { useAccount } from "./Account.jsx";
@@ -35,17 +35,30 @@ export function PromotionAccessProvider({ children }) {
   const continuationRef = useRef(null);
   const activeSessionRef = useRef(null);
 
-  const finishActiveAiSession = async (outcome = "completed") => {
+  const finishActiveAiSession = async (outcome = "completed", options = {}) => {
     const active = activeSessionRef.current;
     activeSessionRef.current = null;
     setAiRequestContext(null);
     if (!active?.sessionId) return;
     try {
-      await finishAiSession(active.sessionId, outcome);
+      await finishAiSession(active.sessionId, outcome, options);
     } catch (error) {
       console.warn("Account session result could not be saved.", error?.message);
     }
   };
+
+  useEffect(() => {
+    const finishBeforeLeaving = () => {
+      const active = activeSessionRef.current;
+      activeSessionRef.current = null;
+      setAiRequestContext(null);
+      if (active?.sessionId) {
+        finishAiSession(active.sessionId, "completed", { keepalive: true }).catch(() => {});
+      }
+    };
+    window.addEventListener("pagehide", finishBeforeLeaving);
+    return () => window.removeEventListener("pagehide", finishBeforeLeaving);
+  }, [finishAiSession]);
 
   const beginSession = async (feature, continuation) => {
     await finishActiveAiSession("completed");

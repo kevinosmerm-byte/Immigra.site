@@ -101,12 +101,13 @@ export function AccountProvider({ children }) {
       loadUsage(session.access_token);
       return decision;
     },
-    finishAiSession: async (sessionId, outcome = "completed") => {
+    finishAiSession: async (sessionId, outcome = "completed", options = {}) => {
       if (!session?.access_token || !sessionId) return null;
       const response = await fetch(`/api/account/sessions/${encodeURIComponent(sessionId)}/finish`, {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ outcome }),
+        keepalive: Boolean(options.keepalive),
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error || "AI session result unavailable");

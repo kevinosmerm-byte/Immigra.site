@@ -67,3 +67,13 @@ test("session completion aggregates trusted server usage events", async () => {
   assert.match(accountService, /total\.requestCount/);
   assert.doesNotMatch(routes, /req\.body\.telemetry/);
 });
+
+test("active AI sessions are finalized when the app page is hidden", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
+  const promotion = await readFile(new URL("../src/PromotionAccess.jsx", import.meta.url), "utf8");
+
+  assert.match(account, /keepalive: Boolean\(options\.keepalive\)/);
+  assert.match(promotion, /addEventListener\("pagehide"/);
+  assert.match(promotion, /keepalive: true/);
+});
