@@ -280,3 +280,15 @@ test("failed provider attempts remain visible in cost telemetry", async () => {
   assert.match(server, /provider: "d-id", model: "agents-client-key"/);
   assert.match(server, /model: "gpt-4o-mini-transcribe"/);
 });
+
+test("unused rewarded credits are refunded atomically and only once", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const sql = await readFile(new URL("../supabase/migrations/202609200007_reward_credit_failure_refunds.sql", import.meta.url), "utf8");
+
+  assert.match(sql, /reward_credit_id uuid references public\.reward_credits/);
+  assert.match(sql, /v_session\.source = 'reward_credit'/);
+  assert.match(sql, /v_request_count = 0/);
+  assert.match(sql, /least\(credits_granted, credits_remaining \+ 1\)/);
+  assert.match(sql, /v_session\.status in \('completed', 'failed', 'refunded'\)/);
+  assert.match(sql, /'creditRefunded', v_credit_refunded/);
+});
