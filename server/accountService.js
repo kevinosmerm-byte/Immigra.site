@@ -138,6 +138,18 @@ export async function deleteAccount(userId) {
   return { deleted: true };
 }
 
+export async function consumeDistributedRateLimit({ bucket, subjectHash, limit, windowSeconds }) {
+  if (!supabase) return null;
+  const { data, error } = await supabase.rpc("consume_api_rate_limit", {
+    p_bucket: bucket,
+    p_subject_hash: subjectHash,
+    p_limit: limit,
+    p_window_seconds: windowSeconds,
+  });
+  throwDatabaseError(error, "Unable to consume shared rate limit.");
+  return data;
+}
+
 export async function startAiSession({ userId, feature, idempotencyKey }) {
   await reconcileStaleAiSessions(userId);
   const { data, error } = await supabase.rpc("start_ai_session", {

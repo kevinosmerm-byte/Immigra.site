@@ -3,9 +3,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import OpenAI from "openai";
 import multer from "multer";
+import { createHmac } from "node:crypto";
 import { fetchUscisCaseStatus, getUscisConfig, maskReceiptNumber } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
-import { attachOptionalAiSession, recordAiUsageEvent } from "./accountService.js";
+import { attachOptionalAiSession, consumeDistributedRateLimit, recordAiUsageEvent } from "./accountService.js";
 
 dotenv.config();
 
@@ -54,15 +55,39 @@ const DID_ALLOWED_ORIGINS = (process.env.DID_ALLOWED_ORIGINS || "")
   .filter(Boolean);
 const DID_CLIENT_KEY_TTL_SECONDS = 300;
 const rateLimitBuckets = new Map();
+const RATE_LIMIT_HASH_SECRET = process.env.RATE_LIMIT_HASH_SECRET?.trim()
+  || process.env.SUPABASE_SECRET_KEY?.trim()
+  || "citizenship-ai-local-rate-limit";
 const uscisManualRefreshes = new Map();
 const configuredUscisCooldown = Number(process.env.USCIS_MANUAL_COOLDOWN_SECONDS || 60);
 const USCIS_MANUAL_COOLDOWN_MS = Math.max(15, Number.isFinite(configuredUscisCooldown) ? configuredUscisCooldown : 60) * 1000;
 
 function requestRateLimit(name, limit, windowMs) {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     const forwardedIp = req.get("cf-connecting-ip") || req.ip || "unknown";
     const key = `${name}:${forwardedIp}`;
     const now = Date.now();
+    const subjectHash = createHmac("sha256", RATE_LIMIT_HASH_SECRET).update(forwardedIp).digest("hex");
+
+    try {
+      const shared = await consumeDistributedRateLimit({
+        bucket: name,
+        subjectHash,
+        limit,
+        windowSeconds: Math.ceil(windowMs / 1000),
+      });
+      if (shared) {
+        res.set("X-RateLimit-Remaining", String(Math.max(0, Number(shared.remaining) || 0)));
+        if (!shared.allowed) {
+          res.set("Retry-After", String(Math.max(1, Number(shared.retryAfterSeconds) || 1)));
+          return res.status(429).json({ error: "Too many requests. Please wait a few minutes and try again." });
+        }
+        return next();
+      }
+    } catch (error) {
+      console.error("Shared rate limit unavailable; using local fallback", { bucket: name, message: error.message });
+    }
+
     if (rateLimitBuckets.size > 1_000) {
       for (const [bucketKey, bucket] of rateLimitBuckets) {
         if (now - bucket.startedAt >= windowMs) rateLimitBuckets.delete(bucketKey);

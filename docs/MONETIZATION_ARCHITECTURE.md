@@ -41,7 +41,7 @@ Do not migrate or delete `civicsViewed`, favorites, local practice history, lang
 - Reject unknown, disabled or exhausted features before provider work begins.
 - Require the issued session ID on `/coach`, `/transcribe`, evaluation and avatar endpoints during Phase 4.
 - Never place `SUPABASE_SECRET_KEY`, OpenAI, D-ID or USCIS credentials in a `VITE_` variable.
-- Rate limits remain defense-in-depth; IP addresses are not account identity.
+- Rate limits are shared across instances through atomic Supabase windows. Only a server-keyed HMAC identifier is stored; IP addresses are not account identity and are never stored in the limiter table.
 
 ## Database objects
 
@@ -65,7 +65,6 @@ Store purchases are adapters, not business logic. Verified Google Play, App Stor
 
 ## Security risks still open
 
-- The in-memory IP limiter is not shared across multiple Render instances.
 - Reward callbacks and subscription webhooks need signature verification and replay protection.
 - Authenticated account export and explicitly confirmed deletion are available; paid-launch legal copy should receive final counsel review.
 - Database migration and RLS tests must run against the actual Supabase project before enforcement.

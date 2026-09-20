@@ -135,3 +135,16 @@ test("account deletion requires an explicit confirmation and uses the admin API"
   assert.match(account, /deleteConfirmation !== "DELETE"/);
   assert.match(account, /Local study progress on this device is not removed/);
 });
+
+test("rate limits are shared atomically without storing raw IP addresses", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const sql = await readFile(new URL("../supabase/migrations/202609200003_distributed_rate_limits.sql", import.meta.url), "utf8");
+  const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
+
+  assert.match(sql, /on conflict \(bucket, subject_hash\) do update/);
+  assert.match(sql, /security definer/);
+  assert.match(sql, /revoke all on table public\.api_rate_limit_windows from anon, authenticated/);
+  assert.match(server, /createHmac\("sha256"/);
+  assert.match(server, /consumeDistributedRateLimit/);
+  assert.doesNotMatch(sql, /ip_address|raw_ip/i);
+});
