@@ -1295,6 +1295,21 @@ function App() {
   const [coachMode, setCoachMode] = useState("welcome");
   const [interviewMode, setInterviewMode] = useState("full");
   const [civicsIndex, setCivicsIndex] = useState(0);
+  const [civicsFlipped, setCivicsFlipped] = useState(false);
+  const [civicsStudyMode, setCivicsStudyMode] = useState("study");
+  const [civicsFavorites, setCivicsFavorites] = useState(() => {
+    const saved = readLocalJson("citizenshipai.civics.favorites.v1", []);
+    return Array.isArray(saved) ? saved : [];
+  });
+  const [civicsMastered, setCivicsMastered] = useState(() => {
+    const saved = readLocalJson("citizenshipai.civics.mastered.v1", []);
+    return Array.isArray(saved) ? saved : [];
+  });
+  const [civicsNeedsPractice, setCivicsNeedsPractice] = useState(() => {
+    const saved = readLocalJson("citizenshipai.civics.needsPractice.v1", []);
+    return Array.isArray(saved) ? saved : [];
+  });
+  const civicsTouchRef = useRef(null);
   const [uscisReceiptNumber, setUscisReceiptNumber] = useState("");
   const [uscisCaseResult, setUscisCaseResult] = useState(null);
   const [uscisLoading, setUscisLoading] = useState(false);
@@ -1712,6 +1727,56 @@ function App() {
     const currentQuestion = civicsQuestions[civicsIndex].english;
     const currentQuestionSpanish = civicsQuestionsSpanish[civicsIndex];
     const currentAnswers = civicsAnswers[civicsIndex];
+    const isSpanish = language === "es";
+    const favoriteIndexes = civicsFavorites.filter((index) => index >= 0 && index < civicsQuestions.length);
+    const visibleIndexes = civicsStudyMode === "favorites" ? favoriteIndexes : civicsQuestions.map((_, index) => index);
+    const activePosition = Math.max(0, visibleIndexes.indexOf(civicsIndex));
+    const studiedPercent = Math.round((civicsMastered.length / civicsQuestions.length) * 100);
+    const copy = isSpanish ? {
+      subtitle: "Domina las preguntas para tu entrevista.", progress: "Progreso", cards: "Tarjetas",
+      practice: "Práctica", quiz: "Examen", favorites: "Favoritas", reveal: "Toca para ver la respuesta",
+      question: "PREGUNTA", answer: "RESPUESTA", need: "Necesito practicar", know: "Ya la sé",
+      studied: "estudiadas", mastered: "dominadas", review: "repasar", empty: "Aún no tienes preguntas favoritas.",
+    } : {
+      subtitle: "Master the questions for your interview.", progress: "Study Progress", cards: "Study Cards",
+      practice: "Practice", quiz: "Quiz", favorites: "Favorites", reveal: "Tap to reveal answer",
+      question: "QUESTION", answer: "ANSWER", need: "Need Practice", know: "I Know This",
+      studied: "studied", mastered: "mastered", review: "review", empty: "You have not saved any favorite questions yet.",
+    };
+
+    const changeCivicsCard = (direction) => {
+      if (!visibleIndexes.length) return;
+      const nextPosition = (activePosition + direction + visibleIndexes.length) % visibleIndexes.length;
+      const nextIndex = visibleIndexes[nextPosition];
+      setCivicsFlipped(false);
+      setCivicsIndex(nextIndex);
+      markCivicsViewed(nextIndex);
+    };
+
+    const updateCivicsCollection = (setter, storageKey, shouldAdd) => {
+      setter((current) => {
+        const updated = shouldAdd
+          ? (current.includes(civicsIndex) ? current : [...current, civicsIndex])
+          : current.filter((index) => index !== civicsIndex);
+        saveLocalValue(storageKey, JSON.stringify(updated));
+        return updated;
+      });
+    };
+
+    const toggleFavorite = () => {
+      const isFavorite = civicsFavorites.includes(civicsIndex);
+      updateCivicsCollection(setCivicsFavorites, "citizenshipai.civics.favorites.v1", !isFavorite);
+      if (civicsStudyMode === "favorites" && isFavorite) {
+        const remaining = favoriteIndexes.filter((index) => index !== civicsIndex);
+        if (remaining.length) setCivicsIndex(remaining[Math.min(activePosition, remaining.length - 1)]);
+      }
+    };
+
+    const setStudyFeedback = (mastered) => {
+      updateCivicsCollection(setCivicsMastered, "citizenshipai.civics.mastered.v1", mastered);
+      updateCivicsCollection(setCivicsNeedsPractice, "citizenshipai.civics.needsPractice.v1", !mastered);
+      window.setTimeout(() => changeCivicsCard(1), 180);
+    };
 
     return (
       <div className="practice-screen civics-screen">
@@ -1721,69 +1786,76 @@ function App() {
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
-        <main className="civics-content">
-          <div className="practice-eyebrow">CIVICS STUDY</div>
-          <h1>Civics.</h1>
-          <p className="practice-intro">Read and listen to the 2025 civics questions.</p>
-          <div className="civics-card">
-            <div className="civics-card-top">
-              <div className="civics-question-number">
-                QUESTION {String(civicsIndex + 1).padStart(2, "0")}<span> / 128</span>
+        <main className="civics-deck-content">
+          <section className="civics-deck-hero" aria-labelledby="civics-deck-title">
+            <div className="civics-deck-icon" aria-hidden="true">▤</div>
+            <div className="civics-deck-heading">
+              <span>CIVICS</span>
+              <h1 id="civics-deck-title">128 {isSpanish ? "Preguntas" : "Questions"}</h1>
+              <p>{copy.subtitle}</p>
+            </div>
+            <div className="civics-deck-progress" aria-label={`${copy.progress}: ${studiedPercent}%`}>
+              <div><span>{copy.progress}</span><strong>{studiedPercent}%</strong></div>
+              <div className="civics-deck-progress-track"><i style={{ width: `${studiedPercent}%` }}></i></div>
+            </div>
+          </section>
+
+          <nav className="civics-modes" aria-label="Civics study modes">
+            <button className={civicsStudyMode === "study" ? "active" : ""} onClick={() => { setCivicsStudyMode("study"); setCivicsFlipped(false); }}>{copy.cards}</button>
+            <button onClick={() => startInterview("civics")}>{copy.practice}</button>
+            <button onClick={() => startInterview("civics")}>{copy.quiz}</button>
+            <button className={civicsStudyMode === "favorites" ? "active" : ""} onClick={() => { setCivicsStudyMode("favorites"); setCivicsFlipped(false); if (favoriteIndexes.length && !favoriteIndexes.includes(civicsIndex)) setCivicsIndex(favoriteIndexes[0]); }}>{copy.favorites}<span>{civicsFavorites.length}</span></button>
+          </nav>
+
+          {visibleIndexes.length ? (
+            <>
+              <section className="civics-card-deck" aria-label={`${copy.cards}: ${civicsIndex + 1} / 128`}>
+                <div className="civics-stack-card previous" aria-hidden="true"></div>
+                <div className="civics-stack-card next" aria-hidden="true"></div>
+                <div
+                  className={`civics-flashcard ${civicsFlipped ? "is-flipped" : ""}`}
+                  onClick={() => { if (civicsTouchRef.current?.swiped) { civicsTouchRef.current = null; return; } setCivicsFlipped((current) => !current); }}
+                  onTouchStart={(event) => { const touch = event.touches[0]; civicsTouchRef.current = { x: touch.clientX, y: touch.clientY }; }}
+                  onTouchEnd={(event) => { const start = civicsTouchRef.current; const touch = event.changedTouches[0]; if (!start || !touch) return; const dx = touch.clientX - start.x; const dy = touch.clientY - start.y; if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.35) { civicsTouchRef.current = { swiped: true }; changeCivicsCard(dx < 0 ? 1 : -1); } else { civicsTouchRef.current = null; } }}
+                  role="button"
+                  tabIndex="0"
+                  aria-label={civicsFlipped ? `${copy.answer}: ${currentAnswers.join(", ")}` : `${copy.question}: ${currentQuestion}. ${copy.reveal}`}
+                  onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setCivicsFlipped((current) => !current); } }}
+                >
+                  <div className="civics-flashcard-inner">
+                    <article className="civics-flashcard-face front">
+                      <div className="civics-flashcard-topline"><span>{civicsIndex + 1} / 128</span><button className={civicsFavorites.includes(civicsIndex) ? "favorite active" : "favorite"} onClick={(event) => { event.stopPropagation(); toggleFavorite(); }} aria-label={civicsFavorites.includes(civicsIndex) ? "Remove from favorites" : "Add to favorites"}>☆</button></div>
+                      <div className="civics-flashcard-question">
+                        <h2>{currentQuestion}</h2>
+                        <p>{currentQuestionSpanish}</p>
+                      </div>
+                      <span className="civics-reveal-hint">{copy.reveal}</span>
+                    </article>
+                    <article className="civics-flashcard-face back">
+                      <div className="civics-answer-head"><span>{copy.question}</span><button onClick={(event) => { event.stopPropagation(); speakAppText(`${currentQuestion}. ${currentAnswers.join(". ")}`, { rate: 0.88, pitch: 1 }); }} aria-label="Play question and answer audio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10" /></svg></button></div>
+                      <h2>{currentQuestion}</h2>
+                      <div className="civics-answer-rule"></div>
+                      <span className="civics-answer-label">{copy.answer}</span>
+                      <div className="civics-flashcard-answers">{currentAnswers.map((answer, index) => <p key={index}>{answer}</p>)}</div>
+                    </article>
+                  </div>
+                </div>
+              </section>
+
+              <div className="civics-deck-navigation">
+                <button onClick={() => changeCivicsCard(-1)} aria-label="Previous question"><span>←</span>{isSpanish ? "Anterior" : "Previous"}</button>
+                <div><strong>{civicsViewed.length} / 128</strong><em>{copy.studied}</em><span>·</span><strong>{civicsMastered.length}</strong><em>{copy.mastered}</em><span>·</span><strong>{civicsNeedsPractice.length}</strong><em>{copy.review}</em></div>
+                <button className="next" onClick={() => changeCivicsCard(1)} aria-label="Next question">{isSpanish ? "Siguiente" : "Next"}<span>→</span></button>
               </div>
-              <div className="civics-ai-status">
-                <span className="civics-ai-dot"></span> ENGLISH AUDIO
-              </div>
-            </div>
-            <div className="civics-question-section">
-              <div className="civics-language-label">ENGLISH</div>
-              <h2 className="civics-question-english">{currentQuestion}</h2>
-            </div>
-            <div className="civics-divider"></div>
-            <div className="civics-question-section spanish">
-              <div className="civics-language-label">ESPAÑOL</div>
-              <p className="civics-question-spanish">{currentQuestionSpanish}</p>
-            </div>
-            <div className="civics-divider"></div>
-            <div className="civics-answer-section">
-              <div className="civics-language-label">ACCEPTABLE ANSWERS</div>
-              <div className="civics-answers">
-                {currentAnswers.map((answer, index) => (
-                  <span key={index} className="civics-answer">{answer}</span>
-                ))}
-              </div>
-            </div>
-            <div className="civics-divider"></div>
-            <div className="civics-navigation">
-              <button
-                className="civics-nav-button"
-                onClick={() => {
-                  setCivicsIndex((currentIndex) =>
-                    currentIndex <= 0 ? civicsQuestions.length - 1 : currentIndex - 1
-                  );
-                }}
-              >
-                <span className="civics-nav-icon" aria-hidden="true">←</span>
-                <span>Previous</span>
-              </button>
-              <div className="civics-progress">
-                {String(civicsIndex + 1).padStart(2, "0")}<span> / 128</span>
-              </div>
-              <button
-                className="civics-nav-button next"
-                onClick={() => {
-                  setCivicsIndex((currentIndex) => {
-                    const nextIndex =
-                      currentIndex >= civicsQuestions.length - 1 ? 0 : currentIndex + 1;
-                    markCivicsViewed(nextIndex);
-                    return nextIndex;
-                  });
-                }}
-              >
-                <span>Next</span>
-                <span className="civics-nav-icon" aria-hidden="true">→</span>
-              </button>
-            </div>
-          </div>
+
+              {civicsFlipped && <div className="civics-study-feedback" aria-label="Study feedback">
+                <button className="needs-practice" onClick={() => setStudyFeedback(false)}>{copy.need}</button>
+                <button className="know-this" onClick={() => setStudyFeedback(true)}>{copy.know}</button>
+              </div>}
+            </>
+          ) : (
+            <section className="civics-favorites-empty"><span>☆</span><p>{copy.empty}</p><button onClick={() => setCivicsStudyMode("study")}>{copy.cards}</button></section>
+          )}
         </main>
       </div>
     );
