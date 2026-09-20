@@ -40,7 +40,7 @@ export function AccountProvider({ children }) {
   useEffect(() => {
     if (client || (browserSupabaseUrl && browserSupabaseKey)) return;
     let active = true;
-    fetch("/account/public-config", { cache: "no-store" })
+    fetch("/api/account/public-config", { cache: "no-store" })
       .then((response) => response.ok ? response.json() : null)
       .then((config) => {
         if (!active) return;
@@ -66,7 +66,7 @@ export function AccountProvider({ children }) {
 
   useEffect(() => {
     if (!session?.access_token) { setUsage(null); return; }
-    fetch("/account/usage", { headers: { Authorization: `Bearer ${session.access_token}` } })
+    fetch("/api/account/usage", { headers: { Authorization: `Bearer ${session.access_token}` } })
       .then((response) => response.ok ? response.json() : null)
       .then(setUsage)
       .catch(() => setUsage(null));

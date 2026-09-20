@@ -347,6 +347,7 @@ app.get("/health", (req, res) => {
 // Account and AI-session accounting are introduced behind configuration. The
 // current launch promotion remains available until Supabase is configured.
 app.use("/account", accountRateLimit, accountRoutes);
+app.use("/api/account", accountRateLimit, accountRoutes);
 
 app.post("/evaluate-reading", aiRateLimit, async (req, res) => {
   try {
