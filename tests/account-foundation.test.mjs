@@ -96,3 +96,14 @@ test("signed-in users receive a compact per-feature allowance summary", async ()
   assert.match(account, /item\.freeLimit/);
   assert.match(account, /Math\.max\(0, limit - used\)/);
 });
+
+test("usage snapshots aggregate provider units without embedding prices", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const sql = await readFile(new URL("../supabase/migrations/202609200002_usage_metering_snapshot.sql", import.meta.url), "utf8");
+
+  assert.match(sql, /sum\(s\.request_count\)/);
+  assert.match(sql, /sum\(s\.input_tokens\)/);
+  assert.match(sql, /sum\(s\.output_tokens\)/);
+  assert.match(sql, /sum\(s\.transcription_seconds\)/);
+  assert.doesNotMatch(sql, /\$\d|usd|unit_price/i);
+});

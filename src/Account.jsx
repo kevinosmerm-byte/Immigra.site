@@ -21,7 +21,7 @@ const COPY = {
     sent: "Check your email. We sent you a secure sign-in link.", signedIn: "SIGNED IN", signOut: "SIGN OUT", close: "Close account panel",
     optional: "Optional during the launch promotion. You can continue using the app without signing in.", unavailable: "Accounts are being prepared. You can continue using the app normally.",
     error: "We could not send the sign-in link. Please try again.", usage: "AI ACCESS", promotion: "Launch promotion active", free: "Free account",
-    usageTitle: "AI PRACTICE", used: "used", available: "available",
+    usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests",
   },
   es: {
     account: "Cuenta", title: "Tu cuenta de Citizenship AI", intro: "Inicia sesión para conectar de forma segura los futuros límites de IA y suscripciones entre tus dispositivos.",
@@ -29,7 +29,7 @@ const COPY = {
     sent: "Revisa tu correo. Te enviamos un enlace seguro para iniciar sesión.", signedIn: "SESIÓN INICIADA", signOut: "CERRAR SESIÓN", close: "Cerrar panel de cuenta",
     optional: "Es opcional durante la promoción de lanzamiento. Puedes continuar usando la aplicación sin iniciar sesión.", unavailable: "Las cuentas se están preparando. Puedes continuar usando la aplicación normalmente.",
     error: "No pudimos enviar el enlace. Inténtalo nuevamente.", usage: "ACCESO A IA", promotion: "Promoción de lanzamiento activa", free: "Cuenta gratuita",
-    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles",
+    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles", requests: "solicitudes al proveedor",
   },
 };
 
@@ -173,6 +173,11 @@ export function AccountSheet({ language = "en", onClose }) {
           <>
             <div className="account-identity"><span>{copy.signedIn}</span><strong>{session.user.email}</strong></div>
             <div className="account-access"><span>{copy.usage}</span><strong>{usage?.tier === "pro" ? "PRO" : copy.free}</strong><small>{copy.promotion}</small></div>
+            {usage?.metering?.total && (
+              <p className="account-metering-note">
+                <strong>{Number(usage.metering.total.requests) || 0}</strong> {copy.requests}
+              </p>
+            )}
             {usageFeatures.length > 0 && (
               <div className="account-usage-summary" aria-label={copy.usageTitle}>
                 <span className="account-usage-title">{copy.usageTitle}</span>

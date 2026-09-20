@@ -25280,6 +25280,8 @@ select { font: inherit; }
 .account-identity span,.account-access span { color:#35dff8; font-size:.59rem; font-weight:900; letter-spacing:.12em; }
 .account-identity strong,.account-access strong { overflow:hidden; color:#fff; text-overflow:ellipsis; }
 .account-access small { color:#79d9bf; }
+.account-metering-note { display:flex; justify-content:space-between; gap:12px; margin:-7px 2px 12px; color:#7890aa; font-size:.62rem; }
+.account-metering-note strong { color:#b9d9f5; }
 .account-usage-summary { display:grid; gap:7px; margin:12px 0; padding:14px; border:1px solid rgba(110,172,235,.2); border-radius:16px; background:rgba(7,25,51,.68); }
 .account-usage-title { color:#35dff8; font-size:.59rem; font-weight:900; letter-spacing:.12em; }
 .account-usage-row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:9px; min-height:28px; padding-top:7px; border-top:1px solid rgba(110,172,235,.12); color:#d9e7f5; font-size:.72rem; }
