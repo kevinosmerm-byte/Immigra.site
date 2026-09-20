@@ -24553,9 +24553,11 @@ select {
 
 .practice-feature-card.civics-image-card {
   display: block;
+  position: relative;
   min-height: 0;
+  aspect-ratio: 1943 / 544;
   padding: 0;
-  border-color: rgba(42, 190, 255, .42);
+  border: 0;
   border-radius: 20px;
   background: #03142c;
   box-shadow: 0 14px 34px rgba(0, 63, 145, .2), inset 0 1px 0 rgba(255,255,255,.08);
@@ -24564,15 +24566,18 @@ select {
 .practice-feature-card.civics-image-card::after { display: none; }
 
 .civics-image-card img {
+  position: absolute;
+  left: -2.73%;
+  top: -17.65%;
   display: block;
-  width: 100%;
-  height: auto;
-  border-radius: inherit;
+  width: 107.4%;
+  height: 138.4%;
+  max-width: none;
+  border-radius: 0;
 }
 
 .practice-feature-card.civics-image-card:hover,
 .practice-feature-card.civics-image-card:focus-visible {
-  border-color: rgba(38, 218, 255, .78);
   background: #03142c;
   box-shadow: 0 16px 42px rgba(0, 113, 218, .28), 0 0 0 2px rgba(0, 217, 255, .12);
   transform: translateY(-2px);
