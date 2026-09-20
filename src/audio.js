@@ -1,6 +1,7 @@
 import { apiFetch } from "./api";
 
 const preferredMimeTypes = ["audio/webm", "audio/mp4"];
+export const MAX_RECORDING_DURATION_MS = 45_000;
 
 function selectMimeType() {
   return preferredMimeTypes.find((type) => MediaRecorder.isTypeSupported(type));
@@ -17,9 +18,13 @@ export async function startAudioRecording() {
     ? new MediaRecorder(stream, { mimeType: preferredMimeType })
     : new MediaRecorder(stream);
   const chunks = [];
+  let automaticStopTimer;
 
   const recording = new Promise((resolve, reject) => {
-    const releaseStream = () => stream.getTracks().forEach((track) => track.stop());
+    const releaseStream = () => {
+      clearTimeout(automaticStopTimer);
+      stream.getTracks().forEach((track) => track.stop());
+    };
 
     recorder.ondataavailable = (event) => {
       if (event.data.size > 0) chunks.push(event.data);
@@ -42,6 +47,9 @@ export async function startAudioRecording() {
   });
 
   recorder.start();
+  automaticStopTimer = window.setTimeout(() => {
+    if (recorder.state !== "inactive") recorder.stop();
+  }, MAX_RECORDING_DURATION_MS);
 
   return {
     stop: () => {

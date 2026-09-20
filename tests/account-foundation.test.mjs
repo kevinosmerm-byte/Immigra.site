@@ -158,3 +158,15 @@ test("expired distributed rate-limit windows are cleaned in bounded batches", as
   assert.match(sql, /limit 1000/);
   assert.match(sql, /random\(\) < 0\.02/);
 });
+
+test("AI responses and microphone recordings have explicit cost ceilings", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
+  const audio = await readFile(new URL("../src/audio.js", import.meta.url), "utf8");
+
+  assert.match(server, /OPENAI_MAX_OUTPUT_TOKENS/);
+  assert.equal((server.match(/max_output_tokens: MAX_AI_OUTPUT_TOKENS/g) || []).length, 4);
+  assert.match(server, /Math\.min\(600/);
+  assert.match(audio, /MAX_RECORDING_DURATION_MS = 45_000/);
+  assert.match(audio, /automaticStopTimer = window\.setTimeout/);
+});

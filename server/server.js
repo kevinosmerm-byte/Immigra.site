@@ -44,6 +44,7 @@ const openai = process.env.OPENAI_API_KEY
 
 const MAX_TEXT_LENGTH = 5_000;
 const MAX_HISTORY_ITEMS = 12;
+const MAX_AI_OUTPUT_TOKENS = Math.max(64, Math.min(600, Number(process.env.OPENAI_MAX_OUTPUT_TOKENS) || 220));
 // Use a public API model by default. It can be changed in Render without a
 // code deployment by setting OPENAI_TEXT_MODEL.
 const OPENAI_TEXT_MODEL = process.env.OPENAI_TEXT_MODEL || "gpt-4o-mini";
@@ -211,6 +212,7 @@ app.post("/evaluate", aiRateLimit, async (req, res) => {
 
     const response = await openai.responses.create({
       model: OPENAI_TEXT_MODEL,
+      max_output_tokens: MAX_AI_OUTPUT_TOKENS,
       instructions: `
 You are an evaluator for a U.S. naturalization interview practice application.
 
@@ -284,6 +286,7 @@ app.post("/evaluate-writing", aiRateLimit, async (req, res) => {
 
     const response = await openai.responses.create({
       model: OPENAI_TEXT_MODEL,
+      max_output_tokens: MAX_AI_OUTPUT_TOKENS,
 
       instructions: `
 You are an English writing evaluator for a U.S. naturalization interview practice application.
@@ -410,6 +413,7 @@ app.post("/evaluate-reading", aiRateLimit, async (req, res) => {
 
     const response = await openai.responses.create({
       model: OPENAI_TEXT_MODEL,
+      max_output_tokens: MAX_AI_OUTPUT_TOKENS,
 
       instructions: `
 You are an English reading evaluator for a U.S. naturalization interview practice application.
@@ -474,6 +478,7 @@ app.post("/coach", aiRateLimit, async (req, res) => {
 
     const response = await openai.responses.create({
       model: OPENAI_TEXT_MODEL,
+      max_output_tokens: MAX_AI_OUTPUT_TOKENS,
 
       instructions: `
 You are Sarah, an AI English Coach inside a U.S. citizenship preparation application.
