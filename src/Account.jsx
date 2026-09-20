@@ -44,6 +44,7 @@ export function AccountProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [usage, setUsage] = useState(null);
   const [promotionAccess, setPromotionAccess] = useState(true);
+  const [aiFeatureAvailability, setAiFeatureAvailability] = useState({});
 
   const loadUsage = async (accessToken) => {
     if (!accessToken) { setUsage(null); return null; }
@@ -65,6 +66,7 @@ export function AccountProvider({ children }) {
       .then((config) => {
         if (!active) return;
         setPromotionAccess(config?.promotionAccess !== false);
+        setAiFeatureAvailability(config?.aiFeatures && typeof config.aiFeatures === "object" ? config.aiFeatures : {});
         if (!client) setClient(createAccountClient(config?.url, config?.publishableKey));
         if (!client && !config?.configured) setLoading(false);
       })
@@ -91,7 +93,7 @@ export function AccountProvider({ children }) {
   }, [session?.access_token]);
 
   const value = useMemo(() => ({
-    configured: Boolean(client), session, loading, usage, promotionAccess,
+    configured: Boolean(client), session, loading, usage, promotionAccess, aiFeatureAvailability,
     sendMagicLink: (email) => client.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` },
@@ -156,7 +158,7 @@ export function AccountProvider({ children }) {
       await client.auth.signOut({ scope: "local" });
       return true;
     },
-  }), [client, session, loading, usage, promotionAccess]);
+  }), [client, session, loading, usage, promotionAccess, aiFeatureAvailability]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 }

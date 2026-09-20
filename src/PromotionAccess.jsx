@@ -38,7 +38,7 @@ const COPY = {
 };
 
 export function PromotionAccessProvider({ children }) {
-  const { session, usage: accountUsage, promotionAccess, startAiSession, finishAiSession, recordAccountEvent } = useAccount();
+  const { session, usage: accountUsage, promotionAccess, aiFeatureAvailability, startAiSession, finishAiSession, recordAccountEvent } = useAccount();
   const [pending, setPending] = useState(null);
   const continuationRef = useRef(null);
   const activeSessionRef = useRef(null);
@@ -116,6 +116,11 @@ export function PromotionAccessProvider({ children }) {
     const config = getAiFeatureConfig(feature);
     if (!config) {
       continuation();
+      return;
+    }
+    if (aiFeatureAvailability?.[feature] === false) {
+      continuationRef.current = null;
+      setPending({ feature, language: language === "es" ? "es" : "en", blocked: true, reason: "feature_unavailable" });
       return;
     }
     if (!session && promotionAccess === false) {

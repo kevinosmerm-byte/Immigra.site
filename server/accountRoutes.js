@@ -6,6 +6,7 @@ import {
   finishAiSession,
   getAccountConfiguration,
   getPublicAccountConfiguration,
+  getPublicAiFeatureAvailability,
   getUsageSnapshot,
   isPromotionalAiAccessAllowed,
   recordProductEvent,
@@ -24,9 +25,14 @@ router.get("/status", (_req, res) => {
 
 router.get("/public-config", async (_req, res) => {
   res.set("Cache-Control", "no-store");
+  const [promotionAccess, aiFeatures] = await Promise.all([
+    isPromotionalAiAccessAllowed(),
+    getPublicAiFeatureAvailability(),
+  ]);
   res.json({
     ...getPublicAccountConfiguration(),
-    promotionAccess: await isPromotionalAiAccessAllowed(),
+    promotionAccess,
+    aiFeatures,
   });
 });
 

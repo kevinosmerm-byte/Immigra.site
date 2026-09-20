@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
-import { getAiFeatureConfig } from "../shared/featureAccessConfig.js";
+import { AI_FEATURE_ACCESS, getAiFeatureConfig } from "../shared/featureAccessConfig.js";
 
 const supabaseUrl = process.env.SUPABASE_URL?.trim();
 const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY?.trim();
@@ -76,6 +76,13 @@ export async function isPromotionalAiAccessAllowed() {
   const allowed = data?.value?.active === true && data?.value?.allowContinueWithoutPayment === true;
   promotionAccessCache = { allowed, expiresAt: Date.now() + FEATURE_AVAILABILITY_CACHE_MS };
   return allowed;
+}
+
+export async function getPublicAiFeatureAvailability() {
+  const entries = await Promise.all(
+    Object.keys(AI_FEATURE_ACCESS).map(async (feature) => [feature, await isAiFeatureEnabled(feature)])
+  );
+  return Object.fromEntries(entries);
 }
 
 function bearerToken(req) {

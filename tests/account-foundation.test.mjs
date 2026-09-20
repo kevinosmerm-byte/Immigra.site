@@ -326,9 +326,26 @@ test("the client follows the remote launch-promotion switch without a new releas
   const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
   const promotion = await readFile(new URL("../src/PromotionAccess.jsx", import.meta.url), "utf8");
 
-  assert.match(routes, /promotionAccess: await isPromotionalAiAccessAllowed\(\)/);
+  assert.match(routes, /const \[promotionAccess, aiFeatures\] = await Promise\.all/);
+  assert.match(routes, /isPromotionalAiAccessAllowed\(\)/);
   assert.match(account, /setPromotionAccess\(config\?\.promotionAccess !== false\)/);
   assert.match(account, /usage, promotionAccess/);
   assert.match(promotion, /!session && promotionAccess === false/);
   assert.match(promotion, /reason: "account_required"/);
+});
+
+test("remote AI feature switches reach the client before a feature opens", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+  const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
+  const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
+  const promotion = await readFile(new URL("../src/PromotionAccess.jsx", import.meta.url), "utf8");
+
+  assert.match(service, /getPublicAiFeatureAvailability/);
+  assert.match(service, /Object\.keys\(AI_FEATURE_ACCESS\)/);
+  assert.match(routes, /getPublicAiFeatureAvailability\(\)/);
+  assert.match(routes, /aiFeatures,/);
+  assert.match(account, /setAiFeatureAvailability\(config\?\.aiFeatures/);
+  assert.match(promotion, /aiFeatureAvailability\?\.\[feature\] === false/);
+  assert.match(promotion, /reason: "feature_unavailable"/);
 });
