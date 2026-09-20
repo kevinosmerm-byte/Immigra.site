@@ -67,5 +67,5 @@ Store purchases are adapters, not business logic. Verified Google Play, App Stor
 
 - The in-memory IP limiter is not shared across multiple Render instances.
 - Reward callbacks and subscription webhooks need signature verification and replay protection.
-- Account export is available; verified account deletion and its legal copy still need completion before paid launch.
+- Authenticated account export and explicitly confirmed deletion are available; paid-launch legal copy should receive final counsel review.
 - Database migration and RLS tests must run against the actual Supabase project before enforcement.

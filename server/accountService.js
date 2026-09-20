@@ -132,6 +132,12 @@ export async function exportAccountData(userId) {
   };
 }
 
+export async function deleteAccount(userId) {
+  const { error } = await supabase.auth.admin.deleteUser(userId);
+  throwDatabaseError(error, "Unable to delete account.");
+  return { deleted: true };
+}
+
 export async function startAiSession({ userId, feature, idempotencyKey }) {
   await reconcileStaleAiSessions(userId);
   const { data, error } = await supabase.rpc("start_ai_session", {

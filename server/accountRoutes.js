@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { randomUUID } from "node:crypto";
 import {
+  deleteAccount,
   exportAccountData,
   finishAiSession,
   getAccountConfiguration,
@@ -48,6 +49,20 @@ router.get("/export", async (req, res) => {
   } catch (error) {
     console.error("Account export error", { message: error.message, cause: error.cause?.code });
     res.status(503).json({ error: "Your account data could not be exported.", code: "export_unavailable" });
+  }
+});
+
+router.delete("/", async (req, res) => {
+  if (req.body?.confirmation !== "DELETE") {
+    return res.status(400).json({ error: "Account deletion requires confirmation.", code: "deletion_confirmation_required" });
+  }
+  try {
+    res.set("Cache-Control", "no-store");
+    await deleteAccount(req.account.userId);
+    return res.json({ deleted: true });
+  } catch (error) {
+    console.error("Account deletion error", { message: error.message, cause: error.cause?.code });
+    return res.status(503).json({ error: "Your account could not be deleted.", code: "deletion_unavailable" });
   }
 });
 

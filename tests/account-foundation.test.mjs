@@ -122,3 +122,16 @@ test("account exports are authenticated, bounded, and omit private content", asy
   assert.match(account, /DOWNLOAD MY DATA/);
   assert.match(account, /DESCARGAR MIS DATOS/);
 });
+
+test("account deletion requires an explicit confirmation and uses the admin API", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
+  const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+  const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
+
+  assert.match(routes, /router\.delete\("\/"/);
+  assert.match(routes, /confirmation !== "DELETE"/);
+  assert.match(service, /auth\.admin\.deleteUser\(userId\)/);
+  assert.match(account, /deleteConfirmation !== "DELETE"/);
+  assert.match(account, /Local study progress on this device is not removed/);
+});
