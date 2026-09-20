@@ -592,24 +592,12 @@ function Home({
           <div className="home-practice-list">
 
             <button
-              className="practice-feature-card civics-feature"
+              className="practice-feature-card civics-feature civics-image-card"
               onClick={() => onOpenFeature("civics")}
+              aria-label="Civics — 128 Questions. Master the questions for your interview."
             >
-
-              <div className="feature-icon">
-                ◎
-              </div>
-
-              <div className="feature-text">
-                <small>CIVICS</small>
-                <h3>128 Questions</h3>
-                <p>Master the questions for your interview.</p>
-              </div>
-
-              <span className="feature-arrow">
-                →
-              </span>
-
+              <img src="/civics-128-button.png" alt="" aria-hidden="true" />
+              <span className="sr-only">Civics — 128 Questions. Master the questions for your interview.</span>
             </button>
 
 
