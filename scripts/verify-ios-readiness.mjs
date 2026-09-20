@@ -5,6 +5,8 @@ import assert from "node:assert/strict";
 const requiredFiles = [
   "ios/App/App/Info.plist",
   "ios/App/App/PrivacyInfo.xcprivacy",
+  "ios/App/App/en.lproj/InfoPlist.strings",
+  "ios/App/App/es.lproj/InfoPlist.strings",
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
   "ios/App/App.xcodeproj/project.pbxproj",
 ];
@@ -27,5 +29,14 @@ assert.match(project, /PRODUCT_BUNDLE_IDENTIFIER = us\.citizenshipai\.app/);
 assert.match(project, /MARKETING_VERSION = 1\.0/);
 assert.match(project, /CURRENT_PROJECT_VERSION = 1/);
 assert.match(project, /PrivacyInfo\.xcprivacy in Resources/);
+assert.match(project, /InfoPlist\.strings in Resources/);
+
+const englishPermissions = await readFile("ios/App/App/en.lproj/InfoPlist.strings", "utf8");
+const spanishPermissions = await readFile("ios/App/App/es.lproj/InfoPlist.strings", "utf8");
+assert.match(englishPermissions, /NSMicrophoneUsageDescription/);
+assert.match(englishPermissions, /NSCameraUsageDescription/);
+assert.match(spanishPermissions, /NSMicrophoneUsageDescription/);
+assert.match(spanishPermissions, /NSCameraUsageDescription/);
+assert.match(spanishPermissions, /micrófono/);
 
 console.log("iOS readiness checks passed.");

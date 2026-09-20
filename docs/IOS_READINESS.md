@@ -18,6 +18,7 @@
 - App-level `PrivacyInfo.xcprivacy` included in the iOS target with no tracking and conservative data-use declarations
 - Repeatable `npm run verify:ios` validation for bundle ID, version, privacy manifest, permissions and App Store icon
 - English and Spanish App Store metadata, review notes, privacy-answer guidance and submission checklist prepared in `app-store/`
+- Native microphone and optional-camera permission messages localized for English and Spanish
 
 ## Repeatable sync workflow
 
