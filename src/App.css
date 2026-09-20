@@ -25146,6 +25146,7 @@ select { font: inherit; }
     margin-top: 4px;
     padding-top: 6px;
     gap: 5px;
+    border-top: 0;
   }
 
   .civics-nav-button {
