@@ -1953,7 +1953,16 @@ function App() {
           <h1>Reading.</h1>
           <p className="practice-intro">Read the sentence aloud and practice your English.</p>
           <div className="reading-card">
-            <div className="reading-label">READ THIS SENTENCE</div>
+            <div className="reading-card-heading">
+              <span className="reading-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M7 4.5h8.5A2.5 2.5 0 0 1 18 7v12H8a3 3 0 0 1-3-3V6.5a2 2 0 0 1 2-2Z"/><path d="M8 4.5V16h10M10.5 9H15M10.5 12H15"/></svg>
+              </span>
+              <div>
+                <small>ENGLISH PRACTICE</small>
+                <div className="reading-label">READ THIS SENTENCE</div>
+              </div>
+              <span className="reading-card-count">{readingIndex + 1} / {readingSentences.length}</span>
+            </div>
             <div className="reading-sentence">{readingSentences[readingIndex].english}</div>
             <div className="writing-spanish">{readingSentences[readingIndex].spanish}</div>
             {aiMessage && (
@@ -1970,7 +1979,18 @@ function App() {
               disabled={isAIThinking && !isReading}
               type="button"
             >
-              {isReading ? "⏹ Stop & Evaluate" : "🎙 Start Reading"}
+              <span className="reading-button-icon" aria-hidden="true">
+                {isReading ? (
+                  <svg viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2" /></svg>
+                ) : (
+                  <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6"/></svg>
+                )}
+              </span>
+              <span className="reading-button-copy">
+                <small>{isReading ? "RECORDING ACTIVE" : "YOUR TURN"}</small>
+                <strong>{isReading ? "Stop & Evaluate" : "Start Reading"}</strong>
+              </span>
+              <span className="reading-button-arrow" aria-hidden="true">{isReading ? "■" : "→"}</span>
             </button>
           </div>
         </main>
