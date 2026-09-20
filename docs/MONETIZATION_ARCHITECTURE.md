@@ -42,6 +42,7 @@ Do not migrate or delete `civicsViewed`, favorites, local practice history, lang
 - Require the issued session ID on `/coach`, `/transcribe`, evaluation and avatar endpoints during Phase 4.
 - Never place `SUPABASE_SECRET_KEY`, OpenAI, D-ID or USCIS credentials in a `VITE_` variable.
 - Rate limits are shared across instances through atomic Supabase windows. Only a server-keyed HMAC identifier is stored; IP addresses are not account identity and are never stored in the limiter table.
+- Expired limiter windows are removed probabilistically in bounded batches, preventing the protection table from growing indefinitely without requiring another paid scheduler.
 
 ## Database objects
 

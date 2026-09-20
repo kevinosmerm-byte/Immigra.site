@@ -148,3 +148,13 @@ test("rate limits are shared atomically without storing raw IP addresses", async
   assert.match(server, /consumeDistributedRateLimit/);
   assert.doesNotMatch(sql, /ip_address|raw_ip/i);
 });
+
+test("expired distributed rate-limit windows are cleaned in bounded batches", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const sql = await readFile(new URL("../supabase/migrations/202609200004_rate_limit_retention.sql", import.meta.url), "utf8");
+
+  assert.match(sql, /api_rate_limit_windows_updated_idx/);
+  assert.match(sql, /updated_at < v_now - interval '24 hours'/);
+  assert.match(sql, /limit 1000/);
+  assert.match(sql, /random\(\) < 0\.02/);
+});
