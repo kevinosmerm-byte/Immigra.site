@@ -21,6 +21,15 @@ android/app/*.keystore
 *.aab
 *.idsig
 
+# Generated iOS web bundle and private Apple signing material
+ios/App/App/public/
+ios/App/App.xcodeproj/xcuserdata/
+ios/App/App.xcworkspace/xcuserdata/
+*.xcuserstate
+*.mobileprovision
+*.p12
+AuthKey_*.p8
+
 # Local secrets and deployment configuration
 .env
 .env.*

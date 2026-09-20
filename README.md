@@ -79,3 +79,7 @@ CitizenshipAI includes a web app manifest and service worker. After deployment w
 ## Android / Google Play release
 
 The web app is installable as a PWA today. A Google Play release additionally requires an Android container and a signed Android App Bundle (`.aab`). Capacitor is the planned wrapper because it preserves this React application and its current visual system. Install it only in an environment that can validate npm registry certificates, then follow the [official Capacitor setup](https://capacitorjs.com/docs/getting-started): install `@capacitor/core`, `@capacitor/cli`, and `@capacitor/android`; initialize the app with `dist` as `webDir`; add Android; run `npm run build`, `npx cap sync android`, and build the signed `.aab` in Android Studio.
+
+## iOS / App Store release
+
+The native iOS container lives in `ios/` and uses the same stable application id, `us.citizenshipai.app`. Run `npm run ios:sync` after every web release to build the Vite app and copy the current production assets and native plugins into Xcode. The final archive, signing, device testing, TestFlight upload, and App Store submission must be completed on a Mac using the current App Store-supported Xcode and iOS SDK. See `docs/IOS_READINESS.md` for the handoff checklist.
