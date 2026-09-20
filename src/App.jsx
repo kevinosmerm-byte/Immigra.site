@@ -1762,7 +1762,8 @@ function App() {
                   );
                 }}
               >
-                ← <span>Previous</span>
+                <span className="civics-nav-icon" aria-hidden="true">←</span>
+                <span>Previous</span>
               </button>
               <div className="civics-progress">
                 {String(civicsIndex + 1).padStart(2, "0")}<span> / 128</span>
@@ -1778,7 +1779,8 @@ function App() {
                   });
                 }}
               >
-                <span>Next</span> →
+                <span>Next</span>
+                <span className="civics-nav-icon" aria-hidden="true">→</span>
               </button>
             </div>
           </div>
