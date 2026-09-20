@@ -1323,6 +1323,14 @@ function App() {
     return () => delete document.body.dataset.appScreen;
   }, [screen]);
 
+  useEffect(() => {
+    // Every module is a new screen. Do not carry the Home page's scroll
+    // position into it, otherwise the coach can open below Sarah's face.
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [screen]);
+
   const [coachListening, setCoachListening] = useState(false);
   const [coachHistory, setCoachHistory] = useState([]);
   const [coachReply, setCoachReply] = useState("");
