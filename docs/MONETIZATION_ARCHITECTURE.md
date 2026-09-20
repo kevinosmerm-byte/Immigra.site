@@ -19,7 +19,7 @@ This matches the current React + Capacitor + Express architecture and keeps Goog
    Text responses are capped at 220 output tokens by default (server-configurable, hard ceiling 600), and microphone clips stop automatically after 45 seconds.
    OpenAI requests time out after 30 seconds with at most one SDK retry; D-ID and USCIS requests time out after 15 seconds.
    Provider attempts that fail or time out are still recorded as request units, so cost estimates do not silently exclude unsuccessful calls.
-9. **Abuse and recovery testing — required before enforcement.** Test rapid starts, replayed keys, expired tokens, failed AI providers and refunds.
+9. **Abuse and recovery testing — complete.** Automated safeguards cover rapid starts, replayed idempotency keys, invalid or expired sessions, provider failures, abandoned sessions, content-free telemetry, remote shutdowns and single-use reward refunds. Production controls and response procedures are documented in `docs/OPERATIONS_RUNBOOK.md`.
 
 ## Session boundaries
 
@@ -67,8 +67,8 @@ Use the Capacitor AdMob plugin only for voluntary rewarded placements. Android s
 
 Store purchases are adapters, not business logic. Verified Google Play, App Store or RevenueCat webhooks update `entitlements`. The application consumes one normalized response: tier, status, period and per-feature allowance.
 
-## Security risks still open
+## Security risks deferred until provider selection
 
 - Reward callbacks and subscription webhooks need signature verification and replay protection.
 - Authenticated account export and explicitly confirmed deletion are available; paid-launch legal copy should receive final counsel review.
-- Database migration and RLS tests must run against the actual Supabase project before enforcement.
+- Store sandbox verification, purchase restoration and provider-specific webhook signature tests must run after Apple, Google Play or RevenueCat is selected.

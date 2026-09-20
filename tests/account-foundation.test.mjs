@@ -349,3 +349,16 @@ test("remote AI feature switches reach the client before a feature opens", async
   assert.match(promotion, /aiFeatureAvailability\?\.\[feature\] === false/);
   assert.match(promotion, /reason: "feature_unavailable"/);
 });
+
+test("the operations runbook documents safe shutdown and paid-launch gates", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const architecture = await readFile(new URL("../docs/MONETIZATION_ARCHITECTURE.md", import.meta.url), "utf8");
+  const runbook = await readFile(new URL("../docs/OPERATIONS_RUNBOOK.md", import.meta.url), "utf8");
+
+  assert.match(architecture, /Abuse and recovery testing — complete/);
+  assert.match(runbook, /DISABLED_AI_FEATURES/);
+  assert.match(runbook, /launch_promotion/);
+  assert.match(runbook, /A consumed rewarded credit is restored at most once/);
+  assert.match(runbook, /Do not enable paid subscriptions or rewarded ads/);
+  assert.doesNotMatch(runbook, /SUPABASE_SECRET_KEY\s*=|OPENAI_API_KEY\s*=|DID_API_KEY\s*=/);
+});
