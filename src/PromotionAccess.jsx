@@ -1,6 +1,7 @@
 import { createContext, useContext, useRef, useState } from "react";
 import { getAiFeatureConfig, PROMOTION_ACCESS_CONFIG } from "../shared/featureAccessConfig.js";
 import { getAiUsageSummary, recordAiSessionStart, shouldShowPromotionNotice } from "./access.js";
+import { useAccount } from "./Account.jsx";
 
 const PromotionAccessContext = createContext(null);
 
@@ -28,12 +29,21 @@ const COPY = {
 };
 
 export function PromotionAccessProvider({ children }) {
+  const { session, usage: accountUsage, startAiSession } = useAccount();
   const [pending, setPending] = useState(null);
   const continuationRef = useRef(null);
 
-  const beginSession = (feature, continuation) => {
+  const beginSession = async (feature, continuation) => {
+    let serverSession = null;
+    if (session) {
+      try {
+        serverSession = await startAiSession(feature);
+      } catch (error) {
+        console.warn("Account usage could not be recorded; promotional access continues.", error?.message);
+      }
+    }
     recordAiSessionStart(feature);
-    continuation();
+    continuation(serverSession);
   };
 
   const requestAiSession = (feature, continuation, language = "en") => {
@@ -64,7 +74,13 @@ export function PromotionAccessProvider({ children }) {
 
   const copy = pending ? COPY[pending.language] : COPY.en;
   const feature = pending ? getAiFeatureConfig(pending.feature) : null;
-  const usage = pending ? getAiUsageSummary().features[pending.feature] : null;
+  const localUsage = pending ? getAiUsageSummary().features[pending.feature] : null;
+  const remoteUsage = pending ? accountUsage?.features?.[pending.feature] : null;
+  const usage = remoteUsage ? {
+    limit: remoteUsage.freeLimit,
+    used: remoteUsage.freeUsed,
+    remaining: Math.max(0, (remoteUsage.freeLimit || 0) - (remoteUsage.freeUsed || 0)),
+  } : localUsage;
 
   return (
     <PromotionAccessContext.Provider value={{ requestAiSession, getAiUsageSummary }}>

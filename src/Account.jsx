@@ -37,6 +37,19 @@ export function AccountProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [usage, setUsage] = useState(null);
 
+  const loadUsage = async (accessToken) => {
+    if (!accessToken) { setUsage(null); return null; }
+    try {
+      const response = await fetch("/api/account/usage", { headers: { Authorization: `Bearer ${accessToken}` } });
+      const nextUsage = response.ok ? await response.json() : null;
+      setUsage(nextUsage);
+      return nextUsage;
+    } catch {
+      setUsage(null);
+      return null;
+    }
+  };
+
   useEffect(() => {
     if (client || (browserSupabaseUrl && browserSupabaseKey)) return;
     let active = true;
@@ -66,10 +79,7 @@ export function AccountProvider({ children }) {
 
   useEffect(() => {
     if (!session?.access_token) { setUsage(null); return; }
-    fetch("/api/account/usage", { headers: { Authorization: `Bearer ${session.access_token}` } })
-      .then((response) => response.ok ? response.json() : null)
-      .then(setUsage)
-      .catch(() => setUsage(null));
+    loadUsage(session.access_token);
   }, [session?.access_token]);
 
   const value = useMemo(() => ({
@@ -79,6 +89,18 @@ export function AccountProvider({ children }) {
       options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` },
     }),
     signOut: () => client?.auth.signOut(),
+    startAiSession: async (feature) => {
+      if (!session?.access_token) return null;
+      const response = await fetch("/api/account/sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ feature, idempotencyKey: crypto.randomUUID() }),
+      });
+      const decision = await response.json().catch(() => ({}));
+      if (!response.ok || !decision.allowed) throw new Error(decision.error || decision.reason || "AI session unavailable");
+      loadUsage(session.access_token);
+      return decision;
+    },
   }), [client, session, loading, usage]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
