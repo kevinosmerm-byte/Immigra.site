@@ -1,4 +1,6 @@
-const config = {
+import type { CapacitorConfig } from "@capacitor/cli";
+
+const config: CapacitorConfig = {
   appId: "us.citizenshipai.app",
   appName: "Citizenship AI",
   webDir: "dist",

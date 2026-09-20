@@ -15,6 +15,7 @@ import { PodcastLibrary } from "./PodcastPlayer";
 import { FREE_AI_LIMITS, canUseAiFeature, getAiUsageSummary, recordAiUsage } from "./access";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
 import ImmigrationHelp from "./ImmigrationHelp";
+import { speakAppText, stopAppSpeech } from "./speech";
 
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
@@ -937,47 +938,21 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     });
   }, [isInterviewComplete, correctAnswers, questions.length, onComplete]);
 
-  const speakQuestion = (text, onFinished, selectedInterviewer = interviewer) => {
+  const speakQuestion = async (text, onFinished, selectedInterviewer = interviewer) => {
     const requestId = ++speechRequestRef.current;
-    window.speechSynthesis.cancel();
     const voiceIsKevin = selectedInterviewer === "kevin";
-    const voices = window.speechSynthesis.getVoices();
-    const englishVoices = voices.filter((v) => v.lang.startsWith("en"));
-    const americanEnglishVoices = englishVoices.filter((v) => /^en-US$/i.test(v.lang));
-    const preferredVoice = voiceIsKevin
-      ? americanEnglishVoices.find((v) => /david|mark|guy|ryan|christopher|matthew|joey|fred|alex/i.test(v.name))
-        || americanEnglishVoices[0]
-        || englishVoices[0]
-      : englishVoices.find((v) => /female|zira|samantha|aria|jenny|susan/i.test(v.name))
-        || englishVoices[0];
-
-    const voice = new SpeechSynthesisUtterance(text);
-    voice.lang = "en-US";
-    voice.rate = voiceIsKevin ? 0.88 : 0.9;
-    voice.pitch = voiceIsKevin ? 0.86 : 1.1;
-
-    if (preferredVoice) {
-      voice.voice = preferredVoice;
-    }
-
-    let finished = false;
     const finishSpeaking = () => {
-      if (finished || requestId !== speechRequestRef.current) return;
-      finished = true;
+      if (requestId !== speechRequestRef.current) return;
       setIsSpeaking(false);
       if (onFinished) onFinished();
     };
-
-    voice.onstart = () => setIsSpeaking(true);
-    voice.onend = () => finishSpeaking();
-    voice.onerror = () => finishSpeaking();
-
-    window.speechSynthesis.speak(voice);
-
-    const estimatedTime = Math.max(3000, text.length * 70);
-    setTimeout(() => {
-      finishSpeaking();
-    }, estimatedTime);
+    setIsSpeaking(true);
+    await speakAppText(text, {
+      profile: voiceIsKevin ? "male" : "female",
+      rate: voiceIsKevin ? 0.88 : 0.9,
+      pitch: voiceIsKevin ? 0.86 : 1.1,
+      onEnd: finishSpeaking,
+    });
   };
 
   useEffect(() => {
@@ -992,7 +967,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
 
     return () => {
       clearTimeout(timer);
-      window.speechSynthesis.cancel();
+      stopAppSpeech();
     };
   }, [questions]);
 
@@ -1392,6 +1367,11 @@ function App() {
   const [aiUsage, setAiUsage] = useState(() => getAiUsageSummary());
   const [usageLimitFeature, setUsageLimitFeature] = useState(null);
 
+  useEffect(() => {
+    document.body.dataset.appScreen = screen;
+    return () => delete document.body.dataset.appScreen;
+  }, [screen]);
+
   const [coachListening, setCoachListening] = useState(false);
   const [coachHistory, setCoachHistory] = useState([]);
   const [coachReply, setCoachReply] = useState("");
@@ -1462,20 +1442,15 @@ function App() {
         saveLocalValue("civicsViewed", JSON.stringify(updated));
         return updated;
       });
-      window.speechSynthesis.cancel();
-      const speech = new SpeechSynthesisUtterance(
-        civicsQuestions[civicsIndex].english
-      );
-      speech.lang = "en-US";
-      speech.rate = 0.88;
-      speech.pitch = 1;
-      speech.volume = 1;
-      window.speechSynthesis.speak(speech);
+      speakAppText(civicsQuestions[civicsIndex].english, {
+        rate: 0.88,
+        pitch: 1,
+      });
     }, 300);
 
     return () => {
       clearTimeout(timer);
-      window.speechSynthesis.cancel();
+      stopAppSpeech();
     };
   }, [screen, civicsIndex]);
 
@@ -1567,27 +1542,16 @@ function App() {
     }
   };
 
-  const speakCoachReply = (text) => {
+  const speakCoachReply = async (text) => {
     if (!text) return;
-    window.speechSynthesis.cancel();
     setCoachSpeaking(false);
-    const speech = new SpeechSynthesisUtterance(text);
-    speech.lang = "en-US";
-    speech.rate = 0.92;
-    speech.pitch = 1.05;
-    speech.volume = 1;
-    const voices = window.speechSynthesis.getVoices();
-    const femaleVoice =
-      voices.find(
-        (voice) =>
-          voice.lang.startsWith("en") &&
-          /female|zira|samantha|aria|jenny|susan/i.test(voice.name)
-      ) || voices.find((voice) => voice.lang.startsWith("en"));
-    if (femaleVoice) speech.voice = femaleVoice;
-    speech.onstart = () => setCoachSpeaking(true);
-    speech.onend = () => setCoachSpeaking(false);
-    speech.onerror = () => setCoachSpeaking(false);
-    window.speechSynthesis.speak(speech);
+    await speakAppText(text, {
+      profile: "female",
+      rate: 0.92,
+      pitch: 1.05,
+      onStart: () => setCoachSpeaking(true),
+      onEnd: () => setCoachSpeaking(false),
+    });
   };
 
   const sendCoachMessage = async (message) => {
@@ -2060,13 +2024,10 @@ function App() {
             <div className="dictation-audio-prompt">
               <button
                 className="dictation-speak-btn"
-                onClick={() => {
-                  window.speechSynthesis.cancel();
-                  const utterance = new SpeechSynthesisUtterance(writingSentences[writingIndex].english);
-                  utterance.lang = "en-US";
-                  utterance.rate = 0.85;
-                  window.speechSynthesis.speak(utterance);
-                }}
+                onClick={() => speakAppText(writingSentences[writingIndex].english, {
+                  rate: 0.85,
+                  pitch: 1,
+                })}
                 type="button"
               >
                 <span className="speaker-icon">🔊</span>

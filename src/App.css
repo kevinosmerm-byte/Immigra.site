@@ -24326,6 +24326,7 @@ select {
 .podcast-error { margin-top: 17px; padding: 12px; border: 1px solid rgba(255, 121, 139, .28); border-radius: 12px; color: #ffc1ca; background: rgba(120, 30, 49, .16); font-size: 11px; }
 
 .podcast-mini-player { position: fixed; right: 14px; bottom: 14px; left: 14px; z-index: 2000; width: min(560px, calc(100% - 28px)); min-height: 68px; margin: 0 auto; display: grid; grid-template-columns: 1fr 48px; align-items: center; gap: 8px; padding: 8px; box-sizing: border-box; border: 1px solid rgba(103, 190, 255, .4); border-radius: 18px; background: rgba(4, 15, 34, .94); box-shadow: 0 22px 60px rgba(0,0,0,.5), 0 0 30px rgba(38,138,255,.12); backdrop-filter: blur(22px); }
+body[data-app-screen="home"] .podcast-mini-player { bottom: 92px; }
 .podcast-mini-open { min-width: 0; display: flex; align-items: center; gap: 11px; padding: 0; border: 0; color: #fff; background: transparent; text-align: left; cursor: pointer; }
 .podcast-mini-open > span { min-width: 0; }
 .podcast-mini-open small { display: block; color: #54d8ff; font-size: 7px; font-weight: 900; letter-spacing: .13em; }
@@ -24549,6 +24550,16 @@ select {
   .home-new-nav { width: calc(100% - 20px); bottom: 10px; padding: 7px 6px; }
   .home-new-nav .home-nav-item { padding: 7px 3px; }
   .home-new-nav .home-nav-item strong { font-size: 8px; letter-spacing: .025em; }
+}
+
+/* Keep the patriotic artwork clean: legacy hero glows were clipped by the
+   content column and appeared as a rectangular translucent layer. */
+.home-new-hero > .hero-glow {
+  display: none !important;
+}
+
+.home-new-hero::before {
+  content: none !important;
 }
 
 /* ===== PREMIUM CROSS-SCREEN CONSISTENCY =====
@@ -24834,7 +24845,11 @@ select { font: inherit; }
   .coach-video-call-card .coach-conversation-avatar { min-height: min(54svh, 440px); }
   .coach-video-call-card .coach-conversation-status { top: 10px; }
   .live-interview-screen .interview-content { padding: 4px 6px 8px; }
-  .sarah-live-stage { min-height: 0; max-height: calc(100svh - 132px); }
+  .sarah-live-stage {
+    height: calc(100svh - 180px);
+    min-height: 460px;
+    max-height: 620px;
+  }
   .live-question-card { margin-inline: 7px; }
   .live-question-card .question { font-size: clamp(18px, 5vw, 23px); }
   .live-interview-controls { grid-template-columns: 52px 1fr; }

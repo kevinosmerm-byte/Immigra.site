@@ -1,8 +1,12 @@
+import { Capacitor } from "@capacitor/core";
+
 // Production requests stay on the page's own domain and are relayed by the
 // Cloudflare Pages Function in functions/api. Local development can still use
 // a custom API target from .env.
 const isLocalDevelopment = ["localhost", "127.0.0.1"].includes(window.location.hostname);
-const configuredBaseUrl = isLocalDevelopment
+const configuredBaseUrl = Capacitor.isNativePlatform()
+  ? "https://citizenshipai.us/api"
+  : isLocalDevelopment
   ? import.meta.env.VITE_API_BASE_URL || "/api"
   : "/api";
 const API_BASE_URL = configuredBaseUrl.replace(/\/$/, "");
