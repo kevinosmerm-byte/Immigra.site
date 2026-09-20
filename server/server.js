@@ -5,7 +5,7 @@ import OpenAI from "openai";
 import multer from "multer";
 import { fetchUscisCaseStatus, getUscisConfig, maskReceiptNumber } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
-import { attachOptionalAiSession } from "./accountService.js";
+import { attachOptionalAiSession, recordAiUsageEvent } from "./accountService.js";
 
 dotenv.config();
 
@@ -155,6 +155,25 @@ function safeHistory(history) {
   });
 }
 
+async function recordProviderUsage(req, { provider, model, usage, transcriptionSeconds }) {
+  if (!req.aiSession) return;
+  try {
+    await recordAiUsageEvent({
+      aiSession: req.aiSession,
+      provider,
+      model,
+      usage: {
+        inputTokens: usage?.input_tokens,
+        outputTokens: usage?.output_tokens,
+        transcriptionSeconds,
+      },
+    });
+  } catch (error) {
+    // Metering must never interrupt a paid provider response or the launch promotion.
+    console.error("AI usage metering error", { sessionId: req.aiSession.id, message: error.message });
+  }
+}
+
 app.post("/evaluate", aiRateLimit, async (req, res) => {
   try {
     if (!requireOpenAI(res)) return;
@@ -207,6 +226,7 @@ ${correctAnswer}
     });
 
    const result = parseModelJson(response.output_text);
+   await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL, usage: response.usage });
 
 if (!result.action) {
   if (result.status === "correct") {
@@ -284,6 +304,7 @@ ${answer}
     });
 
     const result = parseModelJson(response.output_text);
+    await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL, usage: response.usage });
 
     res.json(result);
 
@@ -323,6 +344,8 @@ app.post("/transcribe", transcriptionRateLimit, upload.single("audio"), async (r
       model: "gpt-4o-mini-transcribe",
       language: "en"
     });
+
+    await recordProviderUsage(req, { provider: "openai", model: "gpt-4o-mini-transcribe", usage: transcription.usage });
 
     res.json({
       transcript: transcription.text
@@ -403,6 +426,7 @@ ${transcript}
     });
 
     const result = parseModelJson(response.output_text);
+    await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL, usage: response.usage });
 
     res.json(result);
 
@@ -461,6 +485,7 @@ ${message}
     });
 
     const result = parseModelJson(response.output_text);
+    await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL, usage: response.usage });
 
     res.json(result);
 
@@ -513,6 +538,8 @@ app.post("/avatar/session", avatarSessionRateLimit, async (req, res) => {
       console.error("D-ID client-key request failed", { status: didResponse.status });
       return res.status(502).json({ error: "The live avatar service could not start. Please continue with the standard practice interview." });
     }
+
+    await recordProviderUsage(req, { provider: "d-id", model: "agents-client-key" });
 
     res.set("Cache-Control", "no-store");
     return res.json({

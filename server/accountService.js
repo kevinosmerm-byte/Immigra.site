@@ -123,3 +123,23 @@ export async function finishAiSession({ userId, sessionId, outcome, telemetry })
   throwDatabaseError(error, "Unable to finish AI session.");
   return data;
 }
+
+export async function recordAiUsageEvent({ aiSession, provider, model, usage = {} }) {
+  if (!supabase || !aiSession?.id || !aiSession?.userId) return;
+  const metadata = {
+    provider: String(provider || "").slice(0, 40),
+    model: String(model || "").slice(0, 80),
+    requestCount: 1,
+    inputTokens: Math.max(0, Number(usage.inputTokens) || 0),
+    outputTokens: Math.max(0, Number(usage.outputTokens) || 0),
+    transcriptionSeconds: Math.max(0, Number(usage.transcriptionSeconds) || 0),
+  };
+  const { error } = await supabase.from("usage_events").insert({
+    user_id: aiSession.userId,
+    session_id: aiSession.id,
+    event_name: "ai_provider_request",
+    feature: aiSession.feature,
+    metadata,
+  });
+  throwDatabaseError(error, "Unable to record AI provider usage.");
+}

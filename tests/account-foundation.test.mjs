@@ -44,3 +44,16 @@ test("AI API requests can carry a server-verified account session", async () => 
   assert.match(server, /eq\("user_id", authData\.user\.id\)/);
   assert.match(server, /X-Citizenship-AI-Session-Verified/);
 });
+
+test("provider usage metering stores technical metadata without user content", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const accountService = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+  const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
+
+  assert.match(accountService, /event_name: "ai_provider_request"/);
+  assert.match(accountService, /inputTokens/);
+  assert.match(accountService, /outputTokens/);
+  assert.doesNotMatch(accountService, /conversationText|audioBlob|transcriptText/);
+  assert.match(server, /response\.usage/);
+  assert.match(server, /provider: "d-id"/);
+});
