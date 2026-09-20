@@ -25260,8 +25260,8 @@ select { font: inherit; }
 }
 .home-account-button:hover { color: #fff; border-color: rgba(45, 220, 255, .7); transform: translateY(-1px); }
 .home-account-button.signed-in { color: #041321; border-color: #35e4ca; background: #35e4ca; box-shadow: 0 0 16px rgba(53,228,202,.25); }
-.account-backdrop { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: end center; padding: 16px; background: rgba(0,5,15,.74); backdrop-filter: blur(12px); animation: promotion-fade-in .2s ease-out; }
-.account-sheet { position: relative; width: min(100%, 460px); padding: 28px; overflow: hidden; border: 1px solid rgba(73,187,255,.32); border-radius: 28px; color: #eef7ff; background: linear-gradient(155deg, rgba(13,37,72,.98), rgba(4,15,34,.99) 65%); box-shadow: 0 24px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08); animation: promotion-sheet-in .3s cubic-bezier(.2,.8,.2,1); }
+.account-backdrop { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: end center; padding: 16px; overflow-y:auto; background: rgba(0,5,15,.74); backdrop-filter: blur(12px); animation: promotion-fade-in .2s ease-out; }
+.account-sheet { position: relative; width: min(100%, 460px); max-height:calc(100dvh - 32px); padding: 28px; overflow-x:hidden; overflow-y:auto; border: 1px solid rgba(73,187,255,.32); border-radius: 28px; color: #eef7ff; background: linear-gradient(155deg, rgba(13,37,72,.98), rgba(4,15,34,.99) 65%); box-shadow: 0 24px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08); animation: promotion-sheet-in .3s cubic-bezier(.2,.8,.2,1); }
 .account-sheet::before { content:""; position:absolute; width:230px; height:230px; right:-100px; top:-130px; border-radius:50%; background:rgba(20,191,255,.13); filter:blur(24px); pointer-events:none; }
 .account-close { position:absolute; top:14px; right:14px; width:34px; height:34px; border:1px solid rgba(151,194,241,.18); border-radius:50%; color:#a9bdd5; background:rgba(3,12,28,.62); font-size:20px; cursor:pointer; }
 .account-mark { display:grid; place-items:center; width:50px; height:50px; margin-bottom:18px; border:1px solid #27d9ff; border-radius:16px; color:#35e4ff; background:linear-gradient(145deg,rgba(28,161,230,.24),rgba(74,75,221,.2)); box-shadow:0 0 24px rgba(30,192,255,.14); font-size:24px; }
@@ -25280,6 +25280,11 @@ select { font: inherit; }
 .account-identity span,.account-access span { color:#35dff8; font-size:.59rem; font-weight:900; letter-spacing:.12em; }
 .account-identity strong,.account-access strong { overflow:hidden; color:#fff; text-overflow:ellipsis; }
 .account-access small { color:#79d9bf; }
+.account-usage-summary { display:grid; gap:7px; margin:12px 0; padding:14px; border:1px solid rgba(110,172,235,.2); border-radius:16px; background:rgba(7,25,51,.68); }
+.account-usage-title { color:#35dff8; font-size:.59rem; font-weight:900; letter-spacing:.12em; }
+.account-usage-row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:9px; min-height:28px; padding-top:7px; border-top:1px solid rgba(110,172,235,.12); color:#d9e7f5; font-size:.72rem; }
+.account-usage-row strong { color:#fff; font-size:.72rem; }
+.account-usage-row small { min-width:76px; color:#7790aa; font-size:.59rem; text-align:right; }
 .account-status { margin:12px 3px 0; font-size:.76rem; line-height:1.45; }
 .account-status.sent { color:#70e2bd; }.account-status.error { color:#ff91a3; }
 .account-note { margin:18px 4px 0; color:#71849d; font-size:.66rem; line-height:1.5; text-align:center; }

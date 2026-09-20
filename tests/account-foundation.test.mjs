@@ -86,3 +86,13 @@ test("abandoned sessions are reconciled without giving back consumed provider us
   assert.match(accountService, /event_name", "ai_provider_request"/);
   assert.match(accountService, /outcome: count > 0 \? "completed" : "refunded"/);
 });
+
+test("signed-in users receive a compact per-feature allowance summary", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
+
+  assert.match(account, /account-usage-summary/);
+  assert.match(account, /item\.freeUsed/);
+  assert.match(account, /item\.freeLimit/);
+  assert.match(account, /Math\.max\(0, limit - used\)/);
+});

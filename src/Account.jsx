@@ -21,6 +21,7 @@ const COPY = {
     sent: "Check your email. We sent you a secure sign-in link.", signedIn: "SIGNED IN", signOut: "SIGN OUT", close: "Close account panel",
     optional: "Optional during the launch promotion. You can continue using the app without signing in.", unavailable: "Accounts are being prepared. You can continue using the app normally.",
     error: "We could not send the sign-in link. Please try again.", usage: "AI ACCESS", promotion: "Launch promotion active", free: "Free account",
+    usageTitle: "AI PRACTICE", used: "used", available: "available",
   },
   es: {
     account: "Cuenta", title: "Tu cuenta de Citizenship AI", intro: "Inicia sesión para conectar de forma segura los futuros límites de IA y suscripciones entre tus dispositivos.",
@@ -28,7 +29,13 @@ const COPY = {
     sent: "Revisa tu correo. Te enviamos un enlace seguro para iniciar sesión.", signedIn: "SESIÓN INICIADA", signOut: "CERRAR SESIÓN", close: "Cerrar panel de cuenta",
     optional: "Es opcional durante la promoción de lanzamiento. Puedes continuar usando la aplicación sin iniciar sesión.", unavailable: "Las cuentas se están preparando. Puedes continuar usando la aplicación normalmente.",
     error: "No pudimos enviar el enlace. Inténtalo nuevamente.", usage: "ACCESO A IA", promotion: "Promoción de lanzamiento activa", free: "Cuenta gratuita",
+    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles",
   },
+};
+
+const FEATURE_LABELS = {
+  en: { coach: "English Coach", classicInterview: "Civics Interview", writing: "Writing", speaking: "Speaking", realInterview: "Real Interview" },
+  es: { coach: "Coach de inglés", classicInterview: "Entrevista cívica", writing: "Escritura", speaking: "Conversación", realInterview: "Entrevista real" },
 };
 
 export function AccountProvider({ children }) {
@@ -141,6 +148,9 @@ export function AccountSheet({ language = "en", onClose }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const usageFeatures = usage?.features
+    ? Object.entries(usage.features).filter(([, item]) => item?.enabled)
+    : [];
 
   const submit = async (event) => {
     event.preventDefault();
@@ -163,6 +173,22 @@ export function AccountSheet({ language = "en", onClose }) {
           <>
             <div className="account-identity"><span>{copy.signedIn}</span><strong>{session.user.email}</strong></div>
             <div className="account-access"><span>{copy.usage}</span><strong>{usage?.tier === "pro" ? "PRO" : copy.free}</strong><small>{copy.promotion}</small></div>
+            {usageFeatures.length > 0 && (
+              <div className="account-usage-summary" aria-label={copy.usageTitle}>
+                <span className="account-usage-title">{copy.usageTitle}</span>
+                {usageFeatures.map(([feature, item]) => {
+                  const limit = Math.max(0, Number(item.freeLimit) || 0);
+                  const used = Math.min(limit, Math.max(0, Number(item.freeUsed) || 0));
+                  return (
+                    <div className="account-usage-row" key={feature}>
+                      <span>{FEATURE_LABELS[language === "es" ? "es" : "en"][feature] || feature}</span>
+                      <strong>{used}/{limit}</strong>
+                      <small>{Math.max(0, limit - used)} {copy.available}</small>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
             <button className="account-primary secondary" onClick={signOut} type="button">{copy.signOut}<b>→</b></button>
           </>
         ) : (
