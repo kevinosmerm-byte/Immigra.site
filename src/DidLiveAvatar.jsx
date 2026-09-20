@@ -161,12 +161,18 @@ export function DidLiveAvatar({ autoStart = false }) {
       <div className={state === "error" ? "did-live-avatar-recovery error" : "did-live-avatar-recovery"} role="status">
         {message && <p>{message}</p>}
         {(state === "active" || state === "error") && (
-          <button type="button" onClick={connect}>RETRY LIVE VIDEO</button>
+          <button type="button" className="did-live-avatar-retry" onClick={connect}>
+            <span>Retry live video</span>
+            <span aria-hidden="true">↻</span>
+          </button>
         )}
       </div>
 
       {(state === "active" || state === "error") && (
-        <button type="button" className="did-live-avatar-close" onClick={reset}>RETURN TO STANDARD INTERVIEW</button>
+        <button type="button" className="did-live-avatar-close" onClick={reset}>
+          <span>Use standard interview</span>
+          <span aria-hidden="true">→</span>
+        </button>
       )}
     </section>
   );

@@ -24561,6 +24561,79 @@ select {
   content: none !important;
 }
 
+/* D-ID recovery uses the same native, restrained visual language as Home. */
+.did-live-avatar {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+.did-live-fallback-label strong {
+  font-size: 14px;
+  font-weight: 750;
+  letter-spacing: -.01em;
+}
+
+.did-live-avatar-recovery {
+  gap: 14px;
+  padding: 16px 18px 0;
+}
+
+.did-live-avatar-recovery p {
+  color: #aebfda;
+  font-size: 13px;
+  font-weight: 450;
+  line-height: 1.5;
+}
+
+.did-live-avatar .did-live-avatar-retry,
+.did-live-avatar .did-live-avatar-close {
+  min-height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 16px;
+  border: 1px solid rgba(116, 201, 255, .3);
+  border-radius: 15px;
+  color: #f7fbff;
+  background: linear-gradient(110deg, rgba(20, 62, 105, .94), rgba(25, 35, 84, .94));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 10px 25px rgba(0,0,0,.2);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.did-live-avatar .did-live-avatar-retry {
+  flex: 0 0 auto;
+  margin: 0;
+  border-color: rgba(69, 210, 255, .44);
+  background: linear-gradient(110deg, rgba(13, 116, 166, .92), rgba(71, 73, 185, .94));
+}
+
+.did-live-avatar .did-live-avatar-close {
+  width: calc(100% - 36px);
+  margin: 12px 18px 18px;
+}
+
+.did-live-avatar .did-live-avatar-retry > span:last-child,
+.did-live-avatar .did-live-avatar-close > span:last-child {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 50%;
+  background: rgba(255,255,255,.055);
+  font-size: 15px;
+}
+
+@media (max-width: 480px) {
+  .did-live-avatar .did-live-avatar-retry {
+    width: 100%;
+  }
+}
+
 /* ===== PREMIUM CROSS-SCREEN CONSISTENCY =====
    Extends the Home visual language without changing application behavior. */
 :root {
