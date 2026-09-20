@@ -421,7 +421,6 @@ const readingSentences = [
 function Home({
   onStartInterview,
   onStartCivicsInterview,
-  onOpenPractice,
   onOpenFeature,
   onOpenProgress,
   onOpenSettings,
@@ -822,64 +821,6 @@ function Home({
 
       </main>
 
-
-      {/* ================= BOTTOM NAV ================= */}
-
-      <nav className="home-new-nav">
-
-        <button className="home-nav-item active">
-
-          <span>⌂</span>
-          <strong>Home</strong>
-
-        </button>
-
-
-        <button
-          className="home-nav-item"
-          onClick={onOpenPractice}
-        >
-
-          <span>◎</span>
-          <strong>Practice</strong>
-
-        </button>
-
-
-        <button
-          className="home-nav-item"
-          onClick={onOpenProgress}
-        >
-
-          <span>◌</span>
-          <strong>Progress</strong>
-
-        </button>
-
-
-        <button
-          className="home-nav-item"
-          onClick={() => onOpenFeature("coach")}
-        >
-
-          <span>✦</span>
-          <strong>Coach</strong>
-
-        </button>
-
-        <button
-          className="home-nav-item home-nav-help"
-          onClick={onOpenImmigrationHelp}
-        >
-
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="m6.4 6.4 3.5 3.5m4.2 4.2 3.5 3.5m0-11.2-3.5 3.5m-4.2 4.2-3.5 3.5"/></svg>
-          </span>
-          <strong>{language === "en" ? "Help" : "Ayuda"}</strong>
-
-        </button>
-
-      </nav>
 
     </div>
   );
@@ -2372,7 +2313,6 @@ function App() {
     <Home
       onStartInterview={() => startInterview("full")}
       onStartCivicsInterview={() => startInterview("civics")}
-      onOpenPractice={() => setScreen("practice")}
       onOpenFeature={(feature) => setScreen(feature)}
       onOpenProgress={() => setScreen("progress")}
       onOpenImmigrationHelp={() => setScreen("immigrationHelp")}
