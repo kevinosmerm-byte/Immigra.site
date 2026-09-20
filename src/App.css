@@ -25900,3 +25900,76 @@ select { font: inherit; }
   .writing-ai-input { min-height: 58px; }
   .writing-ai-button { min-height: 56px; }
 }
+
+/* AI English Coach: prominent Home entry and a non-collapsing video-call stage. */
+.coach-feature-card {
+  min-height: 112px !important;
+  padding: 16px 18px !important;
+  gap: 14px;
+  border-color: rgba(105, 179, 240, .25) !important;
+  border-radius: 19px !important;
+  background:
+    radial-gradient(circle at 6% 30%, rgba(117, 71, 240, .13), transparent 28%),
+    linear-gradient(145deg, rgba(13, 37, 72, .96), rgba(5, 18, 41, .97)) !important;
+  box-shadow: 0 15px 38px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.coach-feature-card .coach-feature-avatar {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+  overflow: hidden;
+  border: 1px solid rgba(108, 112, 255, .5);
+  border-radius: 18px;
+  box-shadow: 0 0 0 3px rgba(72, 189, 255, .08), 0 10px 24px rgba(0,0,0,.22);
+}
+
+.coach-feature-card .coach-feature-avatar img,
+.coach-feature-card img {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: inherit !important;
+  object-fit: cover;
+  object-position: center 24%;
+}
+
+.coach-feature-card .coach-feature-text h3 { margin-top: 3px; font-size: .92rem !important; }
+.coach-feature-card .coach-feature-text p { margin-top: 4px; line-height: 1.35; }
+.coach-feature-card .feature-arrow {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  flex: 0 0 32px;
+  border: 1px solid rgba(83, 210, 255, .24);
+  border-radius: 10px;
+  color: #37ddff;
+  background: rgba(28, 156, 216, .07);
+}
+
+.coach-video-call-content > .coach-video-call-card {
+  height: min(78svh, 820px);
+  min-height: 620px;
+  max-height: none;
+}
+
+.coach-video-call-card .coach-conversation-avatar,
+.coach-video-call-card .coach-avatar-video {
+  height: 100%;
+  min-height: 0;
+}
+
+.coach-video-call-card .coach-avatar-video {
+  object-position: center 24%;
+}
+
+@media (max-width: 620px) {
+  .coach-feature-card { min-height: 106px !important; padding: 13px 14px !important; }
+  .coach-feature-card .coach-feature-avatar { width: 68px; height: 68px; flex-basis: 68px; border-radius: 17px; }
+  .coach-feature-card .coach-feature-text p { display: block; font-size: .68rem; }
+  .coach-video-call-content > .coach-video-call-card {
+    height: calc(100svh - 72px);
+    min-height: 540px;
+    max-height: none;
+  }
+}
