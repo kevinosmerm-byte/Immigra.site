@@ -69,3 +69,17 @@ Do not enable paid subscriptions or rewarded ads until all of the following are 
 - App Store and Google Play privacy/data-safety disclosures reviewed.
 - Pricing and fair-use limits approved from measured provider telemetry.
 - Legal copy receives final professional review for the paid launch.
+
+## Production verification record
+
+Verified September 20, 2026 after the monetization-safety rollout:
+
+- The public `/api/health` route returned HTTP 200 through the Citizenship AI domain.
+- The direct Render `/health` route returned HTTP 200.
+- The Cloudflare proxy returned the public account configuration successfully.
+- Supabase account support reported configured.
+- Launch promotion reported active.
+- All five AI feature switches reported enabled.
+- The verification used only health and public-configuration reads; it did not invoke OpenAI, D-ID, USCIS or another usage-billed feature.
+
+The monetization foundation is ready for the iOS/App Store preparation phase. Rewarded advertising and paid subscriptions remain intentionally inactive until their provider-specific paid-launch gates are completed.

@@ -362,3 +362,15 @@ test("the operations runbook documents safe shutdown and paid-launch gates", asy
   assert.match(runbook, /Do not enable paid subscriptions or rewarded ads/);
   assert.doesNotMatch(runbook, /SUPABASE_SECRET_KEY\s*=|OPENAI_API_KEY\s*=|DID_API_KEY\s*=/);
 });
+
+test("production verification is recorded without claiming ads or payments are active", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const runbook = await readFile(new URL("../docs/OPERATIONS_RUNBOOK.md", import.meta.url), "utf8");
+  const ios = await readFile(new URL("../docs/IOS_READINESS.md", import.meta.url), "utf8");
+
+  assert.match(runbook, /Verified September 20, 2026/);
+  assert.match(runbook, /did not invoke OpenAI, D-ID, USCIS/);
+  assert.match(runbook, /advertising and paid subscriptions remain intentionally inactive/);
+  assert.match(ios, /verified in production/);
+  assert.match(ios, /advertising and payments intentionally inactive/);
+});

@@ -13,6 +13,8 @@
 - Branded dark launch artwork installed
 - Microphone and optional-camera privacy descriptions added
 - Export-compliance declaration added for standard/exempt encryption use
+- Server-authoritative AI sessions, quotas, remote feature controls and launch-promotion controls verified in production
+- Reward-credit and provider-neutral subscription foundations prepared, with advertising and payments intentionally inactive
 
 ## Repeatable sync workflow
 
