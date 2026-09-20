@@ -44,7 +44,7 @@ export function PromotionAccessProvider({ children }) {
     recordAccountEvent("paywall_viewed", pending.feature).catch(() => {});
   }, [pending, recordAccountEvent, session?.access_token, session?.user?.id]);
 
-  const finishActiveAiSession = async (outcome = "completed", options = {}) => {
+  const finishActiveAiSession = async (outcome = "auto", options = {}) => {
     const active = activeSessionRef.current;
     activeSessionRef.current = null;
     setAiRequestContext(null);
@@ -62,7 +62,7 @@ export function PromotionAccessProvider({ children }) {
       activeSessionRef.current = null;
       setAiRequestContext(null);
       if (active?.sessionId) {
-        finishAiSession(active.sessionId, "completed", { keepalive: true }).catch(() => {});
+        finishAiSession(active.sessionId, "auto", { keepalive: true }).catch(() => {});
       }
     };
     window.addEventListener("pagehide", finishBeforeLeaving);
@@ -70,7 +70,7 @@ export function PromotionAccessProvider({ children }) {
   }, [finishAiSession]);
 
   const beginSession = async (feature, continuation) => {
-    await finishActiveAiSession("completed");
+    await finishActiveAiSession("auto");
     let serverSession = null;
     if (session) {
       try {

@@ -110,7 +110,7 @@ router.post("/sessions", async (req, res) => {
 router.post("/sessions/:sessionId/finish", async (req, res) => {
   const sessionId = req.params.sessionId;
   const outcome = req.body?.outcome;
-  if (!/^[0-9a-f-]{36}$/i.test(sessionId) || !["completed", "failed", "refunded"].includes(outcome)) {
+  if (!/^[0-9a-f-]{36}$/i.test(sessionId) || !["auto", "completed", "failed", "refunded"].includes(outcome)) {
     return res.status(400).json({ error: "Invalid session result.", code: "invalid_session_result" });
   }
 

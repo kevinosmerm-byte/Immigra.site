@@ -260,10 +260,13 @@ export async function finishAiSession({ userId, sessionId, outcome }) {
     if (!total.model && metadata.model) total.model = String(metadata.model).slice(0, 80);
     return total;
   }, { provider: "", model: "", requestCount: 0, inputTokens: 0, outputTokens: 0, transcriptionSeconds: 0 });
+  const resolvedOutcome = outcome === "auto"
+    ? (telemetry.requestCount > 0 ? "completed" : "refunded")
+    : outcome;
   const { data, error } = await supabase.rpc("finish_ai_session", {
     p_user_id: userId,
     p_session_id: sessionId,
-    p_outcome: outcome,
+    p_outcome: resolvedOutcome,
     p_telemetry: telemetry,
   });
   throwDatabaseError(error, "Unable to finish AI session.");

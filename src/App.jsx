@@ -1321,7 +1321,7 @@ function App() {
 
   useEffect(() => {
     if (!["interview", "writing", "coach", "reading"].includes(screen)) {
-      finishActiveAiSessionRef.current("completed");
+      finishActiveAiSessionRef.current("auto");
     }
   }, [screen]);
 

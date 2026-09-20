@@ -292,3 +292,17 @@ test("unused rewarded credits are refunded atomically and only once", async () =
   assert.match(sql, /v_session\.status in \('completed', 'failed', 'refunded'\)/);
   assert.match(sql, /'creditRefunded', v_credit_refunded/);
 });
+
+test("automatic session closure refunds empty sessions and completes used sessions", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const promotion = await readFile(new URL("../src/PromotionAccess.jsx", import.meta.url), "utf8");
+  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+  const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
+  const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
+
+  assert.match(routes, /\["auto", "completed", "failed", "refunded"\]/);
+  assert.match(service, /outcome === "auto"[\s\S]*telemetry\.requestCount > 0 \? "completed" : "refunded"/);
+  assert.match(promotion, /finishAiSession\(active\.sessionId, "auto", \{ keepalive: true \}\)/);
+  assert.match(promotion, /finishActiveAiSession\("auto"\)/);
+  assert.match(app, /finishActiveAiSessionRef\.current\("auto"\)/);
+});
