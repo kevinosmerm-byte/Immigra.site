@@ -25359,6 +25359,7 @@ select { font: inherit; }
 }
 
 .civics-stack-card.next { transform: translateX(43%) scale(.86) rotateY(-4deg); }
+.civics-card-deck.answer-visible .civics-stack-card { opacity: 0; }
 
 .civics-flashcard {
   position: relative;
@@ -25373,6 +25374,7 @@ select { font: inherit; }
 .civics-flashcard:focus-visible { filter: drop-shadow(0 0 12px rgba(0,217,255,.38)); }
 .civics-flashcard-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform .55s cubic-bezier(.2,.72,.2,1); }
 .civics-flashcard.is-flipped .civics-flashcard-inner { transform: rotateY(180deg); }
+.civics-flashcard.is-flipped .civics-flashcard-face.front { box-shadow: none; }
 
 .civics-flashcard-face {
   position: absolute;

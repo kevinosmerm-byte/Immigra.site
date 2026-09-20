@@ -1809,7 +1809,7 @@ function App() {
 
           {visibleIndexes.length ? (
             <>
-              <section className="civics-card-deck" aria-label={`${copy.cards}: ${civicsIndex + 1} / 128`}>
+              <section className={`civics-card-deck ${civicsFlipped ? "answer-visible" : ""}`} aria-label={`${copy.cards}: ${civicsIndex + 1} / 128`}>
                 <div className="civics-stack-card previous" aria-hidden="true"></div>
                 <div className="civics-stack-card next" aria-hidden="true"></div>
                 <div
