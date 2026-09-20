@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import {
   finishAiSession,
   getAccountConfiguration,
+  getPublicAccountConfiguration,
   getUsageSnapshot,
   requireAccount,
   startAiSession,
@@ -15,6 +16,11 @@ const IDEMPOTENCY_KEY_PATTERN = /^[a-zA-Z0-9._:-]{12,128}$/;
 router.get("/status", (_req, res) => {
   res.set("Cache-Control", "no-store");
   res.json(getAccountConfiguration());
+});
+
+router.get("/public-config", (_req, res) => {
+  res.set("Cache-Control", "no-store");
+  res.json(getPublicAccountConfiguration());
 });
 
 router.use(requireAccount);
@@ -79,4 +85,3 @@ router.post("/sessions/:sessionId/finish", async (req, res) => {
 });
 
 export default router;
-

@@ -17,6 +17,17 @@ export function getAccountConfiguration() {
   };
 }
 
+export function getPublicAccountConfiguration() {
+  const publishableKey = process.env.SUPABASE_PUBLISHABLE_KEY?.trim()
+    || process.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
+  return {
+    provider: "supabase",
+    configured: Boolean(supabaseUrl && publishableKey),
+    url: supabaseUrl || "",
+    publishableKey: publishableKey || "",
+  };
+}
+
 function bearerToken(req) {
   const authorization = req.get("authorization") || "";
   const match = authorization.match(/^Bearer\s+(.+)$/i);

@@ -3,13 +3,16 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const AccountContext = createContext(null);
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
-const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
-const supabase = supabaseUrl && supabasePublishableKey
-  ? createClient(supabaseUrl, supabasePublishableKey, {
+const browserSupabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
+const browserSupabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
+
+function createAccountClient(url, publishableKey) {
+  return url && publishableKey
+    ? createClient(url, publishableKey, {
       auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
     })
-  : null;
+    : null;
+}
 
 const COPY = {
   en: {
@@ -29,22 +32,37 @@ const COPY = {
 };
 
 export function AccountProvider({ children }) {
+  const [client, setClient] = useState(() => createAccountClient(browserSupabaseUrl, browserSupabaseKey));
   const [session, setSession] = useState(null);
-  const [loading, setLoading] = useState(Boolean(supabase));
+  const [loading, setLoading] = useState(true);
   const [usage, setUsage] = useState(null);
 
   useEffect(() => {
-    if (!supabase) return;
+    if (client || (browserSupabaseUrl && browserSupabaseKey)) return;
     let active = true;
-    supabase.auth.getSession().then(({ data }) => {
+    fetch("/account/public-config", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((config) => {
+        if (!active) return;
+        setClient(createAccountClient(config?.url, config?.publishableKey));
+        if (!config?.configured) setLoading(false);
+      })
+      .catch(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [client]);
+
+  useEffect(() => {
+    if (!client) return;
+    let active = true;
+    client.auth.getSession().then(({ data }) => {
       if (active) { setSession(data.session || null); setLoading(false); }
     });
-    const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    const { data } = client.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession || null);
       setLoading(false);
     });
     return () => { active = false; data.subscription.unsubscribe(); };
-  }, []);
+  }, [client]);
 
   useEffect(() => {
     if (!session?.access_token) { setUsage(null); return; }
@@ -55,13 +73,13 @@ export function AccountProvider({ children }) {
   }, [session?.access_token]);
 
   const value = useMemo(() => ({
-    configured: Boolean(supabase), session, loading, usage,
-    sendMagicLink: (email) => supabase.auth.signInWithOtp({
+    configured: Boolean(client), session, loading, usage,
+    sendMagicLink: (email) => client.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` },
     }),
-    signOut: () => supabase?.auth.signOut(),
-  }), [session, loading, usage]);
+    signOut: () => client?.auth.signOut(),
+  }), [client, session, loading, usage]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 }
