@@ -58,6 +58,16 @@ test("provider usage metering stores technical metadata without user content", a
   assert.match(server, /provider: "d-id"/);
 });
 
+test("privacy disclosure accurately describes content-free product telemetry", async () => {
+  const { readFile } = await import("node:fs/promises");
+  const legal = await readFile(new URL("../src/LegalSettings.jsx", import.meta.url), "utf8");
+
+  assert.match(legal, /limited, account-linked product and cost telemetry/);
+  assert.match(legal, /not to contain complete conversations, recordings, transcripts, practice answers, receipt numbers, or case details/);
+  assert.match(legal, /open the Account panel to download/);
+  assert.doesNotMatch(legal, /does not create user accounts|does not include a database|does not implement application analytics/);
+});
+
 test("product analytics are authenticated, allowlisted, and content-free", async () => {
   const { readFile } = await import("node:fs/promises");
   const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
