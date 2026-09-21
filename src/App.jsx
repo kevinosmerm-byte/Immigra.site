@@ -838,6 +838,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const [hasRetried, setHasRetried] = useState(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   const [interviewer, setInterviewer] = useState("sarah");
+  const [speechError, setSpeechError] = useState("");
   const recorderRef = useRef(null);
   const completionReportedRef = useRef(false);
   const speechRequestRef = useRef(0);
@@ -864,16 +865,28 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const speakQuestion = async (text, onFinished, selectedInterviewer = interviewer) => {
     const requestId = ++speechRequestRef.current;
     const voiceIsKevin = selectedInterviewer === "kevin";
+    let failed = false;
     const finishSpeaking = () => {
       if (requestId !== speechRequestRef.current) return;
       setIsSpeaking(false);
-      if (onFinished) onFinished();
+      if (!failed && onFinished) onFinished();
     };
+    setSpeechError("");
     setIsSpeaking(true);
     await speakAppText(text, {
       profile: voiceIsKevin ? "male" : "female",
+      requireProfile: voiceIsKevin,
       rate: voiceIsKevin ? 0.88 : 0.9,
-      pitch: voiceIsKevin ? 0.86 : 1.1,
+      pitch: 1,
+      onError: (error) => {
+        if (requestId !== speechRequestRef.current) return;
+        failed = true;
+        setSpeechError(error === "voice-unavailable"
+          ? "Kevin needs an English male voice on this device. Choose Sarah to continue, or enable an English male voice in your device's speech settings."
+          : error === "unsupported"
+            ? "Speech is not available in this browser. Please try another browser."
+            : "Audio could not start. Tap Play question to try again.");
+      },
       onEnd: finishSpeaking,
     });
   };
@@ -890,6 +903,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
 
     return () => {
       clearTimeout(timer);
+      speechRequestRef.current += 1;
       stopAppSpeech();
     };
   }, [questions]);
@@ -1186,6 +1200,10 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
             </div>
             <h2 className="question">{questions[currentQuestion].english}</h2>
             <p className="question-spanish">{questions[currentQuestion].spanish}</p>
+            {speechError && <p role="alert">{speechError}</p>}
+            <button type="button" className="secondary-button" onClick={() => speakQuestion(questions[currentQuestion].english)}>
+              Play question
+            </button>
             <div className="live-progress-dots" aria-label={`Question ${currentQuestion + 1} of ${questions.length}`}>
               {questions.map((_, index) => <span key={index} className={index <= currentQuestion ? "active" : ""}></span>)}
             </div>
