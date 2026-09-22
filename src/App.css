@@ -16079,10 +16079,22 @@ body {
 }
 
 .home-new-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 1.8px;
   color: #ffffff;
+}
+
+.home-brand-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 3px;
+  border-radius: 7px;
+  object-fit: cover;
+  box-shadow: 0 0 14px rgba(46, 147, 255, 0.32);
 }
 
 .brand-ai {
@@ -25454,6 +25466,23 @@ select { font: inherit; }
 
   .civics-progress {
     font-size: .66rem;
+  }
+}
+
+/* Native iOS: keep top navigation clear of the Dynamic Island and status bar. */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .home-new-header,
+  .home-ai-header,
+  .interview-header,
+  .practice-header,
+  .writing-ai-header,
+  .settings-header,
+  .podcast-header,
+  .immigration-help-header {
+    height: auto;
+    min-height: calc(64px + env(safe-area-inset-top));
+    padding-top: env(safe-area-inset-top);
+    box-sizing: border-box;
   }
 }
 

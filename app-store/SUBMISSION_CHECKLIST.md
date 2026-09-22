@@ -2,6 +2,8 @@
 
 The localized metadata is stored in `app-store/metadata.json` and validated by `npm run verify:app-store`.
 
+The field-by-field privacy, review, age-rating, screenshot and release guidance is in `app-store/APP_STORE_CONNECT_GUIDE.md`.
+
 ## App record
 
 - Name: Citizenship AI

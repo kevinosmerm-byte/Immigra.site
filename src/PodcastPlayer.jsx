@@ -17,6 +17,22 @@ export const PODCASTS = [
     src: "/podcast-spanish.m4a",
     accent: "violet",
   },
+  {
+    id: "surviving-2026-interview-en",
+    language: "English",
+    flag: "🇺🇸",
+    title: "Surviving the 2026 U.S. Citizenship Interview",
+    src: "/podcast-surviving-2026-interview-en.m4a",
+    accent: "cyan",
+  },
+  {
+    id: "aprobar-entrevista-ciudadania-es",
+    language: "Español",
+    flag: "🇺🇸",
+    title: "Cómo aprobar la entrevista de ciudadanía estadounidense",
+    src: "/podcast-aprobar-entrevista-ciudadania-es.m4a",
+    accent: "violet",
+  },
 ];
 
 const PodcastContext = createContext(null);

@@ -432,6 +432,7 @@ function Home({
       <header className="home-new-header">
 
         <div className="home-new-brand">
+          <img className="home-brand-logo" src="/app-icon-192.png" alt="" aria-hidden="true" />
           <span className="brand-main">CITIZENSHIP</span>
           <span className="brand-ai">AI</span>
         </div>
