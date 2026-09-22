@@ -1,3 +1,5 @@
+import { calculateReadiness } from "./learning.js";
+
 const STORAGE_KEY = "citizenshipai.practice-events.v1";
 const MAX_EVENTS = 250;
 
@@ -56,19 +58,47 @@ function moduleSummary(events, module) {
   return { attempts: matching.length, score: average };
 }
 
-export function getPracticeSummary(events = getPracticeEvents(), civicsViewed = []) {
+export function getPracticeSummary(events = getPracticeEvents(), civicsViewed = [], civicsMastered = []) {
   const reading = moduleSummary(events, "reading");
   const writing = moduleSummary(events, "writing");
   const interview = moduleSummary(events, "interview");
   const coach = moduleSummary(events, "coach");
-  const scoredModules = [reading, writing, interview, coach].filter((item) => item.score !== null);
-  const readiness = scoredModules.length
-    ? Math.round(scoredModules.reduce((total, item) => total + item.score, 0) / scoredModules.length)
-    : null;
   const civics = {
     attempts: Array.isArray(civicsViewed) ? civicsViewed.length : 0,
     score: null,
   };
+  const measuredAttempts = events
+    .filter((event) => Number.isFinite(event.score))
+    .map((event) => ({
+      questionId: `${event.module}-${event.at}`,
+      category: event.module,
+      correct: event.score >= 70,
+      score: event.score,
+      answeredAt: new Date(event.at).toISOString(),
+      responseMs: 0,
+      helpUsed: [],
+      mode: event.module === "interview" ? "spoken" : "text",
+    }));
+  const mastered = new Set(Array.isArray(civicsMastered) ? civicsMastered : []);
+  const civicsAttempts = (Array.isArray(civicsViewed) ? civicsViewed : [])
+    .filter((questionId) => mastered.has(questionId))
+    .map((questionId) => ({
+      questionId: `civics-${questionId}`,
+      category: "civics",
+      correct: true,
+      score: 100,
+      // Legacy civics mastery did not store dates. Keep the signal without
+      // inventing a study day; future per-question attempts will be dated.
+      answeredAt: "",
+      responseMs: 0,
+      helpUsed: ["choices"],
+      mode: "text",
+    }));
+  const evaluation = calculateReadiness(
+    [...measuredAttempts, ...civicsAttempts],
+    ["civics", "reading", "writing", "interview"]
+  );
+  const readiness = measuredAttempts.length || civicsAttempts.length ? evaluation.readiness : null;
 
   const candidates = [
     { key: "reading", label: "Read one sentence aloud", detail: "Build your speaking and reading baseline.", data: reading },
@@ -90,5 +120,18 @@ export function getPracticeSummary(events = getPracticeEvents(), civicsViewed = 
     })
     .slice(0, 3);
 
-  return { readiness, civics, reading, writing, interview, coach, recommended, plan };
+  return {
+    readiness,
+    accuracy: measuredAttempts.length || civicsAttempts.length ? evaluation.accuracy : null,
+    coverage: evaluation.coverage,
+    confidence: evaluation.confidence,
+    readinessReasons: evaluation.reasons,
+    civics,
+    reading,
+    writing,
+    interview,
+    coach,
+    recommended,
+    plan,
+  };
 }

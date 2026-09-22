@@ -1361,7 +1361,7 @@ function App() {
       .map((_, index) => index)
       .sort(() => Math.random() - 0.5)
   );
-  const practiceSummary = getPracticeSummary(practiceEvents, civicsViewed);
+  const practiceSummary = getPracticeSummary(practiceEvents, civicsViewed, civicsMastered);
 
   const recordPractice = (event) => {
     setPracticeEvents(recordPracticeEvent(event));
@@ -2294,6 +2294,12 @@ function App() {
             <div className="progress-ai-bar">
               <div className="progress-ai-fill" style={{ width: `${practiceSummary.readiness || 0}%` }}></div>
             </div>
+            <div className="progress-evidence" aria-label="Readiness evidence">
+              <div><span>Accuracy</span><strong>{practiceSummary.accuracy === null ? "—" : `${practiceSummary.accuracy}%`}</strong></div>
+              <div><span>Coverage</span><strong>{practiceSummary.coverage}%</strong></div>
+              <div><span>Confidence</span><strong>{practiceSummary.confidence}</strong></div>
+            </div>
+            {practiceSummary.readinessReasons[0] && <p className="progress-readiness-reason">{practiceSummary.readinessReasons[0]}</p>}
           </section>
           <section className="progress-recommendation" aria-label="Recommended next practice">
             <span>RECOMMENDED NEXT</span>

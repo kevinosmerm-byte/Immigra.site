@@ -22997,6 +22997,49 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 }
 
 /* Measured progress: uses the existing glass card language without changing navigation. */
+.progress-evidence {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.progress-evidence > div {
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  border: 1px solid rgba(91, 176, 255, 0.16);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.progress-evidence span {
+  color: #8fa9cc;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.progress-evidence strong {
+  color: #ecf7ff;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.progress-readiness-reason {
+  margin: 11px 0 0;
+  color: #aebfdd;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+@media (max-width: 420px) {
+  .progress-evidence { gap: 6px; }
+  .progress-evidence > div { padding: 8px 7px; }
+  .progress-evidence strong { font-size: 12px; }
+}
+
 .progress-recommendation {
   margin: 16px 0;
   padding: 18px;
