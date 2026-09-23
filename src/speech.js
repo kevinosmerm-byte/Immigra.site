@@ -1,64 +1,67 @@
+import { Capacitor } from "@capacitor/core";
 import { TextToSpeech, QueueStrategy } from "@capacitor-community/text-to-speech";
+import { createBrowserSpeech, selectVoice } from "./browserSpeech.js";
 
 let speechRequest = 0;
-let cachedVoices = null;
-
-const findVoice = async (profile) => {
-  try {
-    if (!cachedVoices) {
-      cachedVoices = (await TextToSpeech.getSupportedVoices()).voices || [];
-    }
-    const candidates = cachedVoices
-      .map((voice, index) => ({ ...voice, index }))
-      .filter((voice) => /^en-US$/i.test(voice.lang));
-    const pattern = profile === "male"
-      ? /david|mark|guy|ryan|christopher|matthew|joey|fred|alex/i
-      : /female|zira|samantha|aria|jenny|susan/i;
-    return candidates.find((voice) => pattern.test(voice.name))?.index
-      ?? candidates[0]?.index;
-  } catch {
-    return undefined;
-  }
-};
+let browserSpeech;
+const getBrowserSpeech = () => browserSpeech ??= createBrowserSpeech(
+  globalThis.speechSynthesis, globalThis.SpeechSynthesisUtterance,
+);
 
 export const stopAppSpeech = async () => {
   speechRequest += 1;
+  if (!Capacitor.isNativePlatform()) {
+    getBrowserSpeech().stop();
+    return;
+  }
   try {
     await TextToSpeech.stop();
-  } catch {
-    window.speechSynthesis?.cancel?.();
+  } catch (error) {
+    console.error("Unable to stop text-to-speech:", error);
   }
 };
 
 export const speakAppText = async (text, options = {}) => {
   if (!text?.trim()) return false;
+  if (!Capacitor.isNativePlatform()) return getBrowserSpeech().speak(text, options);
   const requestId = ++speechRequest;
   const {
     profile = "female",
     rate = profile === "male" ? 0.88 : 0.92,
-    pitch = profile === "male" ? 0.86 : 1.05,
+    pitch = 1,
     onStart,
     onEnd,
+    onError,
   } = options;
 
   try {
     await TextToSpeech.stop();
     if (requestId !== speechRequest) return false;
+    const { voices = [] } = await TextToSpeech.getSupportedVoices();
+    if (requestId !== speechRequest) return false;
+    const selected = selectVoice(voices, profile, options.requireProfile);
+    if (!selected && options.requireProfile) {
+      onError?.("voice-unavailable");
+      onEnd?.();
+      return false;
+    }
     onStart?.();
-    const voice = await findVoice(profile);
     await TextToSpeech.speak({
       text: text.trim(),
-      lang: "en-US",
+      lang: selected?.lang || "en-US",
       rate,
       pitch,
       volume: 1,
-      voice,
+      ...(selected ? { voice: voices.indexOf(selected) } : {}),
       queueStrategy: QueueStrategy.Flush,
     });
     if (requestId === speechRequest) onEnd?.();
     return true;
   } catch (error) {
-    if (requestId === speechRequest) onEnd?.();
+    if (requestId === speechRequest) {
+      onError?.("audio-error");
+      onEnd?.();
+    }
     console.error("Text-to-speech error:", error);
     return false;
   }
