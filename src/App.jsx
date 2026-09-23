@@ -292,8 +292,9 @@ function Home({
 
       <header className="home-new-header">
 
-        <div className="home-new-brand">
-          <img className="home-brand-logo" src="/citizenship-ai-logo.svg" alt="Citizenship AI" />
+        <div className="home-new-brand" aria-label="Citizenship AI">
+          <img className="home-brand-logo" src="/app-icon-192.png" alt="" aria-hidden="true" />
+          <span className="home-brand-wordmark">Citizenship <strong>AI</strong></span>
         </div>
 
         <div className="language-selector">
