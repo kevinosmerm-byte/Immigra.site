@@ -6,14 +6,21 @@ const DID_AGENT_SCRIPT = "https://agent.d-id.com/v2/index.js";
 const DID_CONSENT_KEY = "citizenshipai.did-avatar-consent.v1";
 const DID_TARGET_ID = "did-live-agent-container";
 
+function hasSavedDidConsent() {
+  try {
+    return localStorage.getItem(DID_CONSENT_KEY) === "accepted";
+  } catch {
+    return false;
+  }
+}
+
 export function DidLiveAvatar({ autoStart = false }) {
   const scriptRef = useRef(null);
   const widgetRef = useRef(null);
   const observerRef = useRef(null);
-  const autoStartedRef = useRef(false);
   const [state, setState] = useState("idle");
   const [message, setMessage] = useState("");
-  const [showNotice, setShowNotice] = useState(false);
+  const [showNotice, setShowNotice] = useState(() => autoStart && !hasSavedDidConsent());
 
   const clearEmbed = () => {
     observerRef.current?.disconnect();
@@ -93,16 +100,9 @@ export function DidLiveAvatar({ autoStart = false }) {
   };
 
   useEffect(() => {
-    if (!autoStart || autoStartedRef.current) return;
-    autoStartedRef.current = true;
-    let consentGranted = false;
-    try {
-      consentGranted = localStorage.getItem(DID_CONSENT_KEY) === "accepted";
-    } catch {
-      consentGranted = false;
-    }
-    if (consentGranted) connect();
-    else setShowNotice(true);
+    if (!autoStart || !hasSavedDidConsent()) return undefined;
+    const timer = setTimeout(() => connect(), 0);
+    return () => clearTimeout(timer);
   }, [autoStart]);
 
   const acceptAndConnect = () => {

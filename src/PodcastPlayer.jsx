@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 export const PODCASTS = [
   {
@@ -80,7 +80,7 @@ export function PodcastProvider({ children }) {
     };
   }, []);
 
-  const selectTrack = (nextTrack) => {
+  const selectTrack = useCallback((nextTrack) => {
     const audio = audioRef.current;
     if (!audio) return;
     setError("");
@@ -95,9 +95,9 @@ export function PodcastProvider({ children }) {
       setPlaying(false);
     }
     setFullPlayerOpen(true);
-  };
+  }, [speed, track?.id]);
 
-  const togglePlayback = async () => {
+  const togglePlayback = useCallback(async () => {
     const audio = audioRef.current;
     if (!audio || !track) return;
     setError("");
@@ -113,22 +113,22 @@ export function PodcastProvider({ children }) {
       audio.pause();
       setPlaying(false);
     }
-  };
+  }, [track]);
 
-  const seekTo = (value) => {
+  const seekTo = useCallback((value) => {
     const audio = audioRef.current;
     if (!audio) return;
     const next = Math.max(0, Math.min(Number(value), duration || 0));
     audio.currentTime = next;
     setCurrentTime(next);
-  };
+  }, [duration]);
 
-  const skip = (seconds) => seekTo(currentTime + seconds);
-  const changeSpeed = (value) => {
+  const skip = useCallback((seconds) => seekTo(currentTime + seconds), [currentTime, seekTo]);
+  const changeSpeed = useCallback((value) => {
     const next = Number(value);
     setSpeed(next);
     if (audioRef.current) audioRef.current.playbackRate = next;
-  };
+  }, []);
 
   const value = useMemo(() => ({
     track, playing, currentTime, duration, speed, error, fullPlayerOpen,
@@ -136,7 +136,7 @@ export function PodcastProvider({ children }) {
     openFullPlayer: () => track && setFullPlayerOpen(true),
     closeFullPlayer: () => setFullPlayerOpen(false),
     formatTime,
-  }), [track, playing, currentTime, duration, speed, error, fullPlayerOpen]);
+  }), [track, playing, currentTime, duration, speed, error, fullPlayerOpen, selectTrack, togglePlayback, seekTo, skip, changeSpeed]);
 
   return (
     <PodcastContext.Provider value={value}>

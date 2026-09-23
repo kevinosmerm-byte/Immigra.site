@@ -82,14 +82,21 @@ export function AccountProvider({ children }) {
     });
     const { data } = client.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession || null);
+      if (!nextSession) setUsage(null);
       setLoading(false);
     });
     return () => { active = false; data.subscription.unsubscribe(); };
   }, [client]);
 
   useEffect(() => {
-    if (!session?.access_token) { setUsage(null); return; }
-    loadUsage(session.access_token);
+    const accessToken = session?.access_token;
+    if (!accessToken) return undefined;
+    let active = true;
+    fetch("/api/account/usage", { headers: { Authorization: `Bearer ${accessToken}` } })
+      .then((response) => response.ok ? response.json() : null)
+      .then((nextUsage) => { if (active) setUsage(nextUsage); })
+      .catch(() => { if (active) setUsage(null); });
+    return () => { active = false; };
   }, [session?.access_token]);
 
   const value = useMemo(() => ({

@@ -691,7 +691,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       clearTimeout(timer);
       stopAppSpeech();
     };
-  }, [questions]);
+  }, [questions, mode]);
 
   const goToNextQuestion = () => {
     const nextQuestion = currentQuestion + 1;
