@@ -2,10 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import "./App.css";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
-import { civicsQuestions } from "./questions";
-import { acceptedAnswers } from "./answers";
-import { civicsAnswers } from "./civicsAnswers";
-import { civicsQuestionsSpanish } from "./civicsQuestionsSpanish";
+import { civicsQuestionBank } from "./civicsQuestionBank.js";
+import { evaluateCivicsAnswer } from "./civicsAnswerEvaluator.js";
 import { apiJson } from "./api";
 import { startAudioRecording, transcribeRecording } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
@@ -16,6 +14,10 @@ import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./ca
 import ImmigrationHelp from "./ImmigrationHelp";
 import { speakAppText, stopAppSpeech } from "./speech";
 import { AccountButton, AccountSheet } from "./Account.jsx";
+import { CategoryMastery, RetrievalPracticeCard } from "./EducationalActivities.jsx";
+import { writingSentences } from "./writingSentences.js";
+import { evaluateWritingSentence } from "./writingEvaluator.js";
+import { getCivicsVisual } from "./civicsVisuals.js";
 
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
@@ -206,211 +208,6 @@ const readingSentences = [
     english: "The Constitution forms the government.",
     spanish: "La Constitución forma el gobierno."
   }
-];const writingSentences = [
-  {
-    english: "Adams was President.",
-    spanish: "Adams fue Presidente."
-  },
-  {
-    english: "Lincoln was President.",
-    spanish: "Lincoln fue Presidente."
-  },
-  {
-    english: "Washington was President.",
-    spanish: "Washington fue Presidente."
-  },
-  {
-    english: "Washington was the Father of Our Country.",
-    spanish: "Washington fue el Padre de Nuestro País."
-  },
-  {
-    english: "The President lives in the White House.",
-    spanish: "El Presidente vive en la Casa Blanca."
-  },
-  {
-    english: "The President lives in Washington.",
-    spanish: "El Presidente vive en Washington."
-  },
-  {
-    english: "Citizens can vote.",
-    spanish: "Los ciudadanos pueden votar."
-  },
-  {
-    english: "Citizens have rights.",
-    spanish: "Los ciudadanos tienen derechos."
-  },
-  {
-    english: "Citizens pay taxes.",
-    spanish: "Los ciudadanos pagan impuestos."
-  },
-  {
-    english: "People have the right to vote.",
-    spanish: "Las personas tienen el derecho de votar."
-  },
-  {
-    english: "People are free.",
-    spanish: "Las personas son libres."
-  },
-  {
-    english: "We have freedom of speech.",
-    spanish: "Tenemos libertad de expresión."
-  },
-  {
-    english: "Congress meets in Washington.",
-    spanish: "El Congreso se reúne en Washington."
-  },
-  {
-    english: "Senators work in Congress.",
-    spanish: "Los senadores trabajan en el Congreso."
-  },
-  {
-    english: "The United States is a country.",
-    spanish: "Los Estados Unidos es un país."
-  },
-  {
-    english: "The United States has fifty states.",
-    spanish: "Los Estados Unidos tiene cincuenta estados."
-  },
-  {
-    english: "Washington is the capital.",
-    spanish: "Washington es la capital."
-  },
-  {
-    english: "The capital is Washington, D.C.",
-    spanish: "La capital es Washington, D.C."
-  },
-  {
-    english: "The American flag is red, white, and blue.",
-    spanish: "La bandera estadounidense es roja, blanca y azul."
-  },
-  {
-    english: "The flag is red, white, and blue.",
-    spanish: "La bandera es roja, blanca y azul."
-  },
-  {
-    english: "The Civil War was a war.",
-    spanish: "La Guerra Civil fue una guerra."
-  },
-  {
-    english: "The Civil War was during Lincoln's time.",
-    spanish: "La Guerra Civil fue durante la época de Lincoln."
-  },
-  {
-    english: "American Indians lived here.",
-    spanish: "Los indígenas americanos vivieron aquí."
-  },
-  {
-    english: "The United States is north of Mexico.",
-    spanish: "Los Estados Unidos está al norte de México."
-  },
-  {
-    english: "Canada is north of the United States.",
-    spanish: "Canadá está al norte de los Estados Unidos."
-  },
-  {
-    english: "Mexico is south of the United States.",
-    spanish: "México está al sur de los Estados Unidos."
-  },
-  {
-    english: "Washington is in the United States.",
-    spanish: "Washington está en los Estados Unidos."
-  },
-  {
-    english: "California is a state.",
-    spanish: "California es un estado."
-  },
-  {
-    english: "Alaska is a state.",
-    spanish: "Alaska es un estado."
-  },
-  {
-    english: "Delaware is a state.",
-    spanish: "Delaware es un estado."
-  },
-  {
-    english: "New York City is a city.",
-    spanish: "Nueva York es una ciudad."
-  },
-  {
-    english: "The President can vote.",
-    spanish: "El Presidente puede votar."
-  },
-  {
-    english: "People can vote.",
-    spanish: "Las personas pueden votar."
-  },
-  {
-    english: "People want freedom.",
-    spanish: "Las personas quieren libertad."
-  },
-  {
-    english: "Citizens want freedom.",
-    spanish: "Los ciudadanos quieren libertad."
-  },
-  {
-    english: "The government is here.",
-    spanish: "El gobierno está aquí."
-  },
-  {
-    english: "The government can help people.",
-    spanish: "El gobierno puede ayudar a las personas."
-  },
-  {
-    english: "The President is elected.",
-    spanish: "El Presidente es elegido."
-  },
-  {
-    english: "The President was elected.",
-    spanish: "El Presidente fue elegido."
-  },
-  {
-    english: "We elect the President.",
-    spanish: "Elegimos al Presidente."
-  },
-  {
-    english: "We vote for the President.",
-    spanish: "Votamos por el Presidente."
-  },
-  {
-    english: "People vote in November.",
-    spanish: "Las personas votan en noviembre."
-  },
-  {
-    english: "The first President was Washington.",
-    spanish: "El primer Presidente fue Washington."
-  },
-  {
-    english: "Lincoln was the second President.",
-    spanish: "Lincoln fue el segundo Presidente."
-  },
-  {
-    english: "The largest state is Alaska.",
-    spanish: "El estado más grande es Alaska."
-  },
-  {
-    english: "The dollar bill is money.",
-    spanish: "El billete de dólar es dinero."
-  },
-  {
-    english: "The United States has one hundred Senators.",
-    spanish: "Los Estados Unidos tiene cien senadores."
-  },
-  {
-    english: "We celebrate Independence Day.",
-    spanish: "Celebramos el Día de la Independencia."
-  },
-  {
-    english: "We celebrate Thanksgiving.",
-    spanish: "Celebramos el Día de Acción de Gracias."
-  },
-  {
-    english: "We celebrate Presidents' Day.",
-    spanish: "Celebramos el Día de los Presidentes."
-  },
-  {
-    english: "We celebrate Memorial Day.",
-    spanish: "Celebramos el Día de los Caídos."
-  }
 ];
 function Home({
   onStartInterview,
@@ -432,9 +229,7 @@ function Home({
       <header className="home-new-header">
 
         <div className="home-new-brand">
-          <img className="home-brand-logo" src="/app-icon-192.png" alt="" aria-hidden="true" />
-          <span className="brand-main">CITIZENSHIP</span>
-          <span className="brand-ai">AI</span>
+          <img className="home-brand-logo" src="/citizenship-ai-logo.svg" alt="Citizenship AI" />
         </div>
 
         <div className="language-selector">
@@ -823,7 +618,7 @@ const n400InterviewQuestions = [
 
 function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const [questions] = useState(() => {
-    const shuffledCivics = [...civicsQuestions].sort(() => Math.random() - 0.5);
+    const shuffledCivics = [...civicsQuestionBank].sort(() => Math.random() - 0.5);
     if (mode === "civics") return shuffledCivics.slice(0, 10);
     return [...n400InterviewQuestions, ...shuffledCivics.slice(0, 5)];
   });
@@ -845,11 +640,14 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
 
   const isKevin = interviewer === "kevin";
   const interviewerName = isKevin ? "Kevin" : "Sarah";
+  const questionText = (question) => question.question || question.english;
+  const questionSpanish = (question) => question.questionSpanish || question.spanish;
+  const questionKey = (question) => question.questionId || question.id;
   const addMissedQuestion = (question) => {
     setMissedQuestions((current) => (
-      current.some((item) => item.id === question.id)
+      current.some((item) => item.id === questionKey(question))
         ? current
-        : [...current, { id: question.id, english: question.english }]
+        : [...current, { id: questionKey(question), english: questionText(question) }]
     ));
   };
 
@@ -885,7 +683,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       speakQuestion(`
         Welcome. Thank you for being here today.
         ${mode === "civics" ? "We are going to begin your civics interview practice." : "We are going to practice Form N-400 questions followed by civics questions."}
-        ${questions[0].english}
+        ${questionText(questions[0])}
       `);
     }, 500);
 
@@ -910,7 +708,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     setHasRetried(false);
 
     setTimeout(() => {
-      speakQuestion(questions[nextQuestion].english);
+      speakQuestion(questionText(questions[nextQuestion]));
     }, 300);
   };
 
@@ -926,17 +724,36 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     setAnswer(transcript);
     setAnswerStatus("evaluating");
     try {
+      const activeQuestion = questions[currentQuestion];
+      if (activeQuestion.questionId) {
+        const localResult = evaluateCivicsAnswer(activeQuestion, transcript);
+        if (!localResult.needsSemanticReview) {
+          setAnswerStatus(localResult.status === "review" ? "incomplete" : localResult.status);
+          if (localResult.status === "correct") setCorrectAnswers((count) => count + 1);
+          if (localResult.status === "incorrect" && hasRetried) {
+            setIncorrectAnswers((count) => count + 1);
+            addMissedQuestion(activeQuestion);
+          }
+          if (localResult.action === "advance") speakQuestion(localResult.feedback, () => goToNextQuestion());
+          else if (localResult.action === "review") speakQuestion(`${localResult.feedback}.`, () => goToNextQuestion());
+          else if (localResult.action === "retry") speakQuestion(`${localResult.feedback} ${questionText(activeQuestion)}`);
+          else if (hasRetried) speakQuestion(`${localResult.feedback} Let's move to the next question.`, () => goToNextQuestion());
+          else { setHasRetried(true); speakQuestion(`${localResult.feedback} ${questionText(activeQuestion)}`); }
+          return;
+        }
+      }
       const result = await apiJson("/evaluate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          question: questions[currentQuestion].english,
+          questionId: activeQuestion.questionId,
+          question: questionText(activeQuestion),
           answer: transcript,
-          correctAnswer: questions[currentQuestion].correctAnswer || acceptedAnswers[questions[currentQuestion].id],
+          correctAnswer: activeQuestion.correctAnswer,
         }),
       });
 
-      setAnswerStatus(result.status);
+      setAnswerStatus(result.status === "review" ? "incomplete" : result.status);
 
       if (result.status === "correct") setCorrectAnswers((count) => count + 1);
       if (result.status === "incorrect" && hasRetried) {
@@ -948,7 +765,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       if (result.action === "advance") {
         speakQuestion(feedback, () => goToNextQuestion());
       } else if (result.action === "retry") {
-        speakQuestion(`${feedback} Please answer the question again. ${questions[currentQuestion].english}`);
+        speakQuestion(`${feedback} Please answer the question again. ${questionText(activeQuestion)}`);
       } else if (result.action === "repeat") {
         if (hasRetried) {
           setIncorrectAnswers((count) => count + 1);
@@ -956,7 +773,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
           speakQuestion(`${feedback} Let's move to the next question.`, () => goToNextQuestion());
         } else {
           setHasRetried(true);
-          speakQuestion(`${feedback} Let me ask you that again. ${questions[currentQuestion].english}`);
+          speakQuestion(`${feedback} Let me ask you that again. ${questionText(activeQuestion)}`);
         }
       }
     } catch (error) {
@@ -1094,7 +911,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
         </div>
         <button
           className="more-button interview-repeat-button"
-          onClick={() => speakQuestion(questions[currentQuestion].english)}
+          onClick={() => speakQuestion(questionText(questions[currentQuestion]))}
           aria-label={`Repeat ${interviewerName}'s question`}
           title="Repeat question"
         >
@@ -1165,8 +982,8 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
               <div><strong>{interviewerName} AI</strong><small>Practice interviewer</small></div>
             </div>
             <div className="live-interviewer-selector" role="group" aria-label="Choose your interview officer">
-              <button type="button" className={!isKevin ? "active" : ""} aria-pressed={!isKevin} onClick={() => { setInterviewer("sarah"); speakQuestion(questions[currentQuestion].english, undefined, "sarah"); }}>Sarah</button>
-              <button type="button" className={isKevin ? "active" : ""} aria-pressed={isKevin} onClick={() => { setInterviewer("kevin"); speakQuestion(questions[currentQuestion].english, undefined, "kevin"); }}>Kevin</button>
+              <button type="button" className={!isKevin ? "active" : ""} aria-pressed={!isKevin} onClick={() => { setInterviewer("sarah"); speakQuestion(questionText(questions[currentQuestion]), undefined, "sarah"); }}>Sarah</button>
+              <button type="button" className={isKevin ? "active" : ""} aria-pressed={isKevin} onClick={() => { setInterviewer("kevin"); speakQuestion(questionText(questions[currentQuestion]), undefined, "kevin"); }}>Kevin</button>
             </div>
             <span className="live-practice-badge">INDEPENDENT PRACTICE</span>
           </div>
@@ -1185,8 +1002,8 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
               </div>
               <span>QUESTION {currentQuestion + 1} / {questions.length}</span>
             </div>
-            <h2 className="question">{questions[currentQuestion].english}</h2>
-            <p className="question-spanish">{questions[currentQuestion].spanish}</p>
+            <h2 className="question">{questionText(questions[currentQuestion])}</h2>
+            <p className="question-spanish">{questionSpanish(questions[currentQuestion])}</p>
             <div className="live-progress-dots" aria-label={`Question ${currentQuestion + 1} of ${questions.length}`}>
               {questions.map((_, index) => <span key={index} className={index <= currentQuestion ? "active" : ""}></span>)}
             </div>
@@ -1283,6 +1100,9 @@ function App() {
   const [civicsIndex, setCivicsIndex] = useState(0);
   const [civicsFlipped, setCivicsFlipped] = useState(false);
   const [civicsStudyMode, setCivicsStudyMode] = useState("study");
+  const [showCivicsImages, setShowCivicsImages] = useState(() => readLocalValue("citizenshipai.civics-images.v1", "on") !== "off");
+  const [studyFeedback, setStudyFeedbackMessage] = useState("");
+  const [soundEnabled, setSoundEnabled] = useState(() => readLocalValue("citizenshipai.feedback-sound.v1", "on") !== "off");
   const [civicsFavorites, setCivicsFavorites] = useState(() => {
     const saved = readLocalJson("citizenshipai.civics.favorites.v1", []);
     return Array.isArray(saved) ? saved : [];
@@ -1413,7 +1233,7 @@ function App() {
         saveLocalValue("civicsViewed", JSON.stringify(updated));
         return updated;
       });
-      speakAppText(civicsQuestions[civicsIndex].english, {
+      speakAppText(civicsQuestionBank[civicsIndex].question, {
         rate: 0.88,
         pitch: 1,
       });
@@ -1427,6 +1247,7 @@ function App() {
 
   // Funciones auxiliares de soporte...
   const playCorrectSound = () => {
+    if (!soundEnabled) return;
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
@@ -1441,6 +1262,7 @@ function App() {
   };
 
   const playIncorrectSound = () => {
+    if (!soundEnabled) return;
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
@@ -1483,23 +1305,27 @@ function App() {
       return;
     }
     setIsAIThinking(true);
-    setAiMessage("AI is evaluating your writing...");
+    setAiMessage("Checking your writing...");
     try {
-      const result = await apiJson("/evaluate-writing", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sentence: writingSentences[writingIndex].english,
-          answer: writingAnswer,
-        }),
-      });
+      const sentence = writingSentences[writingIndex];
+      const localResult = evaluateWritingSentence(sentence, writingAnswer);
+      const result = localResult.needsSemanticReview
+        ? await apiJson("/evaluate-writing", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ sentenceId: sentence.sentenceId, answer: writingAnswer }),
+          })
+        : localResult;
       if (result.accuracy === "Excellent" || result.accuracy === "Good") {
         setWritingGoodCount((count) => count + 1);
+        playCorrectSound();
       } else {
         setWritingNeedsPracticeCount((count) => count + 1);
+        playIncorrectSound();
       }
-      recordPractice({ module: "writing", score: result.score, outcome: result.accuracy });
-      setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
+      const resultLabel = result.resultLabel || (result.accuracy === "Excellent" ? "Correcta" : result.accuracy === "Good" ? "Correcta con observaciones" : "Necesita práctica");
+      recordPractice({ module: "writing", score: result.score, outcome: resultLabel });
+      setAiMessage(`${result.score}% — ${resultLabel}\n\n${result.feedback}`);
       setTimeout(() => {
         nextWritingSentence();
       }, 3000);
@@ -1729,14 +1555,16 @@ function App() {
   // Control de pantallas de la aplicación
   // Control de pantallas de la aplicación
   if (screen === "civics") {
-    const currentQuestion = civicsQuestions[civicsIndex].english;
-    const currentQuestionSpanish = civicsQuestionsSpanish[civicsIndex];
-    const currentAnswers = civicsAnswers[civicsIndex];
     const isSpanish = language === "es";
-    const favoriteIndexes = civicsFavorites.filter((index) => index >= 0 && index < civicsQuestions.length);
-    const visibleIndexes = civicsStudyMode === "favorites" ? favoriteIndexes : civicsQuestions.map((_, index) => index);
+    const currentQuestionRecord = civicsQuestionBank[civicsIndex];
+    const currentVisual = getCivicsVisual(currentQuestionRecord.questionId);
+    const currentQuestion = currentQuestionRecord.question;
+    const currentQuestionSpanish = currentQuestionRecord.questionSpanish;
+    const currentAnswers = currentQuestionRecord.acceptedAnswers.length ? currentQuestionRecord.acceptedAnswers : [isSpanish ? "La respuesta cambia. Verifica la actualización oficial." : "This answer changes. Check the official update before practicing."];
+    const favoriteIndexes = civicsFavorites.filter((index) => index >= 0 && index < civicsQuestionBank.length);
+    const visibleIndexes = civicsStudyMode === "favorites" ? favoriteIndexes : civicsQuestionBank.map((_, index) => index);
     const activePosition = Math.max(0, visibleIndexes.indexOf(civicsIndex));
-    const studiedPercent = Math.round((civicsMastered.length / civicsQuestions.length) * 100);
+    const studiedPercent = Math.round((civicsMastered.length / civicsQuestionBank.length) * 100);
     const copy = isSpanish ? {
       subtitle: "Domina las preguntas para tu entrevista.", progress: "Progreso", cards: "Tarjetas",
       practice: "Práctica", quiz: "Examen", favorites: "Favoritas", reveal: "Toca para ver la respuesta",
@@ -1780,7 +1608,9 @@ function App() {
     const setStudyFeedback = (mastered) => {
       updateCivicsCollection(setCivicsMastered, "citizenshipai.civics.mastered.v1", mastered);
       updateCivicsCollection(setCivicsNeedsPractice, "citizenshipai.civics.needsPractice.v1", !mastered);
-      window.setTimeout(() => changeCivicsCard(1), 180);
+      setStudyFeedbackMessage(mastered ? (isSpanish ? "Correcto. La repasaremos más adelante." : "Correct. We will review it again later.") : (isSpanish ? "Guardada para practicar de nuevo." : "Saved for extra practice."));
+      if (mastered) playCorrectSound(); else playIncorrectSound();
+      window.setTimeout(() => { setStudyFeedbackMessage(""); changeCivicsCard(1); }, 900);
     };
 
     return (
@@ -1811,6 +1641,12 @@ function App() {
             <button onClick={() => startInterview("civics")}>{copy.quiz}</button>
             <button className={civicsStudyMode === "favorites" ? "active" : ""} onClick={() => { setCivicsStudyMode("favorites"); setCivicsFlipped(false); if (favoriteIndexes.length && !favoriteIndexes.includes(civicsIndex)) setCivicsIndex(favoriteIndexes[0]); }}>{copy.favorites}<span>{civicsFavorites.length}</span></button>
           </nav>
+          <div className="civics-visual-preference">
+            <button type="button" aria-pressed={showCivicsImages} onClick={() => { const next = !showCivicsImages; setShowCivicsImages(next); saveLocalValue("citizenshipai.civics-images.v1", next ? "on" : "off"); }}>
+              <span aria-hidden="true">{showCivicsImages ? "▣" : "□"}</span>{showCivicsImages ? (isSpanish ? "Imágenes educativas activadas" : "Educational images on") : (isSpanish ? "Solo texto" : "Text only")}
+            </button>
+            {currentVisual && <small>{isSpanish ? "Biblioteca visual · 128 tarjetas" : "Visual library · 128 cards"}</small>}
+          </div>
 
           {visibleIndexes.length ? (
             <>
@@ -1818,7 +1654,7 @@ function App() {
                 <div className="civics-stack-card previous" aria-hidden="true"></div>
                 <div className="civics-stack-card next" aria-hidden="true"></div>
                 <div
-                  className={`civics-flashcard ${civicsFlipped ? "is-flipped" : ""}`}
+                  className={`civics-flashcard ${civicsFlipped ? "is-flipped" : ""} ${currentVisual ? "visual-enhanced" : ""}`}
                   onClick={() => { if (civicsTouchRef.current?.swiped) { civicsTouchRef.current = null; return; } setCivicsFlipped((current) => !current); }}
                   onTouchStart={(event) => { const touch = event.touches[0]; civicsTouchRef.current = { x: touch.clientX, y: touch.clientY }; }}
                   onTouchEnd={(event) => { const start = civicsTouchRef.current; const touch = event.changedTouches[0]; if (!start || !touch) return; const dx = touch.clientX - start.x; const dy = touch.clientY - start.y; if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.35) { civicsTouchRef.current = { swiped: true }; changeCivicsCard(dx < 0 ? 1 : -1); } else { civicsTouchRef.current = null; } }}
@@ -1830,6 +1666,9 @@ function App() {
                   <div className="civics-flashcard-inner">
                     <article className="civics-flashcard-face front">
                       <div className="civics-flashcard-topline"><span>{civicsIndex + 1} / 128</span><button className={civicsFavorites.includes(civicsIndex) ? "favorite active" : "favorite"} onClick={(event) => { event.stopPropagation(); toggleFavorite(); }} aria-label={civicsFavorites.includes(civicsIndex) ? "Remove from favorites" : "Add to favorites"}>☆</button></div>
+                      {currentVisual && showCivicsImages && <figure className="civics-card-visual">
+                        <img src={currentVisual.imagePath} srcSet={`${currentVisual.imagePath} 640w`} sizes="(max-width: 620px) 78vw, 440px" alt={currentVisual.alt} loading="eager" decoding="async" fetchPriority="high" onError={(event) => { event.currentTarget.closest("figure")?.classList.add("image-unavailable"); }} />
+                      </figure>}
                       <div className="civics-flashcard-question">
                         <h2>{currentQuestion}</h2>
                         <p>{currentQuestionSpanish}</p>
@@ -1857,6 +1696,10 @@ function App() {
                 <button className="needs-practice" onClick={() => setStudyFeedback(false)}>{copy.need}</button>
                 <button className="know-this" onClick={() => setStudyFeedback(true)}>{copy.know}</button>
               </div>}
+              <div className={`study-feedback-message ${studyFeedback ? "visible" : ""}`} role="status" aria-live="polite">{studyFeedback}</div>
+              <button className="feedback-sound-toggle" type="button" aria-pressed={!soundEnabled} onClick={() => { const next = !soundEnabled; setSoundEnabled(next); saveLocalValue("citizenshipai.feedback-sound.v1", next ? "on" : "off"); }}>
+                {soundEnabled ? "🔊 Feedback sound on" : "🔇 Feedback sound off"}
+              </button>
             </>
           ) : (
             <section className="civics-favorites-empty"><span>☆</span><p>{copy.empty}</p><button onClick={() => setCivicsStudyMode("study")}>{copy.cards}</button></section>
@@ -2289,6 +2132,7 @@ function App() {
             <div className="progress-ai-score">
               <span>PRACTICE READINESS</span>
               <strong>{practiceSummary.readiness === null ? "—" : `${practiceSummary.readiness}%`}</strong>
+              <span className="readiness-level">{({ beginner: "Beginner", in_progress: "In progress", prepared: "Prepared", ready_for_interview: "Ready for interview" })[practiceSummary.level] || "Beginner"}</span>
               <p>{practiceSummary.readiness === null ? "Complete a reading, writing, or interview practice to build your baseline." : "Based only on your measured Citizenship AI practice."}</p>
             </div>
             <div className="progress-ai-bar">
@@ -2299,8 +2143,10 @@ function App() {
               <div><span>Coverage</span><strong>{practiceSummary.coverage}%</strong></div>
               <div><span>Confidence</span><strong>{practiceSummary.confidence}</strong></div>
             </div>
+            <CategoryMastery metrics={practiceSummary.metrics} />
             {practiceSummary.readinessReasons[0] && <p className="progress-readiness-reason">{practiceSummary.readinessReasons[0]}</p>}
           </section>
+          <RetrievalPracticeCard title="Strengthen your weakest area" prompt={practiceSummary.recommended.detail} hint="Try to answer aloud before revealing choices or help." onStart={() => openPracticeModule(practiceSummary.recommended.key)} />
           <section className="progress-recommendation" aria-label="Recommended next practice">
             <span>RECOMMENDED NEXT</span>
             <h2>{practiceSummary.recommended.label}</h2>
@@ -2390,7 +2236,7 @@ function App() {
         onExit={() => setScreen("home")}
         onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
         onReview={(questionIds) => {
-          const firstMissedIndex = civicsQuestions.findIndex((question) => question.id === questionIds[0]);
+          const firstMissedIndex = civicsQuestionBank.findIndex((question) => question.questionId === questionIds[0]);
           if (firstMissedIndex >= 0) setCivicsIndex(firstMissedIndex);
           setScreen("civics");
         }}

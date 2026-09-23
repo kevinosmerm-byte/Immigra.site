@@ -112,3 +112,24 @@ test("official dates handle invalid and future values safely", () => {
   assert.equal(formatOfficialDate("not-a-date"), "");
   assert.match(formatOfficialDate("2026-09-19", "en"), /2026/);
 });
+
+test("readiness stays at or below 90 without enough evidence and mock interviews", () => {
+  const attempts = Array.from({ length: 140 }, (_, index) => ({
+    questionId: `q-${index}`, category: ["civics", "reading", "writing", "interview"][index % 4],
+    correct: true, answeredAt: new Date(Date.UTC(2026, 8, 1 + (index % 14))).toISOString(),
+    responseMs: 8000, helpUsed: [], mode: "spoken",
+  }));
+  const result = calculateReadiness(attempts, ["civics", "reading", "writing", "interview"], { mockInterviews: 1, now: "2026-09-23T00:00:00Z" });
+  assert.equal(result.readiness, 90);
+  assert.equal(result.level, "ready_for_interview");
+  assert.equal(result.metrics.mockInterviews, 1);
+});
+
+test("daily plan prioritizes due failures and weak categories", () => {
+  const plan = buildDailyPlan([
+    { questionId: "strong", category: "history", mastery: .9, lapses: 0, nextReviewAt: "2026-09-30T00:00:00Z" },
+    { questionId: "missed", category: "government", mastery: .2, lapses: 3, nextReviewAt: "2026-09-20T00:00:00Z" },
+  ], "2026-09-23T00:00:00Z");
+  assert.equal(plan[0].questionId, "missed");
+  assert.equal(plan[0].reason, "due");
+});
