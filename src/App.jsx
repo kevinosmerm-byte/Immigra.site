@@ -220,7 +220,71 @@ function Home({
   onOpenAccount,
   language,
   onLanguageChange,
+  practiceSummary,
 }) {
+  const copy = language === "en" ? {
+    status: "AI-POWERED CITIZENSHIP TRAINING",
+    aiReady: "AI READY",
+    quickPractice: "QUICK PRACTICE",
+    trainWithAi: "Train with AI",
+    ready: "READY",
+    english: "ENGLISH",
+    reading: "Reading",
+    writing: "Writing",
+    coachEyebrow: "AI ENGLISH COACH",
+    coachTitle: "Practice English with Sarah",
+    coachBody: "Improve your confidence through conversation.",
+    preparation: "YOUR PREPARATION",
+    preparationTitle: "Keep moving forward.",
+    civics: "Civics",
+    interview: "Interview",
+    viewProgress: "VIEW PROGRESS",
+    caseTracker: "Case Tracker",
+    sandbox: "USCIS SANDBOX",
+    caseBody: "Practice checking a status response through the USCIS API Sandbox.",
+    checkCase: "CHECK CASE STATUS",
+    coaching: "AI COACHING",
+    tipTitle: "Build confidence one answer at a time.",
+    tipBody: "Practice regularly and let AI identify the areas that need more attention.",
+    languageLabel: "Change preferred language",
+    settingsLabel: "Open Legal and Privacy Settings",
+    civicsLabel: "Civics — 128 Questions. Master the questions for your interview.",
+  } : {
+    status: "ENTRENAMIENTO DE CIUDADANÍA CON IA",
+    aiReady: "IA LISTA",
+    quickPractice: "PRÁCTICA RÁPIDA",
+    trainWithAi: "Entrena con IA",
+    ready: "LISTO",
+    english: "INGLÉS",
+    reading: "Lectura",
+    writing: "Escritura",
+    coachEyebrow: "COACH DE INGLÉS CON IA",
+    coachTitle: "Practica inglés con Sarah",
+    coachBody: "Mejora tu confianza mediante la conversación.",
+    preparation: "TU PREPARACIÓN",
+    preparationTitle: "Sigue avanzando.",
+    civics: "Educación cívica",
+    interview: "Entrevista",
+    viewProgress: "VER PROGRESO",
+    caseTracker: "Seguimiento del caso",
+    sandbox: "SANDBOX DE USCIS",
+    caseBody: "Practica la consulta de una respuesta de estado mediante la API Sandbox de USCIS.",
+    checkCase: "CONSULTAR ESTADO",
+    coaching: "ENTRENAMIENTO CON IA",
+    tipTitle: "Gana confianza una respuesta a la vez.",
+    tipBody: "Practica con frecuencia y deja que la IA identifique las áreas que necesitan más atención.",
+    languageLabel: "Cambiar idioma preferido",
+    settingsLabel: "Abrir ajustes legales y de privacidad",
+    civicsLabel: "Educación cívica — 128 preguntas. Domina las preguntas para tu entrevista.",
+  };
+  const readiness = practiceSummary?.readiness ?? 0;
+  const civicsProgress = Math.round(Math.min(100, ((practiceSummary?.civics?.attempts || 0) / 128) * 100));
+  const englishScores = [practiceSummary?.reading?.score, practiceSummary?.writing?.score, practiceSummary?.coach?.score]
+    .filter(Number.isFinite);
+  const englishProgress = englishScores.length
+    ? Math.round(englishScores.reduce((total, score) => total + score, 0) / englishScores.length)
+    : 0;
+  const interviewProgress = practiceSummary?.interview?.score ?? 0;
   return (
     <div className="app home-ai">
 
@@ -237,12 +301,12 @@ function Home({
           <button
             className="home-language"
             onClick={() => onLanguageChange(language === "en" ? "es" : "en")}
-            aria-label="Change preferred language"
+            aria-label={copy.languageLabel}
           >
             {language === "en" ? "EN" : "ES"}
             <span>⌄</span>
           </button>
-          <button className="home-settings-button" onClick={onOpenSettings} aria-label="Open Legal and Privacy Settings">⚙</button>
+          <button className="home-settings-button" onClick={onOpenSettings} aria-label={copy.settingsLabel}>⚙</button>
         </div>
 
       </header>
@@ -260,7 +324,7 @@ function Home({
 
             <div className="home-status">
               <span></span>
-              AI-POWERED CITIZENSHIP TRAINING
+              {copy.status}
             </div>
 
             <h1>
@@ -303,7 +367,7 @@ function Home({
 
             <div className="ai-orb-label">
               <span></span>
-              AI READY
+              {copy.aiReady}
             </div>
 
           </div>
@@ -370,13 +434,13 @@ function Home({
           <div className="home-section-heading">
 
             <div>
-              <small>QUICK PRACTICE</small>
-              <h2>Train with AI</h2>
+              <small>{copy.quickPractice}</small>
+              <h2>{copy.trainWithAi}</h2>
             </div>
 
             <span className="section-live">
               <i></i>
-              READY
+              {copy.ready}
             </span>
 
           </div>
@@ -387,10 +451,10 @@ function Home({
             <button
               className="practice-feature-card civics-feature civics-image-card"
               onClick={() => onOpenFeature("civics")}
-              aria-label="Civics — 128 Questions. Master the questions for your interview."
+              aria-label={copy.civicsLabel}
             >
               <img src="/civics-128-button.png" alt="" aria-hidden="true" />
-              <span className="sr-only">Civics — 128 Questions. Master the questions for your interview.</span>
+              <span className="sr-only">{copy.civicsLabel}</span>
             </button>
 
 
@@ -406,8 +470,8 @@ function Home({
                 </div>
 
                 <div>
-                  <small>ENGLISH</small>
-                  <h3>Reading</h3>
+                  <small>{copy.english}</small>
+                  <h3>{copy.reading}</h3>
                 </div>
 
                 <span>↗</span>
@@ -425,8 +489,8 @@ function Home({
                 </div>
 
                 <div>
-                  <small>ENGLISH</small>
-                  <h3>Writing</h3>
+                  <small>{copy.english}</small>
+                  <h3>{copy.writing}</h3>
                 </div>
 
                 <span>↗</span>
@@ -452,14 +516,14 @@ function Home({
 
               <div className="coach-feature-text">
 
-                <small>AI ENGLISH COACH</small>
+                <small>{copy.coachEyebrow}</small>
 
                 <h3>
-                  Practice English with Sarah
+                  {copy.coachTitle}
                 </h3>
 
                 <p>
-                  Improve your confidence through conversation.
+                  {copy.coachBody}
                 </p>
 
               </div>
@@ -482,13 +546,13 @@ function Home({
           <div className="preparation-header">
 
             <div>
-              <small>YOUR PREPARATION</small>
-              <h2>Keep moving forward.</h2>
+              <small>{copy.preparation}</small>
+              <h2>{copy.preparationTitle}</h2>
             </div>
 
             <div className="preparation-score">
-              <strong>0%</strong>
-              <span>READY</span>
+              <strong>{readiness}%</strong>
+              <span>{copy.ready}</span>
             </div>
 
           </div>
@@ -498,7 +562,7 @@ function Home({
 
             <div
               className="preparation-progress-fill"
-              style={{ width: "0%" }}
+              style={{ width: `${readiness}%` }}
             ></div>
 
           </div>
@@ -507,18 +571,18 @@ function Home({
           <div className="preparation-items">
 
             <div>
-              <span>Civics</span>
-              <strong>0%</strong>
+              <span>{copy.civics}</span>
+              <strong>{civicsProgress}%</strong>
             </div>
 
             <div>
-              <span>English</span>
-              <strong>0%</strong>
+              <span>{copy.english}</span>
+              <strong>{englishProgress}%</strong>
             </div>
 
             <div>
-              <span>Interview</span>
-              <strong>0%</strong>
+              <span>{copy.interview}</span>
+              <strong>{interviewProgress}%</strong>
             </div>
 
           </div>
@@ -527,7 +591,7 @@ function Home({
             className="preparation-button"
             onClick={onOpenProgress}
           >
-            VIEW PROGRESS
+            {copy.viewProgress}
             <span>→</span>
           </button>
 
@@ -549,26 +613,26 @@ function Home({
               <small>USCIS</small>
 
               <h2>
-                Case Tracker
+                {copy.caseTracker}
               </h2>
 
             </div>
 
             <div className="uscis-live">
               <span></span>
-              USCIS SANDBOX
+              {copy.sandbox}
             </div>
 
           </div>
 
 
-          <p>Practice checking a status response through the USCIS API Sandbox.</p>
+          <p>{copy.caseBody}</p>
 
 
           <button
             onClick={() => onOpenFeature("uscisTracker")}
           >
-            CHECK CASE STATUS
+            {copy.checkCase}
             <span>→</span>
           </button>
 
@@ -584,15 +648,14 @@ function Home({
 
           <div>
 
-            <small>AI COACHING</small>
+            <small>{copy.coaching}</small>
 
             <h3>
-              Build confidence one answer at a time.
+              {copy.tipTitle}
             </h3>
 
             <p>
-              Practice regularly and let AI identify
-              the areas that need more attention.
+              {copy.tipBody}
             </p>
 
           </div>
@@ -2264,6 +2327,7 @@ function App() {
       }}
       language={language}
       onLanguageChange={setPreferredLanguage}
+      practiceSummary={practiceSummary}
     />
     {accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}
     </>
