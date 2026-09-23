@@ -29,11 +29,14 @@ export function getPracticeEvents() {
   return safeRead();
 }
 
-export function recordPracticeEvent({ module, score, outcome }) {
+export function recordPracticeEvent({ module, score, outcome, responseMs = 0, helpUsed = [], category = module }) {
   const event = {
     module,
     score: Number.isFinite(score) ? Math.max(0, Math.min(100, Math.round(score))) : null,
     outcome: typeof outcome === "string" ? outcome.slice(0, 40) : "completed",
+    category,
+    responseMs: Number.isFinite(responseMs) ? Math.max(0, responseMs) : 0,
+    helpUsed: Array.isArray(helpUsed) ? helpUsed.slice(0, 5) : [],
     at: Date.now(),
   };
   const events = [...safeRead(), event].slice(-MAX_EVENTS);
@@ -71,12 +74,12 @@ export function getPracticeSummary(events = getPracticeEvents(), civicsViewed = 
     .filter((event) => Number.isFinite(event.score))
     .map((event) => ({
       questionId: `${event.module}-${event.at}`,
-      category: event.module,
+      category: event.category || event.module,
       correct: event.score >= 70,
       score: event.score,
       answeredAt: new Date(event.at).toISOString(),
-      responseMs: 0,
-      helpUsed: [],
+      responseMs: event.responseMs || 0,
+      helpUsed: event.helpUsed || [],
       mode: event.module === "interview" ? "spoken" : "text",
     }));
   const mastered = new Set(Array.isArray(civicsMastered) ? civicsMastered : []);
@@ -96,7 +99,8 @@ export function getPracticeSummary(events = getPracticeEvents(), civicsViewed = 
     }));
   const evaluation = calculateReadiness(
     [...measuredAttempts, ...civicsAttempts],
-    ["civics", "reading", "writing", "interview"]
+    ["civics", "reading", "writing", "interview"],
+    { mockInterviews: interview.attempts }
   );
   const readiness = measuredAttempts.length || civicsAttempts.length ? evaluation.readiness : null;
 
@@ -125,6 +129,8 @@ export function getPracticeSummary(events = getPracticeEvents(), civicsViewed = 
     accuracy: measuredAttempts.length || civicsAttempts.length ? evaluation.accuracy : null,
     coverage: evaluation.coverage,
     confidence: evaluation.confidence,
+    level: evaluation.level,
+    metrics: evaluation.metrics,
     readinessReasons: evaluation.reasons,
     civics,
     reading,
