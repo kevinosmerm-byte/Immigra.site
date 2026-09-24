@@ -16088,16 +16088,6 @@ body {
   color: #ffffff;
 }
 
-.home-brand-logo {
-  display: block;
-  width: clamp(34px, 3.2vw, 42px);
-  height: clamp(34px, 3.2vw, 42px);
-  flex-shrink: 0;
-  border-radius: 10px;
-  object-fit: cover;
-  object-position: center;
-}
-
 .home-brand-wordmark {
   color: #f7fbff;
   font-size: clamp(13px, 1.35vw, 18px);
@@ -22499,12 +22489,6 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 
   .home-new-brand {
     flex: 0 1 auto;
-  }
-
-  .home-brand-logo {
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
   }
 
   .home-brand-wordmark {
