@@ -1,21 +1,31 @@
 import { TextToSpeech, QueueStrategy } from "@capacitor-community/text-to-speech";
+import { selectVoiceIndex, voiceProfileDefaults } from "./voiceProfiles";
 
 let speechRequest = 0;
 let cachedVoices = null;
 
+const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+const loadSupportedVoices = async () => {
+  if (cachedVoices?.length) return cachedVoices;
+
+  // Browser voices often arrive shortly after the first page render. An empty
+  // result must not be cached or every later request will use the same default.
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const voices = (await TextToSpeech.getSupportedVoices()).voices || [];
+    if (voices.length) {
+      cachedVoices = voices;
+      return voices;
+    }
+    if (attempt < 3) await wait(120);
+  }
+
+  return [];
+};
+
 const findVoice = async (profile) => {
   try {
-    if (!cachedVoices) {
-      cachedVoices = (await TextToSpeech.getSupportedVoices()).voices || [];
-    }
-    const candidates = cachedVoices
-      .map((voice, index) => ({ ...voice, index }))
-      .filter((voice) => /^en-US$/i.test(voice.lang));
-    const pattern = profile === "male"
-      ? /david|mark|guy|ryan|christopher|matthew|joey|fred|alex/i
-      : /female|zira|samantha|aria|jenny|susan/i;
-    return candidates.find((voice) => pattern.test(voice.name))?.index
-      ?? candidates[0]?.index;
+    return selectVoiceIndex(await loadSupportedVoices(), profile);
   } catch {
     return undefined;
   }
@@ -35,8 +45,8 @@ export const speakAppText = async (text, options = {}) => {
   const requestId = ++speechRequest;
   const {
     profile = "female",
-    rate = profile === "male" ? 0.88 : 0.92,
-    pitch = profile === "male" ? 0.86 : 1.05,
+    rate = voiceProfileDefaults(profile).rate,
+    pitch = voiceProfileDefaults(profile).pitch,
     onStart,
     onEnd,
   } = options;

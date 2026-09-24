@@ -1380,8 +1380,9 @@ function App() {
       });
       if (soundEnabled) {
         speakAppText(civicsQuestionBank[civicsIndex].question, {
+          profile: "female",
           rate: 0.88,
-          pitch: 1,
+          pitch: 1.08,
         });
       }
     }, 300);
@@ -1868,7 +1869,7 @@ function App() {
                   onPlayAudio={() => {
                     if (soundEnabled) {
                       emitCompanionState("reading");
-                      speakAppText(`${currentQuestion}. ${currentAnswers.join(". ")}`, { rate: 0.88, pitch: 1 });
+                      speakAppText(`${currentQuestion}. ${currentAnswers.join(". ")}`, { profile: "female", rate: 0.88, pitch: 1.08 });
                     }
                   }}
                   onNavigate={changeCivicsCard}
@@ -2111,7 +2112,7 @@ function App() {
                 className="dictation-speak-btn"
                 onClick={() => {
                   emitCompanionState("reading");
-                  speakAppText(writingSentences[writingIndex].english, { rate: 0.85, pitch: 1 });
+                  speakAppText(writingSentences[writingIndex].english, { profile: "female", rate: 0.85, pitch: 1.08 });
                 }}
                 type="button"
               >
