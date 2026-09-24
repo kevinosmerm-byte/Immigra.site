@@ -6,6 +6,7 @@ import AppErrorBoundary from './AppErrorBoundary.jsx'
 import { PodcastProvider } from './PodcastPlayer.jsx'
 import { PromotionAccessProvider } from './PromotionAccess.jsx'
 import { AccountProvider } from './Account.jsx'
+import './companion.js'
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')).render(
         <PromotionAccessProvider>
           <PodcastProvider>
             <App />
+            <citizenship-companion />
           </PodcastProvider>
         </PromotionAccessProvider>
       </AccountProvider>

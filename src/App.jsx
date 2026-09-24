@@ -19,6 +19,7 @@ import { writingSentences } from "./writingSentences.js";
 import { evaluateWritingSentence } from "./writingEvaluator.js";
 import { CivicsStudyCard } from "./CivicsStudyCard.jsx";
 import { getCivicsVisual } from "./data/civicsVisuals.js";
+import { emitCompanionResult, emitCompanionState } from "./companionEvents.js";
 
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
@@ -724,6 +725,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       score: Math.round((correctAnswers / questions.length) * 100),
       outcome: "completed",
     });
+    emitCompanionState("celebration");
   }, [isInterviewComplete, correctAnswers, questions.length, onComplete]);
 
   const speakQuestion = async (text, onFinished, selectedInterviewer = interviewer) => {
@@ -735,6 +737,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       if (onFinished) onFinished();
     };
     setIsSpeaking(true);
+    emitCompanionState("coach", { message: `${voiceIsKevin ? "Kevin" : "Sarah"} is asking the next question.` });
     await speakAppText(text, {
       profile: voiceIsKevin ? "male" : "female",
       rate: voiceIsKevin ? 0.88 : 0.9,
@@ -783,18 +786,21 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     addMissedQuestion(questions[currentQuestion]);
     setAnswerStatus("incorrect");
     setHasRetried(false);
+    emitCompanionResult(false);
     goToNextQuestion();
   };
 
   const evaluateInterviewAnswer = async (transcript) => {
     setAnswer(transcript);
     setAnswerStatus("evaluating");
+    emitCompanionState("thinking");
     try {
       const activeQuestion = questions[currentQuestion];
       if (activeQuestion.questionId) {
         const localResult = evaluateCivicsAnswer(activeQuestion, transcript);
         if (!localResult.needsSemanticReview) {
           setAnswerStatus(localResult.status === "review" ? "incomplete" : localResult.status);
+          emitCompanionResult(localResult.status === "correct");
           if (localResult.status === "correct") setCorrectAnswers((count) => count + 1);
           if (localResult.status === "incorrect" && hasRetried) {
             setIncorrectAnswers((count) => count + 1);
@@ -820,6 +826,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       });
 
       setAnswerStatus(result.status === "review" ? "incomplete" : result.status);
+      emitCompanionResult(result.status === "correct");
 
       if (result.status === "correct") setCorrectAnswers((count) => count + 1);
       if (result.status === "incorrect" && hasRetried) {
@@ -859,6 +866,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     setIsListening(true);
     setIsSpeaking(false);
     setAnswerStatus("");
+    emitCompanionState("thinking", { message: "I'm listening. Take your time." });
   };
 
   const stopListening = async () => {
@@ -1218,6 +1226,22 @@ function App() {
   }, [screen]);
 
   useEffect(() => {
+    const stateByScreen = {
+      home: ["welcome", language === "es" ? "¡Hola! Estoy listo para practicar contigo." : "Hi! I'm ready to practice with you."],
+      civics: ["reading", language === "es" ? "Estudiemos una pregunta a la vez." : "Let's study one question at a time."],
+      quiz: ["determined", language === "es" ? "Avancemos paso a paso." : "Let's build mastery step by step."],
+      interview: ["coach", language === "es" ? "Practiquemos como en la entrevista real." : "Let's practice like the real interview."],
+      coach: ["coach", language === "es" ? "Conversemos en inglés." : "Let's practice English together."],
+      reading: ["reading", language === "es" ? "Lee con calma; estoy escuchando." : "Read calmly; I'm listening."],
+      writing: ["reading", language === "es" ? "Escucha y escribe con calma." : "Listen and write at your own pace."],
+      progress: ["progress", language === "es" ? "Mira cuánto has avanzado." : "Look how far you've come."],
+    };
+    const reaction = stateByScreen[screen];
+    if (reaction) emitCompanionState(reaction[0], { message: reaction[1], duration: screen === "home" ? 3500 : 0 });
+    else emitCompanionState("idle");
+  }, [screen, language]);
+
+  useEffect(() => {
     // Every module is a new screen. Do not carry the Home page's scroll
     // position into it, otherwise the coach can open below Sarah's face.
     window.scrollTo(0, 0);
@@ -1373,6 +1397,7 @@ function App() {
       return;
     }
     setIsAIThinking(true);
+    emitCompanionState("thinking");
     setAiMessage("Checking your writing...");
     try {
       const sentence = writingSentences[writingIndex];
@@ -1387,9 +1412,11 @@ function App() {
       if (result.accuracy === "Excellent" || result.accuracy === "Good") {
         setWritingGoodCount((count) => count + 1);
         playCorrectSound();
+        emitCompanionResult(true);
       } else {
         setWritingNeedsPracticeCount((count) => count + 1);
         playIncorrectSound();
+        emitCompanionResult(false);
       }
       const resultLabel = result.resultLabel || (result.accuracy === "Excellent" ? "Correcta" : result.accuracy === "Good" ? "Correcta con observaciones" : "Necesita práctica");
       recordPractice({ module: "writing", score: result.score, outcome: resultLabel });
@@ -1445,6 +1472,7 @@ function App() {
     try {
       coachRecorderRef.current = await startAudioRecording();
       setCoachListening(true);
+      emitCompanionState("thinking", { message: language === "es" ? "Te escucho." : "I'm listening." });
     } catch (error) {
       console.error("Coach microphone error:", error);
       setCoachReply(error.message || "Please allow microphone access and try again.");
@@ -1473,6 +1501,7 @@ function App() {
       setIsAIThinking(true);
       setIsReading(true);
       setAiMessage("Listening to your reading...");
+      emitCompanionState("thinking", { message: language === "es" ? "Te escucho. Lee con calma." : "I'm listening. Read at your own pace." });
     } catch (error) {
       console.error("Reading microphone error:", error);
       setIsAIThinking(false);
@@ -1505,8 +1534,10 @@ function App() {
 
       if (result.accuracy === "Excellent" || result.accuracy === "Good") {
         playCorrectSound();
+        emitCompanionResult(true);
       } else {
         playIncorrectSound();
+        emitCompanionResult(false);
       }
       recordPractice({ module: "reading", score: result.score, outcome: result.accuracy });
 
@@ -1720,6 +1751,7 @@ function App() {
       updateCivicsCollection(setCivicsNeedsPractice, "citizenshipai.civics.needsPractice.v1", !mastered);
       setStudyFeedbackMessage(mastered ? (isSpanish ? "Correcto. La repasaremos más adelante." : "Correct. We will review it again later.") : (isSpanish ? "Guardada para practicar de nuevo." : "Saved for extra practice."));
       if (mastered) playCorrectSound(); else playIncorrectSound();
+      emitCompanionResult(mastered);
       window.setTimeout(() => { setStudyFeedbackMessage(""); changeCivicsCard(1); }, 900);
     };
 
@@ -1773,10 +1805,16 @@ function App() {
                   audioEnabled={soundEnabled}
                   preloadImages={[visualSource.imagePath, ...adjacentVisuals]}
                   touchRef={civicsTouchRef}
-                  onToggleAnswer={() => setCivicsFlipped((current) => !current)}
+                  onToggleAnswer={() => setCivicsFlipped((current) => {
+                    if (!current) emitCompanionState("explain");
+                    return !current;
+                  })}
                   onToggleFavorite={toggleFavorite}
                   onPlayAudio={() => {
-                    if (soundEnabled) speakAppText(`${currentQuestion}. ${currentAnswers.join(". ")}`, { rate: 0.88, pitch: 1 });
+                    if (soundEnabled) {
+                      emitCompanionState("reading");
+                      speakAppText(`${currentQuestion}. ${currentAnswers.join(". ")}`, { rate: 0.88, pitch: 1 });
+                    }
                   }}
                   onNavigate={changeCivicsCard}
                   copy={copy}
@@ -2016,10 +2054,10 @@ function App() {
             <div className="dictation-audio-prompt">
               <button
                 className="dictation-speak-btn"
-                onClick={() => speakAppText(writingSentences[writingIndex].english, {
-                  rate: 0.85,
-                  pitch: 1,
-                })}
+                onClick={() => {
+                  emitCompanionState("reading");
+                  speakAppText(writingSentences[writingIndex].english, { rate: 0.85, pitch: 1 });
+                }}
                 type="button"
               >
                 <span className="speaker-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10" /></svg></span>

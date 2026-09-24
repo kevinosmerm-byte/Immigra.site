@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getCompanionVisibility, setCompanionVisibility } from "./companionEvents.js";
 
 const COPY = {
   en: {
@@ -162,10 +163,17 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
 export function LegalSettings({ onBack, onRestartOnboarding }) {
   const [openSection, setOpenSection] = useState("privacy");
   const [cleared, setCleared] = useState(false);
+  const [companionVisible, setCompanionVisible] = useState(getCompanionVisibility);
+
+  useEffect(() => {
+    const syncVisibility = (event) => setCompanionVisible(Boolean(event.detail?.visible));
+    document.addEventListener("companion:visibility", syncVisibility);
+    return () => document.removeEventListener("companion:visibility", syncVisibility);
+  }, []);
 
   const clearLocalData = () => {
     if (!window.confirm("Clear this device's Citizenship AI preferences and civics progress? This cannot be undone.")) return;
-    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1", "citizenshipai.ai-sessions.promo.v1"].forEach((key) => localStorage.removeItem(key));
+    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1", "citizenshipai.ai-sessions.promo.v1", "citizenshipai-companion-visible-v1", "citizenshipai-companion-streak-v1"].forEach((key) => localStorage.removeItem(key));
     setCleared(true);
   };
 
@@ -193,6 +201,20 @@ export function LegalSettings({ onBack, onRestartOnboarding }) {
               </article>
             );
           })}
+          <article className="legal-item open">
+            <div className="legal-static-title">Study Companion</div>
+            <div className="legal-item-body">
+              <p>The companion reacts locally to practice events. It does not receive your answers, recordings, or personal information.</p>
+              <button
+                className="legal-action-button"
+                type="button"
+                aria-pressed={companionVisible}
+                onClick={() => setCompanionVisible(setCompanionVisibility(!companionVisible))}
+              >
+                {companionVisible ? "Hide study companion" : "Show study companion"}
+              </button>
+            </div>
+          </article>
           <article className="legal-item open">
             <div className="legal-static-title">Data &amp; Account Controls</div>
             <div className="legal-item-body">

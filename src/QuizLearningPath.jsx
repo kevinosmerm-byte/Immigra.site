@@ -4,6 +4,7 @@ import {
   buildAnswerChoices, buildQuizQuestionModels, createQuizSession, evaluateQuizResponse,
   getQuizProgress, QUIZ_LEVELS, recordQuizAttempt, summarizeQuizProgress,
 } from "./quizLearning.js";
+import { emitCompanionResult, emitCompanionState } from "./companionEvents.js";
 
 const COPY = {
   en: {
@@ -58,6 +59,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", o
     setMode(nextMode);
     setSession(createQuizSession(QUESTIONS, progress, nextMode));
     setQuestionIndex(0); setAnswer(""); setResult(null); setSessionScore(0);
+    emitCompanionState(nextMode === "vocabulary" ? "explain" : "determined");
   };
 
   const saveAttempt = (correct, score, helpUsed = []) => {
@@ -69,6 +71,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", o
   const nextQuestion = (scoreOverride = sessionScore) => {
     if (questionIndex + 1 >= session.length) {
       onPracticeComplete?.({ score: session.length ? Math.round((scoreOverride / session.length) * 100) : 0, outcome: mode });
+      emitCompanionState("celebration");
       setMode("complete");
       return;
     }
@@ -127,6 +130,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", o
     const correct = evaluation.status === "correct";
     const score = correct ? 100 : evaluation.status === "incomplete" || evaluation.status === "review" ? 50 : 0;
     setAnswer(value); setResult(evaluation); saveAttempt(correct, score, helpUsed);
+    emitCompanionResult(correct, { message: correct ? copy.correct : copy.review });
   };
 
   return (
@@ -147,6 +151,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", o
               <button className="quiz-primary-action" onClick={() => {
                 const completedScore = sessionScore + 1;
                 saveAttempt(true, 100, ["vocabulary"]);
+                emitCompanionResult(true);
                 nextQuestion(completedScore);
               }}>{copy.continue}</button>
             </>
