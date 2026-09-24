@@ -23,3 +23,15 @@ test("Home preparation card uses measured progress instead of hard-coded zeroes"
   assert.match(app, /practiceSummary=\{practiceSummary\}/);
   assert.doesNotMatch(app, /className="preparation-score">[\s\S]{0,120}<strong>0%<\/strong>/);
 });
+
+test("Home keeps unfinished case tracking visible but inaccessible", () => {
+  assert.match(app, /development: "EN DESARROLLO"/);
+  assert.match(app, /className="home-uscis-disabled-button"[\s\S]{0,100}disabled/);
+  assert.doesNotMatch(app, /onClick=\{\(\) => onOpenFeature\("uscisTracker"\)\}/);
+});
+
+test("Sarah coach is contextual to reading and writing instead of Home", () => {
+  assert.doesNotMatch(app, /className="coach-feature-card"/);
+  assert.match(app, /openCoachFrom\("reading"\)/);
+  assert.match(app, /openCoachFrom\("writing"\)/);
+});

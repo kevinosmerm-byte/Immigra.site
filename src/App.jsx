@@ -236,21 +236,15 @@ function Home({
     english: "ENGLISH",
     reading: "Reading",
     writing: "Writing",
-    coachEyebrow: "AI ENGLISH COACH",
-    coachTitle: "Practice English with Sarah",
-    coachBody: "Improve your confidence through conversation.",
     preparation: "YOUR PREPARATION",
     preparationTitle: "Keep moving forward.",
     civics: "Civics",
     interview: "Interview",
     viewProgress: "VIEW PROGRESS",
     caseTracker: "Case Tracker",
-    sandbox: "USCIS SANDBOX",
+    development: "IN DEVELOPMENT",
     caseBody: "Practice checking a status response through the USCIS API Sandbox.",
-    checkCase: "CHECK CASE STATUS",
-    coaching: "AI COACHING",
-    tipTitle: "Build confidence one answer at a time.",
-    tipBody: "Practice regularly and let AI identify the areas that need more attention.",
+    checkCase: "COMING SOON",
     languageLabel: "Change preferred language",
     settingsLabel: "Open Legal and Privacy Settings",
     civicsLabel: "Civics — 128 Questions. Master the questions for your interview.",
@@ -263,21 +257,15 @@ function Home({
     english: "INGLÉS",
     reading: "Lectura",
     writing: "Escritura",
-    coachEyebrow: "COACH DE INGLÉS CON IA",
-    coachTitle: "Practica inglés con Sarah",
-    coachBody: "Mejora tu confianza mediante la conversación.",
     preparation: "TU PREPARACIÓN",
     preparationTitle: "Sigue avanzando.",
     civics: "Educación cívica",
     interview: "Entrevista",
     viewProgress: "VER PROGRESO",
     caseTracker: "Seguimiento del caso",
-    sandbox: "SANDBOX DE USCIS",
+    development: "EN DESARROLLO",
     caseBody: "Practica la consulta de una respuesta de estado mediante la API Sandbox de USCIS.",
-    checkCase: "CONSULTAR ESTADO",
-    coaching: "ENTRENAMIENTO CON IA",
-    tipTitle: "Gana confianza una respuesta a la vez.",
-    tipBody: "Practica con frecuencia y deja que la IA identifique las áreas que necesitan más atención.",
+    checkCase: "PRÓXIMAMENTE",
     languageLabel: "Cambiar idioma preferido",
     settingsLabel: "Abrir ajustes legales y de privacidad",
     civicsLabel: "Educación cívica — 128 preguntas. Domina las preguntas para tu entrevista.",
@@ -518,40 +506,6 @@ function Home({
             </div>
 
 
-            <button
-              className="coach-feature-card"
-              onClick={() => onOpenFeature("coach")}
-            >
-
-              <div className="coach-feature-avatar">
-
-                <img
-                  src={sarahImage}
-                  alt="Sarah"
-                />
-
-              </div>
-
-              <div className="coach-feature-text">
-
-                <small>{copy.coachEyebrow}</small>
-
-                <h3>
-                  {copy.coachTitle}
-                </h3>
-
-                <p>
-                  {copy.coachBody}
-                </p>
-
-              </div>
-
-              <span className="feature-arrow">
-                →
-              </span>
-
-            </button>
-
           </div>
 
         </section>
@@ -636,9 +590,9 @@ function Home({
 
             </div>
 
-            <div className="uscis-live">
+            <div className="uscis-live uscis-development">
               <span></span>
-              {copy.sandbox}
+              {copy.development}
             </div>
 
           </div>
@@ -648,35 +602,14 @@ function Home({
 
 
           <button
-            onClick={() => onOpenFeature("uscisTracker")}
+            className="home-uscis-disabled-button"
+            disabled
+            aria-disabled="true"
+            title={copy.development}
           >
             {copy.checkCase}
-            <span>→</span>
+            <span aria-hidden="true">🔒</span>
           </button>
-
-        </section>
-
-        {/* ================= AI TIP ================= */}
-
-        <section className="home-ai-tip">
-
-          <div className="tip-symbol">
-            ✦
-          </div>
-
-          <div>
-
-            <small>{copy.coaching}</small>
-
-            <h3>
-              {copy.tipTitle}
-            </h3>
-
-            <p>
-              {copy.tipBody}
-            </p>
-
-          </div>
 
         </section>
 
@@ -1219,6 +1152,7 @@ function App() {
     window.location.hash === "#privacy" ? "settings" : "home"
   );
   const [coachMode, setCoachMode] = useState("welcome");
+  const [coachReturnScreen, setCoachReturnScreen] = useState("english");
   const [interviewMode, setInterviewMode] = useState("full");
   const [interviewRunId, setInterviewRunId] = useState(0);
   const [civicsIndex, setCivicsIndex] = useState(0);
@@ -1333,6 +1267,11 @@ function App() {
 
   const startAiFeature = (feature, continuation) => {
     requestAiSession(feature, continuation, language);
+  };
+
+  const openCoachFrom = (returnScreen) => {
+    setCoachReturnScreen(returnScreen);
+    startAiFeature("coach", () => setScreen("coach"));
   };
 
   const startInterview = (mode = "full") => {
@@ -1687,7 +1626,7 @@ function App() {
     return (
       <div className="practice-screen coach-screen coach-video-call-screen">
         <header className="practice-header">
-          <button className="back-button" onClick={() => { setCoachMode("welcome"); setScreen("practice"); }}>← Practice</button>
+          <button className="back-button" onClick={() => { setCoachMode("welcome"); setScreen(coachReturnScreen); }}>← {coachReturnScreen === "reading" ? "Reading" : coachReturnScreen === "writing" ? "Writing" : "English"}</button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
         <main className="coach-conversation-content coach-video-call-content">
@@ -1979,7 +1918,7 @@ function App() {
               </div>
               <span className="practice-arrow">→</span>
             </button>
-            <button className="practice-option" onClick={() => startAiFeature("coach", () => setScreen("coach"))}>
+            <button className="practice-option" onClick={() => openCoachFrom("english")}>
               <div className="practice-option-left">
                 <div className="practice-option-icon">✦</div>
                 <div className="practice-option-content">
@@ -2049,6 +1988,14 @@ function App() {
               <span className="reading-button-arrow" aria-hidden="true">{isReading ? "■" : "→"}</span>
             </button>
           </div>
+          <button className="english-coach-secondary" onClick={() => openCoachFrom("reading")} type="button">
+            <span className="english-coach-secondary-avatar"><img src={sarahImage} alt="" /></span>
+            <span className="english-coach-secondary-copy">
+              <small>OPTIONAL CONVERSATION PRACTICE</small>
+              <strong>Continue practicing with Sarah</strong>
+            </span>
+            <span className="english-coach-secondary-arrow" aria-hidden="true">→</span>
+          </button>
         </main>
       </div>
     );
@@ -2155,6 +2102,14 @@ function App() {
               <div className="writing-evaluation-text">{aiMessage}</div>
             </div>
           )}
+          <button className="english-coach-secondary" onClick={() => openCoachFrom("writing")} type="button">
+            <span className="english-coach-secondary-avatar"><img src={sarahImage} alt="" /></span>
+            <span className="english-coach-secondary-copy">
+              <small>OPTIONAL CONVERSATION PRACTICE</small>
+              <strong>Continue practicing with Sarah</strong>
+            </span>
+            <span className="english-coach-secondary-arrow" aria-hidden="true">→</span>
+          </button>
         </main>
       </div>
     );

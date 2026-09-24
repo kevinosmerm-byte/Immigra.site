@@ -26389,6 +26389,179 @@ select { font: inherit; }
 .study-feedback-message { min-height: 24px; margin-top: 8px; color: #9defff; text-align: center; opacity: 0; transform: translateY(4px); transition: opacity .2s ease, transform .2s ease; }
 .study-feedback-message.visible { opacity: 1; transform: translateY(0); }
 .feedback-sound-toggle { display: block; margin: 5px auto 0; font-size: .72rem; }
+
+/* Compact Home progress summary and contextual Sarah entry points. */
+.home-ai .preparation-card {
+  padding: 15px 17px;
+  border-radius: 17px;
+  background:
+    radial-gradient(circle at 92% 2%, rgba(48, 209, 255, .08), transparent 30%),
+    linear-gradient(145deg, rgba(15, 35, 68, .95), rgba(8, 23, 48, .97));
+}
+
+.home-ai .preparation-header {
+  align-items: center;
+  gap: 12px;
+}
+
+.home-ai .preparation-header h2 {
+  margin-top: 2px;
+  font-size: 1.05rem;
+  line-height: 1.1;
+}
+
+.home-ai .preparation-score {
+  min-width: 54px;
+  padding: 6px 9px;
+  border-radius: 11px;
+  text-align: center;
+}
+
+.home-ai .preparation-score strong { font-size: 1rem; }
+.home-ai .preparation-score span { font-size: .5rem; }
+
+.home-ai .preparation-progress {
+  height: 4px;
+  margin: 11px 0 10px;
+}
+
+.home-ai .preparation-items {
+  gap: 7px;
+  margin-bottom: 10px;
+}
+
+.home-ai .preparation-items div {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 8px 9px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .025);
+}
+
+.home-ai .preparation-items span {
+  overflow: hidden;
+  font-size: .62rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-ai .preparation-items strong {
+  flex: 0 0 auto;
+  margin: 0;
+  color: #eafaff;
+  font-size: .78rem;
+}
+
+.home-ai .preparation-button {
+  min-height: 38px;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 11px;
+  font-size: .7rem;
+  letter-spacing: .025em;
+}
+
+.english-coach-secondary {
+  display: flex;
+  width: 100%;
+  min-height: 58px;
+  margin-top: 12px;
+  padding: 8px 11px;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(126, 116, 255, .25);
+  border-radius: 14px;
+  color: #f3f7ff;
+  background: linear-gradient(120deg, rgba(44, 32, 98, .28), rgba(6, 29, 56, .78));
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .2s ease, background .2s ease, transform .2s ease;
+}
+
+.english-coach-secondary:hover,
+.english-coach-secondary:focus-visible {
+  border-color: rgba(87, 220, 255, .52);
+  background: linear-gradient(120deg, rgba(65, 43, 139, .38), rgba(7, 42, 77, .88));
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.english-coach-secondary-avatar {
+  width: 39px;
+  height: 39px;
+  flex: 0 0 39px;
+  overflow: hidden;
+  border: 1px solid rgba(112, 126, 255, .48);
+  border-radius: 11px;
+}
+
+.english-coach-secondary-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 24%;
+}
+
+.english-coach-secondary-copy { flex: 1; min-width: 0; }
+.english-coach-secondary-copy small {
+  display: block;
+  color: #b39aff;
+  font-size: .5rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+}
+.english-coach-secondary-copy strong {
+  display: block;
+  margin-top: 3px;
+  overflow: hidden;
+  font-size: .76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.english-coach-secondary-arrow {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  place-items: center;
+  border: 1px solid rgba(89, 215, 255, .24);
+  border-radius: 9px;
+  color: #43dfff;
+  background: rgba(24, 144, 205, .07);
+}
+
+@media (max-width: 420px) {
+  .home-ai .preparation-card { padding: 13px 14px; }
+  .home-ai .preparation-items div { padding: 7px; }
+  .home-ai .preparation-items span { font-size: .56rem; }
+  .home-ai .preparation-items strong { font-size: .72rem; }
+}
+
+.home-uscis-card .uscis-development {
+  color: #ffd277;
+  border-color: rgba(255, 190, 75, .25);
+  background: rgba(135, 88, 10, .12);
+}
+
+.home-uscis-card .uscis-development span {
+  background: #ffbf4b;
+  box-shadow: 0 0 7px rgba(255, 191, 75, .7);
+}
+
+.home-uscis-card .home-uscis-disabled-button,
+.home-uscis-card .home-uscis-disabled-button:hover {
+  border-color: rgba(151, 169, 194, .17);
+  color: #7f8ea3;
+  background: rgba(91, 107, 132, .07);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: .74;
+  transform: none;
+}
 @media (prefers-reduced-motion: reduce) {
   .study-feedback-message, .civics-flashcard-inner, .progress-ai-fill { transition: none !important; animation: none !important; }
 }
