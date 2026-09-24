@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import "./App.css";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
@@ -17,10 +17,12 @@ import { AccountButton, AccountSheet } from "./Account.jsx";
 import { CategoryMastery, RetrievalPracticeCard } from "./EducationalActivities.jsx";
 import { writingSentences } from "./writingSentences.js";
 import { evaluateWritingSentence } from "./writingEvaluator.js";
-import { getCivicsVisual } from "./civicsVisuals.js";
+import { CivicsStudyCard } from "./CivicsStudyCard.jsx";
+import { getCivicsVisual } from "./data/civicsVisuals.js";
 
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
+const CivicsStudyGuide = lazy(() => import("./CivicsStudyGuide.jsx").then((module) => ({ default: module.CivicsStudyGuide })));
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
 const PRACTICE_MODULE_NAMES = {
   reading: "Reading practice",
@@ -1164,7 +1166,6 @@ function App() {
   const [civicsIndex, setCivicsIndex] = useState(0);
   const [civicsFlipped, setCivicsFlipped] = useState(false);
   const [civicsStudyMode, setCivicsStudyMode] = useState("study");
-  const [showCivicsImages, setShowCivicsImages] = useState(() => readLocalValue("citizenshipai.civics-images.v1", "on") !== "off");
   const [studyFeedback, setStudyFeedbackMessage] = useState("");
   const [soundEnabled, setSoundEnabled] = useState(() => readLocalValue("citizenshipai.feedback-sound.v1", "on") !== "off");
   const [civicsFavorites, setCivicsFavorites] = useState(() => {
@@ -1297,17 +1298,19 @@ function App() {
         saveLocalValue("civicsViewed", JSON.stringify(updated));
         return updated;
       });
-      speakAppText(civicsQuestionBank[civicsIndex].question, {
-        rate: 0.88,
-        pitch: 1,
-      });
+      if (soundEnabled) {
+        speakAppText(civicsQuestionBank[civicsIndex].question, {
+          rate: 0.88,
+          pitch: 1,
+        });
+      }
     }, 300);
 
     return () => {
       clearTimeout(timer);
       stopAppSpeech();
     };
-  }, [screen, civicsIndex]);
+  }, [screen, civicsIndex, soundEnabled]);
 
   // Funciones auxiliares de soporte...
   const playCorrectSound = () => {
@@ -1557,6 +1560,14 @@ function App() {
     return <PodcastLibrary onBack={() => setScreen("home")} />;
   }
 
+  if (screen === "civicsGuide") {
+    return (
+      <Suspense fallback={<div className="study-guide-route-loading" role="status">Loading official study guide…</div>}>
+        <CivicsStudyGuide language={language} onBack={() => setScreen("civics")} />
+      </Suspense>
+    );
+  }
+
   if (screen === "civics") {
     // ... mantén tu código actual de civics aquí o déjalo tal cual lo tienes ...
   }
@@ -1631,14 +1642,34 @@ function App() {
     const studiedPercent = Math.round((civicsMastered.length / civicsQuestionBank.length) * 100);
     const copy = isSpanish ? {
       subtitle: "Domina las preguntas para tu entrevista.", progress: "Progreso", cards: "Tarjetas",
-      practice: "Práctica", quiz: "Examen", favorites: "Favoritas", reveal: "Toca para ver la respuesta",
+      practice: "Práctica", quiz: "Examen", guide: "Libro", favorites: "Favoritas", reveal: "Toca para ver la respuesta",
       question: "PREGUNTA", answer: "RESPUESTA", need: "Necesito practicar", know: "Ya la sé",
       studied: "estudiadas", mastered: "dominadas", review: "repasar", empty: "Aún no tienes preguntas favoritas.",
+      backToQuestion: "Toca para volver a la pregunta", playAudio: "Escuchar pregunta y respuesta",
+      source: "Fuente oficial", addFavorite: "Agregar a favoritas", removeFavorite: "Quitar de favoritas",
+      soundOn: "Lectura de tarjetas activada", soundOff: "Lectura de tarjetas desactivada",
     } : {
       subtitle: "Master the questions for your interview.", progress: "Study Progress", cards: "Study Cards",
-      practice: "Practice", quiz: "Quiz", favorites: "Favorites", reveal: "Tap to reveal answer",
+      practice: "Practice", quiz: "Quiz", guide: "Book", favorites: "Favorites", reveal: "Tap to reveal answer",
       question: "QUESTION", answer: "ANSWER", need: "Need Practice", know: "I Know This",
       studied: "studied", mastered: "mastered", review: "review", empty: "You have not saved any favorite questions yet.",
+      backToQuestion: "Tap to return to the question", playAudio: "Play question and answer audio",
+      source: "Official source", addFavorite: "Add to favorites", removeFavorite: "Remove from favorites",
+      soundOn: "Card reading on", soundOff: "Card reading off",
+    };
+
+    const adjacentVisuals = [-1, 1].map((direction) => {
+      if (!visibleIndexes.length) return null;
+      const position = (activePosition + direction + visibleIndexes.length) % visibleIndexes.length;
+      return getCivicsVisual(civicsQuestionBank[visibleIndexes[position]].questionId)?.imagePath ?? null;
+    });
+    const visualSource = currentVisual ?? {
+      imagePath: null,
+      imageAlt: "",
+      sourceName: "U.S. Citizenship and Immigration Services",
+      sourceLabel: "USCIS.gov",
+      sourceUrl: "https://www.uscis.gov/citizenship/2025test",
+      category: "document",
     };
 
     const changeCivicsCard = (direction) => {
@@ -1703,51 +1734,38 @@ function App() {
             <button className={civicsStudyMode === "study" ? "active" : ""} onClick={() => { setCivicsStudyMode("study"); setCivicsFlipped(false); }}>{copy.cards}</button>
             <button onClick={() => startInterview("civics")}>{copy.practice}</button>
             <button onClick={() => startInterview("civics")}>{copy.quiz}</button>
+            <button onClick={() => setScreen("civicsGuide")}>{copy.guide}</button>
             <button className={civicsStudyMode === "favorites" ? "active" : ""} onClick={() => { setCivicsStudyMode("favorites"); setCivicsFlipped(false); if (favoriteIndexes.length && !favoriteIndexes.includes(civicsIndex)) setCivicsIndex(favoriteIndexes[0]); }}>{copy.favorites}<span>{civicsFavorites.length}</span></button>
           </nav>
-          <div className="civics-visual-preference">
-            <button type="button" aria-pressed={showCivicsImages} onClick={() => { const next = !showCivicsImages; setShowCivicsImages(next); saveLocalValue("citizenshipai.civics-images.v1", next ? "on" : "off"); }}>
-              <span aria-hidden="true">{showCivicsImages ? "▣" : "□"}</span>{showCivicsImages ? (isSpanish ? "Imágenes educativas activadas" : "Educational images on") : (isSpanish ? "Solo texto" : "Text only")}
-            </button>
-            {currentVisual && <small>{isSpanish ? "Biblioteca visual · 128 tarjetas" : "Visual library · 128 cards"}</small>}
-          </div>
-
           {visibleIndexes.length ? (
             <>
-              <section className={`civics-card-deck ${civicsFlipped ? "answer-visible" : ""}`} aria-label={`${copy.cards}: ${civicsIndex + 1} / 128`}>
-                <div className="civics-stack-card previous" aria-hidden="true"></div>
-                <div className="civics-stack-card next" aria-hidden="true"></div>
-                <div
-                  className={`civics-flashcard ${civicsFlipped ? "is-flipped" : ""} ${currentVisual ? "visual-enhanced" : ""}`}
-                  onClick={() => { if (civicsTouchRef.current?.swiped) { civicsTouchRef.current = null; return; } setCivicsFlipped((current) => !current); }}
-                  onTouchStart={(event) => { const touch = event.touches[0]; civicsTouchRef.current = { x: touch.clientX, y: touch.clientY }; }}
-                  onTouchEnd={(event) => { const start = civicsTouchRef.current; const touch = event.changedTouches[0]; if (!start || !touch) return; const dx = touch.clientX - start.x; const dy = touch.clientY - start.y; if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.35) { civicsTouchRef.current = { swiped: true }; changeCivicsCard(dx < 0 ? 1 : -1); } else { civicsTouchRef.current = null; } }}
-                  role="button"
-                  tabIndex="0"
-                  aria-label={civicsFlipped ? `${copy.answer}: ${currentAnswers.join(", ")}` : `${copy.question}: ${currentQuestion}. ${copy.reveal}`}
-                  onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setCivicsFlipped((current) => !current); } }}
-                >
-                  <div className="civics-flashcard-inner">
-                    <article className="civics-flashcard-face front">
-                      <div className="civics-flashcard-topline"><span>{civicsIndex + 1} / 128</span><button className={civicsFavorites.includes(civicsIndex) ? "favorite active" : "favorite"} onClick={(event) => { event.stopPropagation(); toggleFavorite(); }} aria-label={civicsFavorites.includes(civicsIndex) ? "Remove from favorites" : "Add to favorites"}>☆</button></div>
-                      {currentVisual && showCivicsImages && <figure className="civics-card-visual">
-                        <img src={currentVisual.imagePath} srcSet={`${currentVisual.imagePath} 640w`} sizes="(max-width: 620px) 78vw, 440px" alt={currentVisual.alt} loading="eager" decoding="async" fetchPriority="high" onError={(event) => { event.currentTarget.closest("figure")?.classList.add("image-unavailable"); }} />
-                      </figure>}
-                      <div className="civics-flashcard-question">
-                        <h2>{currentQuestion}</h2>
-                        <p>{currentQuestionSpanish}</p>
-                      </div>
-                      <span className="civics-reveal-hint">{copy.reveal}</span>
-                    </article>
-                    <article className="civics-flashcard-face back">
-                      <div className="civics-answer-head"><span>{copy.question}</span><button onClick={(event) => { event.stopPropagation(); speakAppText(`${currentQuestion}. ${currentAnswers.join(". ")}`, { rate: 0.88, pitch: 1 }); }} aria-label="Play question and answer audio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10" /></svg></button></div>
-                      <h2>{currentQuestion}</h2>
-                      <div className="civics-answer-rule"></div>
-                      <span className="civics-answer-label">{copy.answer}</span>
-                      <div className="civics-flashcard-answers">{currentAnswers.map((answer, index) => <p key={index}>{answer}</p>)}</div>
-                    </article>
-                  </div>
-                </div>
+              <section className="civics-card-deck premium" aria-label={`${copy.cards}: ${civicsIndex + 1} / 128`}>
+                <CivicsStudyCard
+                  question={currentQuestion}
+                  questionSpanish={currentQuestionSpanish}
+                  answers={currentAnswers}
+                  image={visualSource.imagePath}
+                  imageAlt={visualSource.imageAlt}
+                  sourceName={visualSource.sourceName}
+                  sourceLabel={visualSource.sourceLabel}
+                  sourceUrl={visualSource.sourceUrl}
+                  sourceCategory={visualSource.category}
+                  questionNumber={civicsIndex + 1}
+                  totalQuestions={civicsQuestionBank.length}
+                  favorite={civicsFavorites.includes(civicsIndex)}
+                  mastered={civicsMastered.includes(civicsIndex)}
+                  answerVisible={civicsFlipped}
+                  audioEnabled={soundEnabled}
+                  preloadImages={[visualSource.imagePath, ...adjacentVisuals]}
+                  touchRef={civicsTouchRef}
+                  onToggleAnswer={() => setCivicsFlipped((current) => !current)}
+                  onToggleFavorite={toggleFavorite}
+                  onPlayAudio={() => {
+                    if (soundEnabled) speakAppText(`${currentQuestion}. ${currentAnswers.join(". ")}`, { rate: 0.88, pitch: 1 });
+                  }}
+                  onNavigate={changeCivicsCard}
+                  copy={copy}
+                />
               </section>
 
               <div className="civics-deck-navigation">
@@ -1761,8 +1779,13 @@ function App() {
                 <button className="know-this" onClick={() => setStudyFeedback(true)}>{copy.know}</button>
               </div>}
               <div className={`study-feedback-message ${studyFeedback ? "visible" : ""}`} role="status" aria-live="polite">{studyFeedback}</div>
-              <button className="feedback-sound-toggle" type="button" aria-pressed={!soundEnabled} onClick={() => { const next = !soundEnabled; setSoundEnabled(next); saveLocalValue("citizenshipai.feedback-sound.v1", next ? "on" : "off"); }}>
-                {soundEnabled ? "🔊 Feedback sound on" : "🔇 Feedback sound off"}
+              <button className="feedback-sound-toggle" type="button" aria-pressed={soundEnabled} onClick={() => {
+                const next = !soundEnabled;
+                setSoundEnabled(next);
+                saveLocalValue("citizenshipai.feedback-sound.v1", next ? "on" : "off");
+                if (!next) stopAppSpeech();
+              }}>
+                {soundEnabled ? `🔊 ${copy.soundOn}` : `🔇 ${copy.soundOff}`}
               </button>
             </>
           ) : (
