@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
 const css = await readFile(new URL("../src/App.css", import.meta.url), "utf8");
 const logo = await readFile(new URL("../public/app-icon-192.png", import.meta.url));
 
@@ -28,4 +29,12 @@ test("header geometry supports all requested viewport widths", () => {
     const actionControls = 126;
     assert.ok(logoWidth + actionControls + gutter * 2 <= viewport, `${viewport}px header must not overflow`);
   }
+});
+
+test("Home utility controls share one geometry and Account uses a user icon", () => {
+  assert.match(account, /className=\{`home-account-button/);
+  assert.match(account, /<circle cx="12" cy="8" r="3\.25"/);
+  assert.doesNotMatch(account, /session \? "✓" : "○"/);
+  assert.match(css, /\.language-selector > \.home-account-button,[\s\S]*?\.language-selector > \.home-language,[\s\S]*?\.language-selector > \.home-settings-button/);
+  assert.match(css, /width:\s*36px;[\s\S]*?height:\s*36px;/);
 });

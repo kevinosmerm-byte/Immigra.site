@@ -297,9 +297,13 @@ function Home({
             aria-label={copy.languageLabel}
           >
             {language === "en" ? "EN" : "ES"}
-            <span>⌄</span>
           </button>
-          <button className="home-settings-button" onClick={onOpenSettings} aria-label={copy.settingsLabel}>⚙</button>
+          <button className="home-settings-button" onClick={onOpenSettings} aria-label={copy.settingsLabel}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19 12a7 7 0 0 0-.1-1.15l2-1.55-2-3.45-2.45 1A7 7 0 0 0 14.5 5.7L14.15 3h-4.3L9.5 5.7a7 7 0 0 0-1.95 1.15l-2.45-1-2 3.45 2 1.55A7 7 0 0 0 5 12c0 .4.03.78.1 1.15l-2 1.55 2 3.45 2.45-1A7 7 0 0 0 9.5 18.3l.35 2.7h4.3l.35-2.7a7 7 0 0 0 1.95-1.15l2.45 1 2-3.45-2-1.55c.07-.37.1-.75.1-1.15Z" />
+            </svg>
+          </button>
         </div>
 
       </header>

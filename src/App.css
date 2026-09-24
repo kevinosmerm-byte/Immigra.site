@@ -26562,6 +26562,96 @@ select { font: inherit; }
   opacity: .74;
   transform: none;
 }
+
+/* Precisely aligned, visually consistent Home utility bar. */
+.home-new-header {
+  height: 62px;
+  min-height: 62px;
+  align-items: center;
+}
+
+.home-new-brand,
+.home-brand-wordmark {
+  display: inline-flex;
+  height: 36px;
+  align-items: center;
+  line-height: 1;
+}
+
+.language-selector {
+  height: 36px;
+  align-items: center;
+  gap: 7px;
+}
+
+.language-selector > .home-account-button,
+.language-selector > .home-language,
+.language-selector > .home-settings-button,
+.language-selector > .home-account-button.signed-in {
+  display: grid;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  min-height: 36px;
+  box-sizing: border-box;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(108, 181, 237, .3);
+  border-radius: 11px;
+  color: #b8d5ee;
+  background: rgba(7, 24, 47, .82);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.055);
+  font-size: .6rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.language-selector > .home-account-button:hover,
+.language-selector > .home-language:hover,
+.language-selector > .home-settings-button:hover,
+.language-selector > .home-account-button.signed-in:hover,
+.language-selector > .home-account-button:focus-visible,
+.language-selector > .home-language:focus-visible,
+.language-selector > .home-settings-button:focus-visible {
+  border-color: rgba(47, 218, 255, .68);
+  color: #ecfbff;
+  background: rgba(10, 39, 72, .94);
+  box-shadow: 0 0 14px rgba(47, 218, 255, .12), inset 0 1px 0 rgba(255,255,255,.08);
+  outline: none;
+  transform: none;
+}
+
+.home-account-button svg,
+.home-settings-button svg {
+  width: 17px;
+  height: 17px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.home-account-button .account-status-check {
+  stroke: #5ef0c0;
+  stroke-width: 2;
+}
+
+@media (max-width: 430px) {
+  .home-new-header { height: 58px; min-height: 58px; }
+  .language-selector { gap: 5px; }
+  .language-selector > .home-account-button,
+  .language-selector > .home-language,
+  .language-selector > .home-settings-button,
+  .language-selector > .home-account-button.signed-in {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    min-height: 34px;
+    border-radius: 10px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .study-feedback-message, .civics-flashcard-inner, .progress-ai-fill { transition: none !important; animation: none !important; }
 }
