@@ -26,7 +26,7 @@ export class CitizenshipCompanion extends HTMLElement {
   #count = 0;
   #onLearning = (event) => {
     const detail = event.detail || {};
-    this.react(detail.state, { message: detail.message, duration: detail.duration });
+    this.react(detail.state, { message: detail.message, duration: detail.duration, silent: detail.silent });
   };
 
   constructor() {
@@ -144,7 +144,9 @@ export class CitizenshipCompanion extends HTMLElement {
   }
 
   setVisible(visible) {
-    this.shadowRoot.querySelector(".host").dataset.visible = String(Boolean(visible));
+    const host = this.shadowRoot.querySelector(".host");
+    host.dataset.visible = String(Boolean(visible));
+    host.dataset.sessionHidden = "false";
     try { localStorage.setItem(KEY, String(Boolean(visible))); } catch { /* storage can be unavailable */ }
     this.dispatchEvent(new CustomEvent("companion:visibility", {
       detail: { visible: Boolean(visible) },
@@ -153,12 +155,17 @@ export class CitizenshipCompanion extends HTMLElement {
     }));
   }
 
+  setSessionVisible(visible) {
+    this.shadowRoot.querySelector(".host").dataset.sessionHidden = String(!visible);
+  }
+
   /** Set emotion and optional safe plain-text message. Duration 0 keeps the state until another event. */
-  react(state, { message, duration } = {}) {
+  react(state, { message, duration, silent = false } = {}) {
     if (!STATES.has(state)) return false;
     clearTimeout(this.#timer);
     this.#count += 1;
     this.shadowRoot.querySelector(".host").dataset.state = state;
+    this.shadowRoot.querySelector(".host").dataset.silent = String(Boolean(silent));
     const choices = MESSAGES[state];
     const safeMessage = typeof message === "string" && message.trim() ? message.trim().slice(0, 180) : choices[(this.#count - 1) % choices.length];
     this.#setMessage(safeMessage);
@@ -199,6 +206,8 @@ const CSS = `
   .restore { display:none; width:44px; height:44px; margin-left:auto; border-radius:50%; color:#116aab; font-size:25px; }
   [data-visible="false"] .panel { display:none; }
   [data-visible="false"] .restore { display:block; }
+  [data-session-hidden="true"] .panel, [data-session-hidden="true"] .restore { display:none; }
+  [data-silent="true"] .bubble { display:none; }
   .robot { transform-origin:90px 140px; animation:float 3.2s ease-in-out infinite; }
   .eye { transform-origin:center; animation:blink 5s ease-in-out infinite; }
   .star { transform-origin:90px 146px; animation:pulse 2.5s ease-in-out infinite; }

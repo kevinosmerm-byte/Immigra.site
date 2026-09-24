@@ -24497,6 +24497,7 @@ select {
 }
 
 .home-real-interview-button { --action-accent: #35d7ff; --action-glow: rgba(36, 205, 255, .55); }
+.home-n400-interview-button { --action-accent: #36e3bd; --action-glow: rgba(35, 215, 177, .46); }
 .home-civics-live-button { --action-accent: #5ca4ff; --action-glow: rgba(58, 129, 255, .48); }
 .home-immigration-primary-button { --action-accent: #8d8aff; --action-glow: rgba(107, 96, 245, .45); }
 .home-podcast-primary-button { --action-accent: #d482ff; --action-glow: rgba(179, 78, 239, .4); }
@@ -27185,4 +27186,53 @@ select { font: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   .quiz-session-track i { transition: none; }
+}
+
+/* N-400 practice and non-intrusive companion controls. */
+.interview-header { position: relative; }
+.interview-companion-controls {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 8px);
+  right: 14px;
+  display: flex;
+  gap: 6px;
+  max-width: min(92vw, 380px);
+}
+.interview-companion-controls button {
+  min-height: 34px;
+  padding: 7px 10px;
+  border: 1px solid rgba(79, 211, 246, .38);
+  border-radius: 999px;
+  color: #dff8ff;
+  background: rgba(5, 22, 46, .92);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .25);
+  backdrop-filter: blur(12px);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: .025em;
+  cursor: pointer;
+}
+.interview-companion-controls button[aria-pressed="false"] {
+  color: #9eacc0;
+  border-color: rgba(151, 168, 193, .28);
+}
+.interview-companion-controls button:focus-visible {
+  outline: 3px solid #3eddf7;
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .interview-companion-controls {
+    top: calc(100% + 5px);
+    right: 8px;
+    gap: 4px;
+  }
+  .interview-companion-controls button {
+    min-height: 30px;
+    padding: 6px 8px;
+    font-size: 8px;
+  }
 }

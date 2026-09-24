@@ -19,7 +19,7 @@ import { writingSentences } from "./writingSentences.js";
 import { evaluateWritingSentence } from "./writingEvaluator.js";
 import { CivicsStudyCard } from "./CivicsStudyCard.jsx";
 import { getCivicsVisual } from "./data/civicsVisuals.js";
-import { emitCompanionResult, emitCompanionState } from "./companionEvents.js";
+import { emitCompanionResult, emitCompanionState, getCompanionVisibility, setCompanionSessionVisibility, setCompanionVisibility } from "./companionEvents.js";
 
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
@@ -215,6 +215,7 @@ const readingSentences = [
 ];
 function Home({
   onStartInterview,
+  onStartN400Interview,
   onStartCivicsInterview,
   onOpenFeature,
   onOpenProgress,
@@ -387,6 +388,19 @@ function Home({
               <div>
                 <small>{language === "en" ? "SARAH LIVE VIDEO" : "VIDEO EN VIVO CON SARAH"}</small>
                 <strong>{language === "en" ? "REAL INTERVIEW" : "ENTREVISTA REAL"}</strong>
+              </div>
+              <span className="primary-arrow">→</span>
+            </button>
+            <button
+              className="home-primary-button home-n400-interview-button"
+              onClick={onStartN400Interview}
+            >
+              <span className="home-action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h5M9 12h6M9 16h6"/></svg>
+              </span>
+              <div>
+                <small>{language === "en" ? "FORM N-400 · GUIDED PRACTICE" : "FORMULARIO N-400 · PRÁCTICA GUIADA"}</small>
+                <strong>{language === "en" ? "N-400 INTERVIEW" : "ENTREVISTA N-400"}</strong>
               </div>
               <span className="primary-arrow">→</span>
             </button>
@@ -683,10 +697,11 @@ const n400InterviewQuestions = [
   { id: "n400-oath", type: "n400", english: "Are you willing to take the Oath of Allegiance to the United States?", spanish: "¿Está dispuesto a prestar el Juramento de Lealtad a Estados Unidos?", correctAnswer: "A direct answer that reflects the applicant's own understanding and intent." },
 ];
 
-function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
+function RealInterview({ onExit, onComplete, onReview, onRestart, mode = "full" }) {
   const [questions] = useState(() => {
     const shuffledCivics = [...civicsQuestionBank].sort(() => Math.random() - 0.5);
     if (mode === "civics") return shuffledCivics.slice(0, 10);
+    if (mode === "n400") return [...n400InterviewQuestions];
     return [...n400InterviewQuestions, ...shuffledCivics.slice(0, 5)];
   });
 
@@ -701,6 +716,8 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const [hasRetried, setHasRetried] = useState(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   const [interviewer, setInterviewer] = useState("sarah");
+  const [companionEnabled, setCompanionEnabled] = useState(getCompanionVisibility);
+  const [companionHiddenForInterview, setCompanionHiddenForInterview] = useState(false);
   const recorderRef = useRef(null);
   const completionReportedRef = useRef(false);
   const speechRequestRef = useRef(0);
@@ -717,6 +734,36 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
         : [...current, { id: questionKey(question), english: questionText(question) }]
     ));
   };
+
+  useEffect(() => {
+    if (mode === "full") emitCompanionState("idle", { duration: 0, silent: true });
+    return () => setCompanionSessionVisibility(getCompanionVisibility());
+  }, [mode]);
+
+  const toggleCompanion = () => {
+    const next = setCompanionVisibility(!companionEnabled);
+    setCompanionEnabled(next);
+    setCompanionHiddenForInterview(false);
+  };
+
+  const toggleCompanionForInterview = () => {
+    const nextHidden = !companionHiddenForInterview;
+    setCompanionHiddenForInterview(nextHidden);
+    setCompanionSessionVisibility(!nextHidden);
+  };
+
+  const companionControls = (
+    <div className="interview-companion-controls" aria-label="Learning companion controls">
+      <button type="button" aria-pressed={companionEnabled} onClick={toggleCompanion}>
+        Companion: {companionEnabled ? "On" : "Off"}
+      </button>
+      {companionEnabled && (
+        <button type="button" onClick={toggleCompanionForInterview}>
+          {companionHiddenForInterview ? "Show companion" : "Hide for this interview"}
+        </button>
+      )}
+    </div>
+  );
 
   useEffect(() => {
     if (!isInterviewComplete || completionReportedRef.current) return;
@@ -751,7 +798,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     const timer = setTimeout(() => {
       speakQuestion(`
         Welcome. Thank you for being here today.
-        ${mode === "civics" ? "We are going to begin your civics interview practice." : "We are going to practice Form N-400 questions followed by civics questions."}
+        ${mode === "civics" ? "We are going to begin your civics interview practice." : mode === "n400" ? "We are going to practice questions from Form N-400." : "We are going to practice Form N-400 questions followed by civics questions."}
         ${questionText(questions[0])}
       `);
     }, 500);
@@ -936,8 +983,8 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
             )}
           </section>
           {missedQuestions.length > 0 && (
-            <button className="results-focus-button" onClick={() => onReview?.(missedQuestions.map((question) => question.id))}>
-              REVIEW MISSED QUESTIONS
+            <button className="results-focus-button" onClick={() => mode === "n400" ? onRestart?.() : onReview?.(missedQuestions.map((question) => question.id))}>
+              {mode === "n400" ? "PRACTICE N-400 AGAIN" : "REVIEW MISSED QUESTIONS"}
             </button>
           )}
           <button
@@ -965,6 +1012,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
             <strong>CITIZENSHIP <span>AI</span></strong>
             <small>LIVE N-400 + CIVICS INTERVIEW</small>
           </div>
+          {companionControls}
         </header>
         <main className="interview-content live-avatar-only-content">
           <DidLiveAvatar autoStart />
@@ -981,8 +1029,9 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
         </button>
         <div className="interview-brand">
           <strong>CITIZENSHIP <span>AI</span></strong>
-          <small>{mode === "civics" ? "LIVE CIVICS INTERVIEW" : "LIVE N-400 + CIVICS INTERVIEW"}</small>
+          <small>{mode === "civics" ? "LIVE CIVICS INTERVIEW" : mode === "n400" ? "INTERACTIVE N-400 PRACTICE" : "LIVE N-400 + CIVICS INTERVIEW"}</small>
         </div>
+        {companionControls}
         <button
           className="more-button interview-repeat-button"
           onClick={() => speakQuestion(questionText(questions[currentQuestion]))}
@@ -1171,6 +1220,7 @@ function App() {
   );
   const [coachMode, setCoachMode] = useState("welcome");
   const [interviewMode, setInterviewMode] = useState("full");
+  const [interviewRunId, setInterviewRunId] = useState(0);
   const [civicsIndex, setCivicsIndex] = useState(0);
   const [civicsFlipped, setCivicsFlipped] = useState(false);
   const [civicsStudyMode, setCivicsStudyMode] = useState("study");
@@ -1226,6 +1276,10 @@ function App() {
   }, [screen]);
 
   useEffect(() => {
+    if (screen === "interview" && interviewMode === "full") {
+      emitCompanionState("idle", { duration: 0, silent: true });
+      return;
+    }
     const stateByScreen = {
       home: ["welcome", language === "es" ? "¡Hola! Estoy listo para practicar contigo." : "Hi! I'm ready to practice with you."],
       civics: ["reading", language === "es" ? "Estudiemos una pregunta a la vez." : "Let's study one question at a time."],
@@ -1239,7 +1293,7 @@ function App() {
     const reaction = stateByScreen[screen];
     if (reaction) emitCompanionState(reaction[0], { message: reaction[1], duration: screen === "home" ? 3500 : 0 });
     else emitCompanionState("idle");
-  }, [screen, language]);
+  }, [screen, language, interviewMode]);
 
   useEffect(() => {
     // Every module is a new screen. Do not carry the Home page's scroll
@@ -1285,6 +1339,7 @@ function App() {
     const feature = mode === "full" ? "realInterview" : "classicInterview";
     startAiFeature(feature, () => {
       setInterviewMode(mode);
+      setInterviewRunId((current) => current + 1);
       setScreen("interview");
     });
   };
@@ -2372,9 +2427,11 @@ function App() {
   if (screen === "interview") {
     return (
       <RealInterview
+        key={`${interviewMode}-${interviewRunId}`}
         mode={interviewMode}
         onExit={() => setScreen("home")}
         onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
+        onRestart={() => setInterviewRunId((current) => current + 1)}
         onReview={(questionIds) => {
           const firstMissedIndex = civicsQuestionBank.findIndex((question) => question.questionId === questionIds[0]);
           if (firstMissedIndex >= 0) setCivicsIndex(firstMissedIndex);
@@ -2388,6 +2445,7 @@ function App() {
     <>
     <Home
       onStartInterview={() => startInterview("full")}
+      onStartN400Interview={() => startInterview("n400")}
       onStartCivicsInterview={() => startInterview("civics")}
       onOpenFeature={(feature) => {
         const gatedFeature = feature === "coach" ? "coach" : feature === "writing" ? "writing" : feature === "reading" ? "speaking" : null;

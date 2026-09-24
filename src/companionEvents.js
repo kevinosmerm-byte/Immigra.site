@@ -11,11 +11,12 @@ function safeLocalStorage() {
   try { return window.localStorage; } catch { return null; }
 }
 
-export function emitCompanionState(state, { message, duration } = {}) {
+export function emitCompanionState(state, { message, duration, silent = false } = {}) {
   if (typeof window === "undefined" || !VALID_STATES.has(state)) return false;
   const detail = { state };
   if (typeof message === "string" && message.trim()) detail.message = message.trim().slice(0, 180);
   if (Number.isFinite(duration)) detail.duration = Math.max(0, Math.min(duration, 12000));
+  if (silent) detail.silent = true;
   window.dispatchEvent(new CustomEvent(COMPANION_EVENT, { detail }));
   return true;
 }
@@ -32,6 +33,13 @@ export function setCompanionVisibility(visible) {
   return next;
 }
 
+export function setCompanionSessionVisibility(visible) {
+  const next = Boolean(visible);
+  const companion = typeof document === "undefined" ? null : document.querySelector("citizenship-companion");
+  companion?.setSessionVisible?.(next);
+  return next;
+}
+
 export function emitCompanionResult(correct, options = {}) {
   const storage = safeLocalStorage();
   const previous = Number.parseInt(storage?.getItem(STREAK_KEY) || "0", 10) || 0;
@@ -43,4 +51,3 @@ export function emitCompanionResult(correct, options = {}) {
   }
   return streak;
 }
-
