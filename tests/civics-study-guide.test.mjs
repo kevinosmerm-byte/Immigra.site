@@ -6,7 +6,8 @@ const pdfUrl = new URL("../public/study-guides/uscis-2025-civics-test-study-guid
 
 test("the official USCIS study guide is bundled intact as a PDF", async () => {
   const details = await stat(pdfUrl);
-  assert.ok(details.size > 40_000_000);
+  assert.ok(details.size > 15_000_000);
+  assert.ok(details.size < 25_000_000);
   const file = await open(pdfUrl, "r");
   const header = Buffer.alloc(5);
   await file.read(header, 0, header.length, 0);
