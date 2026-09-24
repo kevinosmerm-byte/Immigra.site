@@ -8,6 +8,7 @@ const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
 const quiz = await readFile(new URL("../src/QuizLearningPath.jsx", import.meta.url), "utf8");
 const settings = await readFile(new URL("../src/LegalSettings.jsx", import.meta.url), "utf8");
 const companion = await readFile(new URL("../src/companion.js", import.meta.url), "utf8");
+const mascotAsset = await readFile(new URL("../public/citizenship-companion.png", import.meta.url));
 
 test("the study companion is registered and mounted exactly once at app level", () => {
   assert.match(main, /import '\.\/companion\.js'/);
@@ -22,6 +23,18 @@ test("the companion is accessible, non-blocking, persistent, and reduced-motion 
   assert.match(companion, /:host \{[^}]*pointer-events:none/);
   assert.match(companion, /bubbles: true/);
   assert.match(companion, /composed: true/);
+  assert.match(companion, /class="mascot-image" src="\/citizenship-companion\.png"/);
+  assert.ok(mascotAsset.byteLength > 100_000);
+});
+
+test("one consistent mascot asset drives every animated learning state", () => {
+  assert.equal((companion.match(/class="mascot-image"/g) || []).length, 1);
+  for (const state of ["thinking", "correct", "incorrect", "streak", "reading", "coach", "celebration", "welcome", "sleepy"]) {
+    assert.match(companion, new RegExp(`data-state=\\"${state}\\"`));
+  }
+  assert.match(companion, /@keyframes mascotCelebrate/);
+  assert.match(companion, /@keyframes mascotComfort/);
+  assert.match(companion, /@keyframes mascotListen/);
 });
 
 test("real practice flows drive companion reactions and Settings controls visibility", () => {
