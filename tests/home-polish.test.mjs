@@ -32,6 +32,6 @@ test("Home keeps unfinished case tracking visible but inaccessible", () => {
 
 test("Sarah coach is contextual to reading and writing instead of Home", () => {
   assert.doesNotMatch(app, /className="coach-feature-card"/);
-  assert.match(app, /openCoachFrom\("reading"\)/);
-  assert.match(app, /openCoachFrom\("writing"\)/);
+  assert.match(app, /const openCoachFrom = \(\) =>/);
+  assert.ok((app.match(/className="english-coach-secondary" onClick=\{openCoachFrom\}/g) || []).length >= 2);
 });

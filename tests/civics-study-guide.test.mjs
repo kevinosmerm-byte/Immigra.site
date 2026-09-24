@@ -18,7 +18,7 @@ test("the official USCIS study guide is bundled intact as a PDF", async () => {
 test("the civics section exposes a book-style reader with accessible controls", async () => {
   const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
   const reader = await readFile(new URL("../src/CivicsStudyGuide.jsx", import.meta.url), "utf8");
-  assert.match(app, /setScreen\("civicsGuide"\)/);
+  assert.match(app, /navigateTo\("civicsGuide"\)/);
   assert.match(app, /<CivicsStudyGuide/);
   assert.match(reader, /pdfjs-dist/);
   assert.match(reader, /Previous page/);

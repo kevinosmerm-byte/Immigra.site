@@ -85,7 +85,7 @@ test("the existing Quiz control routes to the mobile-first learning path", async
   const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
   const component = await readFile(new URL("../src/QuizLearningPath.jsx", import.meta.url), "utf8");
   const styles = await readFile(new URL("../src/App.css", import.meta.url), "utf8");
-  assert.match(app, /setScreen\("quiz"\)/);
+  assert.match(app, /navigateTo\("quiz"\)/);
   assert.match(app, /userKey=\{session\?\.user\?\.id \|\| "guest"\}/);
   assert.match(component, /evaluateQuizResponse\(question, value\)/);
   assert.match(component, /Recommended answer to memorize/);

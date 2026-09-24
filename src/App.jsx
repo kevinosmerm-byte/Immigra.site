@@ -18,6 +18,7 @@ import { CategoryMastery, RetrievalPracticeCard } from "./EducationalActivities.
 import { writingSentences } from "./writingSentences.js";
 import { evaluateWritingSentence } from "./writingEvaluator.js";
 import { CivicsStudyCard } from "./CivicsStudyCard.jsx";
+import { createNavigationHistory, navigateBack, navigateForward } from "./navigationHistory.js";
 import { getCivicsVisual } from "./data/civicsVisuals.js";
 import { emitCompanionResult, emitCompanionState, getCompanionVisibility, setCompanionSessionVisibility, setCompanionVisibility } from "./companionEvents.js";
 
@@ -1152,11 +1153,27 @@ function RealInterview({ onExit, onComplete, onReview, onRestart, mode = "full" 
 
 function App() {
   // 1. TODOS LOS HOOKS (ESTADOS) VAN AQUÍ ARRIBA SIN EXCEPCIÓN
-  const [screen, setScreen] = useState(() =>
+  const [navigation, setNavigation] = useState(() => createNavigationHistory(
     window.location.hash === "#privacy" ? "settings" : "home"
-  );
+  ));
+  const screen = navigation.current;
+  const previousScreen = navigation.entries.at(-1);
+  const previousScreenLabel = (fallback = "home") => ({
+    home: "Home",
+    practice: "Practice",
+    civics: "Civics",
+    english: "English",
+    reading: "Reading",
+    writing: "Writing",
+    coach: "Sarah",
+    progress: "Progress",
+    immigrationHelp: "Immigration Help",
+    podcasts: "Podcasts",
+    quiz: "Quiz",
+    civicsGuide: "Study Guide",
+    interview: "Interview",
+  })[previousScreen || fallback] || "Back";
   const [coachMode, setCoachMode] = useState("welcome");
-  const [coachReturnScreen, setCoachReturnScreen] = useState("english");
   const [interviewMode, setInterviewMode] = useState("full");
   const [interviewRunId, setInterviewRunId] = useState(0);
   const [civicsIndex, setCivicsIndex] = useState(0);
@@ -1269,13 +1286,20 @@ function App() {
     setPracticeEvents(recordPracticeEvent(event));
   };
 
+  const navigateTo = (nextScreen, options) => {
+    setNavigation((current) => navigateForward(current, nextScreen, options));
+  };
+
+  const goBack = (fallbackScreen = "home") => {
+    setNavigation((current) => navigateBack(current, fallbackScreen));
+  };
+
   const startAiFeature = (feature, continuation) => {
     requestAiSession(feature, continuation, language);
   };
 
-  const openCoachFrom = (returnScreen) => {
-    setCoachReturnScreen(returnScreen);
-    startAiFeature("coach", () => setScreen("coach"));
+  const openCoachFrom = () => {
+    startAiFeature("coach", () => navigateTo("coach"));
   };
 
   const startInterview = (mode = "full") => {
@@ -1283,7 +1307,7 @@ function App() {
     startAiFeature(feature, () => {
       setInterviewMode(mode);
       setInterviewRunId((current) => current + 1);
-      setScreen("interview");
+      navigateTo("interview");
     });
   };
 
@@ -1293,11 +1317,11 @@ function App() {
       return;
     }
     if (key === "civics") {
-      setScreen("civics");
+      navigateTo("civics");
       return;
     }
     const feature = key === "writing" ? "writing" : key === "coach" ? "coach" : "speaking";
-    startAiFeature(feature, () => setScreen(key === "writing" ? "writing" : key === "coach" ? "coach" : "reading"));
+    startAiFeature(feature, () => navigateTo(key === "writing" ? "writing" : key === "coach" ? "coach" : "reading"));
   };
 
   const recentPractice = [...practiceEvents].slice(-5).reverse();
@@ -1567,7 +1591,7 @@ function App() {
     } catch {
       // Storage may be unavailable; state still permits the review.
     }
-    setScreen("home");
+    setNavigation(createNavigationHistory("home"));
     setOnboardingComplete(false);
   };
 
@@ -1579,22 +1603,22 @@ function App() {
   if (screen === "settings") {
     return <LegalSettings onBack={() => {
       window.history.replaceState(null, "", window.location.pathname);
-      setScreen("home");
+      goBack("home");
     }} onRestartOnboarding={restartOnboarding} />;
   }
 
   if (screen === "immigrationHelp") {
-    return <ImmigrationHelp language={language} onLanguageChange={setPreferredLanguage} onBack={() => setScreen("home")} />;
+    return <ImmigrationHelp language={language} onLanguageChange={setPreferredLanguage} onBack={() => goBack("home")} />;
   }
 
   if (screen === "podcasts") {
-    return <PodcastLibrary onBack={() => setScreen("home")} />;
+    return <PodcastLibrary onBack={() => goBack("home")} />;
   }
 
   if (screen === "civicsGuide") {
     return (
       <Suspense fallback={<div className="study-guide-route-loading" role="status">Loading official study guide…</div>}>
-        <CivicsStudyGuide language={language} onBack={() => setScreen("civics")} />
+        <CivicsStudyGuide language={language} onBack={() => goBack("civics")} />
       </Suspense>
     );
   }
@@ -1606,7 +1630,7 @@ function App() {
           key={session?.user?.id || "guest"}
           language={language}
           userKey={session?.user?.id || "guest"}
-          onBack={() => setScreen("civics")}
+          onBack={() => goBack("civics")}
           onPracticeComplete={({ score, outcome }) => recordPractice({ module: "quiz", score, outcome, category: "civics" })}
         />
       </Suspense>
@@ -1630,7 +1654,7 @@ function App() {
     return (
       <div className="practice-screen coach-screen coach-video-call-screen">
         <header className="practice-header">
-          <button className="back-button" onClick={() => { setCoachMode("welcome"); setScreen(coachReturnScreen); }}>← {coachReturnScreen === "reading" ? "Reading" : coachReturnScreen === "writing" ? "Writing" : "English"}</button>
+          <button className="back-button" onClick={() => { setCoachMode("welcome"); goBack("english"); }}>← {previousScreenLabel("english")}</button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
         <main className="coach-conversation-content coach-video-call-content">
@@ -1757,8 +1781,8 @@ function App() {
     return (
       <div className="practice-screen civics-screen">
         <header className="practice-header">
-          <button className="back-button" onClick={() => setScreen("practice")}>
-            ← Practice
+          <button className="back-button" onClick={() => goBack("practice")}>
+            ← {previousScreenLabel("practice")}
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
@@ -1779,8 +1803,8 @@ function App() {
           <nav className="civics-modes" aria-label="Civics study modes">
             <button className={civicsStudyMode === "study" ? "active" : ""} onClick={() => { setCivicsStudyMode("study"); setCivicsFlipped(false); }}>{copy.cards}</button>
             <button onClick={() => startInterview("civics")}>{copy.practice}</button>
-            <button onClick={() => setScreen("quiz")}>{copy.quiz}</button>
-            <button onClick={() => setScreen("civicsGuide")}>{copy.guide}</button>
+            <button onClick={() => navigateTo("quiz")}>{copy.quiz}</button>
+            <button onClick={() => navigateTo("civicsGuide")}>{copy.guide}</button>
             <button className={civicsStudyMode === "favorites" ? "active" : ""} onClick={() => { setCivicsStudyMode("favorites"); setCivicsFlipped(false); if (favoriteIndexes.length && !favoriteIndexes.includes(civicsIndex)) setCivicsIndex(favoriteIndexes[0]); }}>{copy.favorites}<span>{civicsFavorites.length}</span></button>
           </nav>
           {visibleIndexes.length ? (
@@ -1852,8 +1876,8 @@ function App() {
     return (
       <div className="practice-screen">
         <header className="practice-header">
-          <button className="back-button" onClick={() => setScreen("home")}>
-            ← Home
+          <button className="back-button" onClick={() => goBack("home")}>
+            ← {previousScreenLabel("home")}
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
@@ -1862,7 +1886,7 @@ function App() {
           <h1>Practice.</h1>
           <p className="practice-intro">Choose how you want to prepare for your citizenship interview.</p>
           <div className="practice-options">
-            <button className="practice-option" onClick={() => setScreen("civics")}>
+            <button className="practice-option" onClick={() => navigateTo("civics")}>
               <div className="practice-option-left">
                 <div className="practice-option-icon">◉</div>
                 <div className="practice-option-content">
@@ -1872,7 +1896,7 @@ function App() {
               </div>
               <span className="practice-arrow">→</span>
             </button>
-            <button className="practice-option" onClick={() => setScreen("english")}>
+            <button className="practice-option" onClick={() => navigateTo("english")}>
               <div className="practice-option-left">
                 <div className="practice-option-icon">A</div>
                 <div className="practice-option-content">
@@ -1892,8 +1916,8 @@ function App() {
     return (
       <div className="practice-screen">
         <header className="practice-header">
-          <button className="back-button" onClick={() => setScreen("practice")}>
-            ← Practice
+          <button className="back-button" onClick={() => goBack("practice")}>
+            ← {previousScreenLabel("practice")}
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
@@ -1902,7 +1926,7 @@ function App() {
           <h1>English.</h1>
           <p className="practice-intro">Practice the English skills needed for your citizenship interview.</p>
           <div className="practice-options">
-            <button className="practice-option" onClick={() => startAiFeature("speaking", () => setScreen("reading"))}>
+            <button className="practice-option" onClick={() => startAiFeature("speaking", () => navigateTo("reading"))}>
               <div className="practice-option-left">
                 <div className="practice-option-icon">A</div>
                 <div className="practice-option-content">
@@ -1912,7 +1936,7 @@ function App() {
               </div>
               <span className="practice-arrow">→</span>
             </button>
-            <button className="practice-option" onClick={() => startAiFeature("writing", () => setScreen("writing"))}>
+            <button className="practice-option" onClick={() => startAiFeature("writing", () => navigateTo("writing"))}>
               <div className="practice-option-left">
                 <div className="practice-option-icon">✎</div>
                 <div className="practice-option-content">
@@ -1922,7 +1946,7 @@ function App() {
               </div>
               <span className="practice-arrow">→</span>
             </button>
-            <button className="practice-option" onClick={() => openCoachFrom("english")}>
+            <button className="practice-option" onClick={openCoachFrom}>
               <div className="practice-option-left">
                 <div className="practice-option-icon">✦</div>
                 <div className="practice-option-content">
@@ -1942,8 +1966,8 @@ function App() {
     return (
       <div className="practice-screen">
         <header className="practice-header">
-          <button className="back-button" onClick={() => setScreen("english")}>
-            ← English
+          <button className="back-button" onClick={() => goBack("english")}>
+            ← {previousScreenLabel("english")}
           </button>
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
@@ -1992,7 +2016,7 @@ function App() {
               <span className="reading-button-arrow" aria-hidden="true">{isReading ? "■" : "→"}</span>
             </button>
           </div>
-          <button className="english-coach-secondary" onClick={() => openCoachFrom("reading")} type="button">
+          <button className="english-coach-secondary" onClick={openCoachFrom} type="button">
             <span className="english-coach-secondary-avatar"><img src={sarahImage} alt="" /></span>
             <span className="english-coach-secondary-copy">
               <small>OPTIONAL CONVERSATION PRACTICE</small>
@@ -2009,8 +2033,8 @@ function App() {
     return (
       <div className="writing-ai-screen">
         <header className="writing-ai-header">
-          <button className="writing-back-button" onClick={() => setScreen("english")}>
-            ← <span>English</span>
+          <button className="writing-back-button" onClick={() => goBack("english")}>
+            ← <span>{previousScreenLabel("english")}</span>
           </button>
           <div className="writing-ai-brand">CITIZENSHIP <span>AI</span></div>
         </header>
@@ -2106,7 +2130,7 @@ function App() {
               <div className="writing-evaluation-text">{aiMessage}</div>
             </div>
           )}
-          <button className="english-coach-secondary" onClick={() => openCoachFrom("writing")} type="button">
+          <button className="english-coach-secondary" onClick={openCoachFrom} type="button">
             <span className="english-coach-secondary-avatar"><img src={sarahImage} alt="" /></span>
             <span className="english-coach-secondary-copy">
               <small>OPTIONAL CONVERSATION PRACTICE</small>
@@ -2266,8 +2290,8 @@ function App() {
               <div className="uscis-monitoring-pending"><strong>{trackerCopy.monitoringTitle}</strong><span>{trackerCopy.monitoring}</span></div>
             </div>
           })()}
-          <button className="uscis-tracker-back" onClick={() => setScreen("home")}>
-            {trackerCopy.back}
+          <button className="uscis-tracker-back" onClick={() => goBack("home")}>
+            ← {previousScreenLabel("home")}
           </button>
         </main>
       </div>
@@ -2376,8 +2400,8 @@ function App() {
               </ul>
             )}
           </section>
-          <button className="progress-ai-back" onClick={() => setScreen("home")}>
-            ← Back to Home
+          <button className="progress-ai-back" onClick={() => goBack("home")}>
+            ← Back
           </button>
         </main>
       </div>
@@ -2389,13 +2413,13 @@ function App() {
       <RealInterview
         key={`${interviewMode}-${interviewRunId}`}
         mode={interviewMode}
-        onExit={() => setScreen("home")}
+        onExit={() => goBack("home")}
         onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
         onRestart={() => setInterviewRunId((current) => current + 1)}
         onReview={(questionIds) => {
           const firstMissedIndex = civicsQuestionBank.findIndex((question) => question.questionId === questionIds[0]);
           if (firstMissedIndex >= 0) setCivicsIndex(firstMissedIndex);
-          setScreen("civics");
+          navigateTo("civics", { replace: true });
         }}
       />
     );
@@ -2409,16 +2433,16 @@ function App() {
       onStartCivicsInterview={() => startInterview("civics")}
       onOpenFeature={(feature) => {
         const gatedFeature = feature === "coach" ? "coach" : feature === "writing" ? "writing" : feature === "reading" ? "speaking" : null;
-        if (gatedFeature) startAiFeature(gatedFeature, () => setScreen(feature));
-        else setScreen(feature);
+        if (gatedFeature) startAiFeature(gatedFeature, () => navigateTo(feature));
+        else navigateTo(feature);
       }}
-      onOpenProgress={() => setScreen("progress")}
-      onOpenImmigrationHelp={() => setScreen("immigrationHelp")}
-      onOpenPodcasts={() => setScreen("podcasts")}
+      onOpenProgress={() => navigateTo("progress")}
+      onOpenImmigrationHelp={() => navigateTo("immigrationHelp")}
+      onOpenPodcasts={() => navigateTo("podcasts")}
       onOpenAccount={() => setAccountOpen(true)}
       onOpenSettings={() => {
         window.location.hash = "privacy";
-        setScreen("settings");
+        navigateTo("settings");
       }}
       language={language}
       onLanguageChange={setPreferredLanguage}
