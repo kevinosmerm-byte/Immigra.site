@@ -13,7 +13,7 @@ function safeRead() {
 }
 
 function isValidEvent(event) {
-  return event && ["reading", "writing", "interview", "coach"].includes(event.module)
+  return event && ["reading", "writing", "interview", "coach", "quiz"].includes(event.module)
     && typeof event.at === "number";
 }
 
@@ -66,15 +66,16 @@ export function getPracticeSummary(events = getPracticeEvents(), civicsViewed = 
   const writing = moduleSummary(events, "writing");
   const interview = moduleSummary(events, "interview");
   const coach = moduleSummary(events, "coach");
+  const quiz = moduleSummary(events, "quiz");
   const civics = {
-    attempts: Array.isArray(civicsViewed) ? civicsViewed.length : 0,
-    score: null,
+    attempts: (Array.isArray(civicsViewed) ? civicsViewed.length : 0) + quiz.attempts,
+    score: quiz.score,
   };
   const measuredAttempts = events
     .filter((event) => Number.isFinite(event.score))
     .map((event) => ({
       questionId: `${event.module}-${event.at}`,
-      category: event.category || event.module,
+      category: event.module === "quiz" ? "civics" : (event.category || event.module),
       correct: event.score >= 70,
       score: event.score,
       answeredAt: new Date(event.at).toISOString(),
@@ -137,6 +138,7 @@ export function getPracticeSummary(events = getPracticeEvents(), civicsViewed = 
     writing,
     interview,
     coach,
+    quiz,
     recommended,
     plan,
   };

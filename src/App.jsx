@@ -13,7 +13,7 @@ import { usePromotionAccess } from "./PromotionAccess.jsx";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
 import ImmigrationHelp from "./ImmigrationHelp";
 import { speakAppText, stopAppSpeech } from "./speech";
-import { AccountButton, AccountSheet } from "./Account.jsx";
+import { AccountButton, AccountSheet, useAccount } from "./Account.jsx";
 import { CategoryMastery, RetrievalPracticeCard } from "./EducationalActivities.jsx";
 import { writingSentences } from "./writingSentences.js";
 import { evaluateWritingSentence } from "./writingEvaluator.js";
@@ -23,6 +23,7 @@ import { getCivicsVisual } from "./data/civicsVisuals.js";
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
 const CivicsStudyGuide = lazy(() => import("./CivicsStudyGuide.jsx").then((module) => ({ default: module.CivicsStudyGuide })));
+const QuizLearningPath = lazy(() => import("./QuizLearningPath.jsx"));
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
 const PRACTICE_MODULE_NAMES = {
   reading: "Reading practice",
@@ -1192,6 +1193,7 @@ function App() {
     () => readLocalValue(ONBOARDING_STORAGE_KEY) === "complete"
   );
   const [accountOpen, setAccountOpen] = useState(false);
+  const { session } = useAccount();
   const trackerCopy = CASE_TRACKER_COPY[language];
   
   const [civicsViewed, setCivicsViewed] = useState(() => {
@@ -1568,6 +1570,20 @@ function App() {
     );
   }
 
+  if (screen === "quiz") {
+    return (
+      <Suspense fallback={<div className="study-guide-route-loading" role="status">Loading adaptive quiz…</div>}>
+        <QuizLearningPath
+          key={session?.user?.id || "guest"}
+          language={language}
+          userKey={session?.user?.id || "guest"}
+          onBack={() => setScreen("civics")}
+          onPracticeComplete={({ score, outcome }) => recordPractice({ module: "quiz", score, outcome, category: "civics" })}
+        />
+      </Suspense>
+    );
+  }
+
   if (screen === "civics") {
     // ... mantén tu código actual de civics aquí o déjalo tal cual lo tienes ...
   }
@@ -1733,7 +1749,7 @@ function App() {
           <nav className="civics-modes" aria-label="Civics study modes">
             <button className={civicsStudyMode === "study" ? "active" : ""} onClick={() => { setCivicsStudyMode("study"); setCivicsFlipped(false); }}>{copy.cards}</button>
             <button onClick={() => startInterview("civics")}>{copy.practice}</button>
-            <button onClick={() => startInterview("civics")}>{copy.quiz}</button>
+            <button onClick={() => setScreen("quiz")}>{copy.quiz}</button>
             <button onClick={() => setScreen("civicsGuide")}>{copy.guide}</button>
             <button className={civicsStudyMode === "favorites" ? "active" : ""} onClick={() => { setCivicsStudyMode("favorites"); setCivicsFlipped(false); if (favoriteIndexes.length && !favoriteIndexes.includes(civicsIndex)) setCivicsIndex(favoriteIndexes[0]); }}>{copy.favorites}<span>{civicsFavorites.length}</span></button>
           </nav>
