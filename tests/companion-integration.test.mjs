@@ -9,6 +9,9 @@ const quiz = await readFile(new URL("../src/QuizLearningPath.jsx", import.meta.u
 const settings = await readFile(new URL("../src/LegalSettings.jsx", import.meta.url), "utf8");
 const companion = await readFile(new URL("../src/companion.js", import.meta.url), "utf8");
 const mascotAsset = await readFile(new URL("../public/citizenship-companion.png", import.meta.url));
+const reactionAssets = await Promise.all([
+  "approved", "denied", "goal", "love", "sleeping", "studying",
+].map((name) => readFile(new URL(`../public/companion-${name}-cutout.png`, import.meta.url))));
 
 test("the study companion is registered and mounted exactly once at app level", () => {
   assert.match(main, /import '\.\/companion\.js'/);
@@ -23,11 +26,14 @@ test("the companion is accessible, non-blocking, persistent, and reduced-motion 
   assert.match(companion, /:host \{[^}]*pointer-events:none/);
   assert.match(companion, /bubbles: true/);
   assert.match(companion, /composed: true/);
-  assert.match(companion, /class="mascot-image" src="\/citizenship-companion\.png"/);
+  assert.match(companion, /class="figure" type="button" aria-label="Ocultar acompañante de estudio"/);
+  assert.doesNotMatch(companion, /Tu compañero de práctica/);
+  assert.doesNotMatch(companion, /class="hide"/);
+  assert.match(companion, /querySelector\("\.figure"\)\.addEventListener\("click"/);
   assert.ok(mascotAsset.byteLength > 100_000);
 });
 
-test("one consistent mascot asset drives every animated learning state", () => {
+test("the mascot uses dedicated reaction artwork for real learning states", () => {
   assert.equal((companion.match(/class="mascot-image"/g) || []).length, 1);
   for (const state of ["thinking", "correct", "incorrect", "streak", "reading", "coach", "celebration", "welcome", "sleepy"]) {
     assert.match(companion, new RegExp(`data-state=\\"${state}\\"`));
@@ -35,6 +41,34 @@ test("one consistent mascot asset drives every animated learning state", () => {
   assert.match(companion, /@keyframes mascotCelebrate/);
   assert.match(companion, /@keyframes mascotComfort/);
   assert.match(companion, /@keyframes mascotListen/);
+  for (const name of ["approved", "denied", "goal", "love", "sleeping", "studying"]) {
+    assert.match(companion, new RegExp(`companion-${name}-cutout\\.png`));
+  }
+  for (const asset of reactionAssets) assert.ok(asset.byteLength > 100_000);
+});
+
+test("all approved encouragement phrases are available in Spanish and English", () => {
+  const phrases = [
+    ["¡Vas muy bien!", "You're doing great!"],
+    ["¡Un paso más!", "One more step!"],
+    ["¡Sigue así!", "Keep it up!"],
+    ["¡Buen esfuerzo!", "Great effort!"],
+    ["¡Lo estás logrando!", "You're making it happen!"],
+    ["¡Confía en ti!", "Believe in yourself!"],
+    ["¡Cada intento cuenta!", "Every try counts!"],
+    ["¡Vamos juntos!", "Let's do this together!"],
+    ["¡Tómate tu tiempo!", "Take your time!"],
+    ["¡Puedes intentarlo otra vez!", "You can try again!"],
+    ["¡Aprendiste algo nuevo!", "You learned something new!"],
+    ["¡Mira cuánto avanzaste!", "Look how far you've come!"],
+    ["¡Gran respuesta!", "Great answer!"],
+    ["¡Qué buena racha!", "What a great streak!"],
+  ];
+  for (const [spanish, english] of phrases) {
+    assert.ok(companion.includes(spanish));
+    assert.ok(companion.includes(english));
+  }
+  assert.match(companion, /localStorage\.getItem\("citizenshipai\.language"\)/);
 });
 
 test("real practice flows drive companion reactions and Settings controls visibility", () => {
@@ -67,6 +101,8 @@ test("the event bridge validates state, persists visibility, and tracks a local 
     assert.equal(setCompanionVisibility(false), false);
     assert.equal(getCompanionVisibility(), false);
     assert.equal(emitCompanionState("not-a-state"), false);
+    assert.equal(emitCompanionState("studying"), true);
+    assert.equal(events.at(-1).detail.state, "studying");
     assert.equal(emitCompanionResult(true), 1);
     assert.equal(events.at(-1).detail.state, "correct");
     assert.equal(values.get("citizenshipai-companion-streak-v1"), "1");

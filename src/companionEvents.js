@@ -4,7 +4,7 @@ const STREAK_KEY = "citizenshipai-companion-streak-v1";
 const VALID_STATES = new Set([
   "idle", "thinking", "correct", "incorrect", "streak", "reading", "coach",
   "celebration", "welcome", "explain", "curious", "surprised", "determined",
-  "support", "progress", "sleepy",
+  "support", "progress", "sleepy", "approved", "denied", "studying", "love", "goal",
 ]);
 
 function safeLocalStorage() {

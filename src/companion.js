@@ -1,25 +1,66 @@
 /** CitizenshipAI Companion — framework-independent Web Component. */
+const PHRASES = {
+  great: { es: "¡Vas muy bien!", en: "You're doing great!" },
+  oneMore: { es: "¡Un paso más!", en: "One more step!" },
+  keepGoing: { es: "¡Sigue así!", en: "Keep it up!" },
+  effort: { es: "¡Buen esfuerzo!", en: "Great effort!" },
+  happening: { es: "¡Lo estás logrando!", en: "You're making it happen!" },
+  believe: { es: "¡Confía en ti!", en: "Believe in yourself!" },
+  everyTry: { es: "¡Cada intento cuenta!", en: "Every try counts!" },
+  together: { es: "¡Vamos juntos!", en: "Let's do this together!" },
+  time: { es: "¡Tómate tu tiempo!", en: "Take your time!" },
+  retry: { es: "¡Puedes intentarlo otra vez!", en: "You can try again!" },
+  learned: { es: "¡Aprendiste algo nuevo!", en: "You learned something new!" },
+  progress: { es: "¡Mira cuánto avanzaste!", en: "Look how far you've come!" },
+  answer: { es: "¡Gran respuesta!", en: "Great answer!" },
+  streak: { es: "¡Qué buena racha!", en: "What a great streak!" },
+};
 const MESSAGES = {
-  idle: ["Estoy aquí para practicar contigo.", "Un paso a la vez."],
-  thinking: ["Tómate tu tiempo. Piensa en la pregunta."],
-  correct: ["¡Muy bien! Sigue así.", "¡Lo lograste!"],
-  incorrect: ["No pasa nada. Revisemos la explicación."],
-  streak: ["¡Qué buena racha! Sigamos practicando."],
-  reading: ["Escucha o lee con calma; puedes repetirla."],
-  coach: ["Practiquemos como en una entrevista real."],
-  celebration: ["¡Terminaste esta práctica! Celebremos tu esfuerzo."],
-  welcome: ["¡Hola! Practiquemos juntos."],
-  explain: ["Veamos la explicación paso a paso."],
-  curious: ["Buena pregunta. Exploremos la respuesta."],
-  surprised: ["¡Eso es nuevo! Vamos a descubrirlo."],
-  determined: ["Puedes intentarlo otra vez."],
-  support: ["Estoy contigo. Avanza a tu propio ritmo."],
-  progress: ["Mira cuánto has avanzado."],
-  sleepy: ["Podemos tomar un descanso cuando quieras."],
+  idle: [PHRASES.great, PHRASES.oneMore, PHRASES.keepGoing, PHRASES.effort, PHRASES.believe],
+  thinking: [PHRASES.time, PHRASES.believe],
+  correct: [PHRASES.answer, PHRASES.great, PHRASES.happening],
+  incorrect: [PHRASES.retry, PHRASES.everyTry, PHRASES.learned],
+  streak: [PHRASES.streak, PHRASES.keepGoing],
+  reading: [PHRASES.time, PHRASES.together],
+  coach: [PHRASES.together, PHRASES.believe],
+  celebration: [PHRASES.progress, PHRASES.happening],
+  welcome: [PHRASES.together, PHRASES.great],
+  explain: [PHRASES.learned],
+  curious: [PHRASES.learned],
+  surprised: [PHRASES.learned],
+  determined: [PHRASES.oneMore, PHRASES.believe, PHRASES.retry],
+  support: [PHRASES.effort, PHRASES.everyTry, PHRASES.together],
+  progress: [PHRASES.progress, PHRASES.happening],
+  sleepy: [PHRASES.time],
+  approved: [PHRASES.answer, PHRASES.keepGoing],
+  denied: [PHRASES.retry, PHRASES.everyTry],
+  studying: [PHRASES.learned, PHRASES.together, PHRASES.time],
+  love: [PHRASES.great, PHRASES.effort, PHRASES.believe],
+  goal: [PHRASES.oneMore, PHRASES.keepGoing, PHRASES.happening, PHRASES.progress],
 };
 const STATES = new Set(Object.keys(MESSAGES));
-const DEFAULT_DURATION = { thinking: 0, idle: 0, correct: 3400, incorrect: 4600, streak: 4200, reading: 0, coach: 0, celebration: 6000, welcome: 3500, explain: 0, curious: 3500, surprised: 3000, determined: 3500, support: 4000, progress: 4200, sleepy: 0 };
+const DEFAULT_DURATION = { thinking: 0, idle: 0, correct: 3400, incorrect: 4600, streak: 4200, reading: 0, coach: 0, celebration: 6000, welcome: 3500, explain: 0, curious: 3500, surprised: 3000, determined: 3500, support: 4000, progress: 4200, sleepy: 0, approved: 3400, denied: 4600, studying: 0, love: 4000, goal: 4200 };
 const KEY = "citizenshipai-companion-visible-v1";
+const BASE_IMAGE = "/citizenship-companion.png";
+const REACTION_IMAGES = {
+  thinking: "/companion-studying-cutout.png",
+  correct: "/companion-approved-cutout.png",
+  incorrect: "/companion-denied-cutout.png",
+  streak: "/companion-goal-cutout.png",
+  reading: "/companion-studying-cutout.png",
+  celebration: "/companion-goal-cutout.png",
+  explain: "/companion-studying-cutout.png",
+  curious: "/companion-studying-cutout.png",
+  determined: "/companion-goal-cutout.png",
+  support: "/companion-love-cutout.png",
+  progress: "/companion-goal-cutout.png",
+  sleepy: "/companion-sleeping-cutout.png",
+  approved: "/companion-approved-cutout.png",
+  denied: "/companion-denied-cutout.png",
+  studying: "/companion-studying-cutout.png",
+  love: "/companion-love-cutout.png",
+  goal: "/companion-goal-cutout.png",
+};
 
 export class CitizenshipCompanion extends HTMLElement {
   #timer;
@@ -42,8 +83,8 @@ export class CitizenshipCompanion extends HTMLElement {
         <button class="restore" type="button" aria-label="Mostrar acompañante de estudio" title="Mostrar acompañante">✦</button>
         <div class="panel">
           <div class="bubble" role="status" aria-live="polite" aria-atomic="true"></div>
-          <div class="figure" role="img" aria-label="Robot acompañante de CitizenshipAI">
-            <img class="mascot-image" src="/citizenship-companion.png" alt="" draggable="false" />
+          <button class="figure" type="button" aria-label="Ocultar acompañante de estudio" title="Ocultar acompañante">
+            <img class="mascot-image" src="${BASE_IMAGE}" alt="" draggable="false" />
             <span class="state-symbol" aria-hidden="true"></span>
             <span class="celebration-burst" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
             <svg class="fallback-vector" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -115,18 +156,29 @@ export class CitizenshipCompanion extends HTMLElement {
               <g class="sparkles" fill="#18ccff"><path d="M19 63l3-8 3 8 8 3-8 3-3 8-3-8-8-3z"/><path d="M177 117l3-8 3 8 8 3-8 3-3 8-3-8-8-3z"/><path d="M162 38l2-6 2 6 6 2-6 2-2 6-2-6-6-2z"/></g>
               <g class="confetti"><path d="M22 106l7 5" stroke="#ffbd16" stroke-width="5"/><path d="M172 78l7-4" stroke="#ff5b6c" stroke-width="5"/><path d="M26 39l5-7" stroke="#34d87b" stroke-width="5"/><path d="M175 145l6 6" stroke="#795dff" stroke-width="5"/></g>
             </svg>
-          </div>
-          <div class="controls"><span class="name">Tu compañero de práctica</span><button class="hide" type="button" aria-label="Ocultar acompañante" title="Ocultar acompañante">×</button></div>
+          </button>
         </div>
       </div>`;
-    this.#setMessage(MESSAGES.idle[0]);
+    this.#setMessage(this.#localizedMessage(MESSAGES.idle[0]));
     const mascotImage = this.shadowRoot.querySelector(".mascot-image");
+    mascotImage.addEventListener("load", () => {
+      mascotImage.hidden = false;
+      this.shadowRoot.querySelector(".fallback-vector").classList.remove("visible");
+    });
     mascotImage.addEventListener("error", () => {
+      if (mascotImage.getAttribute("src") !== BASE_IMAGE) {
+        mascotImage.src = BASE_IMAGE;
+        return;
+      }
       mascotImage.hidden = true;
       this.shadowRoot.querySelector(".fallback-vector").classList.add("visible");
-    }, { once: true });
-    this.shadowRoot.querySelector(".hide").addEventListener("click", () => this.setVisible(false));
+    });
+    this.shadowRoot.querySelector(".figure").addEventListener("click", () => this.setVisible(false));
     this.shadowRoot.querySelector(".restore").addEventListener("click", () => this.setVisible(true));
+    [...new Set(Object.values(REACTION_IMAGES))].forEach((src) => {
+      const image = new Image();
+      image.src = src;
+    });
     window.addEventListener("citizenshipai:learning", this.#onLearning);
   }
 
@@ -141,6 +193,13 @@ export class CitizenshipCompanion extends HTMLElement {
 
   #setMessage(message) {
     this.shadowRoot.querySelector(".bubble").textContent = message;
+  }
+
+  #localizedMessage(message) {
+    if (typeof message === "string") return message;
+    let language = "en";
+    try { language = localStorage.getItem("citizenshipai.language") === "es" ? "es" : "en"; } catch { /* storage can be unavailable */ }
+    return message[language];
   }
 
   setVisible(visible) {
@@ -164,10 +223,17 @@ export class CitizenshipCompanion extends HTMLElement {
     if (!STATES.has(state)) return false;
     clearTimeout(this.#timer);
     this.#count += 1;
-    this.shadowRoot.querySelector(".host").dataset.state = state;
-    this.shadowRoot.querySelector(".host").dataset.silent = String(Boolean(silent));
+    const host = this.shadowRoot.querySelector(".host");
+    host.dataset.state = state;
+    host.dataset.silent = String(Boolean(silent));
+    const reactionImage = REACTION_IMAGES[state] || BASE_IMAGE;
+    host.dataset.reactionArtwork = String(reactionImage !== BASE_IMAGE);
+    const mascotImage = this.shadowRoot.querySelector(".mascot-image");
+    if (mascotImage.getAttribute("src") !== reactionImage) mascotImage.src = reactionImage;
     const choices = MESSAGES[state];
-    const safeMessage = typeof message === "string" && message.trim() ? message.trim().slice(0, 180) : choices[(this.#count - 1) % choices.length];
+    const safeMessage = typeof message === "string" && message.trim()
+      ? message.trim().slice(0, 180)
+      : this.#localizedMessage(choices[(this.#count - 1) % choices.length]);
     this.#setMessage(safeMessage);
     const ms = Number.isFinite(duration) ? Math.max(0, Math.min(duration, 12000)) : DEFAULT_DURATION[state];
     if (ms) this.#timer = setTimeout(() => this.react("idle"), ms);
@@ -183,7 +249,7 @@ const CSS = `
   .host { width:190px; }
   .panel { display:flex; flex-direction:column; align-items:center; }
   .bubble { max-width:190px; min-height:48px; padding:11px 14px; pointer-events:none; background:linear-gradient(145deg,#fff,#f4fbff); border:1px solid #a8dfff; border-radius:18px 18px 5px 18px; box-shadow:0 12px 34px #0b35752b; text-align:center; }
-  .figure { position:relative; width:164px; height:174px; margin-top:0; pointer-events:none; filter:drop-shadow(0 12px 18px #006cff30); }
+  .figure { position:relative; width:164px; height:174px; margin-top:0; pointer-events:auto; filter:drop-shadow(0 12px 18px #006cff30); }
   .mascot-image { display:block; width:100%; height:100%; object-fit:contain; user-select:none; transform-origin:50% 68%; animation:mascotFloat 3.2s ease-in-out infinite; }
   .fallback-vector { display:none; }
   .fallback-vector.visible { display:block; }
@@ -198,16 +264,15 @@ const CSS = `
   .celebration-burst i:nth-child(5) { right:5%; top:32%; background:#16a8ff; transform:rotate(55deg); }
   .celebration-burst i:nth-child(6) { left:2%; top:58%; background:#ff6f48; transform:rotate(72deg); }
   svg { width:100%; height:100%; overflow:visible; }
-  .controls { display:flex; align-items:center; gap:5px; width:100%; justify-content:center; }
-  .name { font-size:11px; font-weight:700; background:#eaf7fb; padding:5px 8px; border-radius:12px; }
   button { pointer-events:auto; font:inherit; cursor:pointer; border:1px solid #b6dce9; color:#183452; background:#fff; box-shadow:0 4px 14px #18345222; }
   button:focus-visible { outline:3px solid #277cc8; outline-offset:3px; }
-  .hide { width:30px; height:30px; border-radius:50%; font-size:21px; line-height:1; }
+  button.figure { display:block; padding:0; border:0; color:inherit; background:transparent; box-shadow:none; }
   .restore { display:none; width:44px; height:44px; margin-left:auto; border-radius:50%; color:#116aab; font-size:25px; }
   [data-visible="false"] .panel { display:none; }
   [data-visible="false"] .restore { display:block; }
   [data-session-hidden="true"] .panel, [data-session-hidden="true"] .restore { display:none; }
   [data-silent="true"] .bubble { display:none; }
+  [data-reaction-artwork="true"] .state-symbol { display:none; }
   .robot { transform-origin:90px 140px; animation:float 3.2s ease-in-out infinite; }
   .eye { transform-origin:center; animation:blink 5s ease-in-out infinite; }
   .star { transform-origin:90px 146px; animation:pulse 2.5s ease-in-out infinite; }
@@ -273,6 +338,6 @@ const CSS = `
   @keyframes mascotReady { 50% { transform:translateY(-7px) scale(1.035); } }
   @keyframes mascotSleep { 50% { transform:translateY(-3px) rotate(-2deg) scale(.97); } }
   @keyframes burst { 0%,100% { transform:scale(.7); opacity:0; } 35%,70% { transform:scale(1.08); opacity:1; } }
-  @media (max-width:600px) { :host { right:8px; bottom:calc(72px + env(safe-area-inset-bottom)); } .host { width:124px; } .bubble { max-width:124px; font-size:11px; line-height:1.3; min-height:0; padding:7px 8px; } .figure { width:102px; height:108px; } .state-symbol { right:0; top:1px; font-size:22px; } .name { display:none; } .controls { justify-content:flex-end; margin-top:-3px; } .hide { width:28px; height:28px; } }
+  @media (max-width:600px) { :host { right:8px; bottom:calc(72px + env(safe-area-inset-bottom)); } .host { width:124px; } .bubble { max-width:124px; font-size:11px; line-height:1.3; min-height:0; padding:7px 8px; } .figure { width:102px; height:108px; } .state-symbol { right:0; top:1px; font-size:22px; } }
   @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation:none !important; transition:none !important; } }
 `;
