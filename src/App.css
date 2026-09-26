@@ -27625,3 +27625,337 @@ select { font: inherit; }
   .n400-question-card .live-question-header > span { max-width: 48%; text-align: right; }
   .n400-progress-label { font-size: .58rem; }
 }
+
+/* Writing Practice — unified, compact visual composition. */
+.writing-ai-screen .writing-ai-content {
+  width: min(100% - 24px, 900px);
+  padding-top: 18px;
+  padding-bottom: 30px;
+}
+
+.writing-practice-panel {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  padding: clamp(16px, 2.6vw, 26px);
+  overflow: hidden;
+  border: 1px solid rgba(76, 192, 255, .46);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 12% 5%, rgba(31, 151, 255, .14), transparent 28%),
+    radial-gradient(circle at 93% 18%, rgba(39, 220, 255, .08), transparent 24%),
+    linear-gradient(150deg, rgba(7, 29, 61, .97), rgba(3, 15, 35, .985));
+  box-shadow: 0 28px 68px rgba(0, 5, 20, .52), inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.writing-practice-panel::before {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, rgba(70, 215, 255, .06), transparent 34%, transparent 68%, rgba(76, 85, 255, .05));
+  content: "";
+  pointer-events: none;
+}
+
+.writing-practice-panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.writing-practice-panel .writing-top-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  margin: 0;
+  padding: 0 2px 3px;
+}
+
+.writing-practice-panel .writing-eyebrow {
+  margin-bottom: 5px;
+  color: #54e4ff;
+  font-size: .66rem;
+  letter-spacing: .14em;
+}
+
+.writing-practice-panel .writing-ai-title {
+  margin: 0;
+  font-size: clamp(2rem, 5.2vw, 3.25rem);
+  line-height: .98;
+  letter-spacing: -.045em;
+}
+
+.writing-practice-panel .writing-ai-title span {
+  color: #53dfff;
+  -webkit-text-fill-color: initial;
+}
+
+.writing-practice-panel .writing-ai-intro {
+  max-width: 610px;
+  margin: 9px 0 0;
+  color: #b5c7de;
+  font-size: .91rem;
+}
+
+.writing-practice-panel .writing-ai-badge {
+  min-width: 220px;
+  margin: 0;
+  padding: 11px 13px;
+  border-color: rgba(71, 184, 255, .34);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07);
+}
+
+.writing-progress-strip {
+  padding: 11px 14px 12px;
+  border: 1px solid rgba(99, 177, 241, .2);
+  border-radius: 16px;
+  background: rgba(14, 42, 81, .66);
+}
+
+.writing-progress-copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  color: #adc6e4;
+  font-size: .77rem;
+}
+
+.writing-progress-copy strong {
+  padding: 3px 10px;
+  border: 1px solid rgba(94, 186, 255, .36);
+  border-radius: 999px;
+  color: #effaff;
+  background: rgba(34, 91, 158, .38);
+  font-size: .75rem;
+}
+
+.writing-progress-track {
+  height: 7px;
+  overflow: hidden;
+  border: 1px solid rgba(99, 168, 230, .2);
+  border-radius: 999px;
+  background: rgba(107, 151, 203, .16);
+}
+
+.writing-progress-track span {
+  display: block;
+  min-width: 10px;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #1aa9ff, #38e6f4);
+  box-shadow: 0 0 14px rgba(43, 216, 255, .55);
+  transition: width .25s ease;
+}
+
+.writing-practice-panel .writing-performance {
+  display: block;
+  margin: 0;
+  padding: 10px 16px;
+  border-radius: 16px;
+  box-shadow: none;
+}
+
+.writing-practice-panel .writing-performance-title {
+  display: none;
+}
+
+.writing-practice-panel .writing-performance-content {
+  min-height: 45px;
+}
+
+.writing-practice-panel .performance-item {
+  justify-content: center;
+}
+
+.writing-practice-panel .performance-item strong {
+  font-size: 1.15rem;
+}
+
+.writing-practice-panel .performance-item span {
+  font-size: .68rem;
+}
+
+.writing-practice-panel .performance-dot {
+  width: 11px;
+  height: 11px;
+  box-shadow: 0 0 18px currentColor;
+}
+
+.writing-practice-panel .writing-question-card {
+  display: grid;
+  grid-template-columns: minmax(230px, .9fr) minmax(280px, 1.1fr);
+  grid-template-rows: auto auto auto;
+  column-gap: 18px;
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 18px;
+  box-shadow: none;
+}
+
+.writing-practice-panel .writing-question-header {
+  grid-column: 1 / -1;
+  padding-bottom: 10px;
+}
+
+.writing-practice-panel .writing-question-header .writing-progress {
+  display: none;
+}
+
+.writing-practice-panel .dictation-audio-prompt {
+  grid-column: 1;
+  grid-row: 2 / 4;
+  display: flex;
+  align-items: stretch;
+  margin: 11px 0 0;
+}
+
+.writing-practice-panel .dictation-speak-btn {
+  width: 100%;
+  min-height: 78px;
+  border-color: rgba(55, 211, 255, .44);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 15% 50%, rgba(38, 216, 255, .18), transparent 29%),
+    linear-gradient(115deg, rgba(15, 91, 156, .96), rgba(14, 48, 96, .97));
+}
+
+.writing-practice-panel .dictation-speak-btn .speaker-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  box-shadow: 0 0 22px rgba(31, 210, 255, .22);
+}
+
+.writing-practice-panel .dictation-replay-copy strong {
+  font-size: .86rem;
+}
+
+.writing-practice-panel .writing-line {
+  display: none;
+}
+
+.writing-practice-panel .writing-translation-label {
+  grid-column: 2;
+  grid-row: 2;
+  align-self: end;
+  margin-top: 12px;
+}
+
+.writing-practice-panel .writing-big-spanish {
+  grid-column: 2;
+  grid-row: 3;
+  align-self: start;
+  min-height: 48px;
+  margin: 5px 0 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(97, 170, 231, .18);
+  border-radius: 13px;
+  background: rgba(6, 23, 50, .56);
+  color: #d0dced;
+  font-size: .88rem;
+  font-style: normal;
+}
+
+.writing-practice-panel .writing-ai-input {
+  min-height: 58px;
+  margin: 0;
+  padding: 15px 17px;
+  border-color: rgba(65, 205, 255, .45);
+  border-radius: 16px;
+  background: linear-gradient(145deg, rgba(12, 43, 82, .95), rgba(6, 24, 52, .98));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 0 0 1px rgba(25, 178, 255, .06);
+}
+
+.writing-practice-panel .writing-ai-button {
+  min-height: 58px;
+  margin: 0;
+  border-color: rgba(84, 224, 255, .55);
+  background: linear-gradient(105deg, #147ff0, #2bd8e9);
+  box-shadow: 0 13px 30px rgba(17, 128, 227, .26), inset 0 1px 0 rgba(255,255,255,.2);
+}
+
+.writing-practice-panel .writing-ai-evaluation,
+.writing-practice-panel .english-coach-secondary {
+  margin-top: 0;
+}
+
+.writing-practice-panel .english-coach-secondary {
+  border-radius: 15px;
+}
+
+@media (max-width: 700px) {
+  .writing-ai-screen .writing-ai-content {
+    width: min(100% - 16px, 900px);
+    padding-top: 8px;
+    padding-bottom: 16px;
+  }
+
+  .writing-practice-panel {
+    gap: 9px;
+    padding: 12px;
+    border-radius: 20px;
+  }
+
+  .writing-practice-panel .writing-top-section {
+    display: block;
+    padding: 1px 2px 4px;
+  }
+
+  .writing-practice-panel .writing-ai-title {
+    font-size: clamp(1.78rem, 9vw, 2.35rem);
+  }
+
+  .writing-practice-panel .writing-ai-intro {
+    margin-top: 6px;
+    font-size: .74rem;
+  }
+
+  .writing-practice-panel .writing-ai-badge {
+    display: none;
+  }
+
+  .writing-progress-strip {
+    padding: 9px 11px 10px;
+  }
+
+  .writing-practice-panel .writing-performance {
+    display: block;
+    padding: 8px 10px;
+  }
+
+  .writing-practice-panel .writing-performance-content {
+    min-height: 40px;
+  }
+
+  .writing-practice-panel .writing-question-card {
+    display: block;
+    padding: 12px;
+  }
+
+  .writing-practice-panel .dictation-audio-prompt {
+    display: block;
+    margin-top: 10px;
+  }
+
+  .writing-practice-panel .dictation-speak-btn {
+    min-height: 62px;
+  }
+
+  .writing-practice-panel .writing-translation-label {
+    margin-top: 11px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(104, 169, 229, .14);
+  }
+
+  .writing-practice-panel .writing-big-spanish {
+    min-height: 0;
+    padding: 9px 10px;
+  }
+
+  .writing-practice-panel .writing-ai-input,
+  .writing-practice-panel .writing-ai-button {
+    min-height: 54px;
+  }
+}

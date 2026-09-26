@@ -2013,6 +2013,7 @@ function App() {
           <div className="writing-ai-brand">CITIZENSHIP <span>AI</span></div>
         </header>
         <main className="writing-ai-content">
+          <section className="writing-practice-panel">
           <div className="writing-top-section">
             <div>
               <div className="writing-eyebrow">ENGLISH · WRITING DICTATION</div>
@@ -2025,6 +2026,15 @@ function App() {
                 <strong>AI AUDIO DICTATION</strong>
                 <small>LISTENING & WRITING TEST</small>
               </div>
+            </div>
+          </div>
+          <div className="writing-progress-strip" aria-label={`Question ${writingIndex + 1} of ${writingSentences.length}`}>
+            <div className="writing-progress-copy">
+              <span>Question {writingIndex + 1} of {writingSentences.length}</span>
+              <strong>{writingIndex + 1} / {writingSentences.length}</strong>
+            </div>
+            <div className="writing-progress-track" aria-hidden="true">
+              <span style={{ width: `${((writingIndex + 1) / writingSentences.length) * 100}%` }} />
             </div>
           </div>
           <div className="writing-performance">
@@ -2150,6 +2160,7 @@ function App() {
             </span>
             <span className="english-coach-secondary-arrow" aria-hidden="true">→</span>
           </button>
+          </section>
         </main>
       </div>
     );

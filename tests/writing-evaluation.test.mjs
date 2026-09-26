@@ -73,3 +73,15 @@ test("writing review stays visible until the learner chooses the next action", a
   assert.match(app, /Semantic writing review unavailable; using deterministic review/);
   assert.doesNotMatch(app, /setTimeout\(\(\) => \{\s*nextWritingSentence\(\)/);
 });
+
+test("writing practice uses one unified compact panel without changing its actions", async () => {
+  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+  const css = await readFile(new URL("../src/App.css", import.meta.url), "utf8");
+  assert.match(app, /className="writing-practice-panel"/);
+  assert.match(app, /className="writing-progress-strip"/);
+  assert.match(app, /onClick=\{checkWriting\}/);
+  assert.match(app, /onClick=\{nextWritingSentence\}/);
+  assert.match(app, /onClick=\{openCoachFrom\}/);
+  assert.match(css, /Writing Practice — unified, compact visual composition/);
+  assert.match(css, /@media \(max-width: 700px\)/);
+});
