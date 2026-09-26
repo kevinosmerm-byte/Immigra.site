@@ -1,7 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-
-const AccountContext = createContext(null);
+import { useEffect, useMemo, useState } from "react";
+import { AccountContext, useAccount } from "./accountContext.js";
 
 const browserSupabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
 const browserSupabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
@@ -168,12 +167,6 @@ export function AccountProvider({ children }) {
   }), [client, session, loading, usage, promotionAccess, aiFeatureAvailability]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
-}
-
-export function useAccount() {
-  const value = useContext(AccountContext);
-  if (!value) throw new Error("useAccount must be used inside AccountProvider");
-  return value;
 }
 
 export function AccountButton({ language = "en", onClick }) {

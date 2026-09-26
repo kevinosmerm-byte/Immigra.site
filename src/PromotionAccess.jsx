@@ -1,10 +1,9 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getAiFeatureConfig, PROMOTION_ACCESS_CONFIG } from "../shared/featureAccessConfig.js";
 import { getAiUsageSummary, recordAiSessionStart, shouldShowPromotionNotice } from "./access.js";
-import { useAccount } from "./Account.jsx";
+import { useAccount } from "./accountContext.js";
 import { setAiRequestContext } from "./api.js";
-
-const PromotionAccessContext = createContext(null);
+import { PromotionAccessContext } from "./promotionAccessContext.js";
 
 const COPY = {
   en: {
@@ -183,10 +182,4 @@ export function PromotionAccessProvider({ children }) {
       )}
     </PromotionAccessContext.Provider>
   );
-}
-
-export function usePromotionAccess() {
-  const value = useContext(PromotionAccessContext);
-  if (!value) throw new Error("usePromotionAccess must be used inside PromotionAccessProvider");
-  return value;
 }
