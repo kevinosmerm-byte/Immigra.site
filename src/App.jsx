@@ -23,6 +23,7 @@ import { createNavigationHistory, navigateBack, navigateForward } from "./naviga
 import { getCivicsVisual } from "./data/civicsVisuals.js";
 import { emitCompanionResult, emitCompanionState } from "./companionEvents.js";
 import { N400InterviewPractice } from "./N400InterviewPractice.jsx";
+import { normalizeThemePreference, resolveTheme, THEME_STORAGE_KEY } from "./theme.js";
 
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
@@ -1144,6 +1145,12 @@ function App() {
   const [language, setLanguage] = useState(() =>
     readLocalValue(LANGUAGE_STORAGE_KEY, "en") === "es" ? "es" : "en"
   );
+  const [themePreference, setThemePreference] = useState(() =>
+    normalizeThemePreference(readLocalValue(THEME_STORAGE_KEY, "dark"))
+  );
+  const [systemPrefersLight, setSystemPrefersLight] = useState(() =>
+    window.matchMedia?.("(prefers-color-scheme: light)").matches ?? false
+  );
   const [onboardingComplete, setOnboardingComplete] = useState(
     () => readLocalValue(ONBOARDING_STORAGE_KEY) === "complete"
   );
@@ -1172,6 +1179,22 @@ function App() {
     document.body.dataset.appScreen = screen;
     return () => delete document.body.dataset.appScreen;
   }, [screen]);
+
+  useEffect(() => {
+    const media = window.matchMedia?.("(prefers-color-scheme: light)");
+    if (!media) return undefined;
+    const syncSystemTheme = (event) => setSystemPrefersLight(event.matches);
+    media.addEventListener?.("change", syncSystemTheme);
+    return () => media.removeEventListener?.("change", syncSystemTheme);
+  }, []);
+
+  useEffect(() => {
+    const resolvedTheme = resolveTheme(themePreference, systemPrefersLight);
+    document.documentElement.dataset.theme = resolvedTheme;
+    document.documentElement.dataset.themePreference = themePreference;
+    document.documentElement.style.colorScheme = resolvedTheme;
+    saveLocalValue(THEME_STORAGE_KEY, themePreference);
+  }, [themePreference, systemPrefersLight]);
 
   useEffect(() => {
     if (screen === "interview" && interviewMode === "full") {
@@ -1556,10 +1579,18 @@ function App() {
   }
 
   if (screen === "settings") {
-    return <LegalSettings onBack={() => {
-      window.history.replaceState(null, "", window.location.pathname);
-      goBack("home");
-    }} onRestartOnboarding={restartOnboarding} />;
+    return (
+      <LegalSettings
+        onBack={() => {
+          window.history.replaceState(null, "", window.location.pathname);
+          goBack("home");
+        }}
+        language={language}
+        themePreference={themePreference}
+        onThemeChange={(value) => setThemePreference(normalizeThemePreference(value))}
+        onRestartOnboarding={restartOnboarding}
+      />
+    );
   }
 
   if (screen === "immigrationHelp") {

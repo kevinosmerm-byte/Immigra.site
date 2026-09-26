@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCompanionVisibility, setCompanionVisibility } from "./companionEvents.js";
+import { THEME_PREFERENCES, THEME_STORAGE_KEY } from "./theme.js";
 
 const COPY = {
   en: {
@@ -160,7 +161,7 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
   );
 }
 
-export function LegalSettings({ onBack, onRestartOnboarding }) {
+export function LegalSettings({ onBack, onRestartOnboarding, language = "en", themePreference = "dark", onThemeChange }) {
   const [openSection, setOpenSection] = useState("privacy");
   const [cleared, setCleared] = useState(false);
   const [companionVisible, setCompanionVisible] = useState(getCompanionVisibility);
@@ -173,7 +174,7 @@ export function LegalSettings({ onBack, onRestartOnboarding }) {
 
   const clearLocalData = () => {
     if (!window.confirm("Clear this device's Citizenship AI preferences and civics progress? This cannot be undone.")) return;
-    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1", "citizenshipai.ai-sessions.promo.v1", "citizenshipai-companion-visible-v1", "citizenshipai-companion-streak-v1"].forEach((key) => localStorage.removeItem(key));
+    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", THEME_STORAGE_KEY, "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1", "citizenshipai.ai-sessions.promo.v1", "citizenshipai-companion-visible-v1", "citizenshipai-companion-streak-v1"].forEach((key) => localStorage.removeItem(key));
     setCleared(true);
   };
 
@@ -187,6 +188,33 @@ export function LegalSettings({ onBack, onRestartOnboarding }) {
         <p className="settings-eyebrow">SETTINGS</p>
         <h1>Legal &amp; Privacy</h1>
         <p className="settings-intro">Permanent access to the information that governs how this practice tool works.</p>
+        <section className="appearance-settings" aria-labelledby="appearance-title">
+          <div>
+            <small>{language === "es" ? "APARIENCIA" : "APPEARANCE"}</small>
+            <h2 id="appearance-title">{language === "es" ? "Tema de la aplicación" : "App theme"}</h2>
+            <p>{language === "es" ? "Elige una apariencia o usa la configuración de tu dispositivo." : "Choose an appearance or follow your device setting."}</p>
+          </div>
+          <div className="theme-choice" role="group" aria-label={language === "es" ? "Tema de la aplicación" : "App theme"}>
+            {THEME_PREFERENCES.map((value) => {
+              const labels = language === "es"
+                ? { system: "Sistema", light: "Claro", dark: "Oscuro" }
+                : { system: "System", light: "Light", dark: "Dark" };
+              const icons = { system: "◐", light: "☀", dark: "☾" };
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  className={themePreference === value ? "selected" : ""}
+                  aria-pressed={themePreference === value}
+                  onClick={() => onThemeChange?.(value)}
+                >
+                  <span aria-hidden="true">{icons[value]}</span>
+                  {labels[value]}
+                </button>
+              );
+            })}
+          </div>
+        </section>
         <p className="settings-public-link">Public policy link: <a href="#privacy">citizenshipai.us/#privacy</a></p>
         <section className="settings-notice" aria-label="Important disclaimer"><span>i</span><p>Independent educational practice only. Not legal advice and not a USCIS or U.S. government service.</p></section>
         <section className="legal-accordion" aria-label="Legal and privacy documents">

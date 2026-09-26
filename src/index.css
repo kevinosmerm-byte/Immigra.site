@@ -17,6 +17,12 @@ body {
   background: #000000;
 }
 
+html[data-theme="light"],
+html[data-theme="light"] body,
+html[data-theme="light"] #root {
+  background: #eef5fc;
+}
+
 #root {
   min-height: 100vh;
 }

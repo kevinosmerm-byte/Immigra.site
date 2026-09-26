@@ -28044,3 +28044,468 @@ select { font: inherit; }
     padding: 10px;
   }
 }
+
+/* ==========================================================================
+   ACCESSIBLE LIGHT THEME
+   Uses the existing component tree and behavior. The supplied visual is a
+   color, contrast, and atmosphere reference—not a second set of screens.
+   ========================================================================== */
+html[data-theme="light"] {
+  --bg-primary: #eef5fc;
+  --bg-secondary: #e5effa;
+  --bg-surface: rgba(255, 255, 255, .9);
+  --bg-surface-hover: #ffffff;
+  --bg-card: rgba(255, 255, 255, .94);
+  --bg-card-hover: #ffffff;
+  --border-subtle: rgba(32, 91, 158, .14);
+  --border-glow: rgba(22, 139, 232, .42);
+  --accent-cyan: #0797d8;
+  --accent-blue: #1678ed;
+  --accent-purple: #7448e8;
+  --accent-glow: rgba(26, 139, 232, .12);
+  --text-main: #091a3d;
+  --text-muted: #4f6482;
+  --text-dim: #74869e;
+  --shadow-neon: 0 12px 28px rgba(31, 126, 219, .14);
+  --shadow-card: 0 16px 38px rgba(35, 87, 145, .12);
+  --ui-surface: linear-gradient(145deg, rgba(255, 255, 255, .98), rgba(239, 247, 255, .96));
+  --ui-surface-soft: rgba(246, 250, 255, .9);
+  --ui-border: rgba(41, 111, 184, .16);
+  --ui-border-focus: rgba(13, 139, 225, .56);
+  --ui-text: #0a1b3e;
+  --ui-muted: #536a88;
+  --ui-cyan: #068ed2;
+  --ui-blue: #176fe3;
+  --ui-violet: #6f4ae3;
+  --ui-shadow: 0 16px 38px rgba(29, 77, 132, .11), inset 0 1px 0 rgba(255, 255, 255, .92);
+}
+
+html[data-theme="light"] body {
+  color: var(--text-main);
+  background: #eef5fc;
+}
+
+html[data-theme="light"] .app,
+html[data-theme="light"] .practice-screen,
+html[data-theme="light"] .writing-ai-screen,
+html[data-theme="light"] .settings-screen,
+html[data-theme="light"] .immigration-help-screen,
+html[data-theme="light"] .podcast-screen,
+html[data-theme="light"] .quiz-path-screen,
+html[data-theme="light"] .study-guide-screen {
+  color: var(--ui-text);
+  background-color: #eef5fc !important;
+  background-image:
+    linear-gradient(160deg, rgba(255, 255, 255, .91), rgba(233, 244, 255, .94)),
+    url("./assets/citizenship-background.png") !important;
+  background-position: center top !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
+}
+
+/* Home — bright, patriotic, and restrained. */
+html[data-theme="light"] .home-ai,
+html[data-theme="light"] .home-new {
+  color: #081a3d;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.76) 0%, rgba(246,251,255,.9) 52%, rgba(237,246,255,.98) 100%),
+    url("./assets/citizenship-background.png") center top / cover fixed !important;
+}
+
+html[data-theme="light"] .home-new-header,
+html[data-theme="light"] .home-ai-header {
+  border-bottom-color: rgba(27, 88, 156, .13);
+  background: rgba(255, 255, 255, .87);
+  box-shadow: 0 8px 30px rgba(44, 95, 153, .08);
+}
+
+html[data-theme="light"] .home-new-brand,
+html[data-theme="light"] .home-brand-wordmark,
+html[data-theme="light"] .home-ai-header .brand {
+  color: #07173a;
+}
+
+html[data-theme="light"] .home-brand-wordmark strong {
+  color: #087eea;
+}
+
+html[data-theme="light"] .language-selector > .home-account-button,
+html[data-theme="light"] .language-selector > .home-language,
+html[data-theme="light"] .language-selector > .home-settings-button,
+html[data-theme="light"] .language-selector > .home-account-button.signed-in {
+  border-color: rgba(40, 91, 151, .18);
+  color: #102548;
+  background: rgba(255, 255, 255, .82);
+  box-shadow: 0 6px 18px rgba(45, 92, 145, .08), inset 0 1px 0 #fff;
+}
+
+html[data-theme="light"] .language-selector > button:hover,
+html[data-theme="light"] .language-selector > button:focus-visible {
+  border-color: rgba(20, 129, 220, .46);
+  color: #087fdf;
+  background: #fff;
+}
+
+html[data-theme="light"] .home-status {
+  border-color: rgba(25, 137, 223, .22);
+  color: #087fd9;
+  background: rgba(227, 244, 255, .82);
+}
+
+html[data-theme="light"] .home-status span {
+  background: #178bea;
+  box-shadow: 0 0 9px rgba(23, 139, 234, .48);
+}
+
+html[data-theme="light"] .home-hero-copy h1,
+html[data-theme="light"] .home-hero-copy h1 strong {
+  color: #07183d;
+  background: none;
+  -webkit-text-fill-color: currentColor;
+}
+
+html[data-theme="light"] .home-hero-copy h1 strong {
+  color: #1683ee;
+}
+
+html[data-theme="light"] .home-hero-copy p {
+  color: #405979;
+}
+
+html[data-theme="light"] .home-interview-actions {
+  border-color: rgba(47, 108, 174, .14);
+  background: rgba(255, 255, 255, .74);
+  box-shadow: 0 22px 55px rgba(38, 89, 146, .12), inset 0 1px 0 #fff;
+}
+
+html[data-theme="light"] .home-interview-actions .home-primary-button,
+html[data-theme="light"] .home-interview-actions .home-primary-button:first-child,
+html[data-theme="light"] .home-interview-actions .home-civics-live-button,
+html[data-theme="light"] .home-interview-actions .home-immigration-primary-button,
+html[data-theme="light"] .home-interview-actions .home-podcast-primary-button {
+  border-color: rgba(43, 103, 166, .13);
+  color: #091a3e;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 8px 20px rgba(38, 84, 137, .075), inset 0 1px 0 #fff;
+}
+
+html[data-theme="light"] .home-interview-actions .home-primary-button::after {
+  opacity: .2;
+}
+
+html[data-theme="light"] .home-interview-actions .home-primary-button small {
+  color: #657a98;
+}
+
+html[data-theme="light"] .home-interview-actions .home-primary-button strong {
+  color: #08183a;
+}
+
+html[data-theme="light"] .home-interview-actions .home-primary-button > .primary-arrow {
+  border-color: rgba(38, 94, 155, .13);
+  color: #123d73;
+  background: #f1f6fb;
+}
+
+html[data-theme="light"] .home-interview-actions .home-action-icon {
+  background: color-mix(in srgb, var(--action-accent) 10%, white);
+  box-shadow: inset 0 1px 0 #fff, 0 8px 20px color-mix(in srgb, var(--action-accent) 11%, transparent);
+}
+
+html[data-theme="light"] .practice-mini-card,
+html[data-theme="light"] .preparation-card,
+html[data-theme="light"] .home-uscis-card {
+  border-color: rgba(39, 101, 167, .14);
+  color: #0a1b3e;
+  background: rgba(255, 255, 255, .88);
+  box-shadow: 0 14px 34px rgba(33, 82, 137, .09), inset 0 1px 0 #fff;
+}
+
+html[data-theme="light"] .practice-mini-card:first-child {
+  background: linear-gradient(135deg, rgba(235,255,250,.96), rgba(255,255,255,.96));
+}
+
+html[data-theme="light"] .practice-mini-card:last-child {
+  background: linear-gradient(135deg, rgba(247,242,255,.96), rgba(255,255,255,.96));
+}
+
+html[data-theme="light"] .practice-mini-card h3,
+html[data-theme="light"] .preparation-card h2,
+html[data-theme="light"] .uscis-card-top h2,
+html[data-theme="light"] .preparation-items strong {
+  color: #0a1b3e;
+}
+
+html[data-theme="light"] .practice-mini-card small,
+html[data-theme="light"] .preparation-card small,
+html[data-theme="light"] .home-uscis-card small {
+  color: #078ad0;
+}
+
+html[data-theme="light"] .mini-icon {
+  border-color: rgba(21, 154, 198, .18);
+  color: #0788cb;
+  background: rgba(103, 231, 219, .19);
+}
+
+html[data-theme="light"] .practice-mini-card:last-child .mini-icon {
+  border-color: rgba(108, 72, 224, .16);
+  color: #7045df;
+  background: rgba(126, 104, 239, .13);
+}
+
+html[data-theme="light"] .preparation-progress {
+  background: rgba(38, 84, 139, .1);
+}
+
+html[data-theme="light"] .preparation-items div {
+  border-color: rgba(35, 96, 162, .12);
+  background: rgba(235, 244, 253, .68);
+}
+
+html[data-theme="light"] .preparation-items span,
+html[data-theme="light"] .home-uscis-card p {
+  color: #59708c;
+}
+
+html[data-theme="light"] .preparation-button,
+html[data-theme="light"] .home-uscis-disabled-button {
+  border-color: rgba(30, 111, 188, .18);
+  color: #123d72;
+  background: rgba(236, 246, 255, .9);
+}
+
+/* Shared screens and cards. */
+html[data-theme="light"] .practice-header,
+html[data-theme="light"] .writing-ai-header,
+html[data-theme="light"] .settings-header,
+html[data-theme="light"] .interview-header,
+html[data-theme="light"] .immigration-help-header,
+html[data-theme="light"] .podcast-header,
+html[data-theme="light"] .quiz-path-header,
+html[data-theme="light"] .quiz-session-header {
+  border-bottom-color: rgba(36, 95, 158, .13);
+  color: #0a1b3e;
+  background: rgba(255, 255, 255, .88);
+  box-shadow: 0 8px 28px rgba(38, 87, 140, .08);
+}
+
+html[data-theme="light"] .practice-brand,
+html[data-theme="light"] .writing-ai-brand,
+html[data-theme="light"] .interview-brand,
+html[data-theme="light"] .immigration-help-brand,
+html[data-theme="light"] .podcast-header > strong {
+  color: #0a1b3e;
+}
+
+html[data-theme="light"] .back-button,
+html[data-theme="light"] .writing-back-button,
+html[data-theme="light"] .interview-exit-button,
+html[data-theme="light"] .immigration-help-header > button,
+html[data-theme="light"] .podcast-header > button,
+html[data-theme="light"] .quiz-path-header .back-button,
+html[data-theme="light"] .quiz-session-header .back-button {
+  border-color: rgba(35, 96, 160, .16);
+  color: #143b6a;
+  background: rgba(244, 249, 255, .9);
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+html[data-theme="light"] .practice-option,
+html[data-theme="light"] .reading-card,
+html[data-theme="light"] .civics-card,
+html[data-theme="light"] .writing-question-card,
+html[data-theme="light"] .coach-conversation-card,
+html[data-theme="light"] .results-card,
+html[data-theme="light"] .progress-ai-overview,
+html[data-theme="light"] .progress-recommendation,
+html[data-theme="light"] .progress-personal-plan,
+html[data-theme="light"] .progress-free-credits,
+html[data-theme="light"] .progress-ai-module,
+html[data-theme="light"] .progress-recent-practice,
+html[data-theme="light"] .settings-notice,
+html[data-theme="light"] .legal-item,
+html[data-theme="light"] .immigration-resource-card,
+html[data-theme="light"] .immigration-detail-card,
+html[data-theme="light"] .immigration-leaving-card,
+html[data-theme="light"] .podcast-card,
+html[data-theme="light"] .quiz-path-progress,
+html[data-theme="light"] .quiz-level-card,
+html[data-theme="light"] .quiz-question-card,
+html[data-theme="light"] .quiz-vocabulary-grid > div,
+html[data-theme="light"] .quiz-preferred-answer {
+  border-color: var(--ui-border);
+  color: #0a1b3e;
+  background: var(--ui-surface);
+  box-shadow: var(--ui-shadow);
+}
+
+html[data-theme="light"] .practice-intro,
+html[data-theme="light"] .writing-ai-intro,
+html[data-theme="light"] .settings-intro,
+html[data-theme="light"] .immigration-help-hero p,
+html[data-theme="light"] .podcast-library-intro p,
+html[data-theme="light"] .quiz-path-intro p,
+html[data-theme="light"] .quiz-question-spanish,
+html[data-theme="light"] .quiz-context-question,
+html[data-theme="light"] .quiz-feedback p,
+html[data-theme="light"] .feature-text p,
+html[data-theme="light"] .coach-feature-text p {
+  color: #536a88;
+}
+
+html[data-theme="light"] .immigration-resource-copy strong,
+html[data-theme="light"] .podcast-card-copy > strong,
+html[data-theme="light"] .quiz-level-card,
+html[data-theme="light"] .quiz-question-card textarea {
+  color: #0a1b3e;
+}
+
+html[data-theme="light"] .immigration-resource-copy small,
+html[data-theme="light"] .immigration-resource-copy p,
+html[data-theme="light"] .podcast-card-copy > span,
+html[data-theme="light"] .quiz-level-copy em,
+html[data-theme="light"] .quiz-level-state,
+html[data-theme="light"] .quiz-vocabulary-grid span {
+  color: #607691;
+}
+
+html[data-theme="light"] .quiz-level-card.recommended {
+  border-color: rgba(17, 153, 221, .52);
+  background: linear-gradient(110deg, rgba(229, 248, 255, .98), rgba(239, 241, 255, .98));
+}
+
+html[data-theme="light"] .quiz-question-card textarea,
+html[data-theme="light"] .immigration-help-search,
+html[data-theme="light"] .writing-ai-input {
+  border-color: rgba(42, 112, 184, .24);
+  color: #0a1b3e;
+  background: rgba(255, 255, 255, .92);
+}
+
+html[data-theme="light"] .quiz-choice-list button {
+  border-color: rgba(42, 104, 169, .18);
+  color: #18395f;
+  background: rgba(249, 252, 255, .94);
+}
+
+html[data-theme="light"] .study-guide-reader {
+  border-color: rgba(43, 109, 177, .2);
+  background: #f7fbff;
+  box-shadow: 0 26px 65px rgba(30, 74, 125, .15);
+}
+
+html[data-theme="light"] .study-guide-toolbar,
+html[data-theme="light"] .study-guide-book {
+  border-color: rgba(43, 103, 165, .14);
+  color: #18395f;
+  background: #eaf2fa;
+}
+
+html[data-theme="light"] .study-guide-toolbar button {
+  border-color: rgba(33, 111, 181, .24);
+  color: #164d84;
+  background: rgba(255, 255, 255, .78);
+}
+
+html[data-theme="light"] .study-guide-heading p,
+html[data-theme="light"] .study-guide-toolbar label,
+html[data-theme="light"] .study-guide-zoom span {
+  color: #526b88;
+}
+
+html[data-theme="light"] .study-guide-toolbar label strong {
+  color: #112f55;
+}
+
+/* Appearance control lives in Settings to keep Home uncluttered. */
+.appearance-settings {
+  display: grid;
+  gap: 14px;
+  margin: 20px 0;
+  padding: 17px;
+  border: 1px solid var(--ui-border);
+  border-radius: 18px;
+  background: var(--ui-surface);
+  box-shadow: var(--ui-shadow);
+}
+
+.appearance-settings small {
+  color: var(--ui-cyan);
+  font-size: .64rem;
+  font-weight: 850;
+  letter-spacing: .13em;
+}
+
+.appearance-settings h2 {
+  margin: 4px 0;
+  font-size: 1.15rem;
+}
+
+.appearance-settings p {
+  margin: 0;
+  color: var(--ui-muted);
+  font-size: .82rem;
+  line-height: 1.45;
+}
+
+.theme-choice {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  padding: 5px;
+  border: 1px solid var(--ui-border);
+  border-radius: 14px;
+  background: rgba(4, 15, 34, .42);
+}
+
+.theme-choice button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 10px;
+  color: var(--ui-muted);
+  background: transparent;
+  font-size: .76rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.theme-choice button.selected {
+  color: #fff;
+  background: linear-gradient(105deg, #167ee9, #25bcd9);
+  box-shadow: 0 8px 20px rgba(21, 126, 218, .22);
+}
+
+html[data-theme="light"] .theme-choice {
+  background: rgba(229, 239, 250, .78);
+}
+
+html[data-theme="light"] .theme-choice button {
+  color: #536a88;
+}
+
+html[data-theme="light"] .theme-choice button.selected {
+  color: #fff;
+}
+
+html[data-theme="light"] .settings-content h1,
+html[data-theme="light"] .legal-item > button,
+html[data-theme="light"] .legal-static-title,
+html[data-theme="light"] .appearance-settings h2 {
+  color: #0a1b3e;
+}
+
+html[data-theme="light"] .legal-item-body,
+html[data-theme="light"] .settings-public-link,
+html[data-theme="light"] .settings-notice {
+  color: #536a88;
+}
+
+@media (max-width: 430px) {
+  .appearance-settings { padding: 14px; }
+  .theme-choice button { gap: 4px; font-size: .68rem; }
+}
