@@ -36,6 +36,8 @@ test("N-400 practice uses the versioned bank and can restart in place", () => {
 
 test("interviews keep the companion neutral without redundant header controls", () => {
   assert.match(app, /mode === "full"\) emitCompanionState\("idle", \{ duration: 0, silent: true \}\)/);
+  assert.match(n400Component, /getCompanionVisibility,\s*setCompanionSessionVisibility/);
+  assert.match(n400Component, /setCompanionSessionVisibility\(getCompanionVisibility\(\)\)/);
   assert.doesNotMatch(app, /Companion:|Hide for this interview|interview-companion-controls/);
   assert.doesNotMatch(n400Component, /Companion:|Hide for this interview|interview-companion-controls/);
   assert.match(companion, /data-silent/);

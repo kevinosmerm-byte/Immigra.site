@@ -153,9 +153,9 @@ export function getAdaptiveQuestionOrder(questions, progress = {}, now = Date.no
   });
 }
 
-export function createQuizSession(questions, progress, mode, limit = MAX_SESSION_QUESTIONS) {
+export function createQuizSession(questions, progress, mode, limit = MAX_SESSION_QUESTIONS, now = Date.now()) {
   const candidates = mode === "vocabulary" ? questions : questions.filter((question) => !question.isDynamic && question.acceptedAnswers.length);
-  return getAdaptiveQuestionOrder(candidates, progress).slice(0, limit);
+  return getAdaptiveQuestionOrder(candidates, progress, now).slice(0, limit);
 }
 
 export function evaluateQuizResponse(question, answer) {

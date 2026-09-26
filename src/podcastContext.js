@@ -28,7 +28,7 @@ export const PODCASTS = [
   {
     id: "aprobar-entrevista-ciudadania-es",
     language: "Español",
-    flag: "🇺🇸",
+    flag: "🇪🇸",
     title: "Cómo aprobar la entrevista de ciudadanía estadounidense",
     src: "/podcast-aprobar-entrevista-ciudadania-es.m4a",
     accent: "violet",

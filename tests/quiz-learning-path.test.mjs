@@ -75,7 +75,13 @@ test("sessions are adaptive and avoid unverified dynamic officeholder answers", 
     userKey: "adaptive", question: firstQuestion, mode: "challenge", correct: true, score: 100,
     answeredAt: "2026-09-23T12:00:00.000Z", storage,
   });
-  const session = createQuizSession(questions, progress, "challenge", 128);
+  const session = createQuizSession(
+    questions,
+    progress,
+    "challenge",
+    128,
+    Date.parse("2026-09-23T12:01:00.000Z"),
+  );
   assert.ok(session.every((question) => !question.isDynamic));
   assert.ok(session.indexOf(firstQuestion) > 0);
   assert.equal(summarizeQuizProgress(progress).attempted, 1);

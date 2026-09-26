@@ -13,7 +13,11 @@ import {
   recordN400FollowUpAnswer,
   selectNextN400Question,
 } from "./n400InterviewEngine.js";
-import { emitCompanionState } from "./companionEvents.js";
+import {
+  emitCompanionState,
+  getCompanionVisibility,
+  setCompanionSessionVisibility,
+} from "./companionEvents.js";
 
 function createInitialFlow() {
   const initialState = createN400InterviewState(n400Bank);

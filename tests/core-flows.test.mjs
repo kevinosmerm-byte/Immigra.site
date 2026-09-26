@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { getCaseGuidance, daysSinceOfficialDate, formatOfficialDate } from "../src/caseTracker.js";
 import { getPracticeSummary, recordPracticeEvent, getPracticeEvents, clearPracticeEvents } from "../src/progress.js";
 import { buildDailyPlan, calculateReadiness, updateQuestionState } from "../src/learning.js";
+import { PODCASTS } from "../src/podcastContext.js";
 
 function createLocalStorage() {
   const values = new Map();
@@ -132,4 +133,10 @@ test("daily plan prioritizes due failures and weak categories", () => {
   ], "2026-09-23T00:00:00Z");
   assert.equal(plan[0].questionId, "missed");
   assert.equal(plan[0].reason, "due");
+});
+
+test("podcast language labels use the matching flag", () => {
+  for (const podcast of PODCASTS) {
+    assert.equal(podcast.flag, podcast.language === "Español" ? "🇪🇸" : "🇺🇸");
+  }
 });

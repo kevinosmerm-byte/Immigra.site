@@ -28,4 +28,5 @@ test("Settings exposes accessible system, light, and dark choices", () => {
   assert.match(settings, /aria-pressed=\{themePreference === value\}/);
   assert.match(settings, /Tema de la aplicación/);
   assert.match(css, /html\[data-theme="light"\]/);
+  assert.match(css, /\.settings-header \.back-button\s*\{[\s\S]*?width:\s*44px;[\s\S]*?height:\s*44px;/);
 });
