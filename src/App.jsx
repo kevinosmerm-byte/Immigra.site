@@ -21,6 +21,7 @@ import { CivicsStudyCard } from "./CivicsStudyCard.jsx";
 import { createNavigationHistory, navigateBack, navigateForward } from "./navigationHistory.js";
 import { getCivicsVisual } from "./data/civicsVisuals.js";
 import { emitCompanionResult, emitCompanionState, getCompanionVisibility, setCompanionSessionVisibility, setCompanionVisibility } from "./companionEvents.js";
+import { N400InterviewPractice } from "./N400InterviewPractice.jsx";
 
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
@@ -627,20 +628,11 @@ function Home({
 
 // Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
 
-const n400InterviewQuestions = [
-  { id: "n400-name", type: "n400", english: "Please state your full legal name.", spanish: "Indique su nombre legal completo.", correctAnswer: "A clear answer that matches the applicant's own Form N-400 information." },
-  { id: "n400-address", type: "n400", english: "What is your current home address?", spanish: "¿Cuál es su domicilio actual?", correctAnswer: "A clear answer that matches the applicant's own Form N-400 information." },
-  { id: "n400-residence", type: "n400", english: "How long have you lived at your current address?", spanish: "¿Cuánto tiempo ha vivido en su domicilio actual?", correctAnswer: "A clear answer based on the applicant's own history and Form N-400." },
-  { id: "n400-travel", type: "n400", english: "Have you taken any trips outside the United States during the last five years?", spanish: "¿Ha realizado viajes fuera de Estados Unidos durante los últimos cinco años?", correctAnswer: "A clear and complete answer based on the applicant's own travel history and Form N-400." },
-  { id: "n400-oath", type: "n400", english: "Are you willing to take the Oath of Allegiance to the United States?", spanish: "¿Está dispuesto a prestar el Juramento de Lealtad a Estados Unidos?", correctAnswer: "A direct answer that reflects the applicant's own understanding and intent." },
-];
-
-function RealInterview({ onExit, onComplete, onReview, onRestart, mode = "full" }) {
+function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const [questions] = useState(() => {
     const shuffledCivics = [...civicsQuestionBank].sort(() => Math.random() - 0.5);
     if (mode === "civics") return shuffledCivics.slice(0, 10);
-    if (mode === "n400") return [...n400InterviewQuestions];
-    return [...n400InterviewQuestions, ...shuffledCivics.slice(0, 5)];
+    return shuffledCivics.slice(0, 5);
   });
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -736,7 +728,7 @@ function RealInterview({ onExit, onComplete, onReview, onRestart, mode = "full" 
     const timer = setTimeout(() => {
       speakQuestion(`
         Welcome. Thank you for being here today.
-        ${mode === "civics" ? "We are going to begin your civics interview practice." : mode === "n400" ? "We are going to practice questions from Form N-400." : "We are going to practice Form N-400 questions followed by civics questions."}
+        ${mode === "civics" ? "We are going to begin your civics interview practice." : "We are going to begin the live interview experience."}
         ${questionText(questions[0])}
       `);
     }, 500);
@@ -921,8 +913,8 @@ function RealInterview({ onExit, onComplete, onReview, onRestart, mode = "full" 
             )}
           </section>
           {missedQuestions.length > 0 && (
-            <button className="results-focus-button" onClick={() => mode === "n400" ? onRestart?.() : onReview?.(missedQuestions.map((question) => question.id))}>
-              {mode === "n400" ? "PRACTICE N-400 AGAIN" : "REVIEW MISSED QUESTIONS"}
+            <button className="results-focus-button" onClick={() => onReview?.(missedQuestions.map((question) => question.id))}>
+              REVIEW MISSED QUESTIONS
             </button>
           )}
           <button
@@ -967,7 +959,7 @@ function RealInterview({ onExit, onComplete, onReview, onRestart, mode = "full" 
         </button>
         <div className="interview-brand">
           <strong>CITIZENSHIP <span>AI</span></strong>
-          <small>{mode === "civics" ? "LIVE CIVICS INTERVIEW" : mode === "n400" ? "INTERACTIVE N-400 PRACTICE" : "LIVE N-400 + CIVICS INTERVIEW"}</small>
+          <small>{mode === "civics" ? "LIVE CIVICS INTERVIEW" : "LIVE N-400 + CIVICS INTERVIEW"}</small>
         </div>
         {companionControls}
         <button
@@ -2409,6 +2401,16 @@ function App() {
   }
 
   if (screen === "interview") {
+    if (interviewMode === "n400") {
+      return (
+        <N400InterviewPractice
+          key={`n400-${interviewRunId}`}
+          onExit={() => goBack("home")}
+          onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
+          onRestart={() => setInterviewRunId((current) => current + 1)}
+        />
+      );
+    }
     return (
       <RealInterview
         key={`${interviewMode}-${interviewRunId}`}
