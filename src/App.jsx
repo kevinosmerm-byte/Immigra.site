@@ -1236,6 +1236,7 @@ function App() {
   const [writingGoodCount, setWritingGoodCount] = useState(0);
   const [writingNeedsPracticeCount, setWritingNeedsPracticeCount] = useState(0);
   const [writingIndex, setWritingIndex] = useState(0);
+  const [writingEvaluation, setWritingEvaluation] = useState(null);
 
   const [readingOrder, setReadingOrder] = useState(() =>
     [...readingSentences]
@@ -1368,6 +1369,7 @@ function App() {
 
   const nextWritingSentence = () => {
     setWritingAnswer("");
+    setWritingEvaluation(null);
     setWritingIndex((currentIndex) => {
       const nextIndex = currentIndex + 1;
       if (nextIndex >= writingSentences.length) return 0;
@@ -1387,14 +1389,26 @@ function App() {
     try {
       const sentence = writingSentences[writingIndex];
       const localResult = evaluateWritingSentence(sentence, writingAnswer);
-      const result = localResult.needsSemanticReview
-        ? await apiJson("/evaluate-writing", {
+      let result = localResult;
+      if (localResult.needsSemanticReview) {
+        try {
+          result = await apiJson("/evaluate-writing", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ sentenceId: sentence.sentenceId, answer: writingAnswer }),
-          })
-        : localResult;
-      if (result.accuracy === "Excellent" || result.accuracy === "Good") {
+          });
+        } catch (semanticReviewError) {
+          console.warn("Semantic writing review unavailable; using deterministic review.", semanticReviewError);
+        }
+      }
+      const completeResult = {
+        ...localResult,
+        ...result,
+        details: result.details || localResult.details,
+        writtenAnswer: writingAnswer,
+        expectedAnswer: sentence.english,
+      };
+      if (completeResult.accuracy === "Excellent" || completeResult.accuracy === "Good") {
         setWritingGoodCount((count) => count + 1);
         playCorrectSound();
         emitCompanionResult(true);
@@ -1403,12 +1417,10 @@ function App() {
         playIncorrectSound();
         emitCompanionResult(false);
       }
-      const resultLabel = result.resultLabel || (result.accuracy === "Excellent" ? "Correcta" : result.accuracy === "Good" ? "Correcta con observaciones" : "Necesita práctica");
-      recordPractice({ module: "writing", score: result.score, outcome: resultLabel });
-      setAiMessage(`${result.score}% — ${resultLabel}\n\n${result.feedback}`);
-      setTimeout(() => {
-        nextWritingSentence();
-      }, 3000);
+      const resultLabel = completeResult.resultLabel || (completeResult.accuracy === "Excellent" ? "Correcta" : completeResult.accuracy === "Good" ? "Correcta con observaciones" : "Necesita práctica");
+      recordPractice({ module: "writing", score: completeResult.score, outcome: resultLabel });
+      setWritingEvaluation({ ...completeResult, resultLabel });
+      setAiMessage("");
     } catch (error) {
       console.error("Writing evaluation error:", error);
       setAiMessage("Unable to evaluate writing.");
@@ -2075,21 +2087,59 @@ function App() {
             placeholder="Type what you hear in English..."
             value={writingAnswer}
             aria-busy={isAIThinking}
+            readOnly={Boolean(writingEvaluation)}
             onChange={(e) => setWritingAnswer(e.target.value)}
           />
-          <button
-            className="writing-ai-button"
-            onClick={checkWriting}
-            disabled={isAIThinking}
-          >
-            <span className="writing-check-icon" aria-hidden="true">✓</span>
-            <span className="writing-check-copy"><small>{isAIThinking ? "AI IS REVIEWING" : "READY TO REVIEW"}</small><strong>{isAIThinking ? "Evaluating..." : "Check Writing"}</strong></span>
-            <span className="writing-check-arrow" aria-hidden="true">→</span>
-          </button>
+          {!writingEvaluation && (
+            <button
+              className="writing-ai-button"
+              onClick={checkWriting}
+              disabled={isAIThinking}
+            >
+              <span className="writing-check-icon" aria-hidden="true">✓</span>
+              <span className="writing-check-copy"><small>{isAIThinking ? "AI IS REVIEWING" : "READY TO REVIEW"}</small><strong>{isAIThinking ? "Evaluating..." : "Check Writing"}</strong></span>
+              <span className="writing-check-arrow" aria-hidden="true">→</span>
+            </button>
+          )}
           {aiMessage && (
             <div className="writing-ai-evaluation" role="status" aria-live="polite">
               <div className="writing-evaluation-label">AI EVALUATION</div>
               <div className="writing-evaluation-text">{aiMessage}</div>
+            </div>
+          )}
+          {writingEvaluation && (
+            <div className={`writing-ai-evaluation ${writingEvaluation.accuracy === "Needs Practice" ? "needs-practice" : "is-correct"}`} role="status" aria-live="polite">
+              <div className="writing-evaluation-heading">
+                <div>
+                  <div className="writing-evaluation-label">REVIEW YOUR ANSWER · REVISA TU RESPUESTA</div>
+                  <strong>{writingEvaluation.resultLabel}</strong>
+                </div>
+                <span className="writing-evaluation-score">{writingEvaluation.score == null ? "—" : `${writingEvaluation.score}%`}</span>
+              </div>
+              <p className="writing-evaluation-text">{writingEvaluation.feedback}</p>
+              <div className="writing-answer-comparison">
+                <div>
+                  <small>YOUR ANSWER · TU RESPUESTA</small>
+                  <p>{writingEvaluation.writtenAnswer}</p>
+                </div>
+                <div className="expected">
+                  <small>CORRECT SENTENCE · ORACIÓN CORRECTA</small>
+                  <p>{writingEvaluation.expectedAnswer}</p>
+                </div>
+              </div>
+              {(writingEvaluation.details?.missingWords?.length > 0 || writingEvaluation.details?.extraWords?.length > 0 || writingEvaluation.details?.corrections?.length > 0) && (
+                <div className="writing-detail-list">
+                  {writingEvaluation.details.missingWords?.length > 0 && <p><strong>Missing / Faltó:</strong> {writingEvaluation.details.missingWords.join(", ")}</p>}
+                  {writingEvaluation.details.extraWords?.length > 0 && <p><strong>Extra:</strong> {writingEvaluation.details.extraWords.join(", ")}</p>}
+                  {writingEvaluation.details.corrections?.length > 0 && <p><strong>Spelling / Ortografía:</strong> {writingEvaluation.details.corrections.map((item) => `${item.written} → ${item.expected}`).join(", ")}</p>}
+                </div>
+              )}
+              <div className="writing-review-actions">
+                {writingEvaluation.accuracy !== "Excellent" && writingEvaluation.accuracy !== "Good" && (
+                  <button type="button" className="writing-review-retry" onClick={() => setWritingEvaluation(null)}>Try again · Intentar otra vez</button>
+                )}
+                <button type="button" className="writing-review-continue" onClick={nextWritingSentence}>Next sentence · Siguiente →</button>
+              </div>
             </div>
           )}
           <button className="english-coach-secondary" onClick={openCoachFrom} type="button">

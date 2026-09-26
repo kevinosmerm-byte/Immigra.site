@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import { writingSentences } from "../src/writingSentences.js";
 import { evaluateWritingSentence, normalizeWritingText } from "../src/writingEvaluator.js";
 
@@ -32,10 +33,13 @@ test("a small spelling error remains passing and identifies the expected word", 
   const result = evaluateWritingSentence(capital, "Washinton is the capital.");
   assert.equal(result.status, "correct_with_observations");
   assert.match(result.feedback, /Washington/);
+  assert.deepEqual(result.details.corrections, [{ written: "washinton", expected: "washington" }]);
 });
 
 test("missing essential words needs practice", () => {
-  assert.equal(evaluateWritingSentence(capital, "Washington is the").status, "needs_practice");
+  const result = evaluateWritingSentence(capital, "Washington is the");
+  assert.equal(result.status, "needs_practice");
+  assert.deepEqual(result.details.missingWords, ["capital"]);
 });
 
 test("negations are critical and change the result", () => {
@@ -58,4 +62,14 @@ test("the exact canonical sentence is fully correct", () => {
   assert.equal(result.status, "correct");
   assert.equal(result.accuracy, "Excellent");
   assert.equal(result.score, 100);
+});
+
+test("writing review stays visible until the learner chooses the next action", async () => {
+  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+  assert.match(app, /REVIEW YOUR ANSWER · REVISA TU RESPUESTA/);
+  assert.match(app, /YOUR ANSWER · TU RESPUESTA/);
+  assert.match(app, /CORRECT SENTENCE · ORACIÓN CORRECTA/);
+  assert.match(app, /onClick=\{nextWritingSentence\}>Next sentence/);
+  assert.match(app, /Semantic writing review unavailable; using deterministic review/);
+  assert.doesNotMatch(app, /setTimeout\(\(\) => \{\s*nextWritingSentence\(\)/);
 });

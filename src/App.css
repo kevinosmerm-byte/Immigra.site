@@ -19044,6 +19044,126 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   white-space: pre-line;
 }
 
+.writing-ai-input[readonly] {
+  border-color: rgba(0, 242, 254, 0.48);
+  background: rgba(6, 24, 53, 0.88);
+}
+
+.writing-ai-evaluation.needs-practice {
+  border-color: rgba(255, 78, 111, 0.52);
+  background: rgba(255, 78, 111, 0.055);
+}
+
+.writing-ai-evaluation.is-correct {
+  border-color: rgba(47, 221, 156, 0.46);
+  background: rgba(47, 221, 156, 0.05);
+}
+
+.writing-evaluation-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.writing-evaluation-heading strong {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1.18rem;
+}
+
+.writing-evaluation-score {
+  flex: 0 0 auto;
+  color: var(--accent-cyan);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.writing-answer-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.writing-answer-comparison > div {
+  min-width: 0;
+  padding: 0.85rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  background: rgba(2, 12, 29, 0.48);
+}
+
+.writing-answer-comparison .expected {
+  border-color: rgba(0, 242, 254, 0.3);
+}
+
+.writing-answer-comparison small {
+  display: block;
+  margin-bottom: 0.45rem;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.writing-answer-comparison p,
+.writing-detail-list p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.45;
+}
+
+.writing-detail-list {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.75rem 0.85rem;
+  border-left: 3px solid var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.04);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.86rem;
+}
+
+.writing-review-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.writing-review-actions button {
+  min-height: 44px;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.writing-review-retry {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: transparent;
+  color: white;
+}
+
+.writing-review-continue {
+  border: 1px solid var(--accent-cyan);
+  background: linear-gradient(135deg, #1684e8, #29c7dc);
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .writing-answer-comparison {
+    grid-template-columns: 1fr;
+  }
+
+  .writing-review-actions {
+    flex-direction: column-reverse;
+  }
+
+  .writing-review-actions button {
+    width: 100%;
+  }
+}
+
 /* ==========================================================================
    USCIS TRACKER & PROGRESS SCREENS
    ========================================================================== */

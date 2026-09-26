@@ -54,24 +54,49 @@ function observationFeedback(expected, answer, typo) {
   return "¡Correcto! La oración comunica el significado esperado; revisa los detalles de escritura.";
 }
 
+function writingDetails(expected, answer, comparison = null) {
+  const details = {
+    missingWords: [],
+    extraWords: [],
+    corrections: [],
+  };
+
+  if (comparison) {
+    details.missingWords = comparison.matches.filter((item) => !item.matched).map((item) => item.expected);
+    details.extraWords = comparison.extras;
+    details.corrections = comparison.matches
+      .filter((item) => item.typo)
+      .map((item) => ({ written: item.actual, expected: item.expected }));
+  }
+
+  details.capitalizationDiffers = normalizeWritingText(expected) === normalizeWritingText(answer)
+    && String(expected).trim().toLowerCase() === String(answer).trim().toLowerCase()
+    && String(expected).trim() !== String(answer).trim();
+  details.punctuationDiffers = normalizeWritingText(expected) === normalizeWritingText(answer)
+    && /[.!?]$/.test(String(expected).trim())
+    && !/[.!?]$/.test(String(answer).trim());
+
+  return details;
+}
+
 export function evaluateWritingSentence(sentence, answer) {
   const expected = sentence?.english || "";
   const normalizedExpected = normalizeWritingText(expected);
   const normalizedAnswer = normalizeWritingText(answer);
   if (!normalizedExpected || !normalizedAnswer) {
-    return { status: "needs_practice", resultLabel: "Necesita práctica", accuracy: "Needs Practice", score: 0, feedback: "Escribe la oración completa para continuar.", needsSemanticReview: false };
+    return { status: "needs_practice", resultLabel: "Necesita práctica", accuracy: "Needs Practice", score: 0, feedback: "Escribe la oración completa para continuar.", needsSemanticReview: false, details: writingDetails(expected, answer) };
   }
   const expectedWords = tokens(expected);
   const answerWords = tokens(answer);
   const unexpectedNegation = answerWords.some((word) => NEGATIONS.has(word)) && !expectedWords.some((word) => NEGATIONS.has(word));
   if (unexpectedNegation) {
-    return { status: "needs_practice", resultLabel: "Necesita práctica", accuracy: "Needs Practice", score: 40, feedback: "La negación cambia el significado de la oración. Inténtalo de nuevo.", needsSemanticReview: false };
+    return { status: "needs_practice", resultLabel: "Necesita práctica", accuracy: "Needs Practice", score: 40, feedback: "La negación cambia el significado de la oración. Inténtalo de nuevo.", needsSemanticReview: false, details: writingDetails(expected, answer) };
   }
   if (String(answer).trim() === expected.trim()) {
-    return { status: "correct", resultLabel: "Correcta", accuracy: "Excellent", score: 100, feedback: "¡Correcto!", needsSemanticReview: false };
+    return { status: "correct", resultLabel: "Correcta", accuracy: "Excellent", score: 100, feedback: "¡Correcto!", needsSemanticReview: false, details: writingDetails(expected, answer) };
   }
   if (normalizedAnswer === normalizedExpected) {
-    return { status: "correct_with_observations", resultLabel: "Correcta con observaciones", accuracy: "Good", score: 90, feedback: observationFeedback(expected, String(answer), null), needsSemanticReview: false };
+    return { status: "correct_with_observations", resultLabel: "Correcta con observaciones", accuracy: "Good", score: 90, feedback: observationFeedback(expected, String(answer), null), needsSemanticReview: false, details: writingDetails(expected, answer) };
   }
 
   const comparison = matchWords(expectedWords, answerWords);
@@ -82,11 +107,11 @@ export function evaluateWritingSentence(sentence, answer) {
   const unsafeExtra = comparison.extras.some((word) => NEGATIONS.has(word) || essential.has(word) || /\d/.test(word));
   if (!missingEssential.length && coverage >= 0.8 && !unsafeExtra && comparison.extras.length === 0) {
     const typo = comparison.matches.find((item) => item.typo);
-    return { status: "correct_with_observations", resultLabel: "Correcta con observaciones", accuracy: "Good", score: typo ? 85 : 88, feedback: observationFeedback(expected, String(answer), typo), needsSemanticReview: false };
+    return { status: "correct_with_observations", resultLabel: "Correcta con observaciones", accuracy: "Good", score: typo ? 85 : 88, feedback: observationFeedback(expected, String(answer), typo), needsSemanticReview: false, details: writingDetails(expected, answer, comparison) };
   }
   // A close response with all essential concepts can use semantic review; clear omissions never invoke AI.
   if (!missingEssential.length && coverage >= 0.65 && !unsafeExtra) {
-    return { status: "ambiguous", resultLabel: "Revisión necesaria", accuracy: "Needs Review", score: null, feedback: "La oración parece cercana; revisaremos el significado.", needsSemanticReview: true };
+    return { status: "ambiguous", resultLabel: "Revisión necesaria", accuracy: "Needs Review", score: null, feedback: "La oración parece cercana; revisaremos el significado.", needsSemanticReview: true, details: writingDetails(expected, answer, comparison) };
   }
-  return { status: "needs_practice", resultLabel: "Necesita práctica", accuracy: "Needs Practice", score: Math.round(coverage * 60), feedback: "Faltan palabras esenciales o cambió el significado. Inténtalo de nuevo.", needsSemanticReview: false };
+  return { status: "needs_practice", resultLabel: "Necesita práctica", accuracy: "Needs Practice", score: Math.round(coverage * 60), feedback: "Faltan palabras esenciales o cambió el significado. Inténtalo de nuevo.", needsSemanticReview: false, details: writingDetails(expected, answer, comparison) };
 }
