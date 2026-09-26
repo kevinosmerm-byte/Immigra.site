@@ -170,5 +170,12 @@ export function summarizeQuizProgress(progress = {}, totalQuestions = 128) {
   const attempted = states.filter((item) => item.attempts > 0).length;
   const mastered = states.filter((item) => (item.mastery || 0) >= 0.75).length;
   const recommended = QUIZ_LEVELS.find(({ id }) => averages[id] < 70)?.id || "challenge";
-  return { attempted, mastered, percent: Math.round((mastered / totalQuestions) * 100), averages, recommended };
+  return {
+    attempted,
+    attemptedPercent: Math.round((attempted / totalQuestions) * 100),
+    mastered,
+    percent: Math.round((mastered / totalQuestions) * 100),
+    averages,
+    recommended,
+  };
 }

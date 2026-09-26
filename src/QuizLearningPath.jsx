@@ -10,7 +10,7 @@ const COPY = {
   en: {
     back: "128 Questions", eyebrow: "ADAPTIVE CIVICS QUIZ", title: "Build mastery step by step.",
     intro: "Move from key words to independent recall. Every official acceptable answer remains valid.",
-    progress: "Your progress", mastered: "questions mastered", recommended: "Recommended next",
+    progress: "Your progress", practiced: "questions practiced", mastered: "questions mastered", recommended: "Recommended next",
     quick: "Quick challenge · 10 questions", question: "Question", continue: "Continue",
     check: "Check answer", placeholder: "Type any official acceptable answer…", correct: "Correct",
     review: "Review this one", incomplete: "Add the remaining official answer.", preferred: "Recommended answer to memorize",
@@ -26,7 +26,7 @@ const COPY = {
   es: {
     back: "128 Preguntas", eyebrow: "QUIZ CÍVICO ADAPTATIVO", title: "Domina cada paso.",
     intro: "Avanza desde palabras clave hasta recordar sin ayuda. Todas las respuestas oficiales aceptables siguen siendo válidas.",
-    progress: "Tu progreso", mastered: "preguntas dominadas", recommended: "Siguiente recomendado",
+    progress: "Tu progreso", practiced: "preguntas practicadas", mastered: "preguntas dominadas", recommended: "Siguiente recomendado",
     quick: "Desafío rápido · 10 preguntas", question: "Pregunta", continue: "Continuar",
     check: "Comprobar respuesta", placeholder: "Escribe cualquier respuesta oficial aceptable…", correct: "Correcto",
     review: "Repasa esta pregunta", incomplete: "Agrega la respuesta oficial que falta.", preferred: "Respuesta recomendada para memorizar",
@@ -90,8 +90,8 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", o
             <span>{copy.eyebrow}</span><h1>{copy.title}</h1><p>{copy.intro}</p>
           </section>
           <section className="quiz-path-progress" aria-label={copy.progress}>
-            <div><span>{copy.progress}</span><strong>{summary.mastered} / 128</strong><small>{copy.mastered}</small></div>
-            <div className="quiz-path-progress-ring" style={{ "--quiz-progress": `${summary.percent * 3.6}deg` }}><b>{summary.percent}%</b></div>
+            <div><span>{copy.progress}</span><strong>{summary.attempted} / 128</strong><small>{copy.practiced} · {summary.mastered} {copy.mastered}</small></div>
+            <div className="quiz-path-progress-ring" style={{ "--quiz-progress": `${summary.attemptedPercent * 3.6}deg` }}><b>{summary.attemptedPercent}%</b></div>
           </section>
           <div className="quiz-level-list">
             {QUIZ_LEVELS.map((level) => {

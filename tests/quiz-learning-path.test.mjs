@@ -68,6 +68,20 @@ test("progress persists independently for each authenticated user and question",
   assert.equal(getQuizProgress("user-b", storage)[questions[1].questionId].attempts, 1);
 });
 
+test("the visible quiz counter advances on practice without inflating mastery", () => {
+  const storage = memoryStorage();
+  const progress = recordQuizAttempt({
+    userKey: "counter", question: questions[0], mode: "vocabulary", correct: true, score: 100,
+    answeredAt: "2026-09-23T12:00:00.000Z", storage,
+  });
+  const summary = summarizeQuizProgress(progress, questions.length);
+
+  assert.equal(summary.attempted, 1);
+  assert.equal(summary.attemptedPercent, 1);
+  assert.equal(summary.mastered, 0);
+  assert.equal(summary.percent, 0);
+});
+
 test("sessions are adaptive and avoid unverified dynamic officeholder answers", () => {
   const storage = memoryStorage();
   const firstQuestion = questions.find((question) => !question.isDynamic);
@@ -94,6 +108,8 @@ test("the existing Quiz control routes to the mobile-first learning path", async
   assert.match(app, /navigateTo\("quiz"\)/);
   assert.match(app, /userKey=\{session\?\.user\?\.id \|\| "guest"\}/);
   assert.match(component, /evaluateQuizResponse\(question, value\)/);
+  assert.match(component, /summary\.attempted} \/ 128/);
+  assert.match(component, /summary\.attemptedPercent \* 3\.6/);
   assert.match(component, /Recommended answer to memorize/);
   assert.match(styles, /\.quiz-path-screen/);
   assert.match(styles, /@media \(max-width: 390px\)/);
