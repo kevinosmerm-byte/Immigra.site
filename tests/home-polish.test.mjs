@@ -4,17 +4,20 @@ import { readFile } from "node:fs/promises";
 
 const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
 
-test("Spanish home copy does not leave the primary dashboard headings in English", () => {
+test("Spanish home copy keeps the remaining dashboard headings translated", () => {
   for (const text of [
     "ENTRENAMIENTO DE CIUDADANÍA CON IA",
-    "PRÁCTICA RÁPIDA",
-    "Entrena con IA",
     "TU PREPARACIÓN",
     "VER PROGRESO",
     "Seguimiento del caso",
   ]) {
     assert.match(app, new RegExp(text));
   }
+});
+
+test("Home opens directly into practice cards without a redundant section banner", () => {
+  assert.match(app, /className="home-new-section home-practice-section"/);
+  assert.doesNotMatch(app, /copy\.quickPractice|copy\.trainWithAi/);
 });
 
 test("Home preparation card uses measured progress instead of hard-coded zeroes", () => {

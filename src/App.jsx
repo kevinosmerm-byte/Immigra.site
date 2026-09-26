@@ -233,8 +233,6 @@ function Home({
   const copy = language === "en" ? {
     status: "AI-POWERED CITIZENSHIP TRAINING",
     aiReady: "AI READY",
-    quickPractice: "QUICK PRACTICE",
-    trainWithAi: "Train with AI",
     ready: "READY",
     english: "ENGLISH",
     reading: "Reading",
@@ -254,8 +252,6 @@ function Home({
   } : {
     status: "ENTRENAMIENTO DE CIUDADANÍA CON IA",
     aiReady: "IA LISTA",
-    quickPractice: "PRÁCTICA RÁPIDA",
-    trainWithAi: "Entrena con IA",
     ready: "LISTO",
     english: "INGLÉS",
     reading: "Lectura",
@@ -442,23 +438,7 @@ function Home({
 
         {/* ================= QUICK PRACTICE ================= */}
 
-        <section className="home-new-section">
-
-          <div className="home-section-heading">
-
-            <div>
-              <small>{copy.quickPractice}</small>
-              <h2>{copy.trainWithAi}</h2>
-            </div>
-
-            <span className="section-live">
-              <i></i>
-              {copy.ready}
-            </span>
-
-          </div>
-
-
+        <section className="home-new-section home-practice-section">
           <div className="home-practice-list">
 
             <button
