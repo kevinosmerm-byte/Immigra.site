@@ -20,7 +20,7 @@ import { evaluateWritingSentence } from "./writingEvaluator.js";
 import { CivicsStudyCard } from "./CivicsStudyCard.jsx";
 import { createNavigationHistory, navigateBack, navigateForward } from "./navigationHistory.js";
 import { getCivicsVisual } from "./data/civicsVisuals.js";
-import { emitCompanionResult, emitCompanionState, getCompanionVisibility, setCompanionSessionVisibility, setCompanionVisibility } from "./companionEvents.js";
+import { emitCompanionResult, emitCompanionState } from "./companionEvents.js";
 import { N400InterviewPractice } from "./N400InterviewPractice.jsx";
 
 
@@ -646,8 +646,6 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const [hasRetried, setHasRetried] = useState(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   const [interviewer, setInterviewer] = useState("sarah");
-  const [companionEnabled, setCompanionEnabled] = useState(getCompanionVisibility);
-  const [companionHiddenForInterview, setCompanionHiddenForInterview] = useState(false);
   const recorderRef = useRef(null);
   const completionReportedRef = useRef(false);
   const speechRequestRef = useRef(0);
@@ -667,33 +665,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
 
   useEffect(() => {
     if (mode === "full") emitCompanionState("idle", { duration: 0, silent: true });
-    return () => setCompanionSessionVisibility(getCompanionVisibility());
   }, [mode]);
-
-  const toggleCompanion = () => {
-    const next = setCompanionVisibility(!companionEnabled);
-    setCompanionEnabled(next);
-    setCompanionHiddenForInterview(false);
-  };
-
-  const toggleCompanionForInterview = () => {
-    const nextHidden = !companionHiddenForInterview;
-    setCompanionHiddenForInterview(nextHidden);
-    setCompanionSessionVisibility(!nextHidden);
-  };
-
-  const companionControls = (
-    <div className="interview-companion-controls" aria-label="Learning companion controls">
-      <button type="button" aria-pressed={companionEnabled} onClick={toggleCompanion}>
-        Companion: {companionEnabled ? "On" : "Off"}
-      </button>
-      {companionEnabled && (
-        <button type="button" onClick={toggleCompanionForInterview}>
-          {companionHiddenForInterview ? "Show companion" : "Hide for this interview"}
-        </button>
-      )}
-    </div>
-  );
 
   useEffect(() => {
     if (!isInterviewComplete || completionReportedRef.current) return;
@@ -942,7 +914,6 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
             <strong>CITIZENSHIP <span>AI</span></strong>
             <small>LIVE N-400 + CIVICS INTERVIEW</small>
           </div>
-          {companionControls}
         </header>
         <main className="interview-content live-avatar-only-content">
           <DidLiveAvatar autoStart />
@@ -961,7 +932,6 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
           <strong>CITIZENSHIP <span>AI</span></strong>
           <small>{mode === "civics" ? "LIVE CIVICS INTERVIEW" : "LIVE N-400 + CIVICS INTERVIEW"}</small>
         </div>
-        {companionControls}
         <button
           className="more-button interview-repeat-button"
           onClick={() => speakQuestion(questionText(questions[currentQuestion]))}

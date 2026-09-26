@@ -13,12 +13,7 @@ import {
   recordN400FollowUpAnswer,
   selectNextN400Question,
 } from "./n400InterviewEngine.js";
-import {
-  emitCompanionState,
-  getCompanionVisibility,
-  setCompanionSessionVisibility,
-  setCompanionVisibility,
-} from "./companionEvents.js";
+import { emitCompanionState } from "./companionEvents.js";
 
 function createInitialFlow() {
   const initialState = createN400InterviewState(n400Bank);
@@ -61,8 +56,6 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart }) {
   const [isComplete, setIsComplete] = useState(false);
   const [skipped, setSkipped] = useState(0);
   const [interviewer, setInterviewer] = useState("sarah");
-  const [companionEnabled, setCompanionEnabled] = useState(getCompanionVisibility);
-  const [companionHidden, setCompanionHidden] = useState(false);
   const recorderRef = useRef(null);
   const speechRequestRef = useRef(0);
   const completionReportedRef = useRef(false);
@@ -224,18 +217,6 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart }) {
     advanceToNextConcept(recordN400Answer(flow.state, activeQuestion, ""));
   };
 
-  const toggleCompanion = () => {
-    const next = setCompanionVisibility(!companionEnabled);
-    setCompanionEnabled(next);
-    setCompanionHidden(false);
-  };
-
-  const toggleCompanionForInterview = () => {
-    const nextHidden = !companionHidden;
-    setCompanionHidden(nextHidden);
-    setCompanionSessionVisibility(!nextHidden);
-  };
-
   if (isComplete) {
     return (
       <div className="interview-screen">
@@ -261,10 +242,6 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart }) {
       <header className="interview-header">
         <button className="back-button interview-exit-button" onClick={onExit} aria-label="Exit N-400 practice"><span aria-hidden="true">×</span></button>
         <div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>INTERACTIVE N-400 PRACTICE</small></div>
-        <div className="interview-companion-controls" aria-label="Learning companion controls">
-          <button type="button" aria-pressed={companionEnabled} onClick={toggleCompanion}>Companion: {companionEnabled ? "On" : "Off"}</button>
-          {companionEnabled && <button type="button" onClick={toggleCompanionForInterview}>{companionHidden ? "Show companion" : "Hide for this interview"}</button>}
-        </div>
         <button className="more-button interview-repeat-button" onClick={() => speakQuestion(question.english)} aria-label={`Repeat ${interviewerName}'s question`} title="Repeat question">↻</button>
       </header>
 

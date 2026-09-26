@@ -27451,42 +27451,6 @@ select { font: inherit; }
   .quiz-session-track i { transition: none; }
 }
 
-/* N-400 practice and non-intrusive companion controls. */
-.interview-header { position: relative; }
-.interview-companion-controls {
-  position: absolute;
-  z-index: 20;
-  top: calc(100% + 8px);
-  right: 14px;
-  display: flex;
-  gap: 6px;
-  max-width: min(92vw, 380px);
-}
-.interview-companion-controls button {
-  min-height: 34px;
-  padding: 7px 10px;
-  border: 1px solid rgba(79, 211, 246, .38);
-  border-radius: 999px;
-  color: #dff8ff;
-  background: rgba(5, 22, 46, .92);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, .25);
-  backdrop-filter: blur(12px);
-  font-family: inherit;
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: .025em;
-  cursor: pointer;
-}
-.interview-companion-controls button[aria-pressed="false"] {
-  color: #9eacc0;
-  border-color: rgba(151, 168, 193, .28);
-}
-.interview-companion-controls button:focus-visible {
-  outline: 3px solid #3eddf7;
-  outline-offset: 2px;
-}
-
 .n400-question-card .question { max-width: 820px; }
 .n400-session-progress {
   width: 100%;
@@ -27538,16 +27502,6 @@ select { font: inherit; }
 }
 
 @media (max-width: 600px) {
-  .interview-companion-controls {
-    top: calc(100% + 5px);
-    right: 8px;
-    gap: 4px;
-  }
-  .interview-companion-controls button {
-    min-height: 30px;
-    padding: 6px 8px;
-    font-size: 8px;
-  }
   .n400-question-card .live-question-header > span { max-width: 48%; text-align: right; }
   .n400-progress-label { font-size: .58rem; }
 }

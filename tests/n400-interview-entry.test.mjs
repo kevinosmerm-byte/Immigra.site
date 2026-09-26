@@ -34,12 +34,13 @@ test("N-400 practice uses the versioned bank and can restart in place", () => {
   assert.doesNotMatch(n400Component, /apiJson|evaluateCivicsAnswer|correctAnswer/);
 });
 
-test("full interview keeps the companion neutral while practice exposes user controls", () => {
+test("interviews keep the companion neutral without redundant header controls", () => {
   assert.match(app, /mode === "full"\) emitCompanionState\("idle", \{ duration: 0, silent: true \}\)/);
-  assert.match(app, /Companion: \{companionEnabled \? "On" : "Off"\}/);
-  assert.match(app, /Hide for this interview/);
+  assert.doesNotMatch(app, /Companion:|Hide for this interview|interview-companion-controls/);
+  assert.doesNotMatch(n400Component, /Companion:|Hide for this interview|interview-companion-controls/);
   assert.match(companion, /data-silent/);
-  assert.match(styles, /\.interview-companion-controls/);
+  assert.doesNotMatch(styles, /\.interview-companion-controls/);
+  assert.match(companion, /querySelector\("\.figure"\)\.addEventListener\("click"/);
 });
 
 test("N-400 selection preserves block order and never repeats a concept", () => {
