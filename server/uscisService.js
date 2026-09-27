@@ -90,6 +90,7 @@ async function requestAccessToken(config, fetchImpl) {
   if (!response.ok || !asText(payload.access_token)) {
     const error = new Error("USCIS authentication failed.");
     error.status = response.status || 502;
+    error.source = "authentication";
     throw error;
   }
 
@@ -107,6 +108,7 @@ export async function fetchUscisCaseStatus(receiptNumber, { environment = proces
   if (!config.clientId || !config.clientSecret || !config.tokenUrl || !config.apiUrl) {
     const error = new Error("USCIS case status is not configured yet.");
     error.status = 503;
+    error.source = "configuration";
     throw error;
   }
 
@@ -123,6 +125,7 @@ export async function fetchUscisCaseStatus(receiptNumber, { environment = proces
     const error = new Error(response.status === 404 ? "We couldn't find information for this Sandbox receipt number." : "We couldn't check USCIS right now. Please try again later.");
     error.status = response.status || 502;
     error.traceId = traceId;
+    error.source = "uscis";
     throw error;
   }
 

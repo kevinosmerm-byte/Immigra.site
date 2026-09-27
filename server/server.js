@@ -676,10 +676,12 @@ app.post("/avatar/session", requireAiFeature("realInterview"), requireAuthorized
 
 function classifyUscisFailure(error) {
   const status = Number(error?.status) || 500;
+  if (error?.source === "configuration") return "configuration";
+  if (error?.source === "authentication") return "authentication";
+  if (error?.source === "uscis" && status >= 500) return "uscis_upstream";
   if (status === 401 || status === 403) return "authentication";
   if (status === 404) return "not_found";
   if (status === 429) return "rate_limited";
-  if (status === 503) return "configuration";
   return status >= 500 ? "upstream_or_server" : "request";
 }
 
