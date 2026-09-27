@@ -343,6 +343,12 @@ function Home({
               : "Prepárate para tu entrevista de ciudadanía de EE. UU. con práctica personalizada de IA."}
             </p>
 
+            <div className="home-value-points" aria-label={language === "en" ? "Key benefits" : "Beneficios principales"}>
+              <span>✓ {language === "en" ? "Bilingual practice" : "Práctica bilingüe"}</span>
+              <span>✓ {language === "en" ? "Personalized progress" : "Progreso personalizado"}</span>
+              <span>✓ {language === "en" ? "Official resources" : "Recursos oficiales"}</span>
+            </div>
+
           </div>
 
 
@@ -378,7 +384,7 @@ function Home({
                 <svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10 5-3v10l-5-3z"/></svg>
               </span>
               <div>
-                <small>{language === "en" ? "SARAH LIVE VIDEO" : "VIDEO EN VIVO CON SARAH"}</small>
+                <small>{language === "en" ? "START HERE · SARAH LIVE VIDEO" : "COMIENZA AQUÍ · VIDEO CON SARAH"}</small>
                 <strong>{language === "en" ? "REAL INTERVIEW" : "ENTREVISTA REAL"}</strong>
               </div>
               <span className="primary-arrow">→</span>

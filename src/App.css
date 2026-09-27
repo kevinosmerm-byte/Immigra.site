@@ -24106,6 +24106,84 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   animation: none !important;
 }
 
+/* ========================================================================
+   HOME FIRST-VIEW CONVERSION PASS
+   One obvious starting action, concise proof points, and a compact secondary
+   action grid keep the most useful choices visible in the first phone view.
+   ======================================================================== */
+.home-value-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 14px;
+  margin-top: 14px;
+  color: rgba(205, 224, 244, .76);
+  font-size: .68rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.home-value-points span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Complete the existing notch support for landscape and the home indicator. */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .home-new-header,
+  .home-ai-header,
+  .interview-header,
+  .practice-header,
+  .writing-ai-header,
+  .settings-header,
+  .podcast-header,
+  .immigration-help-header {
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-left: max(16px, env(safe-area-inset-left));
+  }
+
+  .home-new-nav,
+  .home-ai-nav {
+    bottom: max(10px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 700px) {
+  .home-ai .home-new-hero {
+    padding-top: 24px !important;
+    padding-bottom: 8px !important;
+  }
+
+  .home-hero-copy h1,
+  .home-ai-hero h1 {
+    max-width: 100%;
+    font-size: clamp(2.35rem, 11vw, 3rem) !important;
+    line-height: .94 !important;
+    letter-spacing: -.055em !important;
+  }
+
+  .home-hero-copy p,
+  .home-ai-hero p {
+    max-width: 35rem;
+    margin-top: 11px;
+    font-size: .76rem;
+  }
+
+  .home-value-points {
+    gap: 6px 10px;
+    margin-top: 11px;
+    font-size: .61rem;
+  }
+
+}
+
+@media (max-width: 370px) {
+  .home-value-points span:nth-child(2) {
+    display: none;
+  }
+
+}
+
 /* ===== IMMIGRATION HELP CENTER ===== */
 .home-immigration-help-card { display:grid; grid-template-columns:auto 1fr; gap:15px; margin-top:12px; padding:19px; border:1px solid rgba(119,104,255,.38); border-radius:19px; background:linear-gradient(145deg,rgba(34,28,83,.9),rgba(5,19,43,.96)); box-shadow:0 16px 38px rgba(0,0,0,.24); }
 .home-immigration-help-icon { display:grid; width:46px; height:46px; place-items:center; border:1px solid rgba(113,218,255,.33); border-radius:14px; background:rgba(65,156,255,.12); font-size:22px; }
@@ -28510,4 +28588,135 @@ html[data-theme="light"] .settings-notice {
 @media (max-width: 430px) {
   .appearance-settings { padding: 14px; }
   .theme-choice button { gap: 4px; font-size: .68rem; }
+}
+
+/* Final cascade for the Home conversion layout. */
+.home-interview-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.home-interview-actions .home-real-interview-button {
+  grid-column: 1 / -1;
+  min-height: 78px;
+  border-color: rgba(74, 219, 255, .48);
+  background:
+    radial-gradient(circle at 8% 50%, rgba(39, 226, 255, .2), transparent 34%),
+    linear-gradient(105deg, rgba(7, 91, 151, .98), rgba(46, 77, 202, .98));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 15px 34px rgba(17, 111, 218, .25);
+}
+
+.home-interview-actions .home-primary-button:not(.home-real-interview-button) {
+  grid-template-columns: 42px minmax(0, 1fr) 30px;
+  gap: 10px;
+  min-height: 68px;
+}
+
+.home-interview-actions .home-primary-button:not(.home-real-interview-button) .home-action-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.home-interview-actions .home-primary-button:not(.home-real-interview-button) small {
+  font-size: clamp(7px, 1.35vw, 9px);
+}
+
+.home-interview-actions .home-primary-button:not(.home-real-interview-button) strong {
+  font-size: clamp(13px, 2.4vw, 16px);
+}
+
+html[data-theme="light"] .home-value-points {
+  color: #47617e;
+}
+
+html[data-theme="light"] .home-interview-actions .home-real-interview-button {
+  border-color: rgba(16, 125, 224, .32);
+  color: #fff;
+  background:
+    radial-gradient(circle at 8% 50%, rgba(89, 225, 255, .25), transparent 35%),
+    linear-gradient(105deg, #087fc3, #286fe3);
+  box-shadow: 0 14px 30px rgba(31, 111, 201, .2), inset 0 1px 0 rgba(255,255,255,.24);
+}
+
+@media (max-width: 700px) {
+  .home-interview-actions .home-real-interview-button {
+    min-height: 70px;
+  }
+
+  .home-interview-actions .home-primary-button:not(.home-real-interview-button) {
+    min-height: 76px;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 8px;
+    padding: 9px;
+  }
+
+  .home-interview-actions .home-primary-button:not(.home-real-interview-button) .home-action-icon {
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+  }
+
+  .home-interview-actions .home-primary-button:not(.home-real-interview-button) .home-action-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .home-interview-actions .home-primary-button:not(.home-real-interview-button) small,
+  .home-interview-actions .home-primary-button:not(.home-real-interview-button) > .primary-arrow {
+    display: none !important;
+  }
+
+  .home-interview-actions .home-primary-button:not(.home-real-interview-button) strong {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: clamp(.72rem, 3.25vw, .88rem);
+    line-height: 1.16;
+    white-space: normal;
+    text-overflow: clip;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+}
+
+@media (max-width: 430px) {
+  .home-interview-actions .home-primary-button:not(.home-real-interview-button) strong {
+    font-size: clamp(.67rem, 2.9vw, .78rem);
+  }
+}
+
+/* Light theme: icons need explicit contrast against white glass surfaces. */
+html[data-theme="light"] .home-interview-actions .home-action-icon {
+  border-color: color-mix(in srgb, var(--action-accent) 48%, #c5d8eb);
+  color: color-mix(in srgb, var(--action-accent) 82%, #07345f);
+  background: color-mix(in srgb, var(--action-accent) 24%, white);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 8px 20px color-mix(in srgb, var(--action-accent) 18%, transparent);
+}
+
+html[data-theme="light"] .home-interview-actions .home-action-icon svg,
+html[data-theme="light"] .home-account-button svg,
+html[data-theme="light"] .home-settings-button svg {
+  stroke-width: 2;
+}
+
+html[data-theme="light"] .mini-icon {
+  border-color: rgba(4, 132, 182, .34);
+  color: #066eaa;
+  background: linear-gradient(145deg, rgba(87, 229, 211, .34), rgba(211, 250, 245, .9));
+  box-shadow: inset 0 1px 0 #fff, 0 7px 16px rgba(3, 126, 169, .12);
+}
+
+html[data-theme="light"] .practice-mini-card:last-child .mini-icon {
+  border-color: rgba(100, 61, 210, .32);
+  color: #5c2cc9;
+  background: linear-gradient(145deg, rgba(142, 110, 242, .28), rgba(239, 233, 255, .94));
+  box-shadow: inset 0 1px 0 #fff, 0 7px 16px rgba(91, 57, 190, .12);
+}
+
+html[data-theme="light"] .home-new-nav .home-nav-item > span {
+  color: #315d8f;
+}
+
+html[data-theme="light"] .home-new-nav .home-nav-item.active > span {
+  color: #057ecb;
 }
