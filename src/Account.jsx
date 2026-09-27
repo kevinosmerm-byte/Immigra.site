@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { useEffect, useMemo, useState } from "react";
+import { PRO_PLAN } from "../shared/featureAccessConfig.js";
 import { AccountContext, useAccount } from "./accountContext.js";
 
 const browserSupabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
@@ -20,7 +21,7 @@ const COPY = {
     sent: "Check your email. We sent you a secure sign-in link.", signedIn: "SIGNED IN", signOut: "SIGN OUT", close: "Close account panel",
     optional: "Optional during the launch promotion. You can continue using the app without signing in.", unavailable: "Accounts are being prepared. You can continue using the app normally.",
     error: "We could not send the sign-in link. Please try again.", usage: "AI ACCESS", promotion: "Launch promotion active", free: "Free account",
-    usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.", deleteAccount: "DELETE ACCOUNT", deleteTitle: "Permanently delete account?", deleteBody: "This removes your cloud account, AI allowances, and usage records. Local study progress on this device is not removed.", deletePrompt: "Type DELETE to confirm", deleting: "DELETING…", cancel: "CANCEL", deleteError: "We could not delete your account. Please try again.",
+    usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", pricing: "PRO PRICING", launchPrice: "Launch offer", regularPrice: "Regular $5.99/month", annualPrice: "$49.99/year", pricingStatus: "Purchases are not active yet.", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.", deleteAccount: "DELETE ACCOUNT", deleteTitle: "Permanently delete account?", deleteBody: "This removes your cloud account, AI allowances, and usage records. Local study progress on this device is not removed.", deletePrompt: "Type DELETE to confirm", deleting: "DELETING…", cancel: "CANCEL", deleteError: "We could not delete your account. Please try again.",
   },
   es: {
     account: "Cuenta", title: "Tu cuenta de Citizenship AI", intro: "Inicia sesión para conectar de forma segura los futuros límites de IA y suscripciones entre tus dispositivos.",
@@ -28,7 +29,7 @@ const COPY = {
     sent: "Revisa tu correo. Te enviamos un enlace seguro para iniciar sesión.", signedIn: "SESIÓN INICIADA", signOut: "CERRAR SESIÓN", close: "Cerrar panel de cuenta",
     optional: "Es opcional durante la promoción de lanzamiento. Puedes continuar usando la aplicación sin iniciar sesión.", unavailable: "Las cuentas se están preparando. Puedes continuar usando la aplicación normalmente.",
     error: "No pudimos enviar el enlace. Inténtalo nuevamente.", usage: "ACCESO A IA", promotion: "Promoción de lanzamiento activa", free: "Cuenta gratuita",
-    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles", requests: "solicitudes al proveedor", exportData: "DESCARGAR MIS DATOS", exporting: "PREPARANDO…", exportError: "No pudimos preparar los datos de tu cuenta. Inténtalo nuevamente.", deleteAccount: "ELIMINAR CUENTA", deleteTitle: "¿Eliminar la cuenta permanentemente?", deleteBody: "Esto elimina tu cuenta en la nube, límites de IA y registros de uso. El progreso local de estudio en este dispositivo no se elimina.", deletePrompt: "Escribe DELETE para confirmar", deleting: "ELIMINANDO…", cancel: "CANCELAR", deleteError: "No pudimos eliminar tu cuenta. Inténtalo nuevamente.",
+    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles", requests: "solicitudes al proveedor", pricing: "PRECIO PRO", launchPrice: "Oferta de lanzamiento", regularPrice: "Regular $5.99/mes", annualPrice: "$49.99/año", pricingStatus: "Las compras aún no están activas.", exportData: "DESCARGAR MIS DATOS", exporting: "PREPARANDO…", exportError: "No pudimos preparar los datos de tu cuenta. Inténtalo nuevamente.", deleteAccount: "ELIMINAR CUENTA", deleteTitle: "¿Eliminar la cuenta permanentemente?", deleteBody: "Esto elimina tu cuenta en la nube, límites de IA y registros de uso. El progreso local de estudio en este dispositivo no se elimina.", deletePrompt: "Escribe DELETE para confirmar", deleting: "ELIMINANDO…", cancel: "CANCELAR", deleteError: "No pudimos eliminar tu cuenta. Inténtalo nuevamente.",
   },
 };
 
@@ -304,6 +305,11 @@ export function AccountSheet({ language = "en", onClose }) {
             {status && <p className={`account-status ${status}`}>{status === "sent" ? copy.sent : copy.error}</p>}
           </form>
         )}
+        <div className="account-pricing" aria-label={copy.pricing}>
+          <span>{copy.pricing}</span>
+          <div><strong>{copy.launchPrice} ${(PRO_PLAN.introductoryMonthlyPriceCents / 100).toFixed(2)}/mo</strong><small>{copy.regularPrice} · {copy.annualPrice}</small></div>
+          <em>{copy.pricingStatus}</em>
+        </div>
         <p className="account-note">{copy.optional}</p>
       </section>
     </div>

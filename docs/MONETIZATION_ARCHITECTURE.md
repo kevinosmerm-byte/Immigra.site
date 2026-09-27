@@ -12,9 +12,9 @@ This matches the current React + Capacitor + Express architecture and keeps Goog
 2. **Account foundation — active.** Supabase is configured, and the optional email-link account UI preserves anonymous promotional access and local progress.
 3. **Durable usage ledger — prepared.** The migration creates profiles, entitlements, feature configuration, sessions, rewards and privacy-conscious usage events.
 4. **Endpoint protection — complete.** Signed-in AI calls carry an authenticated, active `ai_session_id`, and the server verifies ownership and feature matching before provider work.
-5. **Quota UI — promotional version complete.** The current sheet informs users of future Pro pricing and permits continued promotional access.
+5. **Quota and pricing UI — complete.** The current sheet shows the approved $4.99 introductory, $5.99 regular and $49.99 annual offer while clearly stating that purchases are not active, and permits continued promotional access.
 6. **Rewarded ads — future.** AdMob server-side verification will grant credits; the client will never grant its own reward.
-7. **Subscriptions — future.** Provider webhooks will update `entitlements`; app code only asks whether Pro is active.
+7. **Subscriptions — pricing approved, provider activation future.** Provider webhooks will update `entitlements`; app code only asks whether Pro is active. Approved prices and allowances live in shared configuration and `docs/PRICING_MODEL.md`.
 8. **Cost telemetry — active.** Provider, model, token totals, request count and transcription duration are recorded without conversation or audio content.
    Text responses are capped at 220 output tokens by default (server-configurable, hard ceiling 600), and microphone clips stop automatically after 45 seconds.
    OpenAI requests time out after 30 seconds with at most one SDK retry; D-ID and USCIS requests time out after 15 seconds.

@@ -25484,6 +25484,11 @@ select { font: inherit; }
 .promotion-access-pro div { display: grid; gap: 4px; }
 .promotion-access-pro strong { color: #f4f8ff; font-size: .75rem; letter-spacing: .04em; }
 .promotion-access-pro small { color: #899bb5; font-size: .65rem; line-height: 1.35; }
+.promotion-access-pro-copy { min-width: 0; }
+.promotion-access-price { display: flex !important; flex-wrap: wrap; align-items: baseline; gap: 4px 8px !important; margin-top: 6px; }
+.promotion-access-price b { color: #42e4ff; font-size: .72rem; letter-spacing: .02em; }
+.promotion-access-price span { color: #b4c6dd; font-size: .62rem; }
+.promotion-access-pro em { color: #71839d; font-size: .58rem; font-style: normal; line-height: 1.35; }
 
 .promotion-access-divider { display: flex; align-items: center; gap: 10px; margin: 18px 0 14px; }
 .promotion-access-divider span { height: 1px; flex: 1; background: rgba(123, 163, 213, .16); }
@@ -25585,6 +25590,12 @@ select { font: inherit; }
 .account-usage-row { display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:9px; min-height:28px; padding-top:7px; border-top:1px solid rgba(110,172,235,.12); color:#d9e7f5; font-size:.72rem; }
 .account-usage-row strong { color:#fff; font-size:.72rem; }
 .account-usage-row small { min-width:76px; color:#7790aa; font-size:.59rem; text-align:right; }
+.account-pricing { display:grid; grid-template-columns:auto minmax(0,1fr); gap:8px 12px; margin:14px 0 0; padding:13px 14px; border:1px solid rgba(66,228,255,.24); border-radius:16px; background:linear-gradient(135deg,rgba(21,74,119,.45),rgba(8,24,49,.78)); }
+.account-pricing > span { align-self:start; padding:4px 7px; border-radius:999px; color:#04172c; background:#42e4ff; font-size:.54rem; font-weight:950; letter-spacing:.08em; }
+.account-pricing div { display:grid; gap:3px; min-width:0; }
+.account-pricing strong { color:#f4f8ff; font-size:.72rem; }
+.account-pricing small { color:#9fb2c9; font-size:.61rem; line-height:1.35; }
+.account-pricing em { grid-column:1 / -1; color:#71839d; font-size:.58rem; font-style:normal; }
 .account-status { margin:12px 3px 0; font-size:.76rem; line-height:1.45; }
 .account-status.sent { color:#70e2bd; }.account-status.error { color:#ff91a3; }
 .account-note { margin:18px 4px 0; color:#71849d; font-size:.66rem; line-height:1.5; text-align:center; }

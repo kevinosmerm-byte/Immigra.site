@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { getAiFeatureConfig, PROMOTION_ACCESS_CONFIG } from "../shared/featureAccessConfig.js";
+import { getAiFeatureConfig, PROMOTION_ACCESS_CONFIG, PRO_PLAN } from "../shared/featureAccessConfig.js";
 import { getAiUsageSummary, recordAiSessionStart, shouldShowPromotionNotice } from "./access.js";
 import { useAccount } from "./accountContext.js";
 import { setAiRequestContext } from "./api.js";
@@ -10,8 +10,12 @@ const COPY = {
     eyebrow: "LAUNCH PROMOTION",
     title: "You've completed your free AI practices",
     body: "Keep preparing for your citizenship interview. Expanded AI practice will become part of Citizenship AI Pro in the future.",
-    pro: "GO PRO · COMING SOON",
+    pro: "CITIZENSHIP AI PRO",
     proDetail: "More AI practice · No ads · Advanced interview training",
+    launchPrice: "Launch price",
+    regularPrice: "then $5.99/month",
+    annualPrice: "$49.99/year",
+    billingSoon: "Pricing approved · Purchases are not active yet",
     continue: "CONTINUE FREE DURING PROMOTION",
     note: "Your Civics study tools, podcasts and educational resources remain free.",
     close: "Not now",
@@ -24,8 +28,12 @@ const COPY = {
     eyebrow: "PROMOCIÓN DE LANZAMIENTO",
     title: "Completaste tus prácticas gratuitas con IA",
     body: "Continúa preparándote para tu entrevista de ciudadanía. En el futuro, la práctica ampliada con IA formará parte de Citizenship AI Pro.",
-    pro: "OBTENER PRO · PRÓXIMAMENTE",
+    pro: "CITIZENSHIP AI PRO",
     proDetail: "Más práctica con IA · Sin anuncios · Entrenamiento avanzado",
+    launchPrice: "Precio de lanzamiento",
+    regularPrice: "luego $5.99/mes",
+    annualPrice: "$49.99/año",
+    billingSoon: "Precio aprobado · Las compras aún no están activas",
     continue: "CONTINUAR GRATIS DURANTE LA PROMOCIÓN",
     note: "Las preguntas cívicas, podcasts y recursos educativos permanecen gratis.",
     close: "Ahora no",
@@ -172,7 +180,16 @@ export function PromotionAccessProvider({ children }) {
             <div className="promotion-access-feature"><span>{feature.label}</span><strong>{usage?.limit || 2} / {usage?.limit || 2}</strong></div>
             <p className="promotion-access-body">{pending.blocked ? blockedBody : copy.body}</p>
             <div className="promotion-access-pro" aria-label={copy.pro}>
-              <span>PRO</span><div><strong>{copy.pro}</strong><small>{copy.proDetail}</small></div>
+              <span>PRO</span>
+              <div className="promotion-access-pro-copy">
+                <strong>{copy.pro}</strong>
+                <small>{copy.proDetail}</small>
+                <div className="promotion-access-price">
+                  <b>{copy.launchPrice} ${(PRO_PLAN.introductoryMonthlyPriceCents / 100).toFixed(2)}/mo</b>
+                  <span>{copy.regularPrice} · {copy.annualPrice}</span>
+                </div>
+                <em>{copy.billingSoon}</em>
+              </div>
             </div>
             {!pending.blocked && <div className="promotion-access-divider"><span></span><small>LAUNCH ACCESS</small><span></span></div>}
             {!pending.blocked && <button className="promotion-access-continue" onClick={continuePromotion} type="button"><span>{copy.continue}</span><b>→</b></button>}
