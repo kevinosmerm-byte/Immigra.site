@@ -317,38 +317,29 @@ function Home({
 
           <div className="hero-glow"></div>
 
-          <div className="home-hero-copy">
+          <button
+            className="home-visual-hero home-hero-interview-button"
+            onClick={onStartInterview}
+            aria-label={language === "en"
+              ? "Start real interview practice with Sarah"
+              : "Comenzar práctica de entrevista real con Sarah"}
+          >
+            <img
+              src="/sarah-real-interview-hero.jpg"
+              alt=""
+              aria-hidden="true"
+            />
+            <span className="sr-only">
+              {language === "en" ? "Real Interview — Practice with Sarah" : "Entrevista real — Practica con Sarah"}
+            </span>
+          </button>
 
-            <div className="home-status">
-              <span></span>
-              {copy.status}
-            </div>
-
-            <h1>
-  {language === "en" ? (
-    <>
-      Your interview.
-      <strong>Your future.</strong>
-    </>
-  ) : (
-    <>
-      Tu entrevista.
-      <strong>Tu futuro.</strong>
-    </>
-  )}
-</h1>
-
+          <div className="sr-only">
+            <h1>{language === "en" ? "Prepare for your citizenship interview" : "Prepárate para tu entrevista de ciudadanía"}</h1>
             <p>{language === "en"
-              ? "Prepare for your U.S. citizenship interview with personalized AI practice."
-              : "Prepárate para tu entrevista de ciudadanía de EE. UU. con práctica personalizada de IA."}
+              ? "Bilingual, personalized practice with official resources."
+              : "Práctica bilingüe y personalizada con recursos oficiales."}
             </p>
-
-            <div className="home-value-points" aria-label={language === "en" ? "Key benefits" : "Beneficios principales"}>
-              <span>✓ {language === "en" ? "Bilingual practice" : "Práctica bilingüe"}</span>
-              <span>✓ {language === "en" ? "Personalized progress" : "Progreso personalizado"}</span>
-              <span>✓ {language === "en" ? "Official resources" : "Recursos oficiales"}</span>
-            </div>
-
           </div>
 
 
@@ -379,16 +370,6 @@ function Home({
           {/* PRIMARY ACTION */}
 
           <div className="home-interview-actions" style={{ display: "grid", gap: "12px", width: "100%" }}>
-            <button className="home-primary-button home-real-interview-button" onClick={onStartInterview}>
-              <span className="home-action-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="3"/><path d="m16 10 5-3v10l-5-3z"/></svg>
-              </span>
-              <div>
-                <small>{language === "en" ? "START HERE · SARAH LIVE VIDEO" : "COMIENZA AQUÍ · VIDEO CON SARAH"}</small>
-                <strong>{language === "en" ? "REAL INTERVIEW" : "ENTREVISTA REAL"}</strong>
-              </div>
-              <span className="primary-arrow">→</span>
-            </button>
             <button
               className="home-primary-button home-n400-interview-button"
               onClick={onStartN400Interview}

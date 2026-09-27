@@ -28720,3 +28720,130 @@ html[data-theme="light"] .home-new-nav .home-nav-item > span {
 html[data-theme="light"] .home-new-nav .home-nav-item.active > span {
   color: #057ecb;
 }
+
+/* ========================================================================
+   QUIET HOME HERO
+   The portrait replaces the marketing copy on the first screen. Independent
+   cards and explicit grid gaps prevent adjacent actions from touching.
+   ======================================================================== */
+.home-ai .home-new-hero {
+  padding: 0 0 10px !important;
+}
+
+.home-visual-hero {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1672 / 940;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(48, 203, 255, .38);
+  border-radius: 0 0 24px 24px;
+  background: #07152a;
+  box-shadow: 0 22px 48px rgba(0, 5, 18, .3);
+  cursor: pointer;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.home-visual-hero img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.home-hero-interview-button:hover {
+  border-color: rgba(58, 218, 255, .7);
+  box-shadow: 0 24px 56px rgba(0, 110, 220, .28);
+  transform: translateY(-1px);
+}
+
+.home-hero-interview-button:focus-visible {
+  outline: 3px solid #6ee7ff;
+  outline-offset: 3px;
+}
+
+.home-ai .home-interview-actions {
+  position: relative;
+  z-index: 3;
+  gap: 12px !important;
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.home-ai .home-interview-actions::before {
+  content: none;
+}
+
+.home-ai .home-interview-actions .home-primary-button,
+.home-ai .home-interview-actions .home-primary-button:first-child,
+.home-ai .home-interview-actions .home-civics-live-button,
+.home-ai .home-interview-actions .home-immigration-primary-button,
+.home-ai .home-interview-actions .home-podcast-primary-button {
+  width: 100%;
+  min-width: 0;
+  margin: 0 !important;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+html[data-theme="light"] .home-visual-hero {
+  border-color: rgba(18, 136, 224, .3);
+  background: #e7f0fa;
+  box-shadow: 0 22px 50px rgba(33, 78, 130, .14);
+}
+
+html[data-theme="light"] .home-hero-interview-button:hover {
+  border-color: rgba(10, 139, 232, .58);
+  box-shadow: 0 22px 48px rgba(31, 111, 201, .2);
+}
+
+@media (max-width: 700px) {
+  .home-ai .home-new-content {
+    padding-inline: 12px;
+  }
+
+  .home-visual-hero {
+    height: auto;
+    margin-inline: -12px;
+    width: calc(100% + 24px);
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+
+  .home-ai .home-interview-actions {
+    gap: 11px !important;
+    margin-top: 11px;
+  }
+
+  .home-interview-actions .home-primary-button:not(.home-real-interview-button) {
+    min-height: 82px;
+    border-radius: 17px;
+  }
+}
+
+@media (max-width: 370px) {
+  .home-ai .home-interview-actions {
+    grid-template-columns: 1fr;
+    margin-top: 10px;
+  }
+
+  .home-interview-actions .home-primary-button:not(.home-real-interview-button) {
+    min-height: 62px;
+    grid-template-columns: 38px minmax(0, 1fr) 28px;
+  }
+
+  .home-interview-actions .home-primary-button:not(.home-real-interview-button) > .primary-arrow {
+    display: grid !important;
+  }
+}
