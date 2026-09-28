@@ -26,6 +26,6 @@ test("writing, quiz and resource grids preserve equal sibling geometry", () => {
 test("mobile layouts keep uniform rows and stack writing review actions", () => {
   assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.practice-options\s*\{[\s\S]*?grid-auto-rows:\s*minmax\(70px, auto\)/);
   assert.match(css, /@media \(max-width: 700px\)[\s\S]*?\.writing-review-actions\s*\{[\s\S]*?grid-template-columns:\s*1fr/);
-  assert.match(css, /original mobile practice hierarchy[\s\S]*?\.home-ai \.home-practice-list\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\)/);
-  assert.match(css, /original mobile practice hierarchy[\s\S]*?\.home-ai \.practice-mini-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(css, /original practice hierarchy at every viewport width[\s\S]*?\.home-ai \.home-practice-list\s*\{[\s\S]*?grid-template-columns:\s*minmax\(0, 1fr\)/);
+  assert.match(css, /original practice hierarchy at every viewport width[\s\S]*?\.home-ai \.practice-mini-grid\s*\{[\s\S]*?grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
 });
