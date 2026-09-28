@@ -124,17 +124,17 @@ export async function createPortalSession({ userId }) {
   return { url: session.url };
 }
 
-export async function handleStripeWebhook(rawBody, signature) {
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
-  if (!webhookSecret) throw new Error("Stripe webhook signing is not configured.");
-  const event = getStripe().webhooks.constructEvent(rawBody, signature, webhookSecret);
+export async function applyStripeEvent(event) {
   if (!["customer.subscription.created", "customer.subscription.updated", "customer.subscription.deleted"].includes(event.type)) {
     return { received: true, handled: false };
   }
 
   const subscription = event.data.object;
   const userId = subscription?.metadata?.user_id;
-  if (!userId) throw new Error("Stripe subscription is missing its account identity.");
+  // Stripe's dashboard fixtures and subscriptions created outside this app do
+  // not carry our account metadata. They are valid signed events, but they must
+  // not create entitlements or trigger repeated webhook retries.
+  if (!userId) return { received: true, handled: false, reason: "missing_account_identity" };
   const mapped = mapStripeSubscription(subscription);
   const customerId = typeof subscription.customer === "string" ? subscription.customer : subscription.customer?.id;
   const result = await applyVerifiedEntitlementEvent({
@@ -151,4 +151,11 @@ export async function handleStripeWebhook(rawBody, signature) {
     occurredAt: new Date(event.created * 1000).toISOString(),
   });
   return { received: true, handled: true, applied: result?.applied === true, duplicate: result?.duplicate === true };
+}
+
+export async function handleStripeWebhook(rawBody, signature) {
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET?.trim();
+  if (!webhookSecret) throw new Error("Stripe webhook signing is not configured.");
+  const event = getStripe().webhooks.constructEvent(rawBody, signature, webhookSecret);
+  return applyStripeEvent(event);
 }

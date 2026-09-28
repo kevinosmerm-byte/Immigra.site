@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { getBillingConfiguration, mapStripeSubscription } from "../server/stripeBilling.js";
+import { applyStripeEvent, getBillingConfiguration, mapStripeSubscription } from "../server/stripeBilling.js";
 
 test("Stripe billing stays disabled until the explicit launch flag and required secrets exist", () => {
   const previous = process.env.STRIPE_BILLING_ENABLED;
@@ -52,6 +52,28 @@ test("Stripe webhook receives the raw request body before JSON parsing", async (
   assert.ok(webhook >= 0, "webhook route should exist");
   assert.ok(jsonParser > webhook, "raw webhook route must be mounted before express.json");
   assert.match(source, /stripe-signature/);
+});
+
+test("Valid Stripe subscription fixtures without app account metadata are acknowledged and ignored", async () => {
+  const result = await applyStripeEvent({
+    id: "evt_test_fixture",
+    type: "customer.subscription.created",
+    created: 1_800_000_000,
+    data: {
+      object: {
+        id: "sub_test_fixture",
+        customer: "cus_test_fixture",
+        metadata: {},
+        status: "active",
+      },
+    },
+  });
+
+  assert.deepEqual(result, {
+    received: true,
+    handled: false,
+    reason: "missing_account_identity",
+  });
 });
 
 test("Checkout accepts only allowlisted billing intervals and authenticated accounts", async () => {
