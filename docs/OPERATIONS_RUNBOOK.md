@@ -8,7 +8,7 @@ This runbook describes production controls without containing credentials, keys,
 - Launch-promotion access is remotely controlled through the `launch_promotion` record in Supabase `app_settings`.
 - Each cost-generating AI feature is independently controlled by `ai_feature_config.enabled`.
 - Environment variable `DISABLED_AI_FEATURES` is the emergency override when database controls are unavailable.
-- Rewarded advertising and paid subscriptions have server foundations only; no payment or advertising SDK is active yet.
+- Rewarded advertising remains inactive. Web subscriptions have a Stripe Checkout, Portal, and signed-webhook foundation, but `STRIPE_BILLING_ENABLED` remains false until the test-mode launch checklist passes.
 
 ## Emergency cost shutdown
 
@@ -63,7 +63,7 @@ Then verify:
 
 Do not enable paid subscriptions or rewarded ads until all of the following are complete:
 
-- Provider selected and official server-signature verification implemented.
+- Provider selected and official server-signature verification implemented. (Complete for Stripe web billing; still required separately for Apple and Google.)
 - Sandbox purchase, renewal, cancellation, expiration and restoration tested.
 - Reward callback replay and premature-ad-close tests passed.
 - App Store and Google Play privacy/data-safety disclosures reviewed.
@@ -82,4 +82,4 @@ Verified September 20, 2026 after the monetization-safety rollout:
 - All five AI feature switches reported enabled.
 - The verification used only health and public-configuration reads; it did not invoke OpenAI, D-ID, USCIS or another usage-billed feature.
 
-The monetization foundation is ready for the iOS/App Store preparation phase. Rewarded advertising and paid subscriptions remain intentionally inactive until their provider-specific paid-launch gates are completed.
+The monetization foundation is ready for the iOS/App Store preparation phase. Rewarded advertising and paid subscriptions remain intentionally inactive until their provider-specific paid-launch gates are completed. Stripe web billing code is present but remains disabled until `docs/WEB_BILLING_SETUP.md` is completed.

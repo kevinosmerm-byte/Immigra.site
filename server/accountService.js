@@ -106,8 +106,24 @@ export async function requireAccount(req, res, next) {
     return res.status(401).json({ error: "Your session is invalid or expired.", code: "invalid_session" });
   }
 
-  req.account = { userId: data.user.id };
+  req.account = { userId: data.user.id, email: data.user.email || "" };
   next();
+}
+
+export async function getBillingIdentity(userId) {
+  if (!supabase) throw new Error("Account service is not configured.");
+  const { data, error } = await supabase
+    .from("entitlements")
+    .select("tier, status, provider, provider_customer_id")
+    .eq("user_id", userId)
+    .maybeSingle();
+  throwDatabaseError(error, "Unable to read subscription identity.");
+  return data ? {
+    tier: data.tier,
+    status: data.status,
+    provider: data.provider,
+    providerCustomerId: data.provider_customer_id,
+  } : null;
 }
 
 export async function attachOptionalAiSession(req, res, next) {

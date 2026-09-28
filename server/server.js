@@ -6,6 +6,8 @@ import multer from "multer";
 import { createHmac } from "node:crypto";
 import { fetchUscisCaseStatus, getUscisConfig, maskReceiptNumber } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
+import billingRoutes from "./billingRoutes.js";
+import { handleStripeWebhook } from "./stripeBilling.js";
 import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, isPromotionalAiAccessAllowed, recordAiUsageEvent } from "./accountService.js";
 import { getCivicsQuestion } from "../src/civicsQuestionBank.js";
 import { evaluateCivicsAnswer } from "../src/civicsAnswerEvaluator.js";
@@ -33,6 +35,16 @@ app.use(cors({
     return callback(new Error("Origin is not allowed by CORS."));
   }
 }));
+app.post("/api/billing/webhook", express.raw({ type: "application/json", limit: "256kb" }), async (req, res) => {
+  try {
+    const signature = req.get("stripe-signature");
+    if (!signature) return res.status(400).json({ error: "Stripe signature is required." });
+    return res.json(await handleStripeWebhook(req.body, signature));
+  } catch (error) {
+    console.error("Stripe webhook error", { message: error.message });
+    return res.status(400).json({ error: "Invalid Stripe webhook." });
+  }
+});
 app.use(express.json({ limit: "256kb" }));
 app.use(attachOptionalAiSession);
 const upload = multer({
@@ -480,6 +492,7 @@ app.post("/civic-location/geocode", uscisRateLimit, async (req, res) => {
 // current launch promotion remains available until Supabase is configured.
 app.use("/account", accountRateLimit, accountRoutes);
 app.use("/api/account", accountRateLimit, accountRoutes);
+app.use("/api/billing", accountRateLimit, billingRoutes);
 
 app.post("/evaluate-reading", requireAiFeature("speaking"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;

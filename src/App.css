@@ -25596,6 +25596,15 @@ select { font: inherit; }
 .account-pricing strong { color:#f4f8ff; font-size:.72rem; }
 .account-pricing small { color:#9fb2c9; font-size:.61rem; line-height:1.35; }
 .account-pricing em { grid-column:1 / -1; color:#71839d; font-size:.58rem; font-style:normal; }
+.account-billing-actions { grid-column:1 / -1; display:grid !important; grid-template-columns:1fr 1fr; gap:8px !important; margin-top:4px; }
+.account-billing-actions button,.account-billing-manage { min-height:48px; padding:8px 10px; border:1px solid rgba(66,228,255,.42); border-radius:12px; color:#f4f8ff; background:rgba(18,77,132,.72); cursor:pointer; }
+.account-billing-actions button { display:grid; gap:3px; text-align:left; }
+.account-billing-actions button b { font-size:.64rem; letter-spacing:.035em; }
+.account-billing-actions button small { color:#b9def0; font-size:.62rem; }
+.account-billing-actions button:disabled,.account-billing-manage:disabled { opacity:.6; cursor:wait; }
+.account-billing-actions em { grid-column:1 / -1; text-align:center; }
+.account-billing-manage { grid-column:1 / -1; width:100%; font-size:.65rem; font-weight:900; letter-spacing:.04em; }
+.account-billing-error { grid-column:1 / -1; margin:0 !important; }
 .account-status { margin:12px 3px 0; font-size:.76rem; line-height:1.45; }
 .account-status.sent { color:#70e2bd; }.account-status.error { color:#ff91a3; }
 .account-note { margin:18px 4px 0; color:#71849d; font-size:.66rem; line-height:1.5; text-align:center; }

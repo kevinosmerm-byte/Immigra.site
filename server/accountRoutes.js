@@ -5,6 +5,7 @@ import {
   exportAccountData,
   finishAiSession,
   getAccountConfiguration,
+  getBillingIdentity,
   getPublicAccountConfiguration,
   getPublicAiFeatureAvailability,
   getUsageSnapshot,
@@ -14,6 +15,7 @@ import {
   startAiSession,
 } from "./accountService.js";
 import { getAiFeatureConfig } from "../shared/featureAccessConfig.js";
+import { getBillingConfiguration } from "./stripeBilling.js";
 
 const router = Router();
 const IDEMPOTENCY_KEY_PATTERN = /^[a-zA-Z0-9._:-]{12,128}$/;
@@ -33,6 +35,7 @@ router.get("/public-config", async (_req, res) => {
     ...getPublicAccountConfiguration(),
     promotionAccess,
     aiFeatures,
+    billing: getBillingConfiguration(),
   });
 });
 
@@ -86,6 +89,13 @@ router.delete("/", async (req, res) => {
     return res.status(400).json({ error: "Account deletion requires confirmation.", code: "deletion_confirmation_required" });
   }
   try {
+    const billingIdentity = await getBillingIdentity(req.account.userId);
+    if (billingIdentity?.provider === "stripe" && ["active", "grace"].includes(billingIdentity.status)) {
+      return res.status(409).json({
+        error: "Cancel the active web subscription in the billing portal before deleting this account.",
+        code: "active_subscription_requires_cancellation",
+      });
+    }
     res.set("Cache-Control", "no-store");
     await deleteAccount(req.account.userId);
     return res.json({ deleted: true });

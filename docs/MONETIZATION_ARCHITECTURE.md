@@ -14,7 +14,7 @@ This matches the current React + Capacitor + Express architecture and keeps Goog
 4. **Endpoint protection — complete.** Signed-in AI calls carry an authenticated, active `ai_session_id`, and the server verifies ownership and feature matching before provider work.
 5. **Quota and pricing UI — complete.** The current sheet shows the approved $4.99 introductory, $5.99 regular and $49.99 annual offer while clearly stating that purchases are not active, and permits continued promotional access.
 6. **Rewarded ads — future.** AdMob server-side verification will grant credits; the client will never grant its own reward.
-7. **Subscriptions — pricing approved, provider activation future.** Provider webhooks will update `entitlements`; app code only asks whether Pro is active. Approved prices and allowances live in shared configuration and `docs/PRICING_MODEL.md`.
+7. **Subscriptions — web adapter implemented, activation gated.** Stripe Checkout, Customer Portal, and signed subscription webhooks update the neutral `entitlements` record. Web billing stays disabled until the test-mode checklist passes. Apple and Google adapters remain separate future work. Approved prices and allowances live in shared configuration and `docs/PRICING_MODEL.md`.
 8. **Cost telemetry — active.** Provider, model, token totals, request count and transcription duration are recorded without conversation or audio content.
    Text responses are capped at 220 output tokens by default (server-configurable, hard ceiling 600), and microphone clips stop automatically after 45 seconds.
    OpenAI requests time out after 30 seconds with at most one SDK retry; D-ID and USCIS requests time out after 15 seconds.
@@ -65,10 +65,10 @@ Use the Capacitor AdMob plugin only for voluntary rewarded placements. Android s
 
 ## Subscription entitlements
 
-Store purchases are adapters, not business logic. Verified Google Play, App Store or RevenueCat webhooks update `entitlements`. The application consumes one normalized response: tier, status, period and per-feature allowance.
+Purchases are adapters, not business logic. Verified Stripe webhooks now translate web subscription state into `entitlements`; future Google Play and App Store adapters must use the same contract. The application consumes one normalized response: tier, status, period and per-feature allowance.
 
-## Security risks deferred until provider selection
+## Remaining paid-launch work
 
-- Reward callbacks and subscription webhooks need signature verification and replay protection.
+- Stripe webhooks have signature verification and database replay protection. Reward callbacks and future native-store webhooks still require their own verification adapters.
 - Authenticated account export and explicitly confirmed deletion are available; paid-launch legal copy should receive final counsel review.
 - Store sandbox verification, purchase restoration and provider-specific webhook signature tests must run after Apple, Google Play or RevenueCat is selected.

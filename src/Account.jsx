@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { Capacitor } from "@capacitor/core";
 import { useEffect, useMemo, useState } from "react";
 import { PRO_PLAN } from "../shared/featureAccessConfig.js";
 import { AccountContext, useAccount } from "./accountContext.js";
@@ -21,7 +22,7 @@ const COPY = {
     sent: "Check your email. We sent you a secure sign-in link.", signedIn: "SIGNED IN", signOut: "SIGN OUT", close: "Close account panel",
     optional: "Optional during the launch promotion. You can continue using the app without signing in.", unavailable: "Accounts are being prepared. You can continue using the app normally.",
     error: "We could not send the sign-in link. Please try again.", usage: "AI ACCESS", promotion: "Launch promotion active", free: "Free account",
-    usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", pricing: "PRO PRICING", launchPrice: "Launch offer", regularPrice: "Regular $5.99/month", annualPrice: "$49.99/year", pricingStatus: "Purchases are not active yet.", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.", deleteAccount: "DELETE ACCOUNT", deleteTitle: "Permanently delete account?", deleteBody: "This removes your cloud account, AI allowances, and usage records. Local study progress on this device is not removed.", deletePrompt: "Type DELETE to confirm", deleting: "DELETING…", cancel: "CANCEL", deleteError: "We could not delete your account. Please try again.",
+    usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", pricing: "PRO PRICING", launchPrice: "Launch offer", regularPrice: "Regular $5.99/month", annualPrice: "$49.99/year", pricingStatus: "Purchases are not active yet.", monthly: "MONTHLY", yearly: "ANNUAL · SAVE 30%", manageSubscription: "MANAGE SUBSCRIPTION", secureCheckout: "Secure checkout by Stripe", billingError: "We could not open secure billing. Please try again.", openingCheckout: "OPENING…", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.", deleteAccount: "DELETE ACCOUNT", deleteTitle: "Permanently delete account?", deleteBody: "This removes your cloud account, AI allowances, and usage records. Local study progress on this device is not removed.", deletePrompt: "Type DELETE to confirm", deleting: "DELETING…", cancel: "CANCEL", deleteError: "We could not delete your account. Please try again.", deleteActiveSubscription: "Cancel your active web subscription from Manage Subscription before deleting the account.",
   },
   es: {
     account: "Cuenta", title: "Tu cuenta de Citizenship AI", intro: "Inicia sesión para conectar de forma segura los futuros límites de IA y suscripciones entre tus dispositivos.",
@@ -29,7 +30,7 @@ const COPY = {
     sent: "Revisa tu correo. Te enviamos un enlace seguro para iniciar sesión.", signedIn: "SESIÓN INICIADA", signOut: "CERRAR SESIÓN", close: "Cerrar panel de cuenta",
     optional: "Es opcional durante la promoción de lanzamiento. Puedes continuar usando la aplicación sin iniciar sesión.", unavailable: "Las cuentas se están preparando. Puedes continuar usando la aplicación normalmente.",
     error: "No pudimos enviar el enlace. Inténtalo nuevamente.", usage: "ACCESO A IA", promotion: "Promoción de lanzamiento activa", free: "Cuenta gratuita",
-    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles", requests: "solicitudes al proveedor", pricing: "PRECIO PRO", launchPrice: "Oferta de lanzamiento", regularPrice: "Regular $5.99/mes", annualPrice: "$49.99/año", pricingStatus: "Las compras aún no están activas.", exportData: "DESCARGAR MIS DATOS", exporting: "PREPARANDO…", exportError: "No pudimos preparar los datos de tu cuenta. Inténtalo nuevamente.", deleteAccount: "ELIMINAR CUENTA", deleteTitle: "¿Eliminar la cuenta permanentemente?", deleteBody: "Esto elimina tu cuenta en la nube, límites de IA y registros de uso. El progreso local de estudio en este dispositivo no se elimina.", deletePrompt: "Escribe DELETE para confirmar", deleting: "ELIMINANDO…", cancel: "CANCELAR", deleteError: "No pudimos eliminar tu cuenta. Inténtalo nuevamente.",
+    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles", requests: "solicitudes al proveedor", pricing: "PRECIO PRO", launchPrice: "Oferta de lanzamiento", regularPrice: "Regular $5.99/mes", annualPrice: "$49.99/año", pricingStatus: "Las compras aún no están activas.", monthly: "MENSUAL", yearly: "ANUAL · AHORRA 30%", manageSubscription: "ADMINISTRAR SUSCRIPCIÓN", secureCheckout: "Pago seguro por Stripe", billingError: "No pudimos abrir el pago seguro. Inténtalo nuevamente.", openingCheckout: "ABRIENDO…", exportData: "DESCARGAR MIS DATOS", exporting: "PREPARANDO…", exportError: "No pudimos preparar los datos de tu cuenta. Inténtalo nuevamente.", deleteAccount: "ELIMINAR CUENTA", deleteTitle: "¿Eliminar la cuenta permanentemente?", deleteBody: "Esto elimina tu cuenta en la nube, límites de IA y registros de uso. El progreso local de estudio en este dispositivo no se elimina.", deletePrompt: "Escribe DELETE para confirmar", deleting: "ELIMINANDO…", cancel: "CANCELAR", deleteError: "No pudimos eliminar tu cuenta. Inténtalo nuevamente.", deleteActiveSubscription: "Cancela tu suscripción web activa desde Administrar suscripción antes de eliminar la cuenta.",
   },
 };
 
@@ -45,6 +46,7 @@ export function AccountProvider({ children }) {
   const [usage, setUsage] = useState(null);
   const [promotionAccess, setPromotionAccess] = useState(true);
   const [aiFeatureAvailability, setAiFeatureAvailability] = useState({});
+  const [billing, setBilling] = useState({ enabled: false });
 
   const loadUsage = async (accessToken) => {
     if (!accessToken) { setUsage(null); return null; }
@@ -67,6 +69,7 @@ export function AccountProvider({ children }) {
         if (!active) return;
         setPromotionAccess(config?.promotionAccess !== false);
         setAiFeatureAvailability(config?.aiFeatures && typeof config.aiFeatures === "object" ? config.aiFeatures : {});
+        setBilling(config?.billing && typeof config.billing === "object" ? config.billing : { enabled: false });
         if (!client) setClient(createAccountClient(config?.url, config?.publishableKey));
         if (!client && !config?.configured) setLoading(false);
       })
@@ -100,7 +103,7 @@ export function AccountProvider({ children }) {
   }, [session?.access_token]);
 
   const value = useMemo(() => ({
-    configured: Boolean(client), session, loading, usage, promotionAccess, aiFeatureAvailability,
+    configured: Boolean(client), session, loading, usage, promotionAccess, aiFeatureAvailability, billing,
     sendMagicLink: (email) => client.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` },
@@ -161,11 +164,39 @@ export function AccountProvider({ children }) {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ confirmation: "DELETE" }),
       });
-      if (!response.ok) throw new Error("Account deletion unavailable");
+      if (!response.ok) {
+        const result = await response.json().catch(() => ({}));
+        const error = new Error(result.error || "Account deletion unavailable");
+        error.code = result.code || "deletion_unavailable";
+        throw error;
+      }
       await client.auth.signOut({ scope: "local" });
       return true;
     },
-  }), [client, session, loading, usage, promotionAccess, aiFeatureAvailability]);
+    openCheckout: async (interval) => {
+      if (!session?.access_token) return false;
+      const response = await fetch("/api/billing/checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+        body: JSON.stringify({ interval }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.url) throw new Error(result.error || "Checkout unavailable");
+      window.location.assign(result.url);
+      return true;
+    },
+    openBillingPortal: async () => {
+      if (!session?.access_token) return false;
+      const response = await fetch("/api/billing/portal-session", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.url) throw new Error(result.error || "Subscription management unavailable");
+      window.location.assign(result.url);
+      return true;
+    },
+  }), [client, session, loading, usage, promotionAccess, aiFeatureAvailability, billing]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 }
@@ -185,7 +216,7 @@ export function AccountButton({ language = "en", onClick }) {
 }
 
 export function AccountSheet({ language = "en", onClose }) {
-  const { configured, session, loading, usage, sendMagicLink, signOut, exportAccountData, deleteAccount } = useAccount();
+  const { configured, session, loading, usage, billing, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, openBillingPortal } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
@@ -196,9 +227,12 @@ export function AccountSheet({ language = "en", onClose }) {
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState(false);
+  const [billingAction, setBillingAction] = useState("");
+  const [billingError, setBillingError] = useState(false);
   const usageFeatures = usage?.features
     ? Object.entries(usage.features).filter(([, item]) => item?.enabled)
     : [];
+  const webBillingEnabled = billing?.enabled && !Capacitor.isNativePlatform();
 
   const submit = async (event) => {
     event.preventDefault();
@@ -236,10 +270,22 @@ export function AccountSheet({ language = "en", onClose }) {
     try {
       await deleteAccount();
       onClose();
-    } catch {
-      setDeleteError(true);
+    } catch (error) {
+      setDeleteError(error.code || "deletion_unavailable");
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const startBillingAction = async (action) => {
+    if (billingAction) return;
+    setBillingAction(action); setBillingError(false);
+    try {
+      if (action === "portal") await openBillingPortal();
+      else await openCheckout(action);
+    } catch {
+      setBillingError(true);
+      setBillingAction("");
     }
   };
 
@@ -293,7 +339,7 @@ export function AccountSheet({ language = "en", onClose }) {
                   <button type="button" onClick={() => { setDeleteArmed(false); setDeleteConfirmation(""); setDeleteError(false); }}>{copy.cancel}</button>
                   <button type="button" onClick={permanentlyDeleteAccount} disabled={deleteConfirmation !== "DELETE" || deleting}>{deleting ? copy.deleting : copy.deleteAccount}</button>
                 </div>
-                {deleteError && <p className="account-status error">{copy.deleteError}</p>}
+                {deleteError && <p className="account-status error">{deleteError === "active_subscription_requires_cancellation" ? copy.deleteActiveSubscription : copy.deleteError}</p>}
               </div>
             )}
           </>
@@ -307,8 +353,22 @@ export function AccountSheet({ language = "en", onClose }) {
         )}
         <div className="account-pricing" aria-label={copy.pricing}>
           <span>{copy.pricing}</span>
-          <div><strong>{copy.launchPrice} ${(PRO_PLAN.introductoryMonthlyPriceCents / 100).toFixed(2)}/mo</strong><small>{copy.regularPrice} · {copy.annualPrice}</small></div>
-          <em>{copy.pricingStatus}</em>
+          <div>
+            <strong>{billing?.enabled && !billing.introductoryOfferEnabled ? copy.regularPrice : `${copy.launchPrice} $${(PRO_PLAN.introductoryMonthlyPriceCents / 100).toFixed(2)}/mo`}</strong>
+            <small>{billing?.enabled && !billing.introductoryOfferEnabled ? copy.annualPrice : `${copy.regularPrice} · ${copy.annualPrice}`}</small>
+          </div>
+          {webBillingEnabled && session ? (
+            usage?.tier === "pro" ? (
+              <button className="account-billing-manage" type="button" onClick={() => startBillingAction("portal")} disabled={Boolean(billingAction)}>{billingAction ? copy.openingCheckout : copy.manageSubscription}</button>
+            ) : (
+              <div className="account-billing-actions">
+                <button type="button" onClick={() => startBillingAction("monthly")} disabled={Boolean(billingAction)}><b>{copy.monthly}</b><small>${(Number(billing.introductoryOfferEnabled ? billing.introductoryMonthlyPriceCents : billing.monthlyPriceCents) / 100).toFixed(2)}/mo</small></button>
+                <button type="button" onClick={() => startBillingAction("annual")} disabled={Boolean(billingAction)}><b>{copy.yearly}</b><small>${(Number(billing.annualPriceCents || PRO_PLAN.annualPriceCents) / 100).toFixed(2)}/yr</small></button>
+                <em>{copy.secureCheckout}</em>
+              </div>
+            )
+          ) : <em>{copy.pricingStatus}</em>}
+          {billingError && <p className="account-status error account-billing-error">{copy.billingError}</p>}
         </div>
         <p className="account-note">{copy.optional}</p>
       </section>
