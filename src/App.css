@@ -26863,6 +26863,317 @@ select { font: inherit; }
     border-radius: 10px;
   }
 }
+
+/* ========================================================================
+   CROSS-SCREEN SPACING CONTRACT
+   Keeps sibling actions, cards and controls optically aligned on every
+   screen.  Component-specific artwork and behavior remain unchanged.
+   ======================================================================== */
+:root {
+  --layout-gap-xs: 8px;
+  --layout-gap-sm: 12px;
+  --layout-gap-md: 16px;
+  --layout-gap-lg: 24px;
+  --layout-control-height: 48px;
+  --layout-card-control-height: 68px;
+  --layout-icon-size: 44px;
+}
+
+/* All full-screen shells use the same box model, centered header rhythm and
+   safe-area aware top spacing. */
+.practice-screen,
+.writing-ai-screen,
+.interview-screen,
+.settings-screen,
+.immigration-help-screen,
+.podcast-screen,
+.quiz-path-screen,
+.study-guide-screen,
+.progress-ai-screen,
+.uscis-tracker-screen {
+  box-sizing: border-box;
+}
+
+.practice-header,
+.writing-ai-header,
+.settings-header,
+.interview-header,
+.immigration-help-header,
+.podcast-header,
+.quiz-path-header,
+.quiz-session-header {
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.practice-header > :last-child,
+.writing-ai-header > :last-child,
+.settings-header > :last-child,
+.interview-header > :last-child,
+.immigration-help-header > :last-child,
+.podcast-header > :last-child,
+.quiz-path-header > :last-child,
+.quiz-session-header > :last-child {
+  margin-block: 0;
+}
+
+/* Home: every card in the two-column groups occupies the same track height. */
+.home-ai .home-interview-actions,
+.home-ai .practice-mini-grid,
+.home-ai .preparation-items {
+  align-items: stretch;
+  grid-auto-rows: 1fr;
+}
+
+.home-ai .home-interview-actions .home-primary-button,
+.home-ai .practice-mini-card,
+.home-ai .preparation-items > div {
+  height: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.home-ai .home-interview-actions .home-primary-button > div,
+.home-ai .practice-mini-card > div:not(.mini-icon) {
+  min-width: 0;
+}
+
+.home-ai .home-interview-actions .home-primary-button small,
+.home-ai .home-interview-actions .home-primary-button strong,
+.home-ai .practice-mini-card small,
+.home-ai .practice-mini-card h3 {
+  margin-block: 0;
+}
+
+.home-ai .home-practice-list {
+  display: grid;
+  gap: var(--layout-gap-sm);
+}
+
+.home-ai .practice-feature-card.civics-image-card,
+.home-ai .preparation-card,
+.home-ai .home-uscis-card {
+  box-sizing: border-box;
+  margin-block: 0;
+}
+
+/* Selection and learning screens: rows stretch uniformly even when one label
+   wraps in Spanish and its sibling stays on one line. */
+.practice-options,
+.quiz-level-list,
+.quiz-choice-list,
+.quiz-vocabulary-grid,
+.legal-accordion,
+.immigration-featured-grid,
+.immigration-resource-list,
+.podcast-card-grid,
+.progress-ai-modules {
+  align-items: stretch;
+}
+
+.practice-option,
+.quiz-level-card,
+.quiz-choice-list > button,
+.quiz-vocabulary-grid > div,
+.legal-item,
+.immigration-resource-card,
+.podcast-card,
+.progress-ai-module {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.practice-options {
+  grid-auto-rows: minmax(78px, auto);
+}
+
+.practice-option,
+.practice-option-left {
+  align-items: center;
+}
+
+.practice-option-left,
+.practice-option-content {
+  min-width: 0;
+}
+
+.practice-option-content {
+  display: grid;
+  align-content: center;
+  gap: 3px;
+}
+
+.practice-option-content h2,
+.practice-option-content p {
+  margin-block: 0;
+}
+
+.practice-option-icon,
+.progress-module-icon,
+.immigration-resource-icon,
+.immigration-detail-icon,
+.writing-ai-badge-icon {
+  flex: 0 0 auto;
+}
+
+/* Learning controls share one baseline and one hit-target height. */
+.civics-modes,
+.writing-review-actions,
+.account-delete-actions,
+.study-guide-zoom,
+.podcast-speed {
+  align-items: stretch;
+}
+
+.civics-modes > button,
+.writing-review-actions > button,
+.account-delete-actions > button,
+.study-guide-toolbar button,
+.podcast-speed > button {
+  box-sizing: border-box;
+  min-height: var(--layout-control-height);
+}
+
+.civics-deck-navigation > button {
+  min-width: 104px;
+  min-height: var(--layout-control-height);
+  box-sizing: border-box;
+}
+
+.civics-study-feedback {
+  align-items: stretch;
+}
+
+.civics-study-feedback > button {
+  min-height: var(--layout-control-height);
+}
+
+.writing-progress-strip,
+.writing-performance,
+.writing-question-card,
+.writing-ai-input,
+.writing-ai-button,
+.english-coach-secondary {
+  box-sizing: border-box;
+}
+
+.writing-performance-content {
+  align-items: stretch;
+}
+
+.writing-performance-content .performance-item {
+  min-height: 48px;
+  align-content: center;
+}
+
+.writing-review-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--layout-gap-xs);
+}
+
+.writing-review-actions > button {
+  height: 100%;
+  margin: 0;
+}
+
+.quiz-level-list {
+  grid-auto-rows: minmax(82px, auto);
+}
+
+.quiz-level-card {
+  align-items: center;
+}
+
+.quiz-choice-list > button {
+  min-height: 56px;
+  align-items: center;
+}
+
+.quiz-vocabulary-grid {
+  grid-auto-rows: 1fr;
+}
+
+/* Resource and progress cards keep their internal text aligned from card to
+   card, instead of letting longer copy change only one column's geometry. */
+.immigration-featured-grid,
+.podcast-card-grid,
+.progress-ai-modules {
+  grid-auto-rows: 1fr;
+}
+
+.immigration-resource-card,
+.podcast-card,
+.progress-ai-module {
+  align-content: start;
+}
+
+.progress-ai-content,
+.settings-content,
+.immigration-help-content,
+.immigration-detail-wrap,
+.podcast-library,
+.quiz-path-content,
+.quiz-session-content,
+.study-guide-main,
+.uscis-tracker-content {
+  box-sizing: border-box;
+  margin-inline: auto;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --layout-gap-sm: 10px;
+    --layout-gap-md: 14px;
+    --layout-card-control-height: 72px;
+  }
+
+  .home-ai .home-interview-actions,
+  .home-ai .practice-mini-grid {
+    gap: var(--layout-gap-sm) !important;
+  }
+
+  .home-ai .home-interview-actions .home-primary-button:not(.home-real-interview-button) {
+    min-height: var(--layout-card-control-height);
+  }
+
+  .practice-options {
+    grid-auto-rows: minmax(70px, auto);
+  }
+
+  .practice-option,
+  .quiz-level-card {
+    height: 100%;
+  }
+
+  .civics-modes {
+    grid-auto-rows: 44px;
+  }
+
+  .writing-review-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .writing-review-actions > button {
+    width: 100%;
+  }
+
+  .civics-deck-navigation > button {
+    min-width: 88px;
+  }
+}
+
+@media (max-width: 370px) {
+  .home-ai .home-interview-actions {
+    grid-auto-rows: auto;
+  }
+
+  .home-ai .home-interview-actions .home-primary-button:not(.home-real-interview-button) {
+    min-height: 62px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .study-feedback-message, .civics-flashcard-inner, .progress-ai-fill { transition: none !important; animation: none !important; }
 }
