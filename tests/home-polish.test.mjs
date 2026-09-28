@@ -20,6 +20,16 @@ test("Home opens directly into practice cards without a redundant section banner
   assert.doesNotMatch(app, /copy\.quickPractice|copy\.trainWithAi/);
 });
 
+test("Home uses the promotional video as the primary real-interview action with playback controls", () => {
+  assert.match(app, /src="\/citizenshipai-home-cta\.mp4"/);
+  assert.match(app, /autoPlay/);
+  assert.match(app, /onClick=\{onStartInterview\}/);
+  assert.match(app, /toggleHomeVideoPlayback/);
+  assert.match(app, /toggleHomeVideoSound/);
+  assert.match(app, /homeVideoNeedsSound/);
+  assert.doesNotMatch(app, /home-video-primary-action/);
+});
+
 test("Home preparation card uses measured progress instead of hard-coded zeroes", () => {
   assert.match(app, /const readiness = practiceSummary\?\.readiness \?\? 0/);
   assert.match(app, /style=\{\{ width: `\$\{readiness\}%` \}\}/);

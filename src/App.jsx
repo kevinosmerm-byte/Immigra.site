@@ -231,6 +231,67 @@ function Home({
   onLanguageChange,
   practiceSummary,
 }) {
+  const homeVideoRef = useRef(null);
+  const [homeVideoPlaying, setHomeVideoPlaying] = useState(false);
+  const [homeVideoMuted, setHomeVideoMuted] = useState(false);
+  const [homeVideoNeedsSound, setHomeVideoNeedsSound] = useState(false);
+
+  useEffect(() => {
+    const video = homeVideoRef.current;
+    if (!video) return undefined;
+
+    let cancelled = false;
+    video.muted = false;
+    const playWithSound = video.play();
+    if (playWithSound?.catch) {
+      playWithSound.catch(async () => {
+        if (cancelled) return;
+        video.muted = true;
+        setHomeVideoMuted(true);
+        setHomeVideoNeedsSound(true);
+        try {
+          await video.play();
+        } catch {
+          setHomeVideoPlaying(false);
+        }
+      });
+    }
+
+    return () => {
+      cancelled = true;
+      video.pause();
+    };
+  }, []);
+
+  const toggleHomeVideoPlayback = async () => {
+    const video = homeVideoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      try {
+        await video.play();
+      } catch {
+        setHomeVideoPlaying(false);
+      }
+    } else {
+      video.pause();
+    }
+  };
+
+  const toggleHomeVideoSound = async () => {
+    const video = homeVideoRef.current;
+    if (!video) return;
+    video.muted = !video.muted;
+    setHomeVideoMuted(video.muted);
+    setHomeVideoNeedsSound(false);
+    if (video.paused) {
+      try {
+        await video.play();
+      } catch {
+        setHomeVideoPlaying(false);
+      }
+    }
+  };
+
   const copy = language === "en" ? {
     status: "AI-POWERED CITIZENSHIP TRAINING",
     aiReady: "AI READY",
@@ -317,22 +378,52 @@ function Home({
 
           <div className="hero-glow"></div>
 
-          <button
-            className="home-visual-hero home-hero-interview-button"
-            onClick={onStartInterview}
-            aria-label={language === "en"
-              ? "Start real interview practice with Sarah"
-              : "Comenzar práctica de entrevista real con Sarah"}
-          >
-            <img
-              src="/sarah-real-interview-hero.jpg"
-              alt=""
-              aria-hidden="true"
+          <div className="home-visual-hero home-video-hero">
+            <video
+              ref={homeVideoRef}
+              className="home-hero-video"
+              src="/citizenshipai-home-cta.mp4"
+              poster="/sarah-real-interview-hero.jpg"
+              autoPlay
+              playsInline
+              preload="metadata"
+              onPlay={() => setHomeVideoPlaying(true)}
+              onPause={() => setHomeVideoPlaying(false)}
+              onEnded={() => setHomeVideoPlaying(false)}
+              onVolumeChange={(event) => setHomeVideoMuted(event.currentTarget.muted)}
+              onClick={onStartInterview}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onStartInterview();
+                }
+              }}
+              role="button"
+              tabIndex="0"
+              aria-label={language === "en"
+                ? "Start real interview practice with Sarah"
+                : "Comenzar práctica de entrevista real con Sarah"}
             />
-            <span className="sr-only">
-              {language === "en" ? "Real Interview — Practice with Sarah" : "Entrevista real — Practica con Sarah"}
-            </span>
-          </button>
+
+            <div className="home-video-controls" aria-label={language === "en" ? "Promotional video controls" : "Controles del video promocional"}>
+              <button type="button" onClick={toggleHomeVideoPlayback} aria-label={homeVideoPlaying
+                ? (language === "en" ? "Pause video" : "Pausar video")
+                : (language === "en" ? "Play video" : "Reproducir video")}>
+                <span aria-hidden="true">{homeVideoPlaying ? "Ⅱ" : "▶"}</span>
+              </button>
+              <button type="button" onClick={toggleHomeVideoSound} aria-label={homeVideoMuted
+                ? (language === "en" ? "Turn sound on" : "Activar sonido")
+                : (language === "en" ? "Mute video" : "Silenciar video")}>
+                <span aria-hidden="true">{homeVideoMuted ? "🔇" : "🔊"}</span>
+              </button>
+              {homeVideoNeedsSound && (
+                <button type="button" className="home-video-sound-prompt" onClick={toggleHomeVideoSound}>
+                  {language === "en" ? "Turn on sound" : "Activar sonido"}
+                </button>
+              )}
+            </div>
+
+          </div>
 
           <div className="sr-only">
             <h1>{language === "en" ? "Prepare for your citizenship interview" : "Prepárate para tu entrevista de ciudadanía"}</h1>

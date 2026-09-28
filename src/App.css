@@ -29086,6 +29086,66 @@ html[data-theme="light"] .home-new-nav .home-nav-item.active > span {
   object-fit: contain;
 }
 
+.home-video-hero {
+  isolation: isolate;
+}
+
+.home-hero-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #020814;
+  cursor: pointer;
+}
+
+.home-hero-video:focus-visible {
+  outline: 3px solid #6ee7ff;
+  outline-offset: -5px;
+}
+
+.home-video-controls {
+  position: absolute;
+  z-index: 4;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.home-video-controls button {
+  display: grid;
+  place-items: center;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 7px 10px;
+  border: 1px solid rgba(118, 224, 255, .55);
+  border-radius: 999px;
+  color: #fff;
+  background: rgba(2, 15, 37, .82);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+}
+
+.home-video-controls button:hover,
+.home-video-controls button:focus-visible {
+  border-color: #6ee7ff;
+  background: rgba(4, 35, 75, .94);
+  outline: none;
+}
+
+.home-video-controls .home-video-sound-prompt {
+  display: block;
+  padding-inline: 14px;
+  color: #06152c;
+  background: #7ceaff;
+  font-size: 12px;
+  font-weight: 850;
+}
+
 .home-hero-interview-button:hover {
   border-color: rgba(58, 218, 255, .7);
   box-shadow: 0 24px 56px rgba(0, 110, 220, .28);
@@ -29150,6 +29210,22 @@ html[data-theme="light"] .home-hero-interview-button:hover {
     border-right: 0;
     border-left: 0;
     border-radius: 0;
+  }
+
+  .home-video-controls {
+    top: 8px;
+    right: 8px;
+  }
+
+  .home-video-controls button {
+    min-width: 34px;
+    min-height: 34px;
+    padding: 6px 8px;
+  }
+
+  .home-video-controls .home-video-sound-prompt {
+    padding-inline: 10px;
+    font-size: 10px;
   }
 
   .home-ai .home-interview-actions {
