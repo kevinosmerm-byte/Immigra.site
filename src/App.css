@@ -29169,3 +29169,20 @@ html[data-theme="light"] .home-hero-interview-button:hover {
     display: grid !important;
   }
 }
+
+/* Restore the original mobile practice hierarchy: the 128 Questions artwork
+   gets a full row, while Reading and Writing share the row below it. */
+@media (max-width: 700px) {
+  .home-ai .home-practice-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-ai .practice-feature-card.civics-image-card {
+    width: 100%;
+  }
+
+  .home-ai .practice-mini-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+}
