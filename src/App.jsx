@@ -784,8 +784,6 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     emitCompanionState("coach", { message: `${voiceIsKevin ? "Kevin" : "Sarah"} is asking the next question.` });
     await speakAppText(text, {
       profile: voiceIsKevin ? "male" : "female",
-      rate: voiceIsKevin ? 0.88 : 0.9,
-      pitch: voiceIsKevin ? 0.86 : 1.1,
       onEnd: finishSpeaking,
     });
   };

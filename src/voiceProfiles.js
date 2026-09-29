@@ -13,6 +13,8 @@ const profileScore = (voice, profile) => {
 
   if (preferredPattern.test(name)) score += 1000;
   if (oppositePattern.test(name)) score -= 1000;
+  // Prefer higher-quality installed variants without changing voice identity.
+  if (/\b(premium|enhanced|natural|neural)\b/i.test(name)) score += 15;
   if (voice?.localService) score += 3;
   if (voice?.default) score += 1;
   return score;
@@ -45,5 +47,5 @@ export const selectVoiceIndex = (voices = [], profile = "female") => {
 };
 
 export const voiceProfileDefaults = (profile = "female") => profile === "male"
-  ? { rate: 0.86, pitch: 0.78 }
-  : { rate: 0.92, pitch: 1.12 };
+  ? { rate: 0.95, pitch: 1 }
+  : { rate: 0.96, pitch: 1 };

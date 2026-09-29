@@ -31,10 +31,21 @@ test("keeps profiles distinct even when platform voice names are unknown", () =>
   assert.notEqual(selectVoiceIndex(voices, "female"), selectVoiceIndex(voices, "male"));
 });
 
-test("falls back to noticeably different speech characteristics", () => {
+test("preserves natural pitch and a clear near-normal pace for both profiles", () => {
   const sarah = voiceProfileDefaults("female");
   const kevin = voiceProfileDefaults("male");
 
-  assert.ok(sarah.pitch > kevin.pitch);
-  assert.ok(sarah.rate > kevin.rate);
+  assert.equal(sarah.pitch, 1);
+  assert.equal(kevin.pitch, 1);
+  assert.ok(sarah.rate >= 0.95 && sarah.rate <= 1);
+  assert.ok(kevin.rate >= 0.95 && kevin.rate <= 1);
+});
+
+test("prefers an enhanced male voice over its basic variant", () => {
+  const voices = [
+    { name: "Daniel", lang: "en-US", localService: true },
+    { name: "Daniel Enhanced", lang: "en-US", localService: true },
+    { name: "Samantha Premium", lang: "en-US", localService: true },
+  ];
+  assert.equal(selectVoiceIndex(voices, "male"), 1);
 });

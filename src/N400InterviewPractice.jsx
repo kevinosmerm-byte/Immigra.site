@@ -82,8 +82,6 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart }) {
     setIsSpeaking(true);
     await speakAppText(text, {
       profile: voiceIsKevin ? "male" : "female",
-      rate: voiceIsKevin ? 0.86 : 0.89,
-      pitch: voiceIsKevin ? 0.84 : 1.08,
       onEnd: finishSpeaking,
     });
   };
@@ -93,8 +91,6 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart }) {
       setIsSpeaking(true);
       speakAppText(`Welcome. We will review your Form N-400 in two parts. First, I will ask about your personal information. ${initialQuestionRef.current}`, {
         profile: "female",
-        rate: 0.89,
-        pitch: 1.08,
         onEnd: () => setIsSpeaking(false),
       });
     }, 500);
