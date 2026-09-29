@@ -14,6 +14,7 @@ export function CivicsStudyCard({
   image,
   imageAlt,
   imageFit = "cover",
+  imagePosition = "50% 50%",
   sourceName,
   sourceLabel,
   sourceUrl,
@@ -89,9 +90,9 @@ export function CivicsStudyCard({
       }}
       onTouchEnd={handleTouchEnd}
     >
-      <div className={`civics-study-media ${image ? "has-photo" : "is-pending"}`}>
+      <div className={`civics-study-media ${image ? "has-photo" : "is-pending"} ${imageFit === "contain" ? "full-artwork" : ""}`}>
         {image ? (
-          <img src={image} alt={imageAlt} style={{ objectFit: imageFit }} loading="eager" decoding="async" fetchPriority="high" />
+          <img src={image} alt={imageAlt} style={{ objectFit: imageFit, objectPosition: imagePosition }} loading="eager" decoding="async" fetchPriority="high" />
         ) : (
           <div className="civics-study-media-placeholder" aria-hidden="true">
             <span>128</span>

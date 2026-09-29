@@ -27455,6 +27455,12 @@ select { font: inherit; }
   filter: saturate(.92) contrast(1.02);
   transition: transform .35s ease;
 }
+.civics-study-media.full-artwork {
+  height: clamp(350px, 55vw, 460px);
+}
+.civics-study-media.full-artwork .civics-study-media-gradient {
+  background: linear-gradient(180deg, rgba(3, 16, 39, .2), transparent 25%, transparent 85%, rgba(3, 16, 39, .15));
+}
 .civics-study-card:hover .civics-study-media img { transform: scale(1.012); }
 .civics-study-media-gradient {
   position: absolute;

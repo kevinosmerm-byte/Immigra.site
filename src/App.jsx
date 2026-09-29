@@ -1914,6 +1914,7 @@ function App() {
                   image={visualSource.imagePath}
                   imageAlt={visualSource.imageAlt}
                   imageFit={visualSource.imageFit}
+                  imagePosition={visualSource.imagePosition}
                   sourceName={visualSource.sourceName}
                   sourceLabel={visualSource.sourceLabel}
                   sourceUrl={visualSource.sourceUrl}

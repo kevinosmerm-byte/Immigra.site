@@ -19,7 +19,8 @@ test("every mapped image has complete source, license, and accessibility metadat
     assert.ok(visual.sourceName && visual.sourceLabel);
     if (visual.userProvided) {
       assert.equal(visual.sourceUrl, visual.imagePath);
-      assert.equal(visual.imageFit, "contain");
+      assert.ok(["contain", "cover"].includes(visual.imageFit));
+      assert.match(visual.imagePosition, /^\d+% \d+%$/);
       assert.match(visual.license, /not verified/);
     } else assert.ok(visual.sourceUrl.startsWith("https://"));
     assert.ok(["document", "institution", "person", "map"].includes(visual.category));
