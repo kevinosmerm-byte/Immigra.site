@@ -30,6 +30,25 @@ const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
 const CivicsStudyGuide = lazy(() => import("./CivicsStudyGuide.jsx").then((module) => ({ default: module.CivicsStudyGuide })));
 const QuizLearningPath = lazy(() => import("./QuizLearningPath.jsx"));
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
+const HOME_VIDEO_PLAYED_KEY = "citizenshipai.homeVideoPlayed.v1";
+let homeVideoPlayedThisVisit = false;
+
+function hasPlayedHomeVideo() {
+  try {
+    return homeVideoPlayedThisVisit || sessionStorage.getItem(HOME_VIDEO_PLAYED_KEY) === "true";
+  } catch {
+    return homeVideoPlayedThisVisit;
+  }
+}
+
+function rememberHomeVideoPlayback() {
+  homeVideoPlayedThisVisit = true;
+  try {
+    sessionStorage.setItem(HOME_VIDEO_PLAYED_KEY, "true");
+  } catch {
+    // The in-memory flag still prevents repeats when storage is unavailable.
+  }
+}
 const PRACTICE_MODULE_NAMES = {
   reading: "Reading practice",
   writing: "Writing practice",
@@ -241,6 +260,20 @@ function Home({
     if (!video) return undefined;
 
     let cancelled = false;
+    if (hasPlayedHomeVideo()) {
+      const showLastFrame = () => {
+        if (cancelled || !Number.isFinite(video.duration)) return;
+        video.pause();
+        video.currentTime = Math.max(0, video.duration - 0.05);
+      };
+      video.addEventListener("loadedmetadata", showLastFrame);
+      if (video.readyState >= 1) showLastFrame();
+      return () => {
+        cancelled = true;
+        video.removeEventListener("loadedmetadata", showLastFrame);
+        video.pause();
+      };
+    }
     video.muted = false;
     const playWithSound = video.play();
     if (playWithSound?.catch) {
@@ -384,10 +417,12 @@ function Home({
               className="home-hero-video"
               src="/citizenshipai-home-cta.mp4"
               poster="/sarah-real-interview-hero.jpg"
-              autoPlay
               playsInline
               preload="metadata"
-              onPlay={() => setHomeVideoPlaying(true)}
+              onPlay={() => {
+                rememberHomeVideoPlayback();
+                setHomeVideoPlaying(true);
+              }}
               onPause={() => setHomeVideoPlaying(false)}
               onEnded={() => setHomeVideoPlaying(false)}
               onVolumeChange={(event) => setHomeVideoMuted(event.currentTarget.muted)}
