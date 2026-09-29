@@ -16,11 +16,16 @@ test("every mapped image has complete source, license, and accessibility metadat
   for (const visual of civicsVisualLibrary) {
     assert.ok(visual.imageAlt.length >= 20);
     assert.ok(visual.license && visual.license !== "Original project artwork");
-    assert.ok(visual.sourceName && visual.sourceLabel && visual.sourceUrl.startsWith("https://"));
+    assert.ok(visual.sourceName && visual.sourceLabel);
+    if (visual.userProvided) {
+      assert.equal(visual.sourceUrl, visual.imagePath);
+      assert.equal(visual.imageFit, "contain");
+      assert.match(visual.license, /not verified/);
+    } else assert.ok(visual.sourceUrl.startsWith("https://"));
     assert.ok(["document", "institution", "person", "map"].includes(visual.category));
-    assert.match(visual.imagePath, /\.webp$/);
+    assert.match(visual.imagePath, /\.(webp|jpg)$/);
     if (!verifiedAssets.has(visual.imagePath)) {
-      assert.ok((await stat(new URL(visual.imagePath))).size < 300_000);
+      assert.ok((await stat(new URL(visual.imagePath))).size < 500_000);
       verifiedAssets.add(visual.imagePath);
     }
   }

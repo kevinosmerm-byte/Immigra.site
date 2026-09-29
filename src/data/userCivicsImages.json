@@ -1,0 +1,261 @@
+[
+  {
+    "file": "user-we-the-people.jpg",
+    "original": "descarga.jpg",
+    "questionIds": [
+      4
+    ],
+    "imageAlt": "Decorative reproduction of the Constitution preamble, We the People",
+    "category": "document"
+  },
+  {
+    "file": "user-liberty-rights.jpg",
+    "original": "Life Liberty Printable Wall Art, America 250 Patriotic Poster, July 4 Digital Download.jpg",
+    "questionIds": [
+      10,
+      11
+    ],
+    "imageAlt": "Commemorative poster quoting Life, Liberty and the pursuit of Happiness",
+    "category": "document"
+  },
+  {
+    "file": "user-capitol.jpg",
+    "original": "Congress building.jpg",
+    "questionIds": [
+      16,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      27,
+      28,
+      31,
+      119
+    ],
+    "imageAlt": "Exterior of the United States Capitol",
+    "category": "institution"
+  },
+  {
+    "file": "user-house-chamber.jpg",
+    "original": "congress.jpg",
+    "questionIds": [
+      24,
+      25,
+      26,
+      29,
+      30,
+      33,
+      35
+    ],
+    "imageAlt": "Historical photograph of a session in the House chamber; not the current membership",
+    "category": "institution"
+  },
+  {
+    "file": "user-voting.jpg",
+    "original": "Diseño de voto de elecciones de dibujos animados _ Vector Premium.jpg",
+    "questionIds": [
+      32,
+      34,
+      49,
+      63,
+      64,
+      69
+    ],
+    "imageAlt": "Illustration of a ballot being placed in a box marked VOTE",
+    "category": "document"
+  },
+  {
+    "file": "user-white-house.jpg",
+    "original": "The white house.jpg",
+    "questionIds": [
+      17,
+      36,
+      37,
+      38,
+      39,
+      40,
+      46,
+      47,
+      48
+    ],
+    "imageAlt": "Exterior of the White House, home of the executive branch",
+    "category": "institution"
+  },
+  {
+    "file": "user-presidential-podium.jpg",
+    "original": "descarga (21).jpg",
+    "questionIds": [
+      41,
+      43,
+      44,
+      45
+    ],
+    "imageAlt": "Presidential lectern with the presidential seal and American flags",
+    "category": "institution"
+  },
+  {
+    "file": "user-fighter-jet.jpg",
+    "original": "air.jpg",
+    "questionIds": [
+      42,
+      58
+    ],
+    "imageAlt": "Modern military aircraft illustrating the United States armed forces",
+    "category": "institution"
+  },
+  {
+    "file": "user-supreme-court.jpg",
+    "original": "Corte Suprema falla a favor de empresa de EEUU por bienes incautados en revolución cubana.jpg",
+    "questionIds": [
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56
+    ],
+    "imageAlt": "Exterior of the United States Supreme Court building",
+    "category": "institution"
+  },
+  {
+    "file": "user-chief-justice.jpg",
+    "original": "John Roberts.jpg",
+    "questionIds": [
+      57
+    ],
+    "imageAlt": "Portrait of John Roberts wearing judicial robes",
+    "category": "person"
+  },
+  {
+    "file": "user-susan-anthony.jpg",
+    "original": "Susan B_ Anthony, born in the Berkshires, became one of the key leaders of the women's suffrage movement who fought for decades to secure the right to vote for women in the United States.jpg",
+    "questionIds": [
+      99,
+      102
+    ],
+    "imageAlt": "Historical portrait of women's suffrage leader Susan B. Anthony",
+    "category": "person"
+  },
+  {
+    "file": "user-mlk.jpg",
+    "original": "Martin Luther King Jr_ The Wit and Wisdom of the Civil Rights Icon.jpg",
+    "questionIds": [
+      112,
+      113
+    ],
+    "imageAlt": "Historical photograph of Martin Luther King Jr. speaking at a podium",
+    "category": "person"
+  },
+  {
+    "file": "user-fireworks.jpg",
+    "original": "descarga (15).jpg",
+    "questionIds": [
+      125,
+      126
+    ],
+    "imageAlt": "Fireworks and an American flag illustrating Independence Day celebrations",
+    "category": "institution"
+  },
+  {
+    "file": "user-uncle-sam.jpg",
+    "original": "descarga (10).jpg",
+    "questionIds": [
+      70
+    ],
+    "imageAlt": "Historical Uncle Sam poster inviting volunteers to enlist in the U.S. Army",
+    "category": "document"
+  },
+  {
+    "file": "user-liberty.jpg",
+    "original": "Wann wurde die USA gegründet_ Entdecke die Geschichte dahinter.jpg",
+    "questionIds": [
+      120
+    ],
+    "imageAlt": "Decorative illustration of the Statue of Liberty with an American flag",
+    "category": "institution"
+  },
+  {
+    "file": "user-lincoln-memorial.jpg",
+    "original": "descarga (1).jpg",
+    "questionIds": [
+      94
+    ],
+    "imageAlt": "Abraham Lincoln statue and inscription at the Lincoln Memorial",
+    "category": "person"
+  },
+  {
+    "file": "user-gettysburg.jpg",
+    "original": "The Guardian of Gettysburg - Counted cross stitch pattern _ Digital format_ Full coverage.jpg",
+    "questionIds": [
+      93
+    ],
+    "imageAlt": "Decorative illustration of Abraham Lincoln with a scroll labeled Gettysburg 1863",
+    "category": "person"
+  },
+  {
+    "file": "user-memorial-day.jpg",
+    "original": "4 JULY INDEPENDANCE DAY.jpg",
+    "questionIds": [
+      127
+    ],
+    "imageAlt": "Illustrated tribute to fallen service members with a helmet, boots and American flags",
+    "category": "institution"
+  },
+  {
+    "file": "user-veterans.jpg",
+    "original": "descarga (8).jpg",
+    "questionIds": [
+      128
+    ],
+    "imageAlt": "Stylized illustration of a modern service member overlaid with an American flag",
+    "category": "person"
+  },
+  {
+    "file": "user-revolution.jpg",
+    "original": "descarga (5).jpg",
+    "questionIds": [
+      76
+    ],
+    "imageAlt": "Artwork depicting Revolutionary War soldiers in battle, with the artist's copyright notice",
+    "category": "institution"
+  },
+  {
+    "file": "user-british-colonial.jpg",
+    "original": "descarga (6).jpg",
+    "questionIds": [
+      77
+    ],
+    "imageAlt": "Historical illustration of British redcoats in a colonial town",
+    "category": "institution"
+  },
+  {
+    "file": "user-delaware.jpg",
+    "original": "Washington Crossing the Delaware.jpg",
+    "questionIds": [
+      80
+    ],
+    "imageAlt": "Historical artwork depicting Washington crossing the Delaware with soldiers",
+    "category": "person"
+  },
+  {
+    "file": "user-washington-portrait.jpg",
+    "original": "George Washington Premium Giclee Print - George Peter Alexander Healy _ Art_com.jpg",
+    "questionIds": [
+      86
+    ],
+    "imageAlt": "Full-length historical painted portrait of George Washington",
+    "category": "person"
+  },
+  {
+    "file": "user-wwii-memorial.jpg",
+    "original": "descarga (14).jpg",
+    "questionIds": [
+      100
+    ],
+    "imageAlt": "Marine Corps War Memorial depicting the flag raising at Iwo Jima during World War II",
+    "category": "institution"
+  }
+]

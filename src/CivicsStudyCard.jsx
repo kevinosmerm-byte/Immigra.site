@@ -13,6 +13,7 @@ export function CivicsStudyCard({
   answers,
   image,
   imageAlt,
+  imageFit = "cover",
   sourceName,
   sourceLabel,
   sourceUrl,
@@ -90,7 +91,7 @@ export function CivicsStudyCard({
     >
       <div className={`civics-study-media ${image ? "has-photo" : "is-pending"}`}>
         {image ? (
-          <img src={image} alt={imageAlt} loading="eager" decoding="async" fetchPriority="high" />
+          <img src={image} alt={imageAlt} style={{ objectFit: imageFit }} loading="eager" decoding="async" fetchPriority="high" />
         ) : (
           <div className="civics-study-media-placeholder" aria-hidden="true">
             <span>128</span>

@@ -1913,6 +1913,7 @@ function App() {
                   answers={currentAnswers}
                   image={visualSource.imagePath}
                   imageAlt={visualSource.imageAlt}
+                  imageFit={visualSource.imageFit}
                   sourceName={visualSource.sourceName}
                   sourceLabel={visualSource.sourceLabel}
                   sourceUrl={visualSource.sourceUrl}

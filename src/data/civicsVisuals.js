@@ -1,4 +1,13 @@
+import userImages from "./userCivicsImages.json" with { type: "json" };
+
 const imageUrl = (fileName) => new URL(`../assets/civics-photos/${fileName}`, import.meta.url).href;
+const userVisuals = new Map(userImages.flatMap((entry) => entry.questionIds.map((id) => [id, {
+  imagePath: imageUrl(entry.file), imageAlt: entry.imageAlt, category: entry.category,
+  sourceName: "User-provided image", sourceLabel: "Original image",
+  sourceUrl: imageUrl(entry.file),
+  license: "User-supplied reference; publication rights not verified",
+  userProvided: true, imageFit: "contain", originalFileName: entry.original,
+}])));
 
 // These ten questions anchor the approved visual subjects from the prototype.
 export const prototypeQuestionIds = Object.freeze([1, 2, 8, 17, 19, 24, 52, 86, 94, 113]);
@@ -82,6 +91,7 @@ function subjectForQuestion(questionId) {
 export const civicsVisualLibrary = Object.freeze(allCivicsQuestionIds.map((questionId) => Object.freeze({
   questionId,
   ...visualSubjects[subjectForQuestion(questionId)],
+  ...userVisuals.get(questionId),
 })));
 
 const visualByQuestion = new Map(civicsVisualLibrary.map((visual) => [visual.questionId, visual]));
