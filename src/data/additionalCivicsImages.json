@@ -127,8 +127,7 @@
     "original": "Pres-meeting-George-W-Bush-National-Security-September-12-2001.webp",
     "questionIds": [
       17,
-      46,
-      115
+      46
     ],
     "imageAlt": "Historical presidential security meeting following the September 2001 attacks",
     "category": "institution",
@@ -194,6 +193,31 @@
     "category": "institution",
     "sourceName": "AI illustration · Ilustración IA",
     "imageFit": "contain",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-flag-allegiance.jpg",
+    "original": "bandera-de-estados-unidos-historia-y-significado.jpg",
+    "questionIds": [66, 67, 121, 122],
+    "imageAlt": "United States flag waving against a blue sky, illustrating the flag and allegiance",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-national-anthem.jpg",
+    "original": "images (4).jpg",
+    "questionIds": [123],
+    "imageAlt": "Commemorative poster about The Star-Spangled Banner becoming the U.S. national anthem on March 3, 1931",
+    "category": "document",
+    "imageFit": "contain",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-september-11.jpg",
+    "original": "torres-gemelas-atentado.jpg",
+    "questionIds": [115],
+    "imageAlt": "New York skyline with smoke rising from the World Trade Center during the September 11, 2001 attacks",
+    "category": "institution",
     "imagePosition": "50% 50%"
   }
 ]
