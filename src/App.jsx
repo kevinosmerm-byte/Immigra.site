@@ -14,7 +14,7 @@ import { evaluateCivicsAnswer } from "./civicsAnswerEvaluator.js";
 import { apiJson } from "./api";
 import { startAudioRecording, transcribeRecording } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
-import { getPracticeEvents, getPracticeSummary, recordPracticeEvent, getModuleProgress, saveModuleProgress, getContinueStudying, recordCivicsMistake, migrateLegacyCivicsProgress } from "./progress";
+import { getPracticeEvents, getPracticeSummary, recordPracticeEvent, getModuleProgress, saveModuleProgress, recordCivicsMistake, migrateLegacyCivicsProgress } from "./progress";
 import { PodcastLibrary } from "./PodcastPlayer";
 import { usePromotionAccess } from "./promotionAccessContext.js";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
@@ -256,7 +256,6 @@ function Home({
   language,
   onLanguageChange,
   practiceSummary,
-  studyActions,
 }) {
   const homeVideoRef = useRef(null);
   const [homeVideoPlaying, setHomeVideoPlaying] = useState(false);
@@ -561,8 +560,6 @@ function Home({
 
 
         {/* ================= QUICK PRACTICE ================= */}
-
-        {studyActions}
         <section className="home-new-section home-practice-section">
           <div className="home-practice-list">
 
@@ -1404,10 +1401,6 @@ function AppContent({ userKey }) {
       .sort(() => Math.random() - 0.5))
   );
   const practiceSummary = getPracticeSummary(practiceEvents, civicsViewed, civicsMastered);
-  const continueStudy = getContinueStudying(userKey);
-  const studyLabels = language === "es"
-    ? { civics: "Preguntas cívicas", vocabulary: "Vocabulario", choose: "Elegir", connect: "Conectar", quiz: "Quiz", reading: "Lectura", writing: "Escritura", interview: "Entrevista cívica" }
-    : { civics: "Civics Questions", vocabulary: "Vocabulary", choose: "Choose", connect: "Connect", quiz: "Quiz", reading: "Reading", writing: "Writing", interview: "Civics Interview" };
 
   const handleQuestionResult = (questionId, correct) => {
     const index = civicsQuestionBank.findIndex(question => question.questionId === questionId);
@@ -2675,12 +2668,6 @@ function AppContent({ userKey }) {
       }}
       language={language}
       onLanguageChange={setPreferredLanguage}
-      studyActions={<section className="home-study-actions" aria-label="Your study plan">
-        <button onClick={() => navigateTo("civicProfile")}><strong>{language === "es" ? "Mi perfil cívico" : "My Civics Profile"}</strong><span>{civicProfile?.state?.code || (language === "es" ? "Configurar ubicación" : "Set your location")}</span></button>
-        {continueStudy && <button onClick={() => { const module = continueStudy.module; if (module === "interview") startInterview("civics"); else if (["reading", "writing", "coach"].includes(module)) openPracticeModule(module); else { setCivicsStudyMode("study"); navigateTo(module); } }}><strong>{language === "es" ? "Continuar estudiando" : "Continue Studying"}</strong><span>{studyLabels[continueStudy.module] || continueStudy.module} · {Math.round(continueStudy.progressPercentage)}% {language === "es" ? "completado" : "complete"}</span></button>}
-        <button onClick={() => { setCivicsStudyMode("mistakes"); setCivicsIndex(civicsNeedsPractice[0] || 0); navigateTo("civics"); }}><strong>{language === "es" ? "Practicar mis errores" : "Practice Your Mistakes"}</strong><span>{civicsNeedsPractice.length} {language === "es" ? "preguntas" : "questions"}</span></button>
-        <button onClick={() => { setCivicsStudyMode("favorites"); setCivicsIndex(civicsFavorites[0] || 0); navigateTo("civics"); }}><strong>{language === "es" ? "Preguntas guardadas" : "Saved Questions"}</strong><span>{civicsFavorites.length} {language === "es" ? "preguntas" : "questions"}</span></button>
-      </section>}
       practiceSummary={practiceSummary}
     />
     {accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}
