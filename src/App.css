@@ -29301,3 +29301,15 @@ html[data-theme="light"] .home-hero-interview-button:hover {
 .global-bottom-navigation button { min-width: 0; }
 @media (max-width: 360px) { .global-bottom-navigation button { font-size: .68rem; } }
 .home-pro-badge { position: absolute; top: 12px; left: 12px; z-index: 3; padding: 4px 8px; border-radius: 7px; background: #102c4be6; color: #d8f5ff; border: 1px solid #75c5e8; font-size: .65rem; font-weight: 700; letter-spacing: .06em; pointer-events: none; }
+
+/* Controls belong to the study card, with the same surface and safe spacing. */
+.civics-card-controls { padding: 16px 22px 18px; border-top: 1px solid #e1e9f2; background: #f6f9fd; cursor: default; }
+.civics-screen .civics-card-controls .civics-deck-navigation { width: 100%; margin: 0; }
+.civics-card-controls .civics-deck-navigation > div { color: #64748b; }
+.civics-card-controls .civics-deck-navigation > div strong { color: #243b58; }
+.civics-card-controls .feedback-sound-toggle { margin: 14px auto 0; color: #264765; background: #e8f1fa; border-color: #cbddeb; min-height: 40px; }
+.civics-card-controls .study-feedback-message:empty { display: none; }
+.global-bottom-navigation svg { width: 26px; height: 26px; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.global-bottom-navigation button { transition: color .18s ease, background .18s ease; }
+.global-bottom-navigation button[aria-current="page"] svg { filter: drop-shadow(0 0 6px #60caff55); }
+@media (max-width: 620px) { .civics-card-controls { padding: 12px 12px 14px; } }

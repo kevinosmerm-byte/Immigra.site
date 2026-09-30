@@ -2001,9 +2001,7 @@ function AppContent({ userKey }) {
                   }}
                   onNavigate={changeCivicsCard}
                   copy={copy}
-                />
-              </section>
-
+                  footer={<div className="civics-card-controls">
               <div className="civics-deck-navigation">
                 <button onClick={() => changeCivicsCard(-1)} aria-label="Previous question"><span>←</span>{isSpanish ? "Anterior" : "Previous"}</button>
                 <div><strong>{civicsViewed.length} / 128</strong><em>{copy.studied}</em><span>·</span><strong>{civicsMastered.length}</strong><em>{copy.mastered}</em><span>·</span><strong>{civicsNeedsPractice.length}</strong><em>{copy.review}</em></div>
@@ -2023,6 +2021,10 @@ function AppContent({ userKey }) {
               }}>
                 {soundEnabled ? `🔊 ${copy.soundOn}` : `🔇 ${copy.soundOff}`}
               </button>
+                  </div>}
+                />
+              </section>
+
             </>
           ) : (
             <section className="civics-favorites-empty"><span>☆</span><p>{civicsStudyMode === "mistakes" ? (isSpanish ? "No tienes errores pendientes de repasar." : "No mistakes waiting for review.") : copy.empty}</p><button onClick={() => setCivicsStudyMode("study")}>{copy.cards}</button></section>

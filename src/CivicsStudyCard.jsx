@@ -32,6 +32,7 @@ export function CivicsStudyCard({
   onPlayAudio,
   onNavigate,
   copy,
+  footer,
 }) {
   useEffect(() => {
     const preloaded = preloadImages.filter(Boolean).map((src) => {
@@ -165,6 +166,7 @@ export function CivicsStudyCard({
         <em>{sourceLabel}</em>
         <b aria-hidden="true">↗</b>
       </a>
+      {footer && <div onClick={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onTouchEnd={event => event.stopPropagation()}>{footer}</div>}
     </article>
   );
 }

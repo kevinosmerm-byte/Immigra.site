@@ -1,10 +1,10 @@
 import { useLayoutEffect, useRef } from "react";
 const ITEMS = [
-  { id: "home", label: "Home", es: "Inicio", path: "M3 10 12 3l9 7v11h-6v-7H9v7H3Z" },
-  { id: "vocabulary", label: "Vocabulary", es: "Vocabulario", path: "M3 4h7l2 2 2-2h7v16h-7l-2 2-2-2H3ZM12 6v16" },
-  { id: "choose", label: "Choose", es: "Elegir", path: "M4 4h16v16H4ZM7 12l3 3 7-7" },
-  { id: "connect", label: "Connect", es: "Conectar", path: "M3 6h5v5H3ZM16 13h5v5h-5ZM8 8h8v8" },
-  { id: "pro", label: "PRO", es: "PRO", path: "m12 3 3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1Z" },
+  { id: "home", label: "Home", es: "Inicio", path: "m3 10 7-6a3 3 0 0 1 4 0l7 6M5 9v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9M9 21v-6a3 3 0 0 1 6 0v6" },
+  { id: "vocabulary", label: "Vocabulary", es: "Vocabulario", path: "M12 6c-3-2-6-2-9-1v14c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-1-9 1Zm0 0v14M6 9l3 1m-3 3 3 1m6-4 3-1m-3 5 3-1" },
+  { id: "choose", label: "Choose", es: "Elegir", path: "M20 12v6a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3h8M8 11l4 4 9-10" },
+  { id: "connect", label: "Connect", es: "Conectar", path: "m10 13 4-4M8 15l-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 3 1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0" },
+  { id: "pro", label: "PRO", es: "PRO", path: "m12 3 2.8 6.2L21 7l-2 11H5L3 7l6.2 2.2L12 3ZM6 21h12" },
 ];
 
 export function BottomNavigation({ screen, language, onNavigate }) {
