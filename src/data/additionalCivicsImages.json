@@ -522,5 +522,16 @@
     "category": "person",
     "imagePosition": "50% 50%",
     "imageFit": "contain"
+  },
+  {
+    "file": "user-tenth-amendment.jpg",
+    "original": "Collage de Nosotros, el Pueblo a mano.png",
+    "questionIds": [
+      60
+    ],
+    "imageAlt": "Colorful We the People collage with the Constitution, historical portraits, and Independence Hall",
+    "category": "document",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
   }
 ]
