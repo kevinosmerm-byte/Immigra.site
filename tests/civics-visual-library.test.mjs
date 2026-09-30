@@ -5,7 +5,7 @@ import { allCivicsQuestionIds, civicsVisualLibrary, getCivicsVisual, prototypeQu
 import additionalImages from "../src/data/additionalCivicsImages.json" with { type: "json" };
 
 test("additional images override their intended questions without duplicate assignments", () => {
-  assert.equal(additionalImages.length, 48);
+  assert.equal(additionalImages.length, 49);
   const ids = new Set();
   for (const entry of additionalImages) {
     for (const id of entry.questionIds) {

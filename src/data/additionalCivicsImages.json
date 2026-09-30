@@ -511,5 +511,16 @@
     "category": "person",
     "imagePosition": "50% 50%",
     "imageFit": "contain"
+  },
+  {
+    "file": "user-colonists-america.jpg",
+    "original": "6495_640310cc48382r_d1574-651-5024.jpeg",
+    "questionIds": [
+      73
+    ],
+    "imageAlt": "Historical battle painting with uniformed soldiers, a flag, and a cannon",
+    "category": "person",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
   }
 ]
