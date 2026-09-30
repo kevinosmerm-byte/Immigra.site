@@ -488,5 +488,16 @@
     "category": "map",
     "imagePosition": "50% 50%",
     "imageFit": "contain"
+  },
+  {
+    "file": "user-thirteen-colonies.jpg",
+    "original": "thirteen_colonies.jpg",
+    "questionIds": [
+      81
+    ],
+    "imageAlt": "Labeled color map of the thirteen original states along the Atlantic coast",
+    "category": "map",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
   }
 ]
