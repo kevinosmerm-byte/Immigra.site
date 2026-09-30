@@ -29,7 +29,7 @@ export const stateCivicsTable = Object.freeze(Object.entries(CAPITALS).map(([sta
 })));
 
 // Manually verified against the official offices on 2026-09-30. No scheduled updater.
-// Reverify this single source before the freshness window expires.
+// Keep available answers until explicitly updated; verification dates remain traceable.
 export const nationalCivicsTable = Object.freeze({
   president: { answers: ["Donald J. Trump", "Donald Trump", "Trump"], verifiedAt: "2026-09-30", sourceUrl: "https://www.whitehouse.gov/administration/" },
   vicePresident: { answers: ["JD Vance", "Vance"], verifiedAt: "2026-09-30", sourceUrl: "https://www.whitehouse.gov/administration/" },
@@ -37,7 +37,7 @@ export const nationalCivicsTable = Object.freeze({
   chiefJustice: { answers: ["John G. Roberts, Jr.", "John Roberts", "Roberts"], verifiedAt: "2026-09-30", sourceUrl: "https://www.supremecourt.gov/about/justices.aspx" },
 });
 
-export function currentDynamicAnswers(record, now = Date.now(), maxAgeDays = 31) {
+export function currentDynamicAnswers(record, now = Date.now(), maxAgeDays = Infinity) {
   if (!record?.verifiedAt || !Array.isArray(record.answers)) return [];
   const date = /^\d{4}-\d{2}-\d{2}$/.test(record.verifiedAt) ? `${record.verifiedAt}T00:00:00Z` : record.verifiedAt;
   const age = now - Date.parse(date);

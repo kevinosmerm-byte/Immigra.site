@@ -18,9 +18,9 @@ test("one official update changes display and grading without stale aliases", ()
   assert.notEqual(evaluateCivicsAnswer(resolved, "Donald Trump").status, "correct");
   assert.deepEqual(question.acceptedAnswers, []);
 });
-test("ISO verification dates work and expired data fails closed", () => {
+test("dated answers remain available until an explicit update", () => {
   assert.deepEqual(currentDynamicAnswers({ answers: ["Example"], verifiedAt: "2026-09-30T10:00:00Z" }, now), ["Example"]);
-  assert.deepEqual(currentDynamicAnswers({ answers: ["Example"], verifiedAt: "2025-01-01" }, now), []);
+  assert.deepEqual(currentDynamicAnswers({ answers: ["Example"], verifiedAt: "2025-01-01" }, now), ["Example"]);
 });
 test("changing civic location changes answers and ambiguous districts never resolve", () => {
   const profile = createCivicProfile({ zipCode: "12345", districts: ["1"], state: { capital: "Sample Capital" }, officials: { representative: "Sample Member", verifiedAt: "2026-09-30" } });
@@ -30,10 +30,10 @@ test("changing civic location changes answers and ambiguous districts never reso
   profile.state.capital = "Other Capital";
   assert.deepEqual(resolveCivicsQuestion(getCivicsQuestion(62), { profile, now }).acceptedAnswers, ["Other Capital"]);
 });
-test("governors resolve from one dated roster and expire independently of location", () => {
+test("governors resolve from one dated roster and remain available", () => {
   const profile = { state: { code: "NJ" }, governor: "Old officeholder", verifiedAt: "2026-09-30" };
   const question = resolveCivicsQuestion(getCivicsQuestion(61), { profile, now });
   assert.equal(question.acceptedAnswers[0], "Mikie Sherrill");
   assert.equal(question.officialSource, "https://www.nga.org/governors/");
-  assert.deepEqual(resolveCivicsQuestion(getCivicsQuestion(61), { profile, now: now + 32 * 86400000 }).acceptedAnswers, []);
+  assert.deepEqual(resolveCivicsQuestion(getCivicsQuestion(61), { profile, now: now + 32 * 86400000 }).acceptedAnswers, ["Mikie Sherrill"]);
 });

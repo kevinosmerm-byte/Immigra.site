@@ -1,13 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { open, readFile, stat } from "node:fs/promises";
+import { open, readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import official from "../src/data/uscis2025Civics.json" with { type: "json" };
 
 const pdfUrl = new URL("../public/study-guides/uscis-2025-civics-test-study-guide.pdf", import.meta.url);
 
 test("the official USCIS study guide is bundled intact as a PDF", async () => {
-  const details = await stat(pdfUrl);
-  assert.ok(details.size > 15_000_000);
-  assert.ok(details.size < 25_000_000);
+  assert.equal(createHash("sha256").update(await readFile(pdfUrl)).digest("hex"), official.source.sha256);
   const file = await open(pdfUrl, "r");
   const header = Buffer.alloc(5);
   await file.read(header, 0, header.length, 0);

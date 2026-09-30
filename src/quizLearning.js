@@ -55,7 +55,7 @@ export function buildQuizQuestionModels(questionBank) {
   return questionBank.map((question) => ({
     ...question,
     category: getCivicsCategory(question.questionId),
-    preferredAnswer: question.acceptedAnswers[0] || "",
+    preferredAnswer: question.acceptedAnswers.slice(0, question.minimumAnswersRequired || 1).join("; "),
     vocabulary: vocabularyFor(question),
   }));
 }

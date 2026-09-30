@@ -27,7 +27,8 @@ test("the adaptive path enriches the existing 128-question source without replac
   assert.equal(questions.length, 128);
   assert.deepEqual(QUIZ_LEVELS.map((level) => level.id), ["vocabulary", "choose", "connect", "recall", "challenge"]);
   for (const question of questions) {
-    assert.equal(question.preferredAnswer, question.acceptedAnswers[0] || "");
+    assert.equal(question.preferredAnswer, question.acceptedAnswers.slice(0, question.minimumAnswersRequired).join("; "));
+    if (question.preferredAnswer) assert.equal(evaluateQuizResponse(question, question.preferredAnswer).status, "correct", "Choice must contain the required number of answers" );
     assert.ok(Array.isArray(question.vocabulary));
   }
 });

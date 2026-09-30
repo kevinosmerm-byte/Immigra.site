@@ -43,9 +43,9 @@ test("similar but conceptually incorrect answers are rejected", () => {
   assert.equal(evaluateCivicsAnswer(getCivicsQuestion(9), "the Declaration of War").status, "incorrect");
 });
 
-test("stale dynamic answers are never presented as current", () => {
+test("available dynamic records remain usable and missing records require review", () => {
   const old = { answers: ["Former officeholder"], verifiedAt: "2025-01-01" };
-  assert.deepEqual(currentDynamicAnswers(old, Date.parse("2026-09-23T00:00:00Z")), []);
+  assert.deepEqual(currentDynamicAnswers(old, Date.parse("2026-09-23T00:00:00Z")), ["Former officeholder"]);
   assert.equal(evaluateCivicsAnswer(getCivicsQuestion(38), "Former officeholder", []).status, "review");
 });
 

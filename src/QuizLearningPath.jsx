@@ -196,7 +196,7 @@ function QuizFeedback({ result, question, copy, onNext }) {
       <strong>{correct ? `✓ ${copy.correct}` : copy.review}</strong>
       {!correct && <p>{result.status === "incomplete" ? copy.incomplete : result.feedback}</p>}
       <div><small>{copy.preferred}</small><b>{question.preferredAnswer || copy.dynamic}</b></div>
-      {question.acceptedAnswers.length > 1 && <details><summary>{copy.accepted}</summary><ul>{question.acceptedAnswers.slice(1).map((item) => <li key={item}>{item}</li>)}</ul></details>}
+      {question.acceptedAnswers.length > 1 && <details><summary>{copy.accepted}</summary><ul>{question.acceptedAnswers.slice(question.minimumAnswersRequired || 1).map((item) => <li key={item}>{item}</li>)}</ul></details>}
       <button onClick={() => onNext()}>{copy.continue} →</button>
     </div>
   );

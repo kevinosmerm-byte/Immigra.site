@@ -121,7 +121,7 @@ test("costly AI endpoints honor remote and emergency feature switches", async ()
 
   assert.match(service, /DISABLED_AI_FEATURES/);
   assert.match(service, /from\("ai_feature_config"\)[\s\S]*select\("enabled"\)/);
-  assert.match(server, /requireAiFeature\("classicInterview"\)/);
+  assert.match(server, /app\.post\("\/evaluate", \(req, res\) =>/);
   assert.match(server, /requireAiFeature\("writing"\)/);
   assert.match(server, /requireAiFeature\("coach"\)/);
   assert.match(server, /requireAiFeature\("realInterview"\)/);
@@ -141,7 +141,7 @@ test("direct provider calls require an authorized session after promotion ends",
   assert.match(server, /requireAuthorizedAiAccess/);
   assert.match(server, /req\.aiSession\?\.id/);
   assert.match(server, /code: "ai_session_required"/);
-  assert.equal((server.match(/requireAuthorizedAiAccess, (?:aiRateLimit|transcriptionRateLimit|avatarSessionRateLimit)/g) || []).length, 6);
+  assert.equal((server.match(/requireAuthorizedAiAccess, (?:aiRateLimit|transcriptionRateLimit|avatarSessionRateLimit)/g) || []).length, 5);
 });
 
 test("session completion aggregates trusted server usage events", async () => {
@@ -255,7 +255,7 @@ test("AI responses and microphone recordings have explicit cost ceilings", async
   const audio = await readFile(new URL("../src/audio.js", import.meta.url), "utf8");
 
   assert.match(server, /OPENAI_MAX_OUTPUT_TOKENS/);
-  assert.equal((server.match(/max_output_tokens: MAX_AI_OUTPUT_TOKENS/g) || []).length, 4);
+  assert.equal((server.match(/max_output_tokens: MAX_AI_OUTPUT_TOKENS/g) || []).length, 3);
   assert.match(server, /Math\.min\(600/);
   assert.match(audio, /MAX_RECORDING_DURATION_MS = 45_000/);
   assert.match(audio, /automaticStopTimer = window\.setTimeout/);
@@ -275,8 +275,8 @@ test("failed provider attempts remain visible in cost telemetry", async () => {
   const { readFile } = await import("node:fs/promises");
   const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
 
-  assert.equal((server.match(/let providerAttempted = false/g) || []).length, 6);
-  assert.equal((server.match(/if \(providerAttempted\) await recordProviderUsage/g) || []).length, 6);
+  assert.equal((server.match(/let providerAttempted = false/g) || []).length, 5);
+  assert.equal((server.match(/if \(providerAttempted\) await recordProviderUsage/g) || []).length, 5);
   assert.match(server, /provider: "d-id", model: "agents-client-key"/);
   assert.match(server, /model: "gpt-4o-mini-transcribe"/);
 });

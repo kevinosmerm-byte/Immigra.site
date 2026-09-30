@@ -208,12 +208,6 @@ function readText(value, maxLength = MAX_TEXT_LENGTH) {
   return value.trim().slice(0, maxLength);
 }
 
-function readAnswer(value) {
-  if (Array.isArray(value)) {
-    return value.map((item) => readText(item, 1_000)).filter(Boolean).join("; ");
-  }
-  return readText(value);
-}
 
 function requireOpenAI(res) {
   if (openai) return true;
@@ -266,93 +260,12 @@ async function recordProviderUsage(req, { provider, model, usage, transcriptionS
   }
 }
 
-app.post("/evaluate", requireAiFeature("classicInterview"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
-  let providerAttempted = false;
-  try {
-    const questionId = Number(req.body?.questionId);
-    const questionRecord = resolveCivicsQuestion(getCivicsQuestion(questionId, req.body?.testVersion));
-    if (!questionRecord) return res.status(400).json({ error: "A supported civics question and test version are required." });
-    const question = questionRecord.question;
-    const answer = readText(req.body?.answer, 1_000);
-    if (!question || !answer) {
-      return res.status(400).json({ error: "Question and answer are required." });
-    }
-
-    if (questionRecord) {
-      const localResult = evaluateCivicsAnswer(questionRecord, answer);
-      if (!localResult.needsSemanticReview) return res.json({ ...localResult, evaluator: "local" });
-    }
-    const correctAnswer = readAnswer(questionRecord.acceptedAnswers);
-    if (!correctAnswer) return res.status(400).json({ error: "Current verified answers are required." });
-    if (!requireOpenAI(res)) return;
-
-    providerAttempted = true;
-    const response = await openai.responses.create({
-      model: OPENAI_TEXT_MODEL,
-      max_output_tokens: MAX_AI_OUTPUT_TOKENS,
-      instructions: `
-You are an evaluator for a U.S. naturalization interview practice application.
-
-Evaluate the applicant's answer to the civics question.
-
-Return ONLY valid JSON with this exact structure:
-{
-  "status": "correct" | "incorrect" | "incomplete" | "review",
-  "action": "advance" | "retry" | "repeat",
-  "feedback": "short explanation"
-}
-
-Do not reveal the correct answer.
-
-Judge the meaning of the applicant's answer, not exact wording.
-Use the accepted answers as the reference for evaluating the applicant's response.
-Accept semantically equivalent answers even when the wording is different.
-If the applicant gives the key idea but the answer is missing an important part, classify it as incomplete.
-If the answer is wrong or contradicts the accepted answers, classify it as incorrect.
-If it is plausibly correct but the semantic meaning remains genuinely uncertain, use status "review", action "advance", and exactly this feedback: "Tu respuesta parece correcta, pero revisemos la respuesta oficial". Do not mark an uncertain answer incorrect.
-Choose the action according to these rules:
-
-- correct → advance
-- incomplete → retry
-- incorrect → repeat
-
-Keep the feedback short and appropriate for a real interview.
-`,
-      input: `
-Question:
-${question}
-
-Applicant's answer:
-${answer}
-
-Accepted answers:
-${correctAnswer}
-`,
-    });
-
-   const result = parseModelJson(response.output_text);
-   await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL, usage: response.usage });
-
-if (!result.action) {
-  if (result.status === "correct") {
-    result.action = "advance";
-  } else if (result.status === "incomplete") {
-    result.action = "retry";
-  } else if (result.status === "incorrect") {
-    result.action = "repeat";
-  }
-}
-
-res.json(result);
-  } catch (error) {
-    if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
-    console.error(error);
-
-    res.status(500).json({
-      status: "error",
-      feedback: "Unable to evaluate the answer."
-    });
-  }
+// Civics evaluation uses the USCIS answer bank only, without a model or AI quota.
+app.post("/evaluate", (req, res) => {
+  const question = resolveCivicsQuestion(getCivicsQuestion(Number(req.body?.questionId), req.body?.testVersion));
+  const answer = readText(req.body?.answer, 1_000);
+  if (!question || !answer) return res.status(400).json({ error: "A supported civics question and answer are required." });
+  return res.json({ ...evaluateCivicsAnswer(question, answer), evaluator: "official-local" });
 });
 app.post("/evaluate-writing", requireAiFeature("writing"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;
