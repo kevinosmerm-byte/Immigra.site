@@ -2,6 +2,20 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile, stat } from "node:fs/promises";
 import { allCivicsQuestionIds, civicsVisualLibrary, getCivicsVisual, prototypeQuestionIds } from "../src/civicsVisuals.js";
+import additionalImages from "../src/data/additionalCivicsImages.json" with { type: "json" };
+
+test("additional images override their intended questions without duplicate assignments", () => {
+  assert.equal(additionalImages.length, 19);
+  const ids = new Set();
+  for (const entry of additionalImages) {
+    for (const id of entry.questionIds) {
+      assert.ok(!ids.has(id));
+      ids.add(id);
+      assert.equal(getCivicsVisual(id).originalFileName, entry.original);
+      assert.equal(getCivicsVisual(id).imagePosition, entry.imagePosition);
+    }
+  }
+});
 
 test("the approved visual system covers all 128 official civics questions", () => {
   assert.equal(civicsVisualLibrary.length, 128);

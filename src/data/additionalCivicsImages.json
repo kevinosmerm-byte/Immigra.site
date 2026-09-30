@@ -1,0 +1,199 @@
+[
+  {
+    "file": "user-rally-participation.jpg",
+    "original": "images (1).jpg",
+    "questionIds": [
+      39
+    ],
+    "imageAlt": "Participants at a political rally with American flags",
+    "category": "person",
+    "imagePosition": "50% 25%"
+  },
+  {
+    "file": "user-house-rostrum.jpg",
+    "original": "images.jpg",
+    "questionIds": [
+      18,
+      30
+    ],
+    "imageAlt": "A speaker at the rostrum of the House chamber",
+    "category": "institution",
+    "imagePosition": "50% 45%"
+  },
+  {
+    "file": "user-constitution-signing.jpg",
+    "original": "Signing-of-the-Constitution-by-Thomas-Prichard-Rossiter-c1860-1870-edit.jpeg",
+    "questionIds": [
+      82
+    ],
+    "imageAlt": "Historical painting depicting the signing of the United States Constitution",
+    "category": "document",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-constitution-quill.jpg",
+    "original": "48795679.jpg",
+    "questionIds": [
+      4,
+      5
+    ],
+    "imageAlt": "Constitution reproduction with We the People, a quill and spectacles",
+    "category": "document",
+    "imagePosition": "50% 0%"
+  },
+  {
+    "file": "user-constitution-book.jpg",
+    "original": "pocket_size_blue_hardcover_united_states_constitution-20565-6.jpg",
+    "questionIds": [
+      2,
+      3,
+      7
+    ],
+    "imageAlt": "Pocket edition of the Constitution of the United States",
+    "category": "document",
+    "imagePosition": "50% 45%"
+  },
+  {
+    "file": "user-lincoln-exterior.jpg",
+    "original": "pexels-amazingsobia-5652177.jpg",
+    "questionIds": [
+      94
+    ],
+    "imageAlt": "Lincoln Memorial exterior and reflecting pool in Washington, D.C.",
+    "category": "institution",
+    "imagePosition": "50% 68%"
+  },
+  {
+    "file": "user-aviation.jpg",
+    "original": "pexels-d28px-39545113.jpg",
+    "questionIds": [],
+    "imageAlt": "Modern passenger airplane illustrating aviation, an American innovation",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-peace-expression.jpg",
+    "original": "pexels-ivan-s-9643159.jpg",
+    "questionIds": [
+      65
+    ],
+    "imageAlt": "A hand making a peace sign in front of an American flag, illustrating expression",
+    "category": "person",
+    "imagePosition": "50% 35%"
+  },
+  {
+    "file": "user-stock-exchange.jpg",
+    "original": "pexels-garrison-gao-56316964-30915372.jpg",
+    "questionIds": [],
+    "imageAlt": "New York Stock Exchange facade illustrating the market economy",
+    "category": "institution",
+    "imagePosition": "50% 40%"
+  },
+  {
+    "file": "user-liberty-photo.jpg",
+    "original": "pexels-david-vives-1474251-5454196.jpg",
+    "questionIds": [
+      120
+    ],
+    "imageAlt": "Photograph of the Statue of Liberty and its pedestal",
+    "category": "institution",
+    "imagePosition": "50% 30%"
+  },
+  {
+    "file": "user-capitol-west.jpg",
+    "original": "Capitol_west_front750.jpg",
+    "questionIds": [
+      1,
+      19,
+      119
+    ],
+    "imageAlt": "West front of the United States Capitol",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-cabinet-meeting.jpg",
+    "original": "images (3).jpg",
+    "questionIds": [
+      47,
+      48
+    ],
+    "imageAlt": "Historical presidential meeting with advisers; not a current cabinet roster",
+    "category": "institution",
+    "imagePosition": "50% 45%"
+  },
+  {
+    "file": "user-security-meeting.webp",
+    "original": "Pres-meeting-George-W-Bush-National-Security-September-12-2001.webp",
+    "questionIds": [
+      17,
+      46,
+      115
+    ],
+    "imageAlt": "Historical presidential security meeting following the September 2001 attacks",
+    "category": "institution",
+    "imagePosition": "50% 40%"
+  },
+  {
+    "file": "user-election-rally.jpg",
+    "original": "images (2).jpg",
+    "questionIds": [
+      38
+    ],
+    "imageAlt": "Campaign rally illustrating presidential elections",
+    "category": "institution",
+    "imagePosition": "50% 40%"
+  },
+  {
+    "file": "user-north-america.jpg",
+    "original": "pexels-lara-jameson-8828626.jpg",
+    "questionIds": [
+      35
+    ],
+    "imageAlt": "Map showing the United States and neighboring countries; a geographic illustration, not population data",
+    "category": "map",
+    "imagePosition": "50% 45%"
+  },
+  {
+    "file": "user-rushmore-close.jpg",
+    "original": "pexels-dudubangbang-28358231.jpg",
+    "questionIds": [
+      86
+    ],
+    "imageAlt": "Presidential sculptures at Mount Rushmore, with George Washington in the foreground",
+    "category": "institution",
+    "imagePosition": "50% 35%"
+  },
+  {
+    "file": "user-tax-currency.jpg",
+    "original": "pexels-karola-g-4386441.jpg",
+    "questionIds": [
+      12,
+      58,
+      71
+    ],
+    "imageAlt": "United States currency on an American flag, illustrating money and taxes",
+    "category": "document",
+    "imagePosition": "50% 30%"
+  },
+  {
+    "file": "user-constitutional-convention.jpg",
+    "original": "democracy-Cover_image.jpg",
+    "questionIds": [
+      15
+    ],
+    "imageAlt": "Historical painting of the Constitutional Convention, illustrating the founding of the republic",
+    "category": "document",
+    "imagePosition": "50% 55%"
+  },
+  {
+    "file": "user-senate-illustration.jpg",
+    "original": "‘Character developments’ observed in Senate sessions on impeach trial.jpg",
+    "questionIds": [21, 22, 23, 27, 28, 31, 32],
+    "imageAlt": "AI illustration of a fictional legislative session; not a photograph of the U.S. Senate or its current members",
+    "category": "institution",
+    "sourceName": "AI illustration · Ilustración IA",
+    "imageFit": "contain",
+    "imagePosition": "50% 50%"
+  }
+]

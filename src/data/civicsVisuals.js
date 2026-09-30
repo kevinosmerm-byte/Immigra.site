@@ -1,4 +1,5 @@
 import userImages from "./userCivicsImages.json" with { type: "json" };
+import additionalImages from "./additionalCivicsImages.json" with { type: "json" };
 
 const imageUrl = (fileName) => new URL(`../assets/civics-photos/${fileName}`, import.meta.url).href;
 // Fill the existing landscape cards; keep text-heavy artwork readable in full.
@@ -15,13 +16,13 @@ const focalPoints = {
   "user-wwii-memorial.jpg": "50% 55%",
   "user-veterans.jpg": "50% 30%",
 };
-const userVisuals = new Map(userImages.flatMap((entry) => entry.questionIds.map((id) => [id, {
+const userVisuals = new Map([...userImages, ...additionalImages].flatMap((entry) => entry.questionIds.map((id) => [id, {
   imagePath: imageUrl(entry.file), imageAlt: entry.imageAlt, category: entry.category,
-  sourceName: "User-provided image", sourceLabel: "Original image",
+  sourceName: entry.sourceName ?? "User-provided image", sourceLabel: "Original image",
   sourceUrl: imageUrl(entry.file),
   license: "User-supplied reference; publication rights not verified",
-  userProvided: true, imageFit: fullArtwork.has(entry.file) ? "contain" : "cover",
-  imagePosition: focalPoints[entry.file] ?? "50% 50%", originalFileName: entry.original,
+  userProvided: true, imageFit: entry.imageFit ?? (fullArtwork.has(entry.file) ? "contain" : "cover"),
+  imagePosition: entry.imagePosition ?? focalPoints[entry.file] ?? "50% 50%", originalFileName: entry.original,
 }])));
 
 // These ten questions anchor the approved visual subjects from the prototype.
