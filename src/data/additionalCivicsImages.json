@@ -500,5 +500,16 @@
     "category": "map",
     "imagePosition": "50% 50%",
     "imageFit": "contain"
+  },
+  {
+    "file": "user-america-before-europeans.jpg",
+    "original": "Indios en la pradera.jpg",
+    "questionIds": [
+      74
+    ],
+    "imageAlt": "Sepia photograph of riders on horseback on a prairie, supplied for the question about America before European arrival",
+    "category": "person",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
   }
 ]
