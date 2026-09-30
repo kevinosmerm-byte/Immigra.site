@@ -455,5 +455,16 @@
     "category": "institution",
     "imagePosition": "50% 50%",
     "imageFit": "contain"
+  },
+  {
+    "file": "user-franklin-roosevelt.jpg",
+    "original": "images (13).jpg",
+    "questionIds": [
+      105
+    ],
+    "imageAlt": "Black-and-white portrait supplied for the president during the Great Depression and World War II question",
+    "category": "person",
+    "imagePosition": "50% 25%",
+    "imageFit": "contain"
   }
 ]
