@@ -22,7 +22,7 @@ Se reutilizaron React/Vite, Express, Capacitor, el banco cívico compuesto, los 
 | 7. Acceso y costes | Reutilizados permisos y contabilidad servidor. Política de presentación Free/Pro y límites diarios adicionales: 60 solicitudes Free/promoción y 600 Pro; 2/6 solicitudes de avatar respectivamente. Las cuotas mensuales existentes siguen aplicando. | Pro solo se reconoce para el límite superior a partir de la fuente verificada de sesión del servidor. No se activaron pagos ni anuncios. Límites configurables en `shared/featureAccessConfig.js`. |
 | 8. Gate del 70% | `ProgressGate` central: transición, deduplicación por cuenta/módulo/sesión, control de voz activa y omisión de Pro. Integrado en tarjetas, quiz, Vocabulary, Choose, Connect, Reading, Writing y entrevista cívica clásica. | Gate observado al 70% en navegador, continuación exacta 7→8 y sin repetición 8→9. Sin proveedor de anuncios activo, continuar gratis no simula una recompensa. El avatar remoto no expone progreso por pregunta: su gate queda pendiente. |
 | 9. Perfil y onboarding | ZIP opcional, versión disponible y práctica inicial en onboarding; My Civics Profile con Census, capital, gobernador y miembros de Congress.gov cuando está configurado. | ZIP no se convierte en distrito por suposición. Se rechazan múltiples coincidencias Census. No se cachea ni guarda la dirección. El flujo actual solicita dirección al no disponer de una tabla ZIP→distritos completa. |
-| 10. Home, errores y guardados | Continue Studying, errores compartidos entre tarjetas/quiz/entrevista y Saved Questions. API autenticada para favoritos, cola local y sincronización serializada. | Reanudación real de Vocabulary en pregunta 9/10 tras recargar. Migración SQL nueva preparada, no aplicada. La sincronización remota requiere desplegar servidor y migración. |
+| 10. Home, errores y guardados | Continue Studying, errores compartidos entre tarjetas/quiz/entrevista y Saved Questions. API autenticada para favoritos, cola local y sincronización serializada. | Reanudación real de Vocabulary en pregunta 9/10 tras recargar. Migración SQL aplicada en producción el 2026-09-30. RLS activo, sin lectura directa de anon/authenticated y escritura habilitada para service_role. |
 | 11. Calidad | Eventos permitidos sin contenido sensible, aviso de progreso no predictivo, privacidad actualizada, limpieza de nuevos datos locales, accesibilidad de la barra y conservación del service worker y recuperación de errores existentes. | Verificación final: **147 pruebas**, lint, build, `verify:mobile`, `verify:ios` y `verify:app-store` correctos. Persiste el aviso previo de bundle principal mayor de 500 kB. No se afirma prueba física de dispositivos ni funcionamiento offline antes de descargar recursos. |
 
 ## Fuentes de datos dinámicos
@@ -66,14 +66,15 @@ Los nombres y fechas están centralizados en `src/dynamicCivicsData.js`. Una ver
 - Pruebas nuevas: `tests/ai-daily-limits.test.mjs`, `tests/civics-version-dynamic.test.mjs`, `tests/location-profile.test.mjs`, `tests/progress-gate.test.mjs`, `tests/progress-resume.test.mjs`, `tests/saved-questions-sync.test.mjs`.
 - Pruebas adaptadas: `tests/civics-evaluation.test.mjs`, `tests/civics-visual-library.test.mjs`.
 
-## Pendientes y límites antes de publicar
+## Estado de publicación y límites
 
-1. **No desplegado:** revisar el diff y autorizar expresamente publicación/migración. La tabla de favoritos tiene RLS y acceso únicamente de servicio; las rutas obtienen el usuario de la sesión autenticada.
+1. **Publicación autorizada:** revisión de implementación `155fbfe` enviada a main; despliegues de Cloudflare Pages y Render activados. La tabla de favoritos tiene RLS y acceso únicamente de servicio; las rutas obtienen el usuario de la sesión autenticada.
 2. **D-ID:** integrar un contrato fiable de preguntas, resultados y fin de turno antes de compartir el banco/perfil y activar el gate dentro del agente remoto. No se intercepta ni interrumpe su conversación actual. N-400 permanece separado y no se persisten sus respuestas personales.
 3. **Ads y tiendas:** conectar proveedores reales y probar recompensa verificada, compra y restauración. Los adaptadores existentes de cobro y recompensas no se sustituyeron por simulaciones.
 4. **Datos:** mantener manualmente las verificaciones; ampliar D.C./territorios y una fuente ZIP→distritos si se desea evitar pedir dirección en casos inequívocos. No se reactivó la automatización USCIS.
 5. **Producto/QA:** completar pruebas físicas iOS/Android, compras sandbox y voz real. El perfil nuevo conserva algunos textos en inglés. El progreso y perfil completos son locales por cuenta; únicamente los favoritos tienen sincronización remota nueva.
 6. **Rendimiento:** persiste el bundle grande preexistente. Quiz y guía PDF continúan con carga diferida; no se hizo una reescritura de App.jsx ni de la integración del avatar.
 
-Este trabajo deja una implementación local verificable y una lista explícita de dependencias pendientes; no declara terminada la integración completa del avatar remoto ni activada monetización real.
+Este trabajo deja una implementación verificada y una lista explícita de dependencias pendientes; no declara terminada la integración completa del avatar remoto ni activada monetización real.
+
 
