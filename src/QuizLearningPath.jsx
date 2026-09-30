@@ -1,4 +1,7 @@
-import { useMemo, useState } from "react";
+import { useProgressGate } from "./progressGateContext.js";
+import { useEffect, useMemo, useState } from "react";
+import { getModuleProgress, saveModuleProgress } from "./progress.js";
+import { resolveCivicsQuestion } from "./dynamicCivicsData.js";
 import { civicsQuestionBank } from "./civicsQuestionBank.js";
 import {
   buildAnswerChoices, buildQuizQuestionModels, createQuizSession, evaluateQuizResponse,
@@ -41,18 +44,28 @@ const COPY = {
   },
 };
 
-const QUESTIONS = buildQuizQuestionModels(civicsQuestionBank);
 
-export default function QuizLearningPath({ language = "en", userKey = "guest", onBack, onPracticeComplete }) {
+export default function QuizLearningPath({ language = "en", userKey = "guest", initialMode = null, civicProfile, onBack, onPracticeComplete, onQuestionResult }) {
+  const QUESTIONS = useMemo(() => buildQuizQuestionModels(civicsQuestionBank.map(question => resolveCivicsQuestion(question, { profile: civicProfile }))), [civicProfile]);
   const copy = COPY[language === "es" ? "es" : "en"];
   const [progress, setProgress] = useState(() => getQuizProgress(userKey));
-  const [mode, setMode] = useState(null);
-  const [session, setSession] = useState([]);
-  const [questionIndex, setQuestionIndex] = useState(0);
+  const { runTransition } = useProgressGate();
+  const moduleKey = initialMode || "quiz";
+  const [checkpoint] = useState(() => {
+    const saved = getModuleProgress(userKey)[moduleKey];
+    return saved && !saved.isComplete && saved.mode && saved.questionIds.length && saved.questionIds.every(id => QUESTIONS.some(q => q.questionId === id)) ? saved : null;
+  });
+  const [mode, setMode] = useState(checkpoint?.mode || initialMode);
+  const [session, setSession] = useState(() => checkpoint ? checkpoint.questionIds.map(id => QUESTIONS.find(q => q.questionId === id)) : initialMode ? createQuizSession(QUESTIONS, progress, initialMode) : []);
+  const [questionIndex, setQuestionIndex] = useState(checkpoint?.questionIndex || 0);
   const [answer, setAnswer] = useState("");
-  const [result, setResult] = useState(null);
-  const [sessionScore, setSessionScore] = useState(0);
-  const summary = useMemo(() => summarizeQuizProgress(progress, QUESTIONS.length), [progress]);
+  const [result, setResult] = useState(checkpoint?.resultStatus ? { status: checkpoint.resultStatus } : null);
+  const [sessionScore, setSessionScore] = useState(checkpoint?.score || 0);
+  useEffect(() => {
+    if (!mode || !session.length) return;
+    saveModuleProgress(moduleKey, { completed: mode === "complete" ? session.length : questionIndex, total: session.length, questionIndex, questionIds: session.map(q => q.questionId), mode, score: sessionScore, resultStatus: result?.status }, userKey);
+  }, [moduleKey, mode, session, questionIndex, userKey, sessionScore, result?.status]);
+  const summary = useMemo(() => summarizeQuizProgress(progress, QUESTIONS.length), [progress, QUESTIONS.length]);
   const question = session[questionIndex];
 
   const startMode = (nextMode) => {
@@ -65,10 +78,11 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", o
   const saveAttempt = (correct, score, helpUsed = []) => {
     const next = recordQuizAttempt({ userKey, question, mode, correct, score, helpUsed });
     setProgress(next);
+    if (mode !== "vocabulary") onQuestionResult?.(question.questionId, correct);
     if (correct) setSessionScore((value) => value + 1);
   };
 
-  const nextQuestion = (scoreOverride = sessionScore) => {
+  const nextQuestion = (scoreOverride = sessionScore) => runTransition({ module: moduleKey, completed: questionIndex + 1, total: session.length }, () => {
     if (questionIndex + 1 >= session.length) {
       onPracticeComplete?.({ score: session.length ? Math.round((scoreOverride / session.length) * 100) : 0, outcome: mode });
       emitCompanionState("celebration");
@@ -76,7 +90,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", o
       return;
     }
     setQuestionIndex((value) => value + 1); setAnswer(""); setResult(null);
-  };
+  });
 
   if (!mode) {
     return (

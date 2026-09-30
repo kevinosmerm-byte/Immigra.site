@@ -6,23 +6,65 @@ const CAPITALS = {
   SD: "Pierre", TN: "Nashville", TX: "Austin", UT: "Salt Lake City", VT: "Montpelier", VA: "Richmond", WA: "Olympia", WV: "Charleston", WI: "Madison", WY: "Cheyenne",
 };
 
+// Primary roster of the National Governors Association, checked 2026-09-30.
+const GOVERNORS = Object.freeze({
+  AL: "Kay Ivey", AK: "Mike Dunleavy", AZ: "Katie Hobbs", AR: "Sarah Huckabee Sanders",
+  CA: "Gavin Newsom", CO: "Jared Polis", CT: "Ned Lamont", DE: "Matt Meyer",
+  FL: "Ron DeSantis", GA: "Brian Kemp", HI: "Josh Green", ID: "Brad Little",
+  IL: "JB Pritzker", IN: "Mike Braun", IA: "Kim Reynolds", KS: "Laura Kelly",
+  KY: "Andy Beshear", LA: "Jeff Landry", ME: "Janet Mills", MD: "Wes Moore",
+  MA: "Maura Healey", MI: "Gretchen Whitmer", MN: "Tim Walz", MS: "Tate Reeves",
+  MO: "Mike Kehoe", MT: "Greg Gianforte", NE: "Jim Pillen", NV: "Joe Lombardo",
+  NH: "Kelly Ayotte", NJ: "Mikie Sherrill", NM: "Michelle Lujan Grisham", NY: "Kathy Hochul",
+  NC: "Josh Stein", ND: "Kelly Armstrong", OH: "Mike DeWine", OK: "Kevin Stitt",
+  OR: "Tina Kotek", PA: "Josh Shapiro", RI: "Dan McKee", SC: "Henry McMaster",
+  SD: "Larry Rhoden", TN: "Bill Lee", TX: "Greg Abbott", UT: "Spencer Cox",
+  VT: "Phil Scott", VA: "Abigail Spanberger", WA: "Bob Ferguson", WV: "Patrick Morrisey",
+  WI: "Tony Evers", WY: "Mark Gordon",
+});
 export const stateCivicsTable = Object.freeze(Object.entries(CAPITALS).map(([stateCode, capital]) => Object.freeze({
-  stateCode, capital, governor: null,
+  stateCode, capital, governor: GOVERNORS[stateCode] || null,
   sourceUrl: "https://www.usa.gov/state-capitals",
-  capitalVerifiedAt: "2026-09-23", governorVerifiedAt: null,
+  capitalVerifiedAt: "2026-09-23", governorVerifiedAt: "2026-09-30", governorSource: "https://www.nga.org/governors/",
 })));
 
-// Current officeholders are intentionally null until an administrator verifies USCIS updates.
+// Manually verified against the official offices on 2026-09-30. No scheduled updater.
+// Reverify this single source before the freshness window expires.
 export const nationalCivicsTable = Object.freeze({
-  president: { answers: [], verifiedAt: null, sourceUrl: "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates" },
-  vicePresident: { answers: [], verifiedAt: null, sourceUrl: "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates" },
-  speakerOfTheHouse: { answers: [], verifiedAt: null, sourceUrl: "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates" },
-  chiefJustice: { answers: [], verifiedAt: null, sourceUrl: "https://www.uscis.gov/citizenship/find-study-materials-and-resources/check-for-test-updates" },
+  president: { answers: ["Donald J. Trump", "Donald Trump", "Trump"], verifiedAt: "2026-09-30", sourceUrl: "https://www.whitehouse.gov/administration/" },
+  vicePresident: { answers: ["JD Vance", "Vance"], verifiedAt: "2026-09-30", sourceUrl: "https://www.whitehouse.gov/administration/" },
+  speakerOfTheHouse: { answers: ["Mike Johnson", "Johnson"], verifiedAt: "2026-09-30", sourceUrl: "https://www.speaker.gov/" },
+  chiefJustice: { answers: ["John G. Roberts, Jr.", "John Roberts", "Roberts"], verifiedAt: "2026-09-30", sourceUrl: "https://www.supremecourt.gov/about/justices.aspx" },
 });
 
 export function currentDynamicAnswers(record, now = Date.now(), maxAgeDays = 31) {
   if (!record?.verifiedAt || !Array.isArray(record.answers)) return [];
-  const age = now - Date.parse(`${record.verifiedAt}T00:00:00Z`);
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(record.verifiedAt) ? `${record.verifiedAt}T00:00:00Z` : record.verifiedAt;
+  const age = now - Date.parse(date);
   if (!Number.isFinite(age) || age < 0 || age > maxAgeDays * 86_400_000) return [];
-  return record.answers;
+  return record.answers.filter((answer) => typeof answer === "string" && answer.trim());
+}
+
+export const currentOfficials = nationalCivicsTable;
+
+/** Resolves only verified civic facts. Personal N-400 answers never enter this layer. */
+export function resolveDynamicAnswers(key, { officials = currentOfficials, profile = null, now = Date.now() } = {}) {
+  if (Object.hasOwn(officials, key)) return currentDynamicAnswers(officials[key], now);
+  if (!profile) return [];
+  const state = stateCivicsTable.find(item => item.stateCode === profile.state?.code);
+  if (key === "stateGovernor" && state?.governor) return currentDynamicAnswers({ answers: [state.governor], verifiedAt: state.governorVerifiedAt }, now);
+  const values = {
+    stateSenators: profile.senators,
+    representative: profile.districtStatus === "confirmed" ? [profile.representative] : [],
+    stateGovernor: [profile.governor],
+    stateCapital: [profile.state?.capital],
+  };
+  return currentDynamicAnswers({ answers: values[key] || [], verifiedAt: profile.verifiedAt }, now);
+}
+
+export function resolveCivicsQuestion(question, context) {
+  if (!question?.isDynamic) return question;
+  const record = (context?.officials || currentOfficials)[question.dynamicAnswerKey];
+  const state = question.dynamicAnswerKey === "stateGovernor" ? stateCivicsTable.find(item => item.stateCode === context?.profile?.state?.code) : null;
+  return { ...question, acceptedAnswers: resolveDynamicAnswers(question.dynamicAnswerKey, context), aliases: [], lastVerified: record?.verifiedAt || state?.governorVerifiedAt || context?.profile?.verifiedAt || null, officialSource: record?.sourceUrl || state?.governorSource || context?.profile?.source || question.officialSource };
 }

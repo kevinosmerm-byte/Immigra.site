@@ -10,10 +10,14 @@ import billingRoutes from "./billingRoutes.js";
 import { handleStripeWebhook } from "./stripeBilling.js";
 import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, isPromotionalAiAccessAllowed, recordAiUsageEvent } from "./accountService.js";
 import { getCivicsQuestion } from "../src/civicsQuestionBank.js";
+import { stateCivicsTable, currentDynamicAnswers, resolveCivicsQuestion } from "../src/dynamicCivicsData.js";
+import { createCivicProfile, normalizeZipCode } from "../src/civicProfile.js";
+import { getCurrentMembers } from "./civicLocationService.js";
 import { evaluateCivicsAnswer } from "../src/civicsAnswerEvaluator.js";
 import { geocodeCivicAddress } from "./civicLocationService.js";
 import { findWritingSentence, getWritingSentence } from "../src/writingSentences.js";
 import { evaluateWritingSentence } from "../src/writingEvaluator.js";
+import { getDailyAiLimit } from "../shared/featureAccessConfig.js";
 
 dotenv.config();
 
@@ -80,12 +84,13 @@ const uscisManualRefreshes = new Map();
 const configuredUscisCooldown = Number(process.env.USCIS_MANUAL_COOLDOWN_SECONDS || 60);
 const USCIS_MANUAL_COOLDOWN_MS = Math.max(15, Number.isFinite(configuredUscisCooldown) ? configuredUscisCooldown : 60) * 1000;
 
-function requestRateLimit(name, limit, windowMs) {
+function requestRateLimit(name, limit, windowMs, accountScoped = false) {
   return async (req, res, next) => {
     const forwardedIp = req.get("cf-connecting-ip") || req.ip || "unknown";
-    const key = `${name}:${forwardedIp}`;
+    const subject = accountScoped ? req.aiSession?.userId || forwardedIp : forwardedIp;
+    const key = `${name}:${subject}`;
     const now = Date.now();
-    const subjectHash = createHmac("sha256", RATE_LIMIT_HASH_SECRET).update(forwardedIp).digest("hex");
+    const subjectHash = createHmac("sha256", RATE_LIMIT_HASH_SECRET).update(subject).digest("hex");
 
     try {
       const shared = await consumeDistributedRateLimit({
@@ -113,13 +118,13 @@ function requestRateLimit(name, limit, windowMs) {
 
     if (rateLimitBuckets.size > 1_000) {
       for (const [bucketKey, bucket] of rateLimitBuckets) {
-        if (now - bucket.startedAt >= windowMs) rateLimitBuckets.delete(bucketKey);
+        if (bucket.expiresAt <= now) rateLimitBuckets.delete(bucketKey);
       }
     }
     const existing = rateLimitBuckets.get(key);
     const active = existing && now - existing.startedAt < windowMs
       ? existing
-      : { startedAt: now, count: 0 };
+      : { startedAt: now, expiresAt: now + windowMs, count: 0 };
 
     active.count += 1;
     rateLimitBuckets.set(key, active);
@@ -139,6 +144,14 @@ const transcriptionRateLimit = requestRateLimit("transcription", 10, 10 * 60 * 1
 const uscisRateLimit = requestRateLimit("uscis", 15, 10 * 60 * 1000);
 const avatarSessionRateLimit = requestRateLimit("avatar-session", 6, 10 * 60 * 1000);
 const accountRateLimit = requestRateLimit("account", 30, 10 * 60 * 1000);
+const dailyAiBudgets = new Map();
+function enforceAiDailyBudget(req, res, next) {
+  const avatar = req.path === "/avatar/session";
+  const limit = getDailyAiLimit(req.aiSession?.source, avatar);
+  const key = `daily-${avatar ? "avatar" : "ai"}-${limit}`;
+  if (!dailyAiBudgets.has(key)) dailyAiBudgets.set(key, requestRateLimit(key, limit, 24 * 60 * 60 * 1000, true));
+  return dailyAiBudgets.get(key)(req, res, next);
+}
 
 function requireAiFeature(defaultFeature, allowedFeatures = [defaultFeature]) {
   return async (req, res, next) => {
@@ -158,9 +171,9 @@ function requireAiFeature(defaultFeature, allowedFeatures = [defaultFeature]) {
 }
 
 async function requireAuthorizedAiAccess(req, res, next) {
-  if (req.aiSession?.id) return next();
+  if (req.aiSession?.id) return enforceAiDailyBudget(req, res, next);
   try {
-    if (await isPromotionalAiAccessAllowed()) return next();
+    if (await isPromotionalAiAccessAllowed()) return enforceAiDailyBudget(req, res, next);
   } catch (error) {
     console.error("Promotion access check failed", { message: error.message, cause: error.cause?.code });
     return res.status(503).json({ error: "AI access could not be verified.", code: "access_check_unavailable" });
@@ -257,18 +270,19 @@ app.post("/evaluate", requireAiFeature("classicInterview"), requireAuthorizedAiA
   let providerAttempted = false;
   try {
     const questionId = Number(req.body?.questionId);
-    const question = readText(req.body?.question, 1_000);
+    const questionRecord = resolveCivicsQuestion(getCivicsQuestion(questionId, req.body?.testVersion));
+    if (!questionRecord) return res.status(400).json({ error: "A supported civics question and test version are required." });
+    const question = questionRecord.question;
     const answer = readText(req.body?.answer, 1_000);
     if (!question || !answer) {
       return res.status(400).json({ error: "Question and answer are required." });
     }
 
-    const questionRecord = getCivicsQuestion(questionId);
     if (questionRecord) {
       const localResult = evaluateCivicsAnswer(questionRecord, answer);
       if (!localResult.needsSemanticReview) return res.json({ ...localResult, evaluator: "local" });
     }
-    const correctAnswer = readAnswer(questionRecord?.acceptedAnswers || req.body?.correctAnswer);
+    const correctAnswer = readAnswer(questionRecord.acceptedAnswers);
     if (!correctAnswer) return res.status(400).json({ error: "Current verified answers are required." });
     if (!requireOpenAI(res)) return;
 
@@ -485,6 +499,24 @@ app.post("/civic-location/geocode", uscisRateLimit, async (req, res) => {
   } catch (error) {
     console.error("Civic address lookup error", { message: error.message });
     return res.status(502).json({ error: "The official Census address service is temporarily unavailable." });
+  }
+});
+
+app.post("/civic-location/profile", uscisRateLimit, async (req, res) => {
+  res.set("Cache-Control", "no-store");
+  const zipCode = normalizeZipCode(req.body?.zipCode);
+  const address = readText(req.body?.address, 500);
+  if (!zipCode || !address) return res.status(400).json({ error: "ZIP code and complete address are required to verify your district." });
+  try {
+    const location = await geocodeCivicAddress(`${address} ${zipCode}`);
+    if (!location?.stateCode || !location?.congressionalDistrict) return res.status(404).json({ error: "The official service could not verify a unique district." });
+    const state = stateCivicsTable.find(item => item.stateCode === location.stateCode);
+    let members = {};
+    try { members = await getCurrentMembers(location.stateCode, location.congressionalDistrict); } catch { /* Return verified geography; officials remain unavailable. */ }
+    const governor = currentDynamicAnswers({ answers: [state?.governor], verifiedAt: state?.governorVerifiedAt })[0] || null;
+    return res.json(createCivicProfile({ zipCode, state: { code: location.stateCode, capital: state?.capital || null }, districts: [location.congressionalDistrict], officials: { ...members, governor, source: members.sourceUrl || location.sourceUrl, verifiedAt: location.verifiedAt } }));
+  } catch {
+    return res.status(502).json({ error: "Official location services are temporarily unavailable. Please try again." });
   }
 });
 

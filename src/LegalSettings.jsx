@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getCompanionVisibility, setCompanionVisibility } from "./companionEvents.js";
 import { THEME_PREFERENCES, THEME_STORAGE_KEY } from "./theme.js";
+import { DEFAULT_TEST_VERSION, TEST_VERSIONS } from "./civicsVersions.js";
+import { normalizeZipCode } from "./civicProfile.js";
 
 const COPY = {
   en: {
@@ -51,6 +53,7 @@ const legalSections = [
       <>
         <p><strong>Last reviewed: September 28, 2026.</strong> This policy describes the behavior of the current Citizenship AI application build.</p>
         <p>Citizenship AI offers optional email-based accounts through Supabase. When you create an account, Supabase stores your account identifier and email address, and Citizenship AI stores account-level access, AI allowance, reward-credit, subscription-status, and technical usage records needed to operate and protect the service. Launch-promotion access may allow you to continue without payment. When web subscriptions are made available, Stripe processes checkout, payment details, and subscription management under its own privacy practices; Citizenship AI receives customer, subscription, status, and billing-period identifiers needed to provide access, but does not receive or store complete card numbers. On this device, the app may also store onboarding completion, language preference, consent choices, viewed civics-question progress, practice results (practice type, score, outcome, and time), and local AI-usage history in your browser&apos;s local storage.</p>
+        <p>Learning checkpoints and your civic profile are saved on this device, separately for each signed-in account. Saved question identifiers can synchronize to your account when cloud storage is available; failed updates remain queued locally. My Civics Profile sends the address you enter through our server to the U.S. Census Geocoder for the current lookup. We do not save that street address in your profile or server cache. The profile keeps your ZIP, state, district, public officials, and verification date. Congress.gov provides congressional member data when available.</p>
         <p>When you request AI feedback, your practice answer, writing, or active conversation is sent through Citizenship AI&apos;s server to OpenAI to generate that response. When you use voice practice, your recording is sent through Citizenship AI&apos;s server to OpenAI only for the active transcription request. The application is designed not to retain recordings, transcripts, practice answers, or AI conversations after the request completes; third-party provider retention and security practices are governed by their own terms.</p>
         <p>If you choose Live Avatar Beta, Citizenship AI requests a temporary, domain-restricted D-ID session credential from its server. D-ID receives and processes the live session content and any microphone or camera input you choose to provide through its panel. The application does not store the client key; it is used in memory only for the active short-lived session. D-ID's own retention and security practices are governed by its terms.</p>
         <p>Citizenship AI records limited, account-linked product and cost telemetry for service operation, security, allowance enforcement, and financial planning. These records may include an AI feature name, session start/completion/failure, provider and model identifiers, request counts, token totals or transcription duration when a provider returns them, and paywall, subscription, or verified-reward lifecycle events. This telemetry is stored in Supabase and is intentionally designed not to contain complete conversations, recordings, transcripts, practice answers, receipt numbers, or case details. Citizenship AI does not use advertising-tracking analytics in this build.</p>
@@ -115,6 +118,8 @@ function LegalNotice({ copy }) {
 
 export function Onboarding({ language, onLanguageChange, onComplete }) {
   const [step, setStep] = useState(0);
+  const [zipCode, setZipCode] = useState("");
+  const [initialPractice, setInitialPractice] = useState("home");
   const copy = COPY[language];
 
   return (
@@ -146,6 +151,9 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
               <li><span>✎</span> {copy.features[1]}</li>
               <li><span>✦</span> {copy.features[2]}</li>
             </ul>
+            <label>{language === "es" ? "Versión disponible" : "Available test version"}<select value={DEFAULT_TEST_VERSION} disabled><option value={DEFAULT_TEST_VERSION}>{TEST_VERSIONS[DEFAULT_TEST_VERSION].label}</option></select></label>
+            <label>{language === "es" ? "ZIP Code (opcional)" : "ZIP Code (optional)"}<input inputMode="numeric" autoComplete="postal-code" maxLength={5} value={zipCode} onChange={event => setZipCode(event.target.value.replace(/\D/g, ""))} /></label>
+            <label>{language === "es" ? "¿Por dónde quieres empezar?" : "Where would you like to start?"}<select value={initialPractice} onChange={event => setInitialPractice(event.target.value)}><option value="home">Home</option><option value="civics">Civics</option><option value="vocabulary">Vocabulary</option></select></label>
             <button className="onboarding-primary" onClick={() => setStep(2)}>{copy.continue} <span>→</span></button>
           </section>
         )}
@@ -154,7 +162,7 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
             <p className="settings-eyebrow">{copy.important}</p>
             <h1 id="onboarding-title">{copy.legal}</h1>
             <LegalNotice copy={copy} />
-            <button className="onboarding-primary" onClick={onComplete}>{copy.understand} <span>→</span></button>
+            <button className="onboarding-primary" onClick={() => onComplete({ zipCode: normalizeZipCode(zipCode), initialPractice })}>{copy.understand} <span>→</span></button>
           </section>
         )}
       </main>
@@ -175,6 +183,7 @@ export function LegalSettings({ onBack, onRestartOnboarding, language = "en", th
 
   const clearLocalData = () => {
     if (!window.confirm("Clear this device's Citizenship AI preferences and civics progress? This cannot be undone.")) return;
+    Object.keys(localStorage).filter(key => key.startsWith("citizenshipai.")).forEach(key => localStorage.removeItem(key));
     ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", THEME_STORAGE_KEY, "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1", "citizenshipai.ai-sessions.promo.v1", "citizenshipai-companion-visible-v1", "citizenshipai-companion-streak-v1"].forEach((key) => localStorage.removeItem(key));
     setCleared(true);
   };

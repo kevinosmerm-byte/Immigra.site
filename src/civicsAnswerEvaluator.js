@@ -48,16 +48,17 @@ function answerMatches(answer, candidate) {
     || controlledMatch(answer, candidate);
 }
 
-export function evaluateCivicsAnswer(question, answer, dynamicAnswers = []) {
+export function evaluateCivicsAnswer(question, answer, dynamicAnswers = question?.acceptedAnswers || []) {
   if (!question || !normalizeCivicsAnswer(answer)) return { status: "incorrect", action: "retry", matchedAnswers: [], needsSemanticReview: false };
   const official = question.isDynamic ? dynamicAnswers : question.acceptedAnswers;
   if (question.isDynamic && !official.length) {
     return { status: "review", action: "review", matchedAnswers: [], needsSemanticReview: false, feedback: "Tu respuesta parece correcta, pero revisemos la respuesta oficial" };
   }
-  const candidates = [...official, ...(question.aliases || [])];
+  const aliases = question.isDynamic ? [] : (question.aliases || []);
+  const candidates = [...official, ...aliases];
   const matchedAnswers = official.filter((candidate) => answerMatches(answer, candidate));
   // Aliases may represent a complete official response, but do not inflate multi-answer counts.
-  const aliasMatch = question.minimumAnswersRequired === 1 && (question.aliases || []).some((candidate) => answerMatches(answer, candidate));
+  const aliasMatch = question.minimumAnswersRequired === 1 && aliases.some((candidate) => answerMatches(answer, candidate));
   const correctCount = new Set(matchedAnswers.map(normalizeCivicsAnswer)).size;
   if (correctCount >= question.minimumAnswersRequired || aliasMatch) {
     return { status: "correct", action: "advance", matchedAnswers, needsSemanticReview: false, feedback: "Correct." };

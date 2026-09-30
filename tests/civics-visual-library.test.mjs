@@ -55,6 +55,6 @@ test("study UI uses the reusable premium card and preloads adjacent official pho
   assert.match(component, /preloadImages\.filter\(Boolean\)/);
   assert.match(component, /disabled=\{!audioEnabled\}/);
   assert.match(app, /if \(!next\) stopAppSpeech\(\)/);
-  assert.match(app, /\[screen, civicsIndex, soundEnabled\]/);
+  assert.match(app, /\[screen, civicsIndex, soundEnabled, userKey\]/);
   assert.doesNotMatch(component, /rotateY|preserve-3d/);
 });

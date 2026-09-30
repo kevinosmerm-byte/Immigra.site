@@ -215,7 +215,7 @@ export function AccountButton({ language = "en", onClick }) {
   );
 }
 
-export function AccountSheet({ language = "en", onClose }) {
+export function AccountSheet({ language = "en", onClose, embedded = false }) {
   const { configured, session, loading, usage, billing, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, openBillingPortal } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
   const [email, setEmail] = useState("");
@@ -290,8 +290,8 @@ export function AccountSheet({ language = "en", onClose }) {
   };
 
   return (
-    <div className="account-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-      <section className="account-sheet" role="dialog" aria-modal="true" aria-labelledby="account-title">
+    <div className={embedded ? "account-page" : "account-backdrop"} role="presentation" onMouseDown={(event) => { if (!embedded && event.target === event.currentTarget) onClose(); }}>
+      <section className="account-sheet" role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : "true"} aria-labelledby="account-title">
         <button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>
         <div className="account-mark" aria-hidden="true">◎</div>
         <p className="account-eyebrow">CITIZENSHIP AI · {copy.account.toUpperCase()}</p>
@@ -352,6 +352,7 @@ export function AccountSheet({ language = "en", onClose }) {
           </form>
         )}
         <div className="account-pricing" aria-label={copy.pricing}>
+          <p>{language === "es" ? "PRO · Más práctica con IA, entrevistas avanzadas y experiencia sin anuncios." : "PRO · Expanded AI practice, advanced interviews and an ad-free experience."}</p>
           <span>{copy.pricing}</span>
           <div>
             <strong>{billing?.enabled && !billing.introductoryOfferEnabled ? copy.regularPrice : `${copy.launchPrice} $${(PRO_PLAN.introductoryMonthlyPriceCents / 100).toFixed(2)}/mo`}</strong>
@@ -369,6 +370,7 @@ export function AccountSheet({ language = "en", onClose }) {
             )
           ) : <em>{copy.pricingStatus}</em>}
           {billingError && <p className="account-status error account-billing-error">{copy.billingError}</p>}
+          {Capacitor.isNativePlatform() && <><button type="button" disabled>{language === "es" ? "Restaurar compra" : "Restore Purchase"}</button><small>{language === "es" ? "Las compras y la restauración en la tienda todavía no están disponibles." : "Store purchases and restoration are not available yet."}</small></>}
         </div>
         <p className="account-note">{copy.optional}</p>
       </section>

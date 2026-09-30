@@ -16,6 +16,9 @@ import {
 } from "./accountService.js";
 import { getAiFeatureConfig } from "../shared/featureAccessConfig.js";
 import { getBillingConfiguration } from "./stripeBilling.js";
+import { getSavedQuestions, setSavedQuestion } from "./accountService.js";
+import { getCivicsQuestion } from "../src/civicsQuestionBank.js";
+import { DEFAULT_TEST_VERSION } from "../src/civicsVersions.js";
 
 const router = Router();
 const IDEMPOTENCY_KEY_PATTERN = /^[a-zA-Z0-9._:-]{12,128}$/;
@@ -40,6 +43,20 @@ router.get("/public-config", async (_req, res) => {
 });
 
 router.use(requireAccount);
+
+router.get("/saved-questions", async (req, res) => {
+  res.set("Cache-Control", "no-store");
+  try { res.json(await getSavedQuestions(req.account.userId)); }
+  catch { res.status(503).json({ error: "Saved questions are temporarily unavailable." }); }
+});
+
+router.put("/saved-questions/:id", async (req, res) => {
+  const version = req.body?.testVersion || DEFAULT_TEST_VERSION;
+  const question = getCivicsQuestion(req.params.id, version);
+  if (!question || typeof req.body?.saved !== "boolean") return res.status(400).json({ error: "A valid question and saved state are required." });
+  try { await setSavedQuestion(req.account.userId, question.questionId, version, req.body.saved); res.status(204).end(); }
+  catch { res.status(503).json({ error: "Your question remains saved on this device. Cloud sync is temporarily unavailable." }); }
+});
 
 router.post("/events", async (req, res) => {
   try {

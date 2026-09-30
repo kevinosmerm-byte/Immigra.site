@@ -1,6 +1,4 @@
 const CENSUS_ENDPOINT = "https://geocoding.geo.census.gov/geocoder/geographies/onelineaddress";
-const CACHE_TTL_MS = 7 * 86_400_000;
-const cache = new Map();
 const memberCache = new Map();
 
 function readGeography(result, name) {
@@ -10,9 +8,6 @@ function readGeography(result, name) {
 export async function geocodeCivicAddress(address, { fetchImpl = fetch, now = Date.now() } = {}) {
   const normalized = String(address || "").trim().replace(/\s+/g, " ");
   if (normalized.length < 8) throw new Error("A complete street address is required.");
-  const key = normalized.toLowerCase();
-  const cached = cache.get(key);
-  if (cached && cached.expiresAt > now) return cached.value;
   const url = new URL(CENSUS_ENDPOINT);
   url.searchParams.set("address", normalized);
   url.searchParams.set("benchmark", "Public_AR_Current");
@@ -20,18 +15,17 @@ export async function geocodeCivicAddress(address, { fetchImpl = fetch, now = Da
   url.searchParams.set("format", "json");
   const response = await fetchImpl(url, { headers: { accept: "application/json" }, signal: AbortSignal.timeout(8_000) });
   if (!response.ok) throw new Error(`Census Geocoder returned ${response.status}.`);
-  const match = (await response.json())?.result?.addressMatches?.[0];
+  const matches = (await response.json())?.result?.addressMatches || [];
+  const match = matches.length === 1 ? matches[0] : null;
   if (!match) return null;
   const state = readGeography(match, "States");
   const district = readGeography(match, "119th Congressional Districts") || readGeography(match, "Congressional Districts");
   const value = {
     stateCode: state?.STUSAB || null,
     congressionalDistrict: district?.CD119 || district?.BASENAME || null,
-    matchedAddress: match.matchedAddress || null,
     sourceUrl: CENSUS_ENDPOINT,
     verifiedAt: new Date(now).toISOString(),
   };
-  cache.set(key, { value, expiresAt: now + CACHE_TTL_MS });
   return value;
 }
 
@@ -56,7 +50,7 @@ export async function getCurrentMembers(stateCode, district, { fetchImpl = fetch
   if (!response.ok) throw new Error(`Congress.gov API returned ${response.status}.`);
   const members = (await response.json())?.members || [];
   const senators = members.filter((member) => member.terms?.item?.at(-1)?.chamber === "Senate").map((member) => member.name).filter(Boolean).slice(0, 2);
-  const representative = members.find((member) => member.terms?.item?.at(-1)?.chamber === "House of Representatives" && String(member.district) === String(district))?.name || null;
+  const representative = members.find((member) => member.terms?.item?.at(-1)?.chamber === "House of Representatives" && Number(member.district) === Number(district))?.name || null;
   const value = { senators, representative: district ? representative : null, sourceUrl: "https://api.congress.gov/", verifiedAt: new Date(now).toISOString() };
   memberCache.set(key, { value, expiresAt: now + 86_400_000 });
   return value;

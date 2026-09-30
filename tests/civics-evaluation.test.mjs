@@ -8,7 +8,7 @@ import { locationResolutionForZip } from "../server/civicLocationService.js";
 test("all 128 questions expose the shared evaluation schema", () => {
   assert.equal(civicsQuestionBank.length, 128);
   for (const question of civicsQuestionBank) {
-    assert.deepEqual(Object.keys(question), ["questionId", "question", "questionSpanish", "acceptedAnswers", "aliases", "minimumAnswersRequired", "answerType", "isDynamic", "dynamicAnswerKey"]);
+    assert.deepEqual(Object.keys(question), ["questionId", "question", "questionSpanish", "acceptedAnswers", "aliases", "minimumAnswersRequired", "answerType", "isDynamic", "dynamicAnswerKey", "testVersion", "category", "officialSource", "lastVerified"]);
     assert.ok(Array.isArray(question.acceptedAnswers));
     assert.ok(Array.isArray(question.aliases));
   }

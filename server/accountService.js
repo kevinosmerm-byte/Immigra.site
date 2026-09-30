@@ -145,7 +145,7 @@ export async function attachOptionalAiSession(req, res, next) {
 
   const { data: aiSession, error } = await supabase
     .from("ai_sessions")
-    .select("id, feature, status")
+    .select("id, feature, status, source")
     .eq("id", sessionId)
     .eq("user_id", authData.user.id)
     .maybeSingle();
@@ -158,7 +158,7 @@ export async function attachOptionalAiSession(req, res, next) {
     return res.status(403).json({ error: "The AI session does not match this feature.", code: "ai_session_feature_mismatch" });
   }
 
-  req.aiSession = { id: aiSession.id, feature: aiSession.feature, userId: authData.user.id };
+  req.aiSession = { id: aiSession.id, feature: aiSession.feature, userId: authData.user.id, source: aiSession.source };
   res.set("X-Citizenship-AI-Session-Verified", "true");
   return next();
 }
@@ -192,6 +192,7 @@ export async function exportAccountData(userId) {
   throwDatabaseError(entitlementResult.error, "Unable to export account entitlement.");
   throwDatabaseError(sessionsResult.error, "Unable to export AI sessions.");
   throwDatabaseError(rewardsResult.error, "Unable to export reward credits.");
+  const savedQuestions = await getSavedQuestions(userId).catch(() => null);
 
   return {
     exportedAt: new Date().toISOString(),
@@ -200,6 +201,8 @@ export async function exportAccountData(userId) {
     entitlement: entitlementResult.data || null,
     aiSessions: sessionsResult.data || [],
     rewardCredits: rewardsResult.data || [],
+    savedQuestions,
+    savedQuestionsExportAvailable: savedQuestions !== null,
     privacyNote: "This export contains account and technical usage records only. Citizenship AI does not include conversation, recording, or transcript content in its usage ledger.",
   };
 }
@@ -317,6 +320,8 @@ export async function recordAiUsageEvent({ aiSession, provider, model, usage = {
 }
 
 const PRODUCT_EVENT_NAMES = new Set([
+  "practice_started", "practice_completed", "practice_abandoned", "progress_70_reached",
+  "pro_selected", "interview_started", "interview_completed", "question_saved", "mistake_practiced",
   "paywall_viewed",
   "upgrade_started",
   "rewarded_ad_offered",
@@ -329,7 +334,7 @@ export async function recordProductEvent({ userId, eventName, feature }) {
   if (!supabase || !userId || !PRODUCT_EVENT_NAMES.has(eventName)) {
     throw new Error("Unsupported product event.");
   }
-  const normalizedFeature = getAiFeatureConfig(feature) ? feature : null;
+  const normalizedFeature = getAiFeatureConfig(feature) || ["civics", "quiz", "vocabulary", "choose", "connect", "reading", "interview"].includes(feature) ? feature : null;
   const { error } = await supabase.from("usage_events").insert({
     user_id: userId,
     event_name: eventName,
@@ -337,6 +342,19 @@ export async function recordProductEvent({ userId, eventName, feature }) {
     metadata: {},
   });
   throwDatabaseError(error, "Unable to record product event.");
+}
+
+export async function getSavedQuestions(userId) {
+  if (!supabase) throw new Error("Account service is unavailable.");
+  const { data, error } = await supabase.from("saved_questions").select("question_id, test_version, saved").eq("user_id", userId).limit(1000);
+  throwDatabaseError(error, "Unable to read saved questions.");
+  return data || [];
+}
+
+export async function setSavedQuestion(userId, questionId, testVersion, saved) {
+  if (!supabase) throw new Error("Account service is unavailable.");
+  const { error } = await supabase.from("saved_questions").upsert({ user_id: userId, question_id: questionId, test_version: testVersion, saved, updated_at: new Date().toISOString() });
+  throwDatabaseError(error, "Unable to save question.");
 }
 
 // This is intentionally not exposed by an account route. A future AdMob SSV

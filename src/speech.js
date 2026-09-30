@@ -33,6 +33,7 @@ const findVoice = async (profile) => {
 
 export const stopAppSpeech = async () => {
   speechRequest += 1;
+  speechActive = false;
   try {
     await TextToSpeech.stop();
   } catch {
@@ -54,6 +55,7 @@ export const speakAppText = async (text, options = {}) => {
   try {
     await TextToSpeech.stop();
     if (requestId !== speechRequest) return false;
+    speechActive = true;
     onStart?.();
     const voice = await findVoice(profile);
     await TextToSpeech.speak({
@@ -65,11 +67,14 @@ export const speakAppText = async (text, options = {}) => {
       voice,
       queueStrategy: QueueStrategy.Flush,
     });
-    if (requestId === speechRequest) onEnd?.();
+    if (requestId === speechRequest) { speechActive = false; onEnd?.(); }
     return true;
   } catch (error) {
-    if (requestId === speechRequest) onEnd?.();
+    if (requestId === speechRequest) { speechActive = false; onEnd?.(); }
     console.error("Text-to-speech error:", error);
     return false;
   }
 };
+
+let speechActive = false;
+export const isAppSpeechActive = () => speechActive;

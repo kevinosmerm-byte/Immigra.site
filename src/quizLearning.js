@@ -1,3 +1,4 @@
+import { getCivicsCategory } from "./civicsVersions.js";
 import { evaluateCivicsAnswer, normalizeCivicsAnswer } from "./civicsAnswerEvaluator.js";
 import { updateQuestionState } from "./learning.js";
 
@@ -29,13 +30,7 @@ const VOCABULARY_STOP_WORDS = new Set([
   "two", "united", "us", "was", "what", "when", "which", "who", "why", "with", "your",
 ]);
 
-export function getCivicsCategory(questionId) {
-  if (questionId <= 14) return "principles";
-  if (questionId <= 60) return "government";
-  if (questionId <= 72) return "rights";
-  if (questionId <= 118) return "history";
-  return "symbols";
-}
+export { getCivicsCategory } from "./civicsVersions.js";
 
 function titleCase(value) {
   return value ? value.charAt(0).toUpperCase() + value.slice(1) : value;
@@ -154,7 +149,7 @@ export function getAdaptiveQuestionOrder(questions, progress = {}, now = Date.no
 }
 
 export function createQuizSession(questions, progress, mode, limit = MAX_SESSION_QUESTIONS, now = Date.now()) {
-  const candidates = mode === "vocabulary" ? questions : questions.filter((question) => !question.isDynamic && question.acceptedAnswers.length);
+  const candidates = mode === "vocabulary" ? questions : questions.filter((question) => question.acceptedAnswers.length);
   return getAdaptiveQuestionOrder(candidates, progress, now).slice(0, limit);
 }
 

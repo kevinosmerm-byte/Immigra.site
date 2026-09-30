@@ -1,3 +1,10 @@
+import { queueSavedQuestion, syncSavedQuestions } from "./savedQuestions.js";
+import { MyCivicsProfile } from "./MyCivicsProfile.jsx";
+import { readCivicProfile, saveCivicProfile } from "./civicProfileStorage.js";
+import { resolveCivicsQuestion } from "./dynamicCivicsData.js";
+import { ProgressGate } from "./ProgressGate.jsx";
+import { useProgressGate } from "./progressGateContext.js";
+import { BottomNavigation } from "./BottomNavigation.jsx";
 import { lazy, Suspense, useState, useEffect, useRef } from "react";
 import "./App.css";
 import sarahImage from "./assets/sarah.png";
@@ -7,7 +14,7 @@ import { evaluateCivicsAnswer } from "./civicsAnswerEvaluator.js";
 import { apiJson } from "./api";
 import { startAudioRecording, transcribeRecording } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
-import { getPracticeEvents, getPracticeSummary, recordPracticeEvent } from "./progress";
+import { getPracticeEvents, getPracticeSummary, recordPracticeEvent, getModuleProgress, saveModuleProgress, getContinueStudying, recordCivicsMistake, migrateLegacyCivicsProgress } from "./progress";
 import { PodcastLibrary } from "./PodcastPlayer";
 import { usePromotionAccess } from "./promotionAccessContext.js";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
@@ -249,6 +256,7 @@ function Home({
   language,
   onLanguageChange,
   practiceSummary,
+  studyActions,
 }) {
   const homeVideoRef = useRef(null);
   const [homeVideoPlaying, setHomeVideoPlaying] = useState(false);
@@ -328,7 +336,7 @@ function Home({
   const copy = language === "en" ? {
     status: "AI-POWERED CITIZENSHIP TRAINING",
     aiReady: "AI READY",
-    ready: "READY",
+    ready: "PRACTICE",
     english: "ENGLISH",
     reading: "Reading",
     writing: "Writing",
@@ -347,7 +355,7 @@ function Home({
   } : {
     status: "ENTRENAMIENTO DE CIUDADANÍA CON IA",
     aiReady: "IA LISTA",
-    ready: "LISTO",
+    ready: "PRÁCTICA",
     english: "INGLÉS",
     reading: "Lectura",
     writing: "Escritura",
@@ -403,6 +411,7 @@ function Home({
       </header>
 
 
+
       {/* ================= HERO ================= */}
 
       <main className="home-new-content">
@@ -412,6 +421,7 @@ function Home({
           <div className="hero-glow"></div>
 
           <div className="home-visual-hero home-video-hero">
+            <span className="home-pro-badge">PRO</span>
             <video
               ref={homeVideoRef}
               className="home-hero-video"
@@ -552,6 +562,7 @@ function Home({
 
         {/* ================= QUICK PRACTICE ================= */}
 
+        {studyActions}
         <section className="home-new-section home-practice-section">
           <div className="home-practice-list">
 
@@ -641,6 +652,7 @@ function Home({
           </div>
 
 
+          <p className="readiness-note">{language === "es" ? "Progreso dentro de Citizenship AI. No predice la aprobación del examen oficial." : "Progress within Citizenship AI. This does not predict passing the official test."}</p>
           <div className="preparation-items">
 
             <div>
@@ -723,27 +735,41 @@ function Home({
 
 // Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
 
-function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
+function RealInterview({ onExit, onComplete, onReview, onQuestionResult, civicProfile, userKey = "guest", mode = "full" }) {
+  const { runTransition } = useProgressGate();
+  const [checkpoint] = useState(() => {
+    const saved = getModuleProgress(userKey).interview;
+    return mode === "civics" && saved && !saved.isComplete && saved.questionIds.length && saved.questionIndex < saved.questionIds.length && saved.questionIds.every(id => civicsQuestionBank.some(question => question.questionId === id)) ? saved : null;
+  });
   const [questions] = useState(() => {
-    const shuffledCivics = [...civicsQuestionBank].sort(() => Math.random() - 0.5);
+    if (checkpoint) return checkpoint.questionIds.map(id => resolveCivicsQuestion(civicsQuestionBank.find(question => question.questionId === id), { profile: civicProfile }));
+    const shuffledCivics = civicsQuestionBank.map(question => resolveCivicsQuestion(question, { profile: civicProfile })).sort(() => Math.random() - 0.5);
     if (mode === "civics") return shuffledCivics.slice(0, 10);
     return shuffledCivics.slice(0, 5);
   });
 
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(checkpoint?.questionIndex || 0);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(true);
   const [answer, setAnswer] = useState("");
   const [answerStatus, setAnswerStatus] = useState("");
-  const [correctAnswers, setCorrectAnswers] = useState(0);
-  const [incorrectAnswers, setIncorrectAnswers] = useState(0);
-  const [missedQuestions, setMissedQuestions] = useState([]);
+  const [correctAnswers, setCorrectAnswers] = useState(checkpoint?.score || 0);
+  const [incorrectAnswers, setIncorrectAnswers] = useState(checkpoint?.incorrect || 0);
+  const [missedQuestions, setMissedQuestions] = useState(() => (checkpoint?.missedIds || []).map(id => ({ id, english: civicsQuestionBank.find(question => question.questionId === id)?.question || "" })));
   const [hasRetried, setHasRetried] = useState(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   const [interviewer, setInterviewer] = useState("sarah");
   const recorderRef = useRef(null);
   const completionReportedRef = useRef(false);
   const speechRequestRef = useRef(0);
+  const savedTransition = useRef(null);
+  useEffect(() => {
+    if (mode !== "civics") return;
+    const transition = `${currentQuestion}:${isInterviewComplete}`;
+    if (savedTransition.current === transition) return;
+    savedTransition.current = transition;
+    saveModuleProgress("interview", { completed: isInterviewComplete ? questions.length : currentQuestion, total: questions.length, questionIndex: currentQuestion, questionIds: questions.map(question => question.questionId), score: correctAnswers, incorrect: incorrectAnswers, missedIds: missedQuestions.map(question => question.id) }, userKey);
+  }, [currentQuestion, isInterviewComplete, questions, correctAnswers, incorrectAnswers, missedQuestions, userKey, mode]);
 
   const isKevin = interviewer === "kevin";
   const interviewerName = isKevin ? "Kevin" : "Sarah";
@@ -751,6 +777,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   const questionSpanish = (question) => question.questionSpanish || question.spanish;
   const questionKey = (question) => question.questionId || question.id;
   const addMissedQuestion = (question) => {
+    onQuestionResult?.(questionKey(question), false);
     setMissedQuestions((current) => (
       current.some((item) => item.id === questionKey(question))
         ? current
@@ -794,7 +821,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       speakQuestion(`
         Welcome. Thank you for being here today.
         ${mode === "civics" ? "We are going to begin your civics interview practice." : "We are going to begin the live interview experience."}
-        ${questionText(questions[0])}
+        ${questionText(questions[checkpoint?.questionIndex || 0])}
       `);
     }, 500);
 
@@ -802,9 +829,9 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       clearTimeout(timer);
       stopAppSpeech();
     };
-  }, [questions, mode]);
+  }, [questions, mode, checkpoint]);
 
-  const goToNextQuestion = () => {
+  const goToNextQuestion = () => runTransition({ module: "interview", completed: currentQuestion + 1, total: questions.length, busy: Boolean(recorderRef.current) }, () => {
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion >= questions.length) {
       setIsSpeaking(true);
@@ -821,7 +848,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
     setTimeout(() => {
       speakQuestion(questionText(questions[nextQuestion]));
     }, 300);
-  };
+  });
 
   const handleSkip = () => {
     setIncorrectAnswers((count) => count + 1);
@@ -843,7 +870,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
         if (!localResult.needsSemanticReview) {
           setAnswerStatus(localResult.status === "review" ? "incomplete" : localResult.status);
           emitCompanionResult(localResult.status === "correct");
-          if (localResult.status === "correct") setCorrectAnswers((count) => count + 1);
+          if (localResult.status === "correct") { setCorrectAnswers((count) => count + 1); onQuestionResult?.(questionKey(activeQuestion), true); }
           if (localResult.status === "incorrect" && hasRetried) {
             setIncorrectAnswers((count) => count + 1);
             addMissedQuestion(activeQuestion);
@@ -870,7 +897,7 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
       setAnswerStatus(result.status === "review" ? "incomplete" : result.status);
       emitCompanionResult(result.status === "correct");
 
-      if (result.status === "correct") setCorrectAnswers((count) => count + 1);
+      if (result.status === "correct") { setCorrectAnswers((count) => count + 1); onQuestionResult?.(questionKey(activeQuestion), true); }
       if (result.status === "incorrect" && hasRetried) {
         setIncorrectAnswers((count) => count + 1);
         addMissedQuestion(questions[currentQuestion]);
@@ -1206,7 +1233,8 @@ function RealInterview({ onExit, onComplete, onReview, mode = "full" }) {
   );
 }
 
-function App() {
+function AppContent({ userKey }) {
+  const { runTransition } = useProgressGate();
   // 1. TODOS LOS HOOKS (ESTADOS) VAN AQUÍ ARRIBA SIN EXCEPCIÓN
   const [navigation, setNavigation] = useState(() => createNavigationHistory(
     window.location.hash === "#privacy" ? "settings" : "home"
@@ -1231,21 +1259,21 @@ function App() {
   const [coachMode, setCoachMode] = useState("welcome");
   const [interviewMode, setInterviewMode] = useState("full");
   const [interviewRunId, setInterviewRunId] = useState(0);
-  const [civicsIndex, setCivicsIndex] = useState(0);
+  const [civicsIndex, setCivicsIndex] = useState(() => migrateLegacyCivicsProgress(civicsQuestionBank.length, userKey)?.questionIndex || 0);
   const [civicsFlipped, setCivicsFlipped] = useState(false);
   const [civicsStudyMode, setCivicsStudyMode] = useState("study");
   const [studyFeedback, setStudyFeedbackMessage] = useState("");
   const [soundEnabled, setSoundEnabled] = useState(() => readLocalValue("citizenshipai.feedback-sound.v1", "on") !== "off");
   const [civicsFavorites, setCivicsFavorites] = useState(() => {
-    const saved = readLocalJson("citizenshipai.civics.favorites.v1", []);
+    const saved = readLocalJson(userKey === "guest" ? "citizenshipai.civics.favorites.v1" : "citizenshipai.civics.favorites.v1:" + userKey, []);
     return Array.isArray(saved) ? saved : [];
   });
   const [civicsMastered, setCivicsMastered] = useState(() => {
-    const saved = readLocalJson("citizenshipai.civics.mastered.v1", []);
+    const saved = readLocalJson(userKey === "guest" ? "citizenshipai.civics.mastered.v1" : "citizenshipai.civics.mastered.v1:" + userKey, []);
     return Array.isArray(saved) ? saved : [];
   });
   const [civicsNeedsPractice, setCivicsNeedsPractice] = useState(() => {
-    const saved = readLocalJson("citizenshipai.civics.needsPractice.v1", []);
+    const saved = readLocalJson(userKey === "guest" ? "citizenshipai.civics.needsPractice.v1" : "citizenshipai.civics.needsPractice.v1:" + userKey, []);
     return Array.isArray(saved) ? saved : [];
   });
   const civicsTouchRef = useRef(null);
@@ -1266,14 +1294,31 @@ function App() {
     () => readLocalValue(ONBOARDING_STORAGE_KEY) === "complete"
   );
   const [accountOpen, setAccountOpen] = useState(false);
-  const { session } = useAccount();
+  const { session, recordAccountEvent } = useAccount();
+
+  const [profileRevision, setProfileRevision] = useState(0);
+  useEffect(() => {
+    if (!session?.access_token) return;
+    let active = true;
+    const sync = () => syncSavedQuestions(session).then(saved => {
+      if (!active || !saved) return;
+      setCivicsFavorites(saved);
+      saveLocalValue(`citizenshipai.civics.favorites.v1:${userKey}`, JSON.stringify(saved));
+    }).catch(() => {});
+    sync(); window.addEventListener("online", sync);
+    return () => { active = false; window.removeEventListener("online", sync); };
+  }, [session, userKey]);
+  const civicProfile = readCivicProfile(userKey);
   const trackerCopy = CASE_TRACKER_COPY[language];
   
   const [civicsViewed, setCivicsViewed] = useState(() => {
-    const saved = readLocalJson("civicsViewed", []);
+    const saved = readLocalJson(userKey === "guest" ? "civicsViewed" : "civicsViewed:" + userKey, []);
     return Array.isArray(saved) ? saved : [];
   });
-  const [practiceEvents, setPracticeEvents] = useState(() => getPracticeEvents());
+  const [practiceEvents, setPracticeEvents] = useState(() => getPracticeEvents(userKey));
+  useEffect(() => {
+    if (screen === "civics") saveModuleProgress("civics", { completed: civicsViewed.length, total: civicsQuestionBank.length, questionIndex: civicsIndex }, userKey);
+  }, [screen, civicsIndex, userKey, civicsViewed.length]);
   const { requestAiSession, finishActiveAiSession } = usePromotionAccess();
   const finishActiveAiSessionRef = useRef(finishActiveAiSession);
   useEffect(() => {
@@ -1345,26 +1390,36 @@ function App() {
   const [isAIThinking, setIsAIThinking] = useState(false);
   const [aiMessage, setAiMessage] = useState("");
   const [isReading, setIsReading] = useState(false);
-  const [readingIndex, setReadingIndex] = useState(0);
+  const [readingIndex, setReadingIndex] = useState(() => getModuleProgress(userKey).reading?.questionIndex || 0);
   const readingRecorderRef = useRef(null);
   const [writingAnswer, setWritingAnswer] = useState("");
   const [writingGoodCount, setWritingGoodCount] = useState(0);
   const [writingNeedsPracticeCount, setWritingNeedsPracticeCount] = useState(0);
-  const [writingIndex, setWritingIndex] = useState(0);
+  const [writingIndex, setWritingIndex] = useState(() => getModuleProgress(userKey).writing?.questionIndex || 0);
   const [writingEvaluation, setWritingEvaluation] = useState(null);
 
   const [readingOrder, setReadingOrder] = useState(() =>
-    [...readingSentences]
+    (getModuleProgress(userKey).reading?.questionIds.length === readingSentences.length ? getModuleProgress(userKey).reading.questionIds.map(id => id - 1) : [...readingSentences]
       .map((_, index) => index)
-      .sort(() => Math.random() - 0.5)
+      .sort(() => Math.random() - 0.5))
   );
   const practiceSummary = getPracticeSummary(practiceEvents, civicsViewed, civicsMastered);
+  const continueStudy = getContinueStudying(userKey);
+  const studyLabels = language === "es"
+    ? { civics: "Preguntas cívicas", vocabulary: "Vocabulario", choose: "Elegir", connect: "Conectar", quiz: "Quiz", reading: "Lectura", writing: "Escritura", interview: "Entrevista cívica" }
+    : { civics: "Civics Questions", vocabulary: "Vocabulary", choose: "Choose", connect: "Connect", quiz: "Quiz", reading: "Reading", writing: "Writing", interview: "Civics Interview" };
 
+  const handleQuestionResult = (questionId, correct) => {
+    const index = civicsQuestionBank.findIndex(question => question.questionId === questionId);
+    setCivicsNeedsPractice(recordCivicsMistake(index, correct, userKey));
+  };
   const recordPractice = (event) => {
-    setPracticeEvents(recordPracticeEvent(event));
+    setPracticeEvents(recordPracticeEvent(event, userKey));
+    recordAccountEvent("practice_completed", event.module).catch(() => {});
   };
 
   const navigateTo = (nextScreen, options) => {
+    if (["civics", "quiz", "vocabulary", "choose", "connect", "reading", "writing", "interview"].includes(nextScreen) && nextScreen !== screen) recordAccountEvent("practice_started", nextScreen).catch(() => {});
     setNavigation((current) => navigateForward(current, nextScreen, options));
   };
 
@@ -1409,7 +1464,7 @@ function App() {
     setCivicsViewed((current) => {
       if (current.includes(index)) return current;
       const updated = [...current, index];
-      saveLocalValue("civicsViewed", JSON.stringify(updated));
+      saveLocalValue(userKey === "guest" ? "civicsViewed" : "civicsViewed:" + userKey, JSON.stringify(updated));
       return updated;
     });
   };
@@ -1420,7 +1475,7 @@ function App() {
       setCivicsViewed((current) => {
         if (current.includes(civicsIndex)) return current;
         const updated = [...current, civicsIndex];
-        saveLocalValue("civicsViewed", JSON.stringify(updated));
+        saveLocalValue(userKey === "guest" ? "civicsViewed" : "civicsViewed:" + userKey, JSON.stringify(updated));
         return updated;
       });
       if (soundEnabled) {
@@ -1436,7 +1491,7 @@ function App() {
       clearTimeout(timer);
       stopAppSpeech();
     };
-  }, [screen, civicsIndex, soundEnabled]);
+  }, [screen, civicsIndex, soundEnabled, userKey]);
 
   // Funciones auxiliares de soporte...
   const playCorrectSound = () => {
@@ -1469,7 +1524,8 @@ function App() {
     oscillator.stop(audioContext.currentTime + 0.3);
   };
 
-  const nextReadingSentence = () => {
+  const nextReadingSentence = () => runTransition({ module: "reading", completed: readingIndex + 1, total: readingOrder.length, busy: Boolean(readingRecorderRef.current) }, () => {
+    saveModuleProgress("reading", { completed: readingIndex + 1, total: readingOrder.length, questionIndex: (readingIndex + 1) % readingOrder.length, questionIds: readingOrder.map(index => index + 1) }, userKey);
     setReadingIndex((currentIndex) => {
       const nextIndex = currentIndex + 1;
       if (nextIndex >= readingOrder.length) {
@@ -1480,9 +1536,10 @@ function App() {
       return nextIndex;
     });
     setAiMessage("");
-  };
+  });
 
-  const nextWritingSentence = () => {
+  const nextWritingSentence = () => runTransition({ module: "writing", completed: writingIndex + 1, total: writingSentences.length, busy: isAIThinking }, () => {
+    saveModuleProgress("writing", { completed: writingIndex + 1, total: writingSentences.length, questionIndex: (writingIndex + 1) % writingSentences.length }, userKey);
     setWritingAnswer("");
     setWritingEvaluation(null);
     setWritingIndex((currentIndex) => {
@@ -1491,7 +1548,7 @@ function App() {
       return nextIndex;
     });
     setAiMessage("");
-  };
+  });
 
   const checkWriting = async () => {
     if (!writingAnswer.trim()) {
@@ -1669,9 +1726,11 @@ function App() {
     saveLocalValue(LANGUAGE_STORAGE_KEY, value);
   };
 
-  const completeOnboarding = () => {
+  const completeOnboarding = ({ zipCode, initialPractice = "home" } = {}) => {
+    if (zipCode && !civicProfile) { saveCivicProfile({ zipCode, districtStatus: "unknown", verifiedAt: null }, userKey); setProfileRevision(value => value + 1); }
     saveLocalValue(ONBOARDING_STORAGE_KEY, "complete");
     setOnboardingComplete(true);
+    navigateTo(initialPractice);
   };
 
   const restartOnboarding = () => {
@@ -1684,6 +1743,7 @@ function App() {
     setOnboardingComplete(false);
   };
 
+  const renderScreen = () => {
   // 3. LAS CONDICIONES DE RENDERIZADO (IF) VAN AQUÍ ABAJO, NUNCA ANTES DE LOS HOOKS
   if (!onboardingComplete && screen !== "settings") {
     return <Onboarding language={language} onLanguageChange={setPreferredLanguage} onComplete={completeOnboarding} />;
@@ -1708,6 +1768,8 @@ function App() {
     return <ImmigrationHelp language={language} onLanguageChange={setPreferredLanguage} onBack={() => goBack("home")} />;
   }
 
+  if (screen === "civicProfile") return <MyCivicsProfile key={`${userKey}:${profileRevision}`} profile={civicProfile} onSave={profile => { saveCivicProfile(profile, userKey); setProfileRevision(value => value + 1); }} onBack={() => goBack("home")} />;
+  if (screen === "pro") return <AccountSheet embedded language={language} onClose={() => goBack("home")} />;
   if (screen === "podcasts") {
     return <PodcastLibrary onBack={() => goBack("home")} />;
   }
@@ -1720,12 +1782,15 @@ function App() {
     );
   }
 
-  if (screen === "quiz") {
+  if (["quiz", "vocabulary", "choose", "connect"].includes(screen)) {
     return (
       <Suspense fallback={<div className="study-guide-route-loading" role="status">Loading adaptive quiz…</div>}>
         <QuizLearningPath
-          key={session?.user?.id || "guest"}
+          key={`${userKey}:${screen}`}
           language={language}
+          onQuestionResult={handleQuestionResult}
+          civicProfile={civicProfile}
+          initialMode={["vocabulary", "choose", "connect"].includes(screen) ? screen : null}
           userKey={session?.user?.id || "guest"}
           onBack={() => goBack("civics")}
           onPracticeComplete={({ score, outcome }) => recordPractice({ module: "quiz", score, outcome, category: "civics" })}
@@ -1797,13 +1862,13 @@ function App() {
   // Control de pantallas de la aplicación
   if (screen === "civics") {
     const isSpanish = language === "es";
-    const currentQuestionRecord = civicsQuestionBank[civicsIndex];
+    const currentQuestionRecord = resolveCivicsQuestion(civicsQuestionBank[civicsIndex], { profile: civicProfile });
     const currentVisual = getCivicsVisual(currentQuestionRecord.questionId);
     const currentQuestion = currentQuestionRecord.question;
     const currentQuestionSpanish = currentQuestionRecord.questionSpanish;
     const currentAnswers = currentQuestionRecord.acceptedAnswers.length ? currentQuestionRecord.acceptedAnswers : [isSpanish ? "La respuesta cambia. Verifica la actualización oficial." : "This answer changes. Check the official update before practicing."];
     const favoriteIndexes = civicsFavorites.filter((index) => index >= 0 && index < civicsQuestionBank.length);
-    const visibleIndexes = civicsStudyMode === "favorites" ? favoriteIndexes : civicsQuestionBank.map((_, index) => index);
+    const visibleIndexes = civicsStudyMode === "favorites" ? favoriteIndexes : civicsStudyMode === "mistakes" ? civicsNeedsPractice : civicsQuestionBank.map((_, index) => index);
     const activePosition = Math.max(0, visibleIndexes.indexOf(civicsIndex));
     const studiedPercent = Math.round((civicsMastered.length / civicsQuestionBank.length) * 100);
     const copy = isSpanish ? {
@@ -1842,9 +1907,9 @@ function App() {
       if (!visibleIndexes.length) return;
       const nextPosition = (activePosition + direction + visibleIndexes.length) % visibleIndexes.length;
       const nextIndex = visibleIndexes[nextPosition];
-      setCivicsFlipped(false);
-      setCivicsIndex(nextIndex);
-      markCivicsViewed(nextIndex);
+      stopAppSpeech().then(() => runTransition({ module: "civics", completed: civicsViewed.length, total: civicsQuestionBank.length }, () => {
+        setCivicsFlipped(false); setCivicsIndex(nextIndex); markCivicsViewed(nextIndex);
+      }));
     };
 
     const updateCivicsCollection = (setter, storageKey, shouldAdd) => {
@@ -1852,13 +1917,16 @@ function App() {
         const updated = shouldAdd
           ? (current.includes(civicsIndex) ? current : [...current, civicsIndex])
           : current.filter((index) => index !== civicsIndex);
-        saveLocalValue(storageKey, JSON.stringify(updated));
+        saveLocalValue(userKey === "guest" ? storageKey : `${storageKey}:${userKey}`, JSON.stringify(updated));
         return updated;
       });
     };
 
     const toggleFavorite = () => {
       const isFavorite = civicsFavorites.includes(civicsIndex);
+      queueSavedQuestion(userKey, currentQuestionRecord.questionId, !isFavorite);
+      syncSavedQuestions(session).catch(() => {});
+      if (!isFavorite) recordAccountEvent("question_saved", "civics").catch(() => {});
       updateCivicsCollection(setCivicsFavorites, "citizenshipai.civics.favorites.v1", !isFavorite);
       if (civicsStudyMode === "favorites" && isFavorite) {
         const remaining = favoriteIndexes.filter((index) => index !== civicsIndex);
@@ -1964,7 +2032,7 @@ function App() {
               </button>
             </>
           ) : (
-            <section className="civics-favorites-empty"><span>☆</span><p>{copy.empty}</p><button onClick={() => setCivicsStudyMode("study")}>{copy.cards}</button></section>
+            <section className="civics-favorites-empty"><span>☆</span><p>{civicsStudyMode === "mistakes" ? (isSpanish ? "No tienes errores pendientes de repasar." : "No mistakes waiting for review.") : copy.empty}</p><button onClick={() => setCivicsStudyMode("study")}>{copy.cards}</button></section>
           )}
         </main>
       </div>
@@ -2570,6 +2638,9 @@ function App() {
     return (
       <RealInterview
         key={`${interviewMode}-${interviewRunId}`}
+        userKey={userKey}
+        onQuestionResult={handleQuestionResult}
+        civicProfile={civicProfile}
         mode={interviewMode}
         onExit={() => goBack("home")}
         onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
@@ -2604,10 +2675,23 @@ function App() {
       }}
       language={language}
       onLanguageChange={setPreferredLanguage}
+      studyActions={<section className="home-study-actions" aria-label="Your study plan">
+        <button onClick={() => navigateTo("civicProfile")}><strong>{language === "es" ? "Mi perfil cívico" : "My Civics Profile"}</strong><span>{civicProfile?.state?.code || (language === "es" ? "Configurar ubicación" : "Set your location")}</span></button>
+        {continueStudy && <button onClick={() => { const module = continueStudy.module; if (module === "interview") startInterview("civics"); else if (["reading", "writing", "coach"].includes(module)) openPracticeModule(module); else { setCivicsStudyMode("study"); navigateTo(module); } }}><strong>{language === "es" ? "Continuar estudiando" : "Continue Studying"}</strong><span>{studyLabels[continueStudy.module] || continueStudy.module} · {Math.round(continueStudy.progressPercentage)}% {language === "es" ? "completado" : "complete"}</span></button>}
+        <button onClick={() => { setCivicsStudyMode("mistakes"); setCivicsIndex(civicsNeedsPractice[0] || 0); navigateTo("civics"); }}><strong>{language === "es" ? "Practicar mis errores" : "Practice Your Mistakes"}</strong><span>{civicsNeedsPractice.length} {language === "es" ? "preguntas" : "questions"}</span></button>
+        <button onClick={() => { setCivicsStudyMode("favorites"); setCivicsIndex(civicsFavorites[0] || 0); navigateTo("civics"); }}><strong>{language === "es" ? "Preguntas guardadas" : "Saved Questions"}</strong><span>{civicsFavorites.length} {language === "es" ? "preguntas" : "questions"}</span></button>
+      </section>}
       practiceSummary={practiceSummary}
     />
     {accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}
     </>
   );
+  };
+  const showNavigation = onboardingComplete && !["interview", "coach", "reading", "writing"].includes(screen);
+  return <div className={showNavigation ? "global-navigation-shell" : undefined}>{renderScreen()}{showNavigation && <BottomNavigation screen={screen} language={language} onNavigate={navigateTo} />}</div>;
 }
-export default App;
+export default function App() {
+  const { session } = useAccount();
+  const userKey = session?.user?.id || "guest";
+  return <ProgressGate key={userKey}><AppContent key={userKey} userKey={userKey} /></ProgressGate>;
+}

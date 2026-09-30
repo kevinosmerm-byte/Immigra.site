@@ -1,11 +1,74 @@
 import { calculateReadiness } from "./learning.js";
+import { DEFAULT_TEST_VERSION } from "./civicsVersions.js";
+
+export function progressMetrics(completed, total) {
+  const count = Number.isFinite(total) ? Math.max(0, Math.floor(total)) : 0;
+  const done = Number.isFinite(completed) ? Math.max(0, Math.min(count, Math.floor(completed))) : 0;
+  return { completed: done, total: count, progressPercentage: count ? done / count * 100 : 0, isComplete: count > 0 && done === count };
+}
+
+const RESUME_MODULES = new Set(["civics", "quiz", "vocabulary", "choose", "connect", "reading", "writing", "interview", "coach"]);
+function resumeKey(userKey) { return `citizenshipai.resume.v1:${userKey || "guest"}:${DEFAULT_TEST_VERSION}`; }
+function resumeStorage(storage) { try { return storage || globalThis.localStorage; } catch { return null; } }
+
+export function getModuleProgress(userKey = "guest", storage) {
+  try {
+    const records = JSON.parse(resumeStorage(storage)?.getItem(resumeKey(userKey)) || "{}");
+    return Object.fromEntries(Object.entries(records || {}).filter(([module, record]) => RESUME_MODULES.has(module) && record?.testVersion === DEFAULT_TEST_VERSION && Number.isFinite(record.lastAccess)));
+  } catch { return {}; }
+}
+
+/** Store learning checkpoints, never voice transcripts or personal interview answers. */
+export function saveModuleProgress(module, value, userKey = "guest", storage) {
+  if (!RESUME_MODULES.has(module)) return null;
+  const record = {
+    module, testVersion: DEFAULT_TEST_VERSION,
+    ...progressMetrics(value.completed, value.total),
+    questionIndex: Math.max(0, Math.min(Math.max(0, (value.total || 1) - 1), Math.floor(value.questionIndex) || 0)),
+    questionIds: Array.isArray(value.questionIds) ? value.questionIds.filter(Number.isInteger).slice(0, 200) : [],
+    mode: ["vocabulary", "choose", "connect", "recall", "challenge"].includes(value.mode) ? value.mode : null,
+    score: Number.isFinite(value.score) ? Math.max(0, value.score) : 0,
+    resultStatus: ["correct", "incorrect", "incomplete", "review"].includes(value.resultStatus) ? value.resultStatus : null,
+    incorrect: Number.isFinite(value.incorrect) ? Math.max(0, value.incorrect) : 0,
+    missedIds: Array.isArray(value.missedIds) ? value.missedIds.filter(Number.isInteger).slice(0, 200) : [],
+    lastAccess: Date.now(),
+  };
+  try { resumeStorage(storage)?.setItem(resumeKey(userKey), JSON.stringify({ ...getModuleProgress(userKey, storage), [module]: record })); } catch { /* Practice works without storage. */ }
+  return record;
+}
+
+export function getContinueStudying(userKey = "guest", storage) {
+  return Object.values(getModuleProgress(userKey, storage)).filter(record => !record.isComplete && record.total > 0).sort((a, b) => b.lastAccess - a.lastAccess)[0] || null;
+}
+
+export function migrateLegacyCivicsProgress(total, userKey = "guest", storage) {
+  const existing = getModuleProgress(userKey, storage).civics;
+  if (existing || userKey !== "guest") return existing || null;
+  try {
+    const parsed = JSON.parse(resumeStorage(storage)?.getItem("civicsViewed") || "[]");
+    const viewed = Array.isArray(parsed) ? [...new Set(parsed.filter(index => Number.isInteger(index) && index >= 0 && index < total))] : [];
+    if (!viewed.length) return null;
+    return saveModuleProgress("civics", { completed: viewed.length, total, questionIndex: viewed.at(-1) }, userKey, storage);
+  } catch { return null; }
+}
+
+export function recordCivicsMistake(questionIndex, correct, userKey = "guest", storage) {
+  if (!Number.isInteger(questionIndex) || questionIndex < 0) return [];
+  const key = `citizenshipai.civics.needsPractice.v1${userKey === "guest" ? "" : `:${userKey}`}`;
+  let current = [];
+  try { const parsed = JSON.parse(resumeStorage(storage)?.getItem(key) || "[]"); if (Array.isArray(parsed)) current = parsed.filter(Number.isInteger); } catch { /* Empty fallback. */ }
+  const next = correct ? current.filter(index => index !== questionIndex) : [...new Set([...current, questionIndex])];
+  try { resumeStorage(storage)?.setItem(key, JSON.stringify(next)); } catch { /* Keep current session usable. */ }
+  return next;
+}
 
 const STORAGE_KEY = "citizenshipai.practice-events.v1";
 const MAX_EVENTS = 250;
 
-function safeRead() {
+function practiceKey(userKey) { return userKey && userKey !== "guest" ? `${STORAGE_KEY}:${userKey}` : STORAGE_KEY; }
+function safeRead(userKey) {
   try {
-    const value = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    const value = JSON.parse(localStorage.getItem(practiceKey(userKey)) || "[]");
     return Array.isArray(value) ? value.filter(isValidEvent).slice(-MAX_EVENTS) : [];
   } catch {
     return [];
@@ -17,19 +80,19 @@ function isValidEvent(event) {
     && typeof event.at === "number";
 }
 
-function safeWrite(events) {
+function safeWrite(events, userKey) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(events.slice(-MAX_EVENTS)));
+    localStorage.setItem(practiceKey(userKey), JSON.stringify(events.slice(-MAX_EVENTS)));
   } catch {
     // Practice remains available if browser storage is unavailable.
   }
 }
 
-export function getPracticeEvents() {
-  return safeRead();
+export function getPracticeEvents(userKey) {
+  return safeRead(userKey);
 }
 
-export function recordPracticeEvent({ module, score, outcome, responseMs = 0, helpUsed = [], category = module }) {
+export function recordPracticeEvent({ module, score, outcome, responseMs = 0, helpUsed = [], category = module }, userKey) {
   const event = {
     module,
     score: Number.isFinite(score) ? Math.max(0, Math.min(100, Math.round(score))) : null,
@@ -39,8 +102,8 @@ export function recordPracticeEvent({ module, score, outcome, responseMs = 0, he
     helpUsed: Array.isArray(helpUsed) ? helpUsed.slice(0, 5) : [],
     at: Date.now(),
   };
-  const events = [...safeRead(), event].slice(-MAX_EVENTS);
-  safeWrite(events);
+  const events = [...safeRead(userKey), event].slice(-MAX_EVENTS);
+  safeWrite(events, userKey);
   return events;
 }
 

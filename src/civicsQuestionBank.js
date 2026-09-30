@@ -1,5 +1,6 @@
 import { civicsQuestions } from "./questions.js";
 import { civicsAnswers } from "./civicsAnswers.js";
+import { DEFAULT_TEST_VERSION, TEST_VERSIONS, getCivicsCategory } from "./civicsVersions.js";
 
 const MULTI_ANSWER_COUNTS = Object.freeze({ 10: 2, 48: 2, 65: 3, 67: 2, 69: 2, 126: 3 });
 const DYNAMIC_KEYS = Object.freeze({
@@ -16,9 +17,6 @@ const ALIASES = Object.freeze({
   18: ["congress", "legislative branch"],
   21: ["one hundred", "100"],
   24: ["four hundred thirty five", "435"],
-  38: ["president trump", "donald trump"],
-  39: ["vice president vance", "jd vance", "j d vance"],
-  57: ["chief justice roberts", "john roberts"],
   108: ["ussr", "soviet union"],
   119: ["washington dc", "dc"],
 });
@@ -39,13 +37,17 @@ export const civicsQuestionBank = Object.freeze(civicsQuestions.map((item, index
     questionId: item.id,
     question: item.english,
     questionSpanish: item.spanish,
-    acceptedAnswers: Object.freeze(staticAnswers),
+    acceptedAnswers: Object.freeze(dynamicAnswerKey ? [] : staticAnswers),
     aliases: Object.freeze(ALIASES[item.id] || []),
     minimumAnswersRequired: MULTI_ANSWER_COUNTS[item.id] || 1,
     answerType: answerType(item.id, item.english),
     isDynamic: Boolean(dynamicAnswerKey),
     dynamicAnswerKey,
+    testVersion: DEFAULT_TEST_VERSION,
+    category: getCivicsCategory(item.id),
+    officialSource: TEST_VERSIONS[DEFAULT_TEST_VERSION].officialSource,
+    lastVerified: null,
   });
 }));
 
-export const getCivicsQuestion = (questionId) => civicsQuestionBank.find((item) => item.questionId === Number(questionId)) || null;
+export const getCivicsQuestion = (questionId, testVersion = DEFAULT_TEST_VERSION) => civicsQuestionBank.find((item) => item.questionId === Number(questionId) && item.testVersion === testVersion) || null;
