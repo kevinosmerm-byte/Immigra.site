@@ -1,8 +1,10 @@
+param([string]$FileName)
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 $entries = Get-Content (Join-Path $PSScriptRoot '../src/data/additionalCivicsImages.json') -Raw | ConvertFrom-Json
 $encoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object MimeType -eq 'image/jpeg'
 foreach ($entry in $entries) {
+  if ($FileName -and $entry.file -ne $FileName) { continue }
   $source = Join-Path 'C:/Users/Administrator/Downloads' $entry.original
   $destination = Join-Path $PSScriptRoot ('../src/assets/civics-photos/' + $entry.file)
   if ($entry.file.EndsWith('.webp')) { Copy-Item -LiteralPath $source -Destination $destination; continue }
