@@ -477,5 +477,16 @@
     "category": "person",
     "imagePosition": "50% 50%",
     "imageFit": "contain"
+  },
+  {
+    "file": "user-louisiana-purchase.jpg",
+    "original": "GettyImages-566421833-5a5392f1845b3400378d597a.jpg",
+    "questionIds": [
+      90
+    ],
+    "imageAlt": "Historical map highlighting the Louisiana Purchase territory acquired from France in 1803",
+    "category": "map",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
   }
 ]
