@@ -466,5 +466,16 @@
     "category": "person",
     "imagePosition": "50% 25%",
     "imageFit": "contain"
+  },
+  {
+    "file": "user-emancipation-proclamation.jpg",
+    "original": "sub-saharan-slaves-4-720x464.jpg",
+    "questionIds": [
+      95
+    ],
+    "imageAlt": "Historical illustration of enslaved people carrying baskets while chained together",
+    "category": "person",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
   }
 ]
