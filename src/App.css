@@ -29313,16 +29313,3 @@ html[data-theme="light"] .home-hero-interview-button:hover {
 .global-bottom-navigation button { transition: color .18s ease, background .18s ease; }
 .global-bottom-navigation button[aria-current="page"] svg { filter: drop-shadow(0 0 6px #60caff55); }
 @media (max-width: 620px) { .civics-card-controls { padding: 12px 12px 14px; } }
-
-/* A quiet shared backdrop, beneath content rather than over text or images. */
-html :is(.app, .home-ai, .home-new, .practice-screen, .writing-ai-screen, .interview-screen, .settings-screen, .immigration-help-screen, .podcast-screen, .quiz-path-screen, .study-guide-screen, .account-page, .app-recovery-screen) {
-  background-image: linear-gradient(rgba(4, 24, 62, .88), rgba(3, 16, 46, .94)), url("./assets/citizenship-background.png") !important;
-  background-color: #04183e !important;
-  background-position: center top !important;
-  background-size: cover !important;
-  background-repeat: no-repeat !important;
-  background-attachment: fixed !important;
-}
-html[data-theme="light"] :is(.app, .home-ai, .home-new, .practice-screen, .writing-ai-screen, .interview-screen, .settings-screen, .immigration-help-screen, .podcast-screen, .quiz-path-screen, .study-guide-screen, .account-page, .app-recovery-screen) {
-  background-image: linear-gradient(rgba(215, 222, 230, .96), rgba(225, 231, 238, .98)), url("./assets/citizenship-background.png") !important;
-}
