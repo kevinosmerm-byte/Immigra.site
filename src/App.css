@@ -29316,8 +29316,8 @@ html[data-theme="light"] .home-hero-interview-button:hover {
 
 /* A quiet shared backdrop, beneath content rather than over text or images. */
 html :is(.app, .home-ai, .home-new, .practice-screen, .writing-ai-screen, .interview-screen, .settings-screen, .immigration-help-screen, .podcast-screen, .quiz-path-screen, .study-guide-screen, .account-page, .app-recovery-screen) {
-  background-image: linear-gradient(rgba(2, 7, 16, .84), rgba(2, 7, 16, .9)), url("./assets/citizenship-background.png") !important;
-  background-color: #030913 !important;
+  background-image: linear-gradient(rgba(4, 24, 62, .88), rgba(3, 16, 46, .94)), url("./assets/citizenship-background.png") !important;
+  background-color: #04183e !important;
   background-position: center top !important;
   background-size: cover !important;
   background-repeat: no-repeat !important;
