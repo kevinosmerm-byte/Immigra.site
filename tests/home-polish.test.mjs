@@ -31,10 +31,9 @@ test("Home uses the promotional video as the primary real-interview action with 
 });
 
 test("Home preparation card uses measured progress instead of hard-coded zeroes", () => {
-  assert.match(app, /const readiness = practiceSummary\?\.readiness \?\? 0/);
-  assert.match(app, /style=\{\{ width: `\$\{readiness\}%` \}\}/);
-  assert.match(app, /practiceSummary=\{practiceSummary\}/);
-  assert.doesNotMatch(app, /className="preparation-score">[\s\S]{0,120}<strong>0%<\/strong>/);
+  assert.match(app, /className="home-progress-link" onClick=\{onOpenProgress\}/);
+  assert.match(app, /practiceSummary\?\.civics\?\.viewed/);
+  assert.doesNotMatch(app, /className="preparation-score"/);
 });
 
 test("Home keeps unfinished case tracking visible but inaccessible", () => {
@@ -43,8 +42,8 @@ test("Home keeps unfinished case tracking visible but inaccessible", () => {
   assert.doesNotMatch(app, /onClick=\{\(\) => onOpenFeature\("uscisTracker"\)\}/);
 });
 
-test("Sarah coach is contextual to reading and writing instead of Home", () => {
-  assert.doesNotMatch(app, /className="coach-feature-card"/);
-  assert.match(app, /const openCoachFrom = \(\) =>/);
-  assert.ok((app.match(/className="english-coach-secondary" onClick=\{openCoachFrom\}/g) || []).length >= 2);
+test("Coach entry buttons are removed while reading and writing remain", () => {
+  assert.doesNotMatch(app, /onClick=\{openCoachFrom\}/);
+  assert.match(app, /onOpenFeature\("reading"\)/);
+  assert.match(app, /onOpenFeature\("writing"\)/);
 });

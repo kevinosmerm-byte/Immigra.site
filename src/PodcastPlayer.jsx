@@ -106,7 +106,7 @@ export function PodcastProvider({ children }) {
 function PodcastArtwork({ track, compact = false }) {
   return (
     <div className={`podcast-artwork podcast-artwork-${track.accent} ${compact ? "compact" : ""}`} aria-hidden="true">
-      <span className="podcast-artwork-live"><i></i> LIVE</span>
+      <span className="podcast-artwork-live">AUDIO</span>
       <span className="podcast-artwork-mic">🎙️</span>
       <strong>CITIZENSHIP <em>AI</em></strong>
       {!compact && <small>{track.flag} {track.language.toUpperCase()}</small>}
@@ -131,7 +131,8 @@ function PodcastMiniPlayer() {
   );
 }
 
-export function PodcastLibrary({ onBack }) {
+export function PodcastLibrary({ onBack, language = "en" }) {
+  const es = language === "es";
   const player = usePodcast();
   if (player.fullPlayerOpen && player.track) return <PodcastFullPlayer onBack={onBack} />;
   return (
@@ -139,13 +140,13 @@ export function PodcastLibrary({ onBack }) {
       <header className="podcast-header">
         <button onClick={onBack} aria-label="Back to Home">←</button>
         <strong>CITIZENSHIP <span>AI</span></strong>
-        <span className="podcast-header-live"><i></i> LIVE</span>
+        <span className="podcast-header-live">AUDIO</span>
       </header>
       <main className="podcast-library">
         <div className="podcast-library-intro">
-          <span>🎙️ PODCASTS EN VIVO</span>
-          <h1>Listen. Learn.<br />Become ready.</h1>
-          <p>Choose your language and study with Citizenship AI.</p>
+          <span>🎙️ PODCASTS</span>
+          <h1>{es ? "Escucha y aprende." : "Listen and learn."}</h1>
+          <p>{es ? "Audios educativos grabados, en inglés y español." : "Recorded educational audio, in English and Spanish."}</p>
         </div>
         <div className="podcast-card-grid">
           {PODCASTS.map((item) => (
@@ -154,7 +155,7 @@ export function PodcastLibrary({ onBack }) {
               <span className="podcast-card-copy">
                 <small>{item.flag} {item.language}</small>
                 <strong>{item.title}</strong>
-                <span>Open player <b>▶</b></span>
+                <span>{es ? "Abrir reproductor" : "Open player"} <b>▶</b></span>
               </span>
             </button>
           ))}

@@ -1,5 +1,6 @@
+import { useModalFocus } from "./useModalFocus.js";
 import { useEffect, useRef, useState } from "react";
-import { getAiFeatureConfig, PROMOTION_ACCESS_CONFIG, PRO_PLAN } from "../shared/featureAccessConfig.js";
+import { getAiFeatureConfig, PROMOTION_ACCESS_CONFIG } from "../shared/featureAccessConfig.js";
 import { getAiUsageSummary, recordAiSessionStart, shouldShowPromotionNotice } from "./access.js";
 import { useAccount } from "./accountContext.js";
 import { setAiRequestContext } from "./api.js";
@@ -22,7 +23,7 @@ const COPY = {
     unavailableTitle: "This AI practice is currently unavailable",
     unavailableBody: "New sessions are paused right now. Your free study tools remain available while access is restored.",
     quotaTitle: "You've completed your included AI practices",
-    quotaBody: "More AI practice will be available through Citizenship AI Pro or an eligible rewarded session.",
+    quotaBody: "Your included sessions have been used. You can continue with the free civics study tools.",
   },
   es: {
     eyebrow: "PROMOCIÓN DE LANZAMIENTO",
@@ -40,7 +41,7 @@ const COPY = {
     unavailableTitle: "Esta práctica con IA no está disponible ahora",
     unavailableBody: "Las sesiones nuevas están pausadas. Tus herramientas gratuitas de estudio siguen disponibles mientras restablecemos el acceso.",
     quotaTitle: "Completaste tus prácticas de IA incluidas",
-    quotaBody: "Habrá más práctica con IA mediante Citizenship AI Pro o una sesión con recompensa elegible.",
+    quotaBody: "Agotaste las sesiones incluidas. Puedes continuar con las herramientas gratuitas de estudio cívico.",
   },
 };
 
@@ -136,9 +137,7 @@ export function PromotionAccessProvider({ children }) {
       return;
     }
     if (PROMOTION_ACCESS_CONFIG.promotionActive && promotionAccess !== false && shouldShowPromotionNotice(feature)) {
-      continuationRef.current = () => beginSession(feature, continuation, language);
-      setPending({ feature, language: language === "es" ? "es" : "en" });
-      return;
+      window.dispatchEvent(new CustomEvent("citizenshipai:pro-benefits", { detail: { feature, language } }));
     }
     beginSession(feature, continuation, language);
   };
@@ -155,6 +154,7 @@ export function PromotionAccessProvider({ children }) {
     continuation?.();
   };
 
+  const modalRef = useModalFocus(Boolean(pending), close);
   const copy = pending ? COPY[pending.language] : COPY.en;
   const blockedTitle = pending?.reason === "quota_exhausted" ? copy.quotaTitle : copy.unavailableTitle;
   const blockedBody = pending?.reason === "quota_exhausted" ? copy.quotaBody : copy.unavailableBody;
@@ -172,25 +172,13 @@ export function PromotionAccessProvider({ children }) {
       {children}
       {pending && feature && (
         <div className="promotion-access-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
-          <section className="promotion-access-sheet" role="dialog" aria-modal="true" aria-labelledby="promotion-access-title">
+          <section ref={modalRef} className="promotion-access-sheet" role="dialog" aria-modal="true" aria-labelledby="promotion-access-title">
             <button className="promotion-access-close" onClick={close} type="button" aria-label={copy.close}>×</button>
             <div className="promotion-access-orb" aria-hidden="true">✦</div>
             <p className="promotion-access-eyebrow">{copy.eyebrow}</p>
             <h2 id="promotion-access-title">{pending.blocked ? blockedTitle : copy.title}</h2>
             <div className="promotion-access-feature"><span>{feature.label}</span><strong>{usage?.limit || 2} / {usage?.limit || 2}</strong></div>
             <p className="promotion-access-body">{pending.blocked ? blockedBody : copy.body}</p>
-            <div className="promotion-access-pro" aria-label={copy.pro}>
-              <span>PRO</span>
-              <div className="promotion-access-pro-copy">
-                <strong>{copy.pro}</strong>
-                <small>{copy.proDetail}</small>
-                <div className="promotion-access-price">
-                  <b>{copy.launchPrice} ${(PRO_PLAN.introductoryMonthlyPriceCents / 100).toFixed(2)}/mo</b>
-                  <span>{copy.regularPrice} · {copy.annualPrice}</span>
-                </div>
-                <em>{copy.billingSoon}</em>
-              </div>
-            </div>
             {!pending.blocked && <div className="promotion-access-divider"><span></span><small>LAUNCH ACCESS</small><span></span></div>}
             {!pending.blocked && <button className="promotion-access-continue" onClick={continuePromotion} type="button"><span>{copy.continue}</span><b>→</b></button>}
             <p className="promotion-access-note">{copy.note}</p>

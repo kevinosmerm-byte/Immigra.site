@@ -22,7 +22,7 @@ import ImmigrationHelp from "./ImmigrationHelp";
 import { speakAppText, stopAppSpeech } from "./speech";
 import { AccountButton, AccountSheet } from "./Account.jsx";
 import { useAccount } from "./accountContext.js";
-import { CategoryMastery, RetrievalPracticeCard } from "./EducationalActivities.jsx";
+import { ProgressDashboard } from "./ProgressDashboard.jsx";
 import { writingSentences } from "./writingSentences.js";
 import { evaluateWritingSentence } from "./writingEvaluator.js";
 import { CivicsStudyCard } from "./CivicsStudyCard.jsx";
@@ -56,12 +56,6 @@ function rememberHomeVideoPlayback() {
     // The in-memory flag still prevents repeats when storage is unavailable.
   }
 }
-const PRACTICE_MODULE_NAMES = {
-  reading: "Reading practice",
-  writing: "Writing practice",
-  interview: "Sarah interview",
-  coach: "Sarah coaching",
-};
 const CASE_TRACKER_COPY = {
   en: {
     uscIs: "USCIS", title: "Case Tracker", sandbox: "Sandbox",
@@ -371,14 +365,7 @@ function Home({
     settingsLabel: "Abrir ajustes legales y de privacidad",
     civicsLabel: "Educación cívica — 128 preguntas. Domina las preguntas para tu entrevista.",
   };
-  const readiness = practiceSummary?.readiness ?? 0;
-  const civicsProgress = Math.round(Math.min(100, ((practiceSummary?.civics?.attempts || 0) / 128) * 100));
-  const englishScores = [practiceSummary?.reading?.score, practiceSummary?.writing?.score, practiceSummary?.coach?.score]
-    .filter(Number.isFinite);
-  const englishProgress = englishScores.length
-    ? Math.round(englishScores.reduce((total, score) => total + score, 0) / englishScores.length)
-    : 0;
-  const interviewProgress = practiceSummary?.interview?.score ?? 0;
+  const civicsProgress = Math.min(100, Math.round((practiceSummary?.civics?.viewed || 0) / 128 * 100));
   return (
     <div className="app home-ai">
 
@@ -549,8 +536,8 @@ function Home({
                 <svg viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg>
               </span>
               <div>
-                <small><i className="home-podcast-live-dot"></i>{language === "en" ? "LIVE AUDIO · ENGLISH + ESPAÑOL" : "AUDIO EN VIVO · ENGLISH + ESPAÑOL"}</small>
-                <strong>{language === "en" ? "LIVE PODCASTS" : "PODCASTS EN VIVO"}</strong>
+                <small><i className="home-podcast-live-dot"></i>{language === "en" ? "STUDY AUDIO · ENGLISH + ESPAÑOL" : "AUDIO DE ESTUDIO · ENGLISH + ESPAÑOL"}</small>
+                <strong>{language === "en" ? "PODCASTS" : "PODCASTS"}</strong>
               </div>
               <span className="primary-arrow">→</span>
             </button>
@@ -622,63 +609,11 @@ function Home({
 
         {/* ================= PREPARATION ================= */}
 
-        <section className="preparation-card">
-
-          <div className="preparation-header">
-
-            <div>
-              <small>{copy.preparation}</small>
-              <h2>{copy.preparationTitle}</h2>
-            </div>
-
-            <div className="preparation-score">
-              <strong>{readiness}%</strong>
-              <span>{copy.ready}</span>
-            </div>
-
-          </div>
-
-
-          <div className="preparation-progress">
-
-            <div
-              className="preparation-progress-fill"
-              style={{ width: `${readiness}%` }}
-            ></div>
-
-          </div>
-
-
-          <p className="readiness-note">{language === "es" ? "Progreso dentro de Citizenship AI. No predice la aprobación del examen oficial." : "Progress within Citizenship AI. This does not predict passing the official test."}</p>
-          <div className="preparation-items">
-
-            <div>
-              <span>{copy.civics}</span>
-              <strong>{civicsProgress}%</strong>
-            </div>
-
-            <div>
-              <span>{copy.english}</span>
-              <strong>{englishProgress}%</strong>
-            </div>
-
-            <div>
-              <span>{copy.interview}</span>
-              <strong>{interviewProgress}%</strong>
-            </div>
-
-          </div>
-
-          <button
-            className="preparation-button"
-            onClick={onOpenProgress}
-          >
-            {copy.viewProgress}
-            <span>→</span>
-          </button>
-
-        </section>
-
+        <button className="home-progress-link" onClick={onOpenProgress}>
+          <span className="home-progress-symbol" aria-hidden="true">↗</span>
+          <span><strong>{language === "es" ? "Mi progreso" : "My progress"}</strong><small>{language === "es" ? "Ver mi actividad y resultados" : "View my activity and results"}</small></span>
+          <span className="home-progress-count">{civicsProgress}% <span aria-hidden="true">→</span></span>
+        </button>
 
         {/* ================= USCIS ================= */}
 
@@ -1424,9 +1359,6 @@ function AppContent({ userKey }) {
     requestAiSession(feature, continuation, language);
   };
 
-  const openCoachFrom = () => {
-    startAiFeature("coach", () => navigateTo("coach"));
-  };
 
   const startInterview = (mode = "full") => {
     const feature = mode === "full" ? "realInterview" : "classicInterview";
@@ -1438,6 +1370,7 @@ function AppContent({ userKey }) {
   };
 
   const openPracticeModule = (key) => {
+    if (key === "quiz") { navigateTo("quiz"); return; }
     if (key === "interview") {
       startInterview();
       return;
@@ -1450,7 +1383,7 @@ function AppContent({ userKey }) {
     startAiFeature(feature, () => navigateTo(key === "writing" ? "writing" : key === "coach" ? "coach" : "reading"));
   };
 
-  const recentPractice = [...practiceEvents].slice(-5).reverse();
+
 
   // 2. TODOS LOS EFECTOS (USEEFFECT) VAN AQUÍ
   const markCivicsViewed = (index) => {
@@ -1764,7 +1697,7 @@ function AppContent({ userKey }) {
   if (screen === "civicProfile") return <MyCivicsProfile key={`${userKey}:${profileRevision}`} profile={civicProfile} onSave={profile => { saveCivicProfile(profile, userKey); setProfileRevision(value => value + 1); }} onBack={() => goBack("home")} />;
   if (screen === "pro") return <AccountSheet embedded language={language} onClose={() => goBack("home")} />;
   if (screen === "podcasts") {
-    return <PodcastLibrary onBack={() => goBack("home")} />;
+    return <PodcastLibrary language={language} onBack={() => goBack("home")} />;
   }
 
   if (screen === "civicsGuide") {
@@ -1870,7 +1803,7 @@ function AppContent({ userKey }) {
       question: "PREGUNTA", answer: "RESPUESTA", need: "Necesito practicar", know: "Ya la sé",
       studied: "estudiadas", mastered: "dominadas", review: "repasar", empty: "Aún no tienes preguntas favoritas.",
       backToQuestion: "Toca para volver a la pregunta", playAudio: "Escuchar pregunta y respuesta",
-      source: "Fuente oficial", addFavorite: "Agregar a favoritas", removeFavorite: "Quitar de favoritas",
+      source: "Fuente de la imagen", addFavorite: "Agregar a favoritas", removeFavorite: "Quitar de favoritas",
       soundOn: "Lectura de tarjetas activada", soundOff: "Lectura de tarjetas desactivada",
     } : {
       subtitle: "Master the questions for your interview.", progress: "Study Progress", cards: "Study Cards",
@@ -1878,7 +1811,7 @@ function AppContent({ userKey }) {
       question: "QUESTION", answer: "ANSWER", need: "Need Practice", know: "I Know This",
       studied: "studied", mastered: "mastered", review: "review", empty: "You have not saved any favorite questions yet.",
       backToQuestion: "Tap to return to the question", playAudio: "Play question and answer audio",
-      source: "Official source", addFavorite: "Add to favorites", removeFavorite: "Remove from favorites",
+      source: "Image source", addFavorite: "Add to favorites", removeFavorite: "Remove from favorites",
       soundOn: "Card reading on", soundOff: "Card reading off",
     };
 
@@ -2108,16 +2041,6 @@ function AppContent({ userKey }) {
               </div>
               <span className="practice-arrow">→</span>
             </button>
-            <button className="practice-option" onClick={openCoachFrom}>
-              <div className="practice-option-left">
-                <div className="practice-option-icon">✦</div>
-                <div className="practice-option-content">
-                  <h2>AI English Coach</h2>
-                  <p>Practice real English conversations with AI</p>
-                </div>
-              </div>
-              <span className="practice-arrow">→</span>
-            </button>
           </div>
         </main>
       </div>
@@ -2178,14 +2101,6 @@ function AppContent({ userKey }) {
               <span className="reading-button-arrow" aria-hidden="true">{isReading ? "■" : "→"}</span>
             </button>
           </div>
-          <button className="english-coach-secondary" onClick={openCoachFrom} type="button">
-            <span className="english-coach-secondary-avatar"><img src={sarahImage} alt="" /></span>
-            <span className="english-coach-secondary-copy">
-              <small>OPTIONAL CONVERSATION PRACTICE</small>
-              <strong>Continue practicing with Sarah</strong>
-            </span>
-            <span className="english-coach-secondary-arrow" aria-hidden="true">→</span>
-          </button>
         </main>
       </div>
     );
@@ -2340,14 +2255,6 @@ function AppContent({ userKey }) {
               </div>
             </div>
           )}
-          <button className="english-coach-secondary" onClick={openCoachFrom} type="button">
-            <span className="english-coach-secondary-avatar"><img src={sarahImage} alt="" /></span>
-            <span className="english-coach-secondary-copy">
-              <small>OPTIONAL CONVERSATION PRACTICE</small>
-              <strong>Continue practicing with Sarah</strong>
-            </span>
-            <span className="english-coach-secondary-arrow" aria-hidden="true">→</span>
-          </button>
           </section>
         </main>
       </div>
@@ -2510,113 +2417,7 @@ function AppContent({ userKey }) {
   }
 
   if (screen === "progress") {
-    return (
-      <div className="app progress-ai-screen">
-        <main className="progress-ai-content">
-          <div className="progress-ai-header">
-            <span>YOUR PERFORMANCE</span>
-            <h1>My Progress</h1>
-            <p>Track your citizenship preparation with AI.</p>
-          </div>
-          <section className="progress-ai-overview">
-            <div className="progress-ai-score">
-              <span>PRACTICE READINESS</span>
-              <strong>{practiceSummary.readiness === null ? "—" : `${practiceSummary.readiness}%`}</strong>
-              <span className="readiness-level">{({ beginner: "Beginner", in_progress: "In progress", prepared: "Prepared", ready_for_interview: "Ready for interview" })[practiceSummary.level] || "Beginner"}</span>
-              <p>{practiceSummary.readiness === null ? "Complete a reading, writing, or interview practice to build your baseline." : "Based only on your measured Citizenship AI practice."}</p>
-            </div>
-            <div className="progress-ai-bar">
-              <div className="progress-ai-fill" style={{ width: `${practiceSummary.readiness || 0}%` }}></div>
-            </div>
-            <div className="progress-evidence" aria-label="Readiness evidence">
-              <div><span>Accuracy</span><strong>{practiceSummary.accuracy === null ? "—" : `${practiceSummary.accuracy}%`}</strong></div>
-              <div><span>Coverage</span><strong>{practiceSummary.coverage}%</strong></div>
-              <div><span>Confidence</span><strong>{practiceSummary.confidence}</strong></div>
-            </div>
-            <CategoryMastery metrics={practiceSummary.metrics} />
-            {practiceSummary.readinessReasons[0] && <p className="progress-readiness-reason">{practiceSummary.readinessReasons[0]}</p>}
-          </section>
-          <RetrievalPracticeCard title="Strengthen your weakest area" prompt={practiceSummary.recommended.detail} hint="Try to answer aloud before revealing choices or help." onStart={() => openPracticeModule(practiceSummary.recommended.key)} />
-          <section className="progress-recommendation" aria-label="Recommended next practice">
-            <span>RECOMMENDED NEXT</span>
-            <h2>{practiceSummary.recommended.label}</h2>
-            <p>{practiceSummary.recommended.detail}</p>
-            <button onClick={() => openPracticeModule(practiceSummary.recommended.key)}>Start practice <span>→</span></button>
-          </section>
-          <section className="progress-personal-plan" aria-label="Personal study plan">
-            <span>PERSONAL STUDY PLAN</span>
-            <h2>{practiceSummary.readiness === null ? "Build your first baseline" : "Your next three focus areas"}</h2>
-            <p>{practiceSummary.readiness === null ? "Complete these short activities so Citizenship AI can tailor your next recommendation." : "The plan prioritizes areas without a baseline first, then the areas that need the most practice."}</p>
-            <ol>
-              {practiceSummary.plan.map((item, index) => (
-                <li key={item.key}>
-                  <span>{index + 1}</span>
-                  <button onClick={() => openPracticeModule(item.key)}>
-                    <strong>{item.label}</strong>
-                    <small>{item.detail}</small>
-                  </button>
-                </li>
-              ))}
-            </ol>
-          </section>
-          <section className="progress-free-credits" aria-label="Unlimited launch access">
-            <div>
-              <span>LAUNCH ACCESS</span>
-              <h2>Unlimited AI practice</h2>
-              <p>All practice modes are currently available without limits while subscriptions are being prepared.</p>
-            </div>
-            <p className="progress-empty-history">No practice limits or payments are active.</p>
-          </section>
-          <section className="progress-ai-modules">
-            <div className="progress-ai-module">
-              <div className="progress-module-icon">◎</div>
-              <div>
-                <span>CIVICS</span>
-                <h2>128 Questions</h2>
-                <p>{civicsViewed.length} questions completed</p>
-              </div>
-              <strong>{Math.round((civicsViewed.length / 128) * 100)}%</strong>
-            </div>
-            {[{ label: "READING", data: practiceSummary.reading }, { label: "WRITING", data: practiceSummary.writing }, { label: "SARAH INTERVIEWS", data: practiceSummary.interview }].map(({ label, data }) => (
-              <div className="progress-ai-module progress-ai-module-measured" key={label}>
-                <div className="progress-module-icon">✦</div>
-                <div>
-                  <span>{label}</span>
-                  <h2>{data.attempts} practice {data.attempts === 1 ? "session" : "sessions"}</h2>
-                  <p>{data.score === null ? "No measured score yet" : `Average practice score: ${data.score}%`}</p>
-                </div>
-                <strong>{data.score === null ? "—" : `${data.score}%`}</strong>
-              </div>
-            ))}
-          </section>
-          <section className="progress-recent-practice" aria-label="Recent practice">
-            <div>
-              <span>YOUR HISTORY</span>
-              <h2>Recent practice</h2>
-            </div>
-            {recentPractice.length === 0 ? (
-              <p className="progress-empty-history">Your completed reading, writing, interview, and coaching sessions will appear here.</p>
-            ) : (
-              <ul>
-                {recentPractice.map((event) => (
-                  <li key={`${event.module}-${event.at}`}>
-                    <div className="progress-history-icon">{event.module === "interview" ? "✦" : event.module === "writing" ? "✎" : event.module === "reading" ? "A" : "◎"}</div>
-                    <div>
-                      <strong>{PRACTICE_MODULE_NAMES[event.module]}</strong>
-                      <small>{new Date(event.at).toLocaleDateString(undefined, { month: "short", day: "numeric" })} · {event.score === null ? "Completed" : `${event.score}%`}</small>
-                    </div>
-                    <span className={event.score !== null && event.score >= 70 ? "progress-history-good" : ""}>{event.outcome}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-          <button className="progress-ai-back" onClick={() => goBack("home")}>
-            ← Back
-          </button>
-        </main>
-      </div>
-    );
+    return <ProgressDashboard language={language} summary={practiceSummary} viewed={civicsViewed} events={practiceEvents} onBack={() => goBack("home")} onPractice={openPracticeModule} />;
   }
 
   if (screen === "interview") {

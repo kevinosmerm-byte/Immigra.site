@@ -81,7 +81,7 @@ test("writing practice uses one unified compact panel without changing its actio
   assert.match(app, /className="writing-progress-strip"/);
   assert.match(app, /onClick=\{checkWriting\}/);
   assert.match(app, /onClick=\{nextWritingSentence\}/);
-  assert.match(app, /onClick=\{openCoachFrom\}/);
+  assert.doesNotMatch(app, /onClick=\{openCoachFrom\}/);
   assert.match(css, /Writing Practice — unified, compact visual composition/);
   assert.match(css, /@media \(max-width: 700px\)/);
 });

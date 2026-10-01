@@ -1,7 +1,8 @@
+import { useModalFocus } from "./useModalFocus.js";
 import { createClient } from "@supabase/supabase-js";
 import { Capacitor } from "@capacitor/core";
 import { useEffect, useMemo, useState } from "react";
-import { PRO_PLAN } from "../shared/featureAccessConfig.js";
+import { AI_FEATURE_ACCESS, PRO_PLAN } from "../shared/featureAccessConfig.js";
 import { AccountContext, useAccount } from "./accountContext.js";
 
 const browserSupabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
@@ -216,6 +217,7 @@ export function AccountButton({ language = "en", onClick }) {
 }
 
 export function AccountSheet({ language = "en", onClose, embedded = false }) {
+  const modalRef = useModalFocus(!embedded, onClose);
   const { configured, session, loading, usage, billing, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, openBillingPortal } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
   const [email, setEmail] = useState("");
@@ -291,7 +293,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
 
   return (
     <div className={embedded ? "account-page" : "account-backdrop"} role="presentation" onMouseDown={(event) => { if (!embedded && event.target === event.currentTarget) onClose(); }}>
-      <section className="account-sheet" role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : "true"} aria-labelledby="account-title">
+      <section ref={modalRef} className="account-sheet" role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : "true"} aria-labelledby="account-title">
         <button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>
         <div className="account-mark" aria-hidden="true">◎</div>
         <p className="account-eyebrow">CITIZENSHIP AI · {copy.account.toUpperCase()}</p>
@@ -352,7 +354,14 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
           </form>
         )}
         <div className="account-pricing" aria-label={copy.pricing}>
-          <p>{language === "es" ? "PRO · Más práctica con IA, entrevistas avanzadas y experiencia sin anuncios." : "PRO · Expanded AI practice, advanced interviews and an ad-free experience."}</p>
+          <h2>{language === "es" ? "Qué incluye PRO" : "What PRO includes"}</h2>
+          <ul className="pro-plan-benefits">
+            <li>{AI_FEATURE_ACCESS.speaking.proMonthlyLimit} {language === "es" ? "sesiones de lectura al mes" : "reading sessions per month"}</li>
+            <li>{AI_FEATURE_ACCESS.writing.proMonthlyLimit} {language === "es" ? "sesiones de escritura al mes" : "writing sessions per month"}</li>
+            <li>{AI_FEATURE_ACCESS.classicInterview.proMonthlyLimit} {language === "es" ? "sesiones de entrevista clásica al mes" : "classic interview sessions per month"}</li>
+            <li>{PRO_PLAN.liveAvatarMonthlySessions} {language === "es" ? "sesión de Real Interview al mes" : "Real Interview session per month"}</li>
+          </ul>
+          <p>{language === "es" ? "Consulta tus límites disponibles en esta cuenta. Se aplican límites diarios de uso." : "Check your available allowances in this account. Daily usage limits apply."}</p>
           <span>{copy.pricing}</span>
           <div>
             <strong>{billing?.enabled && !billing.introductoryOfferEnabled ? copy.regularPrice : `${copy.launchPrice} $${(PRO_PLAN.introductoryMonthlyPriceCents / 100).toFixed(2)}/mo`}</strong>

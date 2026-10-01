@@ -131,6 +131,7 @@ export function getPracticeSummary(events = getPracticeEvents(), civicsViewed = 
   const coach = moduleSummary(events, "coach");
   const quiz = moduleSummary(events, "quiz");
   const civics = {
+    viewed: new Set(Array.isArray(civicsViewed) ? civicsViewed : []).size,
     attempts: (Array.isArray(civicsViewed) ? civicsViewed.length : 0) + quiz.attempts,
     score: quiz.score,
   };
