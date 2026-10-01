@@ -29326,24 +29326,3 @@ html :is(.app, .home-ai, .home-new, .practice-screen, .writing-ai-screen, .inter
 html[data-theme="light"] :is(.app, .home-ai, .home-new, .practice-screen, .writing-ai-screen, .interview-screen, .settings-screen, .immigration-help-screen, .podcast-screen, .quiz-path-screen, .study-guide-screen, .account-page, .app-recovery-screen) {
   background-image: linear-gradient(rgba(215, 222, 230, .96), rgba(225, 231, 238, .98)), url("./assets/citizenship-background.png") !important;
 }
-
-.official-avatar { width: min(100% - 32px, 920px); margin: 0 auto; padding: 24px 0 40px; color: #ecf3ff; }
-.official-avatar-heading { margin-bottom: 18px; }
-.official-avatar-heading h1 { margin: 8px 0; font-size: clamp(1.5rem, 4vw, 2.2rem); }
-.official-avatar-heading span, .official-avatar-question > span { color: #8ad9f8; font-size: .8rem; letter-spacing: .06em; }
-.official-avatar .did-live-stage { width: 100%; min-height: 0; height: clamp(220px, 36vh, 400px); margin-bottom: 18px; background: #071222; }
-.official-avatar .did-live-stage::after { display: none; }
-.official-avatar video { width: 100%; height: 100%; object-fit: contain; position: relative; z-index: 1; }
-.official-avatar-connecting { position: absolute; inset: auto 16px 50px; z-index: 2; padding: 12px; background: #071222e6; border-radius: 12px; }
-.official-avatar-question { padding: clamp(16px, 4vw, 28px); border: 1px solid #334761; border-radius: 22px; background: #101e32; }
-.official-avatar-question h2 { font-size: clamp(1.15rem, 3vw, 1.6rem); line-height: 1.45; margin: 14px 0; }
-.official-avatar-question label { display: block; margin: 16px 0 8px; }
-.official-avatar-question textarea { width: 100%; min-height: 90px; box-sizing: border-box; resize: vertical; border-radius: 12px; padding: 14px; border: 1px solid #57708d; background: #081323; color: #fff; font: inherit; }
-.official-avatar-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-.official-avatar button { min-height: 46px; border: 1px solid #547694; border-radius: 12px; padding: 10px 18px; background: #174267; color: #fff; font: inherit; cursor: pointer; }
-.official-avatar button:disabled { opacity: .5; cursor: default; }
-.official-avatar button:focus-visible, .official-avatar textarea:focus-visible { outline: 3px solid #7dd3fc; outline-offset: 3px; }
-.official-avatar-question ul { padding-left: 22px; line-height: 1.7; }
-.official-avatar .did-live-avatar-notice { margin: 16px 0; }
-.official-avatar .did-live-avatar-notice button { margin: 6px; }
-html[data-theme="light"] .official-avatar-heading { color: #172b45; }

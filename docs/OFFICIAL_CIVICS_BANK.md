@@ -6,8 +6,8 @@ Reviewed all 128 IDs and all 410 answer bullets or update instructions. Existing
 
 Examples corrected: question 8 now includes inherent rights and individual freedoms; question 48 contains the complete Cabinet-level list; question 81 requires five distinct states; question 109 includes nuclear war. The document contains seven multiple-answer questions: 10, 48, 65, 67, 69, 81, 126.
 
-Cards, quizzes, classic civics evaluation and the Sarah avatar interview consume the same source. The avatar uses D-ID DirectPlayback to read exact bank questions, with local deterministic grading; it never sends answers to D-ID chat. The /evaluate endpoint no longer invokes OpenAI or charges an AI quota. Uncertain phrasing is marked for review locally. Number and optional-word variants are derived deterministically. Multiple-choice recommendations include the requested number of answers.
+Cards, quizzes and classic civics evaluation consume the same source. The /evaluate endpoint no longer invokes OpenAI or charges an AI quota. Uncertain phrasing is marked for review locally. Number and optional-word variants are derived deterministically. Multiple-choice recommendations include the requested number of answers.
 
-Available officeholder records remain displayed and usable until explicitly updated, as requested. Missing user-specific location data is not guessed. Speech transcription and avatar video/voice remain external services. The remote agent knowledge configuration is not used by this interview.
+Available officeholder records remain displayed and usable until explicitly updated, as requested. Missing user-specific location data is not guessed. This does not remove speech transcription costs or alter the external D-ID agent's separate knowledge configuration.
 
 Validation: reproducible extraction compared with the bundled PDF; SHA-256 validation; all 151 tests, lint, production build and mobile/iOS/App Store static checks pass.

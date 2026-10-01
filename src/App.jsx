@@ -732,7 +732,7 @@ function Home({
 
 // Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
 
-function RealInterview({ onExit, onComplete, onReview, onQuestionResult, civicProfile, language = "en", userKey = "guest", mode = "full" }) {
+function RealInterview({ onExit, onComplete, onReview, onQuestionResult, civicProfile, userKey = "guest", mode = "full" }) {
   const { runTransition } = useProgressGate();
   const [checkpoint] = useState(() => {
     const saved = getModuleProgress(userKey).interview;
@@ -1029,11 +1029,11 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, civicPr
           </button>
           <div className="interview-brand">
             <strong>CITIZENSHIP <span>AI</span></strong>
-            <small>USCIS CIVICS · LIVE INTERVIEW</small>
+            <small>LIVE N-400 + CIVICS INTERVIEW</small>
           </div>
         </header>
         <main className="interview-content live-avatar-only-content">
-          <DidLiveAvatar autoStart civicProfile={civicProfile} language={language} onQuestionResult={onQuestionResult} onComplete={onComplete} onExit={onExit} />
+          <DidLiveAvatar autoStart />
         </main>
       </div>
     );
@@ -2636,7 +2636,6 @@ function AppContent({ userKey }) {
         userKey={userKey}
         onQuestionResult={handleQuestionResult}
         civicProfile={civicProfile}
-        language={language}
         mode={interviewMode}
         onExit={() => goBack("home")}
         onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
