@@ -9,3 +9,6 @@ The PDF explicitly delegates changing officeholders and location-specific answer
 Civics grading is deterministic and must not invoke a model or consume an AI evaluation quota. Speech transcription, voice synthesis, writing practice, and the external D-ID agent are separate integrations.
 
 Validate source extraction with Python plus pypdf: python scripts/extract-official-civics.py --check. Run npm run quality for code changes. The source PDF SHA-256 is checked in tests.
+
+# Visual design source of truth
+Use BRAND_PALETTE.md and src/BrandPalette.css as the official user-approved palette for every screen. Reuse its CSS variables for new or modified UI. Match the Home reference surfaces, buttons, typography and spacing; preserve readable contrast, semantic feedback states and user-supplied media.

@@ -9,6 +9,7 @@ import { BottomNavigation } from "./BottomNavigation.jsx";
 import { lazy, Suspense, useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
 import "./LegacyIntegrations.css";
+import "./BrandPalette.css";
 import "./HomeReference.css";
 import "./SharedReference.css";
 import { SectionNavigation } from "./SectionNavigation.jsx";

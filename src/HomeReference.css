@@ -49,3 +49,11 @@ html body { background:#e9f3fc url('./assets/citizenship-background.png') center
 html .home-reference .reference-hero-copy { display:none; }
 html .home-reference .home-visual-hero { display:block; min-height:0; }
 html .home-reference .home-hero-video { display:block; width:100%; height:auto; min-height:0; object-fit:contain; }
+/* Palette is shared with every internal screen. */
+html .home-reference :is(.home-primary-button,.practice-mini-card,.home-progress-link,.legacy-tools-links button,.legacy-daily-plan) { background:linear-gradient(135deg,var(--color-white),var(--color-background)) !important; color:var(--color-text); border-color:var(--color-border); border-top-color:var(--color-primary); }
+html .home-reference :is(.home-primary-button strong,.practice-mini-card h3,.home-progress-link strong,.preparation-copy strong) { color:var(--color-navy); }
+html .home-reference :is(.home-primary-button small,.practice-mini-card small,.home-progress-link small,.preparation-copy small) { color:var(--color-text); }
+html .home-reference .home-interview-actions .home-primary-button:nth-child(2),html .home-reference .legacy-daily-plan { border-top-color:var(--color-red); }
+html .home-reference :is(.home-action-icon,.mini-icon,.preparation-icon) { background:var(--color-background) !important; color:var(--color-navy) !important; }
+html .home-reference .reference-progress-track { background:var(--color-border); }
+html .home-reference .reference-progress-track i { background:linear-gradient(90deg,var(--color-primary),var(--color-ai)); }

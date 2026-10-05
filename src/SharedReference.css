@@ -1,14 +1,14 @@
 /* Shared visual language based on the approved Home reference.
    Video artwork and semantic feedback retain their own colors. */
 :root {
-  --brand-ink:#102e54; --brand-muted:#49617e; --brand-blue:#17558e;
-  --brand-border:#c5d5e6; --brand-surface:#f8fbff; --brand-gap:16px;
+  --brand-ink:var(--color-text); --brand-muted:var(--color-navy); --brand-blue:var(--color-primary);
+  --brand-border:var(--color-border); --brand-surface:var(--color-background); --brand-gap:16px;
 }
 html body { font-family:Arial,Helvetica,sans-serif; }
 html body :is(.practice-screen,.interview-screen,.writing-ai-screen,.immigration-help-screen,.profile-screen,.journey-screen,.progress-simple-screen,.settings-screen,.podcast-screen,.quiz-path-screen,.uscis-tracker-screen,.onboarding-screen) {
   --ui-text:var(--brand-ink); --ui-muted:var(--brand-muted); --ui-surface:#fff;
-  --ui-surface-soft:#edf3fa; --ui-border:var(--brand-border); --ui-accent:#17558e; --ui-accent-text:#fff;
-  --text-primary:var(--brand-ink); --text-secondary:var(--brand-muted); --surface-secondary:#edf3fa; --border-color:var(--brand-border);
+  --ui-surface-soft:var(--color-background); --ui-border:var(--brand-border); --ui-accent:var(--color-primary); --ui-accent-text:#fff;
+  --text-primary:var(--brand-ink); --text-secondary:var(--brand-muted); --surface-secondary:var(--color-background); --border-color:var(--brand-border);
   color:var(--brand-ink); background:#e9f3fc url('./assets/citizenship-background.png') center / cover no-repeat fixed !important;
   font-family:Arial,Helvetica,sans-serif; color-scheme:light;
 }
@@ -32,21 +32,21 @@ html body :is(.practice-eyebrow,.writing-eyebrow,.reading-label,.question,.quest
 html body :is(.practice-screen,.interview-screen,.writing-ai-screen,.immigration-help-screen,.profile-screen,.journey-screen,.progress-simple-screen,.settings-screen,.podcast-screen,.quiz-path-screen,.uscis-tracker-screen,.account-sheet,.promotion-access-sheet,.onboarding-screen) button:not(.home-primary-button) {
   font-family:Arial,Helvetica,sans-serif; font-size:14px; font-weight:600; line-height:1.3; min-height:44px; border-radius:12px; border-color:var(--brand-border); text-shadow:none;
 }
-html body :is(.back-button,.simple-back,.writing-back-button,.uscis-tracker-back,.button-secondary,.button-ghost,.secondary-button,.tertiary-button,.profile-secondary,.profile-tertiary,.journey-secondary,.live-skip-button,.results-secondary-button,.settings-secondary-button,.study-guide-toolbar button,.section-navigation button,.civics-modes button,.podcast-speed,.account-primary.secondary,.writing-review-retry,.live-interview-controls>button,.practice-option-links button) { background:#edf3fa; color:var(--brand-ink); border:1px solid var(--brand-border); }
-html body :is(.primary-button,.button-primary,.profile-primary,.journey-primary,.account-primary,.onboarding-primary,.promotion-access-continue,.pro-benefits-action,.quiz-primary-action,.quiz-quick-button,.results-focus-button,.writing-ai-button,.writing-review-continue,.uscis-check-button,.dictation-speak-btn,.progress-simple-hero>button,.n400-text-response>button,.live-interview-controls .n400-confirm-response) { background:linear-gradient(110deg,#104278,#29659e) !important; color:#fff !important; border:1px solid #306a9f; box-shadow:0 3px 8px #17477620; }
+html body :is(.back-button,.simple-back,.writing-back-button,.uscis-tracker-back,.button-secondary,.button-ghost,.secondary-button,.tertiary-button,.profile-secondary,.profile-tertiary,.journey-secondary,.live-skip-button,.results-secondary-button,.settings-secondary-button,.study-guide-toolbar button,.section-navigation button,.civics-modes button,.podcast-speed,.account-primary.secondary,.writing-review-retry,.live-interview-controls>button,.practice-option-links button) { background:var(--color-background); color:var(--brand-ink); border:1px solid var(--brand-border); }
+html body :is(.primary-button,.button-primary,.profile-primary,.journey-primary,.account-primary,.onboarding-primary,.promotion-access-continue,.pro-benefits-action,.quiz-primary-action,.quiz-quick-button,.results-focus-button,.writing-ai-button,.writing-review-continue,.uscis-check-button,.dictation-speak-btn,.progress-simple-hero>button,.n400-text-response>button,.live-interview-controls .n400-confirm-response) { background:linear-gradient(110deg,var(--color-navy),var(--color-primary)) !important; color:#fff !important; border:1px solid var(--color-primary); box-shadow:0 3px 8px #17477620; }
 html body :is(input:not([type=checkbox]):not([type=radio]):not([type=range]),textarea,select):not(.home-language) { background:#fff; color:var(--brand-ink); border:1px solid #9fb6cf; border-radius:10px; font-size:16px; color-scheme:light; }
 html body :is(input,textarea)::placeholder { color:#5b708a; opacity:1; }
-html body :is(button,a,input,textarea,select,summary):focus-visible { outline:3px solid #2871b9; outline-offset:3px; }
+html body :is(button,a,input,textarea,select,summary):focus-visible { outline:3px solid var(--color-ai); outline-offset:3px; }
 html body button:disabled { opacity:.55; cursor:not-allowed; }
-html body :is(.civics-modes,.section-navigation,.immigration-category-scroll) button:is(.active,[aria-selected=true],[aria-pressed=true]),html body .global-bottom-navigation button[aria-current=page] { background:#17558e; color:#fff; }
+html body :is(.civics-modes,.section-navigation,.immigration-category-scroll) button:is(.active,[aria-selected=true],[aria-pressed=true]),html body .global-bottom-navigation button[aria-current=page] { background:var(--color-primary); color:#fff; }
 html body :is(.global-bottom-navigation,.navigation-handle,.podcast-mini-player) { background:#f8fbfff0; border-color:var(--brand-border); color:var(--brand-ink); box-shadow:0 6px 24px #173b6124; }
 html body .global-bottom-navigation button { color:var(--brand-ink); }
-html body :is(.live-score-summary>*,.n400-known-answer,.quiz-preferred-answer,.writing-answer-comparison,.ai-reading-feedback) { background:#edf3fa; color:var(--brand-ink); border-color:var(--brand-border); }
+html body :is(.live-score-summary>*,.n400-known-answer,.quiz-preferred-answer,.writing-answer-comparison,.ai-reading-feedback) { background:var(--color-background); color:var(--brand-ink); border-color:var(--brand-border); }
 html body :is(.account-status.error,.journey-error,.uscis-form-error,.podcast-error,.study-guide-status.error) { color:#9c2435; background:#fff0f1; }
 html body :is(.official-government-badge,.legal-success) { color:#166343; }
-html body .progress-simple-hero progress { accent-color:#17558e; }
-html body .progress-simple-hero progress::-webkit-progress-value { background:linear-gradient(90deg,#104278,#3477b0); }
-html body .progress-simple-hero progress::-webkit-progress-bar { background:#d7e1ee; }
+html body .progress-simple-hero progress { accent-color:var(--color-primary); }
+html body .progress-simple-hero progress::-webkit-progress-value { background:linear-gradient(90deg,var(--color-navy),var(--color-ai)); }
+html body .progress-simple-hero progress::-webkit-progress-bar { background:var(--color-border); }
 html body .live-interview-controls .n400-privacy-note { font-size:12px; }
 @media(max-width:600px) {
   html body :is(.practice-content,.writing-ai-content,.immigration-help-content,.profile-content,.journey-main,.settings-content,.quiz-path-content,.quiz-session-content,.progress-simple-content,.podcast-library,.uscis-tracker-content,.study-guide-main) { padding-inline:16px; }
@@ -54,11 +54,11 @@ html body .live-interview-controls .n400-privacy-note { font-size:12px; }
   html body .live-interview-controls .n400-privacy-note { font-size:11px; }
 }
 @media(prefers-reduced-motion:reduce) { html body :is(button,a) { transition:none; } }
-html body :is(.quiz-level-card,.quiz-vocabulary-grid button,.quiz-choice-list button,.reading-card-count,.writing-progress-strip,.immigration-resource-icon,.study-guide-toolbar,.civics-deck-hero) { background:#f8fbff; color:var(--brand-ink); border-color:var(--brand-border); }
+html body :is(.quiz-level-card,.quiz-vocabulary-grid button,.quiz-choice-list button,.reading-card-count,.writing-progress-strip,.immigration-resource-icon,.study-guide-toolbar,.civics-deck-hero) { background:var(--color-background); color:var(--brand-ink); border-color:var(--brand-border); }
 html body :is(.quiz-level-copy,.quiz-level-state,.quiz-level-icon,.civics-deck-heading,.civics-deck-progress,.reading-card-icon,.writing-ai-intro,.writing-ai-title,.writing-evaluation-score,.writing-performance-title,.immigration-resource-copy strong,.immigration-resource-copy small,.immigration-resource-arrow,.podcast-card-copy strong,.podcast-card-copy small,.account-usage-row) { color:var(--brand-ink); }
-html body :is(.reading-button,.civics-deck-navigation .next,.civics-study-reveal,.podcast-main-play,.podcast-mini-toggle) { background:linear-gradient(110deg,#104278,#29659e); color:#fff; border-color:#306a9f; }
+html body :is(.reading-button,.civics-deck-navigation .next,.civics-study-reveal,.podcast-main-play,.podcast-mini-toggle) { background:linear-gradient(110deg,var(--color-navy),var(--color-primary)); color:#fff; border-color:var(--color-primary); }
 html body :is(.reading-button-copy,.reading-button-arrow,.reading-button-icon) { color:#fff; }
 html body :is(.quiz-choice-list .correct,.quiz-feedback.correct,.answer-preview.correct) { background:#e8f5ee; color:#165d3d; border-color:#78b89b; }
 html body :is(.quiz-choice-list .incorrect,.quiz-feedback.review,.answer-preview.incorrect) { background:#fff0f1; color:#8e2333; border-color:#d7959f; }
-html body :is(.live-mic-button.listening,.reading-button.recording) { background:#a52539 !important; color:#fff !important; }
+html body :is(.live-mic-button.listening,.reading-button.recording) { background:var(--color-red) !important; color:#fff !important; }
 html body .live-interviewer-selector button { min-height:32px; font-size:12px; }
