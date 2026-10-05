@@ -419,7 +419,6 @@ function Home({
           <div className="hero-glow"></div>
 
           <div className="home-visual-hero home-video-hero">
-            <div className="reference-hero-copy"><span>{language === "es" ? "PRACTICA CON SARAH" : "PRACTICE WITH SARAH"}</span><h2>Real<br />Interview</h2><p>{language === "es" ? "Prepárate para tu entrevista de ciudadanía." : "Prepare for your U.S. citizenship interview."}</p><button type="button" onClick={onStartInterview}><span aria-hidden="true">▷</span>{language === "es" ? "Comenzar entrevista" : "Start interview"}<span aria-hidden="true">→</span></button></div>
             <span className="home-pro-badge">PRO</span>
             <video
               ref={homeVideoRef}
