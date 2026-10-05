@@ -67,3 +67,15 @@ html[data-theme="light"] .home-ai .home-progress-link small { color:#3b6357; }
 html[data-theme="light"] .home-ai .legacy-tools-links button:first-child,html[data-theme="light"] .home-ai .practice-mini-card:first-child { background:#e8f7f7; }
 html[data-theme="light"] .home-ai .legacy-tools-links button:nth-child(2),html[data-theme="light"] .home-ai .practice-mini-card:nth-child(2) { background:#f0ebfb; }
 html[data-theme="light"] .home-ai .legacy-daily-plan { background:#fff5e4; }
+
+/* A single blue palette progresses gently from top to bottom. */
+.home-ai .home-interview-actions .home-primary-button { background:linear-gradient(110deg,#123d59,#102d49) !important; border-color:#3b739666; }
+.home-ai .home-interview-actions .home-primary-button:nth-child(n+3) { background:linear-gradient(110deg,#143951,#112b45) !important; }
+.home-ai .practice-mini-card:first-child,.home-ai .practice-mini-card:nth-child(2) { background:linear-gradient(110deg,#15354d,#132a42); border-color:#456e8a77; }
+.home-ai .home-progress-link { background:linear-gradient(110deg,#153249,#14283f); border-color:#456e8a77; }
+.home-ai .legacy-tools-links button:first-child,.home-ai .legacy-tools-links button:nth-child(2) { background:linear-gradient(110deg,#172f45,#15273d); border-color:#45678077; }
+.home-ai .legacy-daily-plan { background:linear-gradient(110deg,#192d42,#17263b); border-color:#45678077; }
+.home-ai .home-interview-actions .home-action-icon,.home-ai .practice-mini-card .mini-icon,.home-ai .home-progress-link .preparation-icon,.home-ai .legacy-tools-links button .preparation-icon,.home-ai .legacy-daily-plan .preparation-icon { color:#7bdaf5; border-color:#52b8df66; background:linear-gradient(145deg,#20527366,#11344e66); box-shadow:inset 0 1px 0 #a3eaff18; }
+html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button { background:linear-gradient(110deg,#e5f3fc,#eff6fc) !important; }
+html[data-theme="light"] .home-ai .practice-mini-card:first-child,html[data-theme="light"] .home-ai .practice-mini-card:nth-child(2),html[data-theme="light"] .home-ai .home-progress-link,html[data-theme="light"] .home-ai .legacy-tools-links button:first-child,html[data-theme="light"] .home-ai .legacy-tools-links button:nth-child(2),html[data-theme="light"] .home-ai .legacy-daily-plan { background:linear-gradient(110deg,#e6eff8,#f2f6fc); color:#17364d; }
+html[data-theme="light"] .home-ai .home-progress-link small { color:#47617d; }
