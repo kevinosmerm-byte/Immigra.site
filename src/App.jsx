@@ -10,6 +10,7 @@ import { lazy, Suspense, useState, useEffect, useRef, useCallback } from "react"
 import "./App.css";
 import "./LegacyIntegrations.css";
 import "./HomeReference.css";
+import "./SharedReference.css";
 import { SectionNavigation } from "./SectionNavigation.jsx";
 import { buildBrainContext, getDailyStudyPlan, getNextAction } from "./brain.js";
 import { useBrainProfile } from "./useBrainProfile.js";
