@@ -569,7 +569,7 @@ function Home({
               aria-label={copy.civicsLabel}
             >
               <img className="reference-civics-artwork" src="/civics-capitol-card.png" alt="" aria-hidden="true" />
-              <span className="sr-only">{copy.civicsLabel}</span>
+              
             </button>
 
 
