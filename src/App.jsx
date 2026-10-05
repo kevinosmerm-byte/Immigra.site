@@ -568,7 +568,7 @@ function Home({
               onClick={() => onOpenFeature("civics")}
               aria-label={copy.civicsLabel}
             >
-              <span className="reference-civics-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5C8 2 4 3 2 4v16c3-2 7-1 10 1 3-2 7-3 10-1V4c-3-1-6-2-10 1Zm0 0v16"/></svg></span><span className="reference-civics-copy"><small>CIVICS</small><strong>128 {language === "es" ? "Preguntas" : "Questions"}</strong><span>{language === "es" ? "Domina las preguntas para tu entrevista." : "Master the questions for your interview."}</span><em>{language === "es" ? "Aprende   ·   Practica   ·   Avanza" : "Learn   ·   Practice   ·   Succeed"}</em></span><span className="reference-civics-arrow" aria-hidden="true">→</span>
+              <img className="reference-civics-artwork" src="/civics-capitol-card.png" alt="" aria-hidden="true" />
               <span className="sr-only">{copy.civicsLabel}</span>
             </button>
 
