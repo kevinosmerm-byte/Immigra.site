@@ -424,8 +424,8 @@ function Home({
             <video
               ref={homeVideoRef}
               className="home-hero-video"
-              src="/citizenshipai-home-cta.mp4"
-              poster="/sarah-real-interview-hero.jpg"
+              src="/citizenshipai-home-cta.mp4?v=20261005"
+
               playsInline
               preload="metadata"
               onPlay={() => {
