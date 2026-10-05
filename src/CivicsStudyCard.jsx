@@ -1,12 +1,5 @@
 import { useEffect } from "react";
 
-const categoryIcon = {
-  document: "▤",
-  institution: "⌂",
-  person: "●",
-  map: "⌖",
-};
-
 export function CivicsStudyCard({
   question,
   questionSpanish,
@@ -15,10 +8,6 @@ export function CivicsStudyCard({
   imageAlt,
   imageFit = "cover",
   imagePosition = "50% 50%",
-  sourceName,
-  sourceLabel,
-  sourceUrl,
-  sourceCategory,
   questionNumber,
   totalQuestions,
   favorite,
@@ -152,19 +141,6 @@ export function CivicsStudyCard({
         </div>
       </div>
 
-      <a
-        className="civics-study-source"
-        href={sourceUrl}
-        target="_blank"
-        rel="noreferrer"
-        onClick={(event) => event.stopPropagation()}
-        aria-label={`${copy.source}: ${sourceName}`}
-      >
-        <span aria-hidden="true">{categoryIcon[sourceCategory] ?? "↗"}</span>
-        <span>{copy.source}: <strong>{sourceName}</strong></span>
-        <em>{sourceLabel}</em>
-        <b aria-hidden="true">↗</b>
-      </a>
       {footer && <div onClick={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onTouchEnd={event => event.stopPropagation()}>{footer}</div>}
     </article>
   );

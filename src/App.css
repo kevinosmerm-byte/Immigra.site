@@ -29370,3 +29370,17 @@ html[data-theme="light"] .progress-simple-content :is(p,small) { color:#455e78; 
 .pro-plan-benefits { margin:16px 0; padding-left:22px; line-height:1.8; color:inherit; }
 :is(.writing-ai-screen,.practice-screen,.settings-screen,.immigration-help-screen,.podcast-screen,.quiz-path-screen) h1 { font-family:var(--app-font)!important; font-size:clamp(28px,4vw,36px); line-height:1.2; letter-spacing:-.025em; }
 .progress-simple-hero > p { margin:12px 0 18px; }
+
+/* One continuous study card, including its controls. */
+.civics-study-card .civics-study-body,.civics-study-card .civics-card-controls { background:#fff; }
+.civics-study-card .civics-card-controls { border-top:0; padding:0 24px 22px; }
+.civics-study-card .civics-study-reveal { width:100%; max-width:none; border-radius:14px; background:#edf7fc; box-shadow:none; overflow:hidden; }
+.civics-study-card .civics-study-reveal button { min-height:48px; }
+.civics-study-card .civics-study-reveal .civics-study-flip { display:flex; align-items:center; justify-content:center; gap:10px; flex:1 1 auto; width:auto; height:auto; padding:12px 16px; border:0; border-radius:0; color:#123e60; font:inherit; line-height:1.4; }
+.civics-study-flip::before { content:'↻'; font-size:22px; color:#078bb7; }
+.civics-screen .civics-card-controls .civics-deck-navigation > button { min-height:48px; border:1px solid #bdd4e4; border-radius:14px; background:#edf4fa; color:#20455f; box-shadow:none; backdrop-filter:none; gap:8px; }
+.civics-screen .civics-card-controls .civics-deck-navigation > button.next { background:linear-gradient(120deg,#117cb2,#075c95); border-color:#0875ab; color:white; }
+.civics-screen .civics-card-controls .civics-deck-navigation > button span { color:inherit; background:transparent; border:0; }
+.civics-card-controls .feedback-sound-toggle { display:flex; align-items:center; justify-content:center; min-height:44px; margin-top:14px; border-radius:12px; background:#f1f6fa; color:#305873; }
+.civics-card-controls button:focus-visible,.civics-study-reveal button:focus-visible { outline:3px solid #008cbe; outline-offset:3px; }
+@media(max-width:620px) { .civics-study-card .civics-card-controls { padding:0 16px 18px; } .civics-card-controls .civics-deck-navigation { display:grid; grid-template-columns:1fr 1fr; gap:12px; } .civics-card-controls .civics-deck-navigation > div { grid-column:1 / -1; grid-row:2; justify-content:center; flex-wrap:wrap; } }
