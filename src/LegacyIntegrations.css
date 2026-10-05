@@ -39,3 +39,11 @@ html[data-theme="light"] .preparation-copy strong { color:#142e49; }
 html[data-theme="light"] .preparation-copy small { color:#47617d; }
 html[data-theme="light"] .home-progress-link { background:#edf7ff; }
 @media(max-width:600px) { .legacy-tools-links { grid-template-columns:1fr; } .legacy-tools-links button { min-height:82px; } }
+
+/* One spacing scale for every row and column on Home. */
+.home-ai .home-new-content { --home-card-gap:12px; gap:var(--home-card-gap) !important; }
+.home-ai .home-new-hero { gap:var(--home-card-gap) !important; padding-bottom:0 !important; margin:0; }
+.home-ai .home-interview-actions,.home-ai .home-practice-list,.home-ai .practice-mini-grid,.home-ai .legacy-tools-links { gap:var(--home-card-gap) !important; }
+.home-ai .home-interview-actions,.home-ai .home-practice-section,.home-ai .home-practice-list,.home-ai .practice-mini-grid,.home-ai .home-progress-link,.home-ai .legacy-new-tools { margin:0; }
+.home-ai .legacy-new-tools { display:grid; gap:var(--home-card-gap); }
+.home-ai .legacy-daily-plan { margin:0; }
