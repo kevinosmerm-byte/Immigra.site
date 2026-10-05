@@ -621,17 +621,17 @@ function Home({
         {/* ================= PREPARATION ================= */}
 
         <button className="home-progress-link" onClick={onOpenProgress}>
-          <span className="home-progress-symbol" aria-hidden="true">↗</span>
+          <span className="home-progress-symbol preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l4-5 4 2 4-7"/><path d="M16 5h4v4"/></svg></span>
           <span><strong>{language === "es" ? "Mi progreso" : "My progress"}</strong><small>{language === "es" ? "Ver mi actividad y resultados" : "View my activity and results"}</small></span>
           <span className="home-progress-count">{civicsProgress}% <span aria-hidden="true">→</span></span>
         </button>
 
         <section className="legacy-new-tools" aria-label={language === "es" ? "Mi preparación" : "My preparation"}>
           <div className="legacy-tools-links">
-            <button onClick={() => onNavigate("profile")}><strong>{language === "es" ? "Mi perfil" : "My profile"}</strong><span>{language === "es" ? "Datos y preferencias" : "Details and preferences"} →</span></button>
-            <button onClick={() => onNavigate("uscisTracker")}><strong>{language === "es" ? "Mi proceso" : "My journey"}</strong><span>{getCaseStageLabel(context.caseProfile.currentStage || "PREPARING_N400", language)} →</span></button>
+            <button onClick={() => onNavigate("profile")}><span className="preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg></span><span className="preparation-copy"><strong>{language === "es" ? "Mi perfil" : "My profile"}</strong><small>{language === "es" ? "Datos y preferencias" : "Details and preferences"}</small></span><span className="preparation-arrow" aria-hidden="true">→</span></button>
+            <button onClick={() => onNavigate("uscisTracker")}><span className="preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h6a4 4 0 0 1 0 8H9a3 3 0 0 0-3 3v4"/></svg></span><span className="preparation-copy"><strong>{language === "es" ? "Mi proceso" : "My journey"}</strong><small>{getCaseStageLabel(context.caseProfile.currentStage || "PREPARING_N400", language)}</small></span><span className="preparation-arrow" aria-hidden="true">→</span></button>
           </div>
-          <details className="legacy-daily-plan"><summary>{language === "es" ? "Mi plan de hoy" : "My daily plan"}</summary><h3>{nextAction.label}</h3><p>{nextAction.detail}</p><button onClick={onContinue}>{language === "es" ? "Continuar mi plan" : "Continue my plan"} →</button><ol>{plan.items.map(item => <li key={item.id}>{item.label} · {item.minutes} min</li>)}</ol></details>
+          <details className="legacy-daily-plan"><summary><span className="preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="3"/><path d="M8 3v4M16 3v4M4 11h16m-12 5 3 3 5-5"/></svg></span><span className="preparation-copy"><strong>{language === "es" ? "Mi plan de hoy" : "My daily plan"}</strong><small>{language === "es" ? "Tu próximo paso de estudio" : "Your next study step"}</small></span><span className="preparation-arrow" aria-hidden="true">⌄</span></summary><h3>{nextAction.label}</h3><p>{nextAction.detail}</p><button onClick={onContinue}>{language === "es" ? "Continuar mi plan" : "Continue my plan"} →</button><ol>{plan.items.map(item => <li key={item.id}>{item.label} · {item.minutes} min</li>)}</ol></details>
         </section>
 
       </main>

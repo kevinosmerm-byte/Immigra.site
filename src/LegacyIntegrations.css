@@ -17,3 +17,25 @@
 html[data-theme="light"] :is(.legacy-tools-links button,.legacy-daily-plan,.brain-today) { background:#fff; color:#162c49; border-color:#b8cce3; }
 html[data-theme="light"] .legacy-tools-links span { color:#47617d; }
 @media(max-width:480px) { .legacy-tools-links { grid-template-columns:1fr; } .legacy-tools-links button,.legacy-daily-plan { padding:16px; } }
+
+/* Shared icon cards echo the original interview shortcuts. */
+.legacy-tools-links button,.legacy-daily-plan,.home-progress-link { border:1px solid #315573; background:linear-gradient(120deg,#12364c 0%,#0d203c 65%,#102440 100%); box-shadow:inset 0 1px 0 #78dfff20,0 8px 24px #0002; }
+.legacy-tools-links button,.legacy-daily-plan summary { display:flex; align-items:center; gap:14px; }
+.legacy-tools-links button { min-height:94px; transition:border-color .2s,box-shadow .2s; }
+.legacy-tools-links .preparation-icon,.legacy-daily-plan .preparation-icon,.home-progress-link .preparation-icon { display:grid; place-items:center; width:44px; height:44px; flex:0 0 44px; margin:0; border:1px solid #3acbf580; border-radius:13px; color:#70e5ff; background:linear-gradient(145deg,#1b637277,#073046); box-shadow:inset 0 1px 0 #9befff33,0 0 16px #00c8ff15; }
+.preparation-icon svg { width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.legacy-tools-links .preparation-copy,.legacy-daily-plan .preparation-copy { display:block; min-width:0; flex:1; margin:0; }
+.preparation-copy strong { font-size:15px; color:#f2f8ff; line-height:1.3; }
+.preparation-copy small { display:block; margin-top:5px; color:#b9cee1; font-size:12px; line-height:1.45; font-weight:400; }
+.legacy-tools-links .preparation-arrow,.legacy-daily-plan .preparation-arrow { display:grid; place-items:center; flex:0 0 30px; width:30px; height:30px; margin:0; border:1px solid #92d3f133; border-radius:50%; color:#d9f6ff; background:#c0eaff09; font-size:18px; }
+.legacy-tools-links button:nth-child(2) .preparation-icon { color:#b5baff; border-color:#858cff80; background:linear-gradient(145deg,#42498277,#192b49); }
+.legacy-daily-plan summary { list-style:none; min-height:44px; }
+.legacy-daily-plan summary::-webkit-details-marker { display:none; }
+.legacy-daily-plan[open] summary { margin-bottom:20px; }
+.legacy-daily-plan[open] .preparation-arrow { transform:rotate(180deg); }
+.legacy-tools-links button:hover,.home-progress-link:hover { border-color:#5ad9fa; box-shadow:inset 0 1px 0 #78dfff30,0 0 20px #00baff18; }
+.legacy-tools-links button:focus-visible,.legacy-daily-plan summary:focus-visible,.home-progress-link:focus-visible { outline:2px solid #7deaff; outline-offset:4px; }
+html[data-theme="light"] .preparation-copy strong { color:#142e49; }
+html[data-theme="light"] .preparation-copy small { color:#47617d; }
+html[data-theme="light"] .home-progress-link { background:#edf7ff; }
+@media(max-width:600px) { .legacy-tools-links { grid-template-columns:1fr; } .legacy-tools-links button { min-height:82px; } }
