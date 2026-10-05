@@ -9,6 +9,7 @@ import { BottomNavigation } from "./BottomNavigation.jsx";
 import { lazy, Suspense, useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
 import "./LegacyIntegrations.css";
+import "./HomeReference.css";
 import { SectionNavigation } from "./SectionNavigation.jsx";
 import { buildBrainContext, getDailyStudyPlan, getNextAction } from "./brain.js";
 import { useBrainProfile } from "./useBrainProfile.js";
@@ -378,7 +379,7 @@ function Home({
   };
   const civicsProgress = Math.min(100, Math.round((practiceSummary?.civics?.viewed || 0) / 128 * 100));
   return (
-    <div className="app home-ai">
+    <div className="app home-ai home-reference">
 
       {/* ================= HEADER ================= */}
 
@@ -418,6 +419,7 @@ function Home({
           <div className="hero-glow"></div>
 
           <div className="home-visual-hero home-video-hero">
+            <div className="reference-hero-copy"><span>{language === "es" ? "PRACTICA CON SARAH" : "PRACTICE WITH SARAH"}</span><h2>Real<br />Interview</h2><p>{language === "es" ? "Prepárate para tu entrevista de ciudadanía." : "Prepare for your U.S. citizenship interview."}</p><button type="button" onClick={onStartInterview}><span aria-hidden="true">▷</span>{language === "es" ? "Comenzar entrevista" : "Start interview"}<span aria-hidden="true">→</span></button></div>
             <span className="home-pro-badge">PRO</span>
             <video
               ref={homeVideoRef}
@@ -566,7 +568,7 @@ function Home({
               onClick={() => onOpenFeature("civics")}
               aria-label={copy.civicsLabel}
             >
-              <img src="/civics-128-button.png" alt="" aria-hidden="true" />
+              <span className="reference-civics-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5C8 2 4 3 2 4v16c3-2 7-1 10 1 3-2 7-3 10-1V4c-3-1-6-2-10 1Zm0 0v16"/></svg></span><span className="reference-civics-copy"><small>CIVICS</small><strong>128 {language === "es" ? "Preguntas" : "Questions"}</strong><span>{language === "es" ? "Domina las preguntas para tu entrevista." : "Master the questions for your interview."}</span><em>{language === "es" ? "Aprende   ·   Practica   ·   Avanza" : "Learn   ·   Practice   ·   Succeed"}</em></span><span className="reference-civics-arrow" aria-hidden="true">→</span>
               <span className="sr-only">{copy.civicsLabel}</span>
             </button>
 
@@ -623,7 +625,7 @@ function Home({
         <button className="home-progress-link" onClick={onOpenProgress}>
           <span className="home-progress-symbol preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l4-5 4 2 4-7"/><path d="M16 5h4v4"/></svg></span>
           <span><strong>{language === "es" ? "Mi progreso" : "My progress"}</strong><small>{language === "es" ? "Ver mi actividad y resultados" : "View my activity and results"}</small></span>
-          <span className="home-progress-count">{civicsProgress}% <span aria-hidden="true">→</span></span>
+          <span className="home-progress-count">{civicsProgress}% <span aria-hidden="true">→</span><span className="reference-progress-track" aria-hidden="true"><i style={{width:`${civicsProgress}%`}} /></span></span>
         </button>
 
         <section className="legacy-new-tools" aria-label={language === "es" ? "Mi preparación" : "My preparation"}>
