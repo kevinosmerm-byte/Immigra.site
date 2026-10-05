@@ -41,3 +41,7 @@ html .home-reference .home-logo,html .home-reference .home-brand { color:#12375f
 /* User-provided civics artwork remains fully visible and clickable. */
 html .home-reference .practice-feature-card.civics-image-card { display:block; padding:0; min-height:0; height:auto; border:0; border-radius:16px; overflow:hidden; background:transparent !important; }
 html .home-reference .practice-feature-card.civics-image-card .reference-civics-artwork { display:block; position:static; width:100%; height:auto; max-height:none; object-fit:contain; transform:none; }
+
+/* Shared user-selected artwork; existing panels retain their readable surfaces. */
+html .home-ai.home-reference { background:#e9f3fc url('./assets/citizenship-background.png') center center / cover no-repeat fixed !important; }
+html body { background:#e9f3fc url('./assets/citizenship-background.png') center center / cover no-repeat fixed; }
