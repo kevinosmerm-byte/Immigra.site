@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { emitCompanionResult, emitCompanionState, getCompanionVisibility, setCompanionVisibility } from "../src/companionEvents.js";
+import { emitCompanionContext, emitCompanionResult, emitCompanionState, getCompanionVisibility, setCompanionVisibility } from "../src/companionEvents.js";
 
 const main = await readFile(new URL("../src/main.jsx", import.meta.url), "utf8");
 const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
@@ -106,6 +106,14 @@ test("the event bridge validates state, persists visibility, and tracks a local 
     assert.equal(emitCompanionResult(true), 1);
     assert.equal(events.at(-1).detail.state, "correct");
     assert.equal(values.get("citizenshipai-companion-streak-v1"), "1");
+    const context = { language: "es", userProfile: { streetAddress: "private address fixture" }, caseProfile: { currentStage: "INTERVIEW_SCHEDULED", interviewDate: "2026-12-15", receiptNumber: "private receipt fixture" } };
+    assert.equal(emitCompanionContext(context), true);
+    assert.equal(events.at(-1).detail.state, "coach");
+    assert.match(events.at(-1).detail.message, /Tu entrevista/);
+    assert.doesNotMatch(JSON.stringify(events.at(-1).detail), /private|2026-12-15/);
+    assert.equal(emitCompanionContext(context, context), false);
+    assert.equal(emitCompanionContext({ ...context, learningProfile: { practiceEvents: [{ outcome: "completed" }] } }, context), true);
+    assert.equal(events.at(-1).detail.state, "celebration");
   } finally {
     globalThis.window = previousWindow;
     globalThis.CustomEvent = previousCustomEvent;

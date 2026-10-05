@@ -4,17 +4,16 @@ import dotenv from "dotenv";
 import OpenAI from "openai";
 import multer from "multer";
 import { createHmac } from "node:crypto";
-import { fetchUscisCaseStatus, getUscisConfig, maskReceiptNumber } from "./uscisService.js";
+import { createCaseStatusProvider, getUscisConfig } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
 import billingRoutes from "./billingRoutes.js";
 import { handleStripeWebhook } from "./stripeBilling.js";
 import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, isPromotionalAiAccessAllowed, recordAiUsageEvent } from "./accountService.js";
 import { getCivicsQuestion } from "../src/civicsQuestionBank.js";
-import { stateCivicsTable, currentDynamicAnswers, resolveCivicsQuestion } from "../src/dynamicCivicsData.js";
-import { createCivicProfile, normalizeZipCode } from "../src/civicProfile.js";
-import { getCurrentMembers } from "./civicLocationService.js";
+import { resolveCivicsQuestion } from "../src/dynamicCivicsData.js";
+import { normalizeZipCode } from "../src/civicProfile.js";
 import { evaluateCivicsAnswer } from "../src/civicsAnswerEvaluator.js";
-import { geocodeCivicAddress } from "./civicLocationService.js";
+import { geocodeCivicAddress, resolveCivicProfile } from "./civicLocationService.js";
 import { findWritingSentence, getWritingSentence } from "../src/writingSentences.js";
 import { evaluateWritingSentence } from "../src/writingEvaluator.js";
 import { getDailyAiLimit } from "../shared/featureAccessConfig.js";
@@ -39,13 +38,13 @@ app.use(cors({
     return callback(new Error("Origin is not allowed by CORS."));
   }
 }));
-app.post("/api/billing/webhook", express.raw({ type: "application/json", limit: "256kb" }), async (req, res) => {
+app.post(["/billing/webhook", "/api/billing/webhook"], express.raw({ type: "application/json", limit: "256kb" }), async (req, res) => {
   try {
     const signature = req.get("stripe-signature");
     if (!signature) return res.status(400).json({ error: "Stripe signature is required." });
     return res.json(await handleStripeWebhook(req.body, signature));
-  } catch (error) {
-    console.error("Stripe webhook error", { message: error.message });
+  } catch {
+    console.error("Stripe webhook verification failed.");
     return res.status(400).json({ error: "Invalid Stripe webhook." });
   }
 });
@@ -337,9 +336,9 @@ ${answer}
 
     res.json(result);
 
-  } catch (error) {
+  } catch {
     if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
-    console.error("Writing evaluation error:", error);
+    console.error("Writing evaluation unavailable.");
 
     res.status(500).json({
       error: "Unable to evaluate writing."
@@ -383,9 +382,9 @@ app.post("/transcribe", requireAiFeature("speaking", ["speaking", "coach", "clas
       transcript: transcription.text
     });
 
-  } catch (error) {
+  } catch {
     if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: "gpt-4o-mini-transcribe" }).catch(() => {});
-    console.error("Reading transcription error:", error);
+    console.error("Speech transcription unavailable.");
 
     res.status(500).json({
       error: "Unable to transcribe audio."
@@ -409,8 +408,8 @@ app.post("/civic-location/geocode", uscisRateLimit, async (req, res) => {
     const result = await geocodeCivicAddress(address);
     if (!result) return res.status(404).json({ error: "The Census Geocoder could not match that address." });
     return res.json(result);
-  } catch (error) {
-    console.error("Civic address lookup error", { message: error.message });
+  } catch {
+    console.error("Civic address lookup unavailable", { code: "provider_unavailable" });
     return res.status(502).json({ error: "The official Census address service is temporarily unavailable." });
   }
 });
@@ -421,13 +420,12 @@ app.post("/civic-location/profile", uscisRateLimit, async (req, res) => {
   const address = readText(req.body?.address, 500);
   if (!zipCode || !address) return res.status(400).json({ error: "ZIP code and complete address are required to verify your district." });
   try {
-    const location = await geocodeCivicAddress(`${address} ${zipCode}`);
-    if (!location?.stateCode || !location?.congressionalDistrict) return res.status(404).json({ error: "The official service could not verify a unique district." });
-    const state = stateCivicsTable.find(item => item.stateCode === location.stateCode);
-    let members = {};
-    try { members = await getCurrentMembers(location.stateCode, location.congressionalDistrict); } catch { /* Return verified geography; officials remain unavailable. */ }
-    const governor = currentDynamicAnswers({ answers: [state?.governor], verifiedAt: state?.governorVerifiedAt })[0] || null;
-    return res.json(createCivicProfile({ zipCode, state: { code: location.stateCode, capital: state?.capital || null }, districts: [location.congressionalDistrict], officials: { ...members, governor, source: members.sourceUrl || location.sourceUrl, verifiedAt: location.verifiedAt } }));
+    const profile = await resolveCivicProfile({ zipCode, address,
+      previousProfile: req.body?.previousProfile || null,
+      addressUpdatedAt: readText(req.body?.addressUpdatedAt, 40) || null,
+    });
+    if (!profile) return res.status(404).json({ error: "The official service could not verify a unique district." });
+    return res.json(profile);
   } catch {
     return res.status(502).json({ error: "Official location services are temporarily unavailable. Please try again." });
   }
@@ -438,6 +436,7 @@ app.post("/civic-location/profile", uscisRateLimit, async (req, res) => {
 app.use("/account", accountRateLimit, accountRoutes);
 app.use("/api/account", accountRateLimit, accountRoutes);
 app.use("/api/billing", accountRateLimit, billingRoutes);
+app.use("/billing", accountRateLimit, billingRoutes);
 
 app.post("/evaluate-reading", requireAiFeature("speaking"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;
@@ -498,9 +497,9 @@ ${transcript}
 
     res.json(result);
 
-  } catch (error) {
+  } catch {
     if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
-    console.error("Reading evaluation error:", error);
+    console.error("Reading evaluation unavailable.");
 
     res.status(500).json({
       error: "Unable to evaluate reading."
@@ -561,9 +560,9 @@ ${message}
 
     res.json(result);
 
-  } catch (error) {
+  } catch {
     if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
-    console.error("Coach AI error:", error);
+    console.error("Conversation practice unavailable.");
 
     res.status(500).json({
       error: "Unable to connect to AI Coach."
@@ -670,7 +669,6 @@ app.post("/uscis-case-status", uscisRateLimit, async (req, res) => {
     const auditContext = {
       environment: config.mode,
       sandboxTestData: config.isSandbox,
-      receipt: maskReceiptNumber(receiptNumber),
     };
     logUscisAuditEvent("case_lookup_started", auditContext);
 
@@ -684,7 +682,8 @@ app.post("/uscis-case-status", uscisRateLimit, async (req, res) => {
       return;
     }
 
-    const result = await fetchUscisCaseStatus(receiptNumber);
+    const caseStatus = await createCaseStatusProvider({ mode: 'official-api' }).getStatus({ receiptNumber });
+    const result = caseStatus.raw;
     logUscisAuditEvent("case_lookup_success", {
       ...auditContext,
       httpStatus: 200,
@@ -698,7 +697,6 @@ app.post("/uscis-case-status", uscisRateLimit, async (req, res) => {
     logUscisAuditEvent("case_lookup_failed", {
       environment: config?.mode || "unconfigured",
       sandboxTestData: config?.isSandbox ?? null,
-      receipt: receiptNumber ? maskReceiptNumber(receiptNumber) : "not_provided",
       httpStatus: status,
       category: classifyUscisFailure(error),
       durationMs: Date.now() - startedAt,
@@ -722,11 +720,16 @@ app.use((error, req, res, _next) => {
   if (error.message === "Origin is not allowed by CORS.") {
     return res.status(403).json({ error: "Origin is not allowed." });
   }
-  console.error("Unhandled server error:", error);
+  console.error("Unhandled server request error.");
   return res.status(500).json({ error: "Unexpected server error." });
 });
 
 const PORT = Number(process.env.PORT) || 3001;
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, "0.0.0.0", error => {
+  if (error) {
+    console.error("Citizenship AI server could not start. Check the configured port.");
+    process.exitCode = 1;
+    return;
+  }
   console.log(`Citizenship AI server running on port ${PORT}`);
 });

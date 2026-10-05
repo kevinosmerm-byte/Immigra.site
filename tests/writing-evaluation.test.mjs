@@ -69,7 +69,7 @@ test("writing review stays visible until the learner chooses the next action", a
   assert.match(app, /REVIEW YOUR ANSWER · REVISA TU RESPUESTA/);
   assert.match(app, /YOUR ANSWER · TU RESPUESTA/);
   assert.match(app, /CORRECT SENTENCE · ORACIÓN CORRECTA/);
-  assert.match(app, /onClick=\{nextWritingSentence\}>Next sentence/);
+  assert.match(app, /onClick=\{nextWritingSentence\}>\{t\("Next sentence/);
   assert.match(app, /Semantic writing review unavailable; using deterministic review/);
   assert.doesNotMatch(app, /setTimeout\(\(\) => \{\s*nextWritingSentence\(\)/);
 });

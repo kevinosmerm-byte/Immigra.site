@@ -3,6 +3,7 @@ const SANDBOX_DEFAULTS = {
   apiUrl: "https://api-int.uscis.gov/case-status",
 };
 const USCIS_REQUEST_TIMEOUT_MS = 15_000;
+export const USCIS_PUBLIC_CASE_STATUS_URL = "https://egov.uscis.gov/";
 
 let cachedToken = null;
 
@@ -122,7 +123,9 @@ export async function fetchUscisCaseStatus(receiptNumber, { environment = proces
   const traceId = response.headers?.get?.("x-trace-id") || response.headers?.get?.("trace-id") || "";
 
   if (!response.ok) {
-    const error = new Error(response.status === 404 ? "We couldn't find information for this Sandbox receipt number." : "We couldn't check USCIS right now. Please try again later.");
+    const error = new Error(response.status === 404
+      ? (config.isSandbox ? "We couldn't find information for this Sandbox receipt number." : "We couldn't find information for this receipt number.")
+      : "We couldn't check USCIS right now. Please try again later.");
     error.status = response.status || 502;
     error.traceId = traceId;
     error.source = "uscis";
@@ -137,6 +140,54 @@ export async function fetchUscisCaseStatus(receiptNumber, { environment = proces
       checkedAt: new Date().toISOString(),
       maskedReceiptNumber: maskReceiptNumber(receiptNumber),
       traceId: traceId || undefined,
+    },
+  };
+}
+
+/**
+ * CaseStatusProvider contract: getStatus(input). Manual mode performs no lookup;
+ * official-api mode reuses the existing authorized OAuth implementation only.
+ */
+export function createCaseStatusProvider({ mode = "manual", fetchStatus = fetchUscisCaseStatus, environment = process.env, fetchImpl = fetch } = {}) {
+  if (!["manual", "official-api"].includes(mode)) throw new Error("Case status provider mode must be manual or official-api.");
+  return {
+    async getStatus(input = {}) {
+      if (mode === "manual") return {
+        provider: "USCIS_MANUAL", statusCode: null, title: null, description: null, statusDate: null,
+        source: "USCIS", sourceUrl: USCIS_PUBLIC_CASE_STATUS_URL,
+        retrievedAt: null, lastCheckedAt: null, official: false, isTestData: false,
+        confidence: "UNVERIFIED", requiresUserAction: true, canUpdateCaseProfile: false,
+      };
+      const receiptNumber = asText(typeof input === "string" ? input : input.receiptNumber).toUpperCase();
+      if (!/^[A-Z]{3}\d{10}$/.test(receiptNumber)) {
+        const error = new Error("Enter a valid 13-character USCIS receipt number.");
+        error.status = 400;
+        error.source = "request";
+        throw error;
+      }
+      const raw = await fetchStatus(receiptNumber, { environment, fetchImpl });
+      const tracker = raw?.tracker || {};
+      const status = raw?.case_status || {};
+      // Unknown environments cannot silently become real production case data.
+      const isTestData = tracker.environment !== "production" || tracker.isTestData !== false;
+      const title = asText(status.current_case_status_text_en) || null;
+      const checkedAt = asText(tracker.checkedAt);
+      const retrievedAt = checkedAt && Number.isFinite(Date.parse(checkedAt)) ? checkedAt : null;
+      const reportedDate = asText(status.modifiedDate);
+      const statusDate = reportedDate && Number.isFinite(Date.parse(reportedDate)) ? reportedDate : null;
+      const official = !isTestData && Boolean(title && retrievedAt);
+      const result = {
+        provider: "USCIS_OFFICIAL_API", statusCode: asText(status.statusCode) || null,
+        title, description: asText(status.current_case_status_desc_en) || null, statusDate,
+        source: "USCIS", sourceUrl: USCIS_PUBLIC_CASE_STATUS_URL,
+        retrievedAt, lastCheckedAt: retrievedAt, official, isTestData,
+        confidence: isTestData ? "SANDBOX_TEST_DATA" : official ? "OFFICIAL_USCIS" : "UNVERIFIED",
+        requiresUserAction: !title, canUpdateCaseProfile: official,
+      };
+      // Compatibility payload is server-only: JSON.stringify(result) cannot
+      // accidentally expose the raw receipt number or an upstream response.
+      Object.defineProperty(result, "raw", { value: raw, enumerable: false });
+      return result;
     },
   };
 }

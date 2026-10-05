@@ -4,7 +4,7 @@ A practice application for the U.S. naturalization process. It includes the 128 
 
 ## Requirements
 
-- Node.js 20 or later
+- Node.js 22.13 or later; Node 24 is pinned in `.node-version` and used for CI/deployment.
 - An OpenAI API key for AI evaluation, coaching, and transcription
 - USCIS API credentials only if case-status lookup is enabled
 

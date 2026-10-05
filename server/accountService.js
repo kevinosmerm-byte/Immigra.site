@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 import { AI_FEATURE_ACCESS, getAiFeatureConfig } from "../shared/featureAccessConfig.js";
+import { getBrainProfile, setBrainProfile, deleteBrainProfile, getBrainProfileConfiguration } from "./brainProfileService.js";
 
 const supabaseUrl = process.env.SUPABASE_URL?.trim();
 const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY?.trim();
@@ -22,6 +23,11 @@ export function getAccountConfiguration() {
     configured: Boolean(supabase),
   };
 }
+
+export function getPrivateProfileConfiguration() { return getBrainProfileConfiguration(); }
+export async function getAccountBrainProfile(userId) { return getBrainProfile(supabase, userId); }
+export async function setAccountBrainProfile(userId, profile) { return setBrainProfile(supabase, userId, profile); }
+export async function deleteAccountBrainProfile(userId) { return deleteBrainProfile(supabase, userId); }
 
 export function getPublicAccountConfiguration() {
   const publishableKey = process.env.SUPABASE_PUBLISHABLE_KEY?.trim()
@@ -193,6 +199,7 @@ export async function exportAccountData(userId) {
   throwDatabaseError(sessionsResult.error, "Unable to export AI sessions.");
   throwDatabaseError(rewardsResult.error, "Unable to export reward credits.");
   const savedQuestions = await getSavedQuestions(userId).catch(() => null);
+  const brainProfile = await getAccountBrainProfile(userId).catch(() => null);
 
   return {
     exportedAt: new Date().toISOString(),
@@ -203,7 +210,10 @@ export async function exportAccountData(userId) {
     rewardCredits: rewardsResult.data || [],
     savedQuestions,
     savedQuestionsExportAvailable: savedQuestions !== null,
-    privacyNote: "This export contains account and technical usage records only. Citizenship AI does not include conversation, recording, or transcript content in its usage ledger.",
+    brainProfile: brainProfile?.profile || null,
+    brainProfileUpdatedAt: brainProfile?.updatedAt || null,
+    brainProfileExportAvailable: brainProfile !== null,
+    privacyNote: "This export includes account and technical usage records plus your explicitly saved encrypted profile, when secure profile storage is available. The usage ledger contains no conversations, recordings, transcripts or personal practice answers. On-device profiles and learning progress remain on your device.",
   };
 }
 

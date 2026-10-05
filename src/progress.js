@@ -1,5 +1,6 @@
 import { calculateReadiness } from "./learning.js";
 import { DEFAULT_TEST_VERSION } from "./civicsVersions.js";
+import n400Bank from "./data/n400InterviewBank.json" with { type: "json" };
 
 export function progressMetrics(completed, total) {
   const count = Number.isFinite(total) ? Math.max(0, Math.floor(total)) : 0;
@@ -21,6 +22,7 @@ export function getModuleProgress(userKey = "guest", storage) {
 /** Store learning checkpoints, never voice transcripts or personal interview answers. */
 export function saveModuleProgress(module, value, userKey = "guest", storage) {
   if (!RESUME_MODULES.has(module)) return null;
+  const existing = getModuleProgress(userKey, storage);
   const record = {
     module, testVersion: DEFAULT_TEST_VERSION,
     ...progressMetrics(value.completed, value.total),
@@ -32,9 +34,47 @@ export function saveModuleProgress(module, value, userKey = "guest", storage) {
     incorrect: Number.isFinite(value.incorrect) ? Math.max(0, value.incorrect) : 0,
     missedIds: Array.isArray(value.missedIds) ? value.missedIds.filter(Number.isInteger).slice(0, 200) : [],
     lastAccess: Date.now(),
+    ...(module === "interview" && existing.interview?.n400Progress ? { n400Progress: existing.interview.n400Progress } : {}),
   };
-  try { resumeStorage(storage)?.setItem(resumeKey(userKey), JSON.stringify({ ...getModuleProgress(userKey, storage), [module]: record })); } catch { /* Practice works without storage. */ }
+  try { resumeStorage(storage)?.setItem(resumeKey(userKey), JSON.stringify({ ...existing, [module]: record })); } catch { /* Practice works without storage. */ }
   return record;
+}
+
+const N400_CONCEPT_IDS = new Set(n400Bank.questions.map(question => question.concept || question.id));
+function n400ConceptIds(values) {
+  return [...new Set(Array.isArray(values) ? values.filter(value => typeof value === "string" && N400_CONCEPT_IDS.has(value)) : [])];
+}
+
+/** Learning observations contain only bank concept IDs, never personal answers or a truth score. */
+export function getN400LearningProgress(userKey = "guest", storage) {
+  const saved = getModuleProgress(userKey, storage).interview?.n400Progress || {};
+  const concepts = Object.fromEntries(Object.entries(saved.concepts || {}).filter(([id]) => N400_CONCEPT_IDS.has(id)).map(([id, state]) => [id, {
+    reviews: Math.max(0, Math.floor(Number(state?.reviews) || 0)),
+    skips: Math.max(0, Math.floor(Number(state?.skips) || 0)),
+    needsPractice: state?.needsPractice === true,
+    lastReviewedAt: typeof state?.lastReviewedAt === "string" && Number.isFinite(Date.parse(state.lastReviewedAt)) ? state.lastReviewedAt : null,
+  }]));
+  const reviewedConceptIds = Object.keys(concepts).filter(id => concepts[id].reviews > 0);
+  const skippedConceptIds = Object.keys(concepts).filter(id => concepts[id].needsPractice).sort((left, right) => Date.parse(concepts[right].lastReviewedAt || "") - Date.parse(concepts[left].lastReviewedAt || "") || left.localeCompare(right));
+  return { concepts, reviewedConceptIds, skippedConceptIds, weakN400ConceptIds: skippedConceptIds, recentN400Mistakes: skippedConceptIds, lastReviewAt: typeof saved.lastReviewAt === "string" ? saved.lastReviewAt : null };
+}
+
+export function recordN400Review({ reviewedConceptIds = [], skippedConceptIds = [] } = {}, userKey = "guest", storage) {
+  const reviewed = n400ConceptIds(reviewedConceptIds);
+  const skipped = n400ConceptIds(skippedConceptIds);
+  const current = getN400LearningProgress(userKey, storage);
+  if (!reviewed.length && !skipped.length) return current;
+  const lastReviewAt = new Date().toISOString();
+  const concepts = { ...current.concepts };
+  for (const id of [...new Set([...reviewed, ...skipped])]) {
+    const previous = concepts[id] || { reviews: 0, skips: 0 };
+    concepts[id] = { reviews: previous.reviews + Number(reviewed.includes(id)), skips: previous.skips + Number(skipped.includes(id)), needsPractice: skipped.includes(id), lastReviewedAt: lastReviewAt };
+  }
+  const records = getModuleProgress(userKey, storage);
+  const interview = records.interview || { module: "interview", testVersion: DEFAULT_TEST_VERSION, ...progressMetrics(0, 0), lastAccess: Date.now() };
+  const record = { ...interview, n400Progress: { concepts, lastReviewAt } };
+  try { resumeStorage(storage)?.setItem(resumeKey(userKey), JSON.stringify({ ...records, interview: record })); } catch { /* Review practice stays usable without storage. */ }
+  return { concepts, reviewedConceptIds: Object.keys(concepts).filter(id => concepts[id].reviews > 0), skippedConceptIds: Object.keys(concepts).filter(id => concepts[id].needsPractice), weakN400ConceptIds: Object.keys(concepts).filter(id => concepts[id].needsPractice), recentN400Mistakes: skipped, lastReviewAt };
 }
 
 export function getContinueStudying(userKey = "guest", storage) {

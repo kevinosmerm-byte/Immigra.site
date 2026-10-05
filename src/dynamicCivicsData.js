@@ -47,10 +47,21 @@ export function currentDynamicAnswers(record, now = Date.now(), maxAgeDays = Inf
 
 export const currentOfficials = nationalCivicsTable;
 
+function profileOfficialRecords(key, profile) {
+  const records = {
+    stateSenators: profile?.usSenators,
+    representative: profile?.districtStatus === "confirmed" ? [profile?.usRepresentative] : [],
+    stateGovernor: [profile?.governorOfficial],
+  };
+  return (records[key] || []).filter(record => record?.active !== false && record?.name && record?.verifiedAt && record?.sourceUrl);
+}
+
 /** Resolves only verified civic facts. Personal N-400 answers never enter this layer. */
 export function resolveDynamicAnswers(key, { officials = currentOfficials, profile = null, now = Date.now() } = {}) {
   if (Object.hasOwn(officials, key)) return currentDynamicAnswers(officials[key], now);
   if (!profile) return [];
+  const records = profileOfficialRecords(key, profile);
+  if (records.length) return [...new Set(records.flatMap(record => currentDynamicAnswers({ answers: [record.name], verifiedAt: record.verifiedAt }, now)))];
   const state = stateCivicsTable.find(item => item.stateCode === profile.state?.code);
   if (key === "stateGovernor" && state?.governor) return currentDynamicAnswers({ answers: [state.governor], verifiedAt: state.governorVerifiedAt }, now);
   const values = {
@@ -59,12 +70,14 @@ export function resolveDynamicAnswers(key, { officials = currentOfficials, profi
     stateGovernor: [profile.governor],
     stateCapital: [profile.state?.capital],
   };
-  return currentDynamicAnswers({ answers: values[key] || [], verifiedAt: profile.verifiedAt }, now);
+  return currentDynamicAnswers({ answers: values[key] || [], verifiedAt: profile.legacyVerification?.[key]?.verifiedAt || profile.verifiedAt }, now);
 }
 
 export function resolveCivicsQuestion(question, context) {
   if (!question?.isDynamic) return question;
   const record = (context?.officials || currentOfficials)[question.dynamicAnswerKey];
+  const profileRecord = profileOfficialRecords(question.dynamicAnswerKey, context?.profile)[0];
+  const legacyRecord = context?.profile?.legacyVerification?.[question.dynamicAnswerKey];
   const state = question.dynamicAnswerKey === "stateGovernor" ? stateCivicsTable.find(item => item.stateCode === context?.profile?.state?.code) : null;
-  return { ...question, acceptedAnswers: resolveDynamicAnswers(question.dynamicAnswerKey, context), aliases: [], lastVerified: record?.verifiedAt || state?.governorVerifiedAt || context?.profile?.verifiedAt || null, officialSource: record?.sourceUrl || state?.governorSource || context?.profile?.source || question.officialSource };
+  return { ...question, acceptedAnswers: resolveDynamicAnswers(question.dynamicAnswerKey, context), aliases: [], lastVerified: record?.verifiedAt || profileRecord?.verifiedAt || state?.governorVerifiedAt || legacyRecord?.verifiedAt || context?.profile?.verifiedAt || null, officialSource: record?.sourceUrl || profileRecord?.sourceUrl || state?.governorSource || legacyRecord?.sourceUrl || context?.profile?.source || question.officialSource };
 }

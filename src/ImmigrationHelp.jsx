@@ -1,5 +1,7 @@
-import { useMemo, useState } from "react";
-import { IMMIGRATION_CATEGORIES, IMMIGRATION_RESOURCES, localizedResource } from "./immigrationResources";
+import { useMemo, useRef, useState } from "react";
+import { useModalFocus } from "./useModalFocus.js";
+import { getJourneyStageLabel } from "./caseTracker.js";
+import { IMMIGRATION_CATEGORIES, IMMIGRATION_RESOURCES, JOURNEY_HELP_CATEGORIES, JOURNEY_HELP_RESOURCE_IDS, getJourneyHelpCategory, getContextualHelpResources, localizedResource } from "./immigrationResources";
 
 const COPY = {
   en: {
@@ -9,7 +11,7 @@ const COPY = {
     leaveText: "You're being redirected to an official U.S. government website.", independent: "Citizenship AI is independent and is not affiliated with or endorsed by any U.S. government agency.",
     continue: "Continue to Official Website", cancel: "Cancel", verified: "Last verified", urgent: "NEED URGENT IMMIGRATION HELP?",
     urgentText: "Use official tools to locate a detained person, court information or legal help. Citizenship AI does not promise legal representation.",
-    educational: "Educational information only — not legal advice.", unavailable: "This resource is currently under review.", home: "Home",
+    context: "Help for your journey", stage: "Your stage", directory: "Other resources", notChecked: "Current guidance has not been verified here. Check the official source and your notice.", educational: "Educational information only — not legal advice.", unavailable: "This resource is currently under review.", home: "Home",
   },
   es: {
     eyebrow: "RECURSOS OFICIALES DE EE. UU.", title: "Ayuda Migratoria", subtitle: "Herramientas y recursos oficiales de inmigración en un solo lugar.",
@@ -18,7 +20,7 @@ const COPY = {
     leaveText: "Serás redirigido a un sitio web oficial del gobierno de EE. UU.", independent: "Citizenship AI es independiente y no está afiliado ni respaldado por ninguna agencia del gobierno de EE. UU.",
     continue: "Continuar al Sitio Oficial", cancel: "Cancelar", verified: "Última verificación", urgent: "¿NECESITAS AYUDA MIGRATORIA URGENTE?",
     urgentText: "Usa herramientas oficiales para localizar a una persona detenida, información de corte o ayuda legal. Citizenship AI no promete representación legal.",
-    educational: "Información educativa únicamente — no es asesoría legal.", unavailable: "Este recurso está actualmente bajo revisión.", home: "Inicio",
+    context: "Ayuda para tu camino", stage: "Tu etapa", directory: "Otros recursos", notChecked: "Aquí no se ha verificado la orientación actual. Consulta la fuente oficial y tu aviso.", educational: "Información educativa únicamente — no es asesoría legal.", unavailable: "Este recurso está actualmente bajo revisión.", home: "Inicio",
   },
 };
 
@@ -28,13 +30,22 @@ function normalizeSearch(value) {
   return value.toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9-]+/g, " ").trim();
 }
 
-export default function ImmigrationHelp({ language = "en", onBack, onLanguageChange }) {
+export default function ImmigrationHelp({ language = "en", caseProfile = {}, onBack, onLanguageChange }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
-  const [selected, setSelected] = useState(null);
+  const [journeyCategory, setJourneyCategory] = useState(() => getJourneyHelpCategory(caseProfile.currentStage));
+  const [selectedId, setSelectedId] = useState(null);
+  const [directoryOpen, setDirectoryOpen] = useState(false);
   const [leaving, setLeaving] = useState(false);
-  const copy = COPY[language];
+  const leavingOpener = useRef(null);
+  const closeLeaving = () => {
+    setLeaving(false);
+    requestAnimationFrame(() => leavingOpener.current?.focus());
+  };
+  const leavingModal = useModalFocus(Boolean(leaving && selectedId), closeLeaving);
+  const copy = COPY[language === "es" ? "es" : "en"];
   const resources = useMemo(() => IMMIGRATION_RESOURCES.map((item) => localizedResource(item, language)), [language]);
+  const selected = resources.find(item => item.id === selectedId) || null;
   const normalized = normalizeSearch(query);
   const queryTerms = normalized.split(/\s+/).filter((term) => term.length > 1 && !SEARCH_STOP_WORDS.has(term));
   const filtered = resources.filter((item) => {
@@ -44,22 +55,23 @@ export default function ImmigrationHelp({ language = "en", onBack, onLanguageCha
     const haystack = normalizeSearch([item.title, item.description, item.agency, ...item.keywords].join(" "));
     return queryTerms.length ? queryTerms.some((term) => haystack.includes(term)) : haystack.includes(normalized);
   });
-  const featured = resources.filter((item) => item.featured);
+  const contextual = useMemo(() => getContextualHelpResources(caseProfile.currentStage, language), [caseProfile.currentStage, language]);
+  const journeyResources = (JOURNEY_HELP_RESOURCE_IDS[journeyCategory] || []).map(id => resources.find(item => item.id === id)).filter(Boolean);
 
-  const openDetail = (item) => { setSelected(item); setLeaving(false); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const openDetail = (item) => { setSelectedId(item.id); setLeaving(false); window.scrollTo({ top: 0, behavior: "smooth" }); };
   const destination = selected ? new URL(selected.official_url).hostname.replace(/^www\./, "") : "";
 
   if (selected) {
     return (
       <div className="immigration-help-screen">
-        <header className="immigration-help-header">
-          <button onClick={() => leaving ? setLeaving(false) : setSelected(null)}>← {copy.back}</button>
+        <header className="immigration-help-header" inert={leaving ? true : undefined}>
+          <button onClick={() => leaving ? closeLeaving() : setSelectedId(null)}>← {copy.back}</button>
           <strong>CITIZENSHIP <span>AI</span></strong>
-          <button className="immigration-help-language" onClick={() => onLanguageChange(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>
+          <button className="immigration-help-language" onClick={() => onLanguageChange?.(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>
         </header>
         <main className="immigration-detail-wrap">
-          {leaving ? (
-            <section className="immigration-leaving-card" role="dialog" aria-modal="true" aria-labelledby="leaving-title">
+          {leaving && (
+            <section ref={leavingModal} className="immigration-leaving-card" role="dialog" aria-modal="true" aria-labelledby="leaving-title">
               <div className="immigration-leaving-icon">↗</div>
               <span>{copy.eyebrow}</span>
               <h1 id="leaving-title">{copy.leave}</h1>
@@ -67,23 +79,22 @@ export default function ImmigrationHelp({ language = "en", onBack, onLanguageCha
               <div className="immigration-destination">{destination}</div>
               <p className="immigration-independent">{copy.independent}</p>
               <a href={selected.official_url} target="_blank" rel="noopener noreferrer">{copy.continue} <span>→</span></a>
-              <button onClick={() => setLeaving(false)}>{copy.cancel}</button>
+              <button onClick={closeLeaving}>{copy.cancel}</button>
             </section>
-          ) : (
-            <section className="immigration-detail-card">
+          )}
+            <section className="immigration-detail-card" hidden={leaving} inert={leaving ? true : undefined}>
               <div className="immigration-detail-icon">{selected.icon}</div>
               <span className="immigration-agency">{selected.agency}</span>
               <h1>{selected.title}</h1>
               <p>{selected.description}</p>
               {selected.warning && <aside><strong>IMPORTANT / IMPORTANTE</strong><p>{selected.warning}</p></aside>}
               <div className="official-government-badge">✓ {copy.official} · {selected.agency}</div>
-              <small>{copy.verified}: {selected.last_verified}</small>
-              <button className="immigration-continue" disabled={selected.status !== "active"} onClick={() => setLeaving(true)}>
+              {selected.last_verified ? <small>{copy.verified}: {selected.last_verified}</small> : <small>{copy.notChecked}</small>}
+              <button className="immigration-continue" disabled={selected.status !== "active"} onClick={event => { leavingOpener.current = event.currentTarget; setLeaving(true); }}>
                 {selected.status === "active" ? copy.continue : copy.unavailable} <span>→</span>
               </button>
               <p className="immigration-legal-line">{copy.educational}</p>
             </section>
-          )}
         </main>
       </div>
     );
@@ -94,7 +105,7 @@ export default function ImmigrationHelp({ language = "en", onBack, onLanguageCha
       <header className="immigration-help-header">
         <button onClick={onBack}>← {copy.home}</button>
         <strong>CITIZENSHIP <span>AI</span></strong>
-        <button className="immigration-help-language" onClick={() => onLanguageChange(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>
+        <button className="immigration-help-language" onClick={() => onLanguageChange?.(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>
       </header>
       <main className="immigration-help-content">
         <section className="immigration-help-hero">
@@ -103,32 +114,34 @@ export default function ImmigrationHelp({ language = "en", onBack, onLanguageCha
           <p>{copy.subtitle}</p>
           <label className="immigration-help-search">
             <span>⌕</span>
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={copy.search} aria-label={copy.search} />
+            <input value={query} onChange={(event) => { setQuery(event.target.value); if (event.target.value.trim()) setDirectoryOpen(true); }} placeholder={copy.search} aria-label={copy.search} />
           </label>
         </section>
 
-        {!query && category === "all" && (
-          <section className="immigration-section">
-            <div className="immigration-section-heading"><span>{copy.featured}</span><i>6</i></div>
-            <div className="immigration-featured-grid">
-              {featured.map((item) => <ResourceCard key={item.id} item={item} copy={copy} onOpen={openDetail} featured />)}
-            </div>
-          </section>
-        )}
+        {!query && <section className="immigration-section immigration-contextual-help" aria-labelledby="journey-help-title">
+          <div className="immigration-section-heading"><h2 id="journey-help-title">{copy.context}</h2></div>
+          <p className="immigration-context-stage">{copy.stage}: {getJourneyStageLabel(caseProfile.currentStage || "PREPARING_N400", language)}</p>
+          <div className="immigration-category-scroll" role="group" aria-label={copy.context}>
+            {JOURNEY_HELP_CATEGORIES.map(([id, en, es]) => <button key={id} type="button" className={journeyCategory === id ? "active" : ""} aria-pressed={journeyCategory === id} onClick={() => setJourneyCategory(id)}>{language === "es" ? es : en}</button>)}
+          </div>
+          <div className="immigration-resource-list">{journeyResources.slice(0, 3).map(item => <ResourceCard key={item.id} item={item} copy={copy} onOpen={openDetail} />)}</div>
+          {contextual[0] && <p className="immigration-context-stage">{language === "es" ? "Sigue tu aviso y las instrucciones oficiales para tu caso." : "Follow your notice and the official instructions for your case."}</p>}
+        </section>}
 
-        <section className="immigration-urgent">
-          <span>!</span><div><strong>{copy.urgent}</strong><p>{copy.urgentText}</p></div>
-          <div>{["detainee", "find-court", "legal-help"].map((id) => { const item = resources.find((resource) => resource.id === id); return <button key={id} onClick={() => openDetail(item)}>{item.title} →</button>; })}</div>
-        </section>
+        <details className="immigration-urgent-details">
+          <summary>{copy.urgent}</summary><p>{copy.urgentText}</p>
+          <div className="immigration-category-scroll">{["detainee", "find-court", "legal-help"].map(id => { const item = resources.find(resource => resource.id === id); return <button type="button" key={id} onClick={() => openDetail(item)}>{item.title} →</button>; })}</div>
+        </details>
 
-        <section className="immigration-section">
+        <details className="immigration-section immigration-directory" open={directoryOpen} onToggle={event => setDirectoryOpen(event.currentTarget.open)}>
+          <summary>{copy.directory}</summary>
           <div className="immigration-section-heading"><span>{copy.all}</span><i>{filtered.length}</i></div>
           <div className="immigration-category-scroll" aria-label={copy.all}>
             <button className={category === "all" ? "active" : ""} onClick={() => setCategory("all")}>{copy.all}</button>
             {IMMIGRATION_CATEGORIES.map(([id, en, es]) => <button key={id} className={category === id ? "active" : ""} onClick={() => setCategory(id)}>{language === "es" ? es : en}</button>)}
           </div>
           {filtered.length ? <div className="immigration-resource-list">{filtered.map((item) => <ResourceCard key={item.id} item={item} copy={copy} onOpen={openDetail} />)}</div> : <div className="immigration-empty">{copy.noResults}</div>}
-        </section>
+        </details>
         <p className="immigration-footer-note">{copy.independent} {copy.educational}</p>
       </main>
     </div>

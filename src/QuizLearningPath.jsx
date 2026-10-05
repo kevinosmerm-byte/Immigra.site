@@ -45,18 +45,18 @@ const COPY = {
 };
 
 
-export default function QuizLearningPath({ language = "en", userKey = "guest", initialMode = null, civicProfile, onBack, onPracticeComplete, onQuestionResult }) {
+export default function QuizLearningPath({ language = "en", userKey = "guest", initialMode = null, preferredQuestionIds = [], sessionSize = 10, checkpointModule = null, civicProfile, onBack, onPracticeComplete, onQuestionResult }) {
   const QUESTIONS = useMemo(() => buildQuizQuestionModels(civicsQuestionBank.map(question => resolveCivicsQuestion(question, { profile: civicProfile }))), [civicProfile]);
   const copy = COPY[language === "es" ? "es" : "en"];
   const [progress, setProgress] = useState(() => getQuizProgress(userKey));
   const { runTransition } = useProgressGate();
-  const moduleKey = initialMode || "quiz";
+  const moduleKey = ["quiz", "vocabulary", "choose", "connect"].includes(checkpointModule) ? checkpointModule : ["vocabulary", "choose", "connect"].includes(initialMode) ? initialMode : "quiz";
   const [checkpoint] = useState(() => {
     const saved = getModuleProgress(userKey)[moduleKey];
-    return saved && !saved.isComplete && saved.mode && saved.questionIds.length && saved.questionIds.every(id => QUESTIONS.some(q => q.questionId === id)) ? saved : null;
+    return saved && !saved.isComplete && saved.mode && saved.questionIds.length && saved.questionIds.every(id => QUESTIONS.some(q => q.questionId === id && (saved.mode === "vocabulary" || q.acceptedAnswers.length))) ? saved : null;
   });
   const [mode, setMode] = useState(checkpoint?.mode || initialMode);
-  const [session, setSession] = useState(() => checkpoint ? checkpoint.questionIds.map(id => QUESTIONS.find(q => q.questionId === id)) : initialMode ? createQuizSession(QUESTIONS, progress, initialMode) : []);
+  const [session, setSession] = useState(() => checkpoint ? checkpoint.questionIds.map(id => QUESTIONS.find(q => q.questionId === id)) : initialMode ? createQuizSession(QUESTIONS, progress, initialMode, sessionSize, undefined, preferredQuestionIds) : []);
   const [questionIndex, setQuestionIndex] = useState(checkpoint?.questionIndex || 0);
   const [answer, setAnswer] = useState("");
   const [result, setResult] = useState(checkpoint?.resultStatus ? { status: checkpoint.resultStatus } : null);
@@ -70,7 +70,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", i
 
   const startMode = (nextMode) => {
     setMode(nextMode);
-    setSession(createQuizSession(QUESTIONS, progress, nextMode));
+    setSession(createQuizSession(QUESTIONS, progress, nextMode, sessionSize, undefined, preferredQuestionIds));
     setQuestionIndex(0); setAnswer(""); setResult(null); setSessionScore(0);
     emitCompanionState(nextMode === "vocabulary" ? "explain" : "determined");
   };
@@ -114,7 +114,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", i
               return (
                 <button key={level.id} className={`quiz-level-card${recommended ? " recommended" : ""}`} onClick={() => startMode(level.id)}>
                   <span className="quiz-level-icon">{level.icon}</span>
-                  <span className="quiz-level-copy"><small>LEVEL {level.level}</small><strong>{labels[0]}</strong><em>{labels[1]}</em></span>
+                  <span className="quiz-level-copy"><small>{language === "es" ? "NIVEL" : "LEVEL"} {level.level}</small><strong>{labels[0]}</strong><em>{labels[1]}</em></span>
                   <span className="quiz-level-state">{recommended ? copy.recommended : `${summary.averages[level.id]}%`}<b>→</b></span>
                 </button>
               );

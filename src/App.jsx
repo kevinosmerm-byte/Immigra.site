@@ -1,12 +1,22 @@
 import { queueSavedQuestion, syncSavedQuestions } from "./savedQuestions.js";
 import { MyCivicsProfile } from "./MyCivicsProfile.jsx";
-import { readCivicProfile, saveCivicProfile } from "./civicProfileStorage.js";
+import { saveCivicProfile } from "./civicProfileStorage.js";
+import { useCivicProfile } from "./useCivicProfile.js";
 import { resolveCivicsQuestion } from "./dynamicCivicsData.js";
 import { ProgressGate } from "./ProgressGate.jsx";
 import { useProgressGate } from "./progressGateContext.js";
 import { BottomNavigation } from "./BottomNavigation.jsx";
-import { lazy, Suspense, useState, useEffect, useRef } from "react";
+import { lazy, Suspense, useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
+import "./ModernDesign.css";
+import { SectionNavigation } from "./SectionNavigation.jsx";
+import { buildBrainContext, getDailyStudyPlan, getNextAction } from "./brain.js";
+import { useBrainProfile } from "./useBrainProfile.js";
+import { Profile } from "./Profile.jsx";
+import CaseJourney from "./CaseJourney.jsx";
+import { getCaseStageLabel, getJourneyChecklistProgress } from "./caseTracker.js";
+import { getQuizProgress, recordQuizAttempt } from "./quizLearning.js";
+import { readAppRoute, appRouteHash } from "./appRoutes.js";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
 import { civicsQuestionBank } from "./civicsQuestionBank.js";
@@ -14,7 +24,7 @@ import { evaluateCivicsAnswer } from "./civicsAnswerEvaluator.js";
 import { apiJson } from "./api";
 import { startAudioRecording, transcribeRecording } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
-import { getPracticeEvents, getPracticeSummary, recordPracticeEvent, getModuleProgress, saveModuleProgress, recordCivicsMistake, migrateLegacyCivicsProgress } from "./progress";
+import { getPracticeEvents, getPracticeSummary, recordPracticeEvent, getModuleProgress, saveModuleProgress, recordCivicsMistake, migrateLegacyCivicsProgress, getN400LearningProgress } from "./progress";
 import { PodcastLibrary } from "./PodcastPlayer";
 import { usePromotionAccess } from "./promotionAccessContext.js";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
@@ -28,7 +38,7 @@ import { evaluateWritingSentence } from "./writingEvaluator.js";
 import { CivicsStudyCard } from "./CivicsStudyCard.jsx";
 import { createNavigationHistory, navigateBack, navigateForward } from "./navigationHistory.js";
 import { getCivicsVisual } from "./data/civicsVisuals.js";
-import { emitCompanionResult, emitCompanionState } from "./companionEvents.js";
+import { emitCompanionResult, emitCompanionState, emitCompanionContext } from "./companionEvents.js";
 import { N400InterviewPractice } from "./N400InterviewPractice.jsx";
 import { normalizeThemePreference, resolveTheme, THEME_STORAGE_KEY } from "./theme.js";
 
@@ -37,25 +47,6 @@ const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
 const CivicsStudyGuide = lazy(() => import("./CivicsStudyGuide.jsx").then((module) => ({ default: module.CivicsStudyGuide })));
 const QuizLearningPath = lazy(() => import("./QuizLearningPath.jsx"));
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
-const HOME_VIDEO_PLAYED_KEY = "citizenshipai.homeVideoPlayed.v1";
-let homeVideoPlayedThisVisit = false;
-
-function hasPlayedHomeVideo() {
-  try {
-    return homeVideoPlayedThisVisit || sessionStorage.getItem(HOME_VIDEO_PLAYED_KEY) === "true";
-  } catch {
-    return homeVideoPlayedThisVisit;
-  }
-}
-
-function rememberHomeVideoPlayback() {
-  homeVideoPlayedThisVisit = true;
-  try {
-    sessionStorage.setItem(HOME_VIDEO_PLAYED_KEY, "true");
-  } catch {
-    // The in-memory flag still prevents repeats when storage is unavailable.
-  }
-}
 const CASE_TRACKER_COPY = {
   en: {
     uscIs: "USCIS", title: "Case Tracker", sandbox: "Sandbox",
@@ -237,943 +228,288 @@ const readingSentences = [
     spanish: "La Constitución forma el gobierno."
   }
 ];
-function Home({
-  onStartInterview,
-  onStartN400Interview,
-  onStartCivicsInterview,
-  onOpenFeature,
-  onOpenProgress,
-  onOpenSettings,
-  onOpenImmigrationHelp,
-  onOpenPodcasts,
-  onOpenAccount,
-  language,
-  onLanguageChange,
-  practiceSummary,
-}) {
-  const homeVideoRef = useRef(null);
-  const [homeVideoPlaying, setHomeVideoPlaying] = useState(false);
-  const [homeVideoMuted, setHomeVideoMuted] = useState(false);
-  const [homeVideoNeedsSound, setHomeVideoNeedsSound] = useState(false);
-
-  useEffect(() => {
-    const video = homeVideoRef.current;
-    if (!video) return undefined;
-
-    let cancelled = false;
-    if (hasPlayedHomeVideo()) {
-      const showLastFrame = () => {
-        if (cancelled || !Number.isFinite(video.duration)) return;
-        video.pause();
-        video.currentTime = Math.max(0, video.duration - 0.05);
-      };
-      video.addEventListener("loadedmetadata", showLastFrame);
-      if (video.readyState >= 1) showLastFrame();
-      return () => {
-        cancelled = true;
-        video.removeEventListener("loadedmetadata", showLastFrame);
-        video.pause();
-      };
-    }
-    video.muted = false;
-    const playWithSound = video.play();
-    if (playWithSound?.catch) {
-      playWithSound.catch(async () => {
-        if (cancelled) return;
-        video.muted = true;
-        setHomeVideoMuted(true);
-        setHomeVideoNeedsSound(true);
-        try {
-          await video.play();
-        } catch {
-          setHomeVideoPlaying(false);
-        }
-      });
-    }
-
-    return () => {
-      cancelled = true;
-      video.pause();
-    };
-  }, []);
-
-  const toggleHomeVideoPlayback = async () => {
-    const video = homeVideoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      try {
-        await video.play();
-      } catch {
-        setHomeVideoPlaying(false);
-      }
-    } else {
-      video.pause();
-    }
-  };
-
-  const toggleHomeVideoSound = async () => {
-    const video = homeVideoRef.current;
-    if (!video) return;
-    video.muted = !video.muted;
-    setHomeVideoMuted(video.muted);
-    setHomeVideoNeedsSound(false);
-    if (video.paused) {
-      try {
-        await video.play();
-      } catch {
-        setHomeVideoPlaying(false);
-      }
-    }
-  };
-
-  const copy = language === "en" ? {
-    status: "AI-POWERED CITIZENSHIP TRAINING",
-    aiReady: "AI READY",
-    ready: "PRACTICE",
-    english: "ENGLISH",
-    reading: "Reading",
-    writing: "Writing",
-    preparation: "YOUR PREPARATION",
-    preparationTitle: "Keep moving forward.",
-    civics: "Civics",
-    interview: "Interview",
-    viewProgress: "VIEW PROGRESS",
-    caseTracker: "Case Tracker",
-    development: "IN DEVELOPMENT",
-    caseBody: "Practice checking a status response through the USCIS API Sandbox.",
-    checkCase: "COMING SOON",
-    languageLabel: "Change preferred language",
-    settingsLabel: "Open Legal and Privacy Settings",
-    civicsLabel: "Civics — 128 Questions. Master the questions for your interview.",
-  } : {
-    status: "ENTRENAMIENTO DE CIUDADANÍA CON IA",
-    aiReady: "IA LISTA",
-    ready: "PRÁCTICA",
-    english: "INGLÉS",
-    reading: "Lectura",
-    writing: "Escritura",
-    preparation: "TU PREPARACIÓN",
-    preparationTitle: "Sigue avanzando.",
-    civics: "Educación cívica",
-    interview: "Entrevista",
-    viewProgress: "VER PROGRESO",
-    caseTracker: "Seguimiento del caso",
-    development: "EN DESARROLLO",
-    caseBody: "Practica la consulta de una respuesta de estado mediante la API Sandbox de USCIS.",
-    checkCase: "PRÓXIMAMENTE",
-    languageLabel: "Cambiar idioma preferido",
-    settingsLabel: "Abrir ajustes legales y de privacidad",
-    civicsLabel: "Educación cívica — 128 preguntas. Domina las preguntas para tu entrevista.",
-  };
-  const civicsProgress = Math.min(100, Math.round((practiceSummary?.civics?.viewed || 0) / 128 * 100));
-  return (
-    <div className="app home-ai">
-
-      {/* ================= HEADER ================= */}
-
-      <header className="home-new-header">
-
-        <div className="home-new-brand" aria-label="Citizenship AI">
-          <span className="home-brand-wordmark">Citizenship <strong>AI</strong></span>
-        </div>
-
-        <div className="language-selector">
-          <AccountButton language={language} onClick={onOpenAccount} />
-          <button
-            className="home-language"
-            onClick={() => onLanguageChange(language === "en" ? "es" : "en")}
-            aria-label={copy.languageLabel}
-          >
-            {language === "en" ? "EN" : "ES"}
-          </button>
-          <button className="home-settings-button" onClick={onOpenSettings} aria-label={copy.settingsLabel}>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M19 12a7 7 0 0 0-.1-1.15l2-1.55-2-3.45-2.45 1A7 7 0 0 0 14.5 5.7L14.15 3h-4.3L9.5 5.7a7 7 0 0 0-1.95 1.15l-2.45-1-2 3.45 2 1.55A7 7 0 0 0 5 12c0 .4.03.78.1 1.15l-2 1.55 2 3.45 2.45-1A7 7 0 0 0 9.5 18.3l.35 2.7h4.3l.35-2.7a7 7 0 0 0 1.95-1.15l2.45 1 2-3.45-2-1.55c.07-.37.1-.75.1-1.15Z" />
-            </svg>
-          </button>
-        </div>
-
-      </header>
-
-
-
-      {/* ================= HERO ================= */}
-
-      <main className="home-new-content">
-
-        <section className="home-new-hero">
-
-          <div className="hero-glow"></div>
-
-          <div className="home-visual-hero home-video-hero">
-            <span className="home-pro-badge">PRO</span>
-            <video
-              ref={homeVideoRef}
-              className="home-hero-video"
-              src="/citizenshipai-home-cta.mp4"
-              poster="/sarah-real-interview-hero.jpg"
-              playsInline
-              preload="metadata"
-              onPlay={() => {
-                rememberHomeVideoPlayback();
-                setHomeVideoPlaying(true);
-              }}
-              onPause={() => setHomeVideoPlaying(false)}
-              onEnded={() => setHomeVideoPlaying(false)}
-              onVolumeChange={(event) => setHomeVideoMuted(event.currentTarget.muted)}
-              onClick={onStartInterview}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  onStartInterview();
-                }
-              }}
-              role="button"
-              tabIndex="0"
-              aria-label={language === "en"
-                ? "Start real interview practice with Sarah"
-                : "Comenzar práctica de entrevista real con Sarah"}
-            />
-
-            <div className="home-video-controls" aria-label={language === "en" ? "Promotional video controls" : "Controles del video promocional"}>
-              <button type="button" onClick={toggleHomeVideoPlayback} aria-label={homeVideoPlaying
-                ? (language === "en" ? "Pause video" : "Pausar video")
-                : (language === "en" ? "Play video" : "Reproducir video")}>
-                <span aria-hidden="true">{homeVideoPlaying ? "Ⅱ" : "▶"}</span>
-              </button>
-              <button type="button" onClick={toggleHomeVideoSound} aria-label={homeVideoMuted
-                ? (language === "en" ? "Turn sound on" : "Activar sonido")
-                : (language === "en" ? "Mute video" : "Silenciar video")}>
-                <span aria-hidden="true">{homeVideoMuted ? "🔇" : "🔊"}</span>
-              </button>
-              {homeVideoNeedsSound && (
-                <button type="button" className="home-video-sound-prompt" onClick={toggleHomeVideoSound}>
-                  {language === "en" ? "Turn on sound" : "Activar sonido"}
-                </button>
-              )}
-            </div>
-
-          </div>
-
-          <div className="sr-only">
-            <h1>{language === "en" ? "Prepare for your citizenship interview" : "Prepárate para tu entrevista de ciudadanía"}</h1>
-            <p>{language === "en"
-              ? "Bilingual, personalized practice with official resources."
-              : "Práctica bilingüe y personalizada con recursos oficiales."}
-            </p>
-          </div>
-
-
-          {/* AI ORB */}
-
-          <div className="ai-orb-container">
-
-            <div className="ai-orb-ring ring-one"></div>
-            <div className="ai-orb-ring ring-two"></div>
-            <div className="ai-orb-ring ring-three"></div>
-
-            <div className="ai-orb">
-
-              <div className="ai-orb-core">
-                ✦
-              </div>
-
-            </div>
-
-            <div className="ai-orb-label">
-              <span></span>
-              {copy.aiReady}
-            </div>
-
-          </div>
-
-
-          {/* PRIMARY ACTION */}
-
-          <div className="home-interview-actions" style={{ display: "grid", gap: "12px", width: "100%" }}>
-            <button
-              className="home-primary-button home-n400-interview-button"
-              onClick={onStartN400Interview}
-            >
-              <span className="home-action-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h5M9 12h6M9 16h6"/></svg>
-              </span>
-              <div>
-                <small>{language === "en" ? "FORM N-400 · GUIDED PRACTICE" : "FORMULARIO N-400 · PRÁCTICA GUIADA"}</small>
-                <strong>{language === "en" ? "N-400 INTERVIEW" : "ENTREVISTA N-400"}</strong>
-              </div>
-              <span className="primary-arrow">→</span>
-            </button>
-            <button
-              className="home-primary-button home-civics-live-button"
-              onClick={onStartCivicsInterview}
-            >
-              <span className="home-action-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-              </span>
-              <div>
-                <small>{language === "en" ? "CLASSIC SARAH PRACTICE" : "PRÁCTICA CLÁSICA CON SARAH"}</small>
-                <strong>{language === "en" ? "CIVICS INTERVIEW" : "ENTREVISTA CÍVICA"}</strong>
-              </div>
-              <span className="primary-arrow">→</span>
-            </button>
-            <button
-              className="home-primary-button home-immigration-primary-button"
-              onClick={onOpenImmigrationHelp}
-            >
-              <span className="home-action-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12 3 20 7v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
-              </span>
-              <div>
-                <small>{language === "en" ? "OFFICIAL U.S. RESOURCES" : "RECURSOS OFICIALES DE EE. UU."}</small>
-                <strong>{language === "en" ? "IMMIGRATION HELP" : "AYUDA MIGRATORIA"}</strong>
-              </div>
-              <span className="primary-arrow">→</span>
-            </button>
-            <button className="home-primary-button home-podcast-primary-button" onClick={onOpenPodcasts}>
-              <span className="home-action-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg>
-              </span>
-              <div>
-                <small><i className="home-podcast-live-dot"></i>{language === "en" ? "STUDY AUDIO · ENGLISH + ESPAÑOL" : "AUDIO DE ESTUDIO · ENGLISH + ESPAÑOL"}</small>
-                <strong>{language === "en" ? "PODCASTS" : "PODCASTS"}</strong>
-              </div>
-              <span className="primary-arrow">→</span>
-            </button>
-          </div>
-
-        </section>
-
-
-        {/* ================= QUICK PRACTICE ================= */}
-        <section className="home-new-section home-practice-section">
-          <div className="home-practice-list">
-
-            <button
-              className="practice-feature-card civics-feature civics-image-card"
-              onClick={() => onOpenFeature("civics")}
-              aria-label={copy.civicsLabel}
-            >
-              <img src="/civics-128-button.png" alt="" aria-hidden="true" />
-              <span className="sr-only">{copy.civicsLabel}</span>
-            </button>
-
-
-            <div className="practice-mini-grid">
-
-              <button
-                className="practice-mini-card"
-                onClick={() => onOpenFeature("reading")}
-              >
-
-                <div className="mini-icon">
-                  A
-                </div>
-
-                <div>
-                  <small>{copy.english}</small>
-                  <h3>{copy.reading}</h3>
-                </div>
-
-                <span>↗</span>
-
-              </button>
-
-
-              <button
-                className="practice-mini-card"
-                onClick={() => onOpenFeature("writing")}
-              >
-
-                <div className="mini-icon">
-                  ✎
-                </div>
-
-                <div>
-                  <small>{copy.english}</small>
-                  <h3>{copy.writing}</h3>
-                </div>
-
-                <span>↗</span>
-
-              </button>
-
-            </div>
-
-
-          </div>
-
-        </section>
-
-
-        {/* ================= PREPARATION ================= */}
-
-        <button className="home-progress-link" onClick={onOpenProgress}>
-          <span className="home-progress-symbol" aria-hidden="true">↗</span>
-          <span><strong>{language === "es" ? "Mi progreso" : "My progress"}</strong><small>{language === "es" ? "Ver mi actividad y resultados" : "View my activity and results"}</small></span>
-          <span className="home-progress-count">{civicsProgress}% <span aria-hidden="true">→</span></span>
+function Home({ language, onLanguageChange, onOpenAccount, onOpenSettings, onNavigate, context, plan, nextAction, onContinue, practiceSummary }) {
+  const es = language === "es";
+  const documents = getJourneyChecklistProgress(context.caseProfile, context.n400Profile, language);
+  const stage = getCaseStageLabel(context.caseProfile.currentStage || "PREPARING_N400", language);
+  return <div className="app home-ai brain-home">
+    <header className="home-new-header">
+      <div className="home-new-brand" aria-label="Citizenship AI"><span className="home-brand-wordmark">Citizenship <strong>AI</strong></span></div>
+      <div className="language-selector">
+        <AccountButton language={language} onClick={onOpenAccount} />
+        <button className="home-language" type="button" onClick={() => onLanguageChange(es ? "en" : "es")} aria-label={es ? "Cambiar a inglés" : "Switch to Spanish"}>{es ? "ES" : "EN"}</button>
+        <button className="home-settings-button" type="button" onClick={onOpenSettings} aria-label={es ? "Ajustes y privacidad" : "Settings and privacy"}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m9 3-1 3-3 1-2 3 2 2-1 3 2 3 3-1 3 1 3-1 3 1 2-3-1-3 2-2-2-3-3-1-1-3Z"/></svg>
         </button>
-
-        {/* ================= USCIS ================= */}
-
-        <section className="home-uscis-card">
-
-          <div className="uscis-card-top">
-
-            <div className="uscis-card-icon">
-              U
-            </div>
-
-            <div>
-
-              <small>USCIS</small>
-
-              <h2>
-                {copy.caseTracker}
-              </h2>
-
-            </div>
-
-            <div className="uscis-live uscis-development">
-              <span></span>
-              {copy.development}
-            </div>
-
-          </div>
-
-
-          <p>{copy.caseBody}</p>
-
-
-          <button
-            className="home-uscis-disabled-button"
-            disabled
-            aria-disabled="true"
-            title={copy.development}
-          >
-            {copy.checkCase}
-            <span aria-hidden="true">🔒</span>
-          </button>
-
-        </section>
-
-      </main>
-
-
-    </div>
-  );
+      </div>
+    </header>
+    <main className="brain-home-main">
+      <div className="brain-greeting"><p>{es ? "Tu camino a la ciudadanía" : "Your citizenship journey"}</p><h1>{context.userProfile.firstName ? (es ? "Hola, " : "Hello, ") + context.userProfile.firstName : es ? "Vamos paso a paso." : "One step at a time."}</h1></div>
+      <section className="brain-today" aria-labelledby="today-title">
+        {plan.daysUntilInterview !== null && plan.daysUntilInterview >= 0 && <p className="brain-appointment">{plan.daysUntilInterview === 0 ? (es ? "Tu entrevista es hoy" : "Your interview is today") : es ? `Entrevista en ${plan.daysUntilInterview} días` : `Interview in ${plan.daysUntilInterview} days`}</p>}
+        <p>{es ? "Lo que importa ahora" : "What matters now"}</p>
+        <h2 id="today-title">{nextAction.label}</h2>
+        <p>{nextAction.detail}</p>
+        <span>{plan.totalMinutes} {es ? "minutos disponibles" : "minutes available"}</span>
+        <button type="button" className="button-primary" onClick={onContinue}>{es ? "Continuar" : "Continue"}<span aria-hidden="true"> →</span></button>
+        <details className="brain-plan-details"><summary>{es ? "Ver el plan de hoy" : "View today's plan"}</summary><ol>{plan.items.map(item => <li key={item.id}><strong>{item.label}</strong><span>{item.minutes} min · {item.detail}</span></li>)}</ol></details>
+      </section>
+      <aside className="brain-home-context" aria-label={es ? "Tu proceso" : "Your journey"}>
+        <section><h2>{es ? "Mi proceso" : "My journey"}</h2><p>{stage}</p><button type="button" className="button-secondary" onClick={() => onNavigate("uscisTracker")}>{es ? "Ver mi próximo paso" : "View my next step"}</button></section>
+        {documents.total > 0 && <section><h2>{es ? "Documentos" : "Documents"}</h2><p>{documents.completed}/{documents.total} {es ? "preparados" : "ready"}</p><button className="button-ghost" type="button" onClick={() => onNavigate("uscisTracker")}>{es ? "Abrir lista" : "Open checklist"} →</button></section>}
+        <section className="brain-home-progress"><h2>{es ? "Tu progreso" : "Your progress"}</h2><p>{practiceSummary.civics.viewed}/128 {es ? "preguntas estudiadas" : "questions studied"}</p><button type="button" className="button-ghost" onClick={() => onNavigate("progress")}>{es ? "Ver progreso" : "View progress"} →</button></section>
+      </aside>
+    </main>
+  </div>;
 }
 
-// Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
-
-function RealInterview({ onExit, onComplete, onReview, onQuestionResult, civicProfile, userKey = "guest", mode = "full" }) {
+function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onRestart, civicProfile, brainContext = {}, language = "en", userKey = "guest", mode = "full", requestVoiceAccess }) {
   const { runTransition } = useProgressGate();
+  const t = (en, es) => language === "es" ? es : en;
   const [checkpoint] = useState(() => {
     const saved = getModuleProgress(userKey).interview;
-    return mode === "civics" && saved && !saved.isComplete && saved.questionIds.length && saved.questionIndex < saved.questionIds.length && saved.questionIds.every(id => civicsQuestionBank.some(question => question.questionId === id)) ? saved : null;
+    const ids = Array.isArray(saved?.questionIds) ? saved.questionIds : [];
+    return mode === "civics" && saved && !saved.isComplete && ids.length && Number.isInteger(saved.questionIndex) && saved.questionIndex >= 0 && saved.questionIndex < ids.length && new Set(ids).size === ids.length && ids.every(id => civicsQuestionBank.some(question => question.questionId === id)) ? saved : null;
   });
   const [questions] = useState(() => {
-    if (checkpoint) return checkpoint.questionIds.map(id => resolveCivicsQuestion(civicsQuestionBank.find(question => question.questionId === id), { profile: civicProfile }));
-    const shuffledCivics = civicsQuestionBank.map(question => resolveCivicsQuestion(question, { profile: civicProfile })).sort(() => Math.random() - 0.5);
-    if (mode === "civics") return shuffledCivics.slice(0, 10);
-    return shuffledCivics.slice(0, 5);
+    const profile = civicProfile || brainContext.civicProfile;
+    if (checkpoint) return checkpoint.questionIds.map(id => resolveCivicsQuestion(civicsQuestionBank.find(question => question.questionId === id), { profile }));
+    const prioritizedIds = getDailyStudyPlan(brainContext).items.flatMap(item => item.questionIds || []);
+    const rank = new Map(prioritizedIds.map((id, index) => [id, index]));
+    return civicsQuestionBank.map(question => resolveCivicsQuestion(question, { profile }))
+      .sort((left, right) => (rank.get(left.questionId) ?? Number.MAX_SAFE_INTEGER) - (rank.get(right.questionId) ?? Number.MAX_SAFE_INTEGER) || left.questionId - right.questionId)
+      .slice(0, mode === "civics" ? 10 : 5);
   });
-
   const [currentQuestion, setCurrentQuestion] = useState(checkpoint?.questionIndex || 0);
   const [isListening, setIsListening] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(true);
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const [answer, setAnswer] = useState("");
+  const [typedAnswer, setTypedAnswer] = useState("");
   const [answerStatus, setAnswerStatus] = useState("");
+  const [feedback, setFeedback] = useState("");
+  const [readyForNext, setReadyForNext] = useState(false);
   const [correctAnswers, setCorrectAnswers] = useState(checkpoint?.score || 0);
   const [incorrectAnswers, setIncorrectAnswers] = useState(checkpoint?.incorrect || 0);
   const [missedQuestions, setMissedQuestions] = useState(() => (checkpoint?.missedIds || []).map(id => ({ id, english: civicsQuestionBank.find(question => question.questionId === id)?.question || "" })));
   const [hasRetried, setHasRetried] = useState(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   const [interviewer, setInterviewer] = useState("sarah");
+  const [useStandardInterview, setUseStandardInterview] = useState(false);
   const recorderRef = useRef(null);
+  const microphonePendingRef = useRef(false);
+  const mountedRef = useRef(false);
   const completionReportedRef = useRef(false);
   const speechRequestRef = useRef(0);
+  const speechTimerRef = useRef(null);
   const savedTransition = useRef(null);
+  const soundEnabled = brainContext.preferences?.soundEnabled !== false;
+  const soundEnabledRef = useRef(soundEnabled);
   useEffect(() => {
     if (mode !== "civics") return;
-    const transition = `${currentQuestion}:${isInterviewComplete}`;
+    const transition = `${currentQuestion}:${isInterviewComplete}:${readyForNext}:${correctAnswers}:${incorrectAnswers}`;
     if (savedTransition.current === transition) return;
     savedTransition.current = transition;
-    saveModuleProgress("interview", { completed: isInterviewComplete ? questions.length : currentQuestion, total: questions.length, questionIndex: currentQuestion, questionIds: questions.map(question => question.questionId), score: correctAnswers, incorrect: incorrectAnswers, missedIds: missedQuestions.map(question => question.id) }, userKey);
-  }, [currentQuestion, isInterviewComplete, questions, correctAnswers, incorrectAnswers, missedQuestions, userKey, mode]);
-
+    const completed = isInterviewComplete ? questions.length : currentQuestion + Number(readyForNext);
+    saveModuleProgress("interview", { completed, total: questions.length, questionIndex: completed, questionIds: questions.map(question => question.questionId), score: correctAnswers, incorrect: incorrectAnswers, missedIds: missedQuestions.map(question => question.id), resultStatus: answerStatus }, userKey);
+  }, [currentQuestion, isInterviewComplete, questions, correctAnswers, incorrectAnswers, missedQuestions, userKey, mode, readyForNext, answerStatus]);
   const isKevin = interviewer === "kevin";
   const interviewerName = isKevin ? "Kevin" : "Sarah";
-  const questionText = (question) => question.question || question.english;
-  const questionSpanish = (question) => question.questionSpanish || question.spanish;
-  const questionKey = (question) => question.questionId || question.id;
-  const addMissedQuestion = (question) => {
-    onQuestionResult?.(questionKey(question), false);
-    setMissedQuestions((current) => (
-      current.some((item) => item.id === questionKey(question))
-        ? current
-        : [...current, { id: questionKey(question), english: questionText(question) }]
-    ));
-  };
-
+  const questionText = question => question.question || question.english;
+  const questionSpanish = question => question.questionSpanish || question.spanish;
+  const questionKey = question => question.questionId || question.id;
+  const addMissedQuestion = question => setMissedQuestions(current => current.some(item => item.id === questionKey(question)) ? current : [...current, { id: questionKey(question), english: questionText(question) }]);
   useEffect(() => {
     if (mode === "full") emitCompanionState("idle", { duration: 0, silent: true });
   }, [mode]);
-
   useEffect(() => {
     if (!isInterviewComplete || completionReportedRef.current) return;
     completionReportedRef.current = true;
-    onComplete?.({
-      score: Math.round((correctAnswers / questions.length) * 100),
-      outcome: "completed",
-    });
+    const graded = correctAnswers + incorrectAnswers;
+    onComplete?.({ score: graded ? Math.round(correctAnswers / graded * 100) : null, outcome: "completed" });
     emitCompanionState("celebration");
-  }, [isInterviewComplete, correctAnswers, questions.length, onComplete]);
-
+  }, [isInterviewComplete, correctAnswers, incorrectAnswers, onComplete]);
   const speakQuestion = async (text, onFinished, selectedInterviewer = interviewer) => {
     const requestId = ++speechRequestRef.current;
-    const voiceIsKevin = selectedInterviewer === "kevin";
-    const finishSpeaking = () => {
-      if (requestId !== speechRequestRef.current) return;
-      setIsSpeaking(false);
-      if (onFinished) onFinished();
-    };
+    if (!soundEnabled) { setIsSpeaking(false); onFinished?.(); return; }
     setIsSpeaking(true);
-    emitCompanionState("coach", { message: `${voiceIsKevin ? "Kevin" : "Sarah"} is asking the next question.` });
-    await speakAppText(text, {
-      profile: voiceIsKevin ? "male" : "female",
-      onEnd: finishSpeaking,
-    });
+    emitCompanionState("coach");
+    try { await speakAppText(text, { profile: selectedInterviewer === "kevin" ? "male" : "female" }); }
+    finally { if (mountedRef.current && requestId === speechRequestRef.current) { setIsSpeaking(false); onFinished?.(); } }
   };
-
+  const stopQuestionSpeech = () => {
+    clearTimeout(speechTimerRef.current);
+    speechRequestRef.current += 1;
+    stopAppSpeech();
+    setIsSpeaking(false);
+  };
   useEffect(() => {
-    if (mode === "full") return undefined;
-    const timer = setTimeout(() => {
-      speakQuestion(`
-        Welcome. Thank you for being here today.
-        ${mode === "civics" ? "We are going to begin your civics interview practice." : "We are going to begin the live interview experience."}
-        ${questionText(questions[checkpoint?.questionIndex || 0])}
-      `);
+    mountedRef.current = true;
+    if (mode !== "full" || useStandardInterview) speechTimerRef.current = setTimeout(() => {
+      if (!soundEnabledRef.current) return;
+      const requestId = ++speechRequestRef.current;
+      setIsSpeaking(true);
+      const question = questions[checkpoint?.questionIndex || 0];
+      speakAppText(`Welcome. We are going to begin your civics interview practice. ${question.question || question.english}`, { profile: "female" })
+        .finally(() => { if (mountedRef.current && requestId === speechRequestRef.current) setIsSpeaking(false); });
     }, 500);
-
     return () => {
-      clearTimeout(timer);
+      mountedRef.current = false;
+      clearTimeout(speechTimerRef.current);
+      speechRequestRef.current += 1;
+      recorderRef.current?.cancel?.();
       stopAppSpeech();
     };
-  }, [questions, mode, checkpoint]);
-
+  }, [questions, mode, checkpoint, useStandardInterview]);
   const goToNextQuestion = () => runTransition({ module: "interview", completed: currentQuestion + 1, total: questions.length, busy: Boolean(recorderRef.current) }, () => {
+    stopQuestionSpeech();
     const nextQuestion = currentQuestion + 1;
-    if (nextQuestion >= questions.length) {
-      setIsSpeaking(true);
-      speakQuestion(`Thank you. That concludes this practice interview.`);
-      setIsInterviewComplete(true);
-      return;
-    }
-
+    if (nextQuestion >= questions.length) { setIsInterviewComplete(true); speakQuestion("Thank you. That concludes this practice interview."); return; }
     setCurrentQuestion(nextQuestion);
-    setAnswer("");
-    setAnswerStatus("");
-    setHasRetried(false);
-
-    setTimeout(() => {
-      speakQuestion(questionText(questions[nextQuestion]));
-    }, 300);
+    setAnswer(""); setTypedAnswer(""); setAnswerStatus(""); setFeedback(""); setReadyForNext(false); setHasRetried(false);
+    speechTimerRef.current = setTimeout(() => speakQuestion(questionText(questions[nextQuestion])), 250);
   });
-
   const handleSkip = () => {
-    setIncorrectAnswers((count) => count + 1);
+    if (isListening || isTranscribing || readyForNext) return;
+    setIncorrectAnswers(count => count + 1);
     addMissedQuestion(questions[currentQuestion]);
-    setAnswerStatus("incorrect");
-    setHasRetried(false);
+    onQuestionResult?.(questionKey(questions[currentQuestion]), false, { mode: "written", source: "interview", helpUsed: [] });
     emitCompanionResult(false);
     goToNextQuestion();
   };
-
-  const evaluateInterviewAnswer = async (transcript) => {
+  const evaluateInterviewAnswer = (value, answerMode = "written") => {
+    const transcript = String(value || "").trim();
+    if (!transcript || readyForNext) return;
+    stopQuestionSpeech();
     setAnswer(transcript);
-    setAnswerStatus("evaluating");
-    emitCompanionState("thinking");
-    try {
-      const activeQuestion = questions[currentQuestion];
-      if (activeQuestion.questionId) {
-        const localResult = evaluateCivicsAnswer(activeQuestion, transcript);
-        if (!localResult.needsSemanticReview) {
-          setAnswerStatus(localResult.status === "review" ? "incomplete" : localResult.status);
-          emitCompanionResult(localResult.status === "correct");
-          if (localResult.status === "correct") { setCorrectAnswers((count) => count + 1); onQuestionResult?.(questionKey(activeQuestion), true); }
-          if (localResult.status === "incorrect" && hasRetried) {
-            setIncorrectAnswers((count) => count + 1);
-            addMissedQuestion(activeQuestion);
-          }
-          if (localResult.action === "advance") speakQuestion(localResult.feedback, () => goToNextQuestion());
-          else if (localResult.action === "review") speakQuestion(`${localResult.feedback}.`, () => goToNextQuestion());
-          else if (localResult.action === "retry") speakQuestion(`${localResult.feedback} ${questionText(activeQuestion)}`);
-          else if (hasRetried) speakQuestion(`${localResult.feedback} Let's move to the next question.`, () => goToNextQuestion());
-          else { setHasRetried(true); speakQuestion(`${localResult.feedback} ${questionText(activeQuestion)}`); }
-          return;
-        }
+    const activeQuestion = questions[currentQuestion];
+    // The official civics evaluator is deterministic; neither typed nor spoken answers consume an AI evaluation quota.
+    const result = evaluateCivicsAnswer(activeQuestion, transcript);
+    setAnswerStatus(result.status);
+    if (result.status === "correct") {
+      setCorrectAnswers(count => count + 1);
+      onQuestionResult?.(questionKey(activeQuestion), true, { mode: answerMode, source: "interview", helpUsed: [] });
+      setReadyForNext(true);
+      setFeedback(t("Correct. Continue when you are ready.", "Correcto. Continúa cuando estés listo."));
+      emitCompanionResult(true);
+    } else if (result.status === "review") {
+      setReadyForNext(true);
+      setFeedback(t("Compare your response with the official answers. This response was not graded.", "Compara tu respuesta con las respuestas oficiales. Esta respuesta no se calificó."));
+      emitCompanionState("support");
+    } else if (result.status === "incomplete") {
+      setFeedback(t(`Please give ${activeQuestion.minimumAnswersRequired} different answers.`, `Da ${activeQuestion.minimumAnswersRequired} respuestas distintas.`));
+      emitCompanionState("support");
+    } else {
+      onQuestionResult?.(questionKey(activeQuestion), false, { mode: answerMode, source: "interview", helpUsed: [] });
+      emitCompanionResult(false);
+      if (hasRetried) {
+        setIncorrectAnswers(count => count + 1);
+        addMissedQuestion(activeQuestion);
+        setReadyForNext(true);
+        setFeedback(t("Review the official answers, then continue.", "Repasa las respuestas oficiales y continúa."));
+      } else {
+        setHasRetried(true);
+        setFeedback(t("Try this question once more.", "Intenta responder esta pregunta otra vez."));
       }
-      const result = await apiJson("/evaluate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          questionId: activeQuestion.questionId,
-          question: questionText(activeQuestion),
-          answer: transcript,
-          correctAnswer: activeQuestion.correctAnswer,
-        }),
-      });
-
-      setAnswerStatus(result.status === "review" ? "incomplete" : result.status);
-      emitCompanionResult(result.status === "correct");
-
-      if (result.status === "correct") { setCorrectAnswers((count) => count + 1); onQuestionResult?.(questionKey(activeQuestion), true); }
-      if (result.status === "incorrect" && hasRetried) {
-        setIncorrectAnswers((count) => count + 1);
-        addMissedQuestion(questions[currentQuestion]);
-      }
-
-      const feedback = result.feedback || "";
-      if (result.action === "advance") {
-        speakQuestion(feedback, () => goToNextQuestion());
-      } else if (result.action === "retry") {
-        speakQuestion(`${feedback} Please answer the question again. ${questionText(activeQuestion)}`);
-      } else if (result.action === "repeat") {
-        if (hasRetried) {
-          setIncorrectAnswers((count) => count + 1);
-          addMissedQuestion(questions[currentQuestion]);
-          speakQuestion(`${feedback} Let's move to the next question.`, () => goToNextQuestion());
-        } else {
-          setHasRetried(true);
-          speakQuestion(`${feedback} Let me ask you that again. ${questionText(activeQuestion)}`);
-        }
-      }
-    } catch (error) {
-      console.error("Evaluation error:", error);
-      setAnswerStatus("error");
     }
   };
-
-  const startListening = async () => {
+  const beginListening = async () => {
+    if (!mountedRef.current || microphonePendingRef.current || recorderRef.current) return;
+    microphonePendingRef.current = true;
+    stopQuestionSpeech();
     try {
-      recorderRef.current = await startAudioRecording();
-    } catch (error) {
-      console.error("Microphone error:", error);
-      setAnswerStatus("error");
-      return;
-    }
-    setIsListening(true);
-    setIsSpeaking(false);
-    setAnswerStatus("");
-    emitCompanionState("thinking", { message: "I'm listening. Take your time." });
+      const recorder = await startAudioRecording();
+      if (!mountedRef.current) { recorder.cancel?.(); return; }
+      recorderRef.current = recorder;
+      setIsListening(true); setAnswerStatus("");
+      emitCompanionState("thinking");
+    } catch { if (mountedRef.current) setAnswerStatus("error"); }
+    finally { microphonePendingRef.current = false; }
   };
-
+  const startListening = () => requestVoiceAccess ? requestVoiceAccess(beginListening) : beginListening();
   const stopListening = async () => {
     const recorder = recorderRef.current;
     recorderRef.current = null;
     setIsListening(false);
     if (!recorder) return;
-
+    setIsTranscribing(true);
     try {
       const transcript = await transcribeRecording(await recorder.stop());
-      if (!transcript) throw new Error("No speech was detected.");
-      await evaluateInterviewAnswer(transcript);
-    } catch (error) {
-      console.error("Interview transcription error:", error);
-      setAnswerStatus("error");
-    }
+      if (mountedRef.current) { if (transcript) evaluateInterviewAnswer(transcript, "spoken"); else setAnswerStatus("error"); }
+    } catch { if (mountedRef.current) setAnswerStatus("error"); }
+    finally { if (mountedRef.current) setIsTranscribing(false); }
   };
-
   if (isInterviewComplete) {
-    const scorePercentage = Math.round(
-      (correctAnswers / questions.length) * 100
-    );
-    const reviewMessage = scorePercentage >= 90
-      ? "Strong civics practice. Keep reviewing the questions below so the information stays fresh."
-      : scorePercentage >= 70
-      ? "You have a solid foundation. Review the questions below, then try another session."
-      : "Build confidence one question at a time. Start by reviewing the questions below.";
-
-    return (
-      <div className="interview-screen">
-        <div className="results-card">
-          <div className="results-eyebrow">PRACTICE INTERVIEW COMPLETE</div>
-          <h1>Interview Complete</h1>
-          <div className="results-score">
-            {correctAnswers}
-            <span> / {questions.length}</span>
-          </div>
-          <div className="results-percentage">{scorePercentage}%</div>
-          <div className="results-stats">
-            <div className="result-stat correct">
-              <span>✓</span>
-              <strong>{correctAnswers}</strong>
-              <small>Correct</small>
-            </div>
-            <div className="result-stat incorrect">
-              <span>✕</span>
-              <strong>{incorrectAnswers}</strong>
-              <small>Incorrect</small>
-            </div>
-          </div>
-          <p className="results-message">
-            {scorePercentage >= 70
-              ? "Great job. Keep practicing to build confidence."
-              : "Keep practicing. You are making progress."}
-          </p>
-          <section className="interview-review-plan" aria-label="Your focused review plan">
-            <span>YOUR NEXT FOCUS</span>
-            <h2>{missedQuestions.length ? `${missedQuestions.length} question${missedQuestions.length === 1 ? "" : "s"} to revisit` : "Keep your momentum"}</h2>
-            <p>{missedQuestions.length ? reviewMessage : "You did not skip or miss a question in this session. Try another randomized interview to keep building consistency."}</p>
-            {missedQuestions.length > 0 && (
-              <ol>
-                {missedQuestions.slice(0, 3).map((question) => (
-                  <li key={question.id}><span>Q{question.id}</span>{question.english}</li>
-                ))}
-                {missedQuestions.length > 3 && <li className="interview-review-more">+ {missedQuestions.length - 3} more question{missedQuestions.length - 3 === 1 ? "" : "s"} to review</li>}
-              </ol>
-            )}
-          </section>
-          {missedQuestions.length > 0 && (
-            <button className="results-focus-button" onClick={() => onReview?.(missedQuestions.map((question) => question.id))}>
-              REVIEW MISSED QUESTIONS
-            </button>
-          )}
-          <button
-            className="results-button"
-            onClick={() => window.location.reload()}
-          >
-            TRY AGAIN
-          </button>
-          <button className="results-secondary-button" onClick={onExit}>
-            BACK TO HOME
-          </button>
-        </div>
-      </div>
-    );
+    const gradedCount = correctAnswers + incorrectAnswers;
+    const scorePercentage = gradedCount ? Math.round(correctAnswers / gradedCount * 100) : null;
+    return <div className="interview-screen"><div className="results-card">
+      <div className="results-eyebrow">{t("Practice interview complete", "Práctica de entrevista completada")}</div>
+      <h1>{t("Interview Complete", "Entrevista completada")}</h1>
+      <div className="results-score">{correctAnswers}<span> / {gradedCount}</span></div><div className="results-percentage">{scorePercentage === null ? "—" : `${scorePercentage}%`}</div>
+      <div className="results-stats"><div className="result-stat correct"><strong>{correctAnswers}</strong><small>{t("Correct", "Correctas")}</small></div><div className="result-stat incorrect"><strong>{incorrectAnswers}</strong><small>{t("Missed", "Por repasar")}</small></div></div>
+      <p className="results-message">{t("Keep practicing to build confidence. Unverified responses were not graded.", "Sigue practicando para ganar confianza. Las respuestas no verificadas no se calificaron.")}</p>
+      <section className="interview-review-plan" aria-label={t("Your focused review plan", "Tu plan de repaso")}><h2>{t("Your next focus", "Tu próximo paso")}</h2>
+        <p>{missedQuestions.length ? t(`${missedQuestions.length} questions to revisit`, `${missedQuestions.length} preguntas para repasar`) : t("Continue your study plan for the next useful practice.", "Continúa tu plan de estudio con la próxima práctica.")}</p>
+        {missedQuestions.length > 0 && <ol>{missedQuestions.slice(0, 3).map(question => <li key={question.id} lang="en">{question.english}</li>)}</ol>}
+      </section>
+      {missedQuestions.length > 0 && <button className="results-focus-button" onClick={() => onReview?.(missedQuestions.map(question => question.id))}>{t("Review missed questions", "Repasar preguntas")}</button>}
+      <button className={missedQuestions.length ? "results-secondary-button" : "results-focus-button"} onClick={onRestart || onExit}>{t("Practice again", "Practicar otra vez")}</button>
+      <button className="results-secondary-button" onClick={onExit}>{t("Back to Home", "Volver al inicio")}</button>
+    </div></div>;
   }
-
-  if (mode === "full") {
-    return (
-      <div className="interview-screen live-interview-screen live-avatar-only-screen">
-        <header className="interview-header">
-          <button className="back-button interview-exit-button" onClick={onExit} aria-label="Exit live interview">
-            <span>×</span> Exit
-          </button>
-          <div className="interview-brand">
-            <strong>CITIZENSHIP <span>AI</span></strong>
-            <small>LIVE N-400 + CIVICS INTERVIEW</small>
-          </div>
-        </header>
-        <main className="interview-content live-avatar-only-content">
-          <DidLiveAvatar autoStart />
-        </main>
-      </div>
-    );
-  }
-
-  return (
-    <div className={`interview-screen live-interview-screen interviewer-${interviewer} ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
-      <header className="interview-header">
-        <button className="back-button interview-exit-button" onClick={onExit} aria-label="Exit practice interview" title="Exit interview">
-          <span aria-hidden="true">×</span>
-        </button>
-        <div className="interview-brand">
-          <strong>CITIZENSHIP <span>AI</span></strong>
-          <small>{mode === "civics" ? "LIVE CIVICS INTERVIEW" : "LIVE N-400 + CIVICS INTERVIEW"}</small>
+  if (mode === "full" && !useStandardInterview) return <div className="interview-screen live-interview-screen live-avatar-only-screen">
+    <header className="interview-header"><button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit live interview", "Salir de la entrevista")}><span aria-hidden="true">×</span></button><div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>{t("LIVE N-400 + CIVICS INTERVIEW", "ENTREVISTA N-400 + CIVISMO")}</small></div></header>
+    <main className="interview-content live-avatar-only-content"><DidLiveAvatar autoStart language={language} onStandardInterview={() => setUseStandardInterview(true)} /></main>
+  </div>;
+  const question = questions[currentQuestion];
+  return <div className={`interview-screen n400-interview-screen live-interview-screen interviewer-${interviewer} ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
+    <header className="interview-header">
+      <button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit practice interview", "Salir de la práctica")}><span aria-hidden="true">×</span></button>
+      <div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>{t("Civics interview practice", "Práctica de entrevista cívica")}</small></div>
+      <button className="more-button interview-repeat-button" onClick={() => speakQuestion(questionText(question))} disabled={isListening || isTranscribing} aria-label={t("Repeat question", "Repetir pregunta")}>↻</button>
+    </header>
+    <main className="interview-content">
+      <section className="sarah-live-stage" aria-label={t(`${interviewerName}, practice interviewer`, `${interviewerName}, entrevistador de práctica`)}>
+        <div className="live-stage-media" aria-hidden="true"><div className={`live-stage-motion-frame sarah-video-frame ${isKevin ? "kevin-motion-frame" : ""}`}>
+          {isKevin ? <><video src="/kevin-listening.mp4" className="live-sarah-video live-sarah-resting" autoPlay muted loop playsInline /><video src="/kevin-speaking.mp4" className="live-sarah-video live-sarah-speaking" autoPlay muted loop playsInline /></> : <><video src="/sarah-listening.mp4" poster={sarahImage} className="live-sarah-video live-sarah-resting" autoPlay muted loop playsInline /><video src="/sarah-speaking.mp4" poster={sarahSpeakingImage} className="live-sarah-video live-sarah-speaking" autoPlay muted loop playsInline /></>}
+        </div><div className="live-stage-mask"></div></div>
+        <div className="live-stage-topbar"><div className="live-agent-badge"><span className="live-dot"></span><div><strong>{interviewerName}</strong><small>{t("Practice interviewer", "Entrevistador de práctica")}</small></div></div>
+          <div className="live-interviewer-selector" role="group" aria-label={t("Choose your practice interviewer", "Elige quién dirige la práctica")}>{["sarah", "kevin"].map(name => <button key={name} className={interviewer === name ? "active" : ""} aria-pressed={interviewer === name} disabled={isListening || isTranscribing} onClick={() => { setInterviewer(name); speakQuestion(questionText(question), undefined, name); }}>{name === "sarah" ? "Sarah" : "Kevin"}</button>)}</div>
+          <span className="live-practice-badge">{t("Practice", "Práctica")}</span>
         </div>
-        <button
-          className="more-button interview-repeat-button"
-          onClick={() => speakQuestion(questionText(questions[currentQuestion]))}
-          aria-label={`Repeat ${interviewerName}'s question`}
-          title="Repeat question"
-        >
-          ↻
-        </button>
-      </header>
-
-      <main className="interview-content">
-        <section className="sarah-live-stage" aria-label={`${interviewerName}, AI practice interviewer`}>
-          <div className="live-stage-media" aria-hidden="true">
-            <div className={`live-stage-motion-frame sarah-video-frame ${isKevin ? "kevin-motion-frame" : ""}`}>
-              {isKevin ? (
-                <>
-                  <video
-                    src="/kevin-listening.mp4"
-                    className="live-sarah-video live-sarah-resting"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    aria-hidden="true"
-                  />
-                  <video
-                    src="/kevin-speaking.mp4"
-                    className="live-sarah-video live-sarah-speaking"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    aria-hidden="true"
-                  />
-                </>
-              ) : (
-                <>
-                  <video
-                    src="/sarah-listening.mp4"
-                    poster={sarahImage}
-                    className="live-sarah-video live-sarah-resting"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    aria-hidden="true"
-                  />
-                  <video
-                    src="/sarah-speaking.mp4"
-                    poster={sarahSpeakingImage}
-                    className="live-sarah-video live-sarah-speaking"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="auto"
-                    aria-hidden="true"
-                  />
-                </>
-              )}
-            </div>
-            <div className="live-stage-mask"></div>
-          </div>
-
-          <div className="live-stage-topbar">
-            <div className="live-agent-badge">
-              <span className="live-dot"></span>
-              <div><strong>{interviewerName} AI</strong><small>Practice interviewer</small></div>
-            </div>
-            <div className="live-interviewer-selector" role="group" aria-label="Choose your interview officer">
-              <button type="button" className={!isKevin ? "active" : ""} aria-pressed={!isKevin} onClick={() => { setInterviewer("sarah"); speakQuestion(questionText(questions[currentQuestion]), undefined, "sarah"); }}>Sarah</button>
-              <button type="button" className={isKevin ? "active" : ""} aria-pressed={isKevin} onClick={() => { setInterviewer("kevin"); speakQuestion(questionText(questions[currentQuestion]), undefined, "kevin"); }}>Kevin</button>
-            </div>
-            <span className="live-practice-badge">INDEPENDENT PRACTICE</span>
-          </div>
-
-          <div className="live-stage-presence">
-            <span>AI INTERVIEW COACH</span>
-            <strong>{interviewerName}</strong>
-            <small>{isSpeaking ? "Speaking with you" : isListening ? "Listening to your answer" : "Ready for your response"}</small>
-          </div>
-
-          <section className="live-question-card" aria-live="polite">
-            <div className="live-question-header">
-              <div className="ai-turn-indicator">
-                <span className="live-sound-icon">⌁</span>
-                {isSpeaking ? `${interviewerName.toUpperCase()} IS SPEAKING` : isListening ? `${interviewerName.toUpperCase()} IS LISTENING` : "YOUR TURN"}
-              </div>
-              <span>QUESTION {currentQuestion + 1} / {questions.length}</span>
-            </div>
-            <h2 className="question">{questionText(questions[currentQuestion])}</h2>
-            <p className="question-spanish">{questionSpanish(questions[currentQuestion])}</p>
-            <div className="live-progress-dots" aria-label={`Question ${currentQuestion + 1} of ${questions.length}`}>
-              {questions.map((_, index) => <span key={index} className={index <= currentQuestion ? "active" : ""}></span>)}
-            </div>
-          </section>
-
-          <div className="live-voice-status" aria-live="polite">
-            <div className="live-voice-bars" aria-hidden="true">
-              {Array.from({ length: 8 }, (_, index) => <span key={index}></span>)}
-            </div>
-            <span>{isSpeaking ? `${interviewerName} is speaking…` : isListening ? "Listening… tap again when you finish" : "Tap the microphone when you are ready"}</span>
-          </div>
+        <div className="live-stage-presence"><span>{t("Civics interview practice", "Práctica de entrevista cívica")}</span><strong>{interviewerName}</strong><small>{isSpeaking ? t("Speaking with you", "Hablando contigo") : isListening ? t("Listening to your answer", "Escuchando tu respuesta") : t("Ready for your response", "Listo para tu respuesta")}</small></div>
+        <section className="live-question-card" aria-live="polite"><div className="live-question-header"><div className="ai-turn-indicator">{isSpeaking ? t(`${interviewerName} is speaking`, `${interviewerName} está hablando`) : isListening ? t(`${interviewerName} is listening`, `${interviewerName} está escuchando`) : t("Your turn", "Tu turno")}</div><span>{t("Question", "Pregunta")} {currentQuestion + 1} / {questions.length}</span></div>
+          <h2 className="question" lang="en">{questionText(question)}</h2>{language === "es" && answer && <p className="question-spanish" lang="es">{questionSpanish(question)}</p>}
+          <div className="live-progress-dots" role="progressbar" aria-valuemin={0} aria-valuemax={questions.length} aria-valuenow={currentQuestion + 1} aria-label={t(`Question ${currentQuestion + 1} of ${questions.length}`, `Pregunta ${currentQuestion + 1} de ${questions.length}`)}>{questions.map((_, index) => <span key={index} className={index <= currentQuestion ? "active" : ""}></span>)}</div>
         </section>
-
-        <section className="live-answer-feedback" aria-live="polite">
-          {answerStatus === "evaluating" && (
-            <div className="ai-thinking-panel">
-              <div className="ai-thinking-main">
-                <div className="ai-brain">
-                  <div className="brain-glow"></div>
-                  <span>✦</span>
-                </div>
-                <div className="ai-thinking-text">
-                  <div className="ai-thinking-title">
-                    AI IS THINKING<span className="thinking-dots">...</span>
-                  </div>
-                  <div className="ai-thinking-subtitle">
-                    Evaluating response patterns...
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {answer && (
-            <div className={`answer-preview ${answerStatus}`}>
-              <span>YOUR INPUT</span>
-              <p>{answer}</p>
-              <div className="answer-result">
-                {answerStatus === "evaluating" && "Evaluating..."}
-                {answerStatus === "correct" && "✓ Verified Correct"}
-                {answerStatus === "incorrect" && "✕ Needs Improvement"}
-                {answerStatus === "incomplete" && "! Incomplete Answer"}
-                {answerStatus === "error" && "Evaluation Error"}
-              </div>
-            </div>
-          )}
-        </section>
-
-        <section className="live-interview-controls" aria-label="Interview controls">
-          <button
-            className={`premium-action-button live-mic-button ${isListening ? "listening" : ""}`}
-            onClick={isListening ? stopListening : startListening}
-            disabled={isSpeaking}
-            aria-label={isListening ? "Stop recording answer" : "Start recording answer"}
-          >
-            <span className="premium-action-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg>
-            </span>
-            <span className="premium-action-copy">
-              <small>{isListening ? "RECORDING" : "YOUR TURN"}</small>
-              <strong>{isListening ? "Finish answer" : "Answer"}</strong>
-            </span>
-            <span className="premium-action-arrow" aria-hidden="true">{isListening ? "■" : "→"}</span>
-          </button>
-          <button
-            className="premium-action-button live-skip-button"
-            onClick={handleSkip}
-            disabled={isSpeaking || isListening}
-          >
-            <span className="premium-action-icon" aria-hidden="true">?</span>
-            <span className="premium-action-copy">
-              <small>NOT SURE</small>
-              <strong>I don&apos;t know</strong>
-            </span>
-            <span className="premium-action-arrow" aria-hidden="true">→</span>
-          </button>
-          <div className="live-score-summary" aria-label="Current score">
-            <span><i className="correct-dot"></i>{correctAnswers} correct</span>
-            <span><i className="incorrect-dot"></i>{incorrectAnswers} missed</span>
-          </div>
-        </section>
-      </main>
-    </div>
-  );
+        <div className="live-voice-status" aria-live="polite"><span>{isTranscribing ? t("Preparing your response…", "Preparando tu respuesta…") : isListening ? t("Listening… finish recording when ready", "Escuchando… termina la grabación cuando estés listo") : t("Speak or type your response below", "Responde hablando o escribiendo abajo")}</span></div>
+      </section>
+      <section className="live-answer-feedback" aria-live="polite">
+        {answer && <div className={`answer-preview ${answerStatus}`}><span>{t("Your response", "Tu respuesta")}</span><p>{answer}</p><div className="answer-result">{feedback}</div></div>}
+        {readyForNext && answerStatus !== "correct" && question.acceptedAnswers?.length > 0 && <details className="n400-known-answer"><summary>{t("Official answers", "Respuestas oficiales")}</summary><ul>{question.acceptedAnswers.map(item => <li key={item} lang="en">{item}</li>)}</ul></details>}
+        {answerStatus === "error" && <p role="alert">{t("We couldn't record your response. Try again or type it below.", "No pudimos grabar tu respuesta. Inténtalo otra vez o escríbela abajo.")}</p>}
+      </section>
+      <section className="live-interview-controls" aria-label={t("Interview controls", "Controles de entrevista")}>
+        {readyForNext ? <button className="primary-button" onClick={goToNextQuestion}>{t("Continue", "Continuar")}</button> : <>
+          <form className="n400-text-response" onSubmit={event => { event.preventDefault(); evaluateInterviewAnswer(typedAnswer); }}><label htmlFor="civics-interview-answer">{t("Type your answer", "Escribe tu respuesta")}</label><textarea id="civics-interview-answer" rows={3} maxLength={1600} value={typedAnswer} disabled={isListening || isTranscribing} onFocus={stopQuestionSpeech} onChange={event => setTypedAnswer(event.target.value)} /><button className="primary-button" disabled={!typedAnswer.trim() || isListening || isTranscribing}>{t("Check response", "Comprobar respuesta")}</button></form>
+          <button className={`secondary-button live-mic-button ${isListening ? "listening" : ""}`} onClick={isListening ? stopListening : startListening} disabled={isTranscribing} aria-pressed={isListening} aria-label={isListening ? t("Stop recording answer", "Terminar de grabar respuesta") : t("Start recording answer", "Comenzar a grabar respuesta")}>{isListening ? t("Finish recording", "Terminar grabación") : t("Speak your answer", "Responder con voz")}</button>
+          <button className="live-skip-button" onClick={handleSkip} disabled={isListening || isTranscribing}>{t("I don't know", "No lo sé")}</button>
+        </>}
+        <div className="live-score-summary" role="group" aria-label={t("Current score", "Resultado actual")}><span>{correctAnswers} {t("correct", "correctas")}</span><span>{incorrectAnswers} {t("missed", "por repasar")}</span></div>
+      </section>
+    </main>
+  </div>;
 }
 
 function AppContent({ userKey }) {
   const { runTransition } = useProgressGate();
   // 1. TODOS LOS HOOKS (ESTADOS) VAN AQUÍ ARRIBA SIN EXCEPCIÓN
   const [navigation, setNavigation] = useState(() => createNavigationHistory(
-    window.location.hash === "#privacy" ? "settings" : "home"
+    readAppRoute(window.location.hash).screen
   ));
   const screen = navigation.current;
   const previousScreen = navigation.entries.at(-1);
-  const previousScreenLabel = (fallback = "home") => ({
+  const previousScreenLabel = (fallback = "home") => language === "es" ? ({home:"Inicio",practice:"Práctica",civics:"Civismo",english:"Inglés",reading:"Lectura",writing:"Escritura",coach:"Sarah",progress:"Progreso",immigrationHelp:"Ayuda",podcasts:"Podcasts",quiz:"Examen",civicsGuide:"Guía",interview:"Entrevista",profile:"Perfil",uscisTracker:"Mi proceso"})[previousScreen || fallback] || "Volver" : ({
     home: "Home",
     practice: "Practice",
     civics: "Civics",
@@ -1189,7 +525,8 @@ function AppContent({ userKey }) {
     interview: "Interview",
   })[previousScreen || fallback] || "Back";
   const [coachMode, setCoachMode] = useState("welcome");
-  const [interviewMode, setInterviewMode] = useState("full");
+  const [interviewMode, setInterviewMode] = useState(() => readAppRoute(window.location.hash).interviewMode);
+  const [plannedQuizMode, setPlannedQuizMode] = useState(null);
   const [interviewRunId, setInterviewRunId] = useState(0);
   const [civicsIndex, setCivicsIndex] = useState(() => migrateLegacyCivicsProgress(civicsQuestionBank.length, userKey)?.questionIndex || 0);
   const [civicsFlipped, setCivicsFlipped] = useState(false);
@@ -1227,6 +564,19 @@ function AppContent({ userKey }) {
   );
   const [accountOpen, setAccountOpen] = useState(false);
   const { session, recordAccountEvent } = useAccount();
+  const brainProfile = useBrainProfile(userKey, session);
+  const t = useCallback((en, es) => language === "es" ? es : en, [language]);
+  useEffect(() => {
+    const handleRoute = () => {
+      const route = readAppRoute(window.location.hash);
+      if (route.screen === "interview") setInterviewMode(route.interviewMode);
+      setNavigation(current => navigateForward(current, route.screen, { replace: true }));
+    };
+    window.addEventListener("hashchange", handleRoute);
+    window.addEventListener("popstate", handleRoute);
+    return () => { window.removeEventListener("hashchange", handleRoute); window.removeEventListener("popstate", handleRoute); };
+  }, []);
+  useEffect(() => { document.documentElement.lang = language; }, [language]);
 
   const [profileRevision, setProfileRevision] = useState(0);
   useEffect(() => {
@@ -1240,7 +590,7 @@ function AppContent({ userKey }) {
     sync(); window.addEventListener("online", sync);
     return () => { active = false; window.removeEventListener("online", sync); };
   }, [session, userKey]);
-  const civicProfile = readCivicProfile(userKey);
+  const { civicProfile, refreshStatus: civicRefreshStatus } = useCivicProfile(userKey, brainProfile.profile);
   const trackerCopy = CASE_TRACKER_COPY[language];
   
   const [civicsViewed, setCivicsViewed] = useState(() => {
@@ -1332,13 +682,37 @@ function AppContent({ userKey }) {
 
   const [readingOrder, setReadingOrder] = useState(() =>
     (getModuleProgress(userKey).reading?.questionIds.length === readingSentences.length ? getModuleProgress(userKey).reading.questionIds.map(id => id - 1) : [...readingSentences]
-      .map((_, index) => index)
-      .sort(() => Math.random() - 0.5))
+      .map((_, index) => index))
   );
   const practiceSummary = getPracticeSummary(practiceEvents, civicsViewed, civicsMastered);
+  const brainContext = buildBrainContext({
+    ...brainProfile.profile, civicProfile, language,
+    userProfile: { ...brainProfile.profile.userProfile, zipCode: brainProfile.profile.userProfile?.zipCode || civicProfile?.zipCode },
+    preferences: { ...brainProfile.profile.preferences, soundEnabled, theme: themePreference, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone },
+    learningProfile: { practiceEvents, civicsViewed, civicsMastered, civicsNeedsPractice, quizProgress: getQuizProgress(userKey), moduleProgress: getModuleProgress(userKey), n400Progress: getN400LearningProgress(userKey) },
+  });
+  const dailyPlan = getDailyStudyPlan(brainContext, { now: new Date().toISOString() });
+  const nextAction = getNextAction(brainContext, dailyPlan);
+  const previousBrainContext = useRef(null);
+  useEffect(() => {
+    emitCompanionContext(brainContext, previousBrainContext.current);
+    previousBrainContext.current = brainContext;
+  }, [brainContext]);
+  useEffect(() => {
+    if (screen !== "home") return;
+    if (dailyPlan.daysUntilInterview !== null && dailyPlan.daysUntilInterview >= 0 && dailyPlan.daysUntilInterview <= 14) {
+      emitCompanionState("determined", { message: t("Your interview is approaching. Let's prepare together.", "Tu entrevista se acerca. Preparémonos juntos."), duration: 4000 });
+    } else if (civicsMastered.length > 0) {
+      emitCompanionState("progress", { message: t("You're building lasting knowledge, one question at a time.", "Estás aprendiendo, una pregunta a la vez."), duration: 3500 });
+    }
+  }, [screen, language, dailyPlan.daysUntilInterview, civicsMastered.length, t]);
 
-  const handleQuestionResult = (questionId, correct) => {
+  const handleQuestionResult = (questionId, correct, evidence) => {
     const index = civicsQuestionBank.findIndex(question => question.questionId === questionId);
+    if (index < 0) return;
+    if (evidence?.source === "interview") {
+      recordQuizAttempt({userKey, question: civicsQuestionBank[index], mode: "recall", correct, helpUsed: evidence.helpUsed || []});
+    }
     setCivicsNeedsPractice(recordCivicsMistake(index, correct, userKey));
   };
   const recordPractice = (event) => {
@@ -1349,24 +723,43 @@ function AppContent({ userKey }) {
   const navigateTo = (nextScreen, options) => {
     if (["civics", "quiz", "vocabulary", "choose", "connect", "reading", "writing", "interview"].includes(nextScreen) && nextScreen !== screen) recordAccountEvent("practice_started", nextScreen).catch(() => {});
     setNavigation((current) => navigateForward(current, nextScreen, options));
+    window.history.pushState(null, "", appRouteHash(nextScreen, nextScreen === "interview" ? interviewMode : undefined));
   };
 
   const goBack = (fallbackScreen = "home") => {
-    setNavigation((current) => navigateBack(current, fallbackScreen));
+    setNavigation((current) => {
+      const previous = navigateBack(current, fallbackScreen);
+      window.history.replaceState(null, "", appRouteHash(previous.current));
+      return previous;
+    });
   };
 
   const startAiFeature = (feature, continuation) => {
     requestAiSession(feature, continuation, language);
   };
+  const requestVoiceAccess = continuation => requestAiSession("classicInterview", continuation, language);
 
 
   const startInterview = (mode = "full") => {
-    const feature = mode === "full" ? "realInterview" : "classicInterview";
-    startAiFeature(feature, () => {
+    const begin = () => {
       setInterviewMode(mode);
-      setInterviewRunId((current) => current + 1);
+      setInterviewRunId(current => current + 1);
       navigateTo("interview");
-    });
+      window.history.replaceState(null, "", appRouteHash("interview", mode));
+    };
+    if (mode === "full") startAiFeature("realInterview", begin);
+    else begin();
+  };
+
+  const continueDailyPlan = () => {
+    if (nextAction.module === "interview") { startInterview(nextAction.mode || "civics"); return; }
+    if (nextAction.module === "civics" && nextAction.questionIds?.length) {
+      const index = civicsQuestionBank.findIndex(question => question.questionId === nextAction.questionIds[0]);
+      if (index >= 0) setCivicsIndex(index);
+      setCivicsStudyMode("study");
+    }
+    if (nextAction.module === "quiz") setPlannedQuizMode(nextAction.mode || "recall");
+    navigateTo(nextAction.module || "practice");
   };
 
   const openPracticeModule = (key) => {
@@ -1455,7 +848,7 @@ function AppContent({ userKey }) {
     setReadingIndex((currentIndex) => {
       const nextIndex = currentIndex + 1;
       if (nextIndex >= readingOrder.length) {
-        const newOrder = [...readingOrder].sort(() => Math.random() - 0.5);
+        const newOrder = [...readingOrder];
         setReadingOrder(newOrder);
         return 0;
       }
@@ -1495,8 +888,8 @@ function AppContent({ userKey }) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ sentenceId: sentence.sentenceId, answer: writingAnswer }),
           });
-        } catch (semanticReviewError) {
-          console.warn("Semantic writing review unavailable; using deterministic review.", semanticReviewError);
+        } catch {
+          console.warn("Semantic writing review unavailable; using deterministic review.");
         }
       }
       const completeResult = {
@@ -1519,9 +912,9 @@ function AppContent({ userKey }) {
       recordPractice({ module: "writing", score: completeResult.score, outcome: resultLabel });
       setWritingEvaluation({ ...completeResult, resultLabel });
       setAiMessage("");
-    } catch (error) {
-      console.error("Writing evaluation error:", error);
-      setAiMessage("Unable to evaluate writing.");
+    } catch {
+      console.error("Writing evaluation error:");
+      setAiMessage(t("We could not review your writing. Please try again.", "No pudimos revisar tu escritura. Inténtalo otra vez."));
     } finally {
       setIsAIThinking(false);
     }
@@ -1555,9 +948,9 @@ function AppContent({ userKey }) {
         { role: "assistant", content: result.reply || "" },
       ]);
       recordPractice({ module: "coach", outcome: "reply" });
-    } catch (error) {
-      console.error("Coach AI error:", error);
-      setCoachReply(error.message || "I'm having trouble connecting right now. Please try again.");
+    } catch {
+      console.error("Coach AI error:");
+      setCoachReply(t("We could not connect. Please try again.", "No pudimos conectar. Inténtalo otra vez."));
     } finally {
       setCoachThinking(false);
     }
@@ -1568,9 +961,9 @@ function AppContent({ userKey }) {
       coachRecorderRef.current = await startAudioRecording();
       setCoachListening(true);
       emitCompanionState("thinking", { message: language === "es" ? "Te escucho." : "I'm listening." });
-    } catch (error) {
-      console.error("Coach microphone error:", error);
-      setCoachReply(error.message || "Please allow microphone access and try again.");
+    } catch {
+      console.error("Coach microphone error:");
+      setCoachReply(t("Allow microphone access and try again.", "Permite el acceso al micrófono e inténtalo otra vez."));
     }
   };
 
@@ -1584,9 +977,9 @@ function AppContent({ userKey }) {
       const transcript = await transcribeRecording(await recorder.stop());
       if (!transcript) throw new Error("No speech was detected.");
       await sendCoachMessage(transcript);
-    } catch (error) {
-      console.error("Coach transcription error:", error);
-      setCoachReply(error.message || "I couldn't hear you. Please try again.");
+    } catch {
+      console.error("Coach transcription error:");
+      setCoachReply(t("We could not hear you. Please try again.", "No pudimos escucharte. Inténtalo otra vez."));
     }
   };
 
@@ -1595,12 +988,12 @@ function AppContent({ userKey }) {
       readingRecorderRef.current = await startAudioRecording();
       setIsAIThinking(true);
       setIsReading(true);
-      setAiMessage("Listening to your reading...");
+      setAiMessage(t("Listening to your reading…", "Escuchando tu lectura…"));
       emitCompanionState("thinking", { message: language === "es" ? "Te escucho. Lee con calma." : "I'm listening. Read at your own pace." });
-    } catch (error) {
-      console.error("Reading microphone error:", error);
+    } catch {
+      console.error("Reading microphone error:");
       setIsAIThinking(false);
-      setAiMessage(error.message || "Please allow microphone access and try again.");
+      setAiMessage(t("Allow microphone access and try again.", "Permite el acceso al micrófono e inténtalo otra vez."));
     }
   };
 
@@ -1611,10 +1004,10 @@ function AppContent({ userKey }) {
     if (!recorder) return;
 
     try {
-      setAiMessage("AI is listening to your reading...");
+      setAiMessage(t("Reviewing your reading…", "Revisando tu lectura…"));
       const transcript = await transcribeRecording(await recorder.stop());
       if (!transcript) {
-        setAiMessage("I couldn't hear your reading. Please try again.");
+        setAiMessage(t("We could not hear your reading. Please try again.", "No pudimos escuchar tu lectura. Inténtalo otra vez."));
         return;
       }
 
@@ -1638,9 +1031,9 @@ function AppContent({ userKey }) {
 
       setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
       setTimeout(nextReadingSentence, 3000);
-    } catch (error) {
-      console.error("Reading AI error:", error);
-      setAiMessage(error.message || "Unable to evaluate reading.");
+    } catch {
+      console.error("Reading AI error:");
+      setAiMessage(t("We could not review your reading. Please try again.", "No pudimos revisar tu lectura. Inténtalo otra vez."));
     } finally {
       setIsAIThinking(false);
     }
@@ -1653,6 +1046,7 @@ function AppContent({ userKey }) {
   };
 
   const completeOnboarding = ({ zipCode, initialPractice = "home" } = {}) => {
+    if (zipCode && !brainContext.userProfile.zipCode) brainProfile.updateProfile({ userProfile: {zipCode} });
     if (zipCode && !civicProfile) { saveCivicProfile({ zipCode, districtStatus: "unknown", verifiedAt: null }, userKey); setProfileRevision(value => value + 1); }
     saveLocalValue(ONBOARDING_STORAGE_KEY, "complete");
     setOnboardingComplete(true);
@@ -1691,10 +1085,12 @@ function AppContent({ userKey }) {
   }
 
   if (screen === "immigrationHelp") {
-    return <ImmigrationHelp language={language} onLanguageChange={setPreferredLanguage} onBack={() => goBack("home")} />;
+    return <ImmigrationHelp language={language} caseProfile={brainContext.caseProfile} n400Profile={brainContext.n400Profile} onLanguageChange={setPreferredLanguage} onBack={() => goBack("home")} />;
   }
 
-  if (screen === "civicProfile") return <MyCivicsProfile key={`${userKey}:${profileRevision}`} profile={civicProfile} onSave={profile => { saveCivicProfile(profile, userKey); setProfileRevision(value => value + 1); }} onBack={() => goBack("home")} />;
+  if (screen === "profile") return <Profile language={language} profile={brainProfile.profile} onUpdate={brainProfile.updateProfile} onBack={() => goBack("home")} onOpenCivicProfile={() => navigateTo("civicProfile")} onOpenAccount={() => setAccountOpen(true)} onOpenSettings={() => navigateTo("settings")} cloudStatus={brainProfile.cloudStatus} onSaveCloud={brainProfile.saveToCloud} onRestoreCloud={brainProfile.restoreFromCloud} onDeleteCloud={brainProfile.deleteFromCloud} onReset={brainProfile.resetProfile} />;
+  if (screen === "uscisTracker") return <CaseJourney language={language} userKey={userKey} caseProfile={brainContext.caseProfile} n400Profile={brainContext.n400Profile} onUpdate={caseProfile => brainProfile.updateProfile({ caseProfile })} onNavigate={(destination, options) => destination === "interview" ? startInterview(options?.mode || "n400") : navigateTo(destination, options)} onBack={() => goBack("home")} />;
+  if (screen === "civicProfile") return <MyCivicsProfile key={`${userKey}:${profileRevision}`} userKey={userKey} language={language} userProfile={brainContext.userProfile} n400Profile={brainContext.n400Profile} profile={civicProfile} refreshStatus={civicRefreshStatus} onProfileUpdate={userProfile => brainProfile.updateProfile({userProfile})} onSave={profile => { saveCivicProfile(profile, userKey); setProfileRevision(value => value + 1); }} onBack={() => goBack("profile")} />;
   if (screen === "pro") return <AccountSheet embedded language={language} onClose={() => goBack("home")} />;
   if (screen === "podcasts") {
     return <PodcastLibrary language={language} onBack={() => goBack("home")} />;
@@ -1702,7 +1098,7 @@ function AppContent({ userKey }) {
 
   if (screen === "civicsGuide") {
     return (
-      <Suspense fallback={<div className="study-guide-route-loading" role="status">Loading official study guide…</div>}>
+      <Suspense fallback={<div className="study-guide-route-loading" role="status">{t("Loading official study guide…", "Cargando la guía oficial…")}</div>}>
         <CivicsStudyGuide language={language} onBack={() => goBack("civics")} />
       </Suspense>
     );
@@ -1710,13 +1106,16 @@ function AppContent({ userKey }) {
 
   if (["quiz", "vocabulary", "choose", "connect"].includes(screen)) {
     return (
-      <Suspense fallback={<div className="study-guide-route-loading" role="status">Loading adaptive quiz…</div>}>
+      <Suspense fallback={<div className="study-guide-route-loading" role="status">{t("Preparing practice…", "Preparando tu práctica…")}</div>}>
         <QuizLearningPath
           key={`${userKey}:${screen}`}
           language={language}
           onQuestionResult={handleQuestionResult}
           civicProfile={civicProfile}
-          initialMode={["vocabulary", "choose", "connect"].includes(screen) ? screen : null}
+          initialMode={["vocabulary", "choose", "connect"].includes(screen) ? screen : plannedQuizMode}
+          checkpointModule={screen}
+          preferredQuestionIds={dailyPlan.items.find(item => item.module === "quiz" || item.module === "civics")?.questionIds || []}
+          sessionSize={Math.max(1, Math.min(10, (dailyPlan.items.find(item => item.module === "quiz")?.minutes || 4) * 2))}
           userKey={session?.user?.id || "guest"}
           onBack={() => goBack("civics")}
           onPracticeComplete={({ score, outcome }) => recordPractice({ module: "quiz", score, outcome, category: "civics" })}
@@ -1725,18 +1124,6 @@ function AppContent({ userKey }) {
     );
   }
 
-  if (screen === "civics") {
-    // ... mantén tu código actual de civics aquí o déjalo tal cual lo tienes ...
-  }
-  if (screen === "practice") {
-    // ... mantén tu código actual de practice aquí ...
-  }
-  if (screen === "english") {
-    // ... mantén tu código actual de english aquí ...
-  }
-  if (screen === "reading") {
-    // ... mantén tu código actual de reading aquí ...
-  }
   if (screen === "coach") {
     const conversationStarted = coachMode === "conversation";
     return (
@@ -1746,35 +1133,35 @@ function AppContent({ userKey }) {
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
         <main className="coach-conversation-content coach-video-call-content">
-          <div className="practice-eyebrow">AI ENGLISH COACH · VIDEO PRACTICE</div>
+          <div className="practice-eyebrow">{t("AI ENGLISH COACH · VIDEO PRACTICE", "CONVERSACIÓN EN INGLÉS · PRÁCTICA EN VIDEO")}</div>
           <div className={"coach-conversation-card coach-video-call-card " + (conversationStarted ? "started" : "ready")}>
-            <div className={"coach-conversation-avatar " + (coachSpeaking ? "speaking" : "listening")} aria-label={coachSpeaking ? "Sarah speaking" : "Sarah ready to listen"}>
+            <div className={"coach-conversation-avatar " + (coachSpeaking ? "speaking" : "listening")} role="img" aria-label={coachSpeaking ? t("Sarah speaking", "Sarah hablando") : t("Sarah ready to listen", "Sarah lista para escuchar")}>
               <video src="/sarah-listening.mp4" poster={sarahImage} className="coach-avatar-video coach-avatar-listening" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
               <video src="/sarah-speaking.mp4" poster={sarahSpeakingImage} className="coach-avatar-video coach-avatar-speaking" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
               <div className="coach-video-call-overlay" aria-hidden="true"></div>
-              <div className="coach-video-call-identity"><span></span><div><strong>Sarah AI</strong><small>English conversation coach</small></div></div>
+              <div className="coach-video-call-identity"><span></span><div><strong>Sarah AI</strong><small>{t("English conversation coach", "Práctica de conversación en inglés")}</small></div></div>
             </div>
             <div className="coach-conversation-status" role="status" aria-live="polite">
               <span></span>
-              {!conversationStarted ? "SARAH IS READY" : coachListening ? "LISTENING TO YOU" : coachThinking ? "SARAH IS THINKING" : coachSpeaking ? "SARAH IS SPEAKING" : "CONVERSATION ACTIVE"}
+              {!conversationStarted ? t("Sarah is ready", "Sarah está lista") : coachListening ? t("Listening to you", "Te escucha") : coachThinking ? t("Preparing a response", "Preparando una respuesta") : coachSpeaking ? t("Sarah is speaking", "Sarah está hablando") : t("Conversation active", "Conversación activa")}
             </div>
             <div className="coach-message">
               <div className="coach-message-label">SARAH</div>
-              <div className="coach-message-text">{conversationStarted ? (coachReply || "Hi! I'm Sarah. Let's practice English together. Tell me about yourself.") : "Ready when you are. Start the conversation and practice English with me naturally."}</div>
+              <div className="coach-message-text">{conversationStarted ? (coachReply || "Hi! I'm Sarah. Let's practice English together. Tell me about yourself.") : t("Ready when you are. Start a conversation to practice English.", "Cuando quieras, inicia una conversación para practicar inglés.")}</div>
             </div>
             <div className="coach-response-area">
               {!conversationStarted ? (
                 <button className="coach-start-button coach-call-start-button" onClick={() => { setCoachReply(""); setCoachMode("conversation"); speakCoachReply("Hi! I'm Sarah. Let's practice English together. Tell me about yourself."); }} type="button">
                   <span className="coach-call-icon" aria-hidden="true">▶</span>
-                  <span className="coach-call-copy"><small>AI ENGLISH COACH</small><strong>Start conversation</strong></span>
+                  <span className="coach-call-copy"><small>{t("AI ENGLISH COACH", "Conversación en inglés")}</small><strong>{t("Start conversation", "Iniciar conversación")}</strong></span>
                   <span className="coach-call-arrow" aria-hidden="true">→</span>
                 </button>
               ) : (
                 <>
-                  <div className="coach-response-label">YOUR RESPONSE</div>
+                  <div className="coach-response-label">{t("YOUR RESPONSE", "Tu respuesta")}</div>
                   <button className={"coach-mic-button " + (coachListening ? "listening" : "")} onClick={coachListening ? stopCoachListening : startCoachListening} disabled={coachThinking} aria-busy={coachThinking} type="button">
                     <div className="coach-mic-icon-wrapper"><span className="mic-glyph">🎙</span></div>
-                    <span className="coach-mic-text">{coachThinking ? "Sarah is preparing a response..." : coachListening ? "Tap again when you finish speaking" : "Tap the microphone to speak"}</span>
+                    <span className="coach-mic-text">{coachThinking ? t("Preparing a response…", "Preparando una respuesta…") : coachListening ? t("Tap again when you finish", "Toca otra vez al terminar") : t("Tap the microphone to speak", "Toca el micrófono para hablar")}</span>
                   </button>
                 </>
               )}
@@ -1891,7 +1278,7 @@ function AppContent({ userKey }) {
             </div>
           </section>
 
-          <nav className="civics-modes" aria-label="Civics study modes">
+          <nav className="civics-modes" aria-label={t("Civics study modes", "Formas de estudiar civismo")}>
             <button className={civicsStudyMode === "study" ? "active" : ""} onClick={() => { setCivicsStudyMode("study"); setCivicsFlipped(false); }}>{copy.cards}</button>
             <button onClick={() => startInterview("civics")}>{copy.practice}</button>
             <button onClick={() => navigateTo("quiz")}>{copy.quiz}</button>
@@ -1936,12 +1323,12 @@ function AppContent({ userKey }) {
                   copy={copy}
                   footer={<div className="civics-card-controls">
               <div className="civics-deck-navigation">
-                <button onClick={() => changeCivicsCard(-1)} aria-label="Previous question"><span>←</span>{isSpanish ? "Anterior" : "Previous"}</button>
+                <button onClick={() => changeCivicsCard(-1)} aria-label={t("Previous question", "Pregunta anterior")}><span>←</span>{isSpanish ? "Anterior" : "Previous"}</button>
                 <div><strong>{civicsViewed.length} / 128</strong><em>{copy.studied}</em><span>·</span><strong>{civicsMastered.length}</strong><em>{copy.mastered}</em><span>·</span><strong>{civicsNeedsPractice.length}</strong><em>{copy.review}</em></div>
-                <button className="next" onClick={() => changeCivicsCard(1)} aria-label="Next question">{isSpanish ? "Siguiente" : "Next"}<span>→</span></button>
+                <button className="next" onClick={() => changeCivicsCard(1)} aria-label={t("Next question", "Pregunta siguiente")}>{isSpanish ? "Siguiente" : "Next"}<span>→</span></button>
               </div>
 
-              {civicsFlipped && <div className="civics-study-feedback" aria-label="Study feedback">
+              {civicsFlipped && <div className="civics-study-feedback" aria-label={t("Study feedback", "Resultado de práctica")}>
                 <button className="needs-practice" onClick={() => setStudyFeedback(false)}>{copy.need}</button>
                 <button className="know-this" onClick={() => setStudyFeedback(true)}>{copy.know}</button>
               </div>}
@@ -1968,43 +1355,31 @@ function AppContent({ userKey }) {
   }
 
   if (screen === "practice") {
-    return (
-      <div className="practice-screen">
-        <header className="practice-header">
-          <button className="back-button" onClick={() => goBack("home")}>
-            ← {previousScreenLabel("home")}
-          </button>
-          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
-        </header>
-        <main className="practice-content">
-          <div className="practice-eyebrow">AI-POWERED CITIZENSHIP TRAINING</div>
-          <h1>Practice.</h1>
-          <p className="practice-intro">Choose how you want to prepare for your citizenship interview.</p>
-          <div className="practice-options">
-            <button className="practice-option" onClick={() => navigateTo("civics")}>
-              <div className="practice-option-left">
-                <div className="practice-option-icon">◉</div>
-                <div className="practice-option-content">
-                  <h2>Civics</h2>
-                  <p>128 official questions</p>
-                </div>
-              </div>
-              <span className="practice-arrow">→</span>
-            </button>
-            <button className="practice-option" onClick={() => navigateTo("english")}>
-              <div className="practice-option-left">
-                <div className="practice-option-icon">A</div>
-                <div className="practice-option-content">
-                  <h2>English</h2>
-                  <p>Reading & writing</p>
-                </div>
-              </div>
-              <span className="practice-arrow">→</span>
-            </button>
-          </div>
-        </main>
-      </div>
-    );
+    const practiceItems = [
+      {id:"interview-n400",label:"N-400",es:"N-400"}, {id:"interview-civics",label:"Interview",es:"Entrevista"},
+      {id:"civics",label:"Civics",es:"Civismo"}, {id:"quiz",label:"Quiz",es:"Examen"},
+      {id:"reading",label:"Reading",es:"Lectura"}, {id:"writing",label:"Writing",es:"Escritura"},
+      {id:"podcasts",label:"Listening",es:"Escuchar"},
+    ];
+    if (dailyPlan.focus === "oath_preparation") practiceItems.unshift({id:"uscisTracker",label:"Oath",es:"Juramento"});
+    return <div className="practice-screen">
+      <header className="practice-header"><button className="back-button" onClick={() => goBack("home")}>← {previousScreenLabel("home")}</button><div className="practice-brand">CITIZENSHIP <span>AI</span></div></header>
+      <main className="practice-content">
+        <h1>{t("Practice", "Práctica")}</h1><p className="practice-intro">{t("A plan that fits your next step.", "Un plan para tu próximo paso.")}</p>
+        <section className="brain-today"><h2>{nextAction.label}</h2><p>{nextAction.detail}</p><button type="button" className="button-primary" onClick={continueDailyPlan}>{t("Continue today's practice", "Continuar la práctica de hoy")} →</button></section>
+        <SectionNavigation items={practiceItems} language={language} onNavigate={id => id.startsWith("interview-") ? startInterview(id.slice(10)) : navigateTo(id)} />
+        <details className="practice-more"><summary>{t("More practice options", "Más opciones de práctica")}</summary><div className="practice-option-links">
+          <button className="button-secondary" onClick={() => startInterview("full")}>{t("Live interview", "Entrevista en vivo")}</button>
+          <button className="button-secondary" onClick={() => startAiFeature("coach", () => navigateTo("coach"))}>{t("English conversation", "Conversación en inglés")}</button>
+          <button className="button-secondary" onClick={() => navigateTo("vocabulary")}>{t("Vocabulary", "Vocabulario")}</button>
+          <button className="button-secondary" onClick={() => navigateTo("choose")}>{t("Choose an answer", "Elegir respuesta")}</button>
+          <button className="button-secondary" onClick={() => navigateTo("connect")}>{t("Connect answers", "Conectar respuestas")}</button>
+          <button className="button-secondary" onClick={() => navigateTo("english")}>{t("English skills", "Habilidades de inglés")}</button>
+          <button className="button-secondary" onClick={() => navigateTo("civicsGuide")}>{t("Official study guide", "Guía oficial")}</button>
+          <button className="button-secondary" onClick={() => navigateTo("progress")}>{t("Progress", "Progreso")}</button>
+        </div></details>
+      </main>
+    </div>;
   }
 
   if (screen === "english") {
@@ -2017,16 +1392,16 @@ function AppContent({ userKey }) {
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
         <main className="practice-content">
-          <div className="practice-eyebrow">ENGLISH PREPARATION</div>
-          <h1>English.</h1>
-          <p className="practice-intro">Practice the English skills needed for your citizenship interview.</p>
+          <div className="practice-eyebrow">{t("ENGLISH PREPARATION", "Preparación de inglés")}</div>
+          <h1>{t("English.", "Inglés.")}</h1>
+          <p className="practice-intro">{t("Practice the English skills needed for your citizenship interview.", "Practica el inglés para tu entrevista de ciudadanía.")}</p>
           <div className="practice-options">
             <button className="practice-option" onClick={() => startAiFeature("speaking", () => navigateTo("reading"))}>
               <div className="practice-option-left">
                 <div className="practice-option-icon">A</div>
                 <div className="practice-option-content">
-                  <h2>Reading</h2>
-                  <p>Practice reading sentences aloud.</p>
+                  <h2>{t("Reading", "Lectura")}</h2>
+                  <p>{t("Practice reading sentences aloud.", "Practica leyendo oraciones en voz alta.")}</p>
                 </div>
               </div>
               <span className="practice-arrow">→</span>
@@ -2035,8 +1410,8 @@ function AppContent({ userKey }) {
               <div className="practice-option-left">
                 <div className="practice-option-icon">✎</div>
                 <div className="practice-option-content">
-                  <h2>Writing</h2>
-                  <p>Practice writing sentences correctly.</p>
+                  <h2>{t("Writing", "Escritura")}</h2>
+                  <p>{t("Practice writing sentences correctly.", "Practica escribiendo oraciones correctamente.")}</p>
                 </div>
               </div>
               <span className="practice-arrow">→</span>
@@ -2057,17 +1432,17 @@ function AppContent({ userKey }) {
           <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
         </header>
         <main className="practice-content">
-          <div className="practice-eyebrow">ENGLISH · READING</div>
-          <h1>Reading.</h1>
-          <p className="practice-intro">Read the sentence aloud and practice your English.</p>
+          <div className="practice-eyebrow">{t("ENGLISH · READING", "Inglés · Lectura")}</div>
+          <h1>{t("Reading.", "Lectura.")}</h1>
+          <p className="practice-intro">{t("Read the sentence aloud and practice your English.", "Lee la oración en voz alta y practica tu inglés.")}</p>
           <div className="reading-card">
             <div className="reading-card-heading">
               <span className="reading-card-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M7 4.5h8.5A2.5 2.5 0 0 1 18 7v12H8a3 3 0 0 1-3-3V6.5a2 2 0 0 1 2-2Z"/><path d="M8 4.5V16h10M10.5 9H15M10.5 12H15"/></svg>
               </span>
               <div>
-                <small>ENGLISH PRACTICE</small>
-                <div className="reading-label">READ THIS SENTENCE</div>
+                <small>{t("ENGLISH PRACTICE", "Práctica de inglés")}</small>
+                <div className="reading-label">{t("READ THIS SENTENCE", "Lee esta oración")}</div>
               </div>
               <span className="reading-card-count">{readingIndex + 1} / {readingSentences.length}</span>
             </div>
@@ -2075,7 +1450,7 @@ function AppContent({ userKey }) {
             <div className="writing-spanish">{readingSentences[readingIndex].spanish}</div>
             {aiMessage && (
               <div className="ai-reading-feedback" role="status" aria-live="polite">
-                <div className="ai-reading-label">AI HEARD</div>
+                <div className="ai-reading-label">{t("AI HEARD", "Lo que escuchamos")}</div>
                 <div className="ai-reading-text">
                   {aiMessage.replace('I heard: "', '').replace('"', '')}
                 </div>
@@ -2095,8 +1470,8 @@ function AppContent({ userKey }) {
                 )}
               </span>
               <span className="reading-button-copy">
-                <small>{isReading ? "RECORDING ACTIVE" : "YOUR TURN"}</small>
-                <strong>{isReading ? "Stop & Evaluate" : "Start Reading"}</strong>
+                <small>{isReading ? t("Recording", "Grabando") : t("Your turn", "Tu turno")}</small>
+                <strong>{isReading ? t("Stop and review", "Detener y revisar") : t("Start reading", "Comenzar lectura")}</strong>
               </span>
               <span className="reading-button-arrow" aria-hidden="true">{isReading ? "■" : "→"}</span>
             </button>
@@ -2119,21 +1494,21 @@ function AppContent({ userKey }) {
           <section className="writing-practice-panel">
           <div className="writing-top-section">
             <div>
-              <div className="writing-eyebrow">ENGLISH · WRITING DICTATION</div>
-              <h1 className="writing-ai-title">Writing <span>Practice.</span></h1>
-              <p className="writing-ai-intro">Listen carefully to Sarah and type the sentence in English.</p>
+              <div className="writing-eyebrow">{t("ENGLISH · WRITING DICTATION", "Inglés · Dictado")}</div>
+              <h1 className="writing-ai-title">{t("Writing", "Escritura")} <span>{t("Practice.", "Práctica.")}</span></h1>
+              <p className="writing-ai-intro">{t("Listen carefully to Sarah and type the sentence in English.", "Escucha a Sarah y escribe la oración en inglés.")}</p>
             </div>
             <div className="writing-ai-badge">
               <div className="writing-ai-badge-icon">✎</div>
               <div>
-                <strong>AI AUDIO DICTATION</strong>
-                <small>LISTENING & WRITING TEST</small>
+                <strong>{t("AI AUDIO DICTATION", "Dictado en inglés")}</strong>
+                <small>{t("LISTENING & WRITING TEST", "Escucha y escritura")}</small>
               </div>
             </div>
           </div>
-          <div className="writing-progress-strip" aria-label={`Question ${writingIndex + 1} of ${writingSentences.length}`}>
+          <div className="writing-progress-strip" aria-label={`${t("Question", "Oración")} ${writingIndex + 1} ${t("of", "de")} ${writingSentences.length}`}>
             <div className="writing-progress-copy">
-              <span>Question {writingIndex + 1} of {writingSentences.length}</span>
+              <span>{t("Question", "Oración")} {writingIndex + 1} {t("of", "de")} {writingSentences.length}</span>
               <strong>{writingIndex + 1} / {writingSentences.length}</strong>
             </div>
             <div className="writing-progress-track" aria-hidden="true">
@@ -2147,7 +1522,7 @@ function AppContent({ userKey }) {
                 <div className="performance-dot"></div>
                 <div>
                   <strong>{String(writingGoodCount).padStart(2, "0")}</strong>
-                  <span>GOOD</span>
+                  <span>{t("GOOD", "Correctas")}</span>
                 </div>
               </div>
               <div className="performance-divider"></div>
@@ -2155,7 +1530,7 @@ function AppContent({ userKey }) {
                 <div className="performance-dot"></div>
                 <div>
                   <strong>{String(writingNeedsPracticeCount).padStart(2, "0")}</strong>
-                  <span>NEEDS PRACTICE</span>
+                  <span>{t("NEEDS PRACTICE", "Por practicar")}</span>
                 </div>
               </div>
             </div>
@@ -2163,7 +1538,7 @@ function AppContent({ userKey }) {
           <div className="writing-question-card">
             <div className="writing-question-header">
               <div className="writing-question-label">
-                <span>🔊</span> LISTEN & TYPE WHAT YOU HEAR
+                {t("Listen and type what you hear", "Escucha y escribe lo que oyes")}
               </div>
               <div className="writing-progress">
                 {writingIndex + 1} / {writingSentences.length}
@@ -2179,25 +1554,25 @@ function AppContent({ userKey }) {
                 type="button"
               >
                 <span className="speaker-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10" /></svg></span>
-                <span className="dictation-replay-copy"><small>AUDIO PROMPT</small><strong>Replay Sentence</strong></span>
+                <span className="dictation-replay-copy"><small>{t("AUDIO PROMPT", "Oración en audio")}</small><strong>{t("Replay Sentence", "Escuchar otra vez")}</strong></span>
                 <span className="dictation-replay-arrow" aria-hidden="true">→</span>
               </button>
             </div>
             <div className="writing-line"></div>
             <div className="writing-translation-label">
-              <span>◎</span> SPANISH TRANSLATION (CONTEXT)
+              <span>◎</span> {t("SPANISH TRANSLATION (CONTEXT)", "Traducción al español (contexto)")}
             </div>
             <div className="writing-big-spanish">
               {writingSentences[writingIndex].spanish}
             </div>
           </div>
           <label className="sr-only" htmlFor="writing-practice-answer">
-            Type the English sentence you hear
+            {t("Type the English sentence you hear", "Escribe la oración que escuchas en inglés")}
           </label>
           <textarea
             id="writing-practice-answer"
             className="writing-ai-input"
-            placeholder="Type what you hear in English..."
+            placeholder={t("Type what you hear in English...", "Escribe lo que escuchas en inglés…")}
             value={writingAnswer}
             aria-busy={isAIThinking}
             readOnly={Boolean(writingEvaluation)}
@@ -2210,13 +1585,13 @@ function AppContent({ userKey }) {
               disabled={isAIThinking}
             >
               <span className="writing-check-icon" aria-hidden="true">✓</span>
-              <span className="writing-check-copy"><small>{isAIThinking ? "AI IS REVIEWING" : "READY TO REVIEW"}</small><strong>{isAIThinking ? "Evaluating..." : "Check Writing"}</strong></span>
+              <span className="writing-check-copy"><small>{isAIThinking ? t("Reviewing", "Revisando") : t("Ready to review", "Lista para revisar")}</small><strong>{isAIThinking ? t("Reviewing…", "Revisando…") : t("Check writing", "Revisar escritura")}</strong></span>
               <span className="writing-check-arrow" aria-hidden="true">→</span>
             </button>
           )}
           {aiMessage && (
             <div className="writing-ai-evaluation" role="status" aria-live="polite">
-              <div className="writing-evaluation-label">AI EVALUATION</div>
+              <div className="writing-evaluation-label">{t("AI EVALUATION", "Evaluación")}</div>
               <div className="writing-evaluation-text">{aiMessage}</div>
             </div>
           )}
@@ -2224,7 +1599,7 @@ function AppContent({ userKey }) {
             <div className={`writing-ai-evaluation ${writingEvaluation.accuracy === "Needs Practice" ? "needs-practice" : "is-correct"}`} role="status" aria-live="polite">
               <div className="writing-evaluation-heading">
                 <div>
-                  <div className="writing-evaluation-label">REVIEW YOUR ANSWER · REVISA TU RESPUESTA</div>
+                  <div className="writing-evaluation-label">{t("REVIEW YOUR ANSWER · REVISA TU RESPUESTA", "Revisa tu respuesta")}</div>
                   <strong>{writingEvaluation.resultLabel}</strong>
                 </div>
                 <span className="writing-evaluation-score">{writingEvaluation.score == null ? "—" : `${writingEvaluation.score}%`}</span>
@@ -2232,26 +1607,26 @@ function AppContent({ userKey }) {
               <p className="writing-evaluation-text">{writingEvaluation.feedback}</p>
               <div className="writing-answer-comparison">
                 <div>
-                  <small>YOUR ANSWER · TU RESPUESTA</small>
+                  <small>{t("YOUR ANSWER · TU RESPUESTA", "Tu respuesta")}</small>
                   <p>{writingEvaluation.writtenAnswer}</p>
                 </div>
                 <div className="expected">
-                  <small>CORRECT SENTENCE · ORACIÓN CORRECTA</small>
+                  <small>{t("CORRECT SENTENCE · ORACIÓN CORRECTA", "Oración correcta")}</small>
                   <p>{writingEvaluation.expectedAnswer}</p>
                 </div>
               </div>
               {(writingEvaluation.details?.missingWords?.length > 0 || writingEvaluation.details?.extraWords?.length > 0 || writingEvaluation.details?.corrections?.length > 0) && (
                 <div className="writing-detail-list">
-                  {writingEvaluation.details.missingWords?.length > 0 && <p><strong>Missing / Faltó:</strong> {writingEvaluation.details.missingWords.join(", ")}</p>}
+                  {writingEvaluation.details.missingWords?.length > 0 && <p><strong>{t("Missing / Faltó:", "Faltó:")}</strong> {writingEvaluation.details.missingWords.join(", ")}</p>}
                   {writingEvaluation.details.extraWords?.length > 0 && <p><strong>Extra:</strong> {writingEvaluation.details.extraWords.join(", ")}</p>}
-                  {writingEvaluation.details.corrections?.length > 0 && <p><strong>Spelling / Ortografía:</strong> {writingEvaluation.details.corrections.map((item) => `${item.written} → ${item.expected}`).join(", ")}</p>}
+                  {writingEvaluation.details.corrections?.length > 0 && <p><strong>{t("Spelling / Ortografía:", "Ortografía:")}</strong> {writingEvaluation.details.corrections.map((item) => `${item.written} → ${item.expected}`).join(", ")}</p>}
                 </div>
               )}
               <div className="writing-review-actions">
                 {writingEvaluation.accuracy !== "Excellent" && writingEvaluation.accuracy !== "Good" && (
-                  <button type="button" className="writing-review-retry" onClick={() => setWritingEvaluation(null)}>Try again · Intentar otra vez</button>
+                  <button type="button" className="writing-review-retry" onClick={() => setWritingEvaluation(null)}>{t("Try again · Intentar otra vez", "Intentar otra vez")}</button>
                 )}
-                <button type="button" className="writing-review-continue" onClick={nextWritingSentence}>Next sentence · Siguiente →</button>
+                <button type="button" className="writing-review-continue" onClick={nextWritingSentence}>{t("Next sentence · Siguiente →", "Siguiente oración →")}</button>
               </div>
             </div>
           )}
@@ -2261,7 +1636,7 @@ function AppContent({ userKey }) {
     );
   }
 
-  if (screen === "uscisTracker") {
+  if (screen === "uscisSandbox") {
     return (
       <div className="app uscis-tracker-screen">
         <main className="uscis-tracker-content">
@@ -2339,9 +1714,9 @@ function AppContent({ userKey }) {
                     isTestData: tracker.isTestData !== false,
                     checkedAt: tracker.checkedAt || new Date().toISOString(),
                   });
-                } catch (error) {
-                  console.error("Case Tracker error:", error);
-                  setUscisError(error.message || "Unable to check case status.");
+                } catch {
+                  console.error("Case Tracker error:");
+                  setUscisError(t("We could not update this status. You can check the official USCIS page.", "No pudimos actualizar el estado. Puedes consultar la página oficial de USCIS."));
                 } finally {
                   setUscisLoading(false);
                 }
@@ -2389,7 +1764,7 @@ function AppContent({ userKey }) {
                 </div>
               </div>
               {(daysInStatus !== null || daysSinceReceived !== null) && (
-                <div className="uscis-calculated-grid" aria-label="Educational date calculations">
+                <div className="uscis-calculated-grid" aria-label={t("Educational date calculations", "Cálculos educativos de fechas")}>
                   {daysInStatus !== null && <div><span>{trackerCopy.daysStatus}</span><strong>{daysInStatus}</strong><small>{trackerCopy.calculatedStatus}</small></div>}
                   {daysSinceReceived !== null && <div><span>{trackerCopy.daysReceived}</span><strong>{daysSinceReceived}</strong><small>{trackerCopy.calculatedReceived}</small></div>}
                 </div>
@@ -2428,6 +1803,11 @@ function AppContent({ userKey }) {
           onExit={() => goBack("home")}
           onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
           onRestart={() => setInterviewRunId((current) => current + 1)}
+          brainContext={brainContext}
+          language={language}
+          userKey={userKey}
+          requestVoiceAccess={requestVoiceAccess}
+          onSaveN400Profile={n400Profile => brainProfile.updateProfile({n400Profile})}
         />
       );
     }
@@ -2437,6 +1817,9 @@ function AppContent({ userKey }) {
         userKey={userKey}
         onQuestionResult={handleQuestionResult}
         civicProfile={civicProfile}
+        brainContext={brainContext}
+        language={language}
+        requestVoiceAccess={requestVoiceAccess}
         mode={interviewMode}
         onExit={() => goBack("home")}
         onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
@@ -2453,32 +1836,15 @@ function AppContent({ userKey }) {
   return (
     <>
     <Home
-      onStartInterview={() => startInterview("full")}
-      onStartN400Interview={() => startInterview("n400")}
-      onStartCivicsInterview={() => startInterview("civics")}
-      onOpenFeature={(feature) => {
-        const gatedFeature = feature === "coach" ? "coach" : feature === "writing" ? "writing" : feature === "reading" ? "speaking" : null;
-        if (gatedFeature) startAiFeature(gatedFeature, () => navigateTo(feature));
-        else navigateTo(feature);
-      }}
-      onOpenProgress={() => navigateTo("progress")}
-      onOpenImmigrationHelp={() => navigateTo("immigrationHelp")}
-      onOpenPodcasts={() => navigateTo("podcasts")}
-      onOpenAccount={() => setAccountOpen(true)}
-      onOpenSettings={() => {
-        window.location.hash = "privacy";
-        navigateTo("settings");
-      }}
-      language={language}
-      onLanguageChange={setPreferredLanguage}
-      practiceSummary={practiceSummary}
+      context={brainContext} plan={dailyPlan} nextAction={nextAction} onContinue={continueDailyPlan}
+      onNavigate={navigateTo} onOpenAccount={() => setAccountOpen(true)} onOpenSettings={() => navigateTo("settings")}
+      language={language} onLanguageChange={setPreferredLanguage} practiceSummary={practiceSummary}
     />
-    {accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}
     </>
   );
   };
   const showNavigation = onboardingComplete && !["interview", "coach", "reading", "writing"].includes(screen);
-  return <div className={showNavigation ? "global-navigation-shell" : undefined}>{renderScreen()}{showNavigation && <BottomNavigation screen={screen} language={language} onNavigate={navigateTo} />}</div>;
+  return <div className={showNavigation ? "global-navigation-shell" : undefined}>{renderScreen()}{accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}{showNavigation && <BottomNavigation screen={screen} language={language} onNavigate={navigateTo} />}</div>;
 }
 export default function App() {
   const { session } = useAccount();

@@ -168,3 +168,72 @@ export function localizedResource(resource, language) {
     keywords: resource[`keywords_${suffix}`] || [],
   };
 }
+
+// Extend the existing help directory rather than maintain a second knowledge base.
+export const JOURNEY_HELP_CATEGORIES = [
+  ["before-applying", "Before applying", "Antes de solicitar"],
+  ["after-applying", "After applying", "Después de solicitar"],
+  ["biometrics", "Biometrics", "Biometría"],
+  ["interview-preparation", "Interview preparation", "Preparación de entrevista"],
+  ["interview-day", "Interview day", "Día de entrevista"],
+  ["after-interview", "After interview", "Después de la entrevista"],
+  ["oath", "Oath", "Juramento"],
+  ["after-naturalization", "After naturalization", "Después de naturalizarte"],
+];
+export const JOURNEY_HELP_RESOURCE_IDS = {
+  "before-applying": ["n400-guidance", "citizenship-center", "uscis-forms", "uscis-fees", "fee-calculator", "legal-help", "avoid-scams"],
+  "after-applying": ["uscis-case-status", "processing-times", "uscis-e-request", "uscis-account", "change-uscis", "naturalization-steps"],
+  biometrics: ["naturalization-steps", "uscis-case-status", "uscis-account", "uscis-e-request", "change-uscis"],
+  "interview-preparation": ["n400-guidance", "citizenship-center", "naturalization-steps", "i94", "legal-help"],
+  "interview-day": ["naturalization-steps", "n400-guidance", "uscis-account", "i94"],
+  "after-interview": ["uscis-case-status", "uscis-e-request", "uscis-account", "naturalization-steps", "legal-help"],
+  oath: ["naturalization-ceremony", "naturalization-steps", "uscis-case-status", "uscis-account"],
+  "after-naturalization": ["new-citizens", "citizenship-center"],
+};
+export function getJourneyHelpCategory(stage) {
+  if (["CITIZEN", "OATH_COMPLETED"].includes(stage)) return "after-naturalization";
+  if (["APPROVED", "OATH_SCHEDULED"].includes(stage)) return "oath";
+  if (["INTERVIEW_COMPLETED", "ADDITIONAL_EVIDENCE"].includes(stage)) return "after-interview";
+  if (stage === "INTERVIEW_SCHEDULED") return "interview-day";
+  if (["BIOMETRICS_COMPLETED", "INTERVIEW_PENDING"].includes(stage)) return "interview-preparation";
+  if (stage === "BIOMETRICS_PENDING") return "biometrics";
+  if (["N400_FILED", "RECEIPT_RECEIVED"].includes(stage)) return "after-applying";
+  return "before-applying";
+}
+export function getContextualHelpResources(stage, language = "en") {
+  return JOURNEY_HELP_RESOURCE_IDS[getJourneyHelpCategory(stage)].map(id => IMMIGRATION_RESOURCES.find(item => item.id === id)).filter(Boolean).map(item => localizedResource(item, language));
+}
+IMMIGRATION_RESOURCES.push(
+  {
+    id: "n400-guidance", category: "citizenship", agency: "USCIS", icon: "▤", last_verified: null, status: "active",
+    title_en: "N-400 Instructions", title_es: "Instrucciones del N-400",
+    description_en: "Review the current official instructions for your application and supporting records.",
+    description_es: "Revisa las instrucciones oficiales actuales de tu solicitud y registros de apoyo.",
+    official_url: "https://www.uscis.gov/sites/default/files/document/forms/n-400instr.pdf",
+    keywords_en: ["n-400", "application", "documents", "marriage", "interview"], keywords_es: ["n-400", "solicitud", "documentos", "matrimonio", "entrevista"],
+  },
+  {
+    id: "naturalization-steps", category: "citizenship", agency: "USCIS", icon: "→", last_verified: null, status: "active",
+    title_en: "Steps to Naturalization", title_es: "Pasos para la Naturalización",
+    description_en: "Review the official overview of biometrics, interview and other steps. Your own notice controls your appointment details.",
+    description_es: "Revisa la descripción oficial de biometría, entrevista y otros pasos. Tu propio aviso determina los detalles de tu cita.",
+    official_url: "https://www.uscis.gov/citizenship/learn-about-citizenship/10-steps-to-naturalization",
+    keywords_en: ["biometrics", "appointment", "interview", "notice", "naturalization"], keywords_es: ["biometría", "cita", "entrevista", "aviso", "naturalización"],
+  },
+  {
+    id: "naturalization-ceremony", category: "citizenship", agency: "USCIS", icon: "▤", last_verified: null, status: "active",
+    title_en: "Naturalization Ceremonies", title_es: "Ceremonias de Naturalización",
+    description_en: "Read official ceremony information and follow your own oath notice for instructions.",
+    description_es: "Lee la información oficial de ceremonias y sigue las instrucciones de tu aviso de juramento.",
+    official_url: "https://www.uscis.gov/citizenship/learn-about-citizenship/naturalization-ceremonies",
+    keywords_en: ["oath", "ceremony", "n-445", "certificate"], keywords_es: ["juramento", "ceremonia", "n-445", "certificado"],
+  },
+  {
+    id: "new-citizens", category: "citizenship", agency: "USCIS", icon: "▤", last_verified: null, status: "active",
+    title_en: "Information for New Citizens", title_es: "Información para Nuevos Ciudadanos",
+    description_en: "Find official information about life and next steps after naturalization.",
+    description_es: "Encuentra información oficial sobre la vida y los próximos pasos después de naturalizarte.",
+    official_url: "https://www.uscis.gov/citizenship/learn-about-citizenship/new-citizens",
+    keywords_en: ["new citizen", "passport", "vote", "certificate"], keywords_es: ["nuevo ciudadano", "pasaporte", "voto", "certificado"],
+  },
+);

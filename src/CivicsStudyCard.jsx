@@ -45,10 +45,7 @@ export function CivicsStudyCard({
   }, [preloadImages]);
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      onToggleAnswer();
-    } else if (event.key === "ArrowLeft") {
+    if (event.key === "ArrowLeft") {
       event.preventDefault();
       onNavigate(-1);
     } else if (event.key === "ArrowRight") {
@@ -74,8 +71,7 @@ export function CivicsStudyCard({
   return (
     <article
       className={`civics-study-card ${answerVisible ? "answer-visible" : ""} ${mastered ? "is-mastered" : ""}`}
-      role="button"
-      tabIndex="0"
+      role="group"
       aria-label={answerVisible ? `${copy.answer}: ${answers.join(", ")}` : `${copy.question}: ${question}. ${copy.reveal}`}
       onClick={() => {
         if (touchRef.current?.swiped) {
@@ -149,7 +145,10 @@ export function CivicsStudyCard({
           >
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10" /></svg>
           </button>
-          <span>{answerVisible ? copy.backToQuestion : copy.reveal}</span>
+          <button type="button" className="civics-study-flip" aria-expanded={answerVisible} onClick={event => {
+            event.stopPropagation();
+            onToggleAnswer();
+          }}>{answerVisible ? copy.backToQuestion : copy.reveal}</button>
         </div>
       </div>
 

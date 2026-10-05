@@ -1,6 +1,6 @@
 import { getCivicsCategory } from "./civicsVersions.js";
 import { evaluateCivicsAnswer, normalizeCivicsAnswer } from "./civicsAnswerEvaluator.js";
-import { updateQuestionState } from "./learning.js";
+import { buildDailyPlan, updateQuestionState } from "./learning.js";
 
 export const QUIZ_LEVELS = Object.freeze([
   { id: "vocabulary", skill: "vocabulary", icon: "Aa", level: 1 },
@@ -124,33 +124,36 @@ export function recordQuizAttempt({ userKey = "guest", question, mode, correct, 
     correct: previous.correct + (correct ? 1 : 0),
     [skill]: Math.max(previous[skill] || 0, normalizedScore),
   };
-  updated.mastery = calculateModeMastery(updated) / 100;
+  updated.modeMastery = calculateModeMastery(updated) / 100;
   const scheduled = updateQuestionState(updated, {
     correct, score: normalizedScore, answeredAt, helpUsed,
     mode: mode === "challenge" || mode === "recall" ? "text" : "choice",
   });
-  scheduled.mastery = Math.max(scheduled.mastery, updated.mastery);
+  // Memory follows actual attempts, rather than the best score ever seen in a mode.
+  const recentResults = [...(Array.isArray(previous.recentResults) ? previous.recentResults : []), Boolean(correct)].slice(-5);
+  scheduled.lastCorrect = Boolean(correct);
+  scheduled.recentResults = recentResults;
+  scheduled.recentErrors = recentResults.filter(value => !value).length;
+  scheduled.incorrect = (previous.incorrect ?? Math.max(0, previous.attempts - previous.correct)) + (correct ? 0 : 1);
   const next = { ...current, [question.questionId]: scheduled };
   try { getStorage(storage)?.setItem(storageKey(userKey), JSON.stringify(next)); } catch { /* Quiz remains usable without storage. */ }
   return next;
 }
 
 export function getAdaptiveQuestionOrder(questions, progress = {}, now = Date.now()) {
-  return [...questions].sort((left, right) => {
-    const leftState = progress[left.questionId] || {};
-    const rightState = progress[right.questionId] || {};
-    const leftDue = leftState.nextReviewAt && Date.parse(leftState.nextReviewAt) <= now ? 0 : 1;
-    const rightDue = rightState.nextReviewAt && Date.parse(rightState.nextReviewAt) <= now ? 0 : 1;
-    return leftDue - rightDue
-      || (leftState.mastery || 0) - (rightState.mastery || 0)
-      || (leftState.attempts || 0) - (rightState.attempts || 0)
-      || left.questionId - right.questionId;
-  });
+  const states = questions.map(question => ({ ...progress[question.questionId], questionId: question.questionId, category: question.category || getCivicsCategory(question.questionId) }));
+  const ranked = buildDailyPlan(states, new Date(now).toISOString(), questions.length);
+  const byId = new Map(questions.map(question => [question.questionId, question]));
+  return ranked.map(item => byId.get(item.questionId));
 }
 
-export function createQuizSession(questions, progress, mode, limit = MAX_SESSION_QUESTIONS, now = Date.now()) {
+export function createQuizSession(questions, progress, mode, limit = MAX_SESSION_QUESTIONS, now = Date.now(), preferredQuestionIds = []) {
   const candidates = mode === "vocabulary" ? questions : questions.filter((question) => question.acceptedAnswers.length);
-  return getAdaptiveQuestionOrder(candidates, progress, now).slice(0, limit);
+  const adaptive = getAdaptiveQuestionOrder(candidates, progress, now);
+  const byId = new Map(candidates.map(question => [question.questionId, question]));
+  const preferred = [...new Set(Array.isArray(preferredQuestionIds) ? preferredQuestionIds : [])].map(id => byId.get(id)).filter(Boolean);
+  const selected = new Set(preferred.map(question => question.questionId));
+  return [...preferred, ...adaptive.filter(question => !selected.has(question.questionId))].slice(0, Math.max(0, limit));
 }
 
 export function evaluateQuizResponse(question, answer) {
@@ -163,7 +166,7 @@ export function summarizeQuizProgress(progress = {}, totalQuestions = 128) {
     states.length ? Math.round(states.reduce((sum, item) => sum + (item[skill] || 0), 0) / totalQuestions) : 0,
   ]));
   const attempted = states.filter((item) => item.attempts > 0).length;
-  const mastered = states.filter((item) => (item.mastery || 0) >= 0.75).length;
+  const mastered = states.filter((item) => (item.mastery || 0) >= 0.9 && (item.consecutiveIndependentCorrect || 0) >= 4).length;
   const recommended = QUIZ_LEVELS.find(({ id }) => averages[id] < 70)?.id || "challenge";
   return {
     attempted,

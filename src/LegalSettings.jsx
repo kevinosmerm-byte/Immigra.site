@@ -51,13 +51,15 @@ const legalSections = [
     title: "Privacy Policy",
     content: (
       <>
-        <p><strong>Last reviewed: October 1, 2026.</strong> This policy describes the behavior of the current Citizenship AI application build.</p>
+        <p><strong>Last reviewed: October 5, 2026.</strong> This policy describes the behavior of the current Citizenship AI application build.</p>
         <p>Citizenship AI offers optional email-based accounts through Supabase. When you create an account, Supabase stores your account identifier and email address, and Citizenship AI stores account-level access, AI allowance, reward-credit, subscription-status, and technical usage records needed to operate and protect the service. Launch-promotion access may allow you to continue without payment. When web subscriptions are made available, Stripe processes checkout, payment details, and subscription management under its own privacy practices; Citizenship AI receives customer, subscription, status, and billing-period identifiers needed to provide access, but does not receive or store complete card numbers. On this device, the app may also store the last PRO recommendation date to avoid repeated notices, onboarding completion, language preference, consent choices, viewed civics-question progress, practice results (practice type, score, outcome, and time), and local AI-usage history in your browser&apos;s local storage.</p>
-        <p>Learning checkpoints and your civic profile are saved on this device, separately for each signed-in account. Saved question identifiers can synchronize to your account when cloud storage is available; failed updates remain queued locally. My Civics Profile sends the address you enter through our server to the U.S. Census Geocoder for the current lookup. We do not save that street address in your profile or server cache. The profile keeps your ZIP, state, district, public officials, and verification date. Congress.gov provides congressional member data when available.</p>
-        <p>Civics questions and accepted English answers in the study bank come from the supplied USCIS 2025 list of 128 questions. Card, quiz and classic civics grading use deterministic rules rather than AI-generated answers. Optional writing or conversation feedback may send your submitted text through Citizenship AI&apos;s server to OpenAI. The separate live D-ID interview may generate responses and does not use the same local grading rules. When you use voice practice, your recording is sent through Citizenship AI&apos;s server to OpenAI only for the active transcription request. The application server is designed not to retain recordings, transcripts, practice answers, or AI conversations after the request completes; active practice text may remain in the page until you leave it, and scores and checkpoints may be retained as described above; third-party provider retention and security practices are governed by their own terms.</p>
+        <p>Learning checkpoints and your civic profile are saved on this device, separately for each signed-in account. Saved question identifiers can synchronize to your account when cloud storage is available; failed updates remain queued locally. Your optional personal profile remembers only information you enter or explicitly confirm, including your address, application dates, receipt number, relevant N-400 answers and histories, confirmed notice fields, journey events and document-checklist completion. These details are stored in this browser by default and can be reused in practice, civics and journey preparation. Browser storage is not an encrypted vault; use a private device and clear your profile when appropriate. A-numbers, original notices, recordings and documents are not stored in the profile.</p>
+        <p>Cloud profile storage is a separate optional action. The Profile screen asks you to agree before sending a snapshot to your signed-in account. The server encrypts personal, immigration, N-400 and journey data before saving it in Supabase; cloud saving is unavailable if secure server configuration is missing. Saving and restoring are manual. You may restore a saved copy, remove the cloud profile while keeping the device profile, export account data, or delete the cloud account. Civic and learning profiles retain their existing device storage and are not included in this cloud snapshot.</p>
+        <p>My Civics Profile sends the address you enter or already saved in your personal profile through our server to the U.S. Census Geocoder for the current lookup. A plain street address is not used as a server cache key. The civic profile keeps your ZIP, state, verified districts, public officials, sources and verification dates. Congress.gov supplies federal member data; configured geographic providers may supply state officials. Your saved address is reused so you do not need to provide it again.</p>
+        <p>Civics questions and accepted English answers in the study bank come from the supplied USCIS 2025 list of 128 questions. Card, quiz and classic civics grading use deterministic rules rather than AI-generated answers. Optional writing or conversation feedback may send your submitted text through Citizenship AI&apos;s server to OpenAI. The separate live D-ID interview may generate responses and does not use the same local grading rules. When you use voice practice, your recording is sent through Citizenship AI&apos;s server to OpenAI only for the active transcription request. The application server is designed not to retain recordings, transcripts or AI conversations after the request completes. Practice answers remain in the active page unless you explicitly confirm selected N-400 details for your personal profile. Scores and checkpoints may be retained as described above; third-party provider retention and security practices are governed by their own terms.</p>
         <p>If you choose Live Avatar Beta, Citizenship AI requests a temporary, domain-restricted D-ID session credential from its server. D-ID receives and processes the live session content and any microphone or camera input you choose to provide through its panel. The application does not store the client key; it is used in memory only for the active short-lived session. D-ID's own retention and security practices are governed by its terms.</p>
         <p>Citizenship AI records limited, account-linked product and cost telemetry for service operation, security, allowance enforcement, and financial planning. These records may include an AI feature name, session start/completion/failure, provider and model identifiers, request counts, token totals or transcription duration when a provider returns them, and paywall, subscription, or verified-reward lifecycle events. This telemetry is stored in Supabase and is intentionally designed not to contain complete conversations, recordings, transcripts, practice answers, receipt numbers, or case details. Citizenship AI does not use advertising-tracking analytics in this build.</p>
-        <p>If you use Case Tracker, your receipt number is sent to Citizenship AI&apos;s server and then to USCIS only to make that active status request. This build is configured for the USCIS Sandbox, not live Production case data. The application does not save receipt numbers or case details. For security diagnostics, the server may create a short operational log containing the time, Sandbox environment, a masked receipt number, request outcome, and any USCIS trace ID; it does not intentionally log the full receipt number or case response. The site is hosted using Cloudflare Pages and Render; those providers may process standard technical request logs required to operate and secure their services. To protect the service from abuse, the server may temporarily use an IP address to limit excessive requests.</p>
+        <p>Your journey stores only stages, events and notice fields you confirm. Notice text is processed in the browser, and extracted fields are reviewed before saving; the original document is not retained. An optional configured USCIS API sends your receipt number through our server to USCIS only for an active status request. Sandbox responses are labeled test data and are not saved as real case events. The official USCIS link works independently of this integration. Receipt numbers, addresses, private N-400 answers and notice content are excluded from product analytics and ordinary application logs. Hosting providers may process standard technical request logs, and the server temporarily uses request identifiers for rate limits.</p>
       </>
     ),
   },
@@ -116,6 +118,46 @@ function LegalNotice({ copy }) {
   );
 }
 
+function SpanishPrivacyPolicy() {
+  return <>
+    <p><strong>Última revisión: 5 de octubre de 2026.</strong> Esta política describe la versión actual de Citizenship AI.</p>
+    <p>Las cuentas por correo son opcionales y usan Supabase, que guarda tu identificador de cuenta y correo. La aplicación guarda datos necesarios de acceso, límites de IA, créditos, suscripciones y uso técnico. Si están disponibles los pagos web, Stripe procesa los pagos y Citizenship AI recibe identificadores y estados de la suscripción, sin guardar números completos de tarjetas.</p>
+    <p>Este navegador guarda preferencias, consentimiento, progreso cívico, resultados de práctica y puntos para continuar. Los perfiles cívicos y de estudio se separan por cuenta. Los identificadores de preguntas favoritas pueden sincronizarse y los cambios pendientes se conservan para reintentar.</p>
+    <p>Tu perfil personal opcional conserva solo datos que ingresas o confirmas: dirección, fechas de la solicitud, número de recibo, respuestas e historiales relevantes del N-400, campos confirmados de avisos, eventos y lista de documentos. Se guardan en este navegador y se reutilizan para preparar tus prácticas y proceso. El almacenamiento del navegador no es una bóveda cifrada: usa un dispositivo privado y borra el perfil cuando corresponda. No guardamos números A, documentos originales, grabaciones ni avisos originales en el perfil.</p>
+    <p>Guardar el perfil en la nube es una acción separada y opcional. La pantalla Perfil solicita tu consentimiento antes de enviar una copia a tu cuenta. El servidor cifra los datos personales, migratorios, del N-400 y del proceso antes de guardarlos en Supabase. Si no hay configuración segura, no se guardan en la nube. Guardar y restaurar son acciones manuales. Puedes restaurar una copia, eliminar el perfil de la nube conservando el local, exportar tus datos o eliminar la cuenta. El perfil cívico y el progreso conservan su almacenamiento actual en el dispositivo.</p>
+    <p>El perfil cívico reutiliza tu dirección guardada o la que ingresas y la envía mediante nuestro servidor al Geocodificador del Censo para verificar tu ubicación. No usamos la dirección completa como clave de caché del servidor. El perfil cívico conserva código postal, estado, distritos verificados, funcionarios públicos, fuentes y fechas de verificación. Congress.gov proporciona datos federales; proveedores geográficos configurados pueden proporcionar funcionarios estatales.</p>
+    <p>Las preguntas cívicas y respuestas aceptadas en inglés provienen de la lista USCIS 2025 de 128 preguntas. La evaluación cívica es determinista. Las prácticas opcionales de escritura o conversación pueden enviar el texto a OpenAI mediante nuestro servidor. Las grabaciones de voz se envían únicamente para la transcripción activa. El servidor no conserva grabaciones, transcripciones ni conversaciones después de la solicitud. Las respuestas de práctica permanecen en la página activa, salvo los datos del N-400 que confirmes para tu perfil. Los proveedores externos aplican sus propias políticas.</p>
+    <p>Si eliges Live Avatar Beta, D-ID procesa el contenido de esa sesión y las entradas de micrófono o cámara que decidas compartir. La credencial temporal se usa solo en memoria. D-ID aplica sus propias políticas de retención y seguridad.</p>
+    <p>Los registros técnicos y de uso vinculados a tu cuenta pueden incluir función, inicio y fin de sesión, proveedor, modelo, cantidad de solicitudes, tokens, duración de transcripción y eventos de suscripción. No contienen conversaciones, grabaciones, transcripciones, respuestas privadas, recibos ni datos del caso. Esta versión no usa analítica de seguimiento publicitario.</p>
+    <p>Tu proceso conserva solo etapas, eventos y campos de avisos que confirmas. El texto del aviso se procesa en el navegador y los campos extraídos se revisan antes de guardar; el documento original no se conserva. Una integración USCIS opcional y configurada envía el recibo únicamente para la consulta activa. Los resultados Sandbox son datos de prueba y no se guardan como eventos reales. Puedes usar el enlace oficial sin esta integración. Los recibos, direcciones, respuestas privadas y avisos quedan fuera de los registros ordinarios y analítica. Los proveedores de alojamiento pueden procesar registros técnicos estándar y el servidor usa identificadores temporales para limitar solicitudes.</p>
+  </>;
+}
+
+function SpanishLegalContent({ id }) {
+  if (id === "privacy") return <SpanishPrivacyPolicy />;
+  if (id === "terms") return <>
+    <p>Citizenship AI es una herramienta educativa independiente para quienes se preparan para la naturalización en Estados Unidos. No brinda asesoría legal, no determina elegibilidad migratoria, no recomienda estrategias legales, no prepara ni presenta solicitudes y no representa a usuarios ante USCIS ni ninguna agencia gubernamental. Úsala únicamente para el estudio personal y lícito. No envíes documentos sensibles, contraseñas, números de Seguro Social, números A ni información personal innecesaria.</p>
+    <p>La disponibilidad, el reconocimiento de voz, las traducciones, los comentarios de IA, los enlaces externos y la conexión USCIS Sandbox pueden interrumpirse o contener información incompleta, inexacta o desactualizada. Debes verificar los requisitos vigentes directamente con USCIS antes de basarte en esta información para tomar una decisión migratoria.</p>
+    <p>Ayuda migratoria es un directorio educativo de recursos externos. Incluir un recurso o enlace no constituye respaldo, recomendación profesional, representación legal ni garantía de sus servicios. Los podcasts son audios educativos pregrabados, no transmisiones en vivo ni programas oficiales de USCIS.</p>
+    <p>Si se ofrecen suscripciones web de pago, el precio y el período de facturación aparecen antes de comprar y Stripe procesa el pago. Puedes administrar o cancelar la suscripción web desde el portal de facturación de tu cuenta. Cancelar detiene las renovaciones futuras y, por lo general, no reembolsa el tiempo ya comprado, salvo cuando lo exija la ley. Las compras mediante Apple o Google, si se ofrecen, se facturan y administran conforme a los términos y herramientas de esa tienda.</p>
+    <p>Si necesitas orientación sobre tu situación, formularios, elegibilidad, plazos, evidencia u opciones migratorias, consulta a un abogado de inmigración autorizado o a un representante acreditado por el Departamento de Justicia de Estados Unidos.</p>
+  </>;
+  if (id === "ai") return <>
+    <p>Los comentarios generados por IA pueden ser incompletos, incorrectos o desactualizados. Sirven para practicar inglés y conceptos de civismo, no para evaluar elegibilidad legal, predecir el resultado de una entrevista ni sustituir asesoría profesional.</p>
+    <p>Las entrevistas simuladas y preguntas de práctica no garantizan las preguntas que hará un funcionario de inmigración ni el resultado de una solicitud o entrevista de naturalización.</p>
+    <p>No uses una respuesta de IA como fundamento para presentar un formulario, dejar pasar un plazo, elegir un beneficio migratorio ni tomar otra decisión legal. Verifica la información con USCIS y busca ayuda profesional autorizada cuando corresponda.</p>
+  </>;
+  if (id === "government") return <>
+    <p>Citizenship AI no está afiliada, respaldada, patrocinada ni operada por USCIS, el Departamento de Seguridad Nacional de Estados Unidos ni ninguna agencia del gobierno estadounidense, y no representa a esas entidades.</p>
+    <p>Los nombres, enlaces, preguntas e información de fuentes gubernamentales públicas se utilizan como referencia educativa. Su disponibilidad no implica respaldo gubernamental de Citizenship AI. No todos los materiales de un sitio gubernamental están necesariamente libres de derechos de terceros, y Citizenship AI no afirma que todo el contenido de la aplicación sea de dominio público.</p>
+    <p>Verifica siempre la información migratoria vigente directamente en las <a href="https://www.uscis.gov/citizenship" target="_blank" rel="noreferrer">fuentes oficiales de USCIS</a>.</p>
+  </>;
+  return <>
+    <p>La información educativa proviene de fuentes públicas, dando prioridad a los materiales oficiales del gobierno de Estados Unidos. Citizenship AI puede resumir, traducir, reorganizar o explicar esa información para estudiar. Los resúmenes y traducciones pueden contener errores o desactualizarse; la fuente oficial en inglés prevalece si difieren los requisitos o instrucciones.</p>
+    <p>Para formularios, tarifas, instrucciones de presentación, reglas de elegibilidad, plazos y requisitos específicos de tu caso, consulta <a href="https://www.uscis.gov" target="_blank" rel="noreferrer">USCIS.gov</a>. Para asesoría legal, consulta a un abogado de inmigración autorizado o a un representante acreditado por el Departamento de Justicia. Aprende a encontrar ayuda autorizada en la <a href="https://www.uscis.gov/avoid-scams/find-legal-services" target="_blank" rel="noreferrer">guía de servicios legales de USCIS</a>.</p>
+  </>;
+}
+
 export function Onboarding({ language, onLanguageChange, onComplete }) {
   const [step, setStep] = useState(0);
   const [zipCode, setZipCode] = useState("");
@@ -126,7 +168,7 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
     <div className="app onboarding-screen">
       <main className="onboarding-card" aria-labelledby="onboarding-title">
         <div className="onboarding-brand">CITIZENSHIP <span>AI</span></div>
-        <div className="onboarding-progress" aria-label={`Step ${step + 1} of 3`}>
+        <div className="onboarding-progress" role="progressbar" aria-valuemin={1} aria-valuemax={3} aria-valuenow={step + 1} aria-label={language === "es" ? `Paso ${step + 1} de 3` : `Step ${step + 1} of 3`}>
           {[0, 1, 2].map((item) => <span className={item <= step ? "active" : ""} key={item} />)}
         </div>
         {step === 0 && (
@@ -153,7 +195,7 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
             </ul>
             <label>{language === "es" ? "Versión disponible" : "Available test version"}<select value={DEFAULT_TEST_VERSION} disabled><option value={DEFAULT_TEST_VERSION}>{TEST_VERSIONS[DEFAULT_TEST_VERSION].label}</option></select></label>
             <label>{language === "es" ? "ZIP Code (opcional)" : "ZIP Code (optional)"}<input inputMode="numeric" autoComplete="postal-code" maxLength={5} value={zipCode} onChange={event => setZipCode(event.target.value.replace(/\D/g, ""))} /></label>
-            <label>{language === "es" ? "¿Por dónde quieres empezar?" : "Where would you like to start?"}<select value={initialPractice} onChange={event => setInitialPractice(event.target.value)}><option value="home">Home</option><option value="civics">Civics</option><option value="vocabulary">Vocabulary</option></select></label>
+            <label>{language === "es" ? "¿Por dónde quieres empezar?" : "Where would you like to start?"}<select value={initialPractice} onChange={event => setInitialPractice(event.target.value)}><option value="home">{language === "es" ? "Inicio" : "Home"}</option><option value="civics">{language === "es" ? "Civismo" : "Civics"}</option><option value="vocabulary">{language === "es" ? "Vocabulario" : "Vocabulary"}</option></select></label>
             <button className="onboarding-primary" onClick={() => setStep(2)}>{copy.continue} <span>→</span></button>
           </section>
         )}
@@ -174,6 +216,7 @@ export function LegalSettings({ onBack, onRestartOnboarding, language = "en", th
   const [openSection, setOpenSection] = useState("privacy");
   const [cleared, setCleared] = useState(false);
   const [companionVisible, setCompanionVisible] = useState(getCompanionVisibility);
+  const spanishTitles = { privacy: "Política de privacidad", terms: "Términos de uso", ai: "Aviso sobre la IA", government: "Aviso de independencia gubernamental", sources: "Fuentes y ayuda profesional" };
 
   useEffect(() => {
     const syncVisibility = (event) => setCompanionVisible(Boolean(event.detail?.visible));
@@ -182,22 +225,23 @@ export function LegalSettings({ onBack, onRestartOnboarding, language = "en", th
   }, []);
 
   const clearLocalData = () => {
-    if (!window.confirm("Clear this device's Citizenship AI preferences and civics progress? This cannot be undone.")) return;
+    if (!window.confirm(language === "es" ? "¿Borrar preferencias, perfiles personales, proceso y progreso de Citizenship AI de este dispositivo? La copia de la nube permanece. Esta acción no se puede deshacer." : "Clear Citizenship AI preferences, personal profiles, journey and learning progress from this device? Your cloud copy will remain. This cannot be undone.")) return;
     Object.keys(localStorage).filter(key => key.startsWith("citizenshipai.")).forEach(key => localStorage.removeItem(key));
     ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", THEME_STORAGE_KEY, "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1", "citizenshipai.ai-sessions.promo.v1", "citizenshipai-companion-visible-v1", "citizenshipai-companion-streak-v1"].forEach((key) => localStorage.removeItem(key));
+    window.dispatchEvent(new Event("citizenshipai:local-data-cleared"));
     setCleared(true);
-  };
+};
 
   return (
     <div className="app settings-screen">
       <header className="settings-header">
-        <button className="back-button" onClick={onBack}>← Back to Home</button>
+        <button className="back-button" onClick={onBack}>{language === "es" ? "← Volver al inicio" : "← Back to Home"}</button>
         <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
       </header>
       <main className="settings-content">
         <p className="settings-eyebrow">{language === "es" ? "AJUSTES" : "SETTINGS"}</p>
         <h1>{language === "es" ? "Legal y privacidad" : "Legal & Privacy"}</h1>
-        <p className="settings-intro">{language === "es" ? "Consulta cómo funciona la aplicación y cómo se usan tus datos. Los documentos legales completos están en inglés." : "Review how the app works and how your data is used."}</p>
+        <p className="settings-intro">{language === "es" ? "Consulta cómo funciona la aplicación y cómo se usan tus datos. La privacidad está disponible en español; los demás documentos completos están en inglés." : "Review how the app works and how your data is used."}</p>
         <section className="appearance-settings" aria-labelledby="appearance-title">
           <div>
             <small>{language === "es" ? "APARIENCIA" : "APPEARANCE"}</small>
@@ -225,48 +269,48 @@ export function LegalSettings({ onBack, onRestartOnboarding, language = "en", th
             })}
           </div>
         </section>
-        <p className="settings-public-link">Public policy link: <a href="#privacy">citizenshipai.us/#privacy</a></p>
-        <section className="settings-notice" aria-label="Important disclaimer"><span>i</span><p>Independent educational practice only. Not legal advice and not a USCIS or U.S. government service.</p></section>
-        <section className="legal-accordion" aria-label="Legal and privacy documents">
+        <p className="settings-public-link">{language === "es" ? "Enlace público de privacidad:" : "Public policy link:"} <a href="#privacy">citizenshipai.us/#privacy</a></p>
+        <section className="settings-notice" aria-label={language === "es" ? "Aviso importante" : "Important disclaimer"}><span aria-hidden="true">i</span><p>{language === "es" ? "Herramienta educativa independiente para practicar. No ofrece asesoría legal ni es un servicio de USCIS o del gobierno de Estados Unidos." : "Independent educational practice only. Not legal advice and not a USCIS or U.S. government service."}</p></section>
+        <section className="legal-accordion" aria-label={language === "es" ? "Documentos legales y de privacidad" : "Legal and privacy documents"}>
           {legalSections.map((section) => {
             const isOpen = openSection === section.id;
             return (
               <article key={section.id} className="legal-item">
                 <button onClick={() => setOpenSection(isOpen ? "" : section.id)} aria-expanded={isOpen} aria-controls={`legal-${section.id}`}>
-                  <span>{section.title}</span><span aria-hidden="true">{isOpen ? "−" : "+"}</span>
+                  <span>{language === "es" ? spanishTitles[section.id] : section.title}</span><span aria-hidden="true">{isOpen ? "−" : "+"}</span>
                 </button>
-                {isOpen && <div id={`legal-${section.id}`} className="legal-item-body">{section.content}</div>}
+                {isOpen && <div id={`legal-${section.id}`} className="legal-item-body" lang={language}>{language === "es" ? <SpanishLegalContent id={section.id} /> : section.content}</div>}
               </article>
             );
           })}
           <article className="legal-item open">
-            <div className="legal-static-title">Study Companion</div>
+            <div className="legal-static-title">{language === "es" ? "Compañero de estudio" : "Study Companion"}</div>
             <div className="legal-item-body">
-              <p>The companion reacts locally to practice events. It does not receive your answers, recordings, or personal information.</p>
+              <p>{language === "es" ? "El compañero reacciona a las actividades de práctica en este dispositivo. No recibe tus respuestas, grabaciones ni información personal." : "The companion reacts locally to practice events. It does not receive your answers, recordings, or personal information."}</p>
               <button
                 className="legal-action-button"
                 type="button"
                 aria-pressed={companionVisible}
                 onClick={() => setCompanionVisible(setCompanionVisibility(!companionVisible))}
               >
-                {companionVisible ? "Hide study companion" : "Show study companion"}
+                {language === "es" ? (companionVisible ? "Ocultar compañero de estudio" : "Mostrar compañero de estudio") : (companionVisible ? "Hide study companion" : "Show study companion")}
               </button>
             </div>
           </article>
           <article className="legal-item open">
-            <div className="legal-static-title">Data &amp; Account Controls</div>
+            <div className="legal-static-title">{language === "es" ? "Controles de datos y cuenta" : "Data & Account Controls"}</div>
             <div className="legal-item-body">
-              <p>You can remove local preferences, consent choices, civics progress, on-device practice results, and local AI-usage history from this device below. If you use an optional account, open the Account panel to download your account and technical usage records or permanently delete the cloud account, its AI allowances, and its usage records. Deleting cloud account data does not automatically clear local data from this device.</p>
-              <button className="legal-action-button" onClick={clearLocalData}>Clear local app data</button>
-              {cleared && <p className="legal-success" role="status">Local data was cleared. Onboarding will appear on your next launch.</p>}
+              <p>{language === "es" ? "Puedes borrar preferencias, consentimiento, perfil personal, datos confirmados del proceso y progreso de este dispositivo. En Perfil puedes borrar la copia de la nube por separado. En Cuenta puedes descargar datos de cuenta, perfil cifrado guardado y uso técnico, o eliminar permanentemente la cuenta y sus datos. Eliminar datos de la nube no borra automáticamente los datos de este dispositivo." : "You can remove preferences, consent choices, personal profiles, confirmed journey details and study progress from this device. Profile lets you remove only the cloud copy. The Account panel exports account records, the explicitly saved encrypted profile and technical usage, or permanently deletes your cloud account and its data. Removing cloud data does not automatically clear this device."}</p>
+              <button className="legal-action-button" onClick={clearLocalData}>{language === "es" ? "Borrar datos locales" : "Clear local app data"}</button>
+              {cleared && <p className="legal-success" role="status">{language === "es" ? "Datos locales borrados. La bienvenida aparecerá en el próximo inicio." : "Local data was cleared. Onboarding will appear on your next launch."}</p>}
             </div>
           </article>
           <article className="legal-item open">
-            <div className="legal-static-title">Contact / Support</div>
-            <div className="legal-item-body"><p>For support, privacy, accessibility, or data questions, contact <a href="mailto:info@citizenshipai.us">info@citizenshipai.us</a>.</p></div>
+            <div className="legal-static-title">{language === "es" ? "Contacto y soporte" : "Contact / Support"}</div>
+            <div className="legal-item-body"><p>{language === "es" ? "Para preguntas sobre soporte, privacidad, accesibilidad o datos, escribe a" : "For support, privacy, accessibility, or data questions, contact"} <a href="mailto:info@citizenshipai.us">info@citizenshipai.us</a>.</p></div>
           </article>
         </section>
-        <button className="settings-secondary-button" onClick={onRestartOnboarding}>Review first-launch information again</button>
+        <button className="settings-secondary-button" onClick={onRestartOnboarding}>{language === "es" ? "Revisar la información de bienvenida" : "Review first-launch information again"}</button>
       </main>
     </div>
   );

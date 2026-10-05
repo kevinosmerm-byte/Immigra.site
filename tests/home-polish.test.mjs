@@ -1,49 +1,50 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { buildBrainContext, getDailyStudyPlan, getNextAction } from "../src/brain.js";
 
 const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+const home = app.slice(app.indexOf("function Home("), app.indexOf("function RealInterview("));
 
-test("Spanish home copy keeps the remaining dashboard headings translated", () => {
-  for (const text of [
-    "ENTRENAMIENTO DE CIUDADANÍA CON IA",
-    "TU PREPARACIÓN",
-    "VER PROGRESO",
-    "Seguimiento del caso",
-  ]) {
-    assert.match(app, new RegExp(text));
-  }
+test("Home offers one dominant daily action and discloses the plan progressively", () => {
+  assert.equal((home.match(/className="button-primary"/g) || []).length, 1);
+  assert.match(home, /onClick=\{onContinue\}/);
+  assert.match(home, /<details className="brain-plan-details"/);
+  assert.doesNotMatch(home, /home-hero-video|ai-orb|home-practice-list/);
 });
 
-test("Home opens directly into practice cards without a redundant section banner", () => {
-  assert.match(app, /className="home-new-section home-practice-section"/);
-  assert.doesNotMatch(app, /copy\.quickPractice|copy\.trainWithAi/);
+test("Home keeps the journey available without requiring USCIS credentials", () => {
+  assert.match(home, /onNavigate\("uscisTracker"\)/);
+  assert.match(app, /<CaseJourney/);
+  assert.doesNotMatch(home, /home-uscis-disabled-button/);
 });
 
-test("Home uses the promotional video as the primary real-interview action with playback controls", () => {
-  assert.match(app, /src="\/citizenshipai-home-cta\.mp4"/);
-  assert.match(app, /autoPlay/);
-  assert.match(app, /onClick=\{onStartInterview\}/);
-  assert.match(app, /toggleHomeVideoPlayback/);
-  assert.match(app, /toggleHomeVideoSound/);
-  assert.match(app, /homeVideoNeedsSound/);
-  assert.doesNotMatch(app, /home-video-primary-action/);
+test("daily action changes when confirmed journey reaches the oath", () => {
+  const before = buildBrainContext({ language: "en", caseProfile: {currentStage: "N400_FILED"} });
+  const after = buildBrainContext({ language: "en", caseProfile: {currentStage: "OATH_SCHEDULED"} });
+  assert.equal(getNextAction(before, getDailyStudyPlan(before)).module, "quiz");
+  assert.equal(getNextAction(after, getDailyStudyPlan(after)).module, "uscisTracker");
+  assert.match(home, /nextAction\.label/);
 });
 
-test("Home preparation card uses measured progress instead of hard-coded zeroes", () => {
-  assert.match(app, /className="home-progress-link" onClick=\{onOpenProgress\}/);
-  assert.match(app, /practiceSummary\?\.civics\?\.viewed/);
-  assert.doesNotMatch(app, /className="preparation-score"/);
+test("Home progress and documents use recorded evidence", () => {
+  assert.match(home, /practiceSummary\.civics\.viewed/);
+  assert.match(home, /getJourneyChecklistProgress\(context\.caseProfile, context\.n400Profile, language\)/);
+  assert.match(home, /documents\.completed/);
 });
 
-test("Home keeps unfinished case tracking visible but inaccessible", () => {
-  assert.match(app, /development: "EN DESARROLLO"/);
-  assert.match(app, /className="home-uscis-disabled-button"[\s\S]{0,100}disabled/);
-  assert.doesNotMatch(app, /onClick=\{\(\) => onOpenFeature\("uscisTracker"\)\}/);
+test("both languages offer the same primary action and supporting destinations", () => {
+  assert.match(home, /Continuar/);
+  assert.match(home, /Continue/);
+  for (const text of ["Tu progreso", "Ver el plan de hoy", "Mi proceso", "What matters now"]) assert.ok(home.includes(text));
+  const es = buildBrainContext({language: "es"});
+  const en = buildBrainContext({language: "en"});
+  assert.equal(getNextAction(es).module, getNextAction(en).module);
+  assert.notEqual(getNextAction(es).label, getNextAction(en).label);
 });
 
-test("Coach entry buttons are removed while reading and writing remain", () => {
-  assert.doesNotMatch(app, /onClick=\{openCoachFrom\}/);
-  assert.match(app, /onOpenFeature\("reading"\)/);
-  assert.match(app, /onOpenFeature\("writing"\)/);
+test("all interview and English tools remain accessible under Practice", () => {
+  for (const id of ["interview-n400", "interview-civics", "reading", "writing", "podcasts"]) assert.ok(app.includes('id:"' + id + '"'));
+  assert.match(app, /startInterview\("full"\)/);
+  assert.match(app, /navigateTo\("coach"\)/);
 });

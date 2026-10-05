@@ -15,13 +15,14 @@ const companion = await readFile(new URL("../src/companion.js", import.meta.url)
 const n400Component = await readFile(new URL("../src/N400InterviewPractice.jsx", import.meta.url), "utf8");
 const bank = JSON.parse(await readFile(new URL("../src/data/n400InterviewBank.json", import.meta.url), "utf8"));
 
-test("Home exposes a dedicated N-400 interview entry without replacing existing actions", () => {
-  assert.match(app, /onStartN400Interview/);
-  assert.match(app, /ENTREVISTA N-400/);
-  assert.match(app, /startInterview\("n400"\)/);
+test("grouped practice keeps N-400 accessible through the existing interview destination", () => {
+  assert.match(app, /interview-n400/);
+  assert.match(app, /N-400/);
+  assert.match(app, /id\.startsWith\("interview-"\) \? startInterview\(id\.slice\(10\)\)/);
   assert.match(app, /<N400InterviewPractice/);
   assert.doesNotMatch(app, /n400InterviewQuestions/);
-  assert.match(styles, /\.home-n400-interview-button/);
+  assert.match(app, /brainContext=\{brainContext\}/);
+  assert.match(n400Component, /onSaveN400Profile/);
 });
 
 test("N-400 practice uses the versioned bank and can restart in place", () => {
@@ -76,7 +77,7 @@ test("N-400 selection preserves block order and never repeats a concept", () => 
 test("conditional branches and neutral follow-ups depend on the applicant response", () => {
   assert.equal(parseYesNo("No, never."), false);
   assert.equal(parseYesNo("Yes, I have."), true);
-  assert.equal(parseYesNo("I am not sure"), false);
+  assert.equal(parseYesNo("I am not sure"), null);
   assert.equal(parseYesNo("Maybe"), null);
 
   const arrest = bank.questions.find((question) => question.id === "E_ARREST_CITE_DETAIN");

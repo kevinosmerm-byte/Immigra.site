@@ -13,6 +13,10 @@ import {
   recordProductEvent,
   requireAccount,
   startAiSession,
+  getPrivateProfileConfiguration,
+  getAccountBrainProfile,
+  setAccountBrainProfile,
+  deleteAccountBrainProfile,
 } from "./accountService.js";
 import { getAiFeatureConfig } from "../shared/featureAccessConfig.js";
 import { getBillingConfiguration } from "./stripeBilling.js";
@@ -43,6 +47,25 @@ router.get("/public-config", async (_req, res) => {
 });
 
 router.use(requireAccount);
+
+router.use("/brain-profile", (_req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
+router.get("/brain-profile/status", (_req, res) => res.json(getPrivateProfileConfiguration()));
+router.get("/brain-profile", async (req, res) => {
+  try { res.json(await getAccountBrainProfile(req.account.userId)); }
+  catch { res.status(503).json({ error: "Your secure profile could not be restored. Your local profile is unchanged.", code: "profile_storage_unavailable" }); }
+});
+router.put("/brain-profile", async (req, res) => {
+  if (req.body?.consent !== true || !req.body?.profile || typeof req.body.profile !== "object" || Array.isArray(req.body.profile)) {
+    return res.status(400).json({ error: "Confirm cloud storage and provide a profile.", code: "profile_consent_required" });
+  }
+  try { res.json(await setAccountBrainProfile(req.account.userId, req.body.profile)); }
+  catch { res.status(503).json({ error: "Secure profile storage is unavailable. Your profile remains on this device.", code: "profile_storage_unavailable" }); }
+});
+router.delete("/brain-profile", async (req, res) => {
+  if (req.body?.confirmation !== "DELETE_PROFILE") return res.status(400).json({ error: "Confirm removal of your cloud profile.", code: "profile_deletion_confirmation_required" });
+  try { res.json(await deleteAccountBrainProfile(req.account.userId)); }
+  catch { res.status(503).json({ error: "Your cloud profile could not be removed. Please try again.", code: "profile_deletion_unavailable" }); }
+});
 
 router.get("/saved-questions", async (req, res) => {
   res.set("Cache-Control", "no-store");

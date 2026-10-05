@@ -88,7 +88,8 @@ export class LegacySpacedRepetitionEngine {
     const independent = !attempt.helpUsed?.length;
     const supportPenalty = Math.min(0.35, (attempt.helpUsed?.length || 0) * 0.08);
     const gain = attempt.correct ? Math.max(0.05, 0.2 - supportPenalty + (attempt.mode === "spoken" && independent ? 0.08 : 0)) : -0.22;
-    const mastery = clamp((previous.mastery || 0) + gain);
+    // Assisted recognition is useful practice, but cannot establish independent recall.
+    const mastery = clamp((previous.mastery || 0) + gain, 0, attempt.correct && !independent ? Math.max(0.7, previous.mastery || 0) : 1);
     const streak = attempt.correct && independent ? (previous.consecutiveIndependentCorrect || 0) + 1 : 0;
     const lapses = attempt.correct ? (previous.lapses || 0) : (previous.lapses || 0) + 1;
     const intervalDays = mastery >= 0.9 && streak >= 4 ? 30 : mastery >= 0.75 && streak >= 3 ? 14 : mastery >= 0.6 && streak >= 2 ? 7 : streak ? 3 : attempt.correct ? 1 : 0.25;
@@ -121,7 +122,8 @@ export function updateQuestionState(previous, attempt) {
 }
 
 export function buildDailyPlan(states = [], nowIso, limit = 10) {
-  const now = Date.parse(nowIso);
+  const parsedNow = Date.parse(nowIso);
+  const now = Number.isFinite(parsedNow) ? parsedNow : Date.now();
   const categoryAverage = new Map();
   for (const state of states) {
     const scores = categoryAverage.get(state.category) || [];
@@ -129,15 +131,18 @@ export function buildDailyPlan(states = [], nowIso, limit = 10) {
     categoryAverage.set(state.category, scores);
   }
   const weakness = (category) => 1 - mean(categoryAverage.get(category) || [0]);
+  const priority = (state) => {
+    const due = Number.isFinite(Date.parse(state.nextReviewAt)) && Date.parse(state.nextReviewAt) <= now;
+    const recentErrors = Number.isFinite(state.recentErrors) ? state.recentErrors : Math.min(3, state.lapses || 0);
+    const recentMistake = state.lastCorrect === false || state.recentMistake;
+    return Number(due) * 5 + Number(Boolean(recentMistake)) * 3 + recentErrors * 0.6
+      + weakness(state.category) * 2 + (1 - (state.mastery || 0)) + (!(state.attempts > 0) ? 0.5 : 0);
+  };
   return [...states].sort((a, b) => {
-    const aDue = Date.parse(a.nextReviewAt) <= now ? 1 : 0;
-    const bDue = Date.parse(b.nextReviewAt) <= now ? 1 : 0;
-    const aPriority = aDue * 4 + (a.lapses || 0) * 0.4 + weakness(a.category) * 2 + (1 - (a.mastery || 0));
-    const bPriority = bDue * 4 + (b.lapses || 0) * 0.4 + weakness(b.category) * 2 + (1 - (b.mastery || 0));
-    return bPriority - aPriority;
-  }).slice(0, limit).map((state) => ({
+    return priority(b) - priority(a) || String(a.questionId).localeCompare(String(b.questionId), undefined, { numeric: true });
+  }).slice(0, Math.max(0, limit)).map((state) => ({
     questionId: state.questionId, category: state.category,
-    reason: Date.parse(state.nextReviewAt) <= now ? "due" : weakness(state.category) >= 0.4 ? "weak_category" : (state.lapses || 0) ? "recent_error" : "interview_rehearsal",
+    reason: Date.parse(state.nextReviewAt) <= now ? "due" : state.lastCorrect === false || state.recentMistake || state.recentErrors > 0 ? "recent_error" : !(state.attempts > 0) ? "new" : weakness(state.category) >= 0.4 ? "weak_category" : "interview_rehearsal",
     support: (state.mastery || 0) >= 0.75 ? "none" : state.preferredSupport || "context",
   }));
 }

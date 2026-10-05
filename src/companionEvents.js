@@ -51,3 +51,25 @@ export function emitCompanionResult(correct, options = {}) {
   }
   return streak;
 }
+
+/** Derive gentle reactions from shared context; messages never contain private facts. */
+export function emitCompanionContext(context = {}, previous = null) {
+  const es = context.language === "es";
+  const learning = context.learningProfile || {};
+  const oldLearning = previous?.learningProfile || {};
+  const completed = profile => (profile.practiceEvents || []).filter(event => event?.outcome === "completed").length;
+  if (previous && completed(learning) > completed(oldLearning)) {
+    return emitCompanionState("celebration", { message: es ? "Completaste tu práctica. ¡Buen trabajo!" : "You completed your practice. Well done!", duration: 3500 });
+  }
+  const masteryCount = profile => (profile.questionStates || []).filter(state => state?.status === "MASTERED").length;
+  if (previous && masteryCount(learning) > masteryCount(oldLearning)) {
+    return emitCompanionState("progress", { message: es ? "Dominas más preguntas. Sigue así." : "You've mastered more questions. Keep going.", duration: 3500 });
+  }
+  const stage = context.caseProfile?.currentStage;
+  const interviewDate = context.caseProfile?.interviewDate || context.immigrationProfile?.interviewDate;
+  const oldDate = previous?.caseProfile?.interviewDate || previous?.immigrationProfile?.interviewDate;
+  if (stage === "INTERVIEW_SCHEDULED" && interviewDate && (!previous || stage !== previous.caseProfile?.currentStage || interviewDate !== oldDate)) {
+    return emitCompanionState("coach", { message: es ? "Tu entrevista está programada. Preparémonos paso a paso." : "Your interview is scheduled. Let's prepare one step at a time.", duration: 4000 });
+  }
+  return false;
+}

@@ -64,7 +64,11 @@ test("privacy disclosure accurately describes content-free product telemetry", a
 
   assert.match(legal, /limited, account-linked product and cost telemetry/);
   assert.match(legal, /not to contain complete conversations, recordings, transcripts, practice answers, receipt numbers, or case details/);
-  assert.match(legal, /open the Account panel to download/);
+  assert.match(legal, /Account panel exports account records, the explicitly saved encrypted profile and technical usage/);
+  assert.match(legal, /asks you to agree before sending a snapshot/);
+  assert.match(legal, /server encrypts personal, immigration, N-400 and journey data before saving/);
+  assert.match(legal, /Browser storage is not an encrypted vault/);
+  assert.match(legal, /Guardar el perfil en la nube es una acción separada y opcional/);
   assert.doesNotMatch(legal, /does not create user accounts|does not include a database|does not implement application analytics/);
 });
 
@@ -194,7 +198,7 @@ test("usage snapshots aggregate provider units without embedding prices", async 
   assert.doesNotMatch(sql, /\$\d|usd|unit_price/i);
 });
 
-test("account exports are authenticated, bounded, and omit private content", async () => {
+test("account exports are authenticated, bounded, and include only the explicitly saved profile plus content-free usage", async () => {
   const { readFile } = await import("node:fs/promises");
   const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
   const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
@@ -204,6 +208,8 @@ test("account exports are authenticated, bounded, and omit private content", asy
   assert.match(routes, /Content-Disposition/);
   assert.match(service, /exportAccountData/);
   assert.match(service, /\.limit\(1000\)/);
+  assert.match(service, /brainProfile: brainProfile\?\.profile/);
+  assert.match(service, /brainProfileExportAvailable/);
   assert.doesNotMatch(service, /conversation_text|audio_blob|transcript_text/i);
   assert.match(account, /DOWNLOAD MY DATA/);
   assert.match(account, /DESCARGAR MIS DATOS/);

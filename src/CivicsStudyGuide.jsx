@@ -122,12 +122,12 @@ export function CivicsStudyGuide({ language = "en", onBack }) {
 
   const copy = isSpanish ? {
     back: "← 128 Preguntas", eyebrow: "MATERIAL OFICIAL DE USCIS", title: "Guía de estudio 2025",
-    subtitle: "One Nation, One People · 88 páginas", previous: "Página anterior", next: "Página siguiente",
+    subtitle: "128 preguntas y respuestas de civismo · USCIS", previous: "Página anterior", next: "Página siguiente",
     page: "Página", of: "de", zoomOut: "Reducir", zoomIn: "Ampliar", open: "Abrir PDF original",
     loading: "Preparando la guía oficial…", error: "No se pudo cargar la guía. Puedes abrir el PDF original.",
   } : {
     back: "← 128 Questions", eyebrow: "OFFICIAL USCIS MATERIAL", title: "2025 Study Guide",
-    subtitle: "One Nation, One People · 88 pages", previous: "Previous page", next: "Next page",
+    subtitle: "128 Civics Questions and Answers · USCIS", previous: "Previous page", next: "Next page",
     page: "Page", of: "of", zoomOut: "Zoom out", zoomIn: "Zoom in", open: "Open original PDF",
     loading: "Preparing the official guide…", error: "The guide could not be loaded. You can open the original PDF.",
   };
@@ -146,7 +146,7 @@ export function CivicsStudyGuide({ language = "en", onBack }) {
             <h1>{copy.title}</h1>
             <p>{copy.subtitle}</p>
           </div>
-          <a href={STUDY_GUIDE_URL} target="_blank" rel="noreferrer">{copy.open} ↗</a>
+          <a href={STUDY_GUIDE_URL} target="_blank" rel="noreferrer">{copy.open}</a>
         </section>
 
         <section

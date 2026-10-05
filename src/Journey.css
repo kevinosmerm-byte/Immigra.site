@@ -1,0 +1,40 @@
+.journey-main { width: 100%; max-width: 1000px; margin: 0 auto; padding: 24px var(--content-gutter, 16px) 40px; color: var(--ui-text); }
+.journey-main h1 { margin: 0 0 12px; font-size: var(--ui-page-title, 2rem); }
+.journey-main h2 { margin: 0 0 12px; font-size: var(--ui-section-title, 1.5rem); }
+.journey-main h3 { font-size: var(--ui-card-title, 1.25rem); line-height: 1.4; }
+.journey-main p { color: var(--ui-muted); line-height: 1.6; }
+.journey-heading { margin-bottom: 24px; }
+.journey-summary { margin-block: 24px; padding-block: 12px; }
+.journey-source,.journey-note { font-size: var(--ui-secondary,.875rem); line-height: 1.6; color: var(--ui-muted); }
+.journey-next-step { padding-block: 12px; }
+.journey-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-block: 16px; }
+.journey-primary,.journey-secondary { min-height: 44px; max-width: 100%; min-width: 0; border-radius: 12px; padding: 12px 20px; font: inherit; font-weight: 650; cursor: pointer; white-space: normal; overflow-wrap: anywhere; }
+.journey-primary { background: var(--ui-accent); color: var(--ui-accent-text); border: 0; }
+.journey-secondary { background: var(--ui-surface-soft); color: var(--ui-text); border: 1px solid var(--ui-border); }
+.journey-panel { margin-block: 20px; padding: 20px; border-radius: var(--ui-radius,16px); border: 1px solid var(--ui-border); background: var(--ui-surface); min-width: 0; }
+.journey-panel > summary,.journey-form summary { min-height: 44px; align-content: center; cursor: pointer; font-weight: 650; }
+.journey-panel > summary span { float: right; color: var(--ui-muted); }
+.journey-field-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; padding-block: 12px; }
+.journey-field { display: flex; flex-direction: column; min-width: 0; gap: 8px; font-size: var(--ui-secondary,.875rem); }
+.journey-field :is(input,select,textarea) { width: 100%; min-height: 44px; min-width: 0; font: inherit; color: var(--ui-text); background: var(--ui-surface-soft); border: 1px solid var(--ui-border); border-radius: 10px; padding: 12px; }
+.journey-field input[type="file"] { padding: 10px; }
+.journey-field input::file-selector-button { max-width: 100%; min-height: 32px; border-radius: 6px; border: 0; padding: 6px 10px; background: var(--ui-surface); color: var(--ui-text); font: inherit; margin-right: 8px; }
+.journey-field :is(input,select,textarea)[aria-invalid="true"] { border-color: var(--ui-danger); }
+.journey-error { color: var(--ui-danger) !important; }
+.journey-status { color: var(--ui-success) !important; }
+.journey-checklist :is(ul,ol) { list-style: none; padding: 0; }
+.journey-checklist label { display: flex; align-items: flex-start; gap: 12px; min-height: 44px; padding-block: 10px; cursor: pointer; line-height: 1.5; }
+.journey-checklist input[type="checkbox"] { flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px; accent-color: var(--ui-accent); }
+.journey-checklist label span { flex: 1; min-width: 0; }
+.journey-history li,.journey-notices li { padding-block: 12px; line-height: 1.6; }
+.journey-history li :is(span,small),.journey-notices li :is(span,small) { display: block; color: var(--ui-muted); }
+.journey-official-links { display: flex; flex-wrap: wrap; gap: 12px 20px; margin-block: 24px; }
+.journey-official-links a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ui-accent); line-height: 1.5; }
+.journey-official-links p { flex-basis: 100%; margin: 0; }
+.immigration-contextual-help { padding-block: 20px; }
+.immigration-context-stage { color: var(--ui-muted); font-size: var(--ui-secondary); }
+.immigration-urgent-details,.immigration-directory { margin-block: 24px; padding-top: 12px; border-top: 1px solid var(--ui-border); }
+.immigration-urgent-details > summary,.immigration-directory > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; line-height: 1.5; }
+html[data-theme="light"] .journey-field :is(input,select,textarea) { color-scheme: light; }
+html[data-theme="dark"] .journey-field :is(input,select,textarea) { color-scheme: dark; }
+@media(max-width:767px) { .journey-field-grid { grid-template-columns: minmax(0,1fr); } .journey-panel { padding: 16px; } .journey-actions { align-items: stretch; } .journey-actions > button { flex: 1 1 180px; } .journey-primary { width: 100%; } }

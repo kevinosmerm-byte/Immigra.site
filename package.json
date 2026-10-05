@@ -15,10 +15,11 @@
     "ios:sync": "npm run build && npx cap sync ios",
     "ios:open": "npx cap open ios",
     "preview": "vite preview",
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "typecheck": "tsc --noEmit --allowJs --checkJs false --noImplicitAny false --module nodenext --moduleResolution nodenext --resolveJsonModule --esModuleInterop --skipLibCheck src/brain.js src/appRoutes.js"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.13"
   },
   "dependencies": {
     "@capacitor-community/text-to-speech": "^8.0.2",

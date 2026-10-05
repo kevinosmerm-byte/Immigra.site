@@ -47,7 +47,7 @@ test("Stripe subscription states map to server-authoritative entitlements", () =
 
 test("Stripe webhook receives the raw request body before JSON parsing", async () => {
   const source = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
-  const webhook = source.indexOf('app.post("/api/billing/webhook", express.raw');
+  const webhook = source.indexOf('app.post(["/billing/webhook", "/api/billing/webhook"], express.raw');
   const jsonParser = source.indexOf('app.use(express.json({ limit: "256kb" }))');
   assert.ok(webhook >= 0, "webhook route should exist");
   assert.ok(jsonParser > webhook, "raw webhook route must be mounted before express.json");
