@@ -45,3 +45,7 @@ html .home-reference .practice-feature-card.civics-image-card .reference-civics-
 /* Shared user-selected artwork; existing panels retain their readable surfaces. */
 html .home-ai.home-reference { background:#e9f3fc url('./assets/citizenship-background.png') center center / cover no-repeat fixed !important; }
 html body { background:#e9f3fc url('./assets/citizenship-background.png') center center / cover no-repeat fixed; }
+/* The supplied video contains the complete hero artwork. */
+html .home-reference .reference-hero-copy { display:none; }
+html .home-reference .home-visual-hero { display:block; min-height:0; }
+html .home-reference .home-hero-video { display:block; width:100%; height:auto; min-height:0; object-fit:contain; }
