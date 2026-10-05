@@ -8,13 +8,13 @@ import { useProgressGate } from "./progressGateContext.js";
 import { BottomNavigation } from "./BottomNavigation.jsx";
 import { lazy, Suspense, useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
-import "./ModernDesign.css";
+import "./LegacyIntegrations.css";
 import { SectionNavigation } from "./SectionNavigation.jsx";
 import { buildBrainContext, getDailyStudyPlan, getNextAction } from "./brain.js";
 import { useBrainProfile } from "./useBrainProfile.js";
 import { Profile } from "./Profile.jsx";
 import CaseJourney from "./CaseJourney.jsx";
-import { getCaseStageLabel, getJourneyChecklistProgress } from "./caseTracker.js";
+import { getCaseStageLabel } from "./caseTracker.js";
 import { getQuizProgress, recordQuizAttempt } from "./quizLearning.js";
 import { readAppRoute, appRouteHash } from "./appRoutes.js";
 import sarahImage from "./assets/sarah.png";
@@ -47,6 +47,25 @@ const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
 const CivicsStudyGuide = lazy(() => import("./CivicsStudyGuide.jsx").then((module) => ({ default: module.CivicsStudyGuide })));
 const QuizLearningPath = lazy(() => import("./QuizLearningPath.jsx"));
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
+const HOME_VIDEO_PLAYED_KEY = "citizenshipai.homeVideoPlayed.v1";
+let homeVideoPlayedThisVisit = false;
+
+function hasPlayedHomeVideo() {
+  try {
+    return homeVideoPlayedThisVisit || sessionStorage.getItem(HOME_VIDEO_PLAYED_KEY) === "true";
+  } catch {
+    return homeVideoPlayedThisVisit;
+  }
+}
+
+function rememberHomeVideoPlayback() {
+  homeVideoPlayedThisVisit = true;
+  try {
+    sessionStorage.setItem(HOME_VIDEO_PLAYED_KEY, "true");
+  } catch {
+    // The in-memory flag still prevents repeats when storage is unavailable.
+  }
+}
 const CASE_TRACKER_COPY = {
   en: {
     uscIs: "USCIS", title: "Case Tracker", sandbox: "Sandbox",
@@ -228,40 +247,401 @@ const readingSentences = [
     spanish: "La Constitución forma el gobierno."
   }
 ];
-function Home({ language, onLanguageChange, onOpenAccount, onOpenSettings, onNavigate, context, plan, nextAction, onContinue, practiceSummary }) {
-  const es = language === "es";
-  const documents = getJourneyChecklistProgress(context.caseProfile, context.n400Profile, language);
-  const stage = getCaseStageLabel(context.caseProfile.currentStage || "PREPARING_N400", language);
-  return <div className="app home-ai brain-home">
-    <header className="home-new-header">
-      <div className="home-new-brand" aria-label="Citizenship AI"><span className="home-brand-wordmark">Citizenship <strong>AI</strong></span></div>
-      <div className="language-selector">
-        <AccountButton language={language} onClick={onOpenAccount} />
-        <button className="home-language" type="button" onClick={() => onLanguageChange(es ? "en" : "es")} aria-label={es ? "Cambiar a inglés" : "Switch to Spanish"}>{es ? "ES" : "EN"}</button>
-        <button className="home-settings-button" type="button" onClick={onOpenSettings} aria-label={es ? "Ajustes y privacidad" : "Settings and privacy"}>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="m9 3-1 3-3 1-2 3 2 2-1 3 2 3 3-1 3 1 3-1 3 1 2-3-1-3 2-2-2-3-3-1-1-3Z"/></svg>
+function Home({
+  onNavigate, context, plan, nextAction, onContinue,
+  onStartInterview,
+  onStartN400Interview,
+  onStartCivicsInterview,
+  onOpenFeature,
+  onOpenProgress,
+  onOpenSettings,
+  onOpenImmigrationHelp,
+  onOpenPodcasts,
+  onOpenAccount,
+  language,
+  onLanguageChange,
+  practiceSummary,
+}) {
+  const homeVideoRef = useRef(null);
+  const [homeVideoPlaying, setHomeVideoPlaying] = useState(false);
+  const [homeVideoMuted, setHomeVideoMuted] = useState(false);
+  const [homeVideoNeedsSound, setHomeVideoNeedsSound] = useState(false);
+
+  useEffect(() => {
+    const video = homeVideoRef.current;
+    if (!video) return undefined;
+
+    let cancelled = false;
+    if (hasPlayedHomeVideo()) {
+      const showLastFrame = () => {
+        if (cancelled || !Number.isFinite(video.duration)) return;
+        video.pause();
+        video.currentTime = Math.max(0, video.duration - 0.05);
+      };
+      video.addEventListener("loadedmetadata", showLastFrame);
+      if (video.readyState >= 1) showLastFrame();
+      return () => {
+        cancelled = true;
+        video.removeEventListener("loadedmetadata", showLastFrame);
+        video.pause();
+      };
+    }
+    video.muted = false;
+    const playWithSound = video.play();
+    if (playWithSound?.catch) {
+      playWithSound.catch(async () => {
+        if (cancelled) return;
+        video.muted = true;
+        setHomeVideoMuted(true);
+        setHomeVideoNeedsSound(true);
+        try {
+          await video.play();
+        } catch {
+          setHomeVideoPlaying(false);
+        }
+      });
+    }
+
+    return () => {
+      cancelled = true;
+      video.pause();
+    };
+  }, []);
+
+  const toggleHomeVideoPlayback = async () => {
+    const video = homeVideoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      try {
+        await video.play();
+      } catch {
+        setHomeVideoPlaying(false);
+      }
+    } else {
+      video.pause();
+    }
+  };
+
+  const toggleHomeVideoSound = async () => {
+    const video = homeVideoRef.current;
+    if (!video) return;
+    video.muted = !video.muted;
+    setHomeVideoMuted(video.muted);
+    setHomeVideoNeedsSound(false);
+    if (video.paused) {
+      try {
+        await video.play();
+      } catch {
+        setHomeVideoPlaying(false);
+      }
+    }
+  };
+
+  const copy = language === "en" ? {
+    status: "AI-POWERED CITIZENSHIP TRAINING",
+    aiReady: "AI READY",
+    ready: "PRACTICE",
+    english: "ENGLISH",
+    reading: "Reading",
+    writing: "Writing",
+    preparation: "YOUR PREPARATION",
+    preparationTitle: "Keep moving forward.",
+    civics: "Civics",
+    interview: "Interview",
+    viewProgress: "VIEW PROGRESS",
+    caseTracker: "Case Tracker",
+    development: "IN DEVELOPMENT",
+    caseBody: "Practice checking a status response through the USCIS API Sandbox.",
+    checkCase: "COMING SOON",
+    languageLabel: "Change preferred language",
+    settingsLabel: "Open Legal and Privacy Settings",
+    civicsLabel: "Civics — 128 Questions. Master the questions for your interview.",
+  } : {
+    status: "ENTRENAMIENTO DE CIUDADANÍA CON IA",
+    aiReady: "IA LISTA",
+    ready: "PRÁCTICA",
+    english: "INGLÉS",
+    reading: "Lectura",
+    writing: "Escritura",
+    preparation: "TU PREPARACIÓN",
+    preparationTitle: "Sigue avanzando.",
+    civics: "Educación cívica",
+    interview: "Entrevista",
+    viewProgress: "VER PROGRESO",
+    caseTracker: "Seguimiento del caso",
+    development: "EN DESARROLLO",
+    caseBody: "Practica la consulta de una respuesta de estado mediante la API Sandbox de USCIS.",
+    checkCase: "PRÓXIMAMENTE",
+    languageLabel: "Cambiar idioma preferido",
+    settingsLabel: "Abrir ajustes legales y de privacidad",
+    civicsLabel: "Educación cívica — 128 preguntas. Domina las preguntas para tu entrevista.",
+  };
+  const civicsProgress = Math.min(100, Math.round((practiceSummary?.civics?.viewed || 0) / 128 * 100));
+  return (
+    <div className="app home-ai">
+
+      {/* ================= HEADER ================= */}
+
+      <header className="home-new-header">
+
+        <div className="home-new-brand" aria-label="Citizenship AI">
+          <span className="home-brand-wordmark">Citizenship <strong>AI</strong></span>
+        </div>
+
+        <div className="language-selector">
+          <AccountButton language={language} onClick={onOpenAccount} />
+          <button
+            className="home-language"
+            onClick={() => onLanguageChange(language === "en" ? "es" : "en")}
+            aria-label={copy.languageLabel}
+          >
+            {language === "en" ? "EN" : "ES"}
+          </button>
+          <button className="home-settings-button" onClick={onOpenSettings} aria-label={copy.settingsLabel}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19 12a7 7 0 0 0-.1-1.15l2-1.55-2-3.45-2.45 1A7 7 0 0 0 14.5 5.7L14.15 3h-4.3L9.5 5.7a7 7 0 0 0-1.95 1.15l-2.45-1-2 3.45 2 1.55A7 7 0 0 0 5 12c0 .4.03.78.1 1.15l-2 1.55 2 3.45 2.45-1A7 7 0 0 0 9.5 18.3l.35 2.7h4.3l.35-2.7a7 7 0 0 0 1.95-1.15l2.45 1 2-3.45-2-1.55c.07-.37.1-.75.1-1.15Z" />
+            </svg>
+          </button>
+        </div>
+
+      </header>
+
+
+
+      {/* ================= HERO ================= */}
+
+      <main className="home-new-content">
+
+        <section className="home-new-hero">
+
+          <div className="hero-glow"></div>
+
+          <div className="home-visual-hero home-video-hero">
+            <span className="home-pro-badge">PRO</span>
+            <video
+              ref={homeVideoRef}
+              className="home-hero-video"
+              src="/citizenshipai-home-cta.mp4"
+              poster="/sarah-real-interview-hero.jpg"
+              playsInline
+              preload="metadata"
+              onPlay={() => {
+                rememberHomeVideoPlayback();
+                setHomeVideoPlaying(true);
+              }}
+              onPause={() => setHomeVideoPlaying(false)}
+              onEnded={() => setHomeVideoPlaying(false)}
+              onVolumeChange={(event) => setHomeVideoMuted(event.currentTarget.muted)}
+              onClick={onStartInterview}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onStartInterview();
+                }
+              }}
+              role="button"
+              tabIndex="0"
+              aria-label={language === "en"
+                ? "Start real interview practice with Sarah"
+                : "Comenzar práctica de entrevista real con Sarah"}
+            />
+
+            <div className="home-video-controls" aria-label={language === "en" ? "Promotional video controls" : "Controles del video promocional"}>
+              <button type="button" onClick={toggleHomeVideoPlayback} aria-label={homeVideoPlaying
+                ? (language === "en" ? "Pause video" : "Pausar video")
+                : (language === "en" ? "Play video" : "Reproducir video")}>
+                <span aria-hidden="true">{homeVideoPlaying ? "Ⅱ" : "▶"}</span>
+              </button>
+              <button type="button" onClick={toggleHomeVideoSound} aria-label={homeVideoMuted
+                ? (language === "en" ? "Turn sound on" : "Activar sonido")
+                : (language === "en" ? "Mute video" : "Silenciar video")}>
+                <span aria-hidden="true">{homeVideoMuted ? "🔇" : "🔊"}</span>
+              </button>
+              {homeVideoNeedsSound && (
+                <button type="button" className="home-video-sound-prompt" onClick={toggleHomeVideoSound}>
+                  {language === "en" ? "Turn on sound" : "Activar sonido"}
+                </button>
+              )}
+            </div>
+
+          </div>
+
+          <div className="sr-only">
+            <h1>{language === "en" ? "Prepare for your citizenship interview" : "Prepárate para tu entrevista de ciudadanía"}</h1>
+            <p>{language === "en"
+              ? "Bilingual, personalized practice with official resources."
+              : "Práctica bilingüe y personalizada con recursos oficiales."}
+            </p>
+          </div>
+
+
+          {/* AI ORB */}
+
+          <div className="ai-orb-container">
+
+            <div className="ai-orb-ring ring-one"></div>
+            <div className="ai-orb-ring ring-two"></div>
+            <div className="ai-orb-ring ring-three"></div>
+
+            <div className="ai-orb">
+
+              <div className="ai-orb-core">
+                ✦
+              </div>
+
+            </div>
+
+            <div className="ai-orb-label">
+              <span></span>
+              {copy.aiReady}
+            </div>
+
+          </div>
+
+
+          {/* PRIMARY ACTION */}
+
+          <div className="home-interview-actions" style={{ display: "grid", gap: "12px", width: "100%" }}>
+            <button
+              className="home-primary-button home-n400-interview-button"
+              onClick={onStartN400Interview}
+            >
+              <span className="home-action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h5M9 12h6M9 16h6"/></svg>
+              </span>
+              <div>
+                <small>{language === "en" ? "FORM N-400 · GUIDED PRACTICE" : "FORMULARIO N-400 · PRÁCTICA GUIADA"}</small>
+                <strong>{language === "en" ? "N-400 INTERVIEW" : "ENTREVISTA N-400"}</strong>
+              </div>
+              <span className="primary-arrow">→</span>
+            </button>
+            <button
+              className="home-primary-button home-civics-live-button"
+              onClick={onStartCivicsInterview}
+            >
+              <span className="home-action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+              </span>
+              <div>
+                <small>{language === "en" ? "CLASSIC SARAH PRACTICE" : "PRÁCTICA CLÁSICA CON SARAH"}</small>
+                <strong>{language === "en" ? "CIVICS INTERVIEW" : "ENTREVISTA CÍVICA"}</strong>
+              </div>
+              <span className="primary-arrow">→</span>
+            </button>
+            <button
+              className="home-primary-button home-immigration-primary-button"
+              onClick={onOpenImmigrationHelp}
+            >
+              <span className="home-action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3 20 7v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
+              </span>
+              <div>
+                <small>{language === "en" ? "OFFICIAL U.S. RESOURCES" : "RECURSOS OFICIALES DE EE. UU."}</small>
+                <strong>{language === "en" ? "IMMIGRATION HELP" : "AYUDA MIGRATORIA"}</strong>
+              </div>
+              <span className="primary-arrow">→</span>
+            </button>
+            <button className="home-primary-button home-podcast-primary-button" onClick={onOpenPodcasts}>
+              <span className="home-action-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg>
+              </span>
+              <div>
+                <small><i className="home-podcast-live-dot"></i>{language === "en" ? "STUDY AUDIO · ENGLISH + ESPAÑOL" : "AUDIO DE ESTUDIO · ENGLISH + ESPAÑOL"}</small>
+                <strong>{language === "en" ? "PODCASTS" : "PODCASTS"}</strong>
+              </div>
+              <span className="primary-arrow">→</span>
+            </button>
+          </div>
+
+        </section>
+
+
+        {/* ================= QUICK PRACTICE ================= */}
+        <section className="home-new-section home-practice-section">
+          <div className="home-practice-list">
+
+            <button
+              className="practice-feature-card civics-feature civics-image-card"
+              onClick={() => onOpenFeature("civics")}
+              aria-label={copy.civicsLabel}
+            >
+              <img src="/civics-128-button.png" alt="" aria-hidden="true" />
+              <span className="sr-only">{copy.civicsLabel}</span>
+            </button>
+
+
+            <div className="practice-mini-grid">
+
+              <button
+                className="practice-mini-card"
+                onClick={() => onOpenFeature("reading")}
+              >
+
+                <div className="mini-icon">
+                  A
+                </div>
+
+                <div>
+                  <small>{copy.english}</small>
+                  <h3>{copy.reading}</h3>
+                </div>
+
+                <span>↗</span>
+
+              </button>
+
+
+              <button
+                className="practice-mini-card"
+                onClick={() => onOpenFeature("writing")}
+              >
+
+                <div className="mini-icon">
+                  ✎
+                </div>
+
+                <div>
+                  <small>{copy.english}</small>
+                  <h3>{copy.writing}</h3>
+                </div>
+
+                <span>↗</span>
+
+              </button>
+
+            </div>
+
+
+          </div>
+
+        </section>
+
+
+        {/* ================= PREPARATION ================= */}
+
+        <button className="home-progress-link" onClick={onOpenProgress}>
+          <span className="home-progress-symbol" aria-hidden="true">↗</span>
+          <span><strong>{language === "es" ? "Mi progreso" : "My progress"}</strong><small>{language === "es" ? "Ver mi actividad y resultados" : "View my activity and results"}</small></span>
+          <span className="home-progress-count">{civicsProgress}% <span aria-hidden="true">→</span></span>
         </button>
-      </div>
-    </header>
-    <main className="brain-home-main">
-      <div className="brain-greeting"><p>{es ? "Tu camino a la ciudadanía" : "Your citizenship journey"}</p><h1>{context.userProfile.firstName ? (es ? "Hola, " : "Hello, ") + context.userProfile.firstName : es ? "Vamos paso a paso." : "One step at a time."}</h1></div>
-      <section className="brain-today" aria-labelledby="today-title">
-        {plan.daysUntilInterview !== null && plan.daysUntilInterview >= 0 && <p className="brain-appointment">{plan.daysUntilInterview === 0 ? (es ? "Tu entrevista es hoy" : "Your interview is today") : es ? `Entrevista en ${plan.daysUntilInterview} días` : `Interview in ${plan.daysUntilInterview} days`}</p>}
-        <p>{es ? "Lo que importa ahora" : "What matters now"}</p>
-        <h2 id="today-title">{nextAction.label}</h2>
-        <p>{nextAction.detail}</p>
-        <span>{plan.totalMinutes} {es ? "minutos disponibles" : "minutes available"}</span>
-        <button type="button" className="button-primary" onClick={onContinue}>{es ? "Continuar" : "Continue"}<span aria-hidden="true"> →</span></button>
-        <details className="brain-plan-details"><summary>{es ? "Ver el plan de hoy" : "View today's plan"}</summary><ol>{plan.items.map(item => <li key={item.id}><strong>{item.label}</strong><span>{item.minutes} min · {item.detail}</span></li>)}</ol></details>
-      </section>
-      <aside className="brain-home-context" aria-label={es ? "Tu proceso" : "Your journey"}>
-        <section><h2>{es ? "Mi proceso" : "My journey"}</h2><p>{stage}</p><button type="button" className="button-secondary" onClick={() => onNavigate("uscisTracker")}>{es ? "Ver mi próximo paso" : "View my next step"}</button></section>
-        {documents.total > 0 && <section><h2>{es ? "Documentos" : "Documents"}</h2><p>{documents.completed}/{documents.total} {es ? "preparados" : "ready"}</p><button className="button-ghost" type="button" onClick={() => onNavigate("uscisTracker")}>{es ? "Abrir lista" : "Open checklist"} →</button></section>}
-        <section className="brain-home-progress"><h2>{es ? "Tu progreso" : "Your progress"}</h2><p>{practiceSummary.civics.viewed}/128 {es ? "preguntas estudiadas" : "questions studied"}</p><button type="button" className="button-ghost" onClick={() => onNavigate("progress")}>{es ? "Ver progreso" : "View progress"} →</button></section>
-      </aside>
-    </main>
-  </div>;
+
+        <section className="legacy-new-tools" aria-label={language === "es" ? "Mi preparación" : "My preparation"}>
+          <div className="legacy-tools-links">
+            <button onClick={() => onNavigate("profile")}><strong>{language === "es" ? "Mi perfil" : "My profile"}</strong><span>{language === "es" ? "Datos y preferencias" : "Details and preferences"} →</span></button>
+            <button onClick={() => onNavigate("uscisTracker")}><strong>{language === "es" ? "Mi proceso" : "My journey"}</strong><span>{getCaseStageLabel(context.caseProfile.currentStage || "PREPARING_N400", language)} →</span></button>
+          </div>
+          <details className="legacy-daily-plan"><summary>{language === "es" ? "Mi plan de hoy" : "My daily plan"}</summary><h3>{nextAction.label}</h3><p>{nextAction.detail}</p><button onClick={onContinue}>{language === "es" ? "Continuar mi plan" : "Continue my plan"} →</button><ol>{plan.items.map(item => <li key={item.id}>{item.label} · {item.minutes} min</li>)}</ol></details>
+        </section>
+
+      </main>
+
+
+    </div>
+  );
 }
+
+// Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
 
 function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onRestart, civicProfile, brainContext = {}, language = "en", userKey = "guest", mode = "full", requestVoiceAccess }) {
   const { runTransition } = useProgressGate();
@@ -1836,6 +2216,13 @@ function AppContent({ userKey }) {
   return (
     <>
     <Home
+      onStartInterview={() => startInterview("full")}
+      onStartN400Interview={() => startInterview("n400")}
+      onStartCivicsInterview={() => startInterview("civics")}
+      onOpenFeature={openPracticeModule}
+      onOpenProgress={() => navigateTo("progress")}
+      onOpenImmigrationHelp={() => navigateTo("immigrationHelp")}
+      onOpenPodcasts={() => navigateTo("podcasts")}
       context={brainContext} plan={dailyPlan} nextAction={nextAction} onContinue={continueDailyPlan}
       onNavigate={navigateTo} onOpenAccount={() => setAccountOpen(true)} onOpenSettings={() => navigateTo("settings")}
       language={language} onLanguageChange={setPreferredLanguage} practiceSummary={practiceSummary}

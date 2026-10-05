@@ -1,0 +1,19 @@
+/* Extensions fit the original app. No global background or typography overrides. */
+.legacy-new-tools { margin:24px 0; color:inherit; }
+.legacy-tools-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.legacy-tools-links button,.legacy-daily-plan { color:#edf5ff; background:#10223ce8; border:1px solid #375679; border-radius:16px; padding:18px; text-align:left; }
+.legacy-tools-links button { cursor:pointer; font:inherit; }
+.legacy-tools-links strong,.legacy-tools-links span { display:block; }
+.legacy-tools-links span { margin-top:8px; color:#c0d3e9; font-size:14px; line-height:1.5; }
+.legacy-daily-plan { margin-top:14px; line-height:1.6; }
+.legacy-daily-plan summary { cursor:pointer; font-weight:700; min-height:28px; }
+.legacy-daily-plan button { padding:12px 18px; border:0; border-radius:10px; background:#42cef4; color:#072439; font-weight:700; cursor:pointer; }
+:is(.profile-screen,.journey-screen,.practice-hub,.brain-today) { --ui-text:#edf5ff; --ui-muted:#bed0e5; --ui-surface:#12233c; --ui-surface-soft:#1b304d; --ui-border:#3c5574; --ui-accent:#82caff; --ui-accent-text:#08273f; }
+.journey-main { --ui-text:#edf5ff; --ui-muted:#bed0e5; --ui-border:#3c5574; }
+.section-navigation { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }
+.section-navigation button,.button-primary,.button-secondary,.button-ghost { font:inherit; min-height:44px; padding:10px 16px; border:1px solid #527292; border-radius:10px; background:#163552; color:#eff7ff; cursor:pointer; }
+.button-primary { background:#39c7eb; color:#09263d; border-color:#39c7eb; font-weight:700; }
+.brain-today { padding:20px; border:1px solid #375679; border-radius:18px; background:#10223ce8; color:#edf5ff; margin:20px 0; }
+html[data-theme="light"] :is(.legacy-tools-links button,.legacy-daily-plan,.brain-today) { background:#fff; color:#162c49; border-color:#b8cce3; }
+html[data-theme="light"] .legacy-tools-links span { color:#47617d; }
+@media(max-width:480px) { .legacy-tools-links { grid-template-columns:1fr; } .legacy-tools-links button,.legacy-daily-plan { padding:16px; } }
