@@ -79,3 +79,22 @@ html[data-theme="light"] .home-ai .legacy-daily-plan { background:#fff5e4; }
 html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button { background:linear-gradient(110deg,#e5f3fc,#eff6fc) !important; }
 html[data-theme="light"] .home-ai .practice-mini-card:first-child,html[data-theme="light"] .home-ai .practice-mini-card:nth-child(2),html[data-theme="light"] .home-ai .home-progress-link,html[data-theme="light"] .home-ai .legacy-tools-links button:first-child,html[data-theme="light"] .home-ai .legacy-tools-links button:nth-child(2),html[data-theme="light"] .home-ai .legacy-daily-plan { background:linear-gradient(110deg,#e6eff8,#f2f6fc); color:#17364d; }
 html[data-theme="light"] .home-ai .home-progress-link small { color:#47617d; }
+
+/* Saturated blue-to-violet progression, with matching colors within each row. */
+.home-ai .home-interview-actions .home-primary-button { background:linear-gradient(110deg,#075cb0,#12458f) !important; border-color:#4ba7fa99; }
+.home-ai .home-interview-actions .home-primary-button:nth-child(n+3) { background:linear-gradient(110deg,#1855ae,#284395) !important; border-color:#658bfa99; }
+.home-ai .practice-mini-card:first-child,.home-ai .practice-mini-card:nth-child(2) { background:linear-gradient(110deg,#304ba5,#3e3c98); border-color:#8692ff99; }
+.home-ai .home-progress-link { background:linear-gradient(110deg,#4543a5,#533597); border-color:#a096ff99; }
+.home-ai .legacy-tools-links button:first-child,.home-ai .legacy-tools-links button:nth-child(2) { background:linear-gradient(110deg,#593ca5,#693293); border-color:#b493fa99; }
+.home-ai .legacy-daily-plan { background:linear-gradient(110deg,#6c36a5,#7b308e); border-color:#cf91ed99; }
+.home-ai .home-interview-actions .home-action-icon,.home-ai .practice-mini-card:first-child .mini-icon,.home-ai .practice-mini-card:nth-child(2) .mini-icon,.home-ai .home-progress-link .preparation-icon,.home-ai .legacy-tools-links button .preparation-icon,.home-ai .legacy-daily-plan .preparation-icon { color:#e1efff; border-color:#c3deff66; background:#c1d8ff18; }
+.home-ai .home-interview-actions .home-primary-button small,.home-ai .practice-mini-card small,.home-ai .preparation-copy small,.home-ai .home-progress-link small { color:#e0e6ff; }
+html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button { background:linear-gradient(110deg,#075cb0,#12458f) !important; }
+html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button:nth-child(n+3) { background:linear-gradient(110deg,#1855ae,#284395) !important; }
+html[data-theme="light"] .home-ai .practice-mini-card:first-child,html[data-theme="light"] .home-ai .practice-mini-card:nth-child(2) { background:linear-gradient(110deg,#304ba5,#3e3c98); }
+html[data-theme="light"] .home-ai .home-progress-link { background:linear-gradient(110deg,#4543a5,#533597); }
+html[data-theme="light"] .home-ai .legacy-tools-links button:first-child,html[data-theme="light"] .home-ai .legacy-tools-links button:nth-child(2) { background:linear-gradient(110deg,#593ca5,#693293); }
+html[data-theme="light"] .home-ai .legacy-daily-plan { background:linear-gradient(110deg,#6c36a5,#7b308e); }
+.home-ai .home-interview-actions .home-primary-button strong,.home-ai .practice-mini-card h3,.home-ai .home-progress-link strong,.home-ai .home-progress-count,.home-ai .preparation-copy strong { color:#fff; }
+html[data-theme="light"] .home-ai .preparation-copy strong,html[data-theme="light"] .home-ai .home-progress-link,html[data-theme="light"] .home-ai .practice-mini-card h3,html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button strong { color:#fff; }
+html[data-theme="light"] .home-ai .preparation-copy small,html[data-theme="light"] .home-ai .home-progress-link small,html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button small { color:#e0e6ff; }
