@@ -30,3 +30,10 @@ createRoot(document.getElementById('root')).render(
     </AppErrorBoundary>
   </StrictMode>,
 )
+
+if (import.meta.env.PROD) {
+  const recover = () => import('./styleRecovery.js').then(({ recoverStyles }) => recoverStyles());
+  if (document.readyState === 'complete') recover();
+  else window.addEventListener('load', recover, { once: true });
+  window.addEventListener('online', recover);
+}

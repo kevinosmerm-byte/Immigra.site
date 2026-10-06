@@ -1,4 +1,4 @@
-const CACHE_NAME = 'citizenshipai-shell-v2';
+const CACHE_NAME = 'citizenshipai-shell-v3';
 const APP_SHELL = ['/', '/index.html', '/manifest.webmanifest', '/app-icon-192.png', '/app-icon-512.png', '/favicon.svg'];
 
 self.addEventListener('install', (event) => {
@@ -9,7 +9,7 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
+      Promise.all(keys.filter((key) => key.startsWith('citizenshipai-shell-') && key !== CACHE_NAME).map((key) => caches.delete(key)))
     )
   );
   self.clients.claim();
@@ -44,9 +44,10 @@ self.addEventListener('fetch', (event) => {
 
   event.respondWith(
     caches.match(request).then((cached) => {
-      if (cached) return cached;
+      const validType = (response) => request.destination === 'style' ? (response.headers.get('content-type') || '').includes('text/css') : request.destination === 'script' ? /javascript/.test(response.headers.get('content-type') || '') : true;
+      if (cached && validType(cached)) return cached;
       return fetch(request).then((response) => {
-        if (response.ok && response.status === 200) {
+        if (response.ok && response.status === 200 && validType(response)) {
           const copy = response.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
         }
