@@ -139,6 +139,34 @@
   html:not([data-theme="dark"]) .quiz-choice-list button.incorrect { background: rgba(156,48,59,.08) !important; border-color: #9c303b !important; }
   html:not([data-theme="dark"]) :is(.button-ghost,.button-tertiary,.profile-tertiary,.practice-feature-card.civics-image-card) { background: transparent !important; }
   html:not([data-theme="dark"]) .home-video-controls button { background: rgba(18,58,99,.8) !important; color: var(--color-white) !important; }
+  /* Feather the supplied video into the white page without altering the media
+     or covering its playback controls and keyboard focus. */
+  html:not([data-theme="dark"]) .home-video-hero {
+    --home-video-edge: 16px;
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+  html:not([data-theme="dark"]) .home-video-hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      linear-gradient(to right, var(--color-white), transparent var(--home-video-edge)),
+      linear-gradient(to left, var(--color-white), transparent var(--home-video-edge)),
+      linear-gradient(to bottom, var(--color-white), transparent var(--home-video-edge)),
+      linear-gradient(to top, var(--color-white), transparent var(--home-video-edge));
+  }
+  html:not([data-theme="dark"]) .home-video-hero:focus-within {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  @media (max-width: 600px) {
+    html:not([data-theme="dark"]) .home-video-hero { --home-video-edge: 10px; }
+  }
   html:not([data-theme="dark"]) :is(button,a,input,textarea,select,summary):focus-visible { outline-color: var(--color-primary) !important; }
   .coach-message-text:focus-visible { outline: 3px solid var(--readable-link) !important; outline-offset: -3px; }
   @media (hover: hover) {
