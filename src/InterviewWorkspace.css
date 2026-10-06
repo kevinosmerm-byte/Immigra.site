@@ -87,3 +87,5 @@ html body #root .interview-workspace .workspace-microphone-icon { display:block 
  html body #root .interview-workspace button.live-mic-button { flex:1 1 100%; order:-1; }
  html body #root .interview-workspace .workspace-overlay { margin-top:-28px; }
 }
+/* Fill the interview stage edge to edge; prioritize the upper portrait. */
+html body #root .interview-workspace .live-sarah-video { width:100% !important; height:100% !important; object-fit:cover !important; object-position:center 28% !important; }
