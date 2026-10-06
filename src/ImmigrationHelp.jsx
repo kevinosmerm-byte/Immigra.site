@@ -103,7 +103,7 @@ export default function ImmigrationHelp({ language = "en", caseProfile = {}, onB
   return (
     <div className="immigration-help-screen">
       <header className="immigration-help-header">
-        <button onClick={onBack}>← {copy.home}</button>
+        <button className="icon-back-control" onClick={onBack} aria-label={copy.home}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg></button>
         <strong>CITIZENSHIP <span>AI</span></strong>
         <button className="immigration-help-language" onClick={() => onLanguageChange?.(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>
       </header>

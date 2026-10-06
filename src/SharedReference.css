@@ -190,3 +190,7 @@ html body #root .legacy-daily-plan li::before { counter-increment:plan-step; con
 html:not([data-theme="dark"]) body #root .legacy-daily-plan li { background:var(--color-background); color:var(--color-text); }
 html[data-theme="dark"] body #root .legacy-daily-plan li { background:#142c46; color:#edf5ff; border-color:#375679; }
 @media(max-width:600px) { html body #root .legacy-daily-plan { padding:18px; } html body #root .legacy-daily-plan > button { width:100%; } }
+/* Return labels remain accessible without competing with the visible icon. */
+html body #root :is(.back-button,.writing-back-button,.uscis-tracker-back,.immigration-help-header > button:first-child) { font-size:0 !important; line-height:0 !important; }
+html body #root .icon-back-control::before,html body #root .icon-back-control::after { content:none !important; }
+html body #root .icon-back-control svg { display:block; width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
