@@ -1,3 +1,4 @@
+import { InterviewWorkspace } from "./InterviewWorkspace.jsx";
 import { queueSavedQuestion, syncSavedQuestions } from "./savedQuestions.js";
 import { MyCivicsProfile } from "./MyCivicsProfile.jsx";
 import { saveCivicProfile } from "./civicProfileStorage.js";
@@ -851,7 +852,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       <div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>{t("Civics interview practice", "Práctica de entrevista cívica")}</small></div>
       <button className="more-button interview-repeat-button" onClick={() => speakQuestion(questionText(question))} disabled={isListening || isTranscribing} aria-label={t("Repeat question", "Repetir pregunta")}>↻</button>
     </header>
-    <main className="interview-content">
+    <InterviewWorkspace language={language} mode="civics" current={currentQuestion + 1} total={questions.length} busy={isListening || isTranscribing} onReplay={() => speakQuestion(questionText(question))}>
       <section className="sarah-live-stage" aria-label={t(`${interviewerName}, practice interviewer`, `${interviewerName}, entrevistador de práctica`)}>
         <div className="live-stage-media" aria-hidden="true"><div className={`live-stage-motion-frame sarah-video-frame ${isKevin ? "kevin-motion-frame" : ""}`}>
           {isKevin ? <><video src="/kevin-listening.mp4" className="live-sarah-video live-sarah-resting" autoPlay muted loop playsInline /><video src="/kevin-speaking.mp4" className="live-sarah-video live-sarah-speaking" autoPlay muted loop playsInline /></> : <><video src="/sarah-listening.mp4" poster={sarahImage} className="live-sarah-video live-sarah-resting" autoPlay muted loop playsInline /><video src="/sarah-speaking.mp4" poster={sarahSpeakingImage} className="live-sarah-video live-sarah-speaking" autoPlay muted loop playsInline /></>}
@@ -880,7 +881,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
         </>}
         <div className="live-score-summary" role="group" aria-label={t("Current score", "Resultado actual")}><span>{correctAnswers} {t("correct", "correctas")}</span><span>{incorrectAnswers} {t("missed", "por repasar")}</span></div>
       </section>
-    </main>
+    </InterviewWorkspace>
   </div>;
 }
 

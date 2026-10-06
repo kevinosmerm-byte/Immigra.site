@@ -1,3 +1,4 @@
+import { InterviewWorkspace } from "./InterviewWorkspace.jsx";
 import { useEffect, useRef, useState } from "react";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
@@ -293,7 +294,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
         <div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>{copy.brand}</small></div>
         <button className="more-button interview-repeat-button" onClick={() => speakQuestion(question.english)} disabled={isListening || isTranscribing} aria-label={copy.repeat} title={copy.repeat}>↻</button>
       </header>
-      <main className="interview-content">
+      <InterviewWorkspace language={language} mode="n400" current={Math.min(reviewedCount + 1, totalConcepts)} total={totalConcepts} busy={isListening || isTranscribing} onReplay={() => speakQuestion(question.english)}>
         <section className="sarah-live-stage" aria-label={`${interviewerName}, ${copy.interviewer}`}>
           <div className="live-stage-media" aria-hidden="true">
             <div className={`live-stage-motion-frame sarah-video-frame ${isKevin ? "kevin-motion-frame" : ""}`}>
@@ -335,10 +336,10 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
             <button className="primary-button" onClick={continueResponse} disabled={saveStatus === "saving"}>{copy.continue}</button>
             {canRemember && <div className="n400-confirm-response"><button className="tertiary-button" onClick={rememberResponse} disabled={saveStatus === "saving" || saveStatus === "saved"}>{saveStatus === "saving" ? copy.preparing : saveStatus === "saved" ? copy.remembered : copy.remember}</button>{saveStatus === "error" && <p role="alert">{copy.saveError}</p>}</div>}
           </>}
-          <p className="n400-privacy-note" id="n400-privacy-note">{copy.privacy}</p>
+          <details className="workspace-privacy"><summary>{language === "es" ? "Privacidad" : "Privacy"}</summary><p className="n400-privacy-note" id="n400-privacy-note">{copy.privacy}</p></details>
           <div className="live-score-summary n400-session-summary" role="group" aria-label={copy.progress}><span>{reviewedCount} {copy.reviewed}</span><span>{skipped} {copy.skipped}</span></div>
         </section>
-      </main>
+      </InterviewWorkspace>
     </div>
   );
 }
