@@ -117,3 +117,12 @@ html[data-theme="dark"] body #root :is(.writing-ai-title,.writing-ai-intro,.writ
 html[data-theme="dark"] body #root .writing-ai-title { -webkit-text-fill-color:var(--readable-ink); }
 html[data-theme] body #root .global-bottom-navigation button[aria-current="page"] { background:var(--color-navy) !important; color:var(--color-white) !important; opacity:1; }
 html[data-theme] body #root .global-bottom-navigation button[aria-current="page"] span { color:var(--color-white) !important; }
+/* Secondary views: player, empty favorites and access notices. */
+html[data-theme="light"] body #root :is(.podcast-track-info small,.podcast-timeline span,.podcast-speed button,.civics-favorites-empty p,.civics-favorites-empty span) { color:var(--color-navy) !important; }
+html[data-theme] body #root .podcast-speed button { min-height:44px; border-radius:10px; }
+html[data-theme] body #root .podcast-speed button.active { background:var(--color-navy) !important; color:var(--color-white) !important; }
+html[data-theme="light"] body #root .civics-favorites-empty { background:var(--color-background); border:1px solid var(--color-border); border-radius:16px; padding:24px; }
+html[data-theme] body #root .promotion-access-sheet { background:var(--readable-panel) !important; color:var(--readable-ink); }
+html[data-theme] body #root .promotion-access-sheet :is(h1,h2,p,small,.promotion-access-feature span,.promotion-access-feature strong) { color:var(--readable-ink) !important; }
+html[data-theme] body #root .promotion-access-sheet .promotion-access-feature { background:var(--readable-soft); border-color:var(--readable-edge); }
+html[data-theme] body #root :is(.promotion-access-close,.pro-benefits-dismiss) { background:var(--readable-soft); color:var(--readable-heading); min-width:44px; min-height:44px; }
