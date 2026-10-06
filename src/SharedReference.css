@@ -170,3 +170,7 @@ html:not([data-theme="dark"]) body #root .quiz-path-progress-ring { background:c
 html:not([data-theme="dark"]) body #root .quiz-path-progress-ring::before { background:var(--color-white); }
 html:not([data-theme="dark"]) body #root .quiz-path-progress-ring b { color:var(--color-navy); font-size:15px; }
 @media(max-width:600px) { html body #root .civics-deck-content { padding-inline:12px; } html body #root .civics-deck-hero { padding:16px; flex-wrap:wrap; } html body #root .civics-modes { display:flex; overflow-x:auto; } html body #root .civics-modes button { flex:0 0 auto; padding:10px 14px; } }
+/* Icon-only back controls: do not let shared button typography expose hidden labels. */
+html body #root :is(.back-button,.writing-back-button,.interview-exit-button,.immigration-help-header > button:first-child) { position:relative; display:flex; align-items:center; justify-content:center; width:44px; min-width:44px; height:44px; min-height:44px; padding:0; font-size:0; line-height:0; overflow:hidden; flex-shrink:0; }
+html body #root :is(.back-button,.writing-back-button,.immigration-help-header > button:first-child)::before { content:'\2190'; display:block; position:absolute; inset:0; text-align:center; font-size:22px; line-height:42px; }
+html body #root .interview-exit-button::before { content:'\00D7'; font-size:24px; }
