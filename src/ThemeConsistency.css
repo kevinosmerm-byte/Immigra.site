@@ -150,3 +150,6 @@ html[data-theme="dark"] body #root :is(input,textarea)::placeholder { color:var(
 html[data-theme] body #root .writing-ai-title span { background:none !important; }
 @media(max-width:600px) { html[data-theme="dark"] body #root :is(.practice-content,.profile-content,.journey-main,.settings-content,.uscis-tracker-content,.progress-simple-content) { padding:18px; width:calc(100% - 24px); margin-inline:auto; } }
 html[data-theme="dark"] body #root .reading-card small { color:var(--readable-muted) !important; }
+html[data-theme] body #root .account-message { background:var(--readable-soft) !important; color:var(--readable-ink) !important; border-color:var(--readable-edge); }
+html[data-theme="light"] body #root :is(.coach-message-text,.uscis-official-note strong) { color:var(--color-text) !important; }
+html[data-theme="light"] body #root .uscis-official-note>span { color:#166343 !important; }
