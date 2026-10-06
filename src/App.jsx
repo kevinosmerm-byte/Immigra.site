@@ -1808,7 +1808,7 @@ function AppContent({ userKey }) {
 
   if (screen === "reading") {
     return (
-      <div className="practice-screen">
+      <div className="practice-screen reading-practice-screen">
         <header className="practice-header">
           <button className="back-button" onClick={() => goBack("english")}>
             ← {previousScreenLabel("english")}
@@ -1943,12 +1943,12 @@ function AppContent({ userKey }) {
               </button>
             </div>
             <div className="writing-line"></div>
-            <div className="writing-translation-label">
+            <details className="writing-context"><summary className="writing-translation-label">
               <span>◎</span> {t("SPANISH TRANSLATION (CONTEXT)", "Traducción al español (contexto)")}
-            </div>
+            </summary>
             <div className="writing-big-spanish">
               {writingSentences[writingIndex].spanish}
-            </div>
+            </div></details>
           </div>
           <label className="sr-only" htmlFor="writing-practice-answer">
             {t("Type the English sentence you hear", "Escribe la oración que escuchas en inglés")}

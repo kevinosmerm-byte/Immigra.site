@@ -220,3 +220,33 @@ html:not([data-theme="dark"]) body #root :is(.button-secondary,.button-ghost,.pr
 /* Clip the artwork's built-in white margin without altering the supplied asset. */
 html body #root .home-reference .practice-feature-card.civics-image-card { position:relative; width:100%; aspect-ratio:3.66; min-height:0; height:auto; padding:0; overflow:hidden; border:0; border-radius:18px; background:transparent !important; }
 html body #root .home-reference .practice-feature-card.civics-image-card .reference-civics-artwork { position:absolute; width:105.5%; max-width:none; height:auto; max-height:none; left:-2.75%; top:50%; transform:translateY(-50%); object-fit:contain; margin:0; }
+html body #root main.interview-workspace { aspect-ratio:auto !important; min-block-size:0 !important; block-size:auto !important; flex-grow:0 !important; justify-content:flex-start !important; }
+html body #root .interview-workspace .live-sarah-video { transform:none !important; scale:none !important; min-width:0 !important; min-height:0 !important; }
+html body #root .interview-exit-button { font-size:0 !important; }
+html body #root .interview-exit-button > span { display:none !important; }
+html body #root .interview-exit-button::before { content:'\00D7' !important; font-size:25px !important; line-height:42px; }
+html body #root .reading-practice-screen .practice-content,html body #root .writing-ai-content { width:calc(100% - 24px); max-width:760px; margin:20px auto 100px; padding:24px; border-radius:24px; box-sizing:border-box; }
+html:not([data-theme="dark"]) body #root .reading-practice-screen .practice-content { background:linear-gradient(135deg,#fff,#f4f8fc); border:1px solid #d8e2ec; box-shadow:0 12px 32px #123a6320; }
+html body #root .reading-practice-screen .practice-content > h1 { margin:12px 0; font:700 34px/1.2 Georgia,serif; }
+html:not([data-theme="dark"]) body #root .reading-practice-screen .practice-content > h1 { color:#123a63 !important; }
+html body #root .reading-practice-screen .reading-card { width:100%; max-width:none; margin:24px 0 0; padding:22px; box-sizing:border-box; }
+html body #root .reading-practice-screen .reading-sentence { font-size:clamp(22px,3vw,28px); line-height:1.45; margin:20px 0 12px; }
+html body #root .reading-button .reading-button-copy :is(small,strong) { color:#fff !important; }
+html body #root .reading-button .reading-button-copy strong { font-size:17px; }
+html body #root .reading-button { min-height:60px; }
+html body #root .writing-ai-content { padding:0; }
+html body #root .writing-practice-panel { display:flex; flex-direction:column; gap:16px; padding:26px; border-radius:24px; }
+html body #root .writing-ai-title { font:700 clamp(28px,4vw,38px)/1.15 Georgia,serif; margin:8px 0; }
+html body #root .writing-ai-badge,html body #root .writing-performance-title,html body #root .writing-question-header,html body #root .writing-line { display:none; }
+html body #root .writing-performance { order:10; padding:14px 0 0; margin:0; border-top:1px solid #d8e2ec; }
+html body #root .writing-question-card { margin:0; padding:16px; box-shadow:none; }
+html body #root .dictation-speak-btn { width:100%; min-height:104px; display:flex; align-items:center; justify-content:center; gap:18px; }
+html body #root .dictation-speak-btn .speaker-icon { display:grid; place-items:center; width:56px; height:56px; border-radius:50%; background:#ffffff20; }
+html body #root .dictation-speak-btn :is(small,strong) { color:#fff !important; }
+html body #root .dictation-speak-btn strong { font-size:18px; }
+html body #root .writing-context { margin-top:14px; }
+html body #root .writing-context summary { cursor:pointer; padding:12px; background:#e5f1fc; color:#123a63; border-radius:10px; font-size:14px; }
+html body #root .writing-ai-input { height:110px; min-height:110px; width:100%; box-sizing:border-box; margin:0; font-size:16px; }
+html body #root .writing-ai-button { margin:0; min-height:54px; }
+html body #root .writing-ai-button :is(small,strong) { color:white !important; }
+@media(max-width:600px) { html body #root .reading-practice-screen .practice-content,html body #root .writing-practice-panel { padding:18px; } html body #root .reading-practice-screen .reading-card { padding:16px; } }
