@@ -174,3 +174,19 @@ html:not([data-theme="dark"]) body #root .quiz-path-progress-ring b { color:var(
 html body #root :is(.back-button,.writing-back-button,.interview-exit-button,.immigration-help-header > button:first-child) { position:relative; display:flex; align-items:center; justify-content:center; width:44px; min-width:44px; height:44px; min-height:44px; padding:0; font-size:0; line-height:0; overflow:hidden; flex-shrink:0; }
 html body #root :is(.back-button,.writing-back-button,.immigration-help-header > button:first-child)::before { content:'\2190'; display:block; position:absolute; inset:0; text-align:center; font-size:22px; line-height:42px; }
 html body #root .interview-exit-button::before { content:'\00D7'; font-size:24px; }
+/* Light veil preserves the supplied images instead of darkening them. */
+html body #root .civics-study-media .civics-study-media-gradient { background:linear-gradient(180deg,#ffffff05,#ffffff08 65%,#ffffff20); }
+html body #root .civics-study-media img { filter:none; opacity:1; }
+/* Daily plan shares the presidential card rhythm. */
+html body #root .legacy-daily-plan { padding:24px; border-radius:18px; }
+html body #root .legacy-daily-plan summary { padding:0 0 4px; gap:16px; border-radius:8px; }
+html body #root .legacy-daily-plan[open] summary { padding-bottom:20px; margin-bottom:20px; border-bottom:1px solid var(--color-border); }
+html body #root .legacy-daily-plan h3 { font-family:Georgia,serif; font-size:23px; line-height:1.3; margin:0 0 10px; }
+html body #root .legacy-daily-plan p { font-size:15px; line-height:1.6; margin:0 0 20px; }
+html body #root .legacy-daily-plan > button { min-height:48px; padding:12px 22px; border-radius:12px; border:1px solid var(--color-primary); background:linear-gradient(120deg,var(--color-navy),var(--color-primary)); color:#fff; font:600 15px/1.4 Arial,sans-serif; box-shadow:0 4px 12px #123a6320; }
+html body #root .legacy-daily-plan ol { display:grid; gap:12px; counter-reset:plan-step; list-style:none; padding:0; margin:24px 0 0; }
+html body #root .legacy-daily-plan li { display:flex; align-items:center; gap:12px; padding:14px; border-radius:12px; border:1px solid var(--color-border); font-size:15px; line-height:1.5; }
+html body #root .legacy-daily-plan li::before { counter-increment:plan-step; content:counter(plan-step,decimal-leading-zero); display:grid; place-items:center; width:32px; height:32px; flex:0 0 32px; border-radius:50%; background:var(--color-navy); color:#fff; font-size:12px; font-weight:700; }
+html:not([data-theme="dark"]) body #root .legacy-daily-plan li { background:var(--color-background); color:var(--color-text); }
+html[data-theme="dark"] body #root .legacy-daily-plan li { background:#142c46; color:#edf5ff; border-color:#375679; }
+@media(max-width:600px) { html body #root .legacy-daily-plan { padding:18px; } html body #root .legacy-daily-plan > button { width:100%; } }
