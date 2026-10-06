@@ -138,3 +138,14 @@ html body #root .immigration-help-header > strong { color:#fff !important; }
 html body #root .immigration-help-header > button { display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; padding:8px 12px; color:#fff; background:#ffffff12; border:1px solid #ffffff70; }
 html[data-theme="dark"] body #root .immigration-resource-copy :is(p,small) { color:#bed0e5; }
 @media(max-width:600px) { html:not([data-theme="dark"]) body #root :is(.immigration-help-hero,.immigration-contextual-help,.immigration-urgent-details,.immigration-directory,.immigration-footer-note) { padding:16px; } }
+/* Civics heading and nested reveal buttons need explicit foregrounds. */
+html:not([data-theme="dark"]) body #root .civics-deck-heading :is(h1,p,span) { color:var(--color-text) !important; opacity:1; text-shadow:none; }
+html:not([data-theme="dark"]) body #root .civics-deck-heading h1 { color:var(--color-navy) !important; }
+html:not([data-theme="dark"]) body #root .civics-deck-progress { background:var(--color-background); color:var(--color-text); border:1px solid var(--color-border); }
+html:not([data-theme="dark"]) body #root .civics-deck-progress :is(span,strong) { color:var(--color-text) !important; }
+html:not([data-theme="dark"]) body #root .civics-deck-progress-track { background:var(--color-border); }
+html:not([data-theme="dark"]) body #root .civics-deck-progress-track i { background:var(--color-primary); }
+html:not([data-theme="dark"]) body #root .civics-study-reveal > button { color:#fff !important; background:transparent; opacity:1; font-size:15px; }
+html:not([data-theme="dark"]) body #root .civics-study-reveal > button:disabled { opacity:.6; }
+html:not([data-theme="dark"]) body #root .civics-study-reveal > button svg { stroke:currentColor; }
+html body #root :is(.practice-brand,.interview-brand,.writing-ai-brand) > span { color:var(--color-ai) !important; }
