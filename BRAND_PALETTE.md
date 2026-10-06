@@ -21,3 +21,6 @@ Aplicar a todos los botones una apariencia institucional elegante: navy y azul f
 
 ## Temas
 El modo claro es el predeterminado para usuarios nuevos. Respetar siempre la preferencia guardada (claro, oscuro o sistema). Las superficies claras deben estar limitadas a `html:not([data-theme="dark"])`; no imponerlas sobre el modo oscuro. En oscuro usar texto claro sobre superficies navy; conservar la paleta oficial para acentos. Las dimensiones de videos e imágenes deben ser independientes del tema.
+
+### Profundidad de los botones claros
+Mantener superficies blancas con un degradado azul pálido hacia los bordes, brillo interior blanco y sombra azul suave. Usar navy para accesos institucionales, azul AI para estudio/progreso y una línea roja discreta para entrevista cívica/plan diario. No convertir toda la tarjeta en un color saturado. En hover, intensificar suavemente el azul; conservar foco visible y texto oscuro. Aplicar estos tratamientos claros solo al tema claro.
