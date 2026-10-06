@@ -170,6 +170,84 @@
   }
   html:not([data-theme="dark"]) .coach-video-call-card .coach-call-start-button { background: rgba(255,255,255,.94) !important; }
   html:not([data-theme="dark"]) .did-live-avatar :is(.did-live-avatar-close,.did-live-avatar-retry) { background: rgba(255,255,255,.94) !important; color: var(--color-navy) !important; }
+  /* The live-video action floats over Sarah's portrait in both themes. */
+  html .did-live-stage-header {
+    position: absolute;
+    inset: 16px 16px auto;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+  }
+  html .did-live-stage-header .did-live-avatar-intro {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  html .did-live-stage-header h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  html .did-live-stage-header .did-live-connect {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    max-width: 100%;
+    min-height: 50px !important;
+    margin: 0 !important;
+    padding: 12px 20px !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 18px !important;
+    background: var(--button-primary-gradient) var(--button-readability-surface) !important;
+    color: var(--color-white) !important;
+    box-shadow: 0 6px 20px color-mix(in srgb, var(--color-navy) 20%, transparent) !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    text-align: center;
+    pointer-events: auto;
+  }
+  html .did-live-connect :is(span,svg) { color: var(--color-white) !important; font-size: inherit !important; line-height: inherit !important; }
+  html .did-live-connect svg { flex: 0 0 20px; width: 20px; height: 20px; }
+  html .did-live-badge,
+  html .did-live-stage-header .did-live-avatar-intro > p {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 4px 10px !important;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: rgba(255,255,255,.94);
+    color: var(--color-navy) !important;
+    backdrop-filter: blur(12px);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+  }
+  html .did-live-indicator {
+    flex: 0 0 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-live);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-live) 12%, transparent), 0 0 10px color-mix(in srgb, var(--color-live) 40%, transparent);
+  }
+  html .did-live-stage.connecting .did-live-indicator { background: var(--color-primary); box-shadow: none; }
+  html .did-live-stage.error .did-live-indicator { background: var(--color-red); box-shadow: none; }
   html:not([data-theme="dark"]) :is(.live-mic-button,.reading-button.recording,.writing-ai-button,.writing-review-continue) {
     background: var(--button-recording) !important;
     color: var(--color-white) !important;

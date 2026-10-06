@@ -15,6 +15,7 @@ const COPY = {
     noticeText: "Sarah's live video is provided by D-ID. Connecting requests a temporary, domain-restricted session key. D-ID processes the conversation and any microphone or camera input you choose to provide in its panel. This feature is optional and does not provide legal advice.",
     cancel: "Not now", accept: "I understand and connect", portrait: "Sarah, practice interviewer",
     standby: "Live interview standby", panel: "Sarah live video interview", retry: "Retry live video", standard: "Practice the standard interview",
+    liveStandby: "LIVE · Standby", liveConnecting: "Connecting", liveUnavailable: "Offline",
   },
   es: {
     label: "Video en vivo opcional con Sarah", beta: "Práctica con video en vivo", title: "Practica con Sarah en video en vivo",
@@ -26,6 +27,7 @@ const COPY = {
     noticeText: "D-ID proporciona el video en vivo de Sarah. Al conectar, se solicita una clave de sesión temporal restringida al dominio. D-ID procesa la conversación y cualquier entrada de micrófono o cámara que elijas proporcionar en su panel. Esta función es opcional y no proporciona asesoría legal.",
     cancel: "Ahora no", accept: "Entiendo y quiero conectar", portrait: "Sarah, entrevistadora de práctica",
     standby: "Entrevista en vivo en espera", panel: "Entrevista por video en vivo con Sarah", retry: "Volver a intentar el video", standard: "Practicar la entrevista estándar",
+    liveStandby: "LIVE · En espera", liveConnecting: "Conectando", liveUnavailable: "Sin conexión",
   },
 };
 
@@ -93,13 +95,25 @@ export function DidLiveAvatar({ language = "en", onStandardInterview }) {
   const useStandard = () => { reset(); onStandardInterview?.(); };
   return (
     <section className="did-live-avatar" aria-label={copy.label}>
-      {state !== "active" && <div className="did-live-avatar-intro">
-        <h2>{language === "es" ? "Práctica en vivo" : "Live practice"}</h2>
-        {state === "idle" && <button type="button" className="button-primary" onClick={connect}>{copy.connect}</button>}
-        {state === "connecting" && <p role="status">{copy.connecting}</p>}
-      </div>}
       <div className={`did-live-stage ${state}`}>
         <img className="did-live-fallback" src={sarahImage} alt={copy.portrait} />
+        <div className="did-live-stage-header">
+          <span className="did-live-badge">
+            <span className="did-live-indicator" aria-hidden="true" />
+            {state === "connecting" ? copy.liveConnecting : state === "error" ? copy.liveUnavailable : state === "active" ? "LIVE" : copy.liveStandby}
+          </span>
+          {state !== "active" && <div className="did-live-avatar-intro">
+            <h2>{language === "es" ? "Práctica en vivo" : "Live practice"}</h2>
+            {state === "idle" && <button type="button" className="button-primary did-live-connect" onClick={connect}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true" focusable="false">
+                <rect x="3" y="6" width="12" height="12" rx="3" />
+                <path d="m15 10 6-3v10l-6-3" strokeLinejoin="round" />
+              </svg>
+              <span>{copy.connect}</span>
+            </button>}
+            {state === "connecting" && <p role="status">{copy.connecting}</p>}
+          </div>}
+        </div>
         <div className="did-live-fallback-label"><span>Sarah</span><strong>{state === "connecting" ? copy.connecting : copy.standby}</strong></div>
         <div id={DID_TARGET_ID} className="did-live-agent-container" role="region" aria-label={copy.panel}></div>
       </div>

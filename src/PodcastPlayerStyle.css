@@ -1,0 +1,178 @@
+/* Player surfaces use the approved navy, blue and red palette in both themes.
+   Reopen the presentation layer so legacy white button rules cannot win. */
+@layer white-appearance {
+  html body #root :is(.podcast-full-player,.podcast-mini-player) {
+    background: linear-gradient(155deg, var(--color-navy), var(--color-primary)) !important;
+    color: var(--color-white) !important;
+    border: 1px solid var(--color-primary) !important;
+    box-shadow: 0 12px 32px color-mix(in srgb, var(--color-navy) 24%, transparent) !important;
+  }
+  html body #root .podcast-full-player .podcast-track-info h1,
+  html body #root .podcast-mini-player :is(strong,small) {
+    color: var(--color-white) !important;
+  }
+  html body #root .podcast-full-player .podcast-track-info :is(small,span),
+  html body #root .podcast-full-player .podcast-timeline span {
+    color: var(--color-white-soft) !important;
+  }
+  html body #root .podcast-full-player .podcast-track-info > small {
+    display: inline-block !important;
+    padding: 6px 10px !important;
+    border: 1px solid color-mix(in srgb, var(--color-white) 35%, transparent) !important;
+    border-radius: 999px !important;
+    background: color-mix(in srgb, var(--color-navy) 55%, transparent) !important;
+  }
+  html body #root .podcast-full-player .podcast-track-info > span {
+    font-size: 12px !important;
+  }
+  html body #root .podcast-full-player .podcast-timeline input[type="range"] {
+    height: 44px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-radius: 8px !important;
+    appearance: none !important;
+    background: linear-gradient(to right, var(--color-ai) var(--podcast-progress), var(--color-border) var(--podcast-progress)) center / 100% 6px no-repeat !important;
+    cursor: pointer;
+  }
+  html body #root .podcast-full-player .podcast-timeline input::-webkit-slider-runnable-track {
+    height: 6px;
+    background: transparent;
+  }
+  html body #root .podcast-full-player .podcast-timeline input::-webkit-slider-thumb {
+    width: 20px !important;
+    height: 20px !important;
+    margin-top: -7px;
+    appearance: none !important;
+    border: 3px solid var(--color-red) !important;
+    border-radius: 50% !important;
+    background: var(--color-white) !important;
+    box-shadow: 0 0 0 2px var(--color-white) !important;
+  }
+  html body #root .podcast-full-player .podcast-timeline input::-moz-range-track {
+    height: 6px;
+    background: transparent;
+  }
+  html body #root .podcast-full-player .podcast-timeline input::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border: 3px solid var(--color-red);
+    border-radius: 50%;
+    background: var(--color-white);
+    box-shadow: 0 0 0 2px var(--color-white);
+  }
+  html body #root .podcast-full-player .podcast-timeline > div {
+    margin-top: 0 !important;
+    font-size: 12px !important;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  html body #root .podcast-full-player .podcast-controls {
+    grid-template-columns: 60px 88px 60px !important;
+  }
+  html body #root .podcast-full-player .podcast-controls button,
+  html body #root .podcast-mini-player .podcast-mini-close {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white) !important;
+    background: var(--color-navy) !important;
+    border: 1px solid var(--color-ai) !important;
+    border-radius: 50% !important;
+    box-shadow: none !important;
+  }
+  html body #root .podcast-full-player .podcast-controls :is(svg,small),
+  html body #root .podcast-mini-player :is(.podcast-mini-toggle,.podcast-mini-close) svg {
+    color: var(--color-white) !important;
+  }
+  html body #root :is(.podcast-player-screen,.podcast-mini-player) .podcast-icon {
+    fill: none !important;
+    stroke: currentColor !important;
+  }
+  html body #root .podcast-full-player .podcast-controls .podcast-icon {
+    width: 32px !important;
+    height: 32px !important;
+    stroke-width: 2 !important;
+  }
+  html body #root .podcast-full-player .podcast-controls button > small {
+    font-size: 11px !important;
+  }
+  html body #root .podcast-full-player .podcast-controls .podcast-main-play,
+  html body #root .podcast-mini-player .podcast-mini-toggle {
+    display: grid !important;
+    place-items: center;
+    color: var(--color-white) !important;
+    background: var(--color-red) !important;
+    border: 2px solid var(--color-white) !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-red) 20%, transparent) !important;
+  }
+  html body #root .podcast-full-player .podcast-speed {
+    background: var(--color-navy) !important;
+    border: 1px solid var(--color-ai) !important;
+  }
+  html body #root .podcast-full-player .podcast-speed button {
+    min-height: 44px !important;
+    color: var(--color-white) !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    font-size: 12px !important;
+    box-shadow: none !important;
+  }
+  html body #root .podcast-full-player .podcast-speed button:is(.active,[aria-pressed="true"]) {
+    color: var(--color-white) !important;
+    background: var(--color-red) !important;
+    border-color: var(--color-white) !important;
+  }
+  html body #root .podcast-full-player .podcast-error {
+    color: var(--color-red) !important;
+    background: var(--color-white) !important;
+    border: 1px solid var(--color-red) !important;
+    font-size: 13px !important;
+    line-height: 1.5;
+  }
+  html body #root .podcast-mini-player {
+    grid-template-columns: minmax(0,1fr) 44px 44px !important;
+  }
+  html body #root .podcast-mini-player .podcast-mini-open {
+    min-height: 44px !important;
+    color: var(--color-white) !important;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+  html body #root .podcast-mini-player .podcast-mini-open :is(strong,small) {
+    color: var(--color-white) !important;
+  }
+  html body #root .podcast-mini-player .podcast-mini-open small { font-size: 10px !important; }
+  html body #root .podcast-mini-player .podcast-mini-open strong { font-size: 12px !important; }
+  html body #root .podcast-mini-player .podcast-mini-close {
+    width: 44px !important;
+    height: 44px !important;
+    padding: 0 !important;
+  }
+  html body #root .podcast-mini-player .podcast-mini-progress {
+    height: 4px !important;
+    background: var(--color-border) !important;
+  }
+  html body #root .podcast-mini-player .podcast-mini-progress > span { background: var(--color-ai) !important; }
+  html body #root :is(.podcast-full-player,.podcast-mini-player) :is(button,input):focus-visible {
+    outline: 3px solid var(--color-white) !important;
+    outline-offset: 3px !important;
+  }
+  @media (hover: hover) {
+    html body #root .podcast-full-player .podcast-controls button:hover:not(:disabled),
+    html body #root .podcast-full-player .podcast-speed button:hover:not(:disabled),
+    html body #root .podcast-mini-player .podcast-mini-close:hover:not(:disabled) {
+      background: var(--color-primary) !important;
+      color: var(--color-white) !important;
+      border-color: var(--color-white) !important;
+    }
+    html body #root .podcast-full-player .podcast-controls .podcast-main-play:hover:not(:disabled),
+    html body #root .podcast-full-player .podcast-speed button:is(.active,[aria-pressed="true"]):hover:not(:disabled),
+    html body #root .podcast-mini-player .podcast-mini-toggle:hover:not(:disabled) {
+      background: var(--color-red) !important;
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--color-white) 18%, transparent) !important;
+    }
+  }
+}

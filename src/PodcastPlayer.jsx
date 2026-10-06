@@ -3,6 +3,7 @@ import { formatPodcastTime, PodcastContext, PODCASTS, usePodcast } from "./podca
 
 export function PodcastProvider({ children }) {
   const audioRef = useRef(null);
+  const playbackRequestRef = useRef(0);
   const [track, setTrack] = useState(null);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -28,6 +29,7 @@ export function PodcastProvider({ children }) {
     audio.addEventListener("ended", stop);
     audio.addEventListener("error", fail);
     return () => {
+      playbackRequestRef.current += 1;
       audio.pause();
       audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("loadedmetadata", updateDuration);
@@ -42,6 +44,7 @@ export function PodcastProvider({ children }) {
     if (!audio) return;
     setError("");
     if (track?.id !== nextTrack.id) {
+      playbackRequestRef.current += 1;
       audio.pause();
       audio.src = nextTrack.src;
       audio.load();
@@ -57,14 +60,17 @@ export function PodcastProvider({ children }) {
   const togglePlayback = useCallback(async () => {
     const audio = audioRef.current;
     if (!audio || !track) return;
+    const request = ++playbackRequestRef.current;
     setError("");
     if (audio.paused) {
       try {
         await audio.play();
-        setPlaying(true);
+        if (request === playbackRequestRef.current) setPlaying(true);
       } catch {
-        setPlaying(false);
-        setError("We couldn't play this audio. Please try again.");
+        if (request === playbackRequestRef.current) {
+          setPlaying(false);
+          setError("We couldn't play this audio. Please try again.");
+        }
       }
     } else {
       audio.pause();
@@ -87,13 +93,29 @@ export function PodcastProvider({ children }) {
     if (audioRef.current) audioRef.current.playbackRate = next;
   }, []);
 
+  const stopPlayback = useCallback(() => {
+    playbackRequestRef.current += 1;
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
+    }
+    setPlaying(false);
+    setTrack(null);
+    setCurrentTime(0);
+    setDuration(0);
+    setFullPlayerOpen(false);
+    setError("");
+  }, []);
+
   const value = useMemo(() => ({
     track, playing, currentTime, duration, speed, error, fullPlayerOpen,
-    selectTrack, togglePlayback, seekTo, skip, changeSpeed,
+    selectTrack, togglePlayback, seekTo, skip, changeSpeed, stopPlayback,
     openFullPlayer: () => track && setFullPlayerOpen(true),
     closeFullPlayer: () => setFullPlayerOpen(false),
     formatTime: formatPodcastTime,
-  }), [track, playing, currentTime, duration, speed, error, fullPlayerOpen, selectTrack, togglePlayback, seekTo, skip, changeSpeed]);
+  }), [track, playing, currentTime, duration, speed, error, fullPlayerOpen, selectTrack, togglePlayback, seekTo, skip, changeSpeed, stopPlayback]);
 
   return (
     <PodcastContext.Provider value={value}>
@@ -138,13 +160,16 @@ function PodcastMiniPlayer() {
   const es = language === "es";
   const progress = player.duration ? (player.currentTime / player.duration) * 100 : 0;
   return (
-    <aside className="podcast-mini-player" aria-label={es ? "Reproduciendo" : "Now playing"}>
+    <aside className="podcast-mini-player" aria-label={player.playing ? (es ? "Reproduciendo" : "Now playing") : (es ? "Podcast en pausa" : "Podcast paused")}>
       <button className="podcast-mini-open" onClick={() => { player.openFullPlayer(); window.location.hash = "podcasts"; }} aria-label={es ? "Abrir reproductor de podcast" : "Open full podcast player"}>
         <PodcastArtwork track={player.track} compact />
-        <span><small>{es ? "REPRODUCIENDO" : "NOW PLAYING"}</small><strong>{player.track.title}</strong></span>
+        <span><small>{player.playing ? (es ? "REPRODUCIENDO" : "NOW PLAYING") : (es ? "EN PAUSA" : "PAUSED")}</small><strong>{player.track.title}</strong></span>
       </button>
       <button className="podcast-mini-toggle" onClick={player.togglePlayback} aria-label={player.playing ? (es ? "Pausar podcast" : "Pause podcast") : (es ? "Reproducir podcast" : "Play podcast")}>
         <PodcastIcon kind={player.playing ? "pause" : "play"} />
+      </button>
+      <button className="podcast-mini-close" type="button" onClick={player.stopPlayback} aria-label={es ? "Cerrar podcast" : "Close podcast"}>
+        <PodcastIcon kind="close" />
       </button>
       <div className="podcast-mini-progress"><span style={{ width: `${progress}%` }}></span></div>
     </aside>
