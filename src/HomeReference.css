@@ -1,24 +1,24 @@
 /* Reference-inspired light home. Scoped to Home; practice screens keep their styles. */
-html .home-ai.home-reference { background:linear-gradient(150deg,#f7fafc,#e7eef6) !important; color:#102e54; }
-html .home-reference::before,html .home-reference::after { display:none; }
-html .home-reference .home-new-content { width:min(100%,1100px); max-width:1100px; padding:16px 24px 110px; }
-html .home-reference .home-new-header { background:#f7fafce8; color:#102e54; border-bottom:1px solid #cbd8e8; }
-html .home-reference .home-visual-hero { display:grid; grid-template-columns:1fr 1fr; aspect-ratio:auto; min-height:340px; overflow:hidden; background:#e7eff7; border:1px solid #c5d5e6; border-radius:24px; box-shadow:0 10px 28px #183a6114; }
-html .home-reference .home-hero-video { position:relative; inset:auto; width:100%; height:100%; min-height:340px; object-fit:cover; }
+html:not([data-theme="dark"]) .home-ai.home-reference { background:linear-gradient(150deg,#f7fafc,#e7eef6) !important; color:#102e54; }
+html:not([data-theme="dark"]) .home-reference::before,html:not([data-theme="dark"]) .home-reference::after { display:none; }
+html:not([data-theme="dark"]) .home-reference .home-new-content { width:min(100%,1100px); max-width:1100px; padding:16px 24px 110px; }
+html:not([data-theme="dark"]) .home-reference .home-new-header { background:#f7fafce8; color:#102e54; border-bottom:1px solid #cbd8e8; }
+html:not([data-theme="dark"]) .home-reference .home-visual-hero { display:grid; grid-template-columns:1fr 1fr; aspect-ratio:auto; min-height:340px; overflow:hidden; background:#e7eff7; border:1px solid #c5d5e6; border-radius:24px; box-shadow:0 10px 28px #183a6114; }
+html:not([data-theme="dark"]) .home-reference .home-hero-video { position:relative; inset:auto; width:100%; height:100%; min-height:340px; object-fit:cover; }
 .reference-hero-copy { padding:34px 28px; align-self:center; z-index:2; }
 .reference-hero-copy > span { font-size:12px; letter-spacing:.2em; font-weight:800; }
 .reference-hero-copy h2 { margin:18px 0 12px; font:700 clamp(36px,5vw,64px)/.98 Georgia,serif; color:#09274d; }
 .reference-hero-copy p { font-size:17px; line-height:1.5; color:#3c5372; }
 .reference-hero-copy button { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; min-height:54px; padding:12px 18px; border:1px solid #5381b0; border-radius:28px; background:linear-gradient(110deg,#093e78,#29659e); color:white; font-size:17px; font-weight:700; cursor:pointer; }
-html .home-reference .home-pro-badge { left:auto; right:14px; }
-html .home-reference .home-video-controls { top:auto; bottom:12px; right:12px; }
-html .home-reference .home-interview-actions .home-primary-button,html .home-reference .home-interview-actions .home-primary-button:nth-child(n+3),html .home-reference .practice-mini-card:first-child,html .home-reference .practice-mini-card:nth-child(2),html .home-reference .home-progress-link,html .home-reference .legacy-tools-links button:first-child,html .home-reference .legacy-tools-links button:nth-child(2),html .home-reference .legacy-daily-plan { background:linear-gradient(135deg,#fff,#f5f9fd) !important; border:1px solid #c8d6e8; border-top:4px solid #17558e; border-radius:14px; color:#112f55; box-shadow:0 6px 16px #244b7610; }
-html .home-reference .home-interview-actions .home-primary-button:nth-child(2),html .home-reference .legacy-daily-plan { border-top-color:#b61e31; }
-html .home-reference .home-interview-actions .home-primary-button strong,html .home-reference .practice-mini-card h3,html .home-reference .home-progress-link strong,html .home-reference .preparation-copy strong { color:#102b50; font-family:Georgia,serif; font-size:21px; letter-spacing:-.02em; line-height:1.2; }
-html .home-reference .home-interview-actions .home-primary-button small,html .home-reference .practice-mini-card small,html .home-reference .home-progress-link small,html .home-reference .preparation-copy small { color:#506684; font-size:13px; line-height:1.4; }
-html .home-reference .home-action-icon,html .home-reference .practice-mini-card .mini-icon,html .home-reference .preparation-icon { color:#174d83 !important; border:0 !important; background:#eaf0f7 !important; box-shadow:none !important; }
-html .home-reference .primary-arrow,html .home-reference .preparation-arrow { background:#f4f8fc; color:#184875; border-color:#d8e3ef; }
-html .home-reference .practice-feature-card.civics-image-card { display:flex; align-items:center; gap:22px; min-height:210px; padding:28px; border:1px solid #b9cde3; border-radius:16px; background:linear-gradient(120deg,#fff,#e7f0fa) !important; text-align:left; box-shadow:0 6px 18px #21477310; }
+html:not([data-theme="dark"]) .home-reference .home-pro-badge { left:auto; right:14px; }
+html:not([data-theme="dark"]) .home-reference .home-video-controls { top:auto; bottom:12px; right:12px; }
+html:not([data-theme="dark"]) .home-reference .home-interview-actions .home-primary-button,html:not([data-theme="dark"]) .home-reference .home-interview-actions .home-primary-button:nth-child(n+3),html:not([data-theme="dark"]) .home-reference .practice-mini-card:first-child,html:not([data-theme="dark"]) .home-reference .practice-mini-card:nth-child(2),html:not([data-theme="dark"]) .home-reference .home-progress-link,html:not([data-theme="dark"]) .home-reference .legacy-tools-links button:first-child,html:not([data-theme="dark"]) .home-reference .legacy-tools-links button:nth-child(2),html:not([data-theme="dark"]) .home-reference .legacy-daily-plan { background:linear-gradient(135deg,#fff,#f5f9fd) !important; border:1px solid #c8d6e8; border-top:4px solid #17558e; border-radius:14px; color:#112f55; box-shadow:0 6px 16px #244b7610; }
+html:not([data-theme="dark"]) .home-reference .home-interview-actions .home-primary-button:nth-child(2),html:not([data-theme="dark"]) .home-reference .legacy-daily-plan { border-top-color:#b61e31; }
+html:not([data-theme="dark"]) .home-reference .home-interview-actions .home-primary-button strong,html:not([data-theme="dark"]) .home-reference .practice-mini-card h3,html:not([data-theme="dark"]) .home-reference .home-progress-link strong,html:not([data-theme="dark"]) .home-reference .preparation-copy strong { color:#102b50; font-family:Georgia,serif; font-size:21px; letter-spacing:-.02em; line-height:1.2; }
+html:not([data-theme="dark"]) .home-reference .home-interview-actions .home-primary-button small,html:not([data-theme="dark"]) .home-reference .practice-mini-card small,html:not([data-theme="dark"]) .home-reference .home-progress-link small,html:not([data-theme="dark"]) .home-reference .preparation-copy small { color:#506684; font-size:13px; line-height:1.4; }
+html:not([data-theme="dark"]) .home-reference .home-action-icon,html:not([data-theme="dark"]) .home-reference .practice-mini-card .mini-icon,html:not([data-theme="dark"]) .home-reference .preparation-icon { color:#174d83 !important; border:0 !important; background:#eaf0f7 !important; box-shadow:none !important; }
+html:not([data-theme="dark"]) .home-reference .primary-arrow,html:not([data-theme="dark"]) .home-reference .preparation-arrow { background:#f4f8fc; color:#184875; border-color:#d8e3ef; }
+html:not([data-theme="dark"]) .home-reference .practice-feature-card.civics-image-card { display:flex; align-items:center; gap:22px; min-height:210px; padding:28px; border:1px solid #b9cde3; border-radius:16px; background:linear-gradient(120deg,#fff,#e7f0fa) !important; text-align:left; box-shadow:0 6px 18px #21477310; }
 .reference-civics-icon { width:90px; flex:0 0 90px; color:#123a6a; }
 .reference-civics-icon svg { width:100%; fill:currentColor; }
 .reference-civics-copy { display:grid; gap:8px; flex:1; color:#15355e; }
@@ -27,33 +27,47 @@ html .home-reference .practice-feature-card.civics-image-card { display:flex; al
 .reference-civics-copy > span { font-size:17px; line-height:1.4; }
 .reference-civics-copy em { font-style:normal; color:#466286; font-size:14px; margin-top:12px; }
 .reference-civics-arrow { display:grid; place-items:center; width:48px; height:48px; flex:0 0 48px; border-radius:50%; color:white; background:#154a80; font-size:26px; }
-html .home-reference .home-progress-count { color:#143b66; min-width:30%; text-align:right; }
+html:not([data-theme="dark"]) .home-reference .home-progress-count { color:#143b66; min-width:30%; text-align:right; }
 .reference-progress-track { display:block; height:9px; margin-top:9px; border-radius:99px; background:#d7e1ee; overflow:hidden; }
 .reference-progress-track i { display:block; height:100%; background:linear-gradient(90deg,#104278,#3477b0); border-radius:inherit; }
-html .home-reference .legacy-daily-plan h3,html .home-reference .legacy-daily-plan p,html .home-reference .legacy-daily-plan li { color:#274463; }
-@media(max-width:600px) { html .home-reference .home-new-content { padding:10px 12px 100px; } html .home-reference .home-visual-hero { min-height:245px; } html .home-reference .home-hero-video { min-height:245px; } .reference-hero-copy { padding:18px 12px; } .reference-hero-copy h2 { font-size:32px; } .reference-hero-copy > span { font-size:9px; letter-spacing:.12em; } .reference-hero-copy p { font-size:13px; } .reference-hero-copy button { font-size:13px; padding:10px; gap:6px; } html .home-reference .home-interview-actions .home-primary-button strong { font-size:16px; } html .home-reference .practice-feature-card.civics-image-card { min-height:170px; padding:18px; gap:14px; } .reference-civics-icon { flex-basis:46px; width:46px; } .reference-civics-copy strong { font-size:28px; } .reference-civics-copy > span { font-size:14px; } .reference-civics-arrow { width:32px; height:32px; flex-basis:32px; } html .home-reference .home-progress-link strong { font-size:20px; } }
-html .home-reference .home-new-hero { display:flex; flex-direction:column; gap:16px !important; }
-html .home-reference .practice-feature-card.civics-image-card { flex-direction:row; height:auto; max-height:none; aspect-ratio:auto; overflow:visible; }
-html .home-reference .practice-feature-card.civics-image-card > span { position:static; }
-html .home-reference .reference-civics-icon svg { fill:none; stroke:currentColor; stroke-width:1.7; stroke-linejoin:round; }
-html .home-reference .home-interview-actions .home-primary-button::before,html .home-reference .home-interview-actions .home-primary-button::after { display:none; }
-html .home-reference .home-logo,html .home-reference .home-brand { color:#12375f; }
+html:not([data-theme="dark"]) .home-reference .legacy-daily-plan h3,html:not([data-theme="dark"]) .home-reference .legacy-daily-plan p,html:not([data-theme="dark"]) .home-reference .legacy-daily-plan li { color:#274463; }
+@media(max-width:600px) { html:not([data-theme="dark"]) .home-reference .home-new-content { padding:10px 12px 100px; } html:not([data-theme="dark"]) .home-reference .home-visual-hero { min-height:245px; } html:not([data-theme="dark"]) .home-reference .home-hero-video { min-height:245px; } .reference-hero-copy { padding:18px 12px; } .reference-hero-copy h2 { font-size:32px; } .reference-hero-copy > span { font-size:9px; letter-spacing:.12em; } .reference-hero-copy p { font-size:13px; } .reference-hero-copy button { font-size:13px; padding:10px; gap:6px; } html:not([data-theme="dark"]) .home-reference .home-interview-actions .home-primary-button strong { font-size:16px; } html:not([data-theme="dark"]) .home-reference .practice-feature-card.civics-image-card { min-height:170px; padding:18px; gap:14px; } .reference-civics-icon { flex-basis:46px; width:46px; } .reference-civics-copy strong { font-size:28px; } .reference-civics-copy > span { font-size:14px; } .reference-civics-arrow { width:32px; height:32px; flex-basis:32px; } html:not([data-theme="dark"]) .home-reference .home-progress-link strong { font-size:20px; } }
+html:not([data-theme="dark"]) .home-reference .home-new-hero { display:flex; flex-direction:column; gap:16px !important; }
+html:not([data-theme="dark"]) .home-reference .practice-feature-card.civics-image-card { flex-direction:row; height:auto; max-height:none; aspect-ratio:auto; overflow:visible; }
+html:not([data-theme="dark"]) .home-reference .practice-feature-card.civics-image-card > span { position:static; }
+html:not([data-theme="dark"]) .home-reference .reference-civics-icon svg { fill:none; stroke:currentColor; stroke-width:1.7; stroke-linejoin:round; }
+html:not([data-theme="dark"]) .home-reference .home-interview-actions .home-primary-button::before,html:not([data-theme="dark"]) .home-reference .home-interview-actions .home-primary-button::after { display:none; }
+html:not([data-theme="dark"]) .home-reference .home-logo,html:not([data-theme="dark"]) .home-reference .home-brand { color:#12375f; }
 /* User-provided civics artwork remains fully visible and clickable. */
-html .home-reference .practice-feature-card.civics-image-card { display:block; padding:0; min-height:0; height:auto; border:0; border-radius:16px; overflow:hidden; background:transparent !important; }
-html .home-reference .practice-feature-card.civics-image-card .reference-civics-artwork { display:block; position:static; width:100%; height:auto; max-height:none; object-fit:contain; transform:none; }
+html:not([data-theme="dark"]) .home-reference .practice-feature-card.civics-image-card { display:block; padding:0; min-height:0; height:auto; border:0; border-radius:16px; overflow:hidden; background:transparent !important; }
+html:not([data-theme="dark"]) .home-reference .practice-feature-card.civics-image-card .reference-civics-artwork { display:block; position:static; width:100%; height:auto; max-height:none; object-fit:contain; transform:none; }
 
 /* Shared user-selected artwork; existing panels retain their readable surfaces. */
-html .home-ai.home-reference { background:#e9f3fc url('./assets/citizenship-background.png') center center / cover no-repeat fixed !important; }
-html body { background:#e9f3fc url('./assets/citizenship-background.png') center center / cover no-repeat fixed; }
+html:not([data-theme="dark"]) .home-ai.home-reference { background:#e9f3fc url('./assets/citizenship-background.png') center center / cover no-repeat fixed !important; }
+html:not([data-theme="dark"]) body { background:#e9f3fc url('./assets/citizenship-background.png') center center / cover no-repeat fixed; }
 /* The supplied video contains the complete hero artwork. */
-html .home-reference .reference-hero-copy { display:none; }
-html .home-reference .home-visual-hero { display:block; min-height:0; }
-html .home-reference .home-hero-video { display:block; width:100%; height:auto; min-height:0; object-fit:contain; }
+html:not([data-theme="dark"]) .home-reference .reference-hero-copy { display:none; }
+html:not([data-theme="dark"]) .home-reference .home-visual-hero { display:block; min-height:0; }
+html:not([data-theme="dark"]) .home-reference .home-hero-video { display:block; width:100%; height:auto; min-height:0; object-fit:contain; }
 /* Palette is shared with every internal screen. */
-html .home-reference :is(.home-primary-button,.practice-mini-card,.home-progress-link,.legacy-tools-links button,.legacy-daily-plan) { background:linear-gradient(135deg,var(--color-white),var(--color-background)) !important; color:var(--color-text); border-color:var(--color-border); border-top-color:var(--color-primary); }
-html .home-reference :is(.home-primary-button strong,.practice-mini-card h3,.home-progress-link strong,.preparation-copy strong) { color:var(--color-navy); }
-html .home-reference :is(.home-primary-button small,.practice-mini-card small,.home-progress-link small,.preparation-copy small) { color:var(--color-text); }
-html .home-reference .home-interview-actions .home-primary-button:nth-child(2),html .home-reference .legacy-daily-plan { border-top-color:var(--color-red); }
-html .home-reference :is(.home-action-icon,.mini-icon,.preparation-icon) { background:var(--color-background) !important; color:var(--color-navy) !important; }
-html .home-reference .reference-progress-track { background:var(--color-border); }
-html .home-reference .reference-progress-track i { background:linear-gradient(90deg,var(--color-primary),var(--color-ai)); }
+html:not([data-theme="dark"]) .home-reference :is(.home-primary-button,.practice-mini-card,.home-progress-link,.legacy-tools-links button,.legacy-daily-plan) { background:linear-gradient(135deg,var(--color-white),var(--color-background)) !important; color:var(--color-text); border-color:var(--color-border); border-top-color:var(--color-primary); }
+html:not([data-theme="dark"]) .home-reference :is(.home-primary-button strong,.practice-mini-card h3,.home-progress-link strong,.preparation-copy strong) { color:var(--color-navy); }
+html:not([data-theme="dark"]) .home-reference :is(.home-primary-button small,.practice-mini-card small,.home-progress-link small,.preparation-copy small) { color:var(--color-text); }
+html:not([data-theme="dark"]) .home-reference .home-interview-actions .home-primary-button:nth-child(2),html:not([data-theme="dark"]) .home-reference .legacy-daily-plan { border-top-color:var(--color-red); }
+html:not([data-theme="dark"]) .home-reference :is(.home-action-icon,.mini-icon,.preparation-icon) { background:var(--color-background) !important; color:var(--color-navy) !important; }
+html:not([data-theme="dark"]) .home-reference .reference-progress-track { background:var(--color-border); }
+html:not([data-theme="dark"]) .home-reference .reference-progress-track i { background:linear-gradient(90deg,var(--color-primary),var(--color-ai)); }
+/* Media geometry is theme-independent. */
+html .home-reference .home-visual-hero { display:block; min-height:0; }
+html .home-reference .home-hero-video { display:block; position:relative; inset:auto; width:100%; height:auto; min-height:0; object-fit:contain; }
+html .home-reference .practice-feature-card.civics-image-card { display:block; padding:0; min-height:0; height:auto; border:0; overflow:hidden; background:transparent !important; }
+html .home-reference .reference-civics-artwork { display:block; position:static; width:100%; height:auto; max-height:none; object-fit:contain; transform:none; }
+html:not([data-theme="dark"]) #root .home-new-header { background:var(--color-background); color:var(--color-text); border-bottom:1px solid var(--color-border); }
+html:not([data-theme="dark"]) #root :is(.home-new-brand,.home-brand-wordmark) { color:var(--color-navy) !important; opacity:1; text-shadow:none; }
+html:not([data-theme="dark"]) #root .home-brand-wordmark strong { color:var(--color-primary) !important; }
+html:not([data-theme="dark"]) #root :is(.home-language,.home-settings-button,.home-new-header button) { color:var(--color-navy); background:var(--color-white); border:1px solid var(--color-border); }
+html[data-theme="dark"] { --brand-ink:#edf5ff; --brand-muted:#bed0e5; --brand-border:#375679; --brand-surface:#12233c; }
+html[data-theme="dark"] #root .home-new-header { background:#101e32; border-bottom:1px solid #375679; }
+html[data-theme="dark"] #root :is(.home-new-brand,.home-brand-wordmark) { color:#edf5ff !important; opacity:1; text-shadow:none; }
+html[data-theme="dark"] #root .home-brand-wordmark strong { color:var(--color-ai) !important; }
+html[data-theme="dark"] #root :is(.home-language,.home-settings-button,.home-new-header button) { color:#edf5ff; background:#173451; border:1px solid #527292; }

@@ -937,7 +937,7 @@ function AppContent({ userKey }) {
     readLocalValue(LANGUAGE_STORAGE_KEY, "en") === "es" ? "es" : "en"
   );
   const [themePreference, setThemePreference] = useState(() =>
-    normalizeThemePreference(readLocalValue(THEME_STORAGE_KEY, "dark"))
+    normalizeThemePreference(readLocalValue(THEME_STORAGE_KEY, "light"))
   );
   const [systemPrefersLight, setSystemPrefersLight] = useState(() =>
     window.matchMedia?.("(prefers-color-scheme: light)").matches ?? false

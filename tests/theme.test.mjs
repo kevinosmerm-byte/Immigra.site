@@ -10,7 +10,7 @@ const css = await readFile(new URL("../src/App.css", import.meta.url), "utf8");
 
 test("theme preferences normalize safely and system mode resolves predictably", () => {
   assert.equal(normalizeThemePreference("light"), "light");
-  assert.equal(normalizeThemePreference("unknown"), "dark");
+  assert.equal(normalizeThemePreference("unknown"), "light");
   assert.equal(resolveTheme("system", true), "light");
   assert.equal(resolveTheme("system", false), "dark");
   assert.equal(resolveTheme("dark", true), "dark");

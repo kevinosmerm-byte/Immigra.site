@@ -18,3 +18,6 @@ Usar estas variables en todas las pantallas nuevas y modificadas. Mantener títu
 
 ## Estilo presidencial / luxury
 Aplicar a todos los botones una apariencia institucional elegante: navy y azul federal, bordes finos, sombras suaves y geometría consistente. Títulos de tarjetas en Georgia; etiquetas de acción legibles en sans serif. Evitar neones, dorados añadidos, efectos excesivos y mezcla de colores fuera de la paleta. Conservar iconos, estados activos, grabación, deshabilitado y foco accesible. No reducir el tamaño táctil ni recortar etiquetas para conseguir el efecto visual.
+
+## Temas
+El modo claro es el predeterminado para usuarios nuevos. Respetar siempre la preferencia guardada (claro, oscuro o sistema). Las superficies claras deben estar limitadas a `html:not([data-theme="dark"])`; no imponerlas sobre el modo oscuro. En oscuro usar texto claro sobre superficies navy; conservar la paleta oficial para acentos. Las dimensiones de videos e imágenes deben ser independientes del tema.
