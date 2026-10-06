@@ -1566,7 +1566,7 @@ function AppContent({ userKey }) {
     const favoriteIndexes = civicsFavorites.filter((index) => index >= 0 && index < civicsQuestionBank.length);
     const visibleIndexes = civicsStudyMode === "favorites" ? favoriteIndexes : civicsStudyMode === "mistakes" ? civicsNeedsPractice : civicsQuestionBank.map((_, index) => index);
     const activePosition = Math.max(0, visibleIndexes.indexOf(civicsIndex));
-    const studiedPercent = Math.round((civicsMastered.length / civicsQuestionBank.length) * 100);
+    const studiedPercent = Math.round((civicsViewed.length / civicsQuestionBank.length) * 100);
     const copy = isSpanish ? {
       subtitle: "Domina las preguntas para tu entrevista.", progress: "Progreso", cards: "Tarjetas",
       practice: "Práctica", quiz: "Examen", guide: "Libro", favorites: "Favoritas", reveal: "Toca para ver la respuesta",
@@ -1656,7 +1656,7 @@ function AppContent({ userKey }) {
               <p>{copy.subtitle}</p>
             </div>
             <div className="civics-deck-progress" aria-label={`${copy.progress}: ${studiedPercent}%`}>
-              <div><span>{copy.progress}</span><strong>{studiedPercent}%</strong></div>
+              <div><span>{isSpanish ? "Tarjetas vistas" : "Cards viewed"}</span><strong>{studiedPercent}%</strong></div>
               <div className="civics-deck-progress-track"><i style={{ width: `${studiedPercent}%` }}></i></div>
             </div>
           </section>
@@ -1707,7 +1707,7 @@ function AppContent({ userKey }) {
                   footer={<div className="civics-card-controls">
               <div className="civics-deck-navigation">
                 <button onClick={() => changeCivicsCard(-1)} aria-label={t("Previous question", "Pregunta anterior")}><span>←</span>{isSpanish ? "Anterior" : "Previous"}</button>
-                <div><strong>{civicsViewed.length} / 128</strong><em>{copy.studied}</em><span>·</span><strong>{civicsMastered.length}</strong><em>{copy.mastered}</em><span>·</span><strong>{civicsNeedsPractice.length}</strong><em>{copy.review}</em></div>
+                <div className="civics-readable-stats" aria-live="polite"><span><strong>{civicsIndex + 1} / 128</strong><em>{isSpanish ? "Tarjeta actual" : "Current card"}</em></span><span><strong>{civicsMastered.length}</strong><em>{copy.mastered}</em></span><span><strong>{civicsNeedsPractice.length}</strong><em>{copy.review}</em></span></div>
                 <button className="next" onClick={() => changeCivicsCard(1)} aria-label={t("Next question", "Pregunta siguiente")}>{isSpanish ? "Siguiente" : "Next"}<span>→</span></button>
               </div>
 
