@@ -37,3 +37,5 @@ if (import.meta.env.PROD) {
   else window.addEventListener('load', recover, { once: true });
   window.addEventListener('online', recover);
 }
+
+import './ThemeConsistency.css'
