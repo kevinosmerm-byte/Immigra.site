@@ -76,3 +76,14 @@ html body #root .interview-workspace .live-stage-motion-frame { transform:none !
 html body #root .interview-workspace .live-sarah-video { object-fit:contain !important; object-position:center top !important; background:#123a63; }
 html body #root .interview-workspace .live-skip-button { flex:0 0 auto !important; width:auto !important; }
 html body #root .interview-workspace .workspace-progress { margin-bottom:0; }
+/* Keep the voice action explicit and visible on every viewport. */
+html body #root .interview-workspace button.live-mic-button { display:flex !important; align-items:center; justify-content:center; gap:10px; visibility:visible !important; opacity:1; width:auto !important; height:auto !important; min-height:50px; overflow:visible; color:#fff !important; }
+html body #root .interview-workspace button.live-mic-button::before { content:none !important; }
+html body #root .interview-workspace .workspace-microphone-icon { display:block !important; flex:0 0 24px; width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; }
+@media(max-width:600px) {
+ html body #root .interview-workspace .sarah-live-stage { height:42dvh !important; min-height:270px !important; }
+ html body #root .interview-workspace .live-sarah-video { object-fit:cover !important; object-position:center 24% !important; }
+ html body #root .interview-workspace .live-stage-media,html body #root .interview-workspace .live-stage-motion-frame { width:100% !important; height:100% !important; inset:0 !important; }
+ html body #root .interview-workspace button.live-mic-button { flex:1 1 100%; order:-1; }
+ html body #root .interview-workspace .workspace-overlay { margin-top:-28px; }
+}

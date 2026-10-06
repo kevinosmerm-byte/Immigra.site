@@ -330,7 +330,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
               <textarea id="n400-text-answer" value={draft} rows={3} maxLength={1600} disabled={isListening || isTranscribing} onFocus={stopQuestionSpeech} onChange={event => setDraft(event.target.value)} aria-describedby="n400-privacy-note" />
               <button className="primary-button" type="submit" disabled={!draft.trim() || isListening || isTranscribing}>{copy.submit}</button>
             </form>
-            <button className={`secondary-button live-mic-button ${isListening ? "listening" : ""}`} onClick={isListening ? stopListening : startListening} disabled={isTranscribing} aria-label={isListening ? copy.stop : copy.microphone} aria-pressed={isListening}><span aria-hidden="true">{isListening ? "■" : ""}</span>{isListening ? copy.finish : copy.record}</button>
+            <button className={`secondary-button live-mic-button ${isListening ? "listening" : ""}`} onClick={isListening ? stopListening : startListening} disabled={isTranscribing} aria-label={isListening ? copy.stop : copy.microphone} aria-pressed={isListening}><svg className="workspace-microphone-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>{isListening ? copy.finish : copy.record}</button>
             <button className="live-skip-button" onClick={skipQuestion} disabled={isListening || isTranscribing}>{copy.skip}</button>
           </> : <>
             <button className="primary-button" onClick={continueResponse} disabled={saveStatus === "saving"}>{copy.continue}</button>
