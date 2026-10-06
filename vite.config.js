@@ -8,7 +8,23 @@ export default defineConfig(({ mode }) => {
     : undefined;
 
   return {
-    plugins: [react()],
+    plugins: [react(), {
+      name: 'self-contained-app-styles',
+      apply: 'build',
+      generateBundle: {
+        order: 'post',
+        handler(_options, bundle) {
+          const page = bundle['index.html'];
+          if (!page || typeof page.source !== 'string') return;
+          page.source = page.source.replace(/<link\b[^>]*rel="stylesheet"[^>]*>/g, tag => {
+            const href = tag.match(/href="([^"]+)"/)?.[1];
+            const asset = href && bundle[href.replace(/^\//, '')];
+            if (!asset || asset.type !== 'asset') throw new Error('Missing production stylesheet: ' + href);
+            return '<style data-app-styles="embedded">' + String(asset.source).replace(/<\/style/gi, '<\\/style') + '</style>';
+          });
+        },
+      },
+    }],
     server: {
       host: true,
       allowedHosts,
