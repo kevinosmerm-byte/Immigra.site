@@ -16,4 +16,13 @@
   --button-recording:rgba(201,42,58,.94);
   --button-podcast:rgba(228,90,101,.16);
   --button-podcast-hover:rgba(228,90,101,.22);
+  --button-primary-gradient:linear-gradient(135deg,rgba(18,58,99,.94),rgba(37,99,166,.96));
+  --button-secondary-gradient:linear-gradient(135deg,rgba(37,99,166,.04),rgba(77,163,230,.15));
+  --button-selected-gradient:linear-gradient(135deg,rgba(37,99,166,.16),rgba(77,163,230,.28));
+  --button-n400-gradient:linear-gradient(135deg,rgba(37,99,166,.06),rgba(37,99,166,.19));
+  --button-civics-gradient:linear-gradient(135deg,rgba(77,163,230,.08),rgba(77,163,230,.25));
+  --button-immigration-gradient:linear-gradient(135deg,rgba(18,58,99,.04),rgba(18,58,99,.18));
+  --button-writing-gradient:linear-gradient(135deg,rgba(37,99,166,.07),rgba(228,90,101,.14));
+  --button-podcast-gradient:linear-gradient(135deg,rgba(228,90,101,.08),rgba(228,90,101,.22));
+  --button-podcast-hover-gradient:linear-gradient(135deg,rgba(228,90,101,.16),rgba(228,90,101,.28));
 }

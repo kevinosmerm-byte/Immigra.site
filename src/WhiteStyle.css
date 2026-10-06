@@ -93,10 +93,10 @@
     background: var(--color-white) !important;
     border-color: var(--color-border) !important;
   }
-  /* Only the background is translucent; text and icons keep their contrast. */
+  /* Only the gradient backgrounds are translucent; text and icons stay opaque. */
   html:not([data-theme="dark"]) button,
   html:not([data-theme="dark"]) :is(.home-primary-button,.practice-mini-card,.home-progress-link,.practice-option,.podcast-card,.progress-simple-module,.quiz-choice-list button,.study-guide-heading > a,.live-interviewer-selector,.civics-study-flip,.writing-context summary) {
-    background: var(--button-secondary) !important;
+    background: var(--button-secondary-gradient) !important;
     color: var(--color-navy) !important;
     border-color: var(--color-border) !important;
     box-shadow: none !important;
@@ -106,14 +106,14 @@
     color: var(--color-navy) !important;
   }
   html:not([data-theme="dark"]) :is(.onboarding-primary,.profile-primary,.journey-primary,.account-primary,.promotion-access-continue,.pro-benefits-action,.quiz-primary-action,.quiz-quick-button,.quiz-check-button,.quiz-continue-button,.quiz-feedback > button,.results-button,.results-focus-button,.uscis-check-button,.brain-primary,.button-primary,.primary-button,.n400-text-response button,.progress-simple-hero > button,.legacy-daily-plan > button,.reference-hero-copy button,.podcast-main-play,.immigration-continue,.app-recovery-card button) {
-    background: var(--button-primary) !important;
+    background: var(--button-primary-gradient) !important;
     color: var(--color-white) !important;
   }
   html:not([data-theme="dark"]) :is(.onboarding-primary,.profile-primary,.journey-primary,.account-primary,.promotion-access-continue,.pro-benefits-action,.quiz-primary-action,.quiz-quick-button,.quiz-check-button,.quiz-continue-button,.results-button,.results-focus-button,.uscis-check-button,.brain-primary,.button-primary,.primary-button,.podcast-main-play,.immigration-continue) :is(span,strong,small,b,svg) {
     color: var(--color-white) !important;
   }
   html:not([data-theme="dark"]) :is(.reading-button,.dictation-speak-btn,.coach-call-start-button,.account-primary.secondary,.profile-secondary,.journey-secondary) {
-    background: var(--button-secondary) !important;
+    background: var(--button-secondary-gradient) !important;
     color: var(--color-navy) !important;
   }
   html:not([data-theme="dark"]) :is(.reading-button,.dictation-speak-btn,.coach-call-start-button,.account-primary.secondary) :is(small,strong,span,svg) {
@@ -129,7 +129,7 @@
     color: var(--color-white) !important;
   }
   html:not([data-theme="dark"]) button:is(.active,.selected,[aria-current="page"],[aria-pressed="true"]) {
-    background: var(--button-selected) !important;
+    background: var(--button-selected-gradient) !important;
     color: var(--color-navy) !important;
     border-color: var(--color-primary) !important;
   }
@@ -146,9 +146,14 @@
   html:not([data-theme="dark"]) .quiz-choice-list button.incorrect { background: rgba(156,48,59,.08) !important; border-color: #9c303b !important; }
   html:not([data-theme="dark"]) :is(.button-ghost,.button-tertiary,.profile-tertiary,.practice-feature-card.civics-image-card) { background: transparent !important; }
   html:not([data-theme="dark"]) .home-video-controls button { background: rgba(18,58,99,.8) !important; color: var(--color-white) !important; }
+  /* Named destinations keep distinct color families on every Home render. */
+  html:not([data-theme="dark"]) .home-reference .home-n400-interview-button { background: var(--button-n400-gradient) !important; }
+  html:not([data-theme="dark"]) .home-reference .home-civics-live-button { background: var(--button-civics-gradient) !important; }
+  html:not([data-theme="dark"]) .home-reference .home-immigration-primary-button { background: var(--button-immigration-gradient) !important; }
+  html:not([data-theme="dark"]) .home-reference .home-writing-button { background: var(--button-writing-gradient) !important; }
   /* Keep the Podcast destination distinct with a translucent red surface. */
   html:not([data-theme="dark"]) .home-reference .home-podcast-primary-button {
-    background: var(--button-podcast) !important;
+    background: var(--button-podcast-gradient) !important;
     border-color: var(--color-red) !important;
   }
   html:not([data-theme="dark"]) .home-podcast-primary-button :is(.home-action-icon,.home-action-icon svg,.primary-arrow) {
@@ -199,7 +204,7 @@
     }
     html:not([data-theme="dark"]) :is(.profile-primary,.journey-primary,.onboarding-primary,.quiz-primary-action,.results-button,.uscis-check-button):hover:not(:disabled) { background: rgba(18,58,99,.96) !important; }
     html:not([data-theme="dark"]) .home-reference .home-podcast-primary-button:hover:not(:disabled) {
-      background: var(--button-podcast-hover) !important;
+      background: var(--button-podcast-hover-gradient) !important;
       border-color: var(--color-red) !important;
       box-shadow: 0 2px 8px var(--button-podcast) !important;
     }

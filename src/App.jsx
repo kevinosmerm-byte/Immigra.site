@@ -578,7 +578,7 @@ function Home({
             <div className="practice-mini-grid">
 
               <button
-                className="practice-mini-card"
+                className="practice-mini-card home-reading-button"
                 onClick={() => onOpenFeature("reading")}
               >
 
@@ -597,7 +597,7 @@ function Home({
 
 
               <button
-                className="practice-mini-card"
+                className="practice-mini-card home-writing-button"
                 onClick={() => onOpenFeature("writing")}
               >
 
