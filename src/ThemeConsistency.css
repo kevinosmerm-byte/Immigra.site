@@ -140,3 +140,12 @@ html[data-theme] body #root .app-recovery-card button { background:var(--color-n
   html[data-theme] body #root .home-reference .home-interview-actions .home-primary-button { height:auto !important; min-height:76px; padding:12px; }
   html[data-theme] body #root .home-reference .home-interview-actions .home-primary-button strong { white-space:normal !important; overflow:visible !important; text-overflow:clip !important; font-size:16px; line-height:1.25; }
 }
+/* An opaque reading surface makes dark text contrast independent of the photo. */
+html[data-theme="dark"] body #root :is(.practice-content,.profile-content,.journey-main,.settings-content,.uscis-tracker-content,.progress-simple-content) {
+  background:var(--readable-panel) !important; border:1px solid var(--readable-edge);
+  border-radius:20px; padding:24px; margin-block:20px 100px;
+}
+html[data-theme="dark"] body #root :is(.practice-intro,.profile-intro,.settings-intro,.journey-heading p,.uscis-tracker-page-header p,.reading-translation) { color:var(--readable-muted) !important; opacity:1; }
+html[data-theme="dark"] body #root :is(input,textarea)::placeholder { color:var(--readable-muted) !important; opacity:1 !important; }
+html[data-theme] body #root .writing-ai-title span { background:none !important; }
+@media(max-width:600px) { html[data-theme="dark"] body #root :is(.practice-content,.profile-content,.journey-main,.settings-content,.uscis-tracker-content,.progress-simple-content) { padding:18px; width:calc(100% - 24px); margin-inline:auto; } }
