@@ -1,9 +1,10 @@
-const CACHE_NAME = 'citizenshipai-shell-v5';
+const CACHE_NAME = 'citizenshipai-shell-v6';
 const APP_SHELL = [
   '/', '/index.html', '/manifest.webmanifest', '/app-icon-192.png', '/app-icon-512.png', '/favicon.svg',
   '/fonts/public-sans/PublicSans-Regular.woff2',
   '/fonts/public-sans/PublicSans-SemiBold.woff2',
   '/fonts/public-sans/PublicSans-Bold.woff2',
+  '/citizenshipai-background-whitehouse-1dcb5b04.png',
 ];
 
 self.addEventListener('install', (event) => {

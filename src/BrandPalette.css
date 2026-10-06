@@ -25,4 +25,8 @@
   --button-writing-gradient:linear-gradient(135deg,rgba(37,99,166,.07),rgba(228,90,101,.14));
   --button-podcast-gradient:linear-gradient(135deg,rgba(228,90,101,.08),rgba(228,90,101,.22));
   --button-podcast-hover-gradient:linear-gradient(135deg,rgba(228,90,101,.16),rgba(228,90,101,.28));
+  --screen-background-image:url('/citizenshipai-background-whitehouse-1dcb5b04.png');
+  --screen-background-veil:rgba(255,255,255,.45);
+  --screen-background-dark-veil:rgba(9,21,38,.94);
+  --button-readability-surface:rgba(255,255,255,.82);
 }
