@@ -268,3 +268,12 @@ html body #root .reading-practice-screen .reading-button :is(small,strong,.readi
 html body #root .reading-practice-screen .reading-button-icon { background:#d6eafb; border-color:#a8cce9; }
 html body #root .reading-practice-screen .reading-button.recording { background:linear-gradient(120deg,#c92a3a,#b82335) !important; }
 html body #root .reading-practice-screen .reading-button.recording :is(small,strong,.reading-button-icon,.reading-button-arrow) { color:#fff !important; }
+/* Legible English preparation and practice selection cards in light mode. */
+html:not([data-theme="dark"]) body #root .practice-content > h1 { color:var(--color-navy) !important; text-shadow:none; }
+html:not([data-theme="dark"]) body #root .practice-option .practice-option-content h2 { color:var(--color-navy) !important; opacity:1; font:700 24px/1.25 Georgia,serif; }
+html:not([data-theme="dark"]) body #root .practice-option .practice-option-content p { color:var(--color-text) !important; opacity:1; font-size:15px; line-height:1.5; }
+html:not([data-theme="dark"]) body #root .practice-option :is(.practice-option-icon,.practice-arrow) { color:var(--color-primary) !important; background:#e1effc; border:1px solid #bdd8ee; opacity:1; }
+html body #root .practice-option { min-height:150px; padding:24px; }
+html body #root .practice-option .practice-option-left { gap:18px; }
+html[data-theme="dark"] body #root .practice-option .practice-option-content h2 { color:#edf5ff; }
+html[data-theme="dark"] body #root .practice-option .practice-option-content p { color:#bed0e5; }
