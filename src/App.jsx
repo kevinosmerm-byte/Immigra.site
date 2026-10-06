@@ -426,7 +426,7 @@ function Home({
             <video
               ref={homeVideoRef}
               className="home-hero-video"
-              src="/citizenshipai-home-cta.mp4?v=20261006-092ad3e1"
+              src="/citizenshipai-home-cta.mp4?v=20261006-ba9be328"
 
               playsInline
               preload="metadata"
