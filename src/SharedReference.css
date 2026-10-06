@@ -260,3 +260,11 @@ html:not([data-theme="dark"]) body #root .writing-ai-screen .writing-performance
 html:not([data-theme="dark"]) body #root .writing-ai-screen .writing-performance :is(strong,span) { color:#123a63; }
 html body #root .writing-ai-screen .writing-check-copy strong { font-size:16px; }
 html body #root .writing-ai-screen .writing-check-copy small { font-size:12px; }
+/* Reading: soft patriotic glow with a clear, high-contrast voice control. */
+html:not([data-theme="dark"]) body #root .reading-practice-screen .practice-content { background:radial-gradient(ellipse at 100% 0%,#4da3e621,transparent 55%),radial-gradient(ellipse at 0% 100%,#e45a6512,transparent 50%),#fdfefe; box-shadow:0 12px 32px #123a631a; }
+html:not([data-theme="dark"]) body #root .reading-practice-screen .reading-card { background:linear-gradient(135deg,#fff 35%,#eef7ff) !important; border-color:#c6ddef; box-shadow:0 5px 22px #4da3e61a,inset 0 1px 0 #fff; }
+html body #root .reading-practice-screen .reading-button { background:linear-gradient(120deg,#f4f8fc,#dceeff) !important; color:#123a63 !important; border:1px solid #b6d4ee; box-shadow:inset 0 1px 0 #fff,0 3px 10px #2563a61a; }
+html body #root .reading-practice-screen .reading-button :is(small,strong,.reading-button-icon,.reading-button-arrow) { color:#123a63 !important; }
+html body #root .reading-practice-screen .reading-button-icon { background:#d6eafb; border-color:#a8cce9; }
+html body #root .reading-practice-screen .reading-button.recording { background:linear-gradient(120deg,#c92a3a,#b82335) !important; }
+html body #root .reading-practice-screen .reading-button.recording :is(small,strong,.reading-button-icon,.reading-button-arrow) { color:#fff !important; }
