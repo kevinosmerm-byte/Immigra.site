@@ -59,7 +59,14 @@
   html:not([data-theme="dark"]) .app::after {
     content: none !important;
   }
-  html:not([data-theme="dark"]) :is(.home-new-header,.practice-header,.writing-ai-header,.settings-header,.podcast-header,.immigration-help-header,.quiz-path-header,.quiz-session-header,.interview-header,.profile-header,.global-bottom-navigation) {
+  /* A white-to-off-white surface separates screen headers from the page. */
+  html:not([data-theme="dark"]) :is(.home-new-header,.home-ai-header,.practice-header,.writing-ai-header,.settings-header,.podcast-header,.immigration-help-header,.quiz-path-header,.quiz-session-header,.interview-header,.profile-header,.progress-simple-content > header,.uscis-tracker-page-header) {
+    background: linear-gradient(180deg, var(--color-white), var(--color-white-soft)) !important;
+    color: var(--color-navy) !important;
+    border-color: var(--color-border) !important;
+    box-shadow: var(--ui-shadow) !important;
+  }
+  html:not([data-theme="dark"]) .global-bottom-navigation {
     background: var(--color-white) !important;
     color: var(--color-navy) !important;
     border-color: var(--color-border) !important;
@@ -139,6 +146,22 @@
   html:not([data-theme="dark"]) .quiz-choice-list button.incorrect { background: rgba(156,48,59,.08) !important; border-color: #9c303b !important; }
   html:not([data-theme="dark"]) :is(.button-ghost,.button-tertiary,.profile-tertiary,.practice-feature-card.civics-image-card) { background: transparent !important; }
   html:not([data-theme="dark"]) .home-video-controls button { background: rgba(18,58,99,.8) !important; color: var(--color-white) !important; }
+  /* Keep the Podcast destination distinct with a translucent red surface. */
+  html:not([data-theme="dark"]) .home-reference .home-podcast-primary-button {
+    background: var(--button-podcast) !important;
+    border-color: var(--color-red) !important;
+  }
+  html:not([data-theme="dark"]) .home-podcast-primary-button :is(.home-action-icon,.home-action-icon svg,.primary-arrow) {
+    color: var(--color-red) !important;
+  }
+  html:not([data-theme="dark"]) .home-podcast-primary-button .home-action-icon {
+    background: var(--color-white) !important;
+    border-color: var(--color-red-soft) !important;
+  }
+  html:not([data-theme="dark"]) .home-podcast-live-dot {
+    background: var(--color-red) !important;
+    box-shadow: 0 0 0 4px var(--button-podcast) !important;
+  }
   /* Feather the supplied video into the white page without altering the media
      or covering its playback controls and keyboard focus. */
   html:not([data-theme="dark"]) .home-video-hero {
@@ -175,5 +198,10 @@
       box-shadow: 0 2px 8px #123a6318 !important;
     }
     html:not([data-theme="dark"]) :is(.profile-primary,.journey-primary,.onboarding-primary,.quiz-primary-action,.results-button,.uscis-check-button):hover:not(:disabled) { background: rgba(18,58,99,.96) !important; }
+    html:not([data-theme="dark"]) .home-reference .home-podcast-primary-button:hover:not(:disabled) {
+      background: var(--button-podcast-hover) !important;
+      border-color: var(--color-red) !important;
+      box-shadow: 0 2px 8px var(--button-podcast) !important;
+    }
   }
 }

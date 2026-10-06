@@ -6,6 +6,7 @@
   --color-red:#C92A3A;
   --color-red-soft:#E45A65;
   --color-white:#FFFFFF;
+  --color-white-soft:#F1F5F8;
   --color-background:#FFFFFF;
   --color-border:#D8E2EC;
   --color-text:#172B3D;
@@ -13,4 +14,6 @@
   --button-secondary:rgba(37,99,166,.07);
   --button-selected:rgba(37,99,166,.16);
   --button-recording:rgba(201,42,58,.94);
+  --button-podcast:rgba(228,90,101,.16);
+  --button-podcast-hover:rgba(228,90,101,.22);
 }

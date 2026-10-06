@@ -1,6 +1,6 @@
 # White appearance update — October 6, 2026
 
-The requested style uses a plain white page background and headers, subtly translucent button backgrounds, and Public Sans from the U.S. Web Design System. The existing Home layout, navigation, portraits, video, and civics artwork are retained from the latest main revision (`023e139`).
+The requested style uses a plain white page background, subtly translucent button backgrounds, and Public Sans from the U.S. Web Design System. Screen headers now use a white-to-off-white gradient with a slight shadow, and the Home Podcast destination has a translucent red background, red border and icon, and navy text. These treatments apply to the light theme and preserve existing layout dimensions. The existing Home layout, navigation, portraits, and civics artwork are retained from the latest main revision (`023e139`); the supplied Home video was updated separately.
 
 `src/WhiteStyle.css` loads last and uses a CSS cascade layer to override the legacy appearance rules without changing layout dimensions. `src/BrandPalette.css` defines the white background and alpha colors. Only button backgrounds are translucent; their text and icons remain legible. Controls over photographs use a high-alpha white surface. Active recording keeps its red background and white text/icons.
 
