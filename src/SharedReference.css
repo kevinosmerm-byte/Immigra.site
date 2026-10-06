@@ -124,3 +124,17 @@ html body #root .podcast-header > button .podcast-icon { display:block; width:22
 html body #root .podcast-header-live { position:static; color:#fff !important; font-size:11px; letter-spacing:.1em; padding:6px 8px; border:1px solid #ffffff50; border-radius:6px; }
 html:not([data-theme="dark"]) body #root .podcast-card-copy > span { color:var(--color-navy); }
 @media(max-width:600px) { html body #root .podcast-card .podcast-artwork > strong { font-size:14px; } html body #root .podcast-card .podcast-artwork > small { font-size:10px; } }
+/* Immigration Help: theme-aware text and opaque reading surfaces. */
+html:not([data-theme="dark"]) body #root .immigration-help-content { color:var(--color-text); }
+html:not([data-theme="dark"]) body #root .immigration-help-content :is(p,small,summary,h1,h2,h3,strong,.immigration-context-stage,.immigration-footer-note,.immigration-empty,.immigration-section-heading) { color:var(--color-text) !important; opacity:1; text-shadow:none; }
+html:not([data-theme="dark"]) body #root :is(.immigration-help-hero,.immigration-contextual-help,.immigration-urgent-details,.immigration-directory,.immigration-footer-note) { background:rgba(244,248,252,.96); padding:20px; border:1px solid var(--color-border); border-radius:16px; margin-block:16px; }
+html:not([data-theme="dark"]) body #root .immigration-resource-copy em { color:#166343 !important; font-size:12px; }
+html:not([data-theme="dark"]) body #root .immigration-category-scroll button { color:var(--color-navy); background:var(--color-white); border:1px solid #9fb6cf; }
+html:not([data-theme="dark"]) body #root .immigration-category-scroll button.active { color:var(--color-white); background:var(--color-navy); }
+html:not([data-theme="dark"]) body #root .immigration-help-search { background:var(--color-white); color:var(--color-navy); border:1px solid #9fb6cf; }
+html:not([data-theme="dark"]) body #root .immigration-help-search input { background:transparent; border:0; color:var(--color-text); }
+html:not([data-theme="dark"]) body #root .immigration-help-search input::placeholder { color:#49617e; }
+html body #root .immigration-help-header > strong { color:#fff !important; }
+html body #root .immigration-help-header > button { display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; padding:8px 12px; color:#fff; background:#ffffff12; border:1px solid #ffffff70; }
+html[data-theme="dark"] body #root .immigration-resource-copy :is(p,small) { color:#bed0e5; }
+@media(max-width:600px) { html:not([data-theme="dark"]) body #root :is(.immigration-help-hero,.immigration-contextual-help,.immigration-urgent-details,.immigration-directory,.immigration-footer-note) { padding:16px; } }
