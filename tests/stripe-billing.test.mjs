@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { applyStripeEvent, getBillingConfiguration, mapStripeSubscription } from "../server/stripeBilling.js";
+import { applyStripeEvent, getBillingConfiguration, mapStripeSubscription, subscriptionDataForInterval } from "../server/stripeBilling.js";
 
 test("Stripe billing stays disabled until the explicit launch flag and required secrets exist", () => {
   const previous = process.env.STRIPE_BILLING_ENABLED;
@@ -14,17 +14,30 @@ test("Stripe billing stays disabled until the explicit launch flag and required 
   }
 });
 
-test("The public launch price is enabled only when Checkout has a matching introductory Price", () => {
+test("Legacy introductory prices cannot override the advertised monthly plan", () => {
   const previous = process.env.STRIPE_PRICE_MONTHLY_INTRO;
   delete process.env.STRIPE_PRICE_MONTHLY_INTRO;
   try {
     assert.equal(getBillingConfiguration().introductoryOfferEnabled, false);
     process.env.STRIPE_PRICE_MONTHLY_INTRO = "price_test_intro";
-    assert.equal(getBillingConfiguration().introductoryOfferEnabled, true);
+    assert.equal(getBillingConfiguration().introductoryOfferEnabled, false);
+    assert.equal(getBillingConfiguration().monthlyPriceCents, 599);
+    assert.equal(getBillingConfiguration().monthlyTrialDays, 7);
   } finally {
     if (previous === undefined) delete process.env.STRIPE_PRICE_MONTHLY_INTRO;
     else process.env.STRIPE_PRICE_MONTHLY_INTRO = previous;
   }
+});
+
+test("Only monthly Checkout receives a seven-day trial with safe cancellation", () => {
+  const metadata = { user_id: "account-example" };
+  assert.deepEqual(subscriptionDataForInterval("monthly", metadata), {
+    metadata, trial_period_days: 7,
+    trial_settings: { end_behavior: { missing_payment_method: "cancel" } },
+  });
+  assert.deepEqual(subscriptionDataForInterval("annual", metadata), { metadata });
+  assert.throws(() => subscriptionDataForInterval("weekly", metadata));
+  assert.equal(mapStripeSubscription({ status: "trialing" }).tier, "pro");
 });
 
 test("Stripe subscription states map to server-authoritative entitlements", () => {

@@ -364,17 +364,18 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
           <p>{language === "es" ? "Consulta tus límites disponibles en esta cuenta. Se aplican límites diarios de uso." : "Check your available allowances in this account. Daily usage limits apply."}</p>
           <span>{copy.pricing}</span>
           <div>
-            <strong>{billing?.enabled && !billing.introductoryOfferEnabled ? copy.regularPrice : `${copy.launchPrice} $${(PRO_PLAN.introductoryMonthlyPriceCents / 100).toFixed(2)}/mo`}</strong>
-            <small>{billing?.enabled && !billing.introductoryOfferEnabled ? copy.annualPrice : `${copy.regularPrice} · ${copy.annualPrice}`}</small>
+            <strong>{!Capacitor.isNativePlatform() && billing?.monthlyTrialDays === 7 ? (language === "es" ? "7 días gratis, luego US$5.99/mes" : "7 days free, then US$5.99/month") : copy.regularPrice}</strong>
+            <small>{copy.annualPrice}</small>
           </div>
           {webBillingEnabled && session ? (
             usage?.tier === "pro" ? (
               <button className="account-billing-manage" type="button" onClick={() => startBillingAction("portal")} disabled={Boolean(billingAction)}>{billingAction ? copy.openingCheckout : copy.manageSubscription}</button>
             ) : (
               <div className="account-billing-actions">
-                <button type="button" onClick={() => startBillingAction("monthly")} disabled={Boolean(billingAction)}><b>{copy.monthly}</b><small>${(Number(billing.introductoryOfferEnabled ? billing.introductoryMonthlyPriceCents : billing.monthlyPriceCents) / 100).toFixed(2)}/mo</small></button>
+                <button type="button" onClick={() => startBillingAction("monthly")} disabled={Boolean(billingAction)}><b>{billing.monthlyTrialDays === 7 ? (language === "es" ? "PROBAR 7 DÍAS GRATIS" : "START 7-DAY FREE TRIAL") : copy.monthly}</b><small>US${(Number(billing.monthlyPriceCents || PRO_PLAN.regularMonthlyPriceCents) / 100).toFixed(2)}/{language === "es" ? "mes" : "month"}</small></button>
                 <button type="button" onClick={() => startBillingAction("annual")} disabled={Boolean(billingAction)}><b>{copy.yearly}</b><small>${(Number(billing.annualPriceCents || PRO_PLAN.annualPriceCents) / 100).toFixed(2)}/yr</small></button>
                 <em>{copy.secureCheckout}</em>
+                {billing.monthlyTrialDays === 7 && <p>{language === "es" ? "Plan mensual: se requiere un método de pago. Después de 7 días se renueva automáticamente por US$5.99 al mes, más impuestos aplicables. Cancela antes de terminar la prueba para evitar el cobro. Administra o cancela desde tu cuenta. El plan anual no incluye prueba gratis." : "Monthly plan: payment method required. After 7 days, automatically renews at US$5.99/month plus applicable taxes. Cancel before the trial ends to avoid a charge. Manage or cancel from your account. The annual plan does not include a free trial."}</p>}
               </div>
             )
           ) : <em>{copy.pricingStatus}</em>}

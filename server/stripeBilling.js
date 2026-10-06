@@ -21,10 +21,6 @@ function getStripe() {
 }
 
 function priceIdForInterval(interval) {
-  if (interval === "monthly") {
-    const introductoryPrice = process.env.STRIPE_PRICE_MONTHLY_INTRO?.trim();
-    if (introductoryPrice) return introductoryPrice;
-  }
   const environmentKey = PRICE_KEYS[interval];
   return environmentKey ? process.env[environmentKey]?.trim() || "" : "";
 }
@@ -52,10 +48,10 @@ export function getBillingConfiguration() {
     enabled: configured && isTrue(process.env.STRIPE_BILLING_ENABLED),
     configured,
     currency: PRO_PLAN.currency,
-    monthlyPriceCents: PRO_PLAN.monthlyPriceCents,
-    introductoryMonthlyPriceCents: PRO_PLAN.introductoryMonthlyPriceCents,
+    monthlyPriceCents: PRO_PLAN.regularMonthlyPriceCents,
+    monthlyTrialDays: 7,
     annualPriceCents: PRO_PLAN.annualPriceCents,
-    introductoryOfferEnabled: Boolean(process.env.STRIPE_PRICE_MONTHLY_INTRO?.trim()),
+    introductoryOfferEnabled: false,
   };
 }
 
@@ -78,6 +74,17 @@ export function mapStripeSubscription(subscription) {
   };
 }
 
+export function subscriptionDataForInterval(interval, metadata) {
+  if (!["monthly", "annual"].includes(interval)) throw new Error("Unknown billing interval.");
+  return {
+    metadata,
+    ...(interval === "monthly" ? {
+      trial_period_days: 7,
+      trial_settings: { end_behavior: { missing_payment_method: "cancel" } },
+    } : {}),
+  };
+}
+
 export async function createCheckoutSession({ userId, email, interval }) {
   const billing = getBillingConfiguration();
   if (!billing.enabled) throw new Error("Billing is not enabled.");
@@ -93,13 +100,23 @@ export async function createCheckoutSession({ userId, email, interval }) {
 
   const baseUrl = appBaseUrl();
   const customer = identity?.provider === "stripe" ? identity.providerCustomerId : null;
+  // Fail closed if deployment points at an old introductory or incorrect price.
+  const configuredPrice = await getStripe().prices.retrieve(price);
+  const expectedAmount = interval === "monthly" ? PRO_PLAN.regularMonthlyPriceCents : PRO_PLAN.annualPriceCents;
+  if (!configuredPrice.active || configuredPrice.currency !== "usd"
+      || configuredPrice.unit_amount !== expectedAmount
+      || configuredPrice.recurring?.interval !== (interval === "monthly" ? "month" : "year")
+      || configuredPrice.recurring?.interval_count !== 1) {
+    throw new Error("The configured subscription price does not match the advertised plan.");
+  }
   const session = await getStripe().checkout.sessions.create({
     mode: "subscription",
     line_items: [{ price, quantity: 1 }],
     client_reference_id: userId,
     ...(customer ? { customer } : { customer_email: email || undefined }),
     metadata: { user_id: userId, product_key: PRO_PLAN.productKey, interval },
-    subscription_data: { metadata: { user_id: userId, product_key: PRO_PLAN.productKey, interval } },
+    subscription_data: subscriptionDataForInterval(interval, { user_id: userId, product_key: PRO_PLAN.productKey, interval }),
+    payment_method_collection: "always",
     allow_promotion_codes: true,
     automatic_tax: { enabled: isTrue(process.env.STRIPE_AUTOMATIC_TAX) },
     success_url: `${baseUrl}/?billing=success&session_id={CHECKOUT_SESSION_ID}`,
