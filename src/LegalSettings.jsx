@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getCompanionVisibility, setCompanionVisibility } from "./companionEvents.js";
-import { THEME_PREFERENCES, THEME_STORAGE_KEY } from "./theme.js";
+import { THEME_PREFERENCES, THEME_STORAGE_KEY, APPEARANCE_STORAGE_KEY } from "./theme.js";
 import { DEFAULT_TEST_VERSION, TEST_VERSIONS } from "./civicsVersions.js";
 import { normalizeZipCode } from "./civicProfile.js";
 
@@ -212,7 +212,7 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
   );
 }
 
-export function LegalSettings({ onBack, onRestartOnboarding, language = "en", themePreference = "dark", onThemeChange }) {
+export function LegalSettings({ onBack, onRestartOnboarding, language = "en", themePreference = "light", onThemeChange }) {
   const [openSection, setOpenSection] = useState("privacy");
   const [cleared, setCleared] = useState(false);
   const [companionVisible, setCompanionVisible] = useState(getCompanionVisibility);
@@ -227,7 +227,7 @@ export function LegalSettings({ onBack, onRestartOnboarding, language = "en", th
   const clearLocalData = () => {
     if (!window.confirm(language === "es" ? "¿Borrar preferencias, perfiles personales, proceso y progreso de Citizenship AI de este dispositivo? La copia de la nube permanece. Esta acción no se puede deshacer." : "Clear Citizenship AI preferences, personal profiles, journey and learning progress from this device? Your cloud copy will remain. This cannot be undone.")) return;
     Object.keys(localStorage).filter(key => key.startsWith("citizenshipai.")).forEach(key => localStorage.removeItem(key));
-    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", THEME_STORAGE_KEY, "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1", "citizenshipai.ai-sessions.promo.v1", "citizenshipai-companion-visible-v1", "citizenshipai-companion-streak-v1"].forEach((key) => localStorage.removeItem(key));
+    ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", THEME_STORAGE_KEY, APPEARANCE_STORAGE_KEY, "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1", "citizenshipai.ai-sessions.promo.v1", "citizenshipai-companion-visible-v1", "citizenshipai-companion-streak-v1"].forEach((key) => localStorage.removeItem(key));
     window.dispatchEvent(new Event("citizenshipai:local-data-cleared"));
     setCleared(true);
 };

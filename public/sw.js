@@ -1,5 +1,10 @@
-const CACHE_NAME = 'citizenshipai-shell-v4';
-const APP_SHELL = ['/', '/index.html', '/manifest.webmanifest', '/app-icon-192.png', '/app-icon-512.png', '/favicon.svg'];
+const CACHE_NAME = 'citizenshipai-shell-v5';
+const APP_SHELL = [
+  '/', '/index.html', '/manifest.webmanifest', '/app-icon-192.png', '/app-icon-512.png', '/favicon.svg',
+  '/fonts/public-sans/PublicSans-Regular.woff2',
+  '/fonts/public-sans/PublicSans-SemiBold.woff2',
+  '/fonts/public-sans/PublicSans-Bold.woff2',
+];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_SHELL)));

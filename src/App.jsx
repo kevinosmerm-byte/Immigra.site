@@ -44,7 +44,7 @@ import { createNavigationHistory, navigateBack, navigateForward } from "./naviga
 import { getCivicsVisual } from "./data/civicsVisuals.js";
 import { emitCompanionResult, emitCompanionState, emitCompanionContext } from "./companionEvents.js";
 import { N400InterviewPractice } from "./N400InterviewPractice.jsx";
-import { normalizeThemePreference, resolveTheme, THEME_STORAGE_KEY } from "./theme.js";
+import { normalizeThemePreference, initialThemePreference, resolveTheme, THEME_STORAGE_KEY, APPEARANCE_STORAGE_KEY, APPEARANCE_VERSION } from "./theme.js";
 
 
 const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
@@ -591,7 +591,7 @@ function Home({
                   <h3>{copy.reading}</h3>
                 </div>
 
-                <span>↗</span>
+                <span aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" focusable="false"><path d="M7 17 17 7M7 7h10v10" /></svg></span>
 
               </button>
 
@@ -610,7 +610,7 @@ function Home({
                   <h3>{copy.writing}</h3>
                 </div>
 
-                <span>↗</span>
+                <span aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" focusable="false"><path d="M7 17 17 7M7 7h10v10" /></svg></span>
 
               </button>
 
@@ -938,7 +938,7 @@ function AppContent({ userKey }) {
     readLocalValue(LANGUAGE_STORAGE_KEY, "en") === "es" ? "es" : "en"
   );
   const [themePreference, setThemePreference] = useState(() =>
-    normalizeThemePreference(readLocalValue(THEME_STORAGE_KEY, "light"))
+    initialThemePreference(readLocalValue(THEME_STORAGE_KEY, "light"), readLocalValue(APPEARANCE_STORAGE_KEY))
   );
   const [systemPrefersLight, setSystemPrefersLight] = useState(() =>
     window.matchMedia?.("(prefers-color-scheme: light)").matches ?? false
@@ -1016,6 +1016,7 @@ function AppContent({ userKey }) {
     document.documentElement.dataset.themePreference = themePreference;
     document.documentElement.style.colorScheme = resolvedTheme;
     saveLocalValue(THEME_STORAGE_KEY, themePreference);
+    saveLocalValue(APPEARANCE_STORAGE_KEY, APPEARANCE_VERSION);
   }, [themePreference, systemPrefersLight]);
 
   useEffect(() => {
@@ -1531,7 +1532,7 @@ function AppContent({ userKey }) {
             </div>
             <div className="coach-message">
               <div className="coach-message-label">SARAH</div>
-              <div className="coach-message-text">{conversationStarted ? (coachReply || "Hi! I'm Sarah. Let's practice English together. Tell me about yourself.") : t("Ready when you are. Start a conversation to practice English.", "Cuando quieras, inicia una conversación para practicar inglés.")}</div>
+              <div className="coach-message-text" tabIndex={0}>{conversationStarted ? (coachReply || "Hi! I'm Sarah. Let's practice English together. Tell me about yourself.") : t("Ready when you are. Start a conversation to practice English.", "Cuando quieras, inicia una conversación para practicar inglés.")}</div>
             </div>
             <div className="coach-response-area">
               {!conversationStarted ? (

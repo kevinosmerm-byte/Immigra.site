@@ -9,8 +9,8 @@
   "display": "standalone",
   "orientation": "portrait-primary",
   "categories": ["education"],
-  "background_color": "#020815",
-  "theme_color": "#061126",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "/app-icon-192.png",

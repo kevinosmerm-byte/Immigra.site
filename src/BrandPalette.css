@@ -6,7 +6,11 @@
   --color-red:#C92A3A;
   --color-red-soft:#E45A65;
   --color-white:#FFFFFF;
-  --color-background:#F4F8FC;
+  --color-background:#FFFFFF;
   --color-border:#D8E2EC;
   --color-text:#172B3D;
+  --button-primary:rgba(18,58,99,.9);
+  --button-secondary:rgba(37,99,166,.07);
+  --button-selected:rgba(37,99,166,.16);
+  --button-recording:rgba(201,42,58,.94);
 }

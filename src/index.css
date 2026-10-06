@@ -8,19 +8,19 @@ body,
 }
 
 html {
-  background: #000000;
+  background: #ffffff;
 }
 
 body {
   min-width: 320px;
   min-height: 100vh;
-  background: #000000;
+  background: #ffffff;
 }
 
 html[data-theme="light"],
 html[data-theme="light"] body,
 html[data-theme="light"] #root {
-  background: #eef5fc;
+  background: #ffffff;
 }
 
 #root {

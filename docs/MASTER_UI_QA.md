@@ -1,5 +1,7 @@
 # Citizenship AI — UI verification
 
+This is the October 5 implementation report. The subsequent white appearance update and its current checks are documented in [WHITE_STYLE_UPDATE.md](WHITE_STYLE_UPDATE.md).
+
 Date: October 5, 2026. Scope: the current working tree, using the existing React/Vite application. This report supersedes the older navigation inventory for this implementation.
 
 ## Verified results
