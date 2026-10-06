@@ -153,3 +153,8 @@ html[data-theme="dark"] body #root .reading-card small { color:var(--readable-mu
 html[data-theme] body #root .account-message { background:var(--readable-soft) !important; color:var(--readable-ink) !important; border-color:var(--readable-edge); }
 html[data-theme="light"] body #root :is(.coach-message-text,.uscis-official-note strong) { color:var(--color-text) !important; }
 html[data-theme="light"] body #root .uscis-official-note>span { color:#166343 !important; }
+@media(max-width:600px) {
+  html[data-theme] body #root .home-reference .home-interview-actions .home-primary-button strong { display:block !important; -webkit-line-clamp:unset !important; line-clamp:unset !important; height:auto !important; font-size:14px !important; overflow-wrap:normal; }
+  html[data-theme] body #root .home-reference .home-interview-actions .home-primary-button { gap:8px; padding:10px; }
+  html[data-theme] body #root .home-reference .home-interview-actions .home-action-icon { width:28px; min-width:28px; height:32px; }
+}
