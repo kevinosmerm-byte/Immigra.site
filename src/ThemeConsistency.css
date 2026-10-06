@@ -126,3 +126,13 @@ html[data-theme] body #root .promotion-access-sheet { background:var(--readable-
 html[data-theme] body #root .promotion-access-sheet :is(h1,h2,p,small,.promotion-access-feature span,.promotion-access-feature strong) { color:var(--readable-ink) !important; }
 html[data-theme] body #root .promotion-access-sheet .promotion-access-feature { background:var(--readable-soft); border-color:var(--readable-edge); }
 html[data-theme] body #root :is(.promotion-access-close,.pro-benefits-dismiss) { background:var(--readable-soft); color:var(--readable-heading); min-width:44px; min-height:44px; }
+/* Mobile labels must grow with their content instead of overflowing fixed controls. */
+html[data-theme] body #root :is(.practice-brand span,.interview-brand strong span,.writing-ai-brand span,.home-brand-wordmark strong,.podcast-header>strong span) { opacity:1 !important; }
+html[data-theme] body #root :is(.reading-practice-screen .reading-button,.writing-ai-screen .dictation-speak-btn,.coach-call-start-button) { height:auto !important; min-height:64px !important; padding:14px !important; align-items:center; }
+html[data-theme] body #root :is(.reading-button-copy,.dictation-speak-btn strong,.coach-call-copy) { min-width:0; white-space:normal; }
+html[data-theme] body #root .reading-practice-screen .practice-content { gap:12px !important; }
+html[data-theme] body #root .reading-practice-screen .practice-intro { margin-bottom:4px; }
+html[data-theme] body #root .reading-practice-screen .reading-card { margin-top:12px; }
+html[data-theme] body #root .app-recovery-card { background:var(--readable-panel) !important; color:var(--readable-heading); }
+html[data-theme] body #root .app-recovery-card :is(span,p,small) { color:var(--readable-ink) !important; }
+html[data-theme] body #root .app-recovery-card button { background:var(--color-navy) !important; color:var(--color-white) !important; min-height:44px; }
