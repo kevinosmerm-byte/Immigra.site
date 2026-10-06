@@ -24,3 +24,6 @@ El modo claro es el predeterminado para usuarios nuevos. Respetar siempre la pre
 
 ### Profundidad de los botones claros
 Mantener superficies blancas con un degradado azul pálido hacia los bordes, brillo interior blanco y sombra azul suave. Usar navy para accesos institucionales, azul AI para estudio/progreso y una línea roja discreta para entrevista cívica/plan diario. No convertir toda la tarjeta en un color saturado. En hover, intensificar suavemente el azul; conservar foco visible y texto oscuro. Aplicar estos tratamientos claros solo al tema claro.
+
+### Verificación de contraste
+La capa final src/ThemeConsistency.css mantiene pares explícitos de fondo y texto para ambos temas. No fijar letras blancas sin fijar también una superficie oscura. Botones secundarios claros con texto navy; acciones principales navy y acciones de voz/revisión rojo patriótico. Evitar alturas fijas cuando la etiqueta puede ocupar dos líneas. Verificar el color calculado, la opacidad heredada y las vistas móviles después de modificar reglas antiguas.

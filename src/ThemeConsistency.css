@@ -136,3 +136,7 @@ html[data-theme] body #root .reading-practice-screen .reading-card { margin-top:
 html[data-theme] body #root .app-recovery-card { background:var(--readable-panel) !important; color:var(--readable-heading); }
 html[data-theme] body #root .app-recovery-card :is(span,p,small) { color:var(--readable-ink) !important; }
 html[data-theme] body #root .app-recovery-card button { background:var(--color-navy) !important; color:var(--color-white) !important; min-height:44px; }
+@media(max-width:600px) {
+  html[data-theme] body #root .home-reference .home-interview-actions .home-primary-button { height:auto !important; min-height:76px; padding:12px; }
+  html[data-theme] body #root .home-reference .home-interview-actions .home-primary-button strong { white-space:normal !important; overflow:visible !important; text-overflow:clip !important; font-size:16px; line-height:1.25; }
+}
