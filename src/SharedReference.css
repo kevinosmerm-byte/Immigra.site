@@ -250,3 +250,13 @@ html body #root .writing-ai-input { height:110px; min-height:110px; width:100%; 
 html body #root .writing-ai-button { margin:0; min-height:54px; }
 html body #root .writing-ai-button :is(small,strong) { color:white !important; }
 @media(max-width:600px) { html body #root .reading-practice-screen .practice-content,html body #root .writing-practice-panel { padding:18px; } html body #root .reading-practice-screen .reading-card { padding:16px; } }
+/* Writing actions: pale blue listening, patriotic red review. */
+html body #root .writing-ai-screen .dictation-speak-btn { background:linear-gradient(135deg,#ffffff,#deefff) !important; color:#123a63 !important; border:1px solid #b7d5ef !important; box-shadow:inset 0 1px 0 #fff,0 4px 12px #2563a617; }
+html body #root .writing-ai-screen .dictation-speak-btn :is(small,strong,.speaker-icon,.dictation-replay-arrow) { color:#123a63 !important; }
+html body #root .writing-ai-screen .dictation-speak-btn .speaker-icon { background:#cce6fc; border-color:#a5cceb; }
+html body #root .writing-ai-screen .writing-ai-button { background:linear-gradient(120deg,#c92a3a,#b82335) !important; border:1px solid #b82335 !important; color:#fff !important; box-shadow:0 4px 12px #c92a3a24; }
+html body #root .writing-ai-screen .writing-ai-button :is(small,strong,span) { color:#fff !important; }
+html:not([data-theme="dark"]) body #root .writing-ai-screen .writing-performance { background:linear-gradient(120deg,#fff,#edf6ff); border:1px solid #d8e2ec; border-radius:14px; padding:14px; }
+html:not([data-theme="dark"]) body #root .writing-ai-screen .writing-performance :is(strong,span) { color:#123a63; }
+html body #root .writing-ai-screen .writing-check-copy strong { font-size:16px; }
+html body #root .writing-ai-screen .writing-check-copy small { font-size:12px; }
