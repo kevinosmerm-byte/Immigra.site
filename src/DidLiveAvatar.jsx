@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { apiJson } from "./api";
 import sarahImage from "./assets/sarah.png";
-import { useModalFocus } from "./useModalFocus.js";
 
 const DID_AGENT_SCRIPT = "https://agent.d-id.com/v2/index.js";
-const DID_CONSENT_KEY = "citizenshipai.did-avatar-consent.v1";
 const DID_TARGET_ID = "did-live-agent-container";
 const COPY = {
   en: {
@@ -30,12 +28,8 @@ const COPY = {
     standby: "Entrevista en vivo en espera", panel: "Entrevista por video en vivo con Sarah", retry: "Volver a intentar el video", standard: "Practicar la entrevista estándar",
   },
 };
-function hasSavedDidConsent() {
-  try { return localStorage.getItem(DID_CONSENT_KEY) === "accepted"; }
-  catch { return false; }
-}
 
-export function DidLiveAvatar({ autoStart = false, language = "en", onStandardInterview }) {
+export function DidLiveAvatar({ language = "en", onStandardInterview }) {
   const copy = COPY[language === "es" ? "es" : "en"];
   const scriptRef = useRef(null);
   const widgetRef = useRef(null);
@@ -44,8 +38,6 @@ export function DidLiveAvatar({ autoStart = false, language = "en", onStandardIn
   const requestRef = useRef(0);
   const [state, setState] = useState("idle");
   const [messageKey, setMessageKey] = useState("");
-  const [showNotice, setShowNotice] = useState(() => autoStart && !hasSavedDidConsent());
-  const noticeRef = useModalFocus(showNotice, () => setShowNotice(false));
   const clearEmbed = useCallback(() => {
     observerRef.current?.disconnect(); observerRef.current = null;
     scriptRef.current?.remove(); scriptRef.current = null;
@@ -62,7 +54,7 @@ export function DidLiveAvatar({ autoStart = false, language = "en", onStandardIn
   }, [clearEmbed]);
   const connect = useCallback(async () => {
     const requestId = ++requestRef.current;
-    clearEmbed(); setShowNotice(false); setState("connecting"); setMessageKey("loading");
+    clearEmbed(); setState("connecting"); setMessageKey("loading");
     try {
       const session = await apiJson("/avatar/session", { method: "POST" });
       if (!mountedRef.current || requestRef.current !== requestId) return;
@@ -98,26 +90,13 @@ export function DidLiveAvatar({ autoStart = false, language = "en", onStandardIn
       clearEmbed(); setState("error"); setMessageKey("unavailable");
     }
   }, [clearEmbed]);
-  useEffect(() => {
-    if (!autoStart || !hasSavedDidConsent()) return undefined;
-    const timer = setTimeout(connect, 0);
-    return () => clearTimeout(timer);
-  }, [autoStart, connect]);
-  const acceptAndConnect = () => {
-    try { localStorage.setItem(DID_CONSENT_KEY, "accepted"); } catch { /* Consent applies to this session. */ }
-    connect();
-  };
   const useStandard = () => { reset(); onStandardInterview?.(); };
   return (
     <section className="did-live-avatar" aria-label={copy.label}>
       {state !== "active" && <div className="did-live-avatar-intro">
-        <span>{copy.beta}</span><h2>{copy.title}</h2><p>{copy.intro}</p>
-        {state === "idle" && <button type="button" className={showNotice ? "button-secondary" : "button-primary"} disabled={showNotice} onClick={() => hasSavedDidConsent() ? connect() : setShowNotice(true)}>{copy.connect}</button>}
+        <h2>{language === "es" ? "Práctica en vivo" : "Live practice"}</h2>
+        {state === "idle" && <button type="button" className="button-primary" onClick={connect}>{copy.connect}</button>}
         {state === "connecting" && <p role="status">{copy.connecting}</p>}
-      </div>}
-      {showNotice && <div ref={noticeRef} className="did-live-avatar-notice" role="dialog" aria-modal="true" aria-labelledby="did-privacy-title" aria-describedby="did-privacy-description">
-        <h3 id="did-privacy-title">{copy.noticeTitle}</h3><p id="did-privacy-description">{copy.noticeText}</p>
-        <div><button type="button" className="button-secondary" onClick={() => setShowNotice(false)}>{copy.cancel}</button><button type="button" className="button-primary" onClick={acceptAndConnect}>{copy.accept}</button></div>
       </div>}
       <div className={`did-live-stage ${state}`}>
         <img className="did-live-fallback" src={sarahImage} alt={copy.portrait} />

@@ -94,3 +94,17 @@ html:not([data-theme="dark"]) body #root :is(.live-mic-button.listening,.reading
   html:not([data-theme="dark"]) body #root .live-interview-controls :is(button,.primary-button) { padding:9px 12px; }
 }
 @media(prefers-reduced-motion:reduce) { html:not([data-theme="dark"]) body #root button { transition:none; } }
+/* Readable question text must not inherit the video overlay's white lettering. */
+html:not([data-theme="dark"]) body #root :is(.live-question-card,.reading-card,.writing-question-card,.quiz-question-card,.civic-profile-panel,.account-pricing) :is(h2,h3,p,label,strong,small,.question,.question-spanish) { color:var(--color-text) !important; text-shadow:none; }
+html:not([data-theme="dark"]) body #root .live-interview-controls { background:var(--color-background) !important; color:var(--color-text); }
+html:not([data-theme="dark"]) body #root .live-interview-controls :is(label,.n400-privacy-note) { color:var(--color-text) !important; }
+html:not([data-theme="dark"]) body #root .did-live-avatar-intro { background:var(--color-background); color:var(--color-text); padding:16px; }
+html:not([data-theme="dark"]) body #root .did-live-avatar-intro h2 { color:var(--color-navy); margin:0 0 14px; font:700 24px/1.2 Georgia,serif; }
+html body #root :is(.home-new-header,.practice-header,.interview-header,.writing-ai-header,.settings-header,.profile-header,.podcast-header,.immigration-help-header) {
+  background:linear-gradient(120deg,rgba(18,58,99,.96),rgba(18,58,99,.78)) !important;
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  color:#fff; border-bottom:1px solid #ffffff30; box-shadow:0 4px 18px #123a6325;
+}
+html body #root :is(.home-new-header,.practice-header,.interview-header,.writing-ai-header,.settings-header,.profile-header,.podcast-header,.immigration-help-header) :is(.home-new-brand,.home-brand-wordmark,.practice-brand,.interview-brand,.writing-ai-brand,h1,p,small) { color:#fff !important; text-shadow:none; }
+html body #root .home-brand-wordmark strong { color:var(--color-ai) !important; }
+html body #root :is(.home-language,.home-settings-button) { background:#ffffff12 !important; color:#fff !important; border:1px solid #ffffff70; }
