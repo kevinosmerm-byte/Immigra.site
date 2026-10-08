@@ -1,0 +1,38 @@
+{
+  "country": "Colombia",
+  "source_refs": [
+    "COL_UN_2025_DISPLACEMENT",
+    "COL_UN_2025_DEFENDER",
+    "COL_CAT_2026"
+  ],
+  "regions": [
+    "Bogotá",
+    "Cali, Valle del Cauca",
+    "Medellín, Antioquia",
+    "Cúcuta, Norte de Santander",
+    "Tumaco, Nariño",
+    "Bucaramanga/Santander",
+    "rural Cauca"
+  ],
+  "contexts": [
+    "environmental or land-defense activity",
+    "community leadership",
+    "local journalism",
+    "victim/community advocacy",
+    "rural commerce under armed-group pressure",
+    "women or social leadership",
+    "forced displacement from contested territory"
+  ],
+  "actors": [
+    "non-state armed group members",
+    "criminal organization members",
+    "unknown armed men",
+    "local political/economic intermediaries",
+    "state officers in a limited factual role"
+  ],
+  "practice_notes": [
+    "Generalized violence is not the same as an individualized event; the interview must explore why this person was affected.",
+    "Actor identity may be uncertain; preserve uncertainty.",
+    "Explore regional relocation and whether threats followed the person."
+  ]
+}

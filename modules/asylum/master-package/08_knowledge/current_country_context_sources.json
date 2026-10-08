@@ -1,0 +1,230 @@
+{
+  "VEN_FFM_2024": {
+    "publisher": "UN OHCHR / Independent International Fact-Finding Mission on Venezuela",
+    "title": "A/HRC/57/57 — Report of the independent international fact-finding mission on Venezuela",
+    "date": "2024-09-17",
+    "url": "https://www.ohchr.org/sites/default/files/documents/hrbodies/hrcouncil/sessions-regular/session57/advance-versions/a-hrc-57-57-en.pdf",
+    "patterns": [
+      "post-election protest repression",
+      "arbitrary detention",
+      "injuries and deaths during repression",
+      "restrictions on civic and democratic space"
+    ]
+  },
+  "VEN_UN_2025_NGO": {
+    "publisher": "UN Special Procedures",
+    "title": "VEN 2/2025 — allegations concerning public statements against Venezuelan NGOs and defenders",
+    "date": "2025-06-18",
+    "url": "https://spcommreports.ohchr.org/TmSearch/RelCom?code=VEN+2%2F2025",
+    "patterns": [
+      "human rights defenders",
+      "NGO stigmatization",
+      "arbitrary detention/disappearance concerns",
+      "civic space"
+    ]
+  },
+  "VEN_UN_2025_DEFENDER": {
+    "publisher": "UN Special Procedures",
+    "title": "VEN 4/2025 — alleged enforced disappearance and arbitrary detention of a human rights defender",
+    "date": "2025-09-05",
+    "url": "https://spcommreports.ohchr.org/TmSearch/RelCom?code=VEN+4%2F2025",
+    "patterns": [
+      "human rights defenders",
+      "enforced disappearance",
+      "arbitrary detention"
+    ]
+  },
+  "CUB_UN_2026": {
+    "publisher": "UN Special Procedures",
+    "title": "CUB 3/2025 — systematic criminalization of dissent and coercion against defenders, activists and artists",
+    "date": "2026-01-07",
+    "url": "https://spcommreports.ohchr.org/LatestReports/PrintRR",
+    "patterns": [
+      "criminalization of dissent",
+      "arbitrary detention",
+      "forced exile",
+      "artists",
+      "activists",
+      "human rights defenders"
+    ]
+  },
+  "CUB_UN_2024": {
+    "publisher": "UN Special Procedures",
+    "title": "CUB 4/2024 — short-term arbitrary detentions, harassment, surveillance and threats against women activists",
+    "date": "2024-09-13",
+    "url": "https://spcommreports.ohchr.org/TmSearch/RelCom?code=CUB+4%2F2024",
+    "patterns": [
+      "short-term detention",
+      "surveillance",
+      "harassment",
+      "threats",
+      "critical expression"
+    ]
+  },
+  "CUB_STATE_2023": {
+    "publisher": "U.S. Department of State",
+    "title": "2023 Country Reports on Human Rights Practices: Cuba",
+    "date": "2024",
+    "url": "https://2021-2025.state.gov/reports/2023-country-reports-on-human-rights-practices/cuba/",
+    "patterns": [
+      "arbitrary detention",
+      "political prisoners",
+      "restrictions on expression, assembly and association",
+      "internet restrictions",
+      "religious freedom restrictions"
+    ]
+  },
+  "NIC_UN_2024": {
+    "publisher": "UN Group of Human Rights Experts on Nicaragua",
+    "title": "A/HRC/55/27 — report on patterns of persecution and repression",
+    "date": "2024",
+    "url": "https://www.ohchr.org/sites/default/files/A_HRC_55_27_AdvanceUneditedVersion1_0.pdf",
+    "patterns": [
+      "persecution of real or perceived opponents",
+      "imprisonment",
+      "deportation/exile",
+      "family punishment",
+      "civic space repression"
+    ]
+  },
+  "NIC_UN_2026": {
+    "publisher": "UN Special Procedures",
+    "title": "NIC 5/2025 — persistent pattern of serious violations including religion, arbitrary detention and forced exile",
+    "date": "2026-03-30",
+    "url": "https://spcommreports.ohchr.org/TmSearch/RelCom?code=NIC+5%2F2025",
+    "patterns": [
+      "religious freedom",
+      "arbitrary detention",
+      "enforced disappearance",
+      "ill-treatment",
+      "deprivation of nationality",
+      "forced exile",
+      "censorship"
+    ]
+  },
+  "COL_UN_2025_DISPLACEMENT": {
+    "publisher": "UN Special Procedures",
+    "title": "COL 1/2025 — mass forced displacement and generalized violence in Norte de Santander",
+    "date": "2025-03-11",
+    "url": "https://spcommreports.ohchr.org/TmSearch/RelCom?code=COL+1%2F2025",
+    "patterns": [
+      "non-state armed groups",
+      "forced displacement",
+      "civilian exposure to violence",
+      "human rights defenders"
+    ]
+  },
+  "COL_UN_2025_DEFENDER": {
+    "publisher": "UN Special Procedures",
+    "title": "COL 2/2025 — alleged harassment and intimidation of environmental human rights defenders",
+    "date": "2025-03-06",
+    "url": "https://spcommreports.ohchr.org/TmSearch/SearchCode?code=%3B+COL+2%2F2025",
+    "patterns": [
+      "environmental defenders",
+      "harassment",
+      "intimidation",
+      "business/resource conflicts"
+    ]
+  },
+  "COL_CAT_2026": {
+    "publisher": "UN Committee against Torture",
+    "title": "CAT/C/COL/QPR/7 — List of issues prior to submission of seventh periodic report",
+    "date": "2026-05-15",
+    "url": "https://docstore.ohchr.org/SelfServices/FilesHandler.ashx?enc=rpmCdurWI0%2FPyrcGoDROcGfyH%2F83vr49s4LKP9FVfWvtCxXbjdszZHD9n728icRToGjZWEtlzG8gOBTx5QDbdw%3D%3D",
+    "patterns": [
+      "armed conflict and criminal violence",
+      "attacks on human rights defenders",
+      "social leaders",
+      "journalists",
+      "detention concerns"
+    ]
+  },
+  "HTI_BINUH_2026_Q1": {
+    "publisher": "UN BINUH",
+    "title": "Quarterly human rights situation in Haiti — Jan–Mar 2026 summary",
+    "date": "2026-05-08",
+    "url": "https://binuh.unmissions.org/en/node/135338",
+    "patterns": [
+      "targeted killings",
+      "kidnappings",
+      "extortion",
+      "destruction of property",
+      "gang territorial control",
+      "violence beyond capital"
+    ]
+  },
+  "HTI_BINUH_2026_FLASH": {
+    "publisher": "UN BINUH",
+    "title": "Flash Report — Intensification of Gang Violence in Plaine du Cul-de-Sac and Cité Soleil",
+    "date": "2026-08-06",
+    "url": "https://binuh.unmissions.org/en/press-releases/haiti-lintensification-des-violences-des-gangs-dans-la-zone-de-la-plaine-du",
+    "patterns": [
+      "gang clashes",
+      "civilian deaths",
+      "sexual violence used as punishment",
+      "territorial dynamics"
+    ]
+  },
+  "HTI_UN_2026": {
+    "publisher": "United Nations",
+    "title": "Human rights impact of violence in Haiti — March 2026 briefing",
+    "date": "2026-03-24",
+    "url": "https://www.un.org/sg/en/content/highlight/2026-03-24.html",
+    "patterns": [
+      "kidnapping",
+      "child trafficking",
+      "illegal checkpoints",
+      "extortion",
+      "targeting people perceived as cooperating with police"
+    ]
+  },
+  "CHN_UN_2025_TRANS": {
+    "publisher": "UN Special Procedures",
+    "title": "CHN 9/2025 — reported transnational human rights violations against activists, defenders and minorities",
+    "date": "2025-07-24",
+    "url": "https://spcommreports.ohchr.org/TmSearch/SearchCode?code=%3B+CHN+9%2F2025",
+    "patterns": [
+      "transnational repression",
+      "activists",
+      "human rights defenders",
+      "ethnic and religious minorities"
+    ]
+  },
+  "CHN_UN_2025_TIBET": {
+    "publisher": "UN Special Procedures",
+    "title": "CHN 13/2025 — alleged arbitrary detention and ill-treatment of Tibetan woman defender",
+    "date": "2025-07-16",
+    "url": "https://spcommreports.ohchr.org/TmSearch/RelCom?code=CHN+13%2F2025",
+    "patterns": [
+      "Tibetan expression",
+      "detention",
+      "ill-treatment",
+      "cultural and political expression"
+    ]
+  },
+  "CHN_UN_2026_HK": {
+    "publisher": "UN Special Procedures",
+    "title": "CHN 23/2025 — detention of Hong Kong pro-democracy and human rights activists",
+    "date": "2026-01-07",
+    "url": "https://spcommreports.ohchr.org/TmSearch/RelCom?code=CHN+23%2F2025",
+    "patterns": [
+      "Hong Kong national security prosecutions",
+      "pro-democracy activity",
+      "detention",
+      "solitary confinement allegations"
+    ]
+  },
+  "CHN_STATE_2023": {
+    "publisher": "U.S. Department of State",
+    "title": "2023 Country Reports on Human Rights Practices: China",
+    "date": "2024",
+    "url": "https://2021-2025.state.gov/reports/2023-country-reports-on-human-rights-practices/china/",
+    "patterns": [
+      "surveillance",
+      "arbitrary detention",
+      "restrictions on expression and religion",
+      "Uyghur and Tibetan minority issues",
+      "transnational repression"
+    ]
+  }
+}

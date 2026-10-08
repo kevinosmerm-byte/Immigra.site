@@ -1,0 +1,19 @@
+{
+  "name": "immigration-ai",
+  "version": "0.30.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "test": "node --test tests/*.test.mjs modules/residency/tests/*.test.mjs",
+    "preview": "vite preview --host 127.0.0.1",
+    "server:realtime": "node server/server.mjs"
+  },
+  "dependencies": {
+    "vite": "^7.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,194 @@
+{
+  "case_id": "CUB-D08",
+  "version": "0.2",
+  "fictional": true,
+  "data_domain": "synthetic",
+  "country": "Cuba",
+  "title": "Cuba — Online Critic — Miguel Santos",
+  "difficulty": "advanced",
+  "persona": {
+    "display_name": "Miguel Santos",
+    "origin": "Santiago de Cuba",
+    "age_range": "31-35",
+    "language": "Spanish",
+    "profile": "person whose main activity was online commentary"
+  },
+  "country_context": {
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ],
+    "rule": "Sources provide contextual realism only. They are not persona facts and are never merged into testimony."
+  },
+  "intentional_features": [
+    "authority_contact",
+    "document_difference",
+    "new_information",
+    "family_remaining"
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "type": "background",
+      "date": "2020",
+      "date_precision": "year_only",
+      "location": "Santiago de Cuba",
+      "summary": "Miguel Santos begins or becomes more visible in a fictional context: person whose main activity was online commentary.",
+      "source_type": "synthetic_persona_fact",
+      "interview_targets": [
+        "role",
+        "frequency",
+        "visibility",
+        "who knew"
+      ]
+    },
+    {
+      "event_id": "E02",
+      "type": "incident",
+      "date": "2021-04",
+      "date_precision": "month_only",
+      "location": "Santiago de Cuba",
+      "summary": "Fictional incident: summoned for questioning. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "local officials or neighborhood-linked state actors",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E03",
+      "type": "incident",
+      "date": "2022-07",
+      "date_precision": "month_only",
+      "location": "Santiago de Cuba",
+      "summary": "Fictional incident: briefly detained before or after a planned gathering. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "State Security officers",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ],
+      "authority_contact": {
+        "contacted": true,
+        "response": "fictional response stored as hidden detail",
+        "document_available": true
+      }
+    },
+    {
+      "event_id": "E04",
+      "type": "incident",
+      "date": "2023-10",
+      "date_precision": "month_only",
+      "location": "Camagüey",
+      "summary": "Fictional incident: home was watched or visited by officials. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "National Revolutionary Police officers",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E05",
+      "type": "departure",
+      "date": "2024-04",
+      "date_precision": "month_only",
+      "location": "Cuba",
+      "summary": "Persona leaves the country. The exact reason/timing relationship to prior incidents should be explored, not assumed.",
+      "interview_targets": [
+        "why_left_when",
+        "time_between_last_incident_and_departure",
+        "travel_route"
+      ]
+    },
+    {
+      "event_id": "E09",
+      "type": "current_context",
+      "date": "2026",
+      "date_precision": "year_only",
+      "location": "United States / abroad",
+      "summary": "Current-fear practice node. What the persona knows today must be elicited separately from country-condition sources.",
+      "interview_targets": [
+        "current_feared_actor",
+        "most_recent_information",
+        "continuing_interest",
+        "post_departure_activity",
+        "expected_harm"
+      ]
+    }
+  ],
+  "discrepancies_for_training": [
+    {
+      "topic": "incident_date",
+      "document_version": "2022-07",
+      "practice_version": "one month later, stated approximately",
+      "instruction": "Do not correct. Ask what the persona personally remembers and preserve both."
+    },
+    {
+      "topic": "new_information",
+      "new_fact": "a previously unmentioned follow-up contact",
+      "instruction": "Ask when/how it happened and keep as unconfirmed until clarified."
+    }
+  ],
+  "documents": [
+    {
+      "type": "identity",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "personal_declaration",
+      "status": "available",
+      "synthetic": true
+    }
+  ],
+  "facts_to_elicit": [
+    "identity and background",
+    "exact nature and visibility of activity",
+    "each incident chronology",
+    "actor identification and basis of knowledge",
+    "words/actions during incidents",
+    "aftermath",
+    "authority contact if any",
+    "relocation if any",
+    "departure timing",
+    "family remaining",
+    "return trips if any",
+    "current information about feared actor",
+    "post-departure events",
+    "what is personal knowledge vs public information"
+  ],
+  "question_engine_hints": {
+    "first_priority": "Stay on the current event until core factual dimensions are reasonably explored.",
+    "if_inconsistency": "Ask a neutral recollection/sequence question; do not reveal a preferred version.",
+    "if_country_context_relevant": "Ask whether the user personally experienced or knows a related fact; never insert the country fact.",
+    "if_legal_question": "Do not determine eligibility or sufficiency; offer factual practice."
+  },
+  "story_narrative_es": "CASO TOTALMENTE FICTICIO. Miguel Santos es una persona adulta de Cuba, originaria de Santiago de Cuba. El escenario se diseñó para practicar una entrevista relacionada con person whose main activity was online commentary. La historia comienza alrededor de 2020. En 2021-04, en Santiago de Cuba, ocurre un evento ficticio descrito internamente como: summoned for questioning. En 2022-07, en Santiago de Cuba, ocurre un evento ficticio descrito internamente como: briefly detained before or after a planned gathering. En 2023-10, en Camagüey, ocurre un evento ficticio descrito internamente como: home was watched or visited by officials. La persona sale del país alrededor de 2024-04. Algunas fechas son aproximadas y ciertos detalles se recuerdan con distinta precisión. En 2026 la persona expresa que todavía tiene preocupación por regresar, pero el sistema debe preguntar qué sabe hoy, cuándo tuvo el contacto más reciente, qué ocurrió con familiares y qué información proviene de experiencia personal frente a fuentes públicas. Este escenario no constituye un ejemplo de un caso jurídicamente suficiente y ninguno de sus hechos puede trasladarse a la historia de un usuario real.",
+  "safety": {
+    "never_use_as_real_testimony": true,
+    "no_merge_with_personal_case": true,
+    "no_legal_sufficiency_label": true,
+    "disclaimer": "Caso completamente ficticio para práctica educativa. No es asesoría legal ni un modelo de hechos que una persona deba adoptar."
+  }
+}

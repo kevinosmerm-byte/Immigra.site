@@ -1,0 +1,91 @@
+html body #root .interview-workspace {
+  --workspace-panel:#fffffff5; --workspace-text:#172b3d; --workspace-muted:#49617e;
+  position:relative; display:flex; flex-direction:column; width:calc(100% - 32px); max-width:1100px;
+  margin:16px auto 32px; padding:0; border:1px solid #ffffffb0; border-radius:28px;
+  overflow:hidden; background:#123a63; box-shadow:0 18px 48px #123a6338; gap:0;
+}
+html body #root .workspace-topbar { position:relative; display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:64px; padding:8px 20px; background:linear-gradient(110deg,#123a63,#172b3d); color:#fff; }
+html body #root .workspace-topbar .live-stage-topbar { position:static; display:flex; align-items:center; gap:20px; padding:0; flex:1; }
+html body #root .workspace-topbar .live-agent-badge { background:transparent; border:0; box-shadow:none; }
+html body #root .workspace-topbar .live-agent-badge strong { font-size:18px; }
+html body #root .workspace-topbar .live-agent-badge small { font-size:12px; }
+html body #root .workspace-topbar .live-practice-badge { display:none; }
+html body #root .workspace-mode { font-size:13px; font-weight:700; white-space:nowrap; }
+html body #root .interview-workspace .sarah-live-stage { width:100%; height:clamp(300px,48dvh,460px); min-height:0; max-height:none; border:0; border-radius:0; margin:0; box-shadow:none; aspect-ratio:auto; }
+html body #root .interview-workspace .live-stage-media,html body #root .interview-workspace .live-stage-motion-frame { position:absolute; inset:0; width:100%; height:100%; transform:none; }
+html body #root .interview-workspace .live-sarah-video { width:100%; height:100%; object-fit:cover; object-position:center 25%; }
+html body #root .workspace-overlay { position:relative; z-index:2; width:calc(100% - 64px); box-sizing:border-box; margin:-90px auto 0; padding:20px 24px; border:1px solid #d8e2ec; border-radius:22px; background:var(--workspace-panel); color:var(--workspace-text); box-shadow:0 8px 25px #0002; }
+html body #root .interview-workspace .live-question-card { position:static; inset:auto; width:100%; max-width:none; margin:0; padding:0 40px 12px 0; border:0; border-radius:0; box-shadow:none; background:transparent !important; }
+html body #root .interview-workspace .live-question-card .question { color:var(--workspace-text) !important; font:700 clamp(21px,2.5vw,29px)/1.25 Arial,sans-serif; margin:10px 0 0; text-shadow:none; }
+html body #root .interview-workspace .live-question-header { color:var(--workspace-muted); font-size:12px; gap:10px; }
+html body #root .interview-workspace .ai-turn-indicator { color:#123a63; background:#dcecff; padding:5px 10px; border-radius:9px; font-size:13px; }
+html body #root .workspace-replay { position:absolute; right:16px; top:16px; display:grid; place-items:center; width:44px; height:44px; padding:0; background:transparent; color:var(--workspace-muted); border:0; }
+html body #root .workspace-replay svg { width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.8; }
+html body #root .interview-workspace .live-interview-controls { display:flex; flex-wrap:wrap; gap:10px; width:100%; margin:0; padding:0; border:0; border-radius:0; box-shadow:none; background:transparent !important; }
+html body #root .interview-workspace .n400-text-response { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; width:100%; margin:0; }
+html body #root .interview-workspace .n400-text-response label { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); }
+html body #root .interview-workspace textarea { box-sizing:border-box; width:100%; min-height:56px; height:56px; max-height:120px; resize:vertical; margin:0; padding:14px; border:1px solid #c0d3e7; border-radius:12px; background:#f4f8fc; color:#172b3d; font:16px/1.4 Arial,sans-serif; }
+html body #root .interview-workspace .n400-text-response .primary-button { margin:0; align-self:stretch; padding:10px 14px; min-height:44px; width:auto; }
+html body #root .interview-workspace .live-mic-button { flex:1; min-height:48px; width:auto; padding:12px 20px; background:linear-gradient(135deg,#e45a65,#c92a3a) !important; color:#fff !important; border:1px solid #c92a3a; border-radius:14px; font-size:16px; }
+html body #root .interview-workspace .live-skip-button { min-height:48px; padding:12px 18px; color:var(--workspace-muted); background:transparent; border:1px solid #c0d3e7; }
+html body #root .interview-workspace .live-score-summary,html body #root .interview-workspace .n400-session-progress,html body #root .interview-workspace .n400-progress-label,html body #root .interview-workspace .live-progress-dots { display:none; }
+html body #root .workspace-type { display:block; margin:8px 0 0 auto; min-height:44px; padding:8px 14px; background:#edf3fa; color:#123a63; border:1px solid #c0d3e7; border-radius:12px; }
+html body #root .workspace-overlay:not(:has(textarea)) .workspace-type { display:none; }
+html body #root .workspace-privacy { width:100%; font-size:12px; color:var(--workspace-muted); }
+html body #root .workspace-privacy summary { cursor:pointer; padding:8px 0; }
+html body #root .workspace-progress { display:grid; justify-items:center; gap:6px; padding:12px 24px 16px; color:#fff; font-size:14px; }
+html body #root .workspace-progress progress { width:180px; height:6px; accent-color:#4da3e6; border-radius:8px; overflow:hidden; }
+html body #root .interview-workspace .live-answer-feedback { margin:0; color:var(--workspace-text); }
+html body #root .interview-workspace .live-answer-feedback:empty { display:none; }
+html body #root .interview-workspace .answer-preview { margin:0 0 12px; padding:12px; background:#edf3fa; color:var(--workspace-text); border-radius:12px; }
+html[data-theme="dark"] body #root .interview-workspace { --workspace-panel:#142b43f5; --workspace-text:#edf5ff; --workspace-muted:#bfd2e6; }
+@media(max-width:600px) {
+ html body #root .interview-workspace { width:calc(100% - 20px); margin:8px auto 16px; border-radius:22px; }
+ html body #root .workspace-topbar { padding:8px 10px; gap:6px; min-height:52px; }
+ html body #root .workspace-topbar .live-stage-topbar { gap:6px; }
+ html body #root .workspace-topbar .live-agent-badge small { display:none; }
+ html body #root .workspace-topbar .live-agent-badge strong { font-size:15px; }
+ html body #root .workspace-mode { font-size:10px; }
+ html body #root .interview-workspace .sarah-live-stage { height:36dvh; min-height:200px; }
+ html body #root .workspace-overlay { width:calc(100% - 20px); margin-top:-40px; padding:14px; border-radius:18px; }
+ html body #root .interview-workspace .question { font-size:21px; }
+ html body #root .interview-workspace .n400-text-response { grid-template-columns:minmax(0,1fr) auto; }
+ html body #root .interview-workspace .n400-text-response .primary-button { max-width:110px; font-size:12px; }
+ html body #root .interview-workspace .live-mic-button { font-size:14px; padding:10px; }
+}
+html body #root .interview-workspace .n400-text-response { order:0; }
+html body #root .interview-workspace .live-mic-button { order:1; flex:1 1 45%; }
+html body #root .interview-workspace .workspace-type { order:2; flex:1 1 40%; margin:0; }
+html body #root .interview-workspace .live-skip-button { order:3; min-height:36px; font-size:13px; }
+html body #root .interview-workspace .workspace-privacy { order:4; }
+html body #root .interview-workspace .live-question-header { padding-right:4px; }
+html body #root .interview-workspace .live-interviewer-selector button { color:#fff; }
+html body #root .interview-workspace .live-interviewer-selector button.active { background:var(--color-primary); color:#fff; }
+/* Override legacy portrait-only sizing for the shared workspace. */
+html body #root main.interview-workspace { display:flex !important; flex-direction:column !important; width:calc(100% - 32px) !important; max-width:1100px !important; min-height:0 !important; height:auto !important; padding:0 !important; margin:16px auto !important; background:#123a63 !important; gap:0 !important; }
+html body #root .interview-workspace .sarah-live-stage { height:clamp(280px,48dvh,460px) !important; min-height:0 !important; width:100% !important; margin:0 !important; }
+html body #root .interview-workspace .live-interview-controls { display:flex !important; gap:10px !important; margin:0 !important; padding:0 !important; border:0 !important; background:transparent !important; }
+html body #root .interview-workspace .live-score-summary { display:none !important; }
+html body #root .interview-workspace .live-question-card { position:static !important; padding:0 40px 12px 0 !important; margin:0 !important; background:transparent !important; border:0 !important; }
+html body #root .interview-workspace .workspace-replay { display:grid !important; }
+html body #root .interview-workspace .n400-text-response textarea { height:56px !important; min-height:56px !important; }
+html body #root .interview-workspace .live-mic-button { font-size:16px !important; }
+@media(max-width:600px) { html body #root main.interview-workspace { width:calc(100% - 16px) !important; margin:8px auto !important; } html body #root .interview-workspace .sarah-live-stage { height:34dvh !important; } }
+html body #root main.interview-workspace { flex:0 0 auto !important; align-self:center; padding-bottom:0 !important; }
+html body #root .interview-workspace .live-stage-motion-frame { transform:none !important; }
+html body #root .interview-workspace .live-sarah-video { object-fit:contain !important; object-position:center top !important; background:#123a63; }
+html body #root .interview-workspace .live-skip-button { flex:0 0 auto !important; width:auto !important; }
+html body #root .interview-workspace .workspace-progress { margin-bottom:0; }
+/* Keep the voice action explicit and visible on every viewport. */
+html body #root .interview-workspace button.live-mic-button { display:flex !important; align-items:center; justify-content:center; gap:10px; visibility:visible !important; opacity:1; width:auto !important; height:auto !important; min-height:50px; overflow:visible; color:#fff !important; }
+html body #root .interview-workspace button.live-mic-button::before { content:none !important; }
+html body #root .interview-workspace .workspace-microphone-icon { display:block !important; flex:0 0 24px; width:24px; height:24px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; }
+@media(max-width:600px) {
+ html body #root .interview-workspace .sarah-live-stage { height:42dvh !important; min-height:270px !important; }
+ html body #root .interview-workspace .live-sarah-video { object-fit:cover !important; object-position:center 24% !important; }
+ html body #root .interview-workspace .live-stage-media,html body #root .interview-workspace .live-stage-motion-frame { width:100% !important; height:100% !important; inset:0 !important; }
+ html body #root .interview-workspace button.live-mic-button { flex:1 1 100%; order:-1; }
+ html body #root .interview-workspace .workspace-overlay { margin-top:-28px; }
+}
+/* Fill the interview stage edge to edge; prioritize the upper portrait. */
+html body #root .interview-workspace .live-sarah-video { width:100% !important; height:100% !important; object-fit:cover !important; object-position:center 28% !important; }

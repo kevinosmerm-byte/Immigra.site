@@ -1,0 +1,73 @@
+[
+  {
+    "id": "SRC_DHS_AI_TASK_FORCE_2024",
+    "publisher": "U.S. Department of Homeland Security",
+    "title": "Artificial Intelligence Task Force One-Year Update",
+    "url": "https://www.dhs.gov/sites/default/files/2024-08/24_0816_ai_task-force-one-year-update.pdf",
+    "concepts": [
+      "USCIS RAIO LLM officer training",
+      "synthetic refugee persona",
+      "interactive chat-like interview",
+      "semantic search",
+      "feedback tied to past persecution and well-founded fear",
+      "model comparison/portability",
+      "asylum persona milestone"
+    ],
+    "implementation_note": "Architecture reference only; applicant-facing product must not copy adjudicative legal-sufficiency feedback."
+  },
+  {
+    "id": "SRC_USCIS_ELICITING_TESTIMONY",
+    "publisher": "USCIS RAIO",
+    "title": "Interviewing - Eliciting Testimony",
+    "url": "https://www.uscis.gov/sites/default/files/document/foia/Interviewing_-_Eliciting_Testimony_LP_RAIO.pdf",
+    "concepts": [
+      "open questions",
+      "follow-up questions",
+      "clarification",
+      "active listening",
+      "fully exploring a topic",
+      "non-adversarial interviewing"
+    ],
+    "implementation_note": "Translate interview techniques into neutral question-selection rules."
+  },
+  {
+    "id": "SRC_USCIS_WELL_FOUNDED_FEAR",
+    "publisher": "USCIS RAIO",
+    "title": "Well-Founded Fear",
+    "url": "https://www.uscis.gov/sites/default/files/document/lesson-plans/Well_Founded_Fear_LP_RAIO.pdf",
+    "concepts": [
+      "future fear",
+      "past persecution",
+      "current conditions",
+      "internal relocation",
+      "subjective/objective components"
+    ],
+    "implementation_note": "Internal topic coverage only; no individualized sufficiency output."
+  },
+  {
+    "id": "SRC_USCIS_DECISION_MAKING",
+    "publisher": "USCIS RAIO",
+    "title": "Decision Making",
+    "url": "https://www.uscis.gov/sites/default/files/document/foia/Decision_Making_LP_RAIO.pdf",
+    "concepts": [
+      "PACI",
+      "Mogharrabi",
+      "breaking frameworks into elements"
+    ],
+    "implementation_note": "PACI internal coverage map only; no pass/fail."
+  },
+  {
+    "id": "SRC_EOIR_MOGHARRABI",
+    "publisher": "EOIR / Board of Immigration Appeals",
+    "title": "Matter of Mogharrabi, 19 I&N Dec. 439 (BIA 1987)",
+    "url": "https://www.justice.gov/sites/default/files/eoir/legacy/2012/08/14/3028.pdf",
+    "concepts": [
+      "well-founded fear precedent",
+      "possession",
+      "awareness",
+      "capability",
+      "inclination"
+    ],
+    "implementation_note": "Internal educational framework only."
+  }
+]

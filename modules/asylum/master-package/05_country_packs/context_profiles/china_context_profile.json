@@ -1,0 +1,40 @@
+{
+  "country": "China",
+  "source_refs": [
+    "CHN_UN_2025_TRANS",
+    "CHN_UN_2025_TIBET",
+    "CHN_UN_2026_HK",
+    "CHN_STATE_2023"
+  ],
+  "regions": [
+    "Beijing",
+    "Shanghai",
+    "Guangzhou, Guangdong",
+    "Chengdu, Sichuan",
+    "Hong Kong",
+    "Tibetan areas of Sichuan/Qinghai",
+    "Xinjiang-related diaspora context"
+  ],
+  "contexts": [
+    "online expression",
+    "independent journalism or rights advocacy",
+    "house-church or religious activity",
+    "Tibetan cultural/religious expression",
+    "Hong Kong pro-democracy activity",
+    "family contact after departure",
+    "diaspora public activity"
+  ],
+  "actors": [
+    "local police",
+    "public security personnel",
+    "state security personnel",
+    "local officials",
+    "unknown persons contacting relatives",
+    "national-security authorities in Hong Kong context"
+  ],
+  "practice_notes": [
+    "Separate mainland, Hong Kong, Tibetan and Xinjiang-related contexts.",
+    "Ask how surveillance or official knowledge was actually perceived or documented.",
+    "Transnational pressure must remain a factual inquiry, not an assumption."
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "name": "citizenshipai",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "oxlint",
+    "test": "node --test tests/*.test.mjs",
+    "verify:mobile": "node scripts/verify-mobile-readiness.mjs",
+    "verify:ios": "node scripts/verify-ios-readiness.mjs",
+    "verify:app-store": "node scripts/verify-app-store-metadata.mjs",
+    "quality": "npm run lint && npm run test && npm run build && npm run verify:mobile && npm run verify:ios && npm run verify:app-store",
+    "ios:sync": "npm run build && npx cap sync ios",
+    "ios:open": "npx cap open ios",
+    "preview": "vite preview",
+    "start": "node server/server.js",
+    "typecheck": "tsc --noEmit --allowJs --checkJs false --noImplicitAny false --module nodenext --moduleResolution nodenext --resolveJsonModule --esModuleInterop --skipLibCheck src/brain.js src/appRoutes.js"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "@capacitor-community/text-to-speech": "^8.0.2",
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.2",
+    "@supabase/supabase-js": "^2.116.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "multer": "^2.3.0",
+    "openai": "^7.10.0",
+    "pdfjs-dist": "^6.3.289",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "stripe": "^22.6.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "oxlint": "^1.79.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  }
+}

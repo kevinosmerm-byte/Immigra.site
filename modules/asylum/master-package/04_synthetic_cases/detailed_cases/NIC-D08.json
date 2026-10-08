@@ -1,0 +1,193 @@
+{
+  "case_id": "NIC-D08",
+  "version": "0.2",
+  "fictional": true,
+  "data_domain": "synthetic",
+  "country": "Nicaragua",
+  "title": "Nicaragua — Teacher — Miguel Téllez",
+  "difficulty": "advanced",
+  "persona": {
+    "display_name": "Miguel Téllez",
+    "origin": "León",
+    "age_range": "31-35",
+    "language": "Spanish",
+    "profile": "teacher questioned about civic comments and student contacts"
+  },
+  "country_context": {
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ],
+    "rule": "Sources provide contextual realism only. They are not persona facts and are never merged into testimony."
+  },
+  "intentional_features": [
+    "authority_contact",
+    "document_difference",
+    "new_information",
+    "family_remaining"
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "type": "background",
+      "date": "2019",
+      "date_precision": "year_only",
+      "location": "León",
+      "summary": "Miguel Téllez begins or becomes more visible in a fictional context: teacher questioned about civic comments and student contacts.",
+      "source_type": "synthetic_persona_fact",
+      "interview_targets": [
+        "role",
+        "frequency",
+        "visibility",
+        "who knew"
+      ]
+    },
+    {
+      "event_id": "E02",
+      "type": "incident",
+      "date": "2020-04",
+      "date_precision": "month_only",
+      "location": "León",
+      "summary": "Fictional incident: police or local political actors visited the home. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "local political structures",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E03",
+      "type": "incident",
+      "date": "2021-07",
+      "date_precision": "month_only",
+      "location": "León",
+      "summary": "Fictional incident: received warnings connected to past civic activity. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "immigration/civil-registration authorities",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ],
+      "authority_contact": {
+        "contacted": true,
+        "response": "fictional response stored as hidden detail",
+        "document_available": true
+      }
+    },
+    {
+      "event_id": "E04",
+      "type": "incident",
+      "date": "2022-10",
+      "date_precision": "month_only",
+      "location": "Estelí",
+      "summary": "Fictional incident: relative was questioned about the persona. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "unknown actors linked by persona to prior monitoring",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E05",
+      "type": "departure",
+      "date": "2023-04",
+      "date_precision": "month_only",
+      "location": "Nicaragua",
+      "summary": "Persona leaves the country. The exact reason/timing relationship to prior incidents should be explored, not assumed.",
+      "interview_targets": [
+        "why_left_when",
+        "time_between_last_incident_and_departure",
+        "travel_route"
+      ]
+    },
+    {
+      "event_id": "E09",
+      "type": "current_context",
+      "date": "2026",
+      "date_precision": "year_only",
+      "location": "United States / abroad",
+      "summary": "Current-fear practice node. What the persona knows today must be elicited separately from country-condition sources.",
+      "interview_targets": [
+        "current_feared_actor",
+        "most_recent_information",
+        "continuing_interest",
+        "post_departure_activity",
+        "expected_harm"
+      ]
+    }
+  ],
+  "discrepancies_for_training": [
+    {
+      "topic": "incident_date",
+      "document_version": "2021-07",
+      "practice_version": "one month later, stated approximately",
+      "instruction": "Do not correct. Ask what the persona personally remembers and preserve both."
+    },
+    {
+      "topic": "new_information",
+      "new_fact": "a previously unmentioned follow-up contact",
+      "instruction": "Ask when/how it happened and keep as unconfirmed until clarified."
+    }
+  ],
+  "documents": [
+    {
+      "type": "identity",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "personal_declaration",
+      "status": "available",
+      "synthetic": true
+    }
+  ],
+  "facts_to_elicit": [
+    "identity and background",
+    "exact nature and visibility of activity",
+    "each incident chronology",
+    "actor identification and basis of knowledge",
+    "words/actions during incidents",
+    "aftermath",
+    "authority contact if any",
+    "relocation if any",
+    "departure timing",
+    "family remaining",
+    "return trips if any",
+    "current information about feared actor",
+    "post-departure events",
+    "what is personal knowledge vs public information"
+  ],
+  "question_engine_hints": {
+    "first_priority": "Stay on the current event until core factual dimensions are reasonably explored.",
+    "if_inconsistency": "Ask a neutral recollection/sequence question; do not reveal a preferred version.",
+    "if_country_context_relevant": "Ask whether the user personally experienced or knows a related fact; never insert the country fact.",
+    "if_legal_question": "Do not determine eligibility or sufficiency; offer factual practice."
+  },
+  "story_narrative_es": "CASO TOTALMENTE FICTICIO. Miguel Téllez es una persona adulta de Nicaragua, originaria de León. El escenario se diseñó para practicar una entrevista relacionada con teacher questioned about civic comments and student contacts. La historia comienza alrededor de 2019. En 2020-04, en León, ocurre un evento ficticio descrito internamente como: police or local political actors visited the home. En 2021-07, en León, ocurre un evento ficticio descrito internamente como: received warnings connected to past civic activity. En 2022-10, en Estelí, ocurre un evento ficticio descrito internamente como: relative was questioned about the persona. La persona sale del país alrededor de 2023-04. Algunas fechas son aproximadas y ciertos detalles se recuerdan con distinta precisión. En 2026 la persona expresa que todavía tiene preocupación por regresar, pero el sistema debe preguntar qué sabe hoy, cuándo tuvo el contacto más reciente, qué ocurrió con familiares y qué información proviene de experiencia personal frente a fuentes públicas. Este escenario no constituye un ejemplo de un caso jurídicamente suficiente y ninguno de sus hechos puede trasladarse a la historia de un usuario real.",
+  "safety": {
+    "never_use_as_real_testimony": true,
+    "no_merge_with_personal_case": true,
+    "no_legal_sufficiency_label": true,
+    "disclaimer": "Caso completamente ficticio para práctica educativa. No es asesoría legal ni un modelo de hechos que una persona deba adoptar."
+  }
+}

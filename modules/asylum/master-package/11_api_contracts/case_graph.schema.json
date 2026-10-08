@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AsiloAI Case Graph",
+  "type": "object",
+  "required": [
+    "case_id",
+    "data_domain",
+    "events",
+    "people",
+    "facts"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string"
+    },
+    "data_domain": {
+      "enum": [
+        "personal",
+        "synthetic"
+      ]
+    },
+    "country_of_fear": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "events": {
+      "type": "array"
+    },
+    "people": {
+      "type": "array"
+    },
+    "organizations": {
+      "type": "array"
+    },
+    "facts": {
+      "type": "array"
+    },
+    "travel_events": {
+      "type": "array"
+    },
+    "topic_coverage": {
+      "type": "array"
+    },
+    "consistency_flags": {
+      "type": "array"
+    }
+  }
+}

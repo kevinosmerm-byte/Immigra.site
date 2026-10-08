@@ -1,0 +1,30 @@
+{
+  "country": "Haiti",
+  "version": "0.1",
+  "synthetic_case_ids": [
+    "SYN031",
+    "SYN032",
+    "SYN033",
+    "SYN034",
+    "SYN035"
+  ],
+  "practice_themes": [
+    "community activity",
+    "non-government actor",
+    "journalism",
+    "family-related threat"
+  ],
+  "country_selection_rule": "Country selection changes fictional scenarios/context retrieval only; it does not assume a personal fact.",
+  "source_policy": {
+    "preferred_sources": [
+      "USCIS",
+      "EOIR/DOJ",
+      "DHS",
+      "U.S. Department of State",
+      "UN bodies",
+      "other verified primary/official sources"
+    ],
+    "personal_fact_rule": "Country-condition information never becomes a personal fact without user confirmation.",
+    "freshness_rule": "Current-fear retrieval stores publication and event dates."
+  }
+}

@@ -1,0 +1,189 @@
+{
+  "case_id": "VEN-D04",
+  "version": "0.2",
+  "fictional": true,
+  "data_domain": "synthetic",
+  "country": "Venezuela",
+  "title": "Venezuela — Local Journalist — Carlos Méndez",
+  "difficulty": "intermediate",
+  "persona": {
+    "display_name": "Carlos Méndez",
+    "origin": "Maracay, Aragua",
+    "age_range": "27-31",
+    "language": "Spanish",
+    "profile": "small digital-media contributor who posted videos and interviews"
+  },
+  "country_context": {
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ],
+    "rule": "Sources provide contextual realism only. They are not persona facts and are never merged into testimony."
+  },
+  "intentional_features": [
+    "internal_relocation",
+    "new_information",
+    "uncertain_actor",
+    "supporting_document"
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "type": "background",
+      "date": "2017",
+      "date_precision": "year_only",
+      "location": "Maracay, Aragua",
+      "summary": "Carlos Méndez begins or becomes more visible in a fictional context: small digital-media contributor who posted videos and interviews.",
+      "source_type": "synthetic_persona_fact",
+      "interview_targets": [
+        "role",
+        "frequency",
+        "visibility",
+        "who knew"
+      ]
+    },
+    {
+      "event_id": "E02",
+      "type": "incident",
+      "date": "2018-07",
+      "date_precision": "month_only",
+      "location": "Maracay, Aragua",
+      "summary": "Fictional incident: briefly detained and questioned. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "armed civilian actors described by the persona as pro-government",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E03",
+      "type": "incident",
+      "date": "2019-10",
+      "date_precision": "month_only",
+      "location": "Maracay, Aragua",
+      "summary": "Fictional incident: family home was visited by unknown men asking about the persona. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "unknown persons invoking political activity",
+      "actor_certainty": "uncertain",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E04",
+      "type": "incident",
+      "date": "2020-02",
+      "date_precision": "month_only",
+      "location": "San Cristóbal, Táchira",
+      "summary": "Fictional incident: stopped at a checkpoint and questioned about prior activity. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "uniformed security officers",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E05",
+      "type": "departure",
+      "date": "2021-11",
+      "date_precision": "month_only",
+      "location": "Venezuela",
+      "summary": "Persona leaves the country. The exact reason/timing relationship to prior incidents should be explored, not assumed.",
+      "interview_targets": [
+        "why_left_when",
+        "time_between_last_incident_and_departure",
+        "travel_route"
+      ]
+    },
+    {
+      "event_id": "E09",
+      "type": "current_context",
+      "date": "2026",
+      "date_precision": "year_only",
+      "location": "United States / abroad",
+      "summary": "Current-fear practice node. What the persona knows today must be elicited separately from country-condition sources.",
+      "interview_targets": [
+        "current_feared_actor",
+        "most_recent_information",
+        "continuing_interest",
+        "post_departure_activity",
+        "expected_harm"
+      ]
+    }
+  ],
+  "discrepancies_for_training": [
+    {
+      "topic": "new_information",
+      "new_fact": "a previously unmentioned follow-up contact",
+      "instruction": "Ask when/how it happened and keep as unconfirmed until clarified."
+    }
+  ],
+  "documents": [
+    {
+      "type": "identity",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "personal_declaration",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "local_report_or_record",
+      "status": "available",
+      "synthetic": true,
+      "verification": "practice artifact"
+    }
+  ],
+  "facts_to_elicit": [
+    "identity and background",
+    "exact nature and visibility of activity",
+    "each incident chronology",
+    "actor identification and basis of knowledge",
+    "words/actions during incidents",
+    "aftermath",
+    "authority contact if any",
+    "relocation if any",
+    "departure timing",
+    "family remaining",
+    "return trips if any",
+    "current information about feared actor",
+    "post-departure events",
+    "what is personal knowledge vs public information"
+  ],
+  "question_engine_hints": {
+    "first_priority": "Stay on the current event until core factual dimensions are reasonably explored.",
+    "if_inconsistency": "Ask a neutral recollection/sequence question; do not reveal a preferred version.",
+    "if_country_context_relevant": "Ask whether the user personally experienced or knows a related fact; never insert the country fact.",
+    "if_legal_question": "Do not determine eligibility or sufficiency; offer factual practice."
+  },
+  "story_narrative_es": "CASO TOTALMENTE FICTICIO. Carlos Méndez es una persona adulta de Venezuela, originaria de Maracay, Aragua. El escenario se diseñó para practicar una entrevista relacionada con small digital-media contributor who posted videos and interviews. La historia comienza alrededor de 2017. En 2018-07, en Maracay, Aragua, ocurre un evento ficticio descrito internamente como: briefly detained and questioned. En 2019-10, en Maracay, Aragua, ocurre un evento ficticio descrito internamente como: family home was visited by unknown men asking about the persona. En 2020-02, en San Cristóbal, Táchira, ocurre un evento ficticio descrito internamente como: stopped at a checkpoint and questioned about prior activity. La persona sale del país alrededor de 2021-11. Algunas fechas son aproximadas y ciertos detalles se recuerdan con distinta precisión. En 2026 la persona expresa que todavía tiene preocupación por regresar, pero el sistema debe preguntar qué sabe hoy, cuándo tuvo el contacto más reciente, qué ocurrió con familiares y qué información proviene de experiencia personal frente a fuentes públicas. Este escenario no constituye un ejemplo de un caso jurídicamente suficiente y ninguno de sus hechos puede trasladarse a la historia de un usuario real.",
+  "safety": {
+    "never_use_as_real_testimony": true,
+    "no_merge_with_personal_case": true,
+    "no_legal_sufficiency_label": true,
+    "disclaimer": "Caso completamente ficticio para práctica educativa. No es asesoría legal ni un modelo de hechos que una persona deba adoptar."
+  }
+}

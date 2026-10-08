@@ -1,0 +1,24 @@
+Open and implement the AsiloAI package in this folder as a cumulative specification.
+
+CRITICAL: Do not omit, delete, simplify away, or replace information, features, datasets, engine logic, questions, synthetic cases, country packs, prompts, database fields, safety rules, or prior requirements whenever they can reasonably be implemented. If something cannot be implemented now, preserve it and mark it PENDING_IMPLEMENTATION or BLOCKED_DEPENDENCY with the exact reason. Do not silently drop it.
+
+Begin by reading 00_README/CODEX_MASTER_COMMAND.md and 00_README/README.md, then inspect the complete repository and create 13_codex_execution/coverage_report.md using the provided template. Map every major requirement to the current CitizenshipAI/AsiloAI codebase before making destructive changes.
+
+The product boundary is non-negotiable: internal legal/procedural/contextual analysis may improve the next neutral factual question, but applicant-facing output must never modify testimony, invent facts, tell the user what to say, select a legally preferable version, provide individualized legal strategy, or predict an immigration outcome.
+
+After the coverage inventory, implement the highest-value compatible components in this order unless the existing codebase makes another dependency order necessary:
+1. data-domain separation (personal vs synthetic),
+2. Case Graph,
+3. Topic Coverage,
+4. Question Reasoning Engine,
+5. neutral-question safety layer,
+6. Fictional Practice mode and country selection,
+7. conversational personal practice without upload,
+8. document/story-based local-first practice,
+9. Consistency Engine,
+10. Future Fear engine,
+11. Interview Knowledge retrieval,
+12. Country Context retrieval,
+13. reports/evaluation/benchmark harness.
+
+Preserve and reuse compatible CitizenshipAI systems for authentication, subscriptions/payments, Sahara voice/avatar, STT/TTS, navigation, UI, analytics infrastructure, deployment and support modules. Do not break working CitizenshipAI functionality.

@@ -1,0 +1,23 @@
+import http from 'node:http';
+import {readFile} from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const base=path.dirname(fileURLToPath(import.meta.url));
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.webmanifest':'application/manifest+json','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.mp4':'video/mp4','.m4a':'audio/mp4','.pdf':'application/pdf','.wasm':'application/wasm'};
+const servers=[];
+for(const [name,port,dir] of [['ImmigrationAI',4388,'dist'],['CitizenshipAI',4391,'connected-apps/citizenship/dist'],['AsiloAI',4392,'connected-apps/asylum/dist']]){
+ const root=path.join(base,dir);
+ const server=http.createServer(async(req,res)=>{
+  try{
+   const url=new URL(req.url,'http://localhost');const pathname=decodeURIComponent(url.pathname);
+   if(pathname.startsWith('/api/')){res.writeHead(pathname==='/api/status'?200:503,{'Content-Type':'application/json','Cache-Control':'no-store'});return res.end(JSON.stringify({ready:false,error:'LOCAL_API_NOT_CONFIGURED'}));}
+   const relative=pathname==='/'?'index.html':pathname.replace(/^\/+/, '');
+   if(relative.split('/').some(s=>s.startsWith('.')||s.startsWith('_'))){res.writeHead(404);return res.end();}
+   const target=path.resolve(root,relative);if(!target.startsWith(root+path.sep)){res.writeHead(403);return res.end();}
+   const data=await readFile(target);res.writeHead(200,{'Content-Type':mime[path.extname(target)]||'application/octet-stream','Cache-Control':'no-store'});res.end(data);
+  }catch{res.writeHead(404);res.end('Not found');}
+ });
+ server.on('error',error=>{console.error(name+': '+error.code);for(const s of servers)s.close();process.exitCode=1;});
+ servers.push(server);server.listen(port,'127.0.0.1',()=>console.log(name+': http://127.0.0.1:'+port));
+}
+process.on('SIGINT',()=>{for(const s of servers)s.close();});

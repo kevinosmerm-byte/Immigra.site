@@ -1,0 +1,160 @@
+/* Final semantic theme layer. Keep text/surface pairs together so legacy white
+   lettering cannot leak onto light cards. Media overlays are deliberately scoped out. */
+:root {
+  --readable-ink:var(--color-text);
+  --readable-heading:var(--color-navy);
+  --readable-muted:#465e78;
+  --readable-link:var(--color-primary);
+  --readable-panel:var(--color-white);
+  --readable-soft:var(--color-background);
+  --readable-edge:var(--color-border);
+}
+html[data-theme="dark"] {
+  --readable-ink:#edf4fc;
+  --readable-heading:#ffffff;
+  --readable-muted:#c2d2e5;
+  --readable-link:#9bd1ff;
+  --readable-panel:#142b44;
+  --readable-soft:#1d3855;
+  --readable-edge:#52708e;
+}
+html[data-theme] body #root .onboarding-card {
+  background:linear-gradient(135deg,var(--readable-panel),var(--readable-soft)) !important;
+  color:var(--readable-ink); border:1px solid var(--readable-edge);
+  box-shadow:0 12px 36px #123a6324;
+}
+html[data-theme] body #root .onboarding-card :is(h1,h2,.onboarding-brand) {
+  color:var(--readable-heading) !important; text-shadow:none;
+}
+html[data-theme] body #root .onboarding-card :is(p,li,label,select,input) {
+  color:var(--readable-ink) !important;
+}
+html[data-theme] body #root .onboarding-card :is(.onboarding-brand span,.settings-eyebrow,.onboarding-feature-list span) {
+  color:var(--readable-link) !important;
+}
+html[data-theme] body #root .onboarding-card :is(input,select,.onboarding-legal-copy) {
+  background:var(--readable-soft) !important; border:1px solid var(--readable-edge);
+}
+html[data-theme] body #root .onboarding-card label { display:grid; gap:8px; margin-block:16px; font-size:15px; }
+html[data-theme] body #root .onboarding-card :is(input,select) { padding:12px; min-height:46px; border-radius:10px; }
+html[data-theme] body #root .onboarding-progress span { background:var(--readable-edge); }
+html[data-theme] body #root .onboarding-progress span.active { background:var(--color-primary); box-shadow:none; }
+html[data-theme] body #root .language-choice-grid button {
+  background:linear-gradient(135deg,var(--readable-panel),var(--readable-soft)) !important;
+  color:var(--readable-ink) !important; border:1px solid var(--readable-edge); min-height:80px;
+}
+html[data-theme] body #root .language-choice-grid button strong { color:var(--readable-heading) !important; }
+html[data-theme] body #root .language-choice-grid button.selected {
+  border:2px solid var(--readable-link); box-shadow:0 0 0 3px #4da3e61a;
+}
+/* Shared button families: light secondary, navy primary, red voice/review. */
+html[data-theme] body #root :is(.onboarding-primary,.profile-primary,.journey-primary,.account-primary,.promotion-access-continue,.pro-benefits-action,.quiz-primary-action,.quiz-quick-button,.results-focus-button,.uscis-check-button,.writing-review-continue,.theme-choice button.selected) {
+  background:linear-gradient(120deg,var(--color-navy),var(--color-primary)) !important;
+  color:var(--color-white) !important; border:1px solid var(--color-primary); border-radius:12px;
+  min-height:44px; padding:12px 18px; font-weight:600; box-shadow:0 3px 10px #123a6320;
+}
+html[data-theme] body #root :is(.onboarding-primary,.profile-primary,.journey-primary,.account-primary,.promotion-access-continue,.quiz-primary-action,.theme-choice button.selected) :is(span,strong,small,b) { color:var(--color-white) !important; }
+html[data-theme] body #root :is(.profile-secondary,.journey-secondary,.settings-secondary-button,.legal-action-button,.account-primary.secondary,.section-navigation button,.civics-modes button,.theme-choice button:not(.selected)) {
+  background:linear-gradient(135deg,var(--readable-panel),var(--readable-soft)) !important;
+  color:var(--readable-heading) !important; border:1px solid var(--readable-edge); border-radius:12px; min-height:44px;
+}
+html[data-theme] body #root :is(.section-navigation,.civics-modes) button:is(.active,[aria-selected="true"]) {
+  background:var(--color-navy) !important; color:var(--color-white) !important; border-color:var(--color-primary);
+}
+html[data-theme] body #root :is(.section-navigation,.civics-modes) button span { color:inherit !important; }
+html[data-theme] body #root :is(.reading-practice-screen .reading-button,.writing-ai-screen .dictation-speak-btn,.coach-call-start-button) {
+  background:linear-gradient(120deg,var(--color-white),#dceeff) !important;
+  color:var(--color-navy) !important; border:1px solid #aacbe7 !important;
+  box-shadow:inset 0 1px 0 #fff,0 4px 12px #2563a61a; border-radius:12px; min-height:52px;
+}
+html[data-theme] body #root :is(.reading-practice-screen .reading-button,.writing-ai-screen .dictation-speak-btn,.coach-call-start-button) :is(small,strong,span) { color:var(--color-navy) !important; }
+html[data-theme] body #root :is(.writing-ai-screen .writing-ai-button,.interview-workspace .live-mic-button,.reading-practice-screen .reading-button.recording) {
+  background:linear-gradient(120deg,var(--color-red),#ac2332) !important;
+  color:var(--color-white) !important; border:1px solid var(--color-red) !important;
+}
+html[data-theme] body #root :is(.writing-ai-screen .writing-ai-button,.interview-workspace .live-mic-button,.reading-practice-screen .reading-button.recording) :is(small,strong,span) { color:var(--color-white) !important; }
+html[data-theme] body #root :is(.reading-practice-screen .practice-content,.writing-big-spanish) { min-height:0; height:auto; }
+html[data-theme] body #root .writing-big-spanish { background:var(--readable-soft) !important; color:var(--readable-ink) !important; }
+html[data-theme] body #root .writing-ai-title span { color:var(--readable-link) !important; }
+/* Navigation branding always sits on the navy bar, in both themes. */
+html[data-theme] body #root :is(.practice-brand,.interview-brand,.writing-ai-brand,.home-brand-wordmark) {
+  background:none !important; -webkit-text-fill-color:var(--color-white) !important; color:var(--color-white) !important;
+}
+html[data-theme] body #root :is(.practice-brand,.interview-brand,.writing-ai-brand,.home-brand-wordmark,.podcast-header>strong) :is(span,strong) {
+  -webkit-text-fill-color:inherit; background:none !important;
+}
+html[data-theme] body #root :is(.practice-brand span,.interview-brand strong span,.writing-ai-brand span,.home-brand-wordmark strong,.podcast-header>strong span) {
+  color:#a4d5fb !important; -webkit-text-fill-color:#a4d5fb !important;
+}
+/* Small labels found during the route-by-route contrast audit. */
+html[data-theme="light"] body #root :is(.journey-panel,.journey-summary) span,
+html[data-theme="light"] body #root :is(.quiz-question-meta span,.quiz-question-meta em,.quiz-choice-list button>span,.podcast-library-intro>span,.uscis-tracker-panel-label,.uscis-tracker-page-header>span,.account-pricing em,.immigration-help-hero>span,.immigration-search>span,.immigration-section-heading i) { color:var(--color-navy) !important; }
+html[data-theme="light"] body #root :is(.settings-content,.onboarding-card,.profile-content,.journey-main) a { color:var(--color-primary) !important; text-decoration:underline; text-underline-offset:3px; }
+html[data-theme="light"] body #root :is(.practice-option-icon,.practice-arrow,.quiz-choice-list button>span,.account-mark) { background:#e1effc !important; color:var(--color-navy) !important; }
+html[data-theme="light"] body #root .uscis-tracker-content :is(.uscis-privacy,.uscis-tracker-privacy) { background:var(--color-background) !important; color:var(--color-text) !important; }
+html[data-theme] body #root .civics-study-eyebrow { color:var(--color-primary) !important; }
+html[data-theme="dark"] body #root .civics-modes { background:var(--readable-panel) !important; border-color:var(--readable-edge); }
+html[data-theme="dark"] body #root .civics-deck-hero { background:var(--readable-panel) !important; }
+html[data-theme="dark"] body #root .civics-deck-heading p { color:var(--readable-muted) !important; }
+html[data-theme="dark"] body #root .reading-card-count { color:var(--readable-muted) !important; }
+html[data-theme] body #root :is(button,a,input,textarea,select,summary):focus-visible { outline:3px solid var(--color-ai); outline-offset:3px; }
+@media(hover:hover) {
+  html[data-theme] body #root button:not(:disabled):hover { border-color:var(--color-ai); }
+}
+@media(prefers-reduced-motion:reduce) { html[data-theme] body #root button { transition:none; } }
+/* Remaining small controls and alternate theme surfaces from the rendered audit. */
+html[data-theme] body #root .practice-mini-card > span:last-child { color:var(--readable-link) !important; }
+html[data-theme] body #root :is(.account-note,.account-pricing em,.quiz-question-meta em,.writing-performance span) { color:var(--readable-muted) !important; }
+html[data-theme] body #root .account-close { background:var(--readable-soft) !important; color:var(--readable-heading) !important; border:1px solid var(--readable-edge); min-width:44px; min-height:44px; }
+html[data-theme] body #root .did-live-avatar :is(.button-primary,.did-live-avatar-close) { background:var(--color-navy) !important; color:var(--color-white) !important; }
+html[data-theme="light"] body #root :is(.immigration-help-search>span,.study-guide-heading span,.study-guide-heading>a) { color:var(--color-navy) !important; }
+html[data-theme="light"] body #root .study-guide-heading>a { background:var(--color-background) !important; border-color:var(--color-border); }
+html[data-theme="light"] body #root .writing-progress-copy strong { background:#e1effc !important; color:var(--color-navy) !important; }
+html[data-theme="light"] body #root :is(.uscis-official-note,.coach-message) { background:var(--color-background) !important; border-color:var(--color-border); }
+html[data-theme="light"] body #root .coach-message-label { color:var(--color-primary) !important; }
+html[data-theme="dark"] body #root :is(.writing-practice-panel,.writing-question-card,.writing-ai-evaluation) { background:var(--readable-panel) !important; border-color:var(--readable-edge); }
+html[data-theme="dark"] body #root :is(.writing-ai-title,.writing-ai-intro,.writing-progress-copy,.writing-question-card,.writing-ai-evaluation) { color:var(--readable-ink) !important; }
+html[data-theme="dark"] body #root .writing-ai-title { -webkit-text-fill-color:var(--readable-ink); }
+html[data-theme] body #root .global-bottom-navigation button[aria-current="page"] { background:var(--color-navy) !important; color:var(--color-white) !important; opacity:1; }
+html[data-theme] body #root .global-bottom-navigation button[aria-current="page"] span { color:var(--color-white) !important; }
+/* Secondary views: player, empty favorites and access notices. */
+html[data-theme="light"] body #root :is(.podcast-track-info small,.podcast-timeline span,.podcast-speed button,.civics-favorites-empty p,.civics-favorites-empty span) { color:var(--color-navy) !important; }
+html[data-theme] body #root .podcast-speed button { min-height:44px; border-radius:10px; }
+html[data-theme] body #root .podcast-speed button.active { background:var(--color-navy) !important; color:var(--color-white) !important; }
+html[data-theme="light"] body #root .civics-favorites-empty { background:var(--color-background); border:1px solid var(--color-border); border-radius:16px; padding:24px; }
+html[data-theme] body #root .promotion-access-sheet { background:var(--readable-panel) !important; color:var(--readable-ink); }
+html[data-theme] body #root .promotion-access-sheet :is(h1,h2,p,small,.promotion-access-feature span,.promotion-access-feature strong) { color:var(--readable-ink) !important; }
+html[data-theme] body #root .promotion-access-sheet .promotion-access-feature { background:var(--readable-soft); border-color:var(--readable-edge); }
+html[data-theme] body #root :is(.promotion-access-close,.pro-benefits-dismiss) { background:var(--readable-soft); color:var(--readable-heading); min-width:44px; min-height:44px; }
+/* Mobile labels must grow with their content instead of overflowing fixed controls. */
+html[data-theme] body #root :is(.practice-brand span,.interview-brand strong span,.writing-ai-brand span,.home-brand-wordmark strong,.podcast-header>strong span) { opacity:1 !important; }
+html[data-theme] body #root :is(.reading-practice-screen .reading-button,.writing-ai-screen .dictation-speak-btn,.coach-call-start-button) { height:auto !important; min-height:64px !important; padding:14px !important; align-items:center; }
+html[data-theme] body #root :is(.reading-button-copy,.dictation-speak-btn strong,.coach-call-copy) { min-width:0; white-space:normal; }
+html[data-theme] body #root .reading-practice-screen .practice-content { gap:12px !important; }
+html[data-theme] body #root .reading-practice-screen .practice-intro { margin-bottom:4px; }
+html[data-theme] body #root .reading-practice-screen .reading-card { margin-top:12px; }
+html[data-theme] body #root .app-recovery-card { background:var(--readable-panel) !important; color:var(--readable-heading); }
+html[data-theme] body #root .app-recovery-card :is(span,p,small) { color:var(--readable-ink) !important; }
+html[data-theme] body #root .app-recovery-card button { background:var(--color-navy) !important; color:var(--color-white) !important; min-height:44px; }
+@media(max-width:600px) {
+  html[data-theme] body #root .home-reference .home-interview-actions .home-primary-button { height:auto !important; min-height:76px; padding:12px; }
+  html[data-theme] body #root .home-reference .home-interview-actions .home-primary-button strong { white-space:normal !important; overflow:visible !important; text-overflow:clip !important; font-size:16px; line-height:1.25; }
+}
+/* An opaque reading surface makes dark text contrast independent of the photo. */
+html[data-theme="dark"] body #root :is(.practice-content,.profile-content,.journey-main,.settings-content,.uscis-tracker-content,.progress-simple-content) {
+  background:var(--readable-panel) !important; border:1px solid var(--readable-edge);
+  border-radius:20px; padding:24px; margin-block:20px 100px;
+}
+html[data-theme="dark"] body #root :is(.practice-intro,.profile-intro,.settings-intro,.journey-heading p,.uscis-tracker-page-header p,.reading-translation) { color:var(--readable-muted) !important; opacity:1; }
+html[data-theme="dark"] body #root :is(input,textarea)::placeholder { color:var(--readable-muted) !important; opacity:1 !important; }
+html[data-theme] body #root .writing-ai-title span { background:none !important; }
+@media(max-width:600px) { html[data-theme="dark"] body #root :is(.practice-content,.profile-content,.journey-main,.settings-content,.uscis-tracker-content,.progress-simple-content) { padding:18px; width:calc(100% - 24px); margin-inline:auto; } }
+html[data-theme="dark"] body #root .reading-card small { color:var(--readable-muted) !important; }
+html[data-theme] body #root .account-message { background:var(--readable-soft) !important; color:var(--readable-ink) !important; border-color:var(--readable-edge); }
+html[data-theme="light"] body #root :is(.coach-message-text,.uscis-official-note strong) { color:var(--color-text) !important; }
+html[data-theme="light"] body #root .uscis-official-note>span { color:#166343 !important; }
+@media(max-width:600px) {
+  html[data-theme] body #root .home-reference .home-interview-actions .home-primary-button strong { display:block !important; -webkit-line-clamp:unset !important; line-clamp:unset !important; height:auto !important; font-size:14px !important; overflow-wrap:normal; }
+  html[data-theme] body #root .home-reference .home-interview-actions .home-primary-button { gap:8px; padding:10px; }
+  html[data-theme] body #root .home-reference .home-interview-actions .home-action-icon { width:28px; min-width:28px; height:32px; }
+}

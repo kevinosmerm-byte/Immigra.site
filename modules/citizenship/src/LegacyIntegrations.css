@@ -1,0 +1,214 @@
+/* Extensions fit the original app. No global background or typography overrides. */
+.legacy-new-tools { margin:24px 0; color:inherit; }
+.legacy-tools-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.legacy-tools-links button,.legacy-daily-plan { color:#edf5ff; background:#10223ce8; border:1px solid #375679; border-radius:16px; padding:18px; text-align:left; }
+.legacy-tools-links button { cursor:pointer; font:inherit; }
+.legacy-tools-links strong,.legacy-tools-links span { display:block; }
+.legacy-tools-links span { margin-top:8px; color:#c0d3e9; font-size:14px; line-height:1.5; }
+.legacy-daily-plan { margin-top:14px; line-height:1.6; }
+.legacy-daily-plan summary { cursor:pointer; font-weight:700; min-height:28px; }
+.legacy-daily-plan button { padding:12px 18px; border:0; border-radius:10px; background:#42cef4; color:#072439; font-weight:700; cursor:pointer; }
+:is(.profile-screen,.journey-screen,.practice-hub,.brain-today) { --ui-text:#edf5ff; --ui-muted:#bed0e5; --ui-surface:#12233c; --ui-surface-soft:#1b304d; --ui-border:#3c5574; --ui-accent:#82caff; --ui-accent-text:#08273f; }
+.journey-main { --ui-text:#edf5ff; --ui-muted:#bed0e5; --ui-border:#3c5574; }
+.section-navigation { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }
+.section-navigation button,.button-primary,.button-secondary,.button-ghost { font:inherit; min-height:44px; padding:10px 16px; border:1px solid #527292; border-radius:10px; background:#163552; color:#eff7ff; cursor:pointer; }
+.button-primary { background:#39c7eb; color:#09263d; border-color:#39c7eb; font-weight:700; }
+.brain-today { padding:20px; border:1px solid #375679; border-radius:18px; background:#10223ce8; color:#edf5ff; margin:20px 0; }
+html[data-theme="light"] :is(.legacy-tools-links button,.legacy-daily-plan,.brain-today) { background:#fff; color:#162c49; border-color:#b8cce3; }
+html[data-theme="light"] .legacy-tools-links span { color:#47617d; }
+@media(max-width:480px) { .legacy-tools-links { grid-template-columns:1fr; } .legacy-tools-links button,.legacy-daily-plan { padding:16px; } }
+
+/* Shared icon cards echo the original interview shortcuts. */
+.legacy-tools-links button,.legacy-daily-plan,.home-progress-link { border:1px solid #315573; background:linear-gradient(120deg,#12364c 0%,#0d203c 65%,#102440 100%); box-shadow:inset 0 1px 0 #78dfff20,0 8px 24px #0002; }
+.legacy-tools-links button,.legacy-daily-plan summary { display:flex; align-items:center; gap:14px; }
+.legacy-tools-links button { min-height:94px; transition:border-color .2s,box-shadow .2s; }
+.legacy-tools-links .preparation-icon,.legacy-daily-plan .preparation-icon,.home-progress-link .preparation-icon { display:grid; place-items:center; width:44px; height:44px; flex:0 0 44px; margin:0; border:1px solid #3acbf580; border-radius:13px; color:#70e5ff; background:linear-gradient(145deg,#1b637277,#073046); box-shadow:inset 0 1px 0 #9befff33,0 0 16px #00c8ff15; }
+.preparation-icon svg { width:23px; height:23px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+.legacy-tools-links .preparation-copy,.legacy-daily-plan .preparation-copy { display:block; min-width:0; flex:1; margin:0; }
+.preparation-copy strong { font-size:15px; color:#f2f8ff; line-height:1.3; }
+.preparation-copy small { display:block; margin-top:5px; color:#b9cee1; font-size:12px; line-height:1.45; font-weight:400; }
+.legacy-tools-links .preparation-arrow,.legacy-daily-plan .preparation-arrow { display:grid; place-items:center; flex:0 0 30px; width:30px; height:30px; margin:0; border:1px solid #92d3f133; border-radius:50%; color:#d9f6ff; background:#c0eaff09; font-size:18px; }
+.legacy-tools-links button:nth-child(2) .preparation-icon { color:#b5baff; border-color:#858cff80; background:linear-gradient(145deg,#42498277,#192b49); }
+.legacy-daily-plan summary { list-style:none; min-height:44px; }
+.legacy-daily-plan summary::-webkit-details-marker { display:none; }
+.legacy-daily-plan[open] summary { margin-bottom:20px; }
+.legacy-daily-plan[open] .preparation-arrow { transform:rotate(180deg); }
+.legacy-tools-links button:hover,.home-progress-link:hover { border-color:#5ad9fa; box-shadow:inset 0 1px 0 #78dfff30,0 0 20px #00baff18; }
+.legacy-tools-links button:focus-visible,.legacy-daily-plan summary:focus-visible,.home-progress-link:focus-visible { outline:2px solid #7deaff; outline-offset:4px; }
+html[data-theme="light"] .preparation-copy strong { color:#142e49; }
+html[data-theme="light"] .preparation-copy small { color:#47617d; }
+html[data-theme="light"] .home-progress-link { background:#edf7ff; }
+@media(max-width:600px) { .legacy-tools-links { grid-template-columns:1fr; } .legacy-tools-links button { min-height:82px; } }
+
+/* One spacing scale for every row and column on Home. */
+.home-ai .home-new-content { --home-card-gap:16px; gap:var(--home-card-gap) !important; }
+.home-ai .home-new-hero { gap:var(--home-card-gap) !important; padding-bottom:0 !important; margin:0; }
+.home-ai .home-interview-actions,.home-ai .home-practice-list,.home-ai .practice-mini-grid,.home-ai .legacy-tools-links { gap:var(--home-card-gap) !important; }
+.home-ai .home-interview-actions,.home-ai .home-practice-section,.home-ai .home-practice-list,.home-ai .practice-mini-grid,.home-ai .home-progress-link,.home-ai .legacy-new-tools { margin:0; }
+.home-ai .legacy-new-tools { display:grid; gap:var(--home-card-gap); }
+.home-ai .legacy-daily-plan { margin:0; }
+
+/* Color accents retain the shared card shape and spacing. */
+.home-ai .home-progress-link { border-color:#32d6a477; background:linear-gradient(115deg,#104840e8,#102c42f5 65%,#10243d); box-shadow:inset 0 1px 0 #8cffcc22,0 6px 24px #0002; }
+.home-ai .home-progress-link strong { display:flex; align-items:center; gap:9px; }
+.home-ai .home-progress-link strong::after { content:''; flex:0 0 8px; width:8px; height:8px; border-radius:50%; background:#57f3ad; box-shadow:0 0 0 4px #46e89c16,0 0 12px #47f2a788; animation:progress-status-glow 2.6s ease-in-out infinite; }
+.home-ai .home-progress-link .preparation-icon { color:#75f2c1; border-color:#48e2b080; background:#12765344; }
+.home-ai .legacy-tools-links button:first-child { border-color:#28bfc377; background:linear-gradient(115deg,#12474f,#10283e 80%); }
+.home-ai .legacy-tools-links button:nth-child(2) { border-color:#9b87f477; background:linear-gradient(115deg,#30294f,#182640 80%); }
+.home-ai .legacy-daily-plan { border-color:#dcaf6270; background:linear-gradient(115deg,#3c3540,#16283f 80%); }
+.home-ai .legacy-daily-plan .preparation-icon { color:#ffd58b; border-color:#f0bc6577; background:#aa742222; }
+.home-ai .practice-mini-card:first-child { border-color:#27bfbf66; background:linear-gradient(115deg,#123a45,#141f32 85%); }
+.home-ai .practice-mini-card:nth-child(2) { border-color:#a789ee66; background:linear-gradient(115deg,#302b48,#171f32 85%); }
+.home-ai .practice-mini-card:nth-child(2) .mini-icon { color:#cbbaff; border-color:#a789ee77; background:#8267bb20; }
+@keyframes progress-status-glow { 50% { box-shadow:0 0 0 5px #46e89c20,0 0 16px #47f2a7aa; } }
+@media(prefers-reduced-motion:reduce) { .home-ai .home-progress-link strong::after { animation:none; } }
+html[data-theme="light"] .home-ai .home-progress-link { background:#e5f7ef; color:#173a30; }
+html[data-theme="light"] .home-ai .home-progress-link small { color:#3b6357; }
+html[data-theme="light"] .home-ai .legacy-tools-links button:first-child,html[data-theme="light"] .home-ai .practice-mini-card:first-child { background:#e8f7f7; }
+html[data-theme="light"] .home-ai .legacy-tools-links button:nth-child(2),html[data-theme="light"] .home-ai .practice-mini-card:nth-child(2) { background:#f0ebfb; }
+html[data-theme="light"] .home-ai .legacy-daily-plan { background:#fff5e4; }
+
+/* A single blue palette progresses gently from top to bottom. */
+.home-ai .home-interview-actions .home-primary-button { background:linear-gradient(110deg,#123d59,#102d49) !important; border-color:#3b739666; }
+.home-ai .home-interview-actions .home-primary-button:nth-child(n+3) { background:linear-gradient(110deg,#143951,#112b45) !important; }
+.home-ai .practice-mini-card:first-child,.home-ai .practice-mini-card:nth-child(2) { background:linear-gradient(110deg,#15354d,#132a42); border-color:#456e8a77; }
+.home-ai .home-progress-link { background:linear-gradient(110deg,#153249,#14283f); border-color:#456e8a77; }
+.home-ai .legacy-tools-links button:first-child,.home-ai .legacy-tools-links button:nth-child(2) { background:linear-gradient(110deg,#172f45,#15273d); border-color:#45678077; }
+.home-ai .legacy-daily-plan { background:linear-gradient(110deg,#192d42,#17263b); border-color:#45678077; }
+.home-ai .home-interview-actions .home-action-icon,.home-ai .practice-mini-card .mini-icon,.home-ai .home-progress-link .preparation-icon,.home-ai .legacy-tools-links button .preparation-icon,.home-ai .legacy-daily-plan .preparation-icon { color:#7bdaf5; border-color:#52b8df66; background:linear-gradient(145deg,#20527366,#11344e66); box-shadow:inset 0 1px 0 #a3eaff18; }
+html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button { background:linear-gradient(110deg,#e5f3fc,#eff6fc) !important; }
+html[data-theme="light"] .home-ai .practice-mini-card:first-child,html[data-theme="light"] .home-ai .practice-mini-card:nth-child(2),html[data-theme="light"] .home-ai .home-progress-link,html[data-theme="light"] .home-ai .legacy-tools-links button:first-child,html[data-theme="light"] .home-ai .legacy-tools-links button:nth-child(2),html[data-theme="light"] .home-ai .legacy-daily-plan { background:linear-gradient(110deg,#e6eff8,#f2f6fc); color:#17364d; }
+html[data-theme="light"] .home-ai .home-progress-link small { color:#47617d; }
+
+/* Saturated blue-to-violet progression, with matching colors within each row. */
+.home-ai .home-interview-actions .home-primary-button { background:linear-gradient(110deg,#075cb0,#12458f) !important; border-color:#4ba7fa99; }
+.home-ai .home-interview-actions .home-primary-button:nth-child(n+3) { background:linear-gradient(110deg,#1855ae,#284395) !important; border-color:#658bfa99; }
+.home-ai .practice-mini-card:first-child,.home-ai .practice-mini-card:nth-child(2) { background:linear-gradient(110deg,#304ba5,#3e3c98); border-color:#8692ff99; }
+.home-ai .home-progress-link { background:linear-gradient(110deg,#4543a5,#533597); border-color:#a096ff99; }
+.home-ai .legacy-tools-links button:first-child,.home-ai .legacy-tools-links button:nth-child(2) { background:linear-gradient(110deg,#593ca5,#693293); border-color:#b493fa99; }
+.home-ai .legacy-daily-plan { background:linear-gradient(110deg,#6c36a5,#7b308e); border-color:#cf91ed99; }
+.home-ai .home-interview-actions .home-action-icon,.home-ai .practice-mini-card:first-child .mini-icon,.home-ai .practice-mini-card:nth-child(2) .mini-icon,.home-ai .home-progress-link .preparation-icon,.home-ai .legacy-tools-links button .preparation-icon,.home-ai .legacy-daily-plan .preparation-icon { color:#e1efff; border-color:#c3deff66; background:#c1d8ff18; }
+.home-ai .home-interview-actions .home-primary-button small,.home-ai .practice-mini-card small,.home-ai .preparation-copy small,.home-ai .home-progress-link small { color:#e0e6ff; }
+html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button { background:linear-gradient(110deg,#075cb0,#12458f) !important; }
+html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button:nth-child(n+3) { background:linear-gradient(110deg,#1855ae,#284395) !important; }
+html[data-theme="light"] .home-ai .practice-mini-card:first-child,html[data-theme="light"] .home-ai .practice-mini-card:nth-child(2) { background:linear-gradient(110deg,#304ba5,#3e3c98); }
+html[data-theme="light"] .home-ai .home-progress-link { background:linear-gradient(110deg,#4543a5,#533597); }
+html[data-theme="light"] .home-ai .legacy-tools-links button:first-child,html[data-theme="light"] .home-ai .legacy-tools-links button:nth-child(2) { background:linear-gradient(110deg,#593ca5,#693293); }
+html[data-theme="light"] .home-ai .legacy-daily-plan { background:linear-gradient(110deg,#6c36a5,#7b308e); }
+.home-ai .home-interview-actions .home-primary-button strong,.home-ai .practice-mini-card h3,.home-ai .home-progress-link strong,.home-ai .home-progress-count,.home-ai .preparation-copy strong { color:#fff; }
+html[data-theme="light"] .home-ai .preparation-copy strong,html[data-theme="light"] .home-ai .home-progress-link,html[data-theme="light"] .home-ai .practice-mini-card h3,html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button strong { color:#fff; }
+html[data-theme="light"] .home-ai .preparation-copy small,html[data-theme="light"] .home-ai .home-progress-link small,html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button small { color:#e0e6ff; }
+
+/* Shared modern response console for N-400 and classic civics interviews. */
+.live-interview-screen .live-interview-controls { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px !important; padding:20px !important; border:1px solid #69adf344; border-radius:22px; background:linear-gradient(135deg,#102d49f2,#1c2041f2) !important; box-shadow:inset 0 1px 0 #a1d9ff16,0 12px 32px #0003; }
+.live-interview-screen .n400-text-response { grid-column:1 / -1; display:grid; gap:12px; min-width:0; width:100%; margin:0; }
+.live-interview-screen .n400-text-response label { color:#bde9ff; font:700 13px/1.4 var(--app-font,system-ui); letter-spacing:.02em; }
+.live-interview-screen .n400-text-response textarea { box-sizing:border-box; width:100%; min-height:112px; resize:vertical; padding:15px; border:1px solid #74a5cf55; border-radius:15px; color:#f3f8ff; background:#071727b8; font:400 16px/1.5 var(--app-font,system-ui); box-shadow:inset 0 2px 8px #0002; }
+.live-interview-screen .n400-text-response textarea:focus { outline:2px solid #68d8ff; outline-offset:2px; }
+.live-interview-screen .live-interview-controls button { position:relative !important; inset:auto !important; transform:none !important; box-sizing:border-box; width:100% !important; height:auto !important; min-height:48px; margin:0 !important; padding:13px 16px !important; border:1px solid #82b8ec66 !important; border-radius:14px !important; font:700 14px/1.4 var(--app-font,system-ui) !important; display:flex !important; align-items:center; justify-content:center; gap:9px; cursor:pointer; }
+.live-interview-screen .live-interview-controls .primary-button { color:white !important; background:linear-gradient(110deg,#097fb5,#6251ce) !important; box-shadow:0 5px 18px #1678c126 !important; }
+.live-interview-screen .live-interview-controls > .primary-button { grid-column:1 / -1; }
+.live-interview-screen .live-interview-controls .live-mic-button { color:#dcf3ff !important; background:linear-gradient(120deg,#16476c,#303963) !important; box-shadow:none !important; }
+.live-interview-screen .live-interview-controls .live-mic-button::before { content:''; width:18px; height:22px; flex:0 0 18px; background:currentColor; clip-path:polygon(33% 0,67% 0,78% 10%,78% 52%,67% 63%,33% 63%,22% 52%,22% 10%,33% 0,33% 0,11% 45%,0 45%,0 64%,39% 82%,39% 91%,17% 91%,17% 100%,83% 100%,83% 91%,61% 91%,61% 82%,100% 64%,100% 45%,89% 45%,89% 61%,61% 73%,39% 73%,11% 61%,11% 45%); }
+.live-interview-screen .live-interview-controls .live-mic-button.listening { background:#9c2953 !important; border-color:#ff89b5 !important; }
+.live-interview-screen .live-interview-controls .live-skip-button { color:#d6e3f4 !important; background:#182c45 !important; box-shadow:none !important; }
+.live-interview-screen .live-interview-controls button:disabled { opacity:.45; cursor:not-allowed; }
+.live-interview-screen .live-interview-controls button:focus-visible { outline:2px solid #8be7ff; outline-offset:3px; }
+.live-interview-screen .live-score-summary { grid-column:1 / -1; display:grid !important; grid-template-columns:1fr 1fr; gap:12px; width:100%; margin:0 !important; padding-top:12px; border-top:1px solid #8cbfff22; }
+.live-interview-screen .live-score-summary span { display:flex; align-items:center; justify-content:center; min-height:44px; padding:8px; border-radius:12px; color:#d9efff; background:#66bbff12; font:700 14px/1.4 var(--app-font,system-ui); }
+.live-interview-screen .live-score-summary span:first-child { color:#8fe8d4; }
+.live-interview-screen .n400-privacy-note { grid-column:1 / -1; margin:0; padding:4px 0; color:#acbfd6; font-size:12px; line-height:1.6; }
+.live-interview-screen .n400-confirm-response { grid-column:1 / -1; }
+.live-interview-screen .n400-known-answer { padding:16px; border:1px solid #6baded44; border-radius:16px; color:#dceeff; background:#11243c; }
+.live-interview-screen .n400-session-progress { height:6px; overflow:hidden; border-radius:99px; background:#a3caff22; }
+.live-interview-screen .n400-session-progress > span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#3bddf1,#8c76ff); }
+.live-interview-screen .n400-progress-label { display:block; margin-top:9px; color:#bbd4eb; font-size:12px; line-height:1.5; }
+@media(max-width:480px) { .live-interview-screen .live-interview-controls { padding:16px !important; gap:10px !important; } .live-interview-screen .live-interview-controls button { font-size:13px !important; padding:12px !important; } }
+
+/* Readable resource directory at phone and desktop widths. */
+.immigration-help-screen { font-size:16px; line-height:1.6; }
+.immigration-help-screen .immigration-help-hero > span { font-size:12px; letter-spacing:.07em; }
+.immigration-help-screen .immigration-help-hero h1 { font-size:clamp(28px,5vw,36px); line-height:1.2; }
+.immigration-help-screen .immigration-help-hero p,.immigration-help-screen .immigration-context-stage { font-size:16px; line-height:1.6; color:#c4d4e7; margin:12px 0; }
+.immigration-help-screen .immigration-help-search input { font-size:16px; min-height:48px; color:#eff7ff; }
+.immigration-help-screen .immigration-help-search input::placeholder { color:#aebfd4; }
+.immigration-help-screen .immigration-section-heading h2 { font-size:20px; line-height:1.4; letter-spacing:.025em; }
+.immigration-help-screen .immigration-category-scroll { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0; }
+.immigration-help-screen .immigration-category-scroll button { white-space:normal; min-height:44px; padding:10px 14px; font-size:14px; line-height:1.4; color:#d9e8fa; }
+.immigration-help-screen .immigration-resource-list { gap:12px; }
+.immigration-help-screen .immigration-resource-card { padding:20px; gap:16px; min-height:120px; text-align:left; }
+.immigration-help-screen .immigration-resource-copy { min-width:0; }
+.immigration-help-screen .immigration-resource-copy small { font-size:12px; line-height:1.5; color:#a9cde9; letter-spacing:.05em; }
+.immigration-help-screen .immigration-resource-copy strong { display:block; font-size:19px; line-height:1.35; margin:3px 0 7px; }
+.immigration-help-screen .immigration-resource-copy p { font-size:16px; line-height:1.55; color:#c5d4e7; margin:0 0 8px; }
+.immigration-help-screen .immigration-resource-copy em { font-size:12px; line-height:1.5; color:#80dfc5; }
+.immigration-help-screen .immigration-resource-icon { width:42px; height:42px; flex-shrink:0; font-size:20px; }
+.immigration-help-screen .immigration-resource-arrow { font-size:22px; }
+.immigration-help-screen :is(.immigration-urgent-details,.immigration-directory) > summary { font-size:18px; font-weight:700; padding:16px 0; cursor:pointer; }
+.immigration-help-screen .immigration-footer-note,.immigration-help-screen .immigration-legal-line { font-size:14px; line-height:1.7; color:#b7c9df; text-align:left; }
+.immigration-help-screen :is(.immigration-detail-card,.immigration-leaving-card) p { font-size:16px; line-height:1.65; }
+@media(max-width:480px) { .immigration-help-screen .immigration-resource-card { padding:16px; gap:12px; } .immigration-help-screen .immigration-resource-copy strong { font-size:18px; } }
+html[data-theme="light"] .immigration-help-screen :is(.immigration-help-hero p,.immigration-context-stage,.immigration-resource-copy p,.immigration-footer-note,.immigration-legal-line,.immigration-category-scroll button) { color:#354d68; }
+
+/* Progress follows the same blue-to-purple visual progression as Home. */
+.progress-simple-screen .progress-simple-hero { background:linear-gradient(120deg,#075c9eea,#28459aee); border-color:#69b9ff77; box-shadow:inset 0 1px 0 #d4ecff22,0 12px 30px #0003; }
+.progress-simple-screen .progress-simple-module { background:linear-gradient(120deg,#304ba5ed,#423b99ed); border-color:#9298ff77; padding:22px; gap:12px; box-shadow:inset 0 1px 0 #e0deff18; }
+.progress-simple-screen .progress-simple-module:nth-child(n+3) { background:linear-gradient(120deg,#533fa2ed,#693595ed); border-color:#b097ff77; }
+.progress-simple-screen .progress-simple-history { background:linear-gradient(120deg,#69369bea,#752f87ea); border-color:#cd98f077; }
+.progress-simple-screen .progress-simple-module > span { font-size:18px; font-weight:700; }
+.progress-simple-screen .progress-simple-module strong { font-size:36px; line-height:1.15; }
+.progress-simple-screen .progress-simple-module small,.progress-simple-screen .progress-simple-history small { font-size:14px; line-height:1.5; color:#e0e5fa; }
+.progress-simple-screen .progress-simple-content p { font-size:16px; color:#e0e8fa; }
+.progress-simple-screen .progress-simple-hero > span { font-size:16px; font-weight:600; }
+.progress-simple-screen .progress-simple-hero > strong { font-size:48px; letter-spacing:-.03em; }
+.progress-simple-screen .progress-simple-hero strong small { color:#d7e8ff; }
+.progress-simple-screen .progress-simple-hero > button { min-height:48px; background:linear-gradient(110deg,#ecfaff,#d3e7ff); color:#163c6e; border:1px solid #d9f0ff; box-shadow:0 5px 18px #07132c22; }
+.progress-simple-screen .progress-simple-hero progress { appearance:none; border:0; border-radius:99px; overflow:hidden; height:9px; background:#ffffff25; }
+.progress-simple-screen .progress-simple-hero progress::-webkit-progress-bar { background:#ffffff25; border-radius:99px; }
+.progress-simple-screen .progress-simple-hero progress::-webkit-progress-value { background:linear-gradient(90deg,#50e5fa,#baa6ff); border-radius:99px; }
+.progress-simple-screen .progress-simple-hero progress::-moz-progress-bar { background:linear-gradient(90deg,#50e5fa,#baa6ff); border-radius:99px; }
+.progress-simple-screen .progress-simple-module:hover { border-color:#d3c6ff; box-shadow:0 5px 24px #7663d833; }
+.progress-simple-screen button:focus-visible { outline:3px solid #a3eaff; outline-offset:3px; }
+.progress-simple-screen .progress-simple-note { font-size:13px !important; line-height:1.6; }
+
+/* Phone interviews keep the interviewer, question and response console together. */
+@media(max-width:760px) {
+  .live-interview-screen .interview-header { min-height:44px; padding:4px 12px; }
+  .live-interview-screen .interview-content { display:flex; flex-direction:column; gap:8px; padding:6px 10px 48px !important; }
+  .live-interview-screen .sarah-live-stage { flex:none; height:clamp(210px,34dvh,290px) !important; min-height:0 !important; max-height:none !important; border-radius:18px; }
+  .live-interview-screen .live-stage-presence { display:none; }
+  .live-interview-screen .live-stage-topbar { top:8px; left:8px; right:8px; gap:6px; }
+  .live-interview-screen .live-stage-motion-frame video { object-position:center 30%; }
+  .live-interview-screen .live-question-card { left:8px; right:8px; bottom:8px; margin:0; padding:10px 12px; border-radius:14px; }
+  .live-interview-screen .live-question-card .question { font-size:16px; line-height:1.3; margin:6px 0; }
+  .live-interview-screen .live-question-header { font-size:10px; line-height:1.3; }
+  .live-interview-screen .live-voice-status { display:none; }
+  .live-interview-screen .n400-progress-label { font-size:10px; margin-top:5px; }
+  .live-interview-screen .live-answer-feedback:empty { display:none; }
+  .live-interview-screen .live-interview-controls { gap:8px !important; padding:12px !important; border-radius:18px; }
+  .live-interview-screen .n400-text-response { gap:7px; }
+  .live-interview-screen .n400-text-response label { font-size:12px; }
+  .live-interview-screen .n400-text-response textarea { min-height:64px; height:64px; padding:10px; }
+  .live-interview-screen .live-interview-controls button { min-height:44px; padding:9px 10px !important; font-size:13px !important; }
+  .live-interview-screen .n400-privacy-note { font-size:11px; line-height:1.35; padding:0; }
+  .live-interview-screen .live-score-summary { gap:8px; padding-top:7px; }
+  .live-interview-screen .live-score-summary span { min-height:28px; padding:4px 8px; font-size:12px; }
+  body[data-app-screen="interview"] .global-bottom-navigation { display:none; }
+  body[data-app-screen="interview"] .navigation-handle { display:none; }
+}
+@media(max-width:760px) and (max-height:540px) {
+  .live-interview-screen .sarah-live-stage { height:170px !important; }
+  .live-interview-screen .live-stage-topbar { top:4px; }
+  .live-interview-screen .n400-text-response textarea { min-height:48px; height:48px; }
+}
+
+/* Restore the subdued original finish using blue tones only. */
+.home-ai .home-interview-actions .home-primary-button { background:linear-gradient(110deg,#123d59,#102d49) !important; border-color:#3b739666; }
+.home-ai .home-interview-actions .home-primary-button:nth-child(n+3) { background:linear-gradient(110deg,#143951,#112b45) !important; border-color:#3b739666; }
+.home-ai .practice-mini-card:first-child,.home-ai .practice-mini-card:nth-child(2) { background:linear-gradient(110deg,#15354d,#132a42); border-color:#456e8a77; }
+.home-ai .home-progress-link { background:linear-gradient(110deg,#153249,#14283f); border-color:#456e8a77; }
+.home-ai .legacy-tools-links button:first-child,.home-ai .legacy-tools-links button:nth-child(2) { background:linear-gradient(110deg,#172f45,#15273d); border-color:#45678077; }
+.home-ai .legacy-daily-plan { background:linear-gradient(110deg,#192d42,#17263b); border-color:#45678077; }
+.home-ai .home-interview-actions .home-action-icon,.home-ai .practice-mini-card:first-child .mini-icon,.home-ai .practice-mini-card:nth-child(2) .mini-icon,.home-ai .home-progress-link .preparation-icon,.home-ai .legacy-tools-links button .preparation-icon,.home-ai .legacy-daily-plan .preparation-icon { color:#7bdaf5; border-color:#52b8df66; background:linear-gradient(145deg,#20527366,#11344e66); }
+html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button,html[data-theme="light"] .home-ai .home-interview-actions .home-primary-button:nth-child(n+3) { background:linear-gradient(110deg,#123d59,#102d49) !important; }
+html[data-theme="light"] .home-ai .practice-mini-card:first-child,html[data-theme="light"] .home-ai .practice-mini-card:nth-child(2),html[data-theme="light"] .home-ai .home-progress-link,html[data-theme="light"] .home-ai .legacy-tools-links button:first-child,html[data-theme="light"] .home-ai .legacy-tools-links button:nth-child(2),html[data-theme="light"] .home-ai .legacy-daily-plan { background:linear-gradient(110deg,#172f45,#15273d); }

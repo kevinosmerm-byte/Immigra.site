@@ -1,0 +1,3 @@
+# Question Reasoning Engine
+
+Inputs: Case Graph, latest answer, previous answers, Topic Coverage, Consistency Flags, mode, Interview Knowledge retrieval, separate Country Context retrieval, Question Bank. Priority: clarify current ambiguity; explore factual difference without correcting; complete current incident; explore user-mentioned undeveloped event; current-fear continuation; timeline gaps; unpracticed core topics; generic bank fallback. Output: neutral factual question only. Never recommended testimony/legal conclusion/legal score. BAD: “Wasn’t this because of your political opinion?” GOOD: “What happened that made you believe this event was connected to your activities?”

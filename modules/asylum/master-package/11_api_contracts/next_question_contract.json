@@ -1,0 +1,25 @@
+{
+  "input": {
+    "case_id": "string",
+    "data_domain": "personal|synthetic",
+    "interview_mode": "guided|uscis_real|uscis_challenge|court_direct|court_cross|court_ij|fictional",
+    "latest_answer": "string",
+    "active_topic": "string|null",
+    "country_context_refs": [
+      "source id"
+    ]
+  },
+  "output": {
+    "question_text": "string",
+    "question_id": "string|null",
+    "question_type": "neutral_factual|clarification|revisit|dynamic_template",
+    "topic_code": "string",
+    "internal_reason_code": "string",
+    "safety_class": "SAFE_NEUTRAL_QUESTION",
+    "must_not_display": [
+      "legal sufficiency",
+      "recommended answer",
+      "hidden synthetic gold facts"
+    ]
+  }
+}

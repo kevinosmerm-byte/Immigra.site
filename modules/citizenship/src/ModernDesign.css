@@ -1,0 +1,273 @@
+/* Shared presentation for the existing screens. Loaded after legacy styles. */
+:root {
+  --app-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --ui-background: #10151e;
+  --ui-surface: #1a2230;
+  --ui-surface-soft: #222d3d;
+  --ui-text: #f1f5fb;
+  --ui-muted: #b4c1d2;
+  --ui-border: #3c4a5d;
+  --ui-accent: #91bdff;
+  --ui-accent-text: #122c4f;
+  --ui-success: #94dfbe;
+  --ui-danger: #ffb9bd;
+  --ui-focus: #a9ccff;
+  --ui-radius: 16px;
+  --ui-shadow: 0 4px 16px #00000014;
+  --ui-caption: .75rem;
+  --ui-secondary: .875rem;
+  --ui-body: 1rem;
+  --ui-card-title: 1.25rem;
+  --ui-section-title: 1.5rem;
+  --ui-page-title: clamp(1.75rem, 4vw, 2.25rem);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --content-gutter: clamp(16px, 3vw, 32px);
+  --app-background: var(--ui-background);
+  --text-primary: var(--ui-text);
+  --text-secondary: var(--ui-muted);
+  --surface-secondary: var(--ui-surface-soft);
+  --border-color: var(--ui-border);
+  --surface-hover: var(--ui-surface-soft);
+}
+
+html[data-theme="light"] {
+  --ui-background: #f4f6f9;
+  --ui-surface: #ffffff;
+  --ui-surface-soft: #edf2f8;
+  --ui-text: #1a2a40;
+  --ui-muted: #4d6078;
+  --ui-border: #c9d4e1;
+  --ui-accent: #255ea8;
+  --ui-accent-text: #ffffff;
+  --ui-success: #176341;
+  --ui-danger: #9c303b;
+  --ui-focus: #255ea8;
+}
+
+html, html body, html #root { background: var(--ui-background) !important; color: var(--ui-text); }
+html, html body, html #root { overflow-x: visible !important; }
+html body::before, html body::after { content: none !important; }
+html :is(.app,.practice-screen,.writing-ai-screen,.settings-screen,.immigration-help-screen,.podcast-screen,.quiz-path-screen,.study-guide-screen) { background-image: none !important; }
+html :is(.app,.home-ai)::before, html :is(.app,.home-ai)::after { content: none !important; }
+citizenship-companion { position: relative; display: block; width: min(100%,1100px); margin: 0 auto; padding: 8px 16px calc(var(--global-navigation-height,0px) + 12px); }
+citizenship-companion[hidden] { display: none !important; }
+body, button, input, textarea, select { font-family: var(--app-font); }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+button, input, select, textarea { max-width: 100%; }
+html button { min-height: 44px !important; min-width: 44px; }
+button { cursor: pointer; transition: background-color 160ms ease, border-color 160ms ease, opacity 160ms ease; }
+button:not(:disabled):active { transform: translateY(1px); }
+button:disabled, button[aria-disabled="true"] { cursor: not-allowed; opacity: .6; }
+button[aria-busy="true"] { cursor: progress; }
+:is(button, a, input, select, textarea, summary):focus-visible { outline: 3px solid var(--ui-focus) !important; outline-offset: 3px; }
+:is(input, textarea, select) { min-width: 0; font-size: var(--ui-body); }
+textarea { resize: vertical; }
+img, video, canvas { max-width: 100%; }
+img { object-fit: contain; }
+:is(h1,h2,h3,p,dt,dd,li,button,label,summary) { overflow-wrap: anywhere; }
+:is(.app,.practice-screen,.writing-ai-screen,.quiz-path-screen,.settings-screen,.immigration-help-screen,.podcast-screen,.interview-screen,.brain-screen) {
+  color: var(--ui-text) !important; background: var(--ui-background) !important;
+}
+:is(.practice-screen,.writing-ai-screen,.quiz-path-screen,.settings-screen,.immigration-help-screen,.podcast-screen,.brain-screen) :is(h1,h2,h3,p,button,input,select,textarea) { font-family: var(--app-font) !important; }
+:is(.practice-screen,.writing-ai-screen,.quiz-path-screen,.settings-screen,.immigration-help-screen,.podcast-screen,.brain-screen) h1 { font-size: var(--ui-page-title) !important; line-height: 1.2; letter-spacing: -.025em; }
+:is(.practice-content,.settings-content,.immigration-help-content,.podcast-library,.quiz-path-content,.quiz-session-content,.brain-content,.writing-ai-content) {
+  width: 100%; max-width: 1100px; margin-inline: auto; padding-inline: var(--content-gutter); min-width: 0;
+}
+:is(.practice-header,.settings-header,.immigration-help-header,.podcast-header,.interview-header,.brain-header) { gap: var(--space-3); max-width: 1164px; min-width: 0; }
+:is(.practice-header,.settings-header,.immigration-help-header,.podcast-header) > * { min-width: 0; }
+:is(.practice-header,.settings-header,.immigration-help-header,.podcast-header) button { min-height: 44px; }
+
+/* Quiet surfaces; the original content and question artwork remain intact. */
+html :is(.practice-option,.quiz-level-card,.quiz-path-progress,.quiz-answer-choice,.quiz-feedback,.quiz-question-card,.quiz-session-card,.quiz-vocabulary-card,.settings-appearance-card,.appearance-settings,.legal-item,.civic-profile-panel,.account-sheet,.immigration-resource-card,.immigration-detail-card,.immigration-leaving-card,.immigration-urgent,.progress-simple-hero,.progress-simple-history,.progress-simple-module,.reading-card,.writing-dictation-card,.writing-practice-card,.brain-card,.journey-card,.profile-card) {
+  background: var(--ui-surface) !important; color: var(--ui-text) !important; border-color: var(--ui-border) !important;
+  box-shadow: var(--ui-shadow) !important; backdrop-filter: none !important; border-radius: var(--ui-radius); min-width: 0;
+}
+html :is(.quiz-level-card,.immigration-resource-card,.progress-simple-module,.practice-option) :is(small,em,p),
+html :is(.settings-appearance-card,.progress-simple-content,.civic-profile-panel,.brain-content) :is(p,small) { color: var(--ui-muted) !important; }
+html :is(.practice-option-icon,.quiz-level-icon,.immigration-resource-icon) { color: var(--ui-muted); background: var(--ui-surface-soft) !important; box-shadow: none !important; }
+html :is(.quiz-level-card,.practice-option,.immigration-resource-card):hover { border-color: var(--ui-accent) !important; transform: none; }
+html .practice-options > .practice-option { display: grid !important; grid-template-columns: minmax(0,1fr) 44px !important; gap: 12px; height: auto !important; padding: 16px !important; }
+html .practice-option .practice-option-left { min-width: 0; display: flex; flex-direction: row; gap: 12px; }
+html .practice-option .practice-option-icon { position: static !important; inset: auto !important; margin: 0 !important; width: 44px !important; height: 44px !important; min-width: 44px; flex: 0 0 44px; }
+html .practice-option .practice-option-content { min-width: 0; }
+html .practice-option .practice-option-content p { display: block; overflow: visible; white-space: normal; font-size: var(--ui-secondary); line-height: 1.5; }
+html .practice-option .practice-arrow { position: static !important; inset: auto !important; margin: 0; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+html :is(.quiz-level-card,.immigration-resource-card,.practice-option) :is(strong,em,small,p) { text-shadow: none !important; }
+
+/* Calm, shared control hierarchy. */
+html :is(.back-button,.simple-back,.writing-back-button,.more-button,.immigration-help-header button,.podcast-header button,.settings-header button,.settings-secondary-button,.legal-action-button,.civic-profile-panel button,.results-secondary-button,.live-skip-button,.dictation-replay-button,.feedback-sound-toggle,.n400-confirm-response,.brain-secondary,.brain-tertiary,.button-secondary,.button-tertiary,.button-ghost,.profile-secondary,.profile-tertiary) {
+  min-height: 44px; min-width: 44px !important; padding: 10px 16px; border: 1px solid var(--ui-border) !important; border-radius: 12px !important;
+  color: var(--ui-text) !important; background: var(--ui-surface-soft) !important; box-shadow: none !important; text-shadow: none !important;
+}
+html .settings-secondary-button { padding: 12px 16px; white-space: normal; line-height: 1.5; font-size: var(--ui-secondary); }
+html .profile-content > button { display: block; margin-block: 16px; }
+html .civic-profile-panel :is(input,select) { display: block; width: 100%; min-height: 44px; margin-block: 8px 16px; padding: 10px 12px; color: var(--ui-text); background: var(--ui-surface-soft); border: 1px solid var(--ui-border); border-radius: 12px; font: inherit; }
+html .civic-profile-panel button { margin-block: 12px; }
+html .civic-profile-panel form button[type="submit"] { background: var(--ui-accent) !important; color: var(--ui-accent-text) !important; }
+html .civic-profile-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+html :is(.results-button,.results-focus-button,.reading-start-button,.reading-button,.writing-check-button,.writing-ai-button,.quiz-check-button,.quiz-continue-button,.quiz-primary-action,.quiz-feedback > button,.quiz-quick-button,.immigration-continue,.onboarding-next,.onboarding-primary,.brain-primary,.button-primary,.primary-button,.profile-primary,.n400-text-response button,.progress-simple-hero > button,.writing-review-continue) {
+  min-height: 48px; min-width: 0; padding: 12px 20px; border: 0 !important; border-radius: 12px !important;
+  background: var(--ui-accent) !important; color: var(--ui-accent-text) !important; box-shadow: none !important; text-shadow: none !important;
+  font-size: var(--ui-body); font-weight: 650; white-space: normal;
+}
+html :is(.results-button,.reading-start-button,.writing-check-button,.quiz-check-button,.quiz-continue-button,.brain-primary):hover:not(:disabled) { filter: brightness(.95); }
+html :is(.civics-modes,.immigration-category-scroll,.theme-choice) button {
+  min-height: 44px; color: var(--ui-muted) !important; background: var(--ui-surface-soft) !important; border-color: transparent !important; box-shadow: none !important;
+}
+html :is(.civics-modes,.immigration-category-scroll,.theme-choice) button:is(.active,[aria-pressed="true"]) { color: var(--ui-text) !important; background: var(--ui-surface) !important; border-color: var(--ui-border) !important; }
+
+.section-navigation { display: flex; align-items: center; gap: 8px; min-width: 0; max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; scrollbar-width: thin; padding: 4px 2px 10px; scroll-padding-inline: 8px; }
+.section-navigation button { flex: 0 0 auto; min-height: 44px; padding: 10px 16px; border: 1px solid transparent; border-radius: 999px; background: var(--ui-surface-soft); color: var(--ui-muted); font-size: var(--ui-secondary); white-space: nowrap; }
+.section-navigation button:hover { background: var(--ui-surface); color: var(--ui-text); }
+.section-navigation button[aria-current="page"] { border-color: var(--ui-border); background: var(--ui-surface); color: var(--ui-text); font-weight: 650; }
+
+/* Primary destinations never change order. The desktop rail reserves its space. */
+html .global-bottom-navigation { z-index: 80; background: var(--ui-surface); border-color: var(--ui-border); box-shadow: none; gap: 4px; }
+html .global-bottom-navigation button { min-width: 0; min-height: 56px; max-width: 160px; padding: 6px 3px; border-radius: 12px; font-size: .75rem; line-height: 1.2; color: var(--ui-muted); }
+html .global-bottom-navigation button:hover { background: var(--ui-surface-soft); }
+html .global-bottom-navigation button[aria-current="page"] { color: var(--ui-text); background: var(--ui-surface-soft); font-weight: 650; }
+html .global-bottom-navigation svg { width: 24px; height: 24px; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; filter: none !important; }
+html .global-bottom-navigation button[aria-current="page"] svg { color: var(--ui-accent); }
+
+/* Private responses are optional and use existing N-400 practice. */
+.n400-text-response { width: 100%; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+.n400-text-response label { color: var(--ui-text); font-size: var(--ui-body); }
+.n400-text-response textarea { width: 100%; min-height: 96px; padding: 14px; background: var(--ui-surface); color: var(--ui-text); border: 1px solid var(--ui-border); border-radius: 12px; font: inherit; line-height: 1.5; }
+.n400-known-answer { width: 100%; margin-block: 12px; padding: 12px; color: var(--ui-muted); background: var(--ui-surface); border: 1px solid var(--ui-border); border-radius: 12px; }
+.n400-known-answer summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; color: var(--ui-text); }
+.n400-privacy-note { color: var(--ui-muted); font-size: var(--ui-secondary); line-height: 1.5; }
+.n400-context-summary { display: flex; flex-wrap: wrap; gap: 8px; color: var(--ui-muted); font-size: var(--ui-secondary); }
+html .n400-interview-screen .live-mic-button { background: var(--ui-surface-soft) !important; color: var(--ui-text) !important; border: 1px solid var(--ui-border) !important; box-shadow: none !important; }
+html .live-mic-button { background: var(--ui-surface-soft) !important; color: var(--ui-text) !important; border: 1px solid var(--ui-border) !important; box-shadow: none !important; }
+
+.brain-home { min-height: 0 !important; padding-bottom: 0 !important; }
+.brain-home-main { width: 100%; max-width: 1100px; margin: 0 auto; padding: 24px var(--content-gutter); }
+.brain-home-main h1 { font-size: var(--ui-page-title); margin: 0 0 12px; letter-spacing: -.025em; }
+.brain-home-main p { color: var(--ui-muted); line-height: 1.6; }
+.brain-home-main h2 { font-size: var(--ui-section-title); margin: 0 0 12px; }
+.brain-today { min-width: 0; padding-block: 16px; }
+.brain-today > button { margin-block: 12px; }
+.brain-home-context { display: grid; grid-template-columns: minmax(0,1fr); gap: 16px; min-width: 0; }
+.brain-home-context > section { padding: 20px; border-radius: var(--ui-radius); background: var(--ui-surface); border: 1px solid var(--ui-border); min-width: 0; }
+.brain-plan-details { margin-block: 20px; border-top: 1px solid var(--ui-border); padding-top: 12px; }
+.brain-plan-details summary { min-height: 44px; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.brain-plan-details ul { padding-left: 20px; line-height: 1.8; }
+.brain-home-progress { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.brain-home-main :is(.button-secondary,.button-tertiary) { width: auto; }
+.brain-home-main > .section-navigation { margin-top: 20px; }
+.brain-greeting { grid-column: 1 / -1; }
+.brain-today .button-primary { width: auto; max-width: 100%; }
+.practice-more { border-top: 1px solid var(--ui-border); margin-top: 24px; padding-top: 12px; }
+.practice-more summary { min-height: 44px; cursor: pointer; }
+.practice-option-links { display: flex; gap: 12px; flex-wrap: wrap; padding-top: 12px; }
+.brain-home-context h2 { width: 100%; }
+html .immigration-help-language { min-width: 44px !important; }
+html .settings-content :is(.appearance-settings small,.legal-item-body a) { color: var(--ui-accent) !important; }
+html :is(.podcast-card-copy small,.study-guide-status,.study-guide-loading,.study-guide-error) { color: var(--ui-muted) !important; }
+html :is(.quiz-path-progress span,.quiz-path-progress small,.quiz-question-meta span,.quiz-question-meta em,.quiz-preferred-answer small,.quiz-level-state) { color: var(--ui-muted) !important; }
+html .quiz-level-copy em { overflow: visible; text-overflow: clip; white-space: normal; line-height: 1.5; }
+html :is(.quiz-question-label,.reading-label,.reading-card-count,.reading-card .writing-spanish,.reading-card-heading small) { color: var(--ui-muted) !important; }
+html :is(.reading-button,.writing-ai-button) :is(strong,small,span,svg) { color: var(--ui-accent-text) !important; }
+html :is(.reading-button-copy,.writing-check-copy) small { display: none; }
+html :is(.reading-button-copy,.writing-check-copy) strong { font-size: var(--ui-body) !important; }
+html .coach-message-text { max-height: none !important; overflow: visible !important; }
+html .coach-message-label { color: var(--ui-muted) !important; }
+html .coach-video-call-content > .coach-video-call-card { height: auto !important; min-height: 0 !important; max-height: none !important; background: var(--ui-surface); border-color: var(--ui-border); box-shadow: var(--ui-shadow); }
+html .coach-video-call-card .coach-conversation-avatar { position: relative; inset: auto; min-height: 200px !important; height: 200px; border-radius: 16px 16px 0 0; }
+html .coach-video-call-card .coach-avatar-video { height: 200px; object-fit: contain; object-position: center; }
+html .coach-video-call-card :is(.coach-message,.coach-response-area,.coach-conversation-status) { position: relative; inset: auto; margin: 16px; }
+html .coach-video-call-card .coach-message { padding: 16px; background: var(--ui-surface-soft); border-color: var(--ui-border); box-shadow: none; backdrop-filter: none; }
+html .coach-video-call-card .coach-response-area { max-height: none !important; overflow: visible !important; }
+html .coach-video-call-card :is(.coach-message-text,.coach-response-label,.coach-conversation-status) { color: var(--ui-text); }
+html .coach-video-call-card .coach-conversation-status { background: var(--ui-surface-soft); border-color: var(--ui-border); box-shadow: none; }
+html .coach-video-call-card .coach-call-start-button { grid-template-columns: minmax(0,1fr); padding: 12px 16px; text-align: center; background: var(--ui-accent); border-color: var(--ui-accent); color: var(--ui-accent-text); box-shadow: none; }
+html .coach-video-call-card .coach-call-start-button :is(.coach-call-icon,.coach-call-arrow,.coach-call-copy small) { display: none !important; }
+html .coach-call-copy strong { font-size: var(--ui-body); white-space: normal; color: var(--ui-accent-text); }
+html .podcast-mini-player { position: relative !important; inset: auto !important; width: min(calc(100% - 32px),720px); margin: 12px auto calc(var(--global-navigation-height,80px) + 16px); background: var(--ui-surface) !important; color: var(--ui-text) !important; border-color: var(--ui-border) !important; box-shadow: var(--ui-shadow) !important; }
+html .podcast-mini-player :is(small,strong) { color: var(--ui-text) !important; }
+html .podcast-artwork-mic svg { display: block; width: 40px; height: 40px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+html .podcast-icon { display: block; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+html .podcast-header button::before, html .podcast-header button::after { content: none !important; }
+html .podcast-full-player > .podcast-artwork { width: 180px; max-width: 100%; }
+html .podcast-controls button { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; min-width: 64px; background: var(--ui-surface-soft); color: var(--ui-text); border-color: var(--ui-border); box-shadow: none; }
+html .podcast-controls .podcast-main-play { width: 76px; height: 76px; min-width: 76px; background: var(--ui-accent); color: var(--ui-accent-text); border-color: var(--ui-accent); box-shadow: none; }
+html .podcast-track-info > span { font-size: var(--ui-secondary); color: var(--ui-muted); }
+html .interview-exit-button::before, html .interview-exit-button::after { content: none !important; }
+html .interview-exit-button { font-size: 24px !important; }
+html .interview-brand > small { color: var(--ui-muted) !important; font-size: var(--ui-caption) !important; line-height: 1.4; letter-spacing: normal; }
+html .live-score-summary > span { color: var(--ui-muted) !important; }
+html .civics-study-reveal .civics-study-flip { width: auto !important; height: auto !important; min-height: 44px; flex: 1; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 12px; color: #1f446b; background: #edf2f7; font-size: var(--ui-secondary); line-height: 1.4; }
+html .did-live-avatar { color: var(--ui-text); background: var(--ui-surface) !important; border-color: var(--ui-border) !important; box-shadow: var(--ui-shadow) !important; }
+html .did-live-avatar-intro h2 { margin: 8px 0 12px; font-size: var(--ui-section-title); color: var(--ui-text); }
+html .did-live-avatar-intro :is(p,span) { color: var(--ui-muted); font-size: var(--ui-secondary); line-height: 1.6; }
+html .did-live-avatar-notice { background: var(--ui-surface-soft); border-color: var(--ui-border); }
+html .did-live-avatar-notice h3 { margin-bottom: 12px; font-size: var(--ui-card-title); }
+html .did-live-avatar-notice p { color: var(--ui-muted); font-size: var(--ui-secondary); line-height: 1.6; }
+html .account-sheet::before { content: none; }
+html .account-pricing { grid-template-columns: minmax(0,1fr); background: var(--ui-surface-soft); border-color: var(--ui-border); }
+html .account-pricing > :is(h2,p,ul,div) { grid-column: 1 / -1; min-width: 0; }
+html .account-pricing h2 { font-size: var(--ui-card-title); line-height: 1.4; }
+html .account-pricing :is(p,small,em) { color: var(--ui-muted); font-size: var(--ui-secondary); line-height: 1.6; }
+html .account-pricing strong { color: var(--ui-text); font-size: var(--ui-card-title); }
+html :is(.account-note,.account-intro) { color: var(--ui-muted); font-size: var(--ui-secondary); line-height: 1.6; }
+html .account-eyebrow { color: var(--ui-accent); font-size: var(--ui-caption); }
+html .account-message { color: var(--ui-text); background: var(--ui-surface-soft); border-color: var(--ui-border); }
+html .account-pricing > span { justify-self: start; font-size: var(--ui-caption); color: var(--ui-accent-text); background: var(--ui-accent); }
+html .n400-interview-screen .sarah-live-stage { height: auto !important; min-height: 0 !important; max-height: none !important; padding-top: 200px; overflow: visible; box-shadow: var(--ui-shadow) !important; }
+html .live-interview-screen .interview-header { grid-template-columns: 44px minmax(0,1fr) 44px; gap: 12px; background: var(--ui-background); }
+html .live-interview-screen .interview-brand { min-width: 0; font-size: 16px; letter-spacing: .03em; white-space: normal; }
+html .live-interview-screen .interview-brand > small { font-size: 12px !important; letter-spacing: normal; overflow-wrap: normal; }
+html .n400-interview-screen .live-stage-media { inset: 0 0 auto; height: 200px; border-radius: 16px 16px 0 0; }
+html .n400-interview-screen .live-question-card { position: relative !important; inset: auto !important; margin: 0; border-radius: 0 0 16px 16px; padding: 16px; background: var(--ui-surface) !important; border-color: var(--ui-border) !important; backdrop-filter: none !important; }
+html .n400-interview-screen .live-question-card :is(.question,.question-spanish,.live-question-header,.ai-turn-indicator,small) { color: var(--ui-text) !important; }
+html .n400-interview-screen .live-voice-status { position: relative; inset: auto; padding: 12px; color: var(--ui-muted); background: var(--ui-surface); text-shadow: none; }
+html .n400-interview-screen .live-stage-presence { top: 80px; }
+html .n400-interview-screen .live-interview-controls { padding: 12px 0; border: 0; background: transparent; box-shadow: none; }
+@media(max-width:767px) { html .n400-interview-screen .sarah-live-stage { padding-top: 160px; } html .n400-interview-screen .live-stage-media { height: 160px; } html .n400-interview-screen .live-stage-presence { display: none; } }
+html :is(.button-ghost,.button-tertiary,.profile-tertiary) { background: transparent !important; border-color: transparent !important; padding-inline: 8px; }
+.brain-plan-details li { margin-bottom: 12px; line-height: 1.5; }
+.brain-plan-details li span { display: block; color: var(--ui-muted); margin-top: 4px; }
+.brain-today > span { display: block; color: var(--ui-muted); }
+.brain-home .home-new-header { width: 100% !important; max-width: 1164px !important; height: auto !important; min-height: 76px; margin-inline: auto; padding: 16px var(--content-gutter) !important; background: transparent !important; border-bottom: 1px solid var(--ui-border); display: flex; justify-content: space-between; }
+.brain-home .home-new-brand { font-size: 18px; line-height: 1.3; color: var(--ui-text); text-shadow: none; }
+.brain-home .home-new-brand span { color: var(--ui-accent); }
+.brain-home .language-selector { height: auto; gap: 8px; }
+.brain-home :is(.home-account-button,.home-language,.home-settings-button) { width: 44px !important; height: 44px !important; min-height: 44px; min-width: 44px; color: var(--ui-text) !important; background: var(--ui-surface-soft) !important; border-color: var(--ui-border) !important; box-shadow: none !important; }
+
+@media (min-width: 768px) { .brain-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; align-items: start; } .brain-home-main { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); gap: 24px; align-items: start; } .brain-home-main > .section-navigation { grid-column: 1 / -1; } }
+@media (min-width: 1024px) {
+  citizenship-companion { padding-left: 144px; padding-bottom: 16px; }
+  html .global-navigation-shell { padding-left: 120px; padding-bottom: 24px; }
+  html .global-bottom-navigation { inset: 0 auto 0 0; width: 120px; flex-direction: column; justify-content: flex-start; gap: 8px; padding: 24px 12px; border-top: 0; border-right: 1px solid var(--ui-border); }
+  html .global-bottom-navigation button { flex: 0 0 auto; width: 100%; max-width: none; min-height: 72px; }
+  .brain-grid { grid-template-columns: minmax(0,1.5fr) minmax(240px,1fr); }
+}
+@media (max-width: 767px) {
+  :is(.practice-grid,.practice-options,.brain-grid) { grid-template-columns: minmax(0,1fr); }
+  .civic-profile-panel { padding: 20px; }
+  .civic-profile-panel dl div { grid-template-columns: minmax(0,1fr); gap: 4px; }
+  html .civics-screen .civics-deck-hero { grid-template-columns: 44px minmax(0,1fr); align-items: start; }
+  html .civics-screen .civics-deck-heading h1 { font-size: 24px !important; overflow-wrap: normal; line-height: 1.2; }
+  html .civics-screen .civics-deck-progress { grid-column: 2; width: 100%; min-width: 0; padding: 8px 12px; }
+  html .civics-screen .civics-deck-progress div:first-child { justify-content: space-between; }
+  html .civics-screen .civics-deck-progress div:first-child span { display: inline; }
+  html .civics-screen .civics-modes { display: flex; max-width: 100%; overflow-x: auto; flex-wrap: nowrap; justify-content: flex-start; gap: 8px; }
+  html .civics-screen .civics-modes button { flex: 0 0 auto; font-size: var(--ui-secondary); padding: 10px 12px; white-space: nowrap; overflow-wrap: normal; }
+  html .podcast-card { grid-template-columns: 80px minmax(0,1fr); gap: 12px; }
+  html .podcast-card .podcast-artwork { width: 80px; }
+  html .podcast-card-copy { min-width: 0; padding: 4px 0; }
+  html .podcast-card-copy > strong { font-size: 16px; line-height: 1.5; overflow-wrap: normal; word-break: normal; }
+  html .coach-video-call-identity { display: none; }
+}
+@media (max-width: 360px) {
+  html .global-bottom-navigation button { font-size: .7rem; }
+  .progress-simple-grid { grid-template-columns: minmax(0,1fr); }
+  .progress-simple-history li { align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }

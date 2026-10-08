@@ -1,0 +1,23 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {engineStatus,assertEngineScope,routeFor} from '../src/integration/registry.mjs';
+import {planNextTurn} from '../modules/residency/intelligence/turnPlanner.mjs';
+import {createMemory,recordClaim} from '../modules/residency/intelligence/memory.mjs';
+import {createVault,addVaultRecord,listVault,deleteVault} from '../modules/residency/documents/vault.mjs';
+import {comparePracticeReports} from '../modules/residency/report/progress.mjs';
+import {createFamilyProfile,canShareProfile} from '../modules/residency/accounts/family.mjs';
+import {aggregateUsage,usageGate} from '../modules/residency/admin/usage.mjs';
+import {releaseGate,REQUIRED_CHECKS} from '../modules/residency/platform/releaseGate.mjs';
+test('three engine registry',()=>{assert.equal(engineStatus('asylum').status,'local_copy_connected');assert.equal(routeFor('residency'),'/residency')});
+test('strict engine boundary',()=>{assert.throws(()=>assertEngineScope('citizenship',{engine:'residency'}));assert.equal(assertEngineScope('residency',{engine:'residency'}),true)});
+test('planner advances without claims',()=>assert.equal(planNextTurn({memory:createMemory()}).action,'advance'));
+test('planner asks grounded clarification only',()=>{let m=createMemory();m=recordClaim(m,{topic:'wedding',statement:'2021',questionId:'wedding-date'});m=recordClaim(m,{topic:'wedding',statement:'2022',questionId:'wedding-date'});assert.equal(planNextTurn({memory:m}).action,'clarify');assert.equal(planNextTurn({memory:m,followupsUsed:3}).action,'advance')});
+test('vault enforces ownership and delete',()=>{let v=createVault('owner');v=addVaultRecord(v,{ownerId:'owner',record:{engine:'residency',type:'I-130',name:'sample'}});assert.equal(listVault(v,'owner').length,1);assert.throws(()=>listVault(v,'stranger'));assert.equal(deleteVault(v,'owner').records.length,0)});
+test('reports count not legal score',()=>{const r=comparePracticeReports([{engine:'residency',educationalOnly:true,answered:5,observations:[]}]);assert.equal(r.sessions,1);assert.match(r.notice,/not eligibility/)});
+test('family consent and sharing',()=>{const p=createFamilyProfile({ownerId:'a',profileId:'b',consent:true});assert.equal(canShareProfile(p,{requesterId:'a',recipientConsented:true}),false)});
+test('usage aggregator and gates',()=>{assert.equal(aggregateUsage([{engine:'residency',sessions:2,audioSeconds:100,estimatedCostUSD:0.2}]).sessions,2);assert.equal(usageGate({authenticated:true,consented:true,entitled:true,rateLimitOk:true,spendLimitOk:true}),true);assert.equal(usageGate({authenticated:true}),false)});
+test('release gate refuses unverified production',()=>{assert.equal(releaseGate({}).ready,false);assert.equal(releaseGate(Object.fromEntries(REQUIRED_CHECKS.map(k=>[k,true]))).ready,true)});
+
+test('contracts reject truthy consent and prototype engine names',()=>{assert.throws(()=>createFamilyProfile({ownerId:'a',profileId:'b',consent:'yes'}));assert.equal(usageGate({authenticated:'yes',consented:true,entitled:true,rateLimitOk:true,spendLimitOk:true}),false);assert.equal(engineStatus('toString'),null);assert.throws(()=>assertEngineScope('toString',{engine:'toString'}));assert.throws(()=>listVault(null,undefined));});
+test('planner honors level limits and does not compare unrelated questions',()=>{let m=createMemory();m=recordClaim(m,{topic:'wedding',statement:'2021',questionId:'ceremony'});m=recordClaim(m,{topic:'wedding',statement:'2022',questionId:'party'});assert.equal(planNextTurn({memory:m}).action,'advance');m=recordClaim(m,{topic:'wedding',statement:'2023',questionId:'ceremony'});assert.equal(planNextTurn({memory:m,followupsUsed:1,level:'normal'}).action,'advance');assert.throws(()=>planNextTurn({memory:m,followupsUsed:-1}));});
+test('vault detaches stored document from input and bounds capacity',()=>{let v=createVault('a');const record={engine:'residency',text:{value:'original'}};v=addVaultRecord(v,{ownerId:'a',record});record.text.value='changed';assert.equal(v.records[0].text.value,'original');for(let i=1;i<20;i++)v=addVaultRecord(v,{ownerId:'a',record});assert.throws(()=>addVaultRecord(v,{ownerId:'a',record}));assert.throws(()=>addVaultRecord(v,{ownerId:'b',record}));});
+test('usage totals stay finite and exclude other engines',()=>{assert.deepEqual(aggregateUsage([{engine:'residency',sessions:Infinity,audioSeconds:-2,estimatedCostUSD:NaN},{engine:'asylum',sessions:5}]),{sessions:0,audioSeconds:0,estimatedCostUSD:0});});

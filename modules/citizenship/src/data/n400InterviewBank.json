@@ -1,0 +1,2517 @@
+{
+  "schemaVersion": "1.0.0",
+  "product": "CitizenshipAI",
+  "dataset": "N-400 Naturalization Interview Knowledge Bank",
+  "formEdition": "01/20/25",
+  "generatedFor": "Codex integration",
+  "disclaimer": "Training and comprehension aid only. Users must answer truthfully based on their own N-400 and circumstances. Do not provide legal conclusions or coach concealment.",
+  "sources": [
+    {
+      "id": "USCIS_N400_2025",
+      "title": "Form N-400, Application for Naturalization",
+      "edition": "01/20/25",
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "authority": "USCIS",
+      "role": "authoritative_form"
+    },
+    {
+      "id": "USCIS_WHAT_TO_EXPECT",
+      "title": "Citizenship - What to Expect",
+      "url": "https://my.uscis.gov/citizenship/what_to_expect",
+      "authority": "USCIS",
+      "role": "interview_process"
+    },
+    {
+      "id": "USCIS_TEST_COMPONENTS",
+      "title": "Components of the Naturalization Test",
+      "url": "https://www.uscis.gov/sites/default/files/document/guides/test_components.pdf",
+      "authority": "USCIS",
+      "role": "english_speaking_context"
+    }
+  ],
+  "interviewArchitecture": {
+    "blockOrder": [
+      "PERSONAL",
+      "ELIGIBILITY"
+    ],
+    "subBlockOrder": {
+      "PERSONAL": [
+        "IDENTITY",
+        "BIRTH",
+        "PERMANENT_RESIDENCE",
+        "CURRENT_ADDRESS",
+        "ADDRESS_HISTORY",
+        "MARITAL_HISTORY",
+        "CHILDREN",
+        "PARENTS",
+        "EMPLOYMENT_SCHOOL",
+        "TRAVEL"
+      ],
+      "ELIGIBILITY": [
+        "CITIZENSHIP_VOTING",
+        "TAXES",
+        "ORGANIZATIONS_IDEOLOGY",
+        "SECURITY_VIOLENCE",
+        "PERSECUTION_HARM",
+        "MILITARY_ARMED_GROUPS",
+        "CRIMINAL_HISTORY",
+        "GOOD_MORAL_CHARACTER",
+        "IMMIGRATION_GOVERNMENT",
+        "SELECTIVE_SERVICE",
+        "MILITARY_SERVICE",
+        "OATH_CONSTITUTION"
+      ]
+    },
+    "hardRules": [
+      "Never randomly mix PERSONAL and ELIGIBILITY questions.",
+      "Complete or substantially complete the current sub-block before moving to the next.",
+      "Never ask every paraphrase of the same concept in one interview.",
+      "Use applicant profile data to determine applicable branches.",
+      "Do not invent applicant facts.",
+      "If the applicant answers YES to a sensitive eligibility concept, ask neutral factual follow-ups only; do not suggest a legal conclusion.",
+      "In Interview Mode, do not show Spanish translation before the applicant answers unless accessibility settings require it.",
+      "Civics is a separate module and must not be inserted randomly into N-400 review."
+    ],
+    "transitionScripts": {
+      "PERSONAL_TO_ELIGIBILITY": [
+        "Now I am going to ask you some additional questions about your application.",
+        "Next, I will review some eligibility questions with you."
+      ],
+      "ELIGIBILITY_TO_OATH": [
+        "Now I will ask you a few questions about the Constitution and the Oath of Allegiance."
+      ]
+    },
+    "selectionAlgorithm": [
+      "Load applicant profile and filing basis.",
+      "Set currentBlock = PERSONAL.",
+      "Process PERSONAL sub-blocks in configured order.",
+      "For each concept, check conditions and whether concept ID has already been asked.",
+      "Choose one phrasing from canonicalPracticePrompt + alternatePhrasings.",
+      "Ask applicable follow-ups based on the applicant's answer and profile.",
+      "Mark concept completed.",
+      "After PERSONAL is sufficiently complete, transition to ELIGIBILITY.",
+      "Process ELIGIBILITY sub-blocks in order with conditional branches.",
+      "End with OATH_CONSTITUTION.",
+      "Launch Civics separately if enabled."
+    ],
+    "stateShape": {
+      "currentBlock": "PERSONAL|ELIGIBILITY",
+      "currentSubBlock": "string",
+      "askedQuestionIDs": [],
+      "askedConceptIDs": [],
+      "completedSubBlocks": [],
+      "applicantProfile": {},
+      "followUpDepth": 0
+    }
+  },
+  "modes": {
+    "LEARNING": {
+      "translationAllowed": true,
+      "vocabularyHelp": true,
+      "slowRepeat": true,
+      "answerCoaching": "comprehension_only"
+    },
+    "INTERVIEW": {
+      "translationAllowedBeforeAnswer": false,
+      "vocabularyHelpBeforeAnswer": false,
+      "suggestAnswer": false,
+      "officerStyle": "brief_neutral_professional"
+    }
+  },
+  "questions": [
+    {
+      "id": "P_ID_FULL_NAME",
+      "block": "PERSONAL",
+      "subBlock": "IDENTITY",
+      "concept": "p_id_full_name",
+      "canonicalPracticePrompt": "What is your full legal name?",
+      "alternatePhrasings": [
+        "Please tell me your full name.",
+        "What name do you use legally?"
+      ],
+      "followUps": [
+        "How do you spell your last name?",
+        "Is that the name shown on your application?"
+      ],
+      "vocabulary": [
+        "legal name",
+        "family name",
+        "given name"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_ID_OTHER_NAMES",
+      "block": "PERSONAL",
+      "subBlock": "IDENTITY",
+      "concept": "p_id_other_names",
+      "canonicalPracticePrompt": "Have you used any other names since birth?",
+      "alternatePhrasings": [
+        "Have you ever used another name?",
+        "Are there any other names you have gone by?"
+      ],
+      "followUps": [
+        "What name did you use?",
+        "When did you use that name?"
+      ],
+      "vocabulary": [
+        "other names",
+        "maiden name",
+        "alias"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_ID_NAME_CHANGE",
+      "block": "PERSONAL",
+      "subBlock": "IDENTITY",
+      "concept": "p_id_name_change",
+      "canonicalPracticePrompt": "Do you want to legally change your name?",
+      "alternatePhrasings": [
+        "Are you requesting a legal name change?"
+      ],
+      "followUps": [
+        "What new name would you like to use?"
+      ],
+      "vocabulary": [
+        "legal name change"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_BIRTH_DATE",
+      "block": "PERSONAL",
+      "subBlock": "BIRTH",
+      "concept": "p_birth_date",
+      "canonicalPracticePrompt": "What is your date of birth?",
+      "alternatePhrasings": [
+        "When were you born?"
+      ],
+      "followUps": [
+        "Can you repeat your date of birth?"
+      ],
+      "vocabulary": [
+        "date of birth"
+      ],
+      "answerType": "date",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_BIRTH_COUNTRY",
+      "block": "PERSONAL",
+      "subBlock": "BIRTH",
+      "concept": "p_birth_country",
+      "canonicalPracticePrompt": "What country were you born in?",
+      "alternatePhrasings": [
+        "Where were you born?",
+        "What is your country of birth?"
+      ],
+      "followUps": [
+        "What city or town were you born in?"
+      ],
+      "vocabulary": [
+        "country of birth",
+        "birthplace"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_LPR_DATE",
+      "block": "PERSONAL",
+      "subBlock": "PERMANENT_RESIDENCE",
+      "concept": "p_lpr_date",
+      "canonicalPracticePrompt": "When did you become a lawful permanent resident?",
+      "alternatePhrasings": [
+        "When did you get your Green Card?",
+        "What is your permanent resident since date?"
+      ],
+      "followUps": [
+        "How long have you been a permanent resident?"
+      ],
+      "vocabulary": [
+        "lawful permanent resident",
+        "Green Card",
+        "resident since"
+      ],
+      "answerType": "date",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_ANUMBER",
+      "block": "PERSONAL",
+      "subBlock": "PERMANENT_RESIDENCE",
+      "concept": "p_anumber",
+      "canonicalPracticePrompt": "What is your A-Number?",
+      "alternatePhrasings": [
+        "Can you tell me your Alien Registration Number?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "A-Number",
+        "Alien Registration Number"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_ADDRESS_CURRENT",
+      "block": "PERSONAL",
+      "subBlock": "CURRENT_ADDRESS",
+      "concept": "p_address_current",
+      "canonicalPracticePrompt": "What is your current home address?",
+      "alternatePhrasings": [
+        "Where do you live now?",
+        "What is your current physical address?"
+      ],
+      "followUps": [
+        "How long have you lived there?",
+        "When did you move there?"
+      ],
+      "vocabulary": [
+        "current address",
+        "physical address"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_ADDRESS_CITY_STATE",
+      "block": "PERSONAL",
+      "subBlock": "CURRENT_ADDRESS",
+      "concept": "p_address_city_state",
+      "canonicalPracticePrompt": "What city and state do you live in?",
+      "alternatePhrasings": [
+        "Which city do you live in?",
+        "What state do you live in?"
+      ],
+      "followUps": [
+        "What is your ZIP code?"
+      ],
+      "vocabulary": [
+        "city",
+        "state",
+        "ZIP code"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_ADDRESS_MAILING",
+      "block": "PERSONAL",
+      "subBlock": "CURRENT_ADDRESS",
+      "concept": "p_address_mailing",
+      "canonicalPracticePrompt": "Is your mailing address the same as your physical address?",
+      "alternatePhrasings": [
+        "Do you receive mail at the same address where you live?"
+      ],
+      "followUps": [
+        "What is your mailing address?"
+      ],
+      "vocabulary": [
+        "mailing address",
+        "physical address"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_ADDRESS_PREVIOUS",
+      "block": "PERSONAL",
+      "subBlock": "ADDRESS_HISTORY",
+      "concept": "p_address_previous",
+      "canonicalPracticePrompt": "Where did you live before your current address?",
+      "alternatePhrasings": [
+        "What was your previous address?"
+      ],
+      "followUps": [
+        "When did you live there?",
+        "When did you move out?"
+      ],
+      "vocabulary": [
+        "previous address",
+        "residence history"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_ADDRESS_HISTORY_MORE",
+      "block": "PERSONAL",
+      "subBlock": "ADDRESS_HISTORY",
+      "concept": "p_address_history_more",
+      "canonicalPracticePrompt": "Did you live anywhere else during the required residence period?",
+      "alternatePhrasings": [
+        "Are there any other addresses on your residence history?"
+      ],
+      "followUps": [
+        "What was that address?",
+        "What dates did you live there?"
+      ],
+      "vocabulary": [
+        "required period",
+        "residence history"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_MARITAL_STATUS",
+      "block": "PERSONAL",
+      "subBlock": "MARITAL_HISTORY",
+      "concept": "p_marital_status",
+      "canonicalPracticePrompt": "What is your current marital status?",
+      "alternatePhrasings": [
+        "Are you married?",
+        "Are you single, married, divorced, or widowed?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "marital status"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_SPOUSE_NAME",
+      "block": "PERSONAL",
+      "subBlock": "MARITAL_HISTORY",
+      "concept": "p_spouse_name",
+      "canonicalPracticePrompt": "What is your spouse's full name?",
+      "alternatePhrasings": [
+        "Please tell me your spouse's name."
+      ],
+      "followUps": [
+        "What is your spouse's date of birth?"
+      ],
+      "vocabulary": [
+        "spouse"
+      ],
+      "answerType": "text",
+      "conditions": {
+        "requires": "married"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_MARRIAGE_DATE",
+      "block": "PERSONAL",
+      "subBlock": "MARITAL_HISTORY",
+      "concept": "p_marriage_date",
+      "canonicalPracticePrompt": "When did you marry your current spouse?",
+      "alternatePhrasings": [
+        "What is the date of your marriage?"
+      ],
+      "followUps": [
+        "Where did you get married?"
+      ],
+      "vocabulary": [
+        "marriage date"
+      ],
+      "answerType": "date",
+      "conditions": {
+        "requires": "married"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_SPOUSE_ADDRESS",
+      "block": "PERSONAL",
+      "subBlock": "MARITAL_HISTORY",
+      "concept": "p_spouse_address",
+      "canonicalPracticePrompt": "Does your spouse live at the same address as you?",
+      "alternatePhrasings": [
+        "Do you and your spouse live together?"
+      ],
+      "followUps": [
+        "Where does your spouse live?"
+      ],
+      "vocabulary": [
+        "same address"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "married"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_SPOUSE_CITIZEN",
+      "block": "PERSONAL",
+      "subBlock": "MARITAL_HISTORY",
+      "concept": "p_spouse_citizen",
+      "canonicalPracticePrompt": "Is your spouse a U.S. citizen?",
+      "alternatePhrasings": [
+        "Does your spouse have U.S. citizenship?"
+      ],
+      "followUps": [
+        "When did your spouse become a U.S. citizen?"
+      ],
+      "vocabulary": [
+        "U.S. citizen"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "married"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_PRIOR_MARRIAGES",
+      "block": "PERSONAL",
+      "subBlock": "MARITAL_HISTORY",
+      "concept": "p_prior_marriages",
+      "canonicalPracticePrompt": "Have you been married before?",
+      "alternatePhrasings": [
+        "How many times have you been married?"
+      ],
+      "followUps": [
+        "When did your previous marriage end?",
+        "How did that marriage end?"
+      ],
+      "vocabulary": [
+        "prior marriage",
+        "divorce",
+        "widowed"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_CHILDREN_COUNT",
+      "block": "PERSONAL",
+      "subBlock": "CHILDREN",
+      "concept": "p_children_count",
+      "canonicalPracticePrompt": "Do you have any children?",
+      "alternatePhrasings": [
+        "How many children do you have?"
+      ],
+      "followUps": [
+        "What are their names?"
+      ],
+      "vocabulary": [
+        "children"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_CHILD_NAME",
+      "block": "PERSONAL",
+      "subBlock": "CHILDREN",
+      "concept": "p_child_name",
+      "canonicalPracticePrompt": "What is your child's full name?",
+      "alternatePhrasings": [
+        "Please tell me your child's name."
+      ],
+      "followUps": [
+        "When was your child born?",
+        "Where does your child live?"
+      ],
+      "vocabulary": [
+        "child",
+        "son",
+        "daughter"
+      ],
+      "answerType": "text",
+      "conditions": {
+        "requires": "has_children"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_PARENT_MOTHER",
+      "block": "PERSONAL",
+      "subBlock": "PARENTS",
+      "concept": "p_parent_mother",
+      "canonicalPracticePrompt": "What is your mother's name?",
+      "alternatePhrasings": [
+        "Please tell me your mother's full name."
+      ],
+      "followUps": [
+        "Is your mother a U.S. citizen?"
+      ],
+      "vocabulary": [
+        "mother",
+        "parent"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_PARENT_FATHER",
+      "block": "PERSONAL",
+      "subBlock": "PARENTS",
+      "concept": "p_parent_father",
+      "canonicalPracticePrompt": "What is your father's name?",
+      "alternatePhrasings": [
+        "Please tell me your father's full name."
+      ],
+      "followUps": [
+        "Is your father a U.S. citizen?"
+      ],
+      "vocabulary": [
+        "father",
+        "parent"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_EMPLOYMENT_CURRENT",
+      "block": "PERSONAL",
+      "subBlock": "EMPLOYMENT_SCHOOL",
+      "concept": "p_employment_current",
+      "canonicalPracticePrompt": "Where do you currently work?",
+      "alternatePhrasings": [
+        "Who is your employer?",
+        "Are you currently employed?"
+      ],
+      "followUps": [
+        "What do you do there?",
+        "When did you start working there?"
+      ],
+      "vocabulary": [
+        "employer",
+        "employed",
+        "occupation"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_EMPLOYMENT_OCCUPATION",
+      "block": "PERSONAL",
+      "subBlock": "EMPLOYMENT_SCHOOL",
+      "concept": "p_employment_occupation",
+      "canonicalPracticePrompt": "What is your occupation?",
+      "alternatePhrasings": [
+        "What kind of work do you do?"
+      ],
+      "followUps": [
+        "What is your job title?"
+      ],
+      "vocabulary": [
+        "occupation",
+        "job title"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_EMPLOYMENT_PREVIOUS",
+      "block": "PERSONAL",
+      "subBlock": "EMPLOYMENT_SCHOOL",
+      "concept": "p_employment_previous",
+      "canonicalPracticePrompt": "Where did you work before your current job?",
+      "alternatePhrasings": [
+        "Who was your previous employer?"
+      ],
+      "followUps": [
+        "What dates did you work there?"
+      ],
+      "vocabulary": [
+        "previous employer"
+      ],
+      "answerType": "text",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_SCHOOL_CURRENT",
+      "block": "PERSONAL",
+      "subBlock": "EMPLOYMENT_SCHOOL",
+      "concept": "p_school_current",
+      "canonicalPracticePrompt": "Are you currently attending school?",
+      "alternatePhrasings": [
+        "Are you a student?"
+      ],
+      "followUps": [
+        "What school do you attend?",
+        "What are you studying?"
+      ],
+      "vocabulary": [
+        "school",
+        "student",
+        "field of study"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_TRAVEL_ANY",
+      "block": "PERSONAL",
+      "subBlock": "TRAVEL",
+      "concept": "p_travel_any",
+      "canonicalPracticePrompt": "Have you traveled outside the United States during the required period?",
+      "alternatePhrasings": [
+        "Have you taken any trips outside the United States?"
+      ],
+      "followUps": [
+        "How many trips did you take?"
+      ],
+      "vocabulary": [
+        "trip",
+        "outside the United States"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_TRAVEL_LAST",
+      "block": "PERSONAL",
+      "subBlock": "TRAVEL",
+      "concept": "p_travel_last",
+      "canonicalPracticePrompt": "When was your most recent trip outside the United States?",
+      "alternatePhrasings": [
+        "When did you last leave the United States?"
+      ],
+      "followUps": [
+        "Where did you go?",
+        "When did you return?"
+      ],
+      "vocabulary": [
+        "most recent trip",
+        "departure",
+        "return"
+      ],
+      "answerType": "date",
+      "conditions": {
+        "requires": "has_travel"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_TRAVEL_DEST",
+      "block": "PERSONAL",
+      "subBlock": "TRAVEL",
+      "concept": "p_travel_dest",
+      "canonicalPracticePrompt": "Which country or countries did you visit on that trip?",
+      "alternatePhrasings": [
+        "Where did you travel?"
+      ],
+      "followUps": [
+        "What was the purpose of the trip?"
+      ],
+      "vocabulary": [
+        "destination",
+        "country"
+      ],
+      "answerType": "text",
+      "conditions": {
+        "requires": "has_travel"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_TRAVEL_LENGTH",
+      "block": "PERSONAL",
+      "subBlock": "TRAVEL",
+      "concept": "p_travel_length",
+      "canonicalPracticePrompt": "How long were you outside the United States on that trip?",
+      "alternatePhrasings": [
+        "How many days were you outside the United States?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "trip length",
+        "days outside"
+      ],
+      "answerType": "duration",
+      "conditions": {
+        "requires": "has_travel"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "P_TRAVEL_MORE",
+      "block": "PERSONAL",
+      "subBlock": "TRAVEL",
+      "concept": "p_travel_more",
+      "canonicalPracticePrompt": "Did you take any other trips outside the United States?",
+      "alternatePhrasings": [
+        "Were there additional trips?"
+      ],
+      "followUps": [
+        "When was the next trip?"
+      ],
+      "vocabulary": [
+        "additional trip"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "has_travel"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_USC_CLAIM",
+      "block": "ELIGIBILITY",
+      "subBlock": "CITIZENSHIP_VOTING",
+      "concept": "e_usc_claim",
+      "canonicalPracticePrompt": "Have you ever claimed to be a U.S. citizen?",
+      "alternatePhrasings": [
+        "Have you ever said or written that you were a U.S. citizen?"
+      ],
+      "followUps": [
+        "When did that happen?",
+        "Where did that happen?"
+      ],
+      "vocabulary": [
+        "claim",
+        "U.S. citizen"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_VOTE_REGISTER",
+      "block": "ELIGIBILITY",
+      "subBlock": "CITIZENSHIP_VOTING",
+      "concept": "e_vote_register",
+      "canonicalPracticePrompt": "Have you ever registered to vote or voted in a U.S. federal, state, or local election?",
+      "alternatePhrasings": [
+        "Have you ever registered for an election in the United States?",
+        "Have you ever voted in a U.S. election?"
+      ],
+      "followUps": [
+        "When?",
+        "Where?",
+        "What type of election was it?"
+      ],
+      "vocabulary": [
+        "register to vote",
+        "federal election",
+        "state election",
+        "local election"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_TAX_OVERDUE",
+      "block": "ELIGIBILITY",
+      "subBlock": "TAXES",
+      "concept": "e_tax_overdue",
+      "canonicalPracticePrompt": "Do you currently owe overdue federal, state, or local taxes?",
+      "alternatePhrasings": [
+        "Do you have any overdue taxes in the United States?"
+      ],
+      "followUps": [
+        "Do you have a payment agreement?"
+      ],
+      "vocabulary": [
+        "overdue taxes",
+        "federal",
+        "state",
+        "local"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_TAX_NONRESIDENT",
+      "block": "ELIGIBILITY",
+      "subBlock": "TAXES",
+      "concept": "e_tax_nonresident",
+      "canonicalPracticePrompt": "Since becoming a permanent resident, have you called yourself a nonresident alien on a tax return or avoided filing because you considered yourself a nonresident?",
+      "alternatePhrasings": [
+        "After getting your Green Card, did you ever file taxes as a nonresident or not file because you considered yourself a nonresident?"
+      ],
+      "followUps": [
+        "When?",
+        "Why?"
+      ],
+      "vocabulary": [
+        "nonresident alien",
+        "tax return",
+        "file taxes"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_PARTY_TOTALITARIAN",
+      "block": "ELIGIBILITY",
+      "subBlock": "ORGANIZATIONS_IDEOLOGY",
+      "concept": "e_party_totalitarian",
+      "canonicalPracticePrompt": "Have you ever been a member of or associated with a Communist or totalitarian party?",
+      "alternatePhrasings": [
+        "Have you ever been involved with a Communist or totalitarian political party anywhere in the world?"
+      ],
+      "followUps": [
+        "What organization?",
+        "When were you involved?",
+        "What was your role?"
+      ],
+      "vocabulary": [
+        "member",
+        "associated",
+        "Communist",
+        "totalitarian"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_ADVOCACY_OVERTHROW",
+      "block": "ELIGIBILITY",
+      "subBlock": "ORGANIZATIONS_IDEOLOGY",
+      "concept": "e_advocacy_overthrow",
+      "canonicalPracticePrompt": "Have you ever supported or belonged to a group that advocated overthrowing government by force, unlawful violence, sabotage, or similar acts?",
+      "alternatePhrasings": [
+        "Have you ever been involved with a group that promoted violent or unconstitutional overthrow of government?"
+      ],
+      "followUps": [
+        "What group?",
+        "What did the group advocate?",
+        "What was your involvement?"
+      ],
+      "vocabulary": [
+        "advocate",
+        "overthrow",
+        "force",
+        "violence",
+        "sabotage"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_TERROR_SUPPORT_WEAPON",
+      "block": "ELIGIBILITY",
+      "subBlock": "SECURITY_VIOLENCE",
+      "concept": "e_terror_support_weapon",
+      "canonicalPracticePrompt": "Have you ever been involved with or supported a group that used weapons or explosives to harm people or damage property?",
+      "alternatePhrasings": [
+        "Have you ever given money, services, labor, or other support to a group that used weapons or explosives for harm?"
+      ],
+      "followUps": [
+        "What group?",
+        "What support did you provide?",
+        "When?"
+      ],
+      "vocabulary": [
+        "support",
+        "weapon",
+        "explosive",
+        "harm",
+        "property"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_TERROR_KIDNAP",
+      "block": "ELIGIBILITY",
+      "subBlock": "SECURITY_VIOLENCE",
+      "concept": "e_terror_kidnap",
+      "canonicalPracticePrompt": "Have you ever been involved with or supported a group that participated in kidnapping, assassination, hijacking, or sabotage of transportation?",
+      "alternatePhrasings": [
+        "Have you ever helped a group connected to kidnapping, assassination, hijacking, or transportation sabotage?"
+      ],
+      "followUps": [
+        "What group?",
+        "What happened?"
+      ],
+      "vocabulary": [
+        "kidnapping",
+        "assassination",
+        "hijacking",
+        "sabotage"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_TERROR_PLAN",
+      "block": "ELIGIBILITY",
+      "subBlock": "SECURITY_VIOLENCE",
+      "concept": "e_terror_plan",
+      "canonicalPracticePrompt": "Have you ever threatened, attempted, planned, encouraged, or helped others prepare acts involving weapons, explosives, kidnapping, assassination, hijacking, or sabotage?",
+      "alternatePhrasings": [
+        "Have you ever helped plan or encourage any of those acts?"
+      ],
+      "followUps": [
+        "What happened?",
+        "What was your role?"
+      ],
+      "vocabulary": [
+        "attempted",
+        "conspired",
+        "planned",
+        "incited"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_TORTURE",
+      "block": "ELIGIBILITY",
+      "subBlock": "PERSECUTION_HARM",
+      "concept": "e_torture",
+      "canonicalPracticePrompt": "Have you ever ordered, helped with, or participated in torture?",
+      "alternatePhrasings": [
+        "Have you ever taken part in torture or helped someone else commit torture?"
+      ],
+      "followUps": [
+        "What happened?",
+        "Where?",
+        "When?"
+      ],
+      "vocabulary": [
+        "torture",
+        "participated",
+        "assisted"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_GENOCIDE",
+      "block": "ELIGIBILITY",
+      "subBlock": "PERSECUTION_HARM",
+      "concept": "e_genocide",
+      "canonicalPracticePrompt": "Have you ever ordered, helped with, or participated in genocide?",
+      "alternatePhrasings": [
+        "Have you ever taken part in or assisted genocide?"
+      ],
+      "followUps": [
+        "What happened?",
+        "Where?",
+        "When?"
+      ],
+      "vocabulary": [
+        "genocide",
+        "assisted"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_KILLING",
+      "block": "ELIGIBILITY",
+      "subBlock": "PERSECUTION_HARM",
+      "concept": "e_killing",
+      "canonicalPracticePrompt": "Have you ever killed or tried to kill another person, or helped someone do so?",
+      "alternatePhrasings": [
+        "Have you ever participated in killing or attempted killing?"
+      ],
+      "followUps": [
+        "What happened?",
+        "Where?",
+        "When?"
+      ],
+      "vocabulary": [
+        "kill",
+        "attempt",
+        "participate"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_SEVERE_INJURY",
+      "block": "ELIGIBILITY",
+      "subBlock": "PERSECUTION_HARM",
+      "concept": "e_severe_injury",
+      "canonicalPracticePrompt": "Have you ever intentionally caused or tried to cause severe injury to another person, or helped someone do so?",
+      "alternatePhrasings": [
+        "Have you ever seriously injured someone on purpose or helped with that?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "severe injury",
+        "intentionally"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_NONCONSENSUAL_SEX",
+      "block": "ELIGIBILITY",
+      "subBlock": "PERSECUTION_HARM",
+      "concept": "e_nonconsensual_sex",
+      "canonicalPracticePrompt": "Have you ever participated in sexual contact or activity with a person who did not or could not consent?",
+      "alternatePhrasings": [
+        "Have you ever forced, threatened, or helped force someone into sexual activity?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "consent",
+        "forced",
+        "threatened"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_RELIGIOUS_PERSECUTION",
+      "block": "ELIGIBILITY",
+      "subBlock": "PERSECUTION_HARM",
+      "concept": "e_religious_persecution",
+      "canonicalPracticePrompt": "Have you ever prevented someone from practicing their religion?",
+      "alternatePhrasings": [
+        "Have you ever stopped or helped stop a person from practicing their religion?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "religion",
+        "practice",
+        "prevented"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_PROTECTED_HARM",
+      "block": "ELIGIBILITY",
+      "subBlock": "PERSECUTION_HARM",
+      "concept": "e_protected_harm",
+      "canonicalPracticePrompt": "Have you ever caused harm or suffering to someone because of race, religion, national origin, social group, or political opinion?",
+      "alternatePhrasings": [
+        "Have you ever persecuted or helped harm someone for one of those reasons?"
+      ],
+      "followUps": [
+        "What happened?",
+        "Why?"
+      ],
+      "vocabulary": [
+        "race",
+        "religion",
+        "national origin",
+        "social group",
+        "political opinion"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_MIL_POLICE_UNIT",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_ARMED_GROUPS",
+      "concept": "e_mil_police_unit",
+      "canonicalPracticePrompt": "Have you ever served in, helped, or participated in a military or police unit?",
+      "alternatePhrasings": [
+        "Have you ever been a member of a military or police organization anywhere in the world?"
+      ],
+      "followUps": [
+        "What country?",
+        "What unit?",
+        "What was your rank or role?",
+        "What dates?"
+      ],
+      "vocabulary": [
+        "military unit",
+        "police unit",
+        "rank"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_ARMED_GROUP",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_ARMED_GROUPS",
+      "concept": "e_armed_group",
+      "canonicalPracticePrompt": "Have you ever served in, helped, or participated in an armed group such as a paramilitary, vigilante, rebel, guerrilla, or self-defense unit?",
+      "alternatePhrasings": [
+        "Have you ever belonged to or assisted an armed group outside the regular military?"
+      ],
+      "followUps": [
+        "What group?",
+        "What was your role?",
+        "When?"
+      ],
+      "vocabulary": [
+        "armed group",
+        "paramilitary",
+        "vigilante",
+        "rebel",
+        "guerrilla"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_DETENTION_PLACE",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_ARMED_GROUPS",
+      "concept": "e_detention_place",
+      "canonicalPracticePrompt": "Have you ever worked or volunteered in a place where people were detained, or participated in detaining people?",
+      "alternatePhrasings": [
+        "Have you ever worked at a prison, jail, detention facility, prison camp, or labor camp?"
+      ],
+      "followUps": [
+        "What place?",
+        "What was your job?",
+        "When?"
+      ],
+      "vocabulary": [
+        "detained",
+        "prison",
+        "jail",
+        "detention facility",
+        "labor camp"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_GROUP_WEAPON_USE",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_ARMED_GROUPS",
+      "concept": "e_group_weapon_use",
+      "canonicalPracticePrompt": "Have you ever been part of or helped a group that used or threatened to use weapons against another person?",
+      "alternatePhrasings": [
+        "Have you ever assisted a group that used weapons against people?"
+      ],
+      "followUps": [
+        "Did you personally use a weapon?",
+        "Did you personally threaten someone with a weapon?"
+      ],
+      "vocabulary": [
+        "weapon",
+        "threatened",
+        "group"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_PERSONAL_WEAPON_USE",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_ARMED_GROUPS",
+      "concept": "e_personal_weapon_use",
+      "canonicalPracticePrompt": "While part of such a group, did you ever use a weapon against another person?",
+      "alternatePhrasings": [
+        "Did you personally use a weapon against someone?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "weapon",
+        "use"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "group_weapon_use_yes"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_PERSONAL_WEAPON_THREAT",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_ARMED_GROUPS",
+      "concept": "e_personal_weapon_threat",
+      "canonicalPracticePrompt": "While part of such a group, did you ever threaten another person with a weapon?",
+      "alternatePhrasings": [
+        "Did you personally threaten someone that you would use a weapon?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "threaten",
+        "weapon"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "group_weapon_use_yes"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_WEAPON_TRANSFER",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_ARMED_GROUPS",
+      "concept": "e_weapon_transfer",
+      "canonicalPracticePrompt": "Have you ever sold, provided, or transported weapons knowing or believing they would be used against another person?",
+      "alternatePhrasings": [
+        "Have you ever helped supply or move weapons that you believed would be used against people?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "sold",
+        "provided",
+        "transported",
+        "weapons"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_WEAPON_TRAINING",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_ARMED_GROUPS",
+      "concept": "e_weapon_training",
+      "canonicalPracticePrompt": "Have you ever received weapons, paramilitary, or other military-type training?",
+      "alternatePhrasings": [
+        "Have you ever had weapons or paramilitary training?"
+      ],
+      "followUps": [
+        "Where?",
+        "When?",
+        "Who provided the training?"
+      ],
+      "vocabulary": [
+        "weapons training",
+        "paramilitary training"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_CHILD_RECRUIT",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_ARMED_GROUPS",
+      "concept": "e_child_recruit",
+      "canonicalPracticePrompt": "Have you ever recruited, enlisted, conscripted, or used anyone under age 15 to serve or help an armed group?",
+      "alternatePhrasings": [
+        "Have you ever helped bring a child under 15 into an armed group?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "recruited",
+        "enlisted",
+        "conscripted",
+        "under 15"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_CHILD_HOSTILITIES",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_ARMED_GROUPS",
+      "concept": "e_child_hostilities",
+      "canonicalPracticePrompt": "Have you ever used a person under age 15 to take part in hostilities or combat-related support?",
+      "alternatePhrasings": [
+        "Have you ever used a child under 15 in combat or related support such as carrying messages or supplies?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "hostilities",
+        "combat",
+        "messenger",
+        "supplies"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_CRIME_UNARRESTED",
+      "block": "ELIGIBILITY",
+      "subBlock": "CRIMINAL_HISTORY",
+      "concept": "e_crime_unarrested",
+      "canonicalPracticePrompt": "Have you ever committed a crime or offense for which you were not arrested?",
+      "alternatePhrasings": [
+        "Have you ever committed an offense even though you were never arrested for it?"
+      ],
+      "followUps": [
+        "What was the offense?",
+        "When and where did it happen?"
+      ],
+      "vocabulary": [
+        "crime",
+        "offense",
+        "arrested"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_ARREST_CITE_DETAIN",
+      "block": "ELIGIBILITY",
+      "subBlock": "CRIMINAL_HISTORY",
+      "concept": "e_arrest_cite_detain",
+      "canonicalPracticePrompt": "Have you ever been arrested, cited, detained, confined, or charged with a crime or offense?",
+      "alternatePhrasings": [
+        "Have you ever had any contact with law enforcement involving an arrest, citation, detention, confinement, or criminal charge?"
+      ],
+      "followUps": [
+        "What happened?",
+        "When?",
+        "Where?",
+        "What was the result?"
+      ],
+      "vocabulary": [
+        "arrested",
+        "cited",
+        "detained",
+        "confined",
+        "charged"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": "Records may still need disclosure even if sealed, expunged, or otherwise cleared; do not coach a user to conceal history."
+    },
+    {
+      "id": "E_CRIME_DISPOSITION",
+      "block": "ELIGIBILITY",
+      "subBlock": "CRIMINAL_HISTORY",
+      "concept": "e_crime_disposition",
+      "canonicalPracticePrompt": "What was the outcome or disposition of that arrest, citation, detention, or charge?",
+      "alternatePhrasings": [
+        "How was the case resolved?"
+      ],
+      "followUps": [
+        "Were you convicted?",
+        "Were the charges dismissed?",
+        "Did you receive probation or jail time?"
+      ],
+      "vocabulary": [
+        "outcome",
+        "disposition",
+        "convicted",
+        "dismissed",
+        "probation"
+      ],
+      "answerType": "text",
+      "conditions": {
+        "requires": "criminal_history_yes"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_PROBATION_COMPLETE",
+      "block": "ELIGIBILITY",
+      "subBlock": "CRIMINAL_HISTORY",
+      "concept": "e_probation_complete",
+      "canonicalPracticePrompt": "If you received a suspended sentence, probation, or parole, have you completed it?",
+      "alternatePhrasings": [
+        "Did you finish all probation, parole, or suspended-sentence requirements?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "suspended sentence",
+        "probation",
+        "parole"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "probation_or_parole"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_PROSTITUTION",
+      "block": "ELIGIBILITY",
+      "subBlock": "GOOD_MORAL_CHARACTER",
+      "concept": "e_prostitution",
+      "canonicalPracticePrompt": "Have you ever engaged in prostitution, helped obtain or import persons for prostitution, or received money from prostitution?",
+      "alternatePhrasings": [
+        "Have you ever participated in, arranged, or profited from prostitution?"
+      ],
+      "followUps": [
+        "What happened?",
+        "When?"
+      ],
+      "vocabulary": [
+        "prostitution",
+        "procure",
+        "proceeds"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_DRUG_TRAFFICKING",
+      "block": "ELIGIBILITY",
+      "subBlock": "GOOD_MORAL_CHARACTER",
+      "concept": "e_drug_trafficking",
+      "canonicalPracticePrompt": "Have you ever illegally manufactured, produced, distributed, sold, or smuggled controlled substances, illegal drugs, narcotics, or drug paraphernalia?",
+      "alternatePhrasings": [
+        "Have you ever trafficked or illegally handled controlled substances or drug paraphernalia?"
+      ],
+      "followUps": [
+        "What happened?",
+        "When?"
+      ],
+      "vocabulary": [
+        "controlled substance",
+        "narcotics",
+        "trafficked",
+        "paraphernalia"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_POLYGAMY",
+      "block": "ELIGIBILITY",
+      "subBlock": "GOOD_MORAL_CHARACTER",
+      "concept": "e_polygamy",
+      "canonicalPracticePrompt": "Have you ever been married to more than one person at the same time?",
+      "alternatePhrasings": [
+        "Have you ever had more than one legal spouse at the same time?"
+      ],
+      "followUps": [
+        "When?"
+      ],
+      "vocabulary": [
+        "married",
+        "same time"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_MARRIAGE_FRAUD",
+      "block": "ELIGIBILITY",
+      "subBlock": "GOOD_MORAL_CHARACTER",
+      "concept": "e_marriage_fraud",
+      "canonicalPracticePrompt": "Have you ever married someone in order to obtain an immigration benefit?",
+      "alternatePhrasings": [
+        "Have you ever entered a marriage mainly to get an immigration benefit?"
+      ],
+      "followUps": [
+        "When?",
+        "What happened?"
+      ],
+      "vocabulary": [
+        "immigration benefit",
+        "marriage"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_SMUGGLE_ENTRY",
+      "block": "ELIGIBILITY",
+      "subBlock": "GOOD_MORAL_CHARACTER",
+      "concept": "e_smuggle_entry",
+      "canonicalPracticePrompt": "Have you ever helped anyone enter or try to enter the United States illegally?",
+      "alternatePhrasings": [
+        "Have you ever assisted someone in entering the United States unlawfully?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "enter illegally",
+        "helped"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_ILLEGAL_GAMBLING",
+      "block": "ELIGIBILITY",
+      "subBlock": "GOOD_MORAL_CHARACTER",
+      "concept": "e_illegal_gambling",
+      "canonicalPracticePrompt": "Have you ever gambled illegally or received income from illegal gambling?",
+      "alternatePhrasings": [
+        "Have you ever participated in or profited from illegal gambling?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "gambling",
+        "income"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_SUPPORT_DEPENDENTS",
+      "block": "ELIGIBILITY",
+      "subBlock": "GOOD_MORAL_CHARACTER",
+      "concept": "e_support_dependents",
+      "canonicalPracticePrompt": "Have you ever failed to support your dependents or pay court-ordered alimony?",
+      "alternatePhrasings": [
+        "Have you ever failed to pay required child support or alimony?"
+      ],
+      "followUps": [
+        "What happened?",
+        "Do you currently owe support?"
+      ],
+      "vocabulary": [
+        "dependents",
+        "child support",
+        "alimony"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_PUBLIC_BENEFIT_MISREP",
+      "block": "ELIGIBILITY",
+      "subBlock": "GOOD_MORAL_CHARACTER",
+      "concept": "e_public_benefit_misrep",
+      "canonicalPracticePrompt": "Have you ever made a misrepresentation to obtain a public benefit in the United States?",
+      "alternatePhrasings": [
+        "Have you ever provided false or misleading information to receive a public benefit?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "misrepresentation",
+        "public benefit"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_FALSE_DOC_GOV",
+      "block": "ELIGIBILITY",
+      "subBlock": "IMMIGRATION_GOVERNMENT",
+      "concept": "e_false_doc_gov",
+      "canonicalPracticePrompt": "Have you ever given a U.S. government official false, fraudulent, or misleading information or documents?",
+      "alternatePhrasings": [
+        "Have you ever provided false or misleading information or documents to the U.S. government?"
+      ],
+      "followUps": [
+        "What was provided?",
+        "When?",
+        "Why?"
+      ],
+      "vocabulary": [
+        "false",
+        "fraudulent",
+        "misleading",
+        "documentation"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_LIED_ENTRY_BENEFIT",
+      "block": "ELIGIBILITY",
+      "subBlock": "IMMIGRATION_GOVERNMENT",
+      "concept": "e_lied_entry_benefit",
+      "canonicalPracticePrompt": "Have you ever lied to a U.S. government official to gain entry to the United States or obtain an immigration benefit?",
+      "alternatePhrasings": [
+        "Have you ever made a false statement to get into the United States or get an immigration benefit?"
+      ],
+      "followUps": [
+        "What happened?"
+      ],
+      "vocabulary": [
+        "gain entry",
+        "immigration benefit",
+        "lied"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_REMOVAL_PROCEEDINGS",
+      "block": "ELIGIBILITY",
+      "subBlock": "IMMIGRATION_GOVERNMENT",
+      "concept": "e_removal_proceedings",
+      "canonicalPracticePrompt": "Have you ever been placed in removal, rescission, or deportation proceedings?",
+      "alternatePhrasings": [
+        "Have you ever had immigration court or proceedings involving removal, rescission, or deportation?"
+      ],
+      "followUps": [
+        "When?",
+        "Where?",
+        "What was the outcome?"
+      ],
+      "vocabulary": [
+        "removal",
+        "rescission",
+        "deportation",
+        "proceedings"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_REMOVED_DEPORTED",
+      "block": "ELIGIBILITY",
+      "subBlock": "IMMIGRATION_GOVERNMENT",
+      "concept": "e_removed_deported",
+      "canonicalPracticePrompt": "Have you ever been removed or deported from the United States?",
+      "alternatePhrasings": [
+        "Has the U.S. government ever removed or deported you?"
+      ],
+      "followUps": [
+        "When?",
+        "What happened?"
+      ],
+      "vocabulary": [
+        "removed",
+        "deported"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_SELECTIVE_MALE_18_25",
+      "block": "ELIGIBILITY",
+      "subBlock": "SELECTIVE_SERVICE",
+      "concept": "e_selective_male_18_25",
+      "canonicalPracticePrompt": "Were you a male who lived in the United States at any time between your 18th and 26th birthdays, other than only as a lawful nonimmigrant?",
+      "alternatePhrasings": [
+        "Did you live in the United States as a male between ages 18 and 25?"
+      ],
+      "followUps": [
+        "Did you register with Selective Service?"
+      ],
+      "vocabulary": [
+        "Selective Service",
+        "18th birthday",
+        "26th birthday",
+        "nonimmigrant"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_SELECTIVE_REGISTER",
+      "block": "ELIGIBILITY",
+      "subBlock": "SELECTIVE_SERVICE",
+      "concept": "e_selective_register",
+      "canonicalPracticePrompt": "Did you register for Selective Service?",
+      "alternatePhrasings": [
+        "Are you registered with the Selective Service System?"
+      ],
+      "followUps": [
+        "What is your registration date?",
+        "What is your Selective Service number?"
+      ],
+      "vocabulary": [
+        "Selective Service",
+        "register"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "selective_service_applicable"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_DRAFT_AVOID",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_SERVICE",
+      "concept": "e_draft_avoid",
+      "canonicalPracticePrompt": "Have you ever left the United States to avoid being drafted into the U.S. armed forces?",
+      "alternatePhrasings": [
+        "Have you ever left the country to avoid a U.S. military draft?"
+      ],
+      "followUps": [
+        "When?",
+        "Why?"
+      ],
+      "vocabulary": [
+        "draft",
+        "armed forces"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_MIL_EXEMPTION",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_SERVICE",
+      "concept": "e_mil_exemption",
+      "canonicalPracticePrompt": "Have you ever applied for an exemption from U.S. military service?",
+      "alternatePhrasings": [
+        "Have you ever asked to be exempt from service in the U.S. armed forces?"
+      ],
+      "followUps": [
+        "When?",
+        "What was the reason?"
+      ],
+      "vocabulary": [
+        "exemption",
+        "military service"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_MIL_SERVED",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_SERVICE",
+      "concept": "e_mil_served",
+      "canonicalPracticePrompt": "Have you ever served in the U.S. armed forces?",
+      "alternatePhrasings": [
+        "Have you ever been a member of the U.S. military?"
+      ],
+      "followUps": [
+        "Are you currently serving?",
+        "What branch did you serve in?"
+      ],
+      "vocabulary": [
+        "U.S. armed forces",
+        "served"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_MIL_CURRENT",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_SERVICE",
+      "concept": "e_mil_current",
+      "canonicalPracticePrompt": "Are you currently a member of the U.S. armed forces?",
+      "alternatePhrasings": [
+        "Are you currently serving in the U.S. military?"
+      ],
+      "followUps": [
+        "Are you scheduled to deploy outside the United States within the next three months?",
+        "Are you currently stationed outside the United States?"
+      ],
+      "vocabulary": [
+        "current member",
+        "deploy",
+        "stationed"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "served_us_military"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_MIL_FORMER_ABROAD",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_SERVICE",
+      "concept": "e_mil_former_abroad",
+      "canonicalPracticePrompt": "If you are no longer serving, are you a former U.S. military member currently living outside the United States?",
+      "alternatePhrasings": [
+        "Are you a former U.S. service member now residing abroad?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "former service member",
+        "residing abroad"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "former_us_military"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_MIL_COURT_DISCHARGE",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_SERVICE",
+      "concept": "e_mil_court_discharge",
+      "canonicalPracticePrompt": "Have you ever been court-martialed or received an other-than-honorable, bad-conduct, or dishonorable discharge from the U.S. armed forces?",
+      "alternatePhrasings": [
+        "Have you ever had a court-martial or a negative military discharge characterization?"
+      ],
+      "followUps": [
+        "What happened?",
+        "When?"
+      ],
+      "vocabulary": [
+        "court-martial",
+        "other than honorable",
+        "bad conduct",
+        "dishonorable discharge"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "served_us_military"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_MIL_ALIEN_DISCHARGE",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_SERVICE",
+      "concept": "e_mil_alien_discharge",
+      "canonicalPracticePrompt": "Have you ever been discharged from U.S. military training or service because you were an alien?",
+      "alternatePhrasings": [
+        "Were you ever released from U.S. military service because of alien status?"
+      ],
+      "followUps": [
+        "When?",
+        "What happened?"
+      ],
+      "vocabulary": [
+        "discharged",
+        "alien"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "served_us_military"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_MIL_DESERTED",
+      "block": "ELIGIBILITY",
+      "subBlock": "MILITARY_SERVICE",
+      "concept": "e_mil_deserted",
+      "canonicalPracticePrompt": "Have you ever deserted from the U.S. armed forces?",
+      "alternatePhrasings": [
+        "Have you ever left U.S. military service without authorization in a way considered desertion?"
+      ],
+      "followUps": [
+        "When?",
+        "What happened?"
+      ],
+      "vocabulary": [
+        "deserted",
+        "armed forces"
+      ],
+      "answerType": "yes_no",
+      "conditions": {
+        "requires": "served_us_military"
+      },
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_NOBILITY_TITLE",
+      "block": "ELIGIBILITY",
+      "subBlock": "OATH_CONSTITUTION",
+      "concept": "e_nobility_title",
+      "canonicalPracticePrompt": "Do you now have, or have you ever had, a hereditary title or order of nobility in a foreign country?",
+      "alternatePhrasings": [
+        "Have you ever held an inherited title of nobility in another country?"
+      ],
+      "followUps": [
+        "Are you willing to give it up at naturalization?"
+      ],
+      "vocabulary": [
+        "hereditary title",
+        "order of nobility"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_SUPPORT_CONSTITUTION",
+      "block": "ELIGIBILITY",
+      "subBlock": "OATH_CONSTITUTION",
+      "concept": "e_support_constitution",
+      "canonicalPracticePrompt": "Do you support the Constitution and form of government of the United States?",
+      "alternatePhrasings": [
+        "Do you support the U.S. Constitution and the U.S. form of government?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "Constitution",
+        "form of government"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_UNDERSTAND_OATH",
+      "block": "ELIGIBILITY",
+      "subBlock": "OATH_CONSTITUTION",
+      "concept": "e_understand_oath",
+      "canonicalPracticePrompt": "Do you understand the full Oath of Allegiance to the United States?",
+      "alternatePhrasings": [
+        "Do you understand the Oath of Allegiance?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "Oath of Allegiance"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_WILLING_OATH",
+      "block": "ELIGIBILITY",
+      "subBlock": "OATH_CONSTITUTION",
+      "concept": "e_willing_oath",
+      "canonicalPracticePrompt": "Are you willing to take the full Oath of Allegiance to the United States?",
+      "alternatePhrasings": [
+        "Are you willing to take the Oath of Allegiance?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "willing",
+        "Oath of Allegiance"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_BEAR_ARMS",
+      "block": "ELIGIBILITY",
+      "subBlock": "OATH_CONSTITUTION",
+      "concept": "e_bear_arms",
+      "canonicalPracticePrompt": "If the law requires it, are you willing to bear arms on behalf of the United States?",
+      "alternatePhrasings": [
+        "If required by law, would you be willing to carry weapons on behalf of the United States?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "bear arms",
+        "required by law"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_NONCOMBATANT",
+      "block": "ELIGIBILITY",
+      "subBlock": "OATH_CONSTITUTION",
+      "concept": "e_noncombatant",
+      "canonicalPracticePrompt": "If the law requires it, are you willing to perform noncombatant service in the U.S. armed forces?",
+      "alternatePhrasings": [
+        "If required by law, would you perform military service that does not involve fighting?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "noncombatant service"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    },
+    {
+      "id": "E_NATIONAL_IMPORTANCE",
+      "block": "ELIGIBILITY",
+      "subBlock": "OATH_CONSTITUTION",
+      "concept": "e_national_importance",
+      "canonicalPracticePrompt": "If the law requires it, are you willing to perform work of national importance under civilian direction?",
+      "alternatePhrasings": [
+        "If required by law, would you do civilian work considered important to the United States?"
+      ],
+      "followUps": [],
+      "vocabulary": [
+        "national importance",
+        "civilian direction"
+      ],
+      "answerType": "yes_no",
+      "conditions": {},
+      "sourceRefs": [
+        "USCIS_N400_2025"
+      ],
+      "difficulty": "core",
+      "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
+      "notes": ""
+    }
+  ]
+}

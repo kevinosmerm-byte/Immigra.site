@@ -1,0 +1,7 @@
+{
+  "name": "asiloai-analysis",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-07",
+  "workers_dev": false,
+  "vars": { "AI_ENABLED": "false", "OPENAI_MODEL": "" }
+}

@@ -1,0 +1,3 @@
+# Story Graph Engine
+
+Objects: PERSON, ORGANIZATION, LOCATION, EVENT, INCIDENT, THREAT, HARM, MEDICAL_EVENT, AUTHORITY_CONTACT, TRAVEL, RETURN_TRIP, THIRD_COUNTRY, DOCUMENT, EVIDENCE, CURRENT_FEAR, USER_STATEMENT. Preserve source provenance. Never collapse user statement, document text, AI inference, country condition, legal educational content. Status: USER_CONFIRMED, USER_DISPUTED, EXTRACTED_UNCONFIRMED, AI_INFERENCE_INTERNAL_ONLY.

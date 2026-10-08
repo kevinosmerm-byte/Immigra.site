@@ -1,0 +1,537 @@
+[
+  {
+    "file": "user-rally-participation.jpg",
+    "original": "images (1).jpg",
+    "questionIds": [
+      39
+    ],
+    "imageAlt": "Participants at a political rally with American flags",
+    "category": "person",
+    "imagePosition": "50% 25%"
+  },
+  {
+    "file": "user-house-rostrum.jpg",
+    "original": "images.jpg",
+    "questionIds": [
+      18,
+      30
+    ],
+    "imageAlt": "A speaker at the rostrum of the House chamber",
+    "category": "institution",
+    "imagePosition": "50% 45%"
+  },
+  {
+    "file": "user-constitution-signing.jpg",
+    "original": "Signing-of-the-Constitution-by-Thomas-Prichard-Rossiter-c1860-1870-edit.jpeg",
+    "questionIds": [
+      82
+    ],
+    "imageAlt": "Historical painting depicting the signing of the United States Constitution",
+    "category": "document",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-constitution-quill.jpg",
+    "original": "48795679.jpg",
+    "questionIds": [
+      4,
+      5
+    ],
+    "imageAlt": "Constitution reproduction with We the People, a quill and spectacles",
+    "category": "document",
+    "imagePosition": "50% 0%"
+  },
+  {
+    "file": "user-constitution-book.jpg",
+    "original": "pocket_size_blue_hardcover_united_states_constitution-20565-6.jpg",
+    "questionIds": [
+      2,
+      3,
+      7
+    ],
+    "imageAlt": "Pocket edition of the Constitution of the United States",
+    "category": "document",
+    "imagePosition": "50% 45%"
+  },
+  {
+    "file": "user-lincoln-exterior.jpg",
+    "original": "pexels-amazingsobia-5652177.jpg",
+    "questionIds": [
+      94
+    ],
+    "imageAlt": "Lincoln Memorial exterior and reflecting pool in Washington, D.C.",
+    "category": "institution",
+    "imagePosition": "50% 68%"
+  },
+  {
+    "file": "user-aviation.jpg",
+    "original": "pexels-d28px-39545113.jpg",
+    "questionIds": [],
+    "imageAlt": "Modern passenger airplane illustrating aviation, an American innovation",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-peace-expression.jpg",
+    "original": "pexels-ivan-s-9643159.jpg",
+    "questionIds": [
+      65
+    ],
+    "imageAlt": "A hand making a peace sign in front of an American flag, illustrating expression",
+    "category": "person",
+    "imagePosition": "50% 35%"
+  },
+  {
+    "file": "user-stock-exchange.jpg",
+    "original": "pexels-garrison-gao-56316964-30915372.jpg",
+    "questionIds": [],
+    "imageAlt": "New York Stock Exchange facade illustrating the market economy",
+    "category": "institution",
+    "imagePosition": "50% 40%"
+  },
+  {
+    "file": "user-liberty-photo.jpg",
+    "original": "pexels-david-vives-1474251-5454196.jpg",
+    "questionIds": [
+      120
+    ],
+    "imageAlt": "Photograph of the Statue of Liberty and its pedestal",
+    "category": "institution",
+    "imagePosition": "50% 30%"
+  },
+  {
+    "file": "user-capitol-west.jpg",
+    "original": "Capitol_west_front750.jpg",
+    "questionIds": [
+      1,
+      119
+    ],
+    "imageAlt": "West front of the United States Capitol",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-cabinet-meeting.jpg",
+    "original": "images (3).jpg",
+    "questionIds": [
+      47,
+      48
+    ],
+    "imageAlt": "Historical presidential meeting with advisers; not a current cabinet roster",
+    "category": "institution",
+    "imagePosition": "50% 45%"
+  },
+  {
+    "file": "user-security-meeting.webp",
+    "original": "Pres-meeting-George-W-Bush-National-Security-September-12-2001.webp",
+    "questionIds": [
+      17,
+      46
+    ],
+    "imageAlt": "Historical presidential security meeting following the September 2001 attacks",
+    "category": "institution",
+    "imagePosition": "50% 40%"
+  },
+  {
+    "file": "user-election-rally.jpg",
+    "original": "images (2).jpg",
+    "questionIds": [
+      38
+    ],
+    "imageAlt": "Campaign rally illustrating presidential elections",
+    "category": "institution",
+    "imagePosition": "50% 40%"
+  },
+  {
+    "file": "user-north-america.jpg",
+    "original": "pexels-lara-jameson-8828626.jpg",
+    "questionIds": [
+      35
+    ],
+    "imageAlt": "Map showing the United States and neighboring countries; a geographic illustration, not population data",
+    "category": "map",
+    "imagePosition": "50% 45%"
+  },
+  {
+    "file": "user-rushmore-close.jpg",
+    "original": "pexels-dudubangbang-28358231.jpg",
+    "questionIds": [
+      86
+    ],
+    "imageAlt": "Presidential sculptures at Mount Rushmore, with George Washington in the foreground",
+    "category": "institution",
+    "imagePosition": "50% 35%"
+  },
+  {
+    "file": "user-tax-currency.jpg",
+    "original": "pexels-karola-g-4386441.jpg",
+    "questionIds": [
+      12,
+      58,
+      71
+    ],
+    "imageAlt": "United States currency on an American flag, illustrating money and taxes",
+    "category": "document",
+    "imagePosition": "50% 30%"
+  },
+  {
+    "file": "user-constitutional-convention.jpg",
+    "original": "democracy-Cover_image.jpg",
+    "questionIds": [
+      15
+    ],
+    "imageAlt": "Historical painting of the Constitutional Convention, illustrating the founding of the republic",
+    "category": "document",
+    "imagePosition": "50% 55%"
+  },
+  {
+    "file": "user-senate-chamber.jpg",
+    "original": "Cámara del Senado de Estados Unidos.png",
+    "questionIds": [
+      19,
+      21,
+      22,
+      23,
+      26,
+      27,
+      28,
+      31,
+      32
+    ],
+    "imageAlt": "Interior of the United States Senate chamber with the presiding desk and senators seating",
+    "category": "institution",
+    "sourceName": "User-provided image",
+    "imageFit": "cover",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-flag-allegiance.jpg",
+    "original": "bandera-de-estados-unidos-historia-y-significado.jpg",
+    "questionIds": [
+      66,
+      121,
+      122
+    ],
+    "imageAlt": "United States flag waving against a blue sky, illustrating the flag and allegiance",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-national-anthem.jpg",
+    "original": "images (4).jpg",
+    "questionIds": [
+      123
+    ],
+    "imageAlt": "Commemorative poster about The Star-Spangled Banner becoming the U.S. national anthem on March 3, 1931",
+    "category": "document",
+    "imageFit": "contain",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-september-11.jpg",
+    "original": "torres-gemelas-atentado.jpg",
+    "questionIds": [
+      115
+    ],
+    "imageAlt": "New York skyline with smoke rising from the World Trade Center during the September 11, 2001 attacks",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-great-depression.webp",
+    "original": "men-line-food-Chicago-Great-Depression-Illinois.webp",
+    "questionIds": [
+      103,
+      104
+    ],
+    "imageAlt": "People waiting outside a soup kitchen for unemployed workers during the Great Depression",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-world-war-two.jpg",
+    "original": "Into_the_Jaws_of_Death_23-0455M_edit-small.jpg",
+    "questionIds": [
+      100
+    ],
+    "imageAlt": "Troops leaving a landing craft during the Normandy landings in World War II; not World War I or Pearl Harbor",
+    "category": "institution",
+    "imagePosition": "50% 55%"
+  },
+  {
+    "file": "user-slavery-end.jpg",
+    "original": "When-Did-Slavery-End-in-America.jpg",
+    "questionIds": [
+      96
+    ],
+    "imageAlt": "Historical group photograph of people gathered outside wooden buildings, supplied for the question about the war that ended slavery",
+    "category": "person",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-benjamin-franklin.jpg",
+    "original": "AC-ben-franklin-kite.jpg",
+    "questionIds": [
+      85
+    ],
+    "imageAlt": "Painting depicting Benjamin Franklin with a kite string and key, illustrating his experiments with electricity",
+    "category": "person",
+    "imagePosition": "50% 40%"
+  },
+  {
+    "file": "user-thomas-jefferson.jpg",
+    "original": "images (5).jpg",
+    "questionIds": [
+      78,
+      87
+    ],
+    "imageAlt": "Illustrated portrait of Thomas Jefferson, author of the Declaration of Independence",
+    "category": "person",
+    "imagePosition": "50% 25%"
+  },
+  {
+    "file": "user-james-madison.jpg",
+    "original": "James_Madison.jpg",
+    "questionIds": [
+      83,
+      88
+    ],
+    "imageAlt": "Painted portrait of James Madison, one of the authors of the Federalist Papers",
+    "category": "person",
+    "imagePosition": "50% 20%"
+  },
+  {
+    "file": "user-alexander-hamilton.jpg",
+    "original": "images (6).jpg",
+    "questionIds": [
+      89
+    ],
+    "imageAlt": "Painted portrait of Alexander Hamilton, the first Secretary of the Treasury",
+    "category": "person",
+    "imagePosition": "50% 25%"
+  },
+  {
+    "file": "user-civil-war-battle.jpg",
+    "original": "1800s-1860s-may-1864-union-troops-fight-vintage-images.jpg",
+    "questionIds": [
+      91
+    ],
+    "imageAlt": "Historical illustration of Union troops fighting during the American Civil War in the 1800s",
+    "category": "institution",
+    "imagePosition": "50% 40%"
+  },
+  {
+    "file": "user-north-south-war.jpg",
+    "original": "images (7).jpg",
+    "questionIds": [
+      92
+    ],
+    "imageAlt": "Historical illustration of opposing armies in battle during the American Civil War between the North and the South",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-world-war-one.jpg",
+    "original": "wwi-farewell-165-ww-476.jpg",
+    "questionIds": [
+      101
+    ],
+    "imageAlt": "Historical photograph of soldiers saying farewell to loved ones beside a train during World War I",
+    "category": "institution",
+    "imagePosition": "50% 40%"
+  },
+  {
+    "file": "user-wwii-entry.jpg",
+    "original": "images (8).jpg",
+    "questionIds": [
+      106
+    ],
+    "imageAlt": "Historical photograph of warships burning in a harbor, supplied for the question about U.S. entry into World War II",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-dwight-eisenhower.jpg",
+    "original": "Dwight-Eisenhower-Featured-Image-e1673281007159.jpg",
+    "questionIds": [
+      107
+    ],
+    "imageAlt": "Portrait of Dwight Eisenhower seated at a desk in military uniform",
+    "category": "person",
+    "imagePosition": "50% 20%"
+  },
+  {
+    "file": "user-cold-war-rival.jpg",
+    "original": "59164571_902.jpg",
+    "questionIds": [
+      108,
+      109
+    ],
+    "imageAlt": "Historical black-and-white photograph of a man waving a flag above a crowd, supplied for the Cold War rival question",
+    "category": "institution",
+    "imageFit": "contain",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-persian-gulf-war.jpg",
+    "original": "images (9).jpg",
+    "questionIds": [
+      114
+    ],
+    "imageAlt": "Soldiers on a military vehicle with fires and smoke in the background, illustrating the Persian Gulf War",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-american-indian-tribe.jpg",
+    "original": "2_-three_crow_horsemen-_edward_s__curtis.jpg",
+    "questionIds": [
+      117
+    ],
+    "imageAlt": "Historical photograph of three horse riders, supplied as Three Crow Horsemen for the American Indian tribe question",
+    "category": "person",
+    "imageFit": "contain",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-supreme-court-seats.jpg",
+    "original": "94b805ab183261d8321fe7dbdc194fe82a384c98.jpg",
+    "questionIds": [
+      53
+    ],
+    "imageAlt": "Group portrait of nine people in judicial robes, illustrating the nine seats on the Supreme Court",
+    "category": "institution",
+    "imageFit": "contain",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-state-police-protection.jpg",
+    "original": "images (10).jpg",
+    "questionIds": [
+      59
+    ],
+    "imageAlt": "Fort Worth Police vehicle illustrating police protection provided through state and local government",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-citizenship-oath.jpg",
+    "original": "451907478-1024x682.jpg",
+    "questionIds": [
+      67,
+      68
+    ],
+    "imageAlt": "People raising their right hands and holding American flags during a citizenship oath ceremony",
+    "category": "person",
+    "imagePosition": "50% 30%"
+  },
+  {
+    "file": "user-post-september-11-conflict.jpg",
+    "original": "descarga (24).jpg",
+    "questionIds": [
+      116
+    ],
+    "imageAlt": "Military personnel gathered beside tents in a desert camp",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-vietnam-war.jpg",
+    "original": "0_1Emh3fm-BSekcAIV.jpg",
+    "questionIds": [
+      111
+    ],
+    "imageAlt": "Illustration of helicopters and soldiers in a field during the Vietnam War",
+    "category": "institution",
+    "imagePosition": "50% 50%"
+  },
+  {
+    "file": "user-korean-war.jpg",
+    "original": "armistice_pic1_lrg.jpg",
+    "questionIds": [
+      110
+    ],
+    "imageAlt": "Black-and-white photograph of military officials seated at a table with photographers during Korean armistice proceedings",
+    "category": "institution",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
+  },
+  {
+    "file": "user-franklin-roosevelt.jpg",
+    "original": "images (13).jpg",
+    "questionIds": [
+      105
+    ],
+    "imageAlt": "Black-and-white portrait supplied for the president during the Great Depression and World War II question",
+    "category": "person",
+    "imagePosition": "50% 25%",
+    "imageFit": "contain"
+  },
+  {
+    "file": "user-emancipation-proclamation.jpg",
+    "original": "sub-saharan-slaves-4-720x464.jpg",
+    "questionIds": [
+      75,
+      95
+    ],
+    "imageAlt": "Historical illustration of enslaved people carrying baskets while chained together",
+    "category": "person",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
+  },
+  {
+    "file": "user-louisiana-purchase.jpg",
+    "original": "GettyImages-566421833-5a5392f1845b3400378d597a.jpg",
+    "questionIds": [
+      90
+    ],
+    "imageAlt": "Historical map highlighting the Louisiana Purchase territory acquired from France in 1803",
+    "category": "map",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
+  },
+  {
+    "file": "user-thirteen-colonies.jpg",
+    "original": "thirteen_colonies.jpg",
+    "questionIds": [
+      81
+    ],
+    "imageAlt": "Labeled color map of the thirteen original states along the Atlantic coast",
+    "category": "map",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
+  },
+  {
+    "file": "user-america-before-europeans.jpg",
+    "original": "Indios en la pradera.jpg",
+    "questionIds": [
+      74
+    ],
+    "imageAlt": "Sepia photograph of riders on horseback on a prairie, supplied for the question about America before European arrival",
+    "category": "person",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
+  },
+  {
+    "file": "user-colonists-america.jpg",
+    "original": "6495_640310cc48382r_d1574-651-5024.jpeg",
+    "questionIds": [
+      73
+    ],
+    "imageAlt": "Historical battle painting with uniformed soldiers, a flag, and a cannon",
+    "category": "person",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
+  },
+  {
+    "file": "user-tenth-amendment.jpg",
+    "original": "Collage de Nosotros, el Pueblo a mano.png",
+    "questionIds": [
+      60
+    ],
+    "imageAlt": "Colorful We the People collage with the Constitution, historical portraits, and Independence Hall",
+    "category": "document",
+    "imagePosition": "50% 50%",
+    "imageFit": "contain"
+  }
+]

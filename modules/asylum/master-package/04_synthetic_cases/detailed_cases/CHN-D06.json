@@ -1,0 +1,178 @@
+{
+  "case_id": "CHN-D06",
+  "version": "0.2",
+  "fictional": true,
+  "data_domain": "synthetic",
+  "country": "China",
+  "title": "China — Independent Writer — Tsering Dolma",
+  "difficulty": "challenge",
+  "persona": {
+    "display_name": "Tsering Dolma",
+    "origin": "Tibetan areas of Sichuan/Qinghai",
+    "age_range": "29-33",
+    "language": "Mandarin/other local language + optional English/Spanish practice",
+    "profile": "writer/blogger whose posts were removed and who was repeatedly questioned"
+  },
+  "country_context": {
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ],
+    "rule": "Sources provide contextual realism only. They are not persona facts and are never merged into testimony."
+  },
+  "intentional_features": [
+    "long_time_gap",
+    "current_interest_unknown",
+    "family_remaining",
+    "approximate_date"
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "type": "background",
+      "date": "2021",
+      "date_precision": "year_only",
+      "location": "Tibetan areas of Sichuan/Qinghai",
+      "summary": "Tsering Dolma begins or becomes more visible in a fictional context: writer/blogger whose posts were removed and who was repeatedly questioned.",
+      "source_type": "synthetic_persona_fact",
+      "interview_targets": [
+        "role",
+        "frequency",
+        "visibility",
+        "who knew"
+      ]
+    },
+    {
+      "event_id": "E02",
+      "type": "incident",
+      "date": "2022-11",
+      "date_precision": "approximate",
+      "location": "Tibetan areas of Sichuan/Qinghai",
+      "summary": "Fictional incident: was prevented from participating in a public/cultural activity. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "national-security authorities in Hong Kong context",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E03",
+      "type": "incident",
+      "date": "2023-03",
+      "date_precision": "month_only",
+      "location": "Tibetan areas of Sichuan/Qinghai",
+      "summary": "Fictional incident: received pressure after activity abroad became public. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "local police",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E04",
+      "type": "incident",
+      "date": "2024-06",
+      "date_precision": "approximate",
+      "location": "Beijing",
+      "summary": "Fictional incident: was called to a police station for questioning. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "public security personnel",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E05",
+      "type": "departure",
+      "date": "2025-02",
+      "date_precision": "month_only",
+      "location": "China",
+      "summary": "Persona leaves the country. The exact reason/timing relationship to prior incidents should be explored, not assumed.",
+      "interview_targets": [
+        "why_left_when",
+        "time_between_last_incident_and_departure",
+        "travel_route"
+      ]
+    },
+    {
+      "event_id": "E09",
+      "type": "current_context",
+      "date": "2026",
+      "date_precision": "year_only",
+      "location": "United States / abroad",
+      "summary": "Current-fear practice node. What the persona knows today must be elicited separately from country-condition sources.",
+      "interview_targets": [
+        "current_feared_actor",
+        "most_recent_information",
+        "continuing_interest",
+        "post_departure_activity",
+        "expected_harm"
+      ]
+    }
+  ],
+  "discrepancies_for_training": [],
+  "documents": [
+    {
+      "type": "identity",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "personal_declaration",
+      "status": "available",
+      "synthetic": true
+    }
+  ],
+  "facts_to_elicit": [
+    "identity and background",
+    "exact nature and visibility of activity",
+    "each incident chronology",
+    "actor identification and basis of knowledge",
+    "words/actions during incidents",
+    "aftermath",
+    "authority contact if any",
+    "relocation if any",
+    "departure timing",
+    "family remaining",
+    "return trips if any",
+    "current information about feared actor",
+    "post-departure events",
+    "what is personal knowledge vs public information"
+  ],
+  "question_engine_hints": {
+    "first_priority": "Stay on the current event until core factual dimensions are reasonably explored.",
+    "if_inconsistency": "Ask a neutral recollection/sequence question; do not reveal a preferred version.",
+    "if_country_context_relevant": "Ask whether the user personally experienced or knows a related fact; never insert the country fact.",
+    "if_legal_question": "Do not determine eligibility or sufficiency; offer factual practice."
+  },
+  "story_narrative_es": "CASO TOTALMENTE FICTICIO. Tsering Dolma es una persona adulta de China, originaria de Tibetan areas of Sichuan/Qinghai. El escenario se diseñó para practicar una entrevista relacionada con writer/blogger whose posts were removed and who was repeatedly questioned. La historia comienza alrededor de 2021. En 2022-11, en Tibetan areas of Sichuan/Qinghai, ocurre un evento ficticio descrito internamente como: was prevented from participating in a public/cultural activity. En 2023-03, en Tibetan areas of Sichuan/Qinghai, ocurre un evento ficticio descrito internamente como: received pressure after activity abroad became public. En 2024-06, en Beijing, ocurre un evento ficticio descrito internamente como: was called to a police station for questioning. La persona sale del país alrededor de 2025-02. Algunas fechas son aproximadas y ciertos detalles se recuerdan con distinta precisión. En 2026 la persona expresa que todavía tiene preocupación por regresar, pero el sistema debe preguntar qué sabe hoy, cuándo tuvo el contacto más reciente, qué ocurrió con familiares y qué información proviene de experiencia personal frente a fuentes públicas. Este escenario no constituye un ejemplo de un caso jurídicamente suficiente y ninguno de sus hechos puede trasladarse a la historia de un usuario real.",
+  "safety": {
+    "never_use_as_real_testimony": true,
+    "no_merge_with_personal_case": true,
+    "no_legal_sufficiency_label": true,
+    "disclaimer": "Caso completamente ficticio para práctica educativa. No es asesoría legal ni un modelo de hechos que una persona deba adoptar."
+  }
+}
