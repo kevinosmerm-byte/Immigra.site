@@ -136,7 +136,7 @@ export function CivicsStudyGuide({ language = "en", onBack }) {
     <div className="practice-screen study-guide-screen" onKeyDown={handleKeyDown} tabIndex="-1">
       <header className="practice-header">
         <button className="back-button" onClick={onBack}>{copy.back}</button>
-        <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+        
       </header>
 
       <main className="study-guide-main">

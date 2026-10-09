@@ -1,3 +1,4 @@
+import {GlassPreferences} from '../../../shared/design-system/Glass.jsx';
 import { useEffect, useState } from "react";
 import { getCompanionVisibility, setCompanionVisibility } from "./companionEvents.js";
 import { THEME_PREFERENCES, THEME_STORAGE_KEY } from "./theme.js";
@@ -6,7 +7,7 @@ import { normalizeZipCode } from "./civicProfile.js";
 
 const COPY = {
   en: {
-    welcome: "Welcome to Citizenship AI",
+    welcome: "Welcome to Immigration AI",
     choose: "Choose your preferred language",
     english: "English",
     spanish: "Español",
@@ -19,13 +20,13 @@ const COPY = {
     important: "IMPORTANT INFORMATION",
     features: ["Civics study and explanations", "English reading and writing practice", "AI-supported practice feedback"],
     legalNotice: [
-      "Citizenship AI is an independent educational practice tool. It is not affiliated with, endorsed by, or operated by USCIS or any U.S. government agency.",
+      "Immigration AI is an independent educational practice tool. It is not affiliated with, endorsed by, or operated by USCIS or any U.S. government agency.",
       "It does not provide legal advice, determine immigration eligibility, recommend a legal strategy, prepare or file applications, or represent users before USCIS. AI-generated feedback may contain errors, and simulated practice does not guarantee interview questions or outcomes.",
       "Always verify current requirements directly through official USCIS sources. For advice about your circumstances, forms, eligibility, deadlines, or immigration options, consult a licensed immigration attorney or a Department of Justice-accredited representative.",
     ],
   },
   es: {
-    welcome: "Bienvenido a Citizenship AI",
+    welcome: "Bienvenido a Immigration AI",
     choose: "Elige tu idioma preferido",
     english: "English",
     spanish: "Español",
@@ -38,7 +39,7 @@ const COPY = {
     important: "INFORMACIÓN IMPORTANTE",
     features: ["Estudio y explicaciones de civismo", "Práctica de lectura y escritura en inglés", "Comentarios de práctica asistidos por IA"],
     legalNotice: [
-      "Citizenship AI es una herramienta educativa independiente para practicar. No está afiliada, respaldada ni operada por USCIS ni por ninguna agencia del gobierno de Estados Unidos.",
+      "Immigration AI es una herramienta educativa independiente para practicar. No está afiliada, respaldada ni operada por USCIS ni por ninguna agencia del gobierno de Estados Unidos.",
       "No brinda asesoría legal, no determina elegibilidad migratoria, no recomienda estrategias legales, no prepara ni presenta solicitudes y no representa a usuarios ante USCIS. La IA puede cometer errores y la práctica simulada no garantiza preguntas ni resultados.",
       "Verifica siempre los requisitos vigentes directamente en fuentes oficiales de USCIS. Para recibir orientación sobre tu situación, formularios, elegibilidad, plazos u opciones migratorias, consulta a un abogado de inmigración autorizado o a un representante acreditado por el Departamento de Justicia.",
     ],
@@ -51,14 +52,14 @@ const legalSections = [
     title: "Privacy Policy",
     content: (
       <>
-        <p><strong>Last reviewed: October 5, 2026.</strong> This policy describes the behavior of the current Citizenship AI application build.</p>
-        <p>Citizenship AI offers optional email-based accounts through Supabase. When you create an account, Supabase stores your account identifier and email address, and Citizenship AI stores account-level access, AI allowance, reward-credit, subscription-status, and technical usage records needed to operate and protect the service. Launch-promotion access may allow you to continue without payment. When web subscriptions are made available, Stripe processes checkout, payment details, and subscription management under its own privacy practices; Citizenship AI receives customer, subscription, status, and billing-period identifiers needed to provide access, but does not receive or store complete card numbers. On this device, the app may also store the last PRO recommendation date to avoid repeated notices, onboarding completion, language preference, consent choices, viewed civics-question progress, practice results (practice type, score, outcome, and time), and local AI-usage history in your browser&apos;s local storage.</p>
+        <p><strong>Last reviewed: October 5, 2026.</strong> This policy describes the behavior of the current Immigration AI application build.</p>
+        <p>Immigration AI offers optional email-based accounts through Supabase. When you create an account, Supabase stores your account identifier and email address, and Immigration AI stores account-level access, AI allowance, reward-credit, subscription-status, and technical usage records needed to operate and protect the service. Launch-promotion access may allow you to continue without payment. When web subscriptions are made available, Stripe processes checkout, payment details, and subscription management under its own privacy practices; Immigration AI receives customer, subscription, status, and billing-period identifiers needed to provide access, but does not receive or store complete card numbers. On this device, the app may also store the last PRO recommendation date to avoid repeated notices, onboarding completion, language preference, consent choices, viewed civics-question progress, practice results (practice type, score, outcome, and time), and local AI-usage history in your browser&apos;s local storage.</p>
         <p>Learning checkpoints and your civic profile are saved on this device, separately for each signed-in account. Saved question identifiers can synchronize to your account when cloud storage is available; failed updates remain queued locally. Your optional personal profile remembers only information you enter or explicitly confirm, including your address, application dates, receipt number, relevant N-400 answers and histories, confirmed notice fields, journey events and document-checklist completion. These details are stored in this browser by default and can be reused in practice, civics and journey preparation. Browser storage is not an encrypted vault; use a private device and clear your profile when appropriate. A-numbers, original notices, recordings and documents are not stored in the profile.</p>
         <p>Cloud profile storage is a separate optional action. The Profile screen asks you to agree before sending a snapshot to your signed-in account. The server encrypts personal, immigration, N-400 and journey data before saving it in Supabase; cloud saving is unavailable if secure server configuration is missing. Saving and restoring are manual. You may restore a saved copy, remove the cloud profile while keeping the device profile, export account data, or delete the cloud account. Civic and learning profiles retain their existing device storage and are not included in this cloud snapshot.</p>
         <p>My Civics Profile sends the address you enter or already saved in your personal profile through our server to the U.S. Census Geocoder for the current lookup. A plain street address is not used as a server cache key. The civic profile keeps your ZIP, state, verified districts, public officials, sources and verification dates. Congress.gov supplies federal member data; configured geographic providers may supply state officials. Your saved address is reused so you do not need to provide it again.</p>
-        <p>Civics questions and accepted English answers in the study bank come from the supplied USCIS 2025 list of 128 questions. Card, quiz and classic civics grading use deterministic rules rather than AI-generated answers. Optional writing or conversation feedback may send your submitted text through Citizenship AI&apos;s server to OpenAI. The separate live D-ID interview may generate responses and does not use the same local grading rules. When you use voice practice, your recording is sent through Citizenship AI&apos;s server to OpenAI only for the active transcription request. The application server is designed not to retain recordings, transcripts or AI conversations after the request completes. Practice answers remain in the active page unless you explicitly confirm selected N-400 details for your personal profile. Scores and checkpoints may be retained as described above; third-party provider retention and security practices are governed by their own terms.</p>
-        <p>If you choose Live Avatar Beta, Citizenship AI requests a temporary, domain-restricted D-ID session credential from its server. D-ID receives and processes the live session content and any microphone or camera input you choose to provide through its panel. The application does not store the client key; it is used in memory only for the active short-lived session. D-ID's own retention and security practices are governed by its terms.</p>
-        <p>Citizenship AI records limited, account-linked product and cost telemetry for service operation, security, allowance enforcement, and financial planning. These records may include an AI feature name, session start/completion/failure, provider and model identifiers, request counts, token totals or transcription duration when a provider returns them, and paywall, subscription, or verified-reward lifecycle events. This telemetry is stored in Supabase and is intentionally designed not to contain complete conversations, recordings, transcripts, practice answers, receipt numbers, or case details. Citizenship AI does not use advertising-tracking analytics in this build.</p>
+        <p>Civics questions and accepted English answers in the study bank come from the supplied USCIS 2025 list of 128 questions. Card, quiz and classic civics grading use deterministic rules rather than AI-generated answers. Optional writing or conversation feedback may send your submitted text through Immigration AI&apos;s server to OpenAI. The separate live D-ID interview may generate responses and does not use the same local grading rules. When you use voice practice, your recording is sent through Immigration AI&apos;s server to OpenAI only for the active transcription request. The application server is designed not to retain recordings, transcripts or AI conversations after the request completes. Practice answers remain in the active page unless you explicitly confirm selected N-400 details for your personal profile. Scores and checkpoints may be retained as described above; third-party provider retention and security practices are governed by their own terms.</p>
+        <p>If you choose Live Avatar Beta, Immigration AI requests a temporary, domain-restricted D-ID session credential from its server. D-ID receives and processes the live session content and any microphone or camera input you choose to provide through its panel. The application does not store the client key; it is used in memory only for the active short-lived session. D-ID's own retention and security practices are governed by its terms.</p>
+        <p>Immigration AI records limited, account-linked product and cost telemetry for service operation, security, allowance enforcement, and financial planning. These records may include an AI feature name, session start/completion/failure, provider and model identifiers, request counts, token totals or transcription duration when a provider returns them, and paywall, subscription, or verified-reward lifecycle events. This telemetry is stored in Supabase and is intentionally designed not to contain complete conversations, recordings, transcripts, practice answers, receipt numbers, or case details. Immigration AI does not use advertising-tracking analytics in this build.</p>
         <p>Your journey stores only stages, events and notice fields you confirm. Notice text is processed in the browser, and extracted fields are reviewed before saving; the original document is not retained. An optional configured USCIS API sends your receipt number through our server to USCIS only for an active status request. Sandbox responses are labeled test data and are not saved as real case events. The official USCIS link works independently of this integration. Receipt numbers, addresses, private N-400 answers and notice content are excluded from product analytics and ordinary application logs. Hosting providers may process standard technical request logs, and the server temporarily uses request identifiers for rate limits.</p>
       </>
     ),
@@ -68,7 +69,7 @@ const legalSections = [
     title: "Terms of Use",
     content: (
       <>
-        <p>Citizenship AI is an independent educational practice tool for people preparing for the U.S. naturalization process. It does not provide legal advice, determine immigration eligibility, recommend a legal strategy, prepare or file applications, or represent users before USCIS or any government agency. Use it only for lawful, personal study. Do not submit sensitive documents, passwords, Social Security numbers, A-Numbers, or other unnecessary personal information.</p>
+        <p>Immigration AI is an independent educational practice tool for people preparing for the U.S. naturalization process. It does not provide legal advice, determine immigration eligibility, recommend a legal strategy, prepare or file applications, or represent users before USCIS or any government agency. Use it only for lawful, personal study. Do not submit sensitive documents, passwords, Social Security numbers, A-Numbers, or other unnecessary personal information.</p>
         <p>Availability, speech recognition, translations, AI feedback, external links, and the USCIS Sandbox connection may be interrupted, incomplete, inaccurate, or outdated. You are responsible for verifying current requirements directly with USCIS before relying on information for an immigration decision.</p>
         <p>Immigration Help is an educational directory of external resources. Listing or linking to a resource does not constitute an endorsement, referral, legal representation, or guarantee of its services. The podcasts are prerecorded educational audio, not live broadcasts or official USCIS programming.</p>
         <p>If paid web subscriptions become available, the price and billing period are shown before purchase and payment is processed by Stripe. You can manage or cancel a web subscription through the account billing portal. Cancellation stops future renewals and does not ordinarily refund time already purchased except where required by law. Purchases made through Apple or Google, if offered, are billed and managed under that store&apos;s terms and tools.</p>
@@ -92,8 +93,8 @@ const legalSections = [
     title: "Government Affiliation Disclaimer",
     content: (
       <>
-        <p>Citizenship AI is not affiliated with, endorsed by, sponsored by, operated by, or a representative of USCIS, the U.S. Department of Homeland Security, or any U.S. government agency.</p>
-        <p>Names, links, questions, and information derived from publicly available government sources are used for educational reference. Their availability does not imply government endorsement of Citizenship AI. Not every item found on a government website is necessarily free of third-party rights, and Citizenship AI does not claim that all application content is in the public domain.</p>
+        <p>Immigration AI is not affiliated with, endorsed by, sponsored by, operated by, or a representative of USCIS, the U.S. Department of Homeland Security, or any U.S. government agency.</p>
+        <p>Names, links, questions, and information derived from publicly available government sources are used for educational reference. Their availability does not imply government endorsement of Immigration AI. Not every item found on a government website is necessarily free of third-party rights, and Immigration AI does not claim that all application content is in the public domain.</p>
         <p>Always verify current immigration information directly with <a href="https://www.uscis.gov/citizenship" target="_blank" rel="noreferrer">official USCIS sources</a>.</p>
       </>
     ),
@@ -103,7 +104,7 @@ const legalSections = [
     title: "Information Sources & Professional Help",
     content: (
       <>
-        <p>Educational information is drawn from publicly available sources, with priority given to official U.S. government materials. Citizenship AI may summarize, translate, reorganize, or explain that information for study purposes. Summaries and translations may contain errors or become outdated, and the official English-language source controls when requirements or instructions differ.</p>
+        <p>Educational information is drawn from publicly available sources, with priority given to official U.S. government materials. Immigration AI may summarize, translate, reorganize, or explain that information for study purposes. Summaries and translations may contain errors or become outdated, and the official English-language source controls when requirements or instructions differ.</p>
         <p>For current forms, fees, filing instructions, eligibility rules, deadlines, and case-specific requirements, use <a href="https://www.uscis.gov" target="_blank" rel="noreferrer">USCIS.gov</a>. For legal advice, use a licensed immigration attorney or a Department of Justice-accredited representative. Learn how to find authorized help through <a href="https://www.uscis.gov/avoid-scams/find-legal-services" target="_blank" rel="noreferrer">USCIS legal-services guidance</a>.</p>
       </>
     ),
@@ -120,8 +121,8 @@ function LegalNotice({ copy }) {
 
 function SpanishPrivacyPolicy() {
   return <>
-    <p><strong>Última revisión: 5 de octubre de 2026.</strong> Esta política describe la versión actual de Citizenship AI.</p>
-    <p>Las cuentas por correo son opcionales y usan Supabase, que guarda tu identificador de cuenta y correo. La aplicación guarda datos necesarios de acceso, límites de IA, créditos, suscripciones y uso técnico. Si están disponibles los pagos web, Stripe procesa los pagos y Citizenship AI recibe identificadores y estados de la suscripción, sin guardar números completos de tarjetas.</p>
+    <p><strong>Última revisión: 5 de octubre de 2026.</strong> Esta política describe la versión actual de Immigration AI.</p>
+    <p>Las cuentas por correo son opcionales y usan Supabase, que guarda tu identificador de cuenta y correo. La aplicación guarda datos necesarios de acceso, límites de IA, créditos, suscripciones y uso técnico. Si están disponibles los pagos web, Stripe procesa los pagos y Immigration AI recibe identificadores y estados de la suscripción, sin guardar números completos de tarjetas.</p>
     <p>Este navegador guarda preferencias, consentimiento, progreso cívico, resultados de práctica y puntos para continuar. Los perfiles cívicos y de estudio se separan por cuenta. Los identificadores de preguntas favoritas pueden sincronizarse y los cambios pendientes se conservan para reintentar.</p>
     <p>Tu perfil personal opcional conserva solo datos que ingresas o confirmas: dirección, fechas de la solicitud, número de recibo, respuestas e historiales relevantes del N-400, campos confirmados de avisos, eventos y lista de documentos. Se guardan en este navegador y se reutilizan para preparar tus prácticas y proceso. El almacenamiento del navegador no es una bóveda cifrada: usa un dispositivo privado y borra el perfil cuando corresponda. No guardamos números A, documentos originales, grabaciones ni avisos originales en el perfil.</p>
     <p>Guardar el perfil en la nube es una acción separada y opcional. La pantalla Perfil solicita tu consentimiento antes de enviar una copia a tu cuenta. El servidor cifra los datos personales, migratorios, del N-400 y del proceso antes de guardarlos en Supabase. Si no hay configuración segura, no se guardan en la nube. Guardar y restaurar son acciones manuales. Puedes restaurar una copia, eliminar el perfil de la nube conservando el local, exportar tus datos o eliminar la cuenta. El perfil cívico y el progreso conservan su almacenamiento actual en el dispositivo.</p>
@@ -136,7 +137,7 @@ function SpanishPrivacyPolicy() {
 function SpanishLegalContent({ id }) {
   if (id === "privacy") return <SpanishPrivacyPolicy />;
   if (id === "terms") return <>
-    <p>Citizenship AI es una herramienta educativa independiente para quienes se preparan para la naturalización en Estados Unidos. No brinda asesoría legal, no determina elegibilidad migratoria, no recomienda estrategias legales, no prepara ni presenta solicitudes y no representa a usuarios ante USCIS ni ninguna agencia gubernamental. Úsala únicamente para el estudio personal y lícito. No envíes documentos sensibles, contraseñas, números de Seguro Social, números A ni información personal innecesaria.</p>
+    <p>Immigration AI es una herramienta educativa independiente para quienes se preparan para la naturalización en Estados Unidos. No brinda asesoría legal, no determina elegibilidad migratoria, no recomienda estrategias legales, no prepara ni presenta solicitudes y no representa a usuarios ante USCIS ni ninguna agencia gubernamental. Úsala únicamente para el estudio personal y lícito. No envíes documentos sensibles, contraseñas, números de Seguro Social, números A ni información personal innecesaria.</p>
     <p>La disponibilidad, el reconocimiento de voz, las traducciones, los comentarios de IA, los enlaces externos y la conexión USCIS Sandbox pueden interrumpirse o contener información incompleta, inexacta o desactualizada. Debes verificar los requisitos vigentes directamente con USCIS antes de basarte en esta información para tomar una decisión migratoria.</p>
     <p>Ayuda migratoria es un directorio educativo de recursos externos. Incluir un recurso o enlace no constituye respaldo, recomendación profesional, representación legal ni garantía de sus servicios. Los podcasts son audios educativos pregrabados, no transmisiones en vivo ni programas oficiales de USCIS.</p>
     <p>Si se ofrecen suscripciones web de pago, el precio y el período de facturación aparecen antes de comprar y Stripe procesa el pago. Puedes administrar o cancelar la suscripción web desde el portal de facturación de tu cuenta. Cancelar detiene las renovaciones futuras y, por lo general, no reembolsa el tiempo ya comprado, salvo cuando lo exija la ley. Las compras mediante Apple o Google, si se ofrecen, se facturan y administran conforme a los términos y herramientas de esa tienda.</p>
@@ -148,12 +149,12 @@ function SpanishLegalContent({ id }) {
     <p>No uses una respuesta de IA como fundamento para presentar un formulario, dejar pasar un plazo, elegir un beneficio migratorio ni tomar otra decisión legal. Verifica la información con USCIS y busca ayuda profesional autorizada cuando corresponda.</p>
   </>;
   if (id === "government") return <>
-    <p>Citizenship AI no está afiliada, respaldada, patrocinada ni operada por USCIS, el Departamento de Seguridad Nacional de Estados Unidos ni ninguna agencia del gobierno estadounidense, y no representa a esas entidades.</p>
-    <p>Los nombres, enlaces, preguntas e información de fuentes gubernamentales públicas se utilizan como referencia educativa. Su disponibilidad no implica respaldo gubernamental de Citizenship AI. No todos los materiales de un sitio gubernamental están necesariamente libres de derechos de terceros, y Citizenship AI no afirma que todo el contenido de la aplicación sea de dominio público.</p>
+    <p>Immigration AI no está afiliada, respaldada, patrocinada ni operada por USCIS, el Departamento de Seguridad Nacional de Estados Unidos ni ninguna agencia del gobierno estadounidense, y no representa a esas entidades.</p>
+    <p>Los nombres, enlaces, preguntas e información de fuentes gubernamentales públicas se utilizan como referencia educativa. Su disponibilidad no implica respaldo gubernamental de Immigration AI. No todos los materiales de un sitio gubernamental están necesariamente libres de derechos de terceros, y Immigration AI no afirma que todo el contenido de la aplicación sea de dominio público.</p>
     <p>Verifica siempre la información migratoria vigente directamente en las <a href="https://www.uscis.gov/citizenship" target="_blank" rel="noreferrer">fuentes oficiales de USCIS</a>.</p>
   </>;
   return <>
-    <p>La información educativa proviene de fuentes públicas, dando prioridad a los materiales oficiales del gobierno de Estados Unidos. Citizenship AI puede resumir, traducir, reorganizar o explicar esa información para estudiar. Los resúmenes y traducciones pueden contener errores o desactualizarse; la fuente oficial en inglés prevalece si difieren los requisitos o instrucciones.</p>
+    <p>La información educativa proviene de fuentes públicas, dando prioridad a los materiales oficiales del gobierno de Estados Unidos. Immigration AI puede resumir, traducir, reorganizar o explicar esa información para estudiar. Los resúmenes y traducciones pueden contener errores o desactualizarse; la fuente oficial en inglés prevalece si difieren los requisitos o instrucciones.</p>
     <p>Para formularios, tarifas, instrucciones de presentación, reglas de elegibilidad, plazos y requisitos específicos de tu caso, consulta <a href="https://www.uscis.gov" target="_blank" rel="noreferrer">USCIS.gov</a>. Para asesoría legal, consulta a un abogado de inmigración autorizado o a un representante acreditado por el Departamento de Justicia. Aprende a encontrar ayuda autorizada en la <a href="https://www.uscis.gov/avoid-scams/find-legal-services" target="_blank" rel="noreferrer">guía de servicios legales de USCIS</a>.</p>
   </>;
 }
@@ -167,7 +168,7 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
   return (
     <div className="app onboarding-screen">
       <main className="onboarding-card" aria-labelledby="onboarding-title">
-        <div className="onboarding-brand">CITIZENSHIP <span>AI</span></div>
+        <div className="onboarding-brand">IMMIGRATION <span>AI</span></div>
         <div className="onboarding-progress" role="progressbar" aria-valuemin={1} aria-valuemax={3} aria-valuenow={step + 1} aria-label={language === "es" ? `Paso ${step + 1} de 3` : `Step ${step + 1} of 3`}>
           {[0, 1, 2].map((item) => <span className={item <= step ? "active" : ""} key={item} />)}
         </div>
@@ -185,7 +186,7 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
         )}
         {step === 1 && (
           <section>
-            <p className="settings-eyebrow">CITIZENSHIP AI</p>
+            <p className="settings-eyebrow">IMMIGRATION AI</p>
             <h1 id="onboarding-title">{copy.howItWorks}</h1>
             <p className="onboarding-intro">{copy.howCopy}</p>
             <ul className="onboarding-feature-list">
@@ -225,7 +226,7 @@ export function LegalSettings({ onBack, onRestartOnboarding, language = "en", th
   }, []);
 
   const clearLocalData = () => {
-    if (!window.confirm(language === "es" ? "¿Borrar preferencias, perfiles personales, proceso y progreso de Citizenship AI de este dispositivo? La copia de la nube permanece. Esta acción no se puede deshacer." : "Clear Citizenship AI preferences, personal profiles, journey and learning progress from this device? Your cloud copy will remain. This cannot be undone.")) return;
+    if (!window.confirm(language === "es" ? "¿Borrar preferencias, perfiles personales, proceso y progreso de Immigration AI de este dispositivo? La copia de la nube permanece. Esta acción no se puede deshacer." : "Clear Immigration AI preferences, personal profiles, journey and learning progress from this device? Your cloud copy will remain. This cannot be undone.")) return;
     Object.keys(localStorage).filter(key => key.startsWith("citizenshipai.")).forEach(key => localStorage.removeItem(key));
     ["civicsViewed", "citizenshipai.onboarding.v1", "citizenshipai.language", THEME_STORAGE_KEY, "citizenshipai.microphone-notice.v1", "citizenshipai.did-avatar-consent.v1", "citizenshipai.practice-events.v1", "citizenshipai.ai-usage.v1", "citizenshipai.ai-sessions.promo.v1", "citizenshipai-companion-visible-v1", "citizenshipai-companion-streak-v1"].forEach((key) => localStorage.removeItem(key));
     window.dispatchEvent(new Event("citizenshipai:local-data-cleared"));
@@ -236,13 +237,13 @@ export function LegalSettings({ onBack, onRestartOnboarding, language = "en", th
     <div className="app settings-screen">
       <header className="settings-header">
         <button className="back-button" onClick={onBack}>{language === "es" ? "← Volver al inicio" : "← Back to Home"}</button>
-        <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+        
       </header>
       <main className="settings-content">
         <p className="settings-eyebrow">{language === "es" ? "AJUSTES" : "SETTINGS"}</p>
         <h1>{language === "es" ? "Legal y privacidad" : "Legal & Privacy"}</h1>
         <p className="settings-intro">{language === "es" ? "Consulta cómo funciona la aplicación y cómo se usan tus datos. La privacidad está disponible en español; los demás documentos completos están en inglés." : "Review how the app works and how your data is used."}</p>
-        <section className="appearance-settings" aria-labelledby="appearance-title">
+        <GlassPreferences language={language}/><section className="appearance-settings" aria-labelledby="appearance-title">
           <div>
             <small>{language === "es" ? "APARIENCIA" : "APPEARANCE"}</small>
             <h2 id="appearance-title">{language === "es" ? "Tema de la aplicación" : "App theme"}</h2>

@@ -1,4 +1,6 @@
-import { InterviewWorkspace } from "./InterviewWorkspace.jsx";
+import CoachCall from '../CoachCall.jsx';
+import CallView from '../../../shared/interview-ui/CallView.jsx';
+import PlatformHome from '../PlatformHome.jsx';
 import { queueSavedQuestion, syncSavedQuestions } from "./savedQuestions.js";
 import { MyCivicsProfile } from "./MyCivicsProfile.jsx";
 import { saveCivicProfile } from "./civicProfileStorage.js";
@@ -6,19 +8,15 @@ import { useCivicProfile } from "./useCivicProfile.js";
 import { resolveCivicsQuestion } from "./dynamicCivicsData.js";
 import { ProgressGate } from "./ProgressGate.jsx";
 import { useProgressGate } from "./progressGateContext.js";
-import { BottomNavigation } from "./BottomNavigation.jsx";
+import {ModuleNavigation} from '../../../shared/design-system/Components.jsx';
 import { lazy, Suspense, useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
-import "./LegacyIntegrations.css";
 import "./BrandPalette.css";
-import "./HomeReference.css";
-import "./SharedReference.css";
 import { SectionNavigation } from "./SectionNavigation.jsx";
 import { buildBrainContext, getDailyStudyPlan, getNextAction } from "./brain.js";
 import { useBrainProfile } from "./useBrainProfile.js";
 import { Profile } from "./Profile.jsx";
 import CaseJourney from "./CaseJourney.jsx";
-import { getCaseStageLabel } from "./caseTracker.js";
 import { getQuizProgress, recordQuizAttempt } from "./quizLearning.js";
 import { readAppRoute, appRouteHash } from "../routes.mjs";
 import sarahImage from "./assets/sarah.png";
@@ -34,7 +32,7 @@ import { usePromotionAccess } from "./promotionAccessContext.js";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
 import ImmigrationHelp from "./ImmigrationHelp";
 import { speakAppText, stopAppSpeech } from "./speech";
-import { AccountButton, AccountSheet } from "./Account.jsx";
+import { AccountSheet } from "./Account.jsx";
 import { useAccount } from "./accountContext.js";
 import { ProgressDashboard } from "./ProgressDashboard.jsx";
 import { writingSentences } from "./writingSentences.js";
@@ -51,25 +49,6 @@ const ONBOARDING_STORAGE_KEY = "citizenshipai.onboarding.v1";
 const CivicsStudyGuide = lazy(() => import("./CivicsStudyGuide.jsx").then((module) => ({ default: module.CivicsStudyGuide })));
 const QuizLearningPath = lazy(() => import("./QuizLearningPath.jsx"));
 const LANGUAGE_STORAGE_KEY = "citizenshipai.language";
-const HOME_VIDEO_PLAYED_KEY = "citizenshipai.homeVideoPlayed.v1";
-let homeVideoPlayedThisVisit = false;
-
-function hasPlayedHomeVideo() {
-  try {
-    return homeVideoPlayedThisVisit || sessionStorage.getItem(HOME_VIDEO_PLAYED_KEY) === "true";
-  } catch {
-    return homeVideoPlayedThisVisit;
-  }
-}
-
-function rememberHomeVideoPlayback() {
-  homeVideoPlayedThisVisit = true;
-  try {
-    sessionStorage.setItem(HOME_VIDEO_PLAYED_KEY, "true");
-  } catch {
-    // The in-memory flag still prevents repeats when storage is unavailable.
-  }
-}
 const CASE_TRACKER_COPY = {
   en: {
     uscIs: "USCIS", title: "Case Tracker", sandbox: "Sandbox",
@@ -78,13 +57,13 @@ const CASE_TRACKER_COPY = {
     help: "Use an official USCIS Sandbox test receipt number. This environment does not check a live USCIS case.",
     placeholder: "Sandbox receipt number", inputLabel: "USCIS Sandbox receipt number", missing: "Please enter your receipt number.",
     invalid: "Use 3 letters followed by 10 numbers, for example IOE1234567890.", check: "CHECK SANDBOX STATUS",
-    active: "Sandbox mode is active", privacy: "Citizenship AI does not save your receipt number or create case monitoring in this version.",
+    active: "Sandbox mode is active", privacy: "Immigration AI does not save your receipt number or create case monitoring in this version.",
     loading: "Checking official Sandbox status...", unavailable: "Status unavailable", official: "OFFICIAL USCIS STATUS",
     receipt: "RECEIPT NUMBER", testReceipt: "SANDBOX TEST RECEIPT", form: "FORM", updated: "LAST UPDATED", unavailableShort: "Not available",
     daysStatus: "DAYS IN CURRENT STATUS", daysReceived: "DAYS SINCE RECEIVED", calculatedStatus: "Calculated from USCIS last updated date",
-    calculatedReceived: "Calculated from the official received date", intelligence: "CITIZENSHIP AI EXPLANATION", next: "WHAT SHOULD I DO NOW",
+    calculatedReceived: "Calculated from the official received date", intelligence: "IMMIGRATION AI EXPLANATION", next: "WHAT SHOULD I DO NOW",
     educational: "Educational information only — not legal advice or an outcome prediction.", history: "OFFICIAL HISTORY", events: "Case events",
-    noHistory: "USCIS did not provide a historical event timeline in this Sandbox response. Citizenship AI will not create or infer events.",
+    noHistory: "USCIS did not provide a historical event timeline in this Sandbox response. Immigration AI will not create or infer events.",
     monitoringTitle: "Case monitoring is not available yet.", monitoring: "It requires secure accounts, encrypted case storage, user controls, and USCIS Production approval.", back: "← Back to Home",
   },
   es: {
@@ -94,13 +73,13 @@ const CASE_TRACKER_COPY = {
     help: "Usa un número de recibo oficial de prueba de USCIS Sandbox. Este entorno no consulta un caso real de USCIS.",
     placeholder: "Número de recibo Sandbox", inputLabel: "Número de recibo de USCIS Sandbox", missing: "Ingresa tu número de recibo.",
     invalid: "Usa 3 letras seguidas de 10 números, por ejemplo IOE1234567890.", check: "CONSULTAR ESTADO SANDBOX",
-    active: "El modo Sandbox está activo", privacy: "Citizenship AI no guarda tu número de recibo ni crea monitoreo de casos en esta versión.",
+    active: "El modo Sandbox está activo", privacy: "Immigration AI no guarda tu número de recibo ni crea monitoreo de casos en esta versión.",
     loading: "Consultando el estado oficial de Sandbox...", unavailable: "Estado no disponible", official: "ESTADO OFICIAL DE USCIS",
     receipt: "NÚMERO DE RECIBO", testReceipt: "RECIBO DE PRUEBA SANDBOX", form: "FORMULARIO", updated: "ÚLTIMA ACTUALIZACIÓN", unavailableShort: "No disponible",
     daysStatus: "DÍAS EN EL ESTADO ACTUAL", daysReceived: "DÍAS DESDE LA RECEPCIÓN", calculatedStatus: "Calculado desde la fecha de actualización de USCIS",
-    calculatedReceived: "Calculado desde la fecha oficial de recepción", intelligence: "EXPLICACIÓN DE CITIZENSHIP AI", next: "¿QUÉ DEBO HACER AHORA?",
+    calculatedReceived: "Calculado desde la fecha oficial de recepción", intelligence: "EXPLICACIÓN DE IMMIGRATION AI", next: "¿QUÉ DEBO HACER AHORA?",
     educational: "Información educativa únicamente; no es asesoría legal ni una predicción del resultado.", history: "HISTORIAL OFICIAL", events: "Eventos del caso",
-    noHistory: "USCIS no proporcionó una línea de tiempo de eventos en esta respuesta Sandbox. Citizenship AI no creará ni inferirá eventos.",
+    noHistory: "USCIS no proporcionó una línea de tiempo de eventos en esta respuesta Sandbox. Immigration AI no creará ni inferirá eventos.",
     monitoringTitle: "El monitoreo del caso aún no está disponible.", monitoring: "Requiere cuentas seguras, almacenamiento cifrado de casos, controles de usuario y aprobación de USCIS para Producción.", back: "← Volver al inicio",
   },
 };
@@ -251,404 +230,11 @@ const readingSentences = [
     spanish: "La Constitución forma el gobierno."
   }
 ];
-function Home({
-  onNavigate, context, plan, nextAction, onContinue,
-  onStartInterview,
-  onStartN400Interview,
-  onStartCivicsInterview,
-  onOpenFeature,
-  onOpenProgress,
-  onOpenSettings,
-  onOpenImmigrationHelp,
-  onOpenPodcasts,
-  onOpenAccount,
-  language,
-  onLanguageChange,
-  practiceSummary,
-}) {
-  const homeVideoRef = useRef(null);
-  const [homeVideoPlaying, setHomeVideoPlaying] = useState(false);
-  const [homeVideoMuted, setHomeVideoMuted] = useState(false);
-  const [homeVideoNeedsSound, setHomeVideoNeedsSound] = useState(false);
-
-  useEffect(() => {
-    const video = homeVideoRef.current;
-    if (!video) return undefined;
-
-    let cancelled = false;
-    if (hasPlayedHomeVideo()) {
-      const showLastFrame = () => {
-        if (cancelled || !Number.isFinite(video.duration)) return;
-        video.pause();
-        video.currentTime = Math.max(0, video.duration - 0.05);
-      };
-      video.addEventListener("loadedmetadata", showLastFrame);
-      if (video.readyState >= 1) showLastFrame();
-      return () => {
-        cancelled = true;
-        video.removeEventListener("loadedmetadata", showLastFrame);
-        video.pause();
-      };
-    }
-    video.muted = false;
-    const playWithSound = video.play();
-    if (playWithSound?.catch) {
-      playWithSound.catch(async () => {
-        if (cancelled) return;
-        video.muted = true;
-        setHomeVideoMuted(true);
-        setHomeVideoNeedsSound(true);
-        try {
-          await video.play();
-        } catch {
-          setHomeVideoPlaying(false);
-        }
-      });
-    }
-
-    return () => {
-      cancelled = true;
-      video.pause();
-    };
-  }, []);
-
-  const toggleHomeVideoPlayback = async () => {
-    const video = homeVideoRef.current;
-    if (!video) return;
-    if (video.paused) {
-      try {
-        await video.play();
-      } catch {
-        setHomeVideoPlaying(false);
-      }
-    } else {
-      video.pause();
-    }
-  };
-
-  const toggleHomeVideoSound = async () => {
-    const video = homeVideoRef.current;
-    if (!video) return;
-    video.muted = !video.muted;
-    setHomeVideoMuted(video.muted);
-    setHomeVideoNeedsSound(false);
-    if (video.paused) {
-      try {
-        await video.play();
-      } catch {
-        setHomeVideoPlaying(false);
-      }
-    }
-  };
-
-  const copy = language === "en" ? {
-    status: "AI-POWERED CITIZENSHIP TRAINING",
-    aiReady: "AI READY",
-    ready: "PRACTICE",
-    english: "ENGLISH",
-    reading: "Reading",
-    writing: "Writing",
-    preparation: "YOUR PREPARATION",
-    preparationTitle: "Keep moving forward.",
-    civics: "Civics",
-    interview: "Interview",
-    viewProgress: "VIEW PROGRESS",
-    caseTracker: "Case Tracker",
-    development: "IN DEVELOPMENT",
-    caseBody: "Practice checking a status response through the USCIS API Sandbox.",
-    checkCase: "COMING SOON",
-    languageLabel: "Change preferred language",
-    settingsLabel: "Open Legal and Privacy Settings",
-    civicsLabel: "Civics — 128 Questions. Master the questions for your interview.",
-  } : {
-    status: "ENTRENAMIENTO DE CIUDADANÍA CON IA",
-    aiReady: "IA LISTA",
-    ready: "PRÁCTICA",
-    english: "INGLÉS",
-    reading: "Lectura",
-    writing: "Escritura",
-    preparation: "TU PREPARACIÓN",
-    preparationTitle: "Sigue avanzando.",
-    civics: "Educación cívica",
-    interview: "Entrevista",
-    viewProgress: "VER PROGRESO",
-    caseTracker: "Seguimiento del caso",
-    development: "EN DESARROLLO",
-    caseBody: "Practica la consulta de una respuesta de estado mediante la API Sandbox de USCIS.",
-    checkCase: "PRÓXIMAMENTE",
-    languageLabel: "Cambiar idioma preferido",
-    settingsLabel: "Abrir ajustes legales y de privacidad",
-    civicsLabel: "Educación cívica — 128 preguntas. Domina las preguntas para tu entrevista.",
-  };
-  const civicsProgress = Math.min(100, Math.round((practiceSummary?.civics?.viewed || 0) / 128 * 100));
-  return (
-    <div className="app home-ai home-reference">
-
-      {/* ================= HEADER ================= */}
-
-      <header className="home-new-header">
-
-        <div className="home-new-brand" aria-label="Citizenship AI">
-          <span className="home-brand-wordmark">Citizenship <strong>AI</strong></span>
-        </div>
-
-        <div className="language-selector">
-          <AccountButton language={language} onClick={onOpenAccount} />
-          <button
-            className="home-language"
-            onClick={() => onLanguageChange(language === "en" ? "es" : "en")}
-            aria-label={copy.languageLabel}
-          >
-            {language === "en" ? "EN" : "ES"}
-          </button>
-          <button className="home-settings-button" onClick={onOpenSettings} aria-label={copy.settingsLabel}>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M19 12a7 7 0 0 0-.1-1.15l2-1.55-2-3.45-2.45 1A7 7 0 0 0 14.5 5.7L14.15 3h-4.3L9.5 5.7a7 7 0 0 0-1.95 1.15l-2.45-1-2 3.45 2 1.55A7 7 0 0 0 5 12c0 .4.03.78.1 1.15l-2 1.55 2 3.45 2.45-1A7 7 0 0 0 9.5 18.3l.35 2.7h4.3l.35-2.7a7 7 0 0 0 1.95-1.15l2.45 1 2-3.45-2-1.55c.07-.37.1-.75.1-1.15Z" />
-            </svg>
-          </button>
-        </div>
-
-      </header>
-
-
-
-      {/* ================= HERO ================= */}
-
-      <main className="home-new-content">
-
-        <section className="home-new-hero">
-
-          <div className="hero-glow"></div>
-
-          <div className="home-visual-hero home-video-hero">
-            <span className="home-pro-badge">PRO</span>
-            <video
-              ref={homeVideoRef}
-              className="home-hero-video"
-              src="/citizenshipai-home-cta.mp4?v=20261006"
-
-              playsInline
-              preload="metadata"
-              onPlay={() => {
-                rememberHomeVideoPlayback();
-                setHomeVideoPlaying(true);
-              }}
-              onPause={() => setHomeVideoPlaying(false)}
-              onEnded={() => setHomeVideoPlaying(false)}
-              onVolumeChange={(event) => setHomeVideoMuted(event.currentTarget.muted)}
-              onClick={onStartInterview}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  onStartInterview();
-                }
-              }}
-              role="button"
-              tabIndex="0"
-              aria-label={language === "en"
-                ? "Start real interview practice with Sarah"
-                : "Comenzar práctica de entrevista real con Sarah"}
-            />
-
-            <div className="home-video-controls" aria-label={language === "en" ? "Promotional video controls" : "Controles del video promocional"}>
-              <button type="button" onClick={toggleHomeVideoPlayback} aria-label={homeVideoPlaying
-                ? (language === "en" ? "Pause video" : "Pausar video")
-                : (language === "en" ? "Play video" : "Reproducir video")}>
-                <span aria-hidden="true">{homeVideoPlaying ? "Ⅱ" : "▶"}</span>
-              </button>
-              <button type="button" onClick={toggleHomeVideoSound} aria-label={homeVideoMuted
-                ? (language === "en" ? "Turn sound on" : "Activar sonido")
-                : (language === "en" ? "Mute video" : "Silenciar video")}>
-                <span aria-hidden="true">{homeVideoMuted ? "🔇" : "🔊"}</span>
-              </button>
-              {homeVideoNeedsSound && (
-                <button type="button" className="home-video-sound-prompt" onClick={toggleHomeVideoSound}>
-                  {language === "en" ? "Turn on sound" : "Activar sonido"}
-                </button>
-              )}
-            </div>
-
-          </div>
-
-          <div className="sr-only">
-            <h1>{language === "en" ? "Prepare for your citizenship interview" : "Prepárate para tu entrevista de ciudadanía"}</h1>
-            <p>{language === "en"
-              ? "Bilingual, personalized practice with official resources."
-              : "Práctica bilingüe y personalizada con recursos oficiales."}
-            </p>
-          </div>
-
-
-          {/* AI ORB */}
-
-          <div className="ai-orb-container">
-
-            <div className="ai-orb-ring ring-one"></div>
-            <div className="ai-orb-ring ring-two"></div>
-            <div className="ai-orb-ring ring-three"></div>
-
-            <div className="ai-orb">
-
-              <div className="ai-orb-core">
-                ✦
-              </div>
-
-            </div>
-
-            <div className="ai-orb-label">
-              <span></span>
-              {copy.aiReady}
-            </div>
-
-          </div>
-
-
-          {/* PRIMARY ACTION */}
-
-          <div className="home-interview-actions" style={{ display: "grid", gap: "12px", width: "100%" }}>
-            <button
-              className="home-primary-button home-n400-interview-button"
-              onClick={onStartN400Interview}
-            >
-              <span className="home-action-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v5h5M9 12h6M9 16h6"/></svg>
-              </span>
-              <div>
-                <small>{language === "en" ? "FORM N-400 · GUIDED PRACTICE" : "FORMULARIO N-400 · PRÁCTICA GUIADA"}</small>
-                <strong>{language === "en" ? "N-400 INTERVIEW" : "ENTREVISTA N-400"}</strong>
-              </div>
-              <span className="primary-arrow">→</span>
-            </button>
-            <button
-              className="home-primary-button home-civics-live-button"
-              onClick={onStartCivicsInterview}
-            >
-              <span className="home-action-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-              </span>
-              <div>
-                <small>{language === "en" ? "CLASSIC SARAH PRACTICE" : "PRÁCTICA CLÁSICA CON SARAH"}</small>
-                <strong>{language === "en" ? "CIVICS INTERVIEW" : "ENTREVISTA CÍVICA"}</strong>
-              </div>
-              <span className="primary-arrow">→</span>
-            </button>
-            <button
-              className="home-primary-button home-immigration-primary-button"
-              onClick={onOpenImmigrationHelp}
-            >
-              <span className="home-action-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><path d="M12 3 20 7v5c0 5-3.4 8-8 9-4.6-1-8-4-8-9V7z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>
-              </span>
-              <div>
-                <small>{language === "en" ? "OFFICIAL U.S. RESOURCES" : "RECURSOS OFICIALES DE EE. UU."}</small>
-                <strong>{language === "en" ? "IMMIGRATION HELP" : "AYUDA MIGRATORIA"}</strong>
-              </div>
-              <span className="primary-arrow">→</span>
-            </button>
-            <button className="home-primary-button home-podcast-primary-button" onClick={onOpenPodcasts}>
-              <span className="home-action-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="13" rx="4"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M9 21h6"/></svg>
-              </span>
-              <div>
-                <small><i className="home-podcast-live-dot"></i>{language === "en" ? "STUDY AUDIO · ENGLISH + ESPAÑOL" : "AUDIO DE ESTUDIO · ENGLISH + ESPAÑOL"}</small>
-                <strong>{language === "en" ? "PODCASTS" : "PODCASTS"}</strong>
-              </div>
-              <span className="primary-arrow">→</span>
-            </button>
-          </div>
-
-        </section>
-
-
-        {/* ================= QUICK PRACTICE ================= */}
-        <section className="home-new-section home-practice-section">
-          <div className="home-practice-list">
-
-            <button
-              className="practice-feature-card civics-feature civics-image-card"
-              onClick={() => onOpenFeature("civics")}
-              aria-label={copy.civicsLabel}
-            >
-              <img className="reference-civics-artwork" src="/civics-capitol-card.png" alt="" aria-hidden="true" />
-              
-            </button>
-
-
-            <div className="practice-mini-grid">
-
-              <button
-                className="practice-mini-card"
-                onClick={() => onOpenFeature("reading")}
-              >
-
-                <div className="mini-icon">
-                  A
-                </div>
-
-                <div>
-                  <small>{copy.english}</small>
-                  <h3>{copy.reading}</h3>
-                </div>
-
-                <span>↗</span>
-
-              </button>
-
-
-              <button
-                className="practice-mini-card"
-                onClick={() => onOpenFeature("writing")}
-              >
-
-                <div className="mini-icon">
-                  ✎
-                </div>
-
-                <div>
-                  <small>{copy.english}</small>
-                  <h3>{copy.writing}</h3>
-                </div>
-
-                <span>↗</span>
-
-              </button>
-
-            </div>
-
-
-          </div>
-
-        </section>
-
-
-        {/* ================= PREPARATION ================= */}
-
-        <button className="home-progress-link" onClick={onOpenProgress}>
-          <span className="home-progress-symbol preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l4-5 4 2 4-7"/><path d="M16 5h4v4"/></svg></span>
-          <span><strong>{language === "es" ? "Mi progreso" : "My progress"}</strong><small>{language === "es" ? "Ver mi actividad y resultados" : "View my activity and results"}</small></span>
-          <span className="home-progress-count">{civicsProgress}% <span aria-hidden="true">→</span><span className="reference-progress-track" aria-hidden="true"><i style={{width:`${civicsProgress}%`}} /></span></span>
-        </button>
-
-        <section className="legacy-new-tools" aria-label={language === "es" ? "Mi preparación" : "My preparation"}>
-          <div className="legacy-tools-links">
-            <button onClick={() => onNavigate("profile")}><span className="preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg></span><span className="preparation-copy"><strong>{language === "es" ? "Mi perfil" : "My profile"}</strong><small>{language === "es" ? "Datos y preferencias" : "Details and preferences"}</small></span><span className="preparation-arrow" aria-hidden="true">→</span></button>
-            <button onClick={() => onNavigate("uscisTracker")}><span className="preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h6a4 4 0 0 1 0 8H9a3 3 0 0 0-3 3v4"/></svg></span><span className="preparation-copy"><strong>{language === "es" ? "Mi proceso" : "My journey"}</strong><small>{getCaseStageLabel(context.caseProfile.currentStage || "PREPARING_N400", language)}</small></span><span className="preparation-arrow" aria-hidden="true">→</span></button>
-          </div>
-          <details className="legacy-daily-plan"><summary><span className="preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="3"/><path d="M8 3v4M16 3v4M4 11h16m-12 5 3 3 5-5"/></svg></span><span className="preparation-copy"><strong>{language === "es" ? "Mi plan de hoy" : "My daily plan"}</strong><small>{language === "es" ? "Tu próximo paso de estudio" : "Your next study step"}</small></span><span className="preparation-arrow" aria-hidden="true">⌄</span></summary><h3>{nextAction.label}</h3><p>{nextAction.detail}</p><button onClick={onContinue}>{language === "es" ? "Continuar mi plan" : "Continue my plan"} →</button><ol>{plan.items.map(item => <li key={item.id}>{item.label} · {item.minutes} min</li>)}</ol></details>
-        </section>
-
-      </main>
-
-
-    </div>
-  );
-}
-
-// Reemplaza la sección del componente RealInterview en tu App.js (el bloque que devuelve la pantalla de entrevista) con este código completamente optimizado y rediseñado:
-
 function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onRestart, civicProfile, brainContext = {}, language = "en", userKey = "guest", mode = "full", requestVoiceAccess }) {
   const { runTransition } = useProgressGate();
+  const [callStarted,setCallStarted]=useState(false),[paused,setPaused]=useState(false),[captions,setCaptions]=useState(true),[elapsed,setElapsed]=useState(0);
+  const captureGeneration=useRef(0);
+  const [endedEarly,setEndedEarly]=useState(false);
   const t = (en, es) => language === "es" ? es : en;
   const [checkpoint] = useState(() => {
     const saved = getModuleProgress(userKey).interview;
@@ -678,6 +264,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   const [missedQuestions, setMissedQuestions] = useState(() => (checkpoint?.missedIds || []).map(id => ({ id, english: civicsQuestionBank.find(question => question.questionId === id)?.question || "" })));
   const [hasRetried, setHasRetried] = useState(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
+  useEffect(()=>{if(!callStarted||isInterviewComplete)return;const timer=setInterval(()=>setElapsed(x=>x+1),1000);return()=>clearInterval(timer);},[callStarted,isInterviewComplete]);
   const [interviewer, setInterviewer] = useState("sarah");
   const [useStandardInterview, setUseStandardInterview] = useState(false);
   const recorderRef = useRef(null);
@@ -694,9 +281,9 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     const transition = `${currentQuestion}:${isInterviewComplete}:${readyForNext}:${correctAnswers}:${incorrectAnswers}`;
     if (savedTransition.current === transition) return;
     savedTransition.current = transition;
-    const completed = isInterviewComplete ? questions.length : currentQuestion + Number(readyForNext);
+    const completed = isInterviewComplete && !endedEarly ? questions.length : currentQuestion + Number(readyForNext);
     saveModuleProgress("interview", { completed, total: questions.length, questionIndex: completed, questionIds: questions.map(question => question.questionId), score: correctAnswers, incorrect: incorrectAnswers, missedIds: missedQuestions.map(question => question.id), resultStatus: answerStatus }, userKey);
-  }, [currentQuestion, isInterviewComplete, questions, correctAnswers, incorrectAnswers, missedQuestions, userKey, mode, readyForNext, answerStatus]);
+  }, [currentQuestion, isInterviewComplete, questions, correctAnswers, incorrectAnswers, missedQuestions, userKey, mode, readyForNext, answerStatus,endedEarly]);
   const isKevin = interviewer === "kevin";
   const interviewerName = isKevin ? "Kevin" : "Sarah";
   const questionText = question => question.question || question.english;
@@ -729,7 +316,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   };
   useEffect(() => {
     mountedRef.current = true;
-    if (mode !== "full" || useStandardInterview) speechTimerRef.current = setTimeout(() => {
+    if (callStarted && (mode !== "full" || useStandardInterview)) speechTimerRef.current = setTimeout(() => {
       if (!soundEnabledRef.current) return;
       const requestId = ++speechRequestRef.current;
       setIsSpeaking(true);
@@ -744,7 +331,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       recorderRef.current?.cancel?.();
       stopAppSpeech();
     };
-  }, [questions, mode, checkpoint, useStandardInterview]);
+  }, [questions, mode, checkpoint, useStandardInterview, callStarted]);
   const goToNextQuestion = () => runTransition({ module: "interview", completed: currentQuestion + 1, total: questions.length, busy: Boolean(recorderRef.current) }, () => {
     stopQuestionSpeech();
     const nextQuestion = currentQuestion + 1;
@@ -800,18 +387,20 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   const beginListening = async () => {
     if (!mountedRef.current || microphonePendingRef.current || recorderRef.current) return;
     microphonePendingRef.current = true;
+    const generation=captureGeneration.current;
     stopQuestionSpeech();
     try {
       const recorder = await startAudioRecording();
-      if (!mountedRef.current) { recorder.cancel?.(); return; }
+      if (!mountedRef.current || generation!==captureGeneration.current) { recorder.cancel?.(); return; }
       recorderRef.current = recorder;
       setIsListening(true); setAnswerStatus("");
       emitCompanionState("thinking");
-    } catch { if (mountedRef.current) setAnswerStatus("error"); }
+    } catch { if (mountedRef.current && generation===captureGeneration.current) setAnswerStatus("error"); }
     finally { microphonePendingRef.current = false; }
   };
   const startListening = () => requestVoiceAccess ? requestVoiceAccess(beginListening) : beginListening();
   const stopListening = async () => {
+    const generation=captureGeneration.current;
     const recorder = recorderRef.current;
     recorderRef.current = null;
     setIsListening(false);
@@ -819,9 +408,9 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     setIsTranscribing(true);
     try {
       const transcript = await transcribeRecording(await recorder.stop());
-      if (mountedRef.current) { if (transcript) evaluateInterviewAnswer(transcript, "spoken"); else setAnswerStatus("error"); }
-    } catch { if (mountedRef.current) setAnswerStatus("error"); }
-    finally { if (mountedRef.current) setIsTranscribing(false); }
+      if (mountedRef.current && generation===captureGeneration.current) { if (transcript) evaluateInterviewAnswer(transcript, "spoken"); else setAnswerStatus("error"); }
+    } catch { if (mountedRef.current && generation===captureGeneration.current) setAnswerStatus("error"); }
+    finally { if (mountedRef.current && generation===captureGeneration.current) setIsTranscribing(false); }
   };
   if (isInterviewComplete) {
     const gradedCount = correctAnswers + incorrectAnswers;
@@ -842,47 +431,20 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     </div></div>;
   }
   if (mode === "full" && !useStandardInterview) return <div className="interview-screen live-interview-screen live-avatar-only-screen">
-    <header className="interview-header"><button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit live interview", "Salir de la entrevista")}><span aria-hidden="true">×</span></button><div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>{t("LIVE N-400 + CIVICS INTERVIEW", "ENTREVISTA N-400 + CIVISMO")}</small></div></header>
+    <header className="interview-header"><button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit live interview", "Salir de la entrevista")}><span aria-hidden="true">×</span></button><div className="interview-brand"><strong>IMMIGRATION <span>AI</span></strong><small>{t("LIVE N-400 + CIVICS INTERVIEW", "ENTREVISTA N-400 + CIVISMO")}</small></div></header>
     <main className="interview-content live-avatar-only-content"><DidLiveAvatar autoStart language={language} onStandardInterview={() => setUseStandardInterview(true)} /></main>
   </div>;
   const question = questions[currentQuestion];
-  return <div className={`interview-screen n400-interview-screen live-interview-screen interviewer-${interviewer} ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
-    <header className="interview-header">
-      <button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit practice interview", "Salir de la práctica")}><span aria-hidden="true">×</span></button>
-      <div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>{t("Civics interview practice", "Práctica de entrevista cívica")}</small></div>
-      <button className="more-button interview-repeat-button" onClick={() => speakQuestion(questionText(question))} disabled={isListening || isTranscribing} aria-label={t("Repeat question", "Repetir pregunta")}>↻</button>
-    </header>
-    <InterviewWorkspace language={language} mode="civics" current={currentQuestion + 1} total={questions.length} busy={isListening || isTranscribing} onReplay={() => speakQuestion(questionText(question))}>
-      <section className="sarah-live-stage" aria-label={t(`${interviewerName}, practice interviewer`, `${interviewerName}, entrevistador de práctica`)}>
-        <div className="live-stage-media" aria-hidden="true"><div className={`live-stage-motion-frame sarah-video-frame ${isKevin ? "kevin-motion-frame" : ""}`}>
-          {isKevin ? <><video src="/kevin-listening.mp4" className="live-sarah-video live-sarah-resting" autoPlay muted loop playsInline /><video src="/kevin-speaking.mp4" className="live-sarah-video live-sarah-speaking" autoPlay muted loop playsInline /></> : <><video src="/sarah-listening.mp4" poster={sarahImage} className="live-sarah-video live-sarah-resting" autoPlay muted loop playsInline /><video src="/sarah-speaking.mp4" poster={sarahSpeakingImage} className="live-sarah-video live-sarah-speaking" autoPlay muted loop playsInline /></>}
-        </div><div className="live-stage-mask"></div></div>
-        <div className="live-stage-topbar"><div className="live-agent-badge"><span className="live-dot"></span><div><strong>{interviewerName}</strong><small>{t("Practice interviewer", "Entrevistador de práctica")}</small></div></div>
-          <div className="live-interviewer-selector" role="group" aria-label={t("Choose your practice interviewer", "Elige quién dirige la práctica")}>{["sarah", "kevin"].map(name => <button key={name} className={interviewer === name ? "active" : ""} aria-pressed={interviewer === name} disabled={isListening || isTranscribing} onClick={() => { setInterviewer(name); speakQuestion(questionText(question), undefined, name); }}>{name === "sarah" ? "Sarah" : "Kevin"}</button>)}</div>
-          <span className="live-practice-badge">{t("Practice", "Práctica")}</span>
-        </div>
-        <div className="live-stage-presence"><span>{t("Civics interview practice", "Práctica de entrevista cívica")}</span><strong>{interviewerName}</strong><small>{isSpeaking ? t("Speaking with you", "Hablando contigo") : isListening ? t("Listening to your answer", "Escuchando tu respuesta") : t("Ready for your response", "Listo para tu respuesta")}</small></div>
-        <section className="live-question-card" aria-live="polite"><div className="live-question-header"><div className="ai-turn-indicator">{isSpeaking ? t(`${interviewerName} is speaking`, `${interviewerName} está hablando`) : isListening ? t(`${interviewerName} is listening`, `${interviewerName} está escuchando`) : t("Your turn", "Tu turno")}</div><span>{t("Question", "Pregunta")} {currentQuestion + 1} / {questions.length}</span></div>
-          <h2 className="question" lang="en">{questionText(question)}</h2>{language === "es" && answer && <p className="question-spanish" lang="es">{questionSpanish(question)}</p>}
-          <div className="live-progress-dots" role="progressbar" aria-valuemin={0} aria-valuemax={questions.length} aria-valuenow={currentQuestion + 1} aria-label={t(`Question ${currentQuestion + 1} of ${questions.length}`, `Pregunta ${currentQuestion + 1} de ${questions.length}`)}>{questions.map((_, index) => <span key={index} className={index <= currentQuestion ? "active" : ""}></span>)}</div>
-        </section>
-        <div className="live-voice-status" aria-live="polite"><span>{isTranscribing ? t("Preparing your response…", "Preparando tu respuesta…") : isListening ? t("Listening… finish recording when ready", "Escuchando… termina la grabación cuando estés listo") : t("Speak or type your response below", "Responde hablando o escribiendo abajo")}</span></div>
-      </section>
-      <section className="live-answer-feedback" aria-live="polite">
-        {answer && <div className={`answer-preview ${answerStatus}`}><span>{t("Your response", "Tu respuesta")}</span><p>{answer}</p><div className="answer-result">{feedback}</div></div>}
-        {readyForNext && answerStatus !== "correct" && question.acceptedAnswers?.length > 0 && <details className="n400-known-answer"><summary>{t("Official answers", "Respuestas oficiales")}</summary><ul>{question.acceptedAnswers.map(item => <li key={item} lang="en">{item}</li>)}</ul></details>}
-        {answerStatus === "error" && <p role="alert">{t("We couldn't record your response. Try again or type it below.", "No pudimos grabar tu respuesta. Inténtalo otra vez o escríbela abajo.")}</p>}
-      </section>
-      <section className="live-interview-controls" aria-label={t("Interview controls", "Controles de entrevista")}>
-        {readyForNext ? <button className="primary-button" onClick={goToNextQuestion}>{t("Continue", "Continuar")}</button> : <>
-          <form className="n400-text-response" onSubmit={event => { event.preventDefault(); evaluateInterviewAnswer(typedAnswer); }}><label htmlFor="civics-interview-answer">{t("Type your answer", "Escribe tu respuesta")}</label><textarea id="civics-interview-answer" rows={3} maxLength={1600} value={typedAnswer} disabled={isListening || isTranscribing} onFocus={stopQuestionSpeech} onChange={event => setTypedAnswer(event.target.value)} /><button className="primary-button" disabled={!typedAnswer.trim() || isListening || isTranscribing}>{t("Check response", "Comprobar respuesta")}</button></form>
-          <button className={`secondary-button live-mic-button ${isListening ? "listening" : ""}`} onClick={isListening ? stopListening : startListening} disabled={isTranscribing} aria-pressed={isListening} aria-label={isListening ? t("Stop recording answer", "Terminar de grabar respuesta") : t("Start recording answer", "Comenzar a grabar respuesta")}><svg className="workspace-microphone-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>{isListening ? t("Finish recording", "Terminar grabación") : t("Speak your answer", "Responder con voz")}</button>
-          <button className="live-skip-button" onClick={handleSkip} disabled={isListening || isTranscribing}>{t("I don't know", "No lo sé")}</button>
-        </>}
-        <div className="live-score-summary" role="group" aria-label={t("Current score", "Resultado actual")}><span>{correctAnswers} {t("correct", "correctas")}</span><span>{incorrectAnswers} {t("missed", "por repasar")}</span></div>
-      </section>
-    </InterviewWorkspace>
-  </div>;
+  const suspend=()=>{captureGeneration.current++;recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setIsTranscribing(false);stopQuestionSpeech();setPaused(true);};
+  if(!callStarted)return <section className="platform-panel platform-call-start"><h1>{t('Civics interview','Entrevista cívica')}</h1><p>{t('Choose your interviewer. Speak or type your responses.','Elige tu entrevistador. Puedes responder hablando o escribiendo.')}</p><label>{t('Interviewer','Entrevistador')}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><button onClick={()=>setCallStarted(true)}>{t('Begin interview','Comenzar entrevista')}</button></section>;
+  return <CallView moduleId="citizenship" lang={language} interviewerName={interviewerName} interviewType={t('Civics interview','Entrevista cívica')} mediaBase={'/modules/citizenship/'+interviewer+'-'} state={paused?'paused':isTranscribing?'processing':isSpeaking?'speaking':'listening'} elapsed={elapsed} muted={!isListening} captions={[{who:'ai',text:questionText(question)},...(answer?[{who:'user',text:answer}]:[])]} showCaptions={captions} onCaptions={()=>setCaptions(x=>!x)} onMic={()=>{if(!paused&&!isTranscribing&&!readyForNext)(isListening?stopListening:startListening)();}} onRepeat={()=>{suspend();setPaused(false);speakQuestion(questionText(question));}} onPause={()=>{if(paused)setPaused(false);else suspend();}} onSuspend={suspend} onFinish={()=>{suspend();setEndedEarly(true);setCallStarted(false);setIsInterviewComplete(true);}} error={answerStatus==='error'?t('Microphone unavailable. Try again or type your answer.','Micrófono no disponible. Inténtalo de nuevo o escribe tu respuesta.'):''}>
+  {feedback&&<p role="status">{feedback}</p>}
+  {readyForNext?<button disabled={paused} onClick={goToNextQuestion}>{t('Continue','Continuar')}</button>:<form onSubmit={e=>{e.preventDefault();evaluateInterviewAnswer(typedAnswer);}}><input aria-label={t('Your response','Tu respuesta')} value={typedAnswer} maxLength={1600} disabled={paused||isListening||isTranscribing} onFocus={stopQuestionSpeech} onChange={e=>setTypedAnswer(e.target.value)}/><button disabled={paused||!typedAnswer.trim()||isListening||isTranscribing}>{t('Check','Comprobar')}</button></form>}
+  {readyForNext&&answerStatus!=='correct'&&<details><summary>{t('Official answers','Respuestas oficiales')}</summary><ul>{question.acceptedAnswers?.map(x=><li key={x}>{x}</li>)}</ul></details>}
+  {!readyForNext&&<button disabled={paused||isListening||isTranscribing} onClick={handleSkip}>{t("I don't know",'No lo sé')}</button>}
+  {language==='es'&&answer&&<p>{questionSpanish(question)}</p>}
+  <p>{currentQuestion+1}/{questions.length} · {correctAnswers} {t('correct','correctas')} · {incorrectAnswers} {t('to review','por repasar')}</p>
+  </CallView>;
 }
 
 function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
@@ -1053,6 +615,10 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   const [coachThinking, setCoachThinking] = useState(false);
   const [coachSpeaking, setCoachSpeaking] = useState(false);
   const coachRecorderRef = useRef(null);
+  const coachGeneration = useRef(0);
+  const coachMicPending = useRef(false);
+  const suspendCoach = () => {coachGeneration.current++;coachRecorderRef.current?.cancel?.();coachRecorderRef.current=null;stopAppSpeech();setCoachListening(false);setCoachSpeaking(false);setCoachThinking(false);};
+  useEffect(()=>()=>{coachGeneration.current++;coachRecorderRef.current?.cancel?.();stopAppSpeech();},[screen]);
 
   const [isAIThinking, setIsAIThinking] = useState(false);
   const [aiMessage, setAiMessage] = useState("");
@@ -1318,6 +884,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   };
 
   const sendCoachMessage = async (message) => {
+    const generation=coachGeneration.current;
     setCoachThinking(true);
     try {
       const result = await apiJson("/coach", {
@@ -1325,6 +892,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message, history: coachHistory }),
       });
+      if(generation!==coachGeneration.current)return;
       setCoachReply(result.reply || "");
       speakCoachReply(result.reply || "");
       setCoachHistory((current) => [
@@ -1334,25 +902,32 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
       ]);
       recordPractice({ module: "coach", outcome: "reply" });
     } catch {
+      if(generation!==coachGeneration.current)return;
       console.error("Coach AI error:");
       setCoachReply(t("We could not connect. Please try again.", "No pudimos conectar. Inténtalo otra vez."));
     } finally {
-      setCoachThinking(false);
+      if(generation===coachGeneration.current)setCoachThinking(false);
     }
   };
 
   const startCoachListening = async () => {
+    if(coachMicPending.current||coachRecorderRef.current)return;
+    const generation=coachGeneration.current;coachMicPending.current=true;stopAppSpeech();setCoachSpeaking(false);
     try {
-      coachRecorderRef.current = await startAudioRecording();
+      const recorder=await startAudioRecording();
+      if(generation!==coachGeneration.current){recorder.cancel?.();return;}
+      coachRecorderRef.current=recorder;
       setCoachListening(true);
       emitCompanionState("thinking", { message: language === "es" ? "Te escucho." : "I'm listening." });
     } catch {
+      if(generation!==coachGeneration.current)return;
       console.error("Coach microphone error:");
       setCoachReply(t("Allow microphone access and try again.", "Permite el acceso al micrófono e inténtalo otra vez."));
-    }
+    } finally {coachMicPending.current=false;}
   };
 
   const stopCoachListening = async () => {
+    const generation=coachGeneration.current;
     const recorder = coachRecorderRef.current;
     coachRecorderRef.current = null;
     setCoachListening(false);
@@ -1360,9 +935,11 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
 
     try {
       const transcript = await transcribeRecording(await recorder.stop());
+      if(generation!==coachGeneration.current)return;
       if (!transcript) throw new Error("No speech was detected.");
       await sendCoachMessage(transcript);
     } catch {
+      if(generation!==coachGeneration.current)return;
       console.error("Coach transcription error:");
       setCoachReply(t("We could not hear you. Please try again.", "No pudimos escucharte. Inténtalo otra vez."));
     }
@@ -1379,7 +956,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
       console.error("Reading microphone error:");
       setIsAIThinking(false);
       setAiMessage(t("Allow microphone access and try again.", "Permite el acceso al micrófono e inténtalo otra vez."));
-    }
+    } finally {coachMicPending.current=false;}
   };
 
   const stopReading = async () => {
@@ -1510,53 +1087,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
     );
   }
 
-  if (screen === "coach") {
-    const conversationStarted = coachMode === "conversation";
-    return (
-      <div className="practice-screen coach-screen coach-video-call-screen">
-        <header className="practice-header">
-          <button className="back-button" onClick={() => { setCoachMode("welcome"); goBack("english"); }}>← {previousScreenLabel("english")}</button>
-          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
-        </header>
-        <main className="coach-conversation-content coach-video-call-content">
-          <div className="practice-eyebrow">{t("AI ENGLISH COACH · VIDEO PRACTICE", "CONVERSACIÓN EN INGLÉS · PRÁCTICA EN VIDEO")}</div>
-          <div className={"coach-conversation-card coach-video-call-card " + (conversationStarted ? "started" : "ready")}>
-            <div className={"coach-conversation-avatar " + (coachSpeaking ? "speaking" : "listening")} role="img" aria-label={coachSpeaking ? t("Sarah speaking", "Sarah hablando") : t("Sarah ready to listen", "Sarah lista para escuchar")}>
-              <video src="/sarah-listening.mp4" poster={sarahImage} className="coach-avatar-video coach-avatar-listening" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
-              <video src="/sarah-speaking.mp4" poster={sarahSpeakingImage} className="coach-avatar-video coach-avatar-speaking" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
-              <div className="coach-video-call-overlay" aria-hidden="true"></div>
-              <div className="coach-video-call-identity"><span></span><div><strong>Sarah AI</strong><small>{t("English conversation coach", "Práctica de conversación en inglés")}</small></div></div>
-            </div>
-            <div className="coach-conversation-status" role="status" aria-live="polite">
-              <span></span>
-              {!conversationStarted ? t("Sarah is ready", "Sarah está lista") : coachListening ? t("Listening to you", "Te escucha") : coachThinking ? t("Preparing a response", "Preparando una respuesta") : coachSpeaking ? t("Sarah is speaking", "Sarah está hablando") : t("Conversation active", "Conversación activa")}
-            </div>
-            <div className="coach-message">
-              <div className="coach-message-label">SARAH</div>
-              <div className="coach-message-text">{conversationStarted ? (coachReply || "Hi! I'm Sarah. Let's practice English together. Tell me about yourself.") : t("Ready when you are. Start a conversation to practice English.", "Cuando quieras, inicia una conversación para practicar inglés.")}</div>
-            </div>
-            <div className="coach-response-area">
-              {!conversationStarted ? (
-                <button className="coach-start-button coach-call-start-button" onClick={() => { setCoachReply(""); setCoachMode("conversation"); speakCoachReply("Hi! I'm Sarah. Let's practice English together. Tell me about yourself."); }} type="button">
-                  <span className="coach-call-icon" aria-hidden="true">▶</span>
-                  <span className="coach-call-copy"><small>{t("AI ENGLISH COACH", "Conversación en inglés")}</small><strong>{t("Start conversation", "Iniciar conversación")}</strong></span>
-                  <span className="coach-call-arrow" aria-hidden="true">→</span>
-                </button>
-              ) : (
-                <>
-                  <div className="coach-response-label">{t("YOUR RESPONSE", "Tu respuesta")}</div>
-                  <button className={"coach-mic-button " + (coachListening ? "listening" : "")} onClick={coachListening ? stopCoachListening : startCoachListening} disabled={coachThinking} aria-busy={coachThinking} type="button">
-                    <div className="coach-mic-icon-wrapper"><span className="mic-glyph">🎙</span></div>
-                    <span className="coach-mic-text">{coachThinking ? t("Preparing a response…", "Preparando una respuesta…") : coachListening ? t("Tap again when you finish", "Toca otra vez al terminar") : t("Tap the microphone to speak", "Toca el micrófono para hablar")}</span>
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </main>
-      </div>
-    );
-  }
+  if (screen === "coach") return <CoachCall language={language} started={coachMode==='conversation'} speaking={coachSpeaking} listening={coachListening} thinking={coachThinking} reply={coachReply} history={coachHistory} onStart={()=>{setCoachReply("");setCoachMode("conversation");speakCoachReply("Hi! I'm Sarah. Let's practice English together. Tell me about yourself.");}} onMic={coachListening?stopCoachListening:startCoachListening} onRepeat={()=>speakCoachReply(coachReply||"Hi! I'm Sarah. Let's practice English together. Tell me about yourself.")} onSuspend={suspendCoach} onExit={()=>{suspendCoach();setCoachMode('welcome');goBack('home');}}/>;
   // Control de pantallas de la aplicación
   // Control de pantallas de la aplicación
   if (screen === "civics") {
@@ -1648,7 +1179,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
           <button className="back-button" onClick={() => goBack("practice")}>
             ← {previousScreenLabel("practice")}
           </button>
-          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+          
         </header>
         <main className="civics-deck-content">
           <section className="civics-deck-hero" aria-labelledby="civics-deck-title">
@@ -1749,7 +1280,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
     ];
     if (dailyPlan.focus === "oath_preparation") practiceItems.unshift({id:"uscisTracker",label:"Oath",es:"Juramento"});
     return <div className="practice-screen">
-      <header className="practice-header"><button className="back-button" onClick={() => goBack("home")}>← {previousScreenLabel("home")}</button><div className="practice-brand">CITIZENSHIP <span>AI</span></div></header>
+      <header className="practice-header"><button className="back-button" onClick={() => goBack("home")}>← {previousScreenLabel("home")}</button></header>
       <main className="practice-content">
         <h1>{t("Practice", "Práctica")}</h1><p className="practice-intro">{t("A plan that fits your next step.", "Un plan para tu próximo paso.")}</p>
         <section className="brain-today"><h2>{nextAction.label}</h2><p>{nextAction.detail}</p><button type="button" className="button-primary" onClick={continueDailyPlan}>{t("Continue today's practice", "Continuar la práctica de hoy")} →</button></section>
@@ -1775,7 +1306,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
           <button className="back-button" onClick={() => goBack("practice")}>
             ← {previousScreenLabel("practice")}
           </button>
-          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+          
         </header>
         <main className="practice-content">
           <div className="practice-eyebrow">{t("ENGLISH PREPARATION", "Preparación de inglés")}</div>
@@ -1815,7 +1346,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
           <button className="back-button" onClick={() => goBack("english")}>
             ← {previousScreenLabel("english")}
           </button>
-          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+          
         </header>
         <main className="practice-content">
           <div className="practice-eyebrow">{t("ENGLISH · READING", "Inglés · Lectura")}</div>
@@ -1874,7 +1405,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
           <button className="writing-back-button" onClick={() => goBack("english")}>
             ← <span>{previousScreenLabel("english")}</span>
           </button>
-          <div className="writing-ai-brand">CITIZENSHIP <span>AI</span></div>
+          <div className="writing-ai-brand">IMMIGRATION <span>AI</span></div>
         </header>
         <main className="writing-ai-content">
           <section className="writing-practice-panel">
@@ -2221,7 +1752,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
 
   return (
     <>
-    <Home
+    <PlatformHome
       onStartInterview={() => startInterview("full")}
       onStartN400Interview={() => startInterview("n400")}
       onStartCivicsInterview={() => startInterview("civics")}
@@ -2237,7 +1768,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   );
   };
   const showNavigation = onboardingComplete && !["interview", "coach", "reading", "writing"].includes(screen);
-  return <div className={showNavigation ? "global-navigation-shell" : undefined}>{renderScreen()}{accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}{showNavigation && <BottomNavigation screen={screen} language={language} onNavigate={navigateTo} />}</div>;
+  return <div data-citizen-screen={screen} className={showNavigation ? "global-navigation-shell" : undefined}>{showNavigation && <ModuleNavigation current={screen} onNavigate={navigateTo} label={language==='es'?'Ciudadanía':'Citizenship'} items={language==='es'?[['home','Resumen'],['civics','128 preguntas'],['practice','Practicar'],['progress','Progreso']]:[['home','Overview'],['civics','128 questions'],['practice','Practice'],['progress','Progress']]}/>} {renderScreen()}{accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}</div>;
 }
 export default function App({platformLanguage,onPlatformLanguageChange}={}) {
   const { session } = useAccount();

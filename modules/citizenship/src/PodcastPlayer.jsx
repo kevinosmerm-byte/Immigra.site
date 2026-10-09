@@ -108,7 +108,7 @@ function PodcastArtwork({ track, compact = false }) {
     <div className={`podcast-artwork podcast-artwork-${track.accent} ${compact ? "compact" : ""}`} aria-hidden="true">
       <span className="podcast-artwork-live">AUDIO</span>
       <span className="podcast-artwork-mic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3" /><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8" /></svg></span>
-      <strong>CITIZENSHIP <em>AI</em></strong>
+      <strong>IMMIGRATION <em>AI</em></strong>
       {!compact && <small>{track.flag} {track.language.toUpperCase()}</small>}
     </div>
   );
@@ -159,7 +159,7 @@ export function PodcastLibrary({ onBack, language = "en" }) {
     <div className="podcast-screen">
       <header className="podcast-header">
         <button onClick={onBack} aria-label={es ? "Volver al inicio" : "Back to Home"}><PodcastIcon kind="back" /></button>
-        <strong>CITIZENSHIP <span>AI</span></strong>
+        <strong>IMMIGRATION <span>AI</span></strong>
         <span className="podcast-header-live">AUDIO</span>
       </header>
       <main className="podcast-library">

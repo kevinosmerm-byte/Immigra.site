@@ -4,18 +4,18 @@ import { readFile } from "node:fs/promises";
 import { buildBrainContext, getDailyStudyPlan, getNextAction } from "../src/brain.js";
 
 const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
-const home = app.slice(app.indexOf("function Home("), app.indexOf("function RealInterview("));
+const home = await readFile(new URL("../PlatformHome.jsx", import.meta.url), "utf8");
 
-test("original home keeps Sarah video and daily plan is an optional extension", () => {
+test("platform home preserves video, study destinations and daily plan", () => {
   assert.match(home, /citizenshipai-home-cta\.mp4/);
-  assert.match(home, /home-practice-list/);
+  assert.match(home, /citizen-activity-grid/);
   assert.match(home, /onClick=\{onContinue\}/);
-  assert.match(home, /<details className="legacy-daily-plan"/);
+  assert.match(home, /<details>/);
   assert.doesNotMatch(app, /import "\.\/ModernDesign\.css"/);
 });
 
 test("Home keeps the journey available without requiring USCIS credentials", () => {
-  assert.match(home, /onNavigate\("uscisTracker"\)/);
+  assert.match(home, /onNavigate\('uscisTracker'\)/);
   assert.match(app, /<CaseJourney/);
   assert.doesNotMatch(home, /home-uscis-disabled-button/);
 });
@@ -30,8 +30,8 @@ test("daily action changes when confirmed journey reaches the oath", () => {
 
 test("profile, journey and measured progress remain accessible from restored home", () => {
   assert.match(home, /practiceSummary\?\.civics\?\.viewed/);
-  assert.match(home, /onNavigate\("profile"\)/);
-  assert.match(home, /onNavigate\("uscisTracker"\)/);
+  assert.match(home, /onNavigate\('profile'\)/);
+  assert.match(home, /onNavigate\('uscisTracker'\)/);
   assert.match(app, /<Profile/);
   assert.match(app, /useBrainProfile/);
 });
@@ -39,7 +39,7 @@ test("profile, journey and measured progress remain accessible from restored hom
 test("both languages offer the same primary action and supporting destinations", () => {
   assert.match(home, /Continuar/);
   assert.match(home, /Continue/);
-  for (const text of ["Mi progreso", "Mi plan de hoy", "Mi proceso", "My daily plan"]) assert.ok(home.includes(text));
+  for (const text of ["Mi progreso", "Tu plan de hoy", "Mi proceso", "Your plan today"]) assert.ok(home.includes(text));
   const es = buildBrainContext({language: "es"});
   const en = buildBrainContext({language: "en"});
   assert.equal(getNextAction(es).module, getNextAction(en).module);

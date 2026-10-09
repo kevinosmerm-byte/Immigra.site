@@ -7,19 +7,19 @@ const COPY = {
   en: {
     eyebrow: "OFFICIAL U.S. RESOURCES", title: "Immigration Help", subtitle: "Official immigration tools and resources in one place.",
     search: "What do you need help with?", featured: "Featured tools", all: "All resources", noResults: "No matching resource found. Try a simpler phrase.",
-    official: "Official Government Resource", open: "View details", back: "Back", leave: "YOU'RE LEAVING CITIZENSHIP AI",
-    leaveText: "You're being redirected to an official U.S. government website.", independent: "Citizenship AI is independent and is not affiliated with or endorsed by any U.S. government agency.",
+    official: "Official Government Resource", open: "View details", back: "Back", leave: "YOU'RE LEAVING IMMIGRATION AI",
+    leaveText: "You're being redirected to an official U.S. government website.", independent: "Immigration AI is independent and is not affiliated with or endorsed by any U.S. government agency.",
     continue: "Continue to Official Website", cancel: "Cancel", verified: "Last verified", urgent: "NEED URGENT IMMIGRATION HELP?",
-    urgentText: "Use official tools to locate a detained person, court information or legal help. Citizenship AI does not promise legal representation.",
+    urgentText: "Use official tools to locate a detained person, court information or legal help. Immigration AI does not promise legal representation.",
     context: "Help for your journey", stage: "Your stage", directory: "Other resources", notChecked: "Current guidance has not been verified here. Check the official source and your notice.", educational: "Educational information only — not legal advice.", unavailable: "This resource is currently under review.", home: "Home",
   },
   es: {
     eyebrow: "RECURSOS OFICIALES DE EE. UU.", title: "Ayuda Migratoria", subtitle: "Herramientas y recursos oficiales de inmigración en un solo lugar.",
     search: "¿Con qué necesitas ayuda?", featured: "Herramientas destacadas", all: "Todos los recursos", noResults: "No encontramos un recurso. Intenta una frase más sencilla.",
-    official: "Recurso Oficial del Gobierno", open: "Ver detalles", back: "Volver", leave: "ESTÁS SALIENDO DE CITIZENSHIP AI",
-    leaveText: "Serás redirigido a un sitio web oficial del gobierno de EE. UU.", independent: "Citizenship AI es independiente y no está afiliado ni respaldado por ninguna agencia del gobierno de EE. UU.",
+    official: "Recurso Oficial del Gobierno", open: "Ver detalles", back: "Volver", leave: "ESTÁS SALIENDO DE IMMIGRATION AI",
+    leaveText: "Serás redirigido a un sitio web oficial del gobierno de EE. UU.", independent: "Immigration AI es independiente y no está afiliado ni respaldado por ninguna agencia del gobierno de EE. UU.",
     continue: "Continuar al Sitio Oficial", cancel: "Cancelar", verified: "Última verificación", urgent: "¿NECESITAS AYUDA MIGRATORIA URGENTE?",
-    urgentText: "Usa herramientas oficiales para localizar a una persona detenida, información de corte o ayuda legal. Citizenship AI no promete representación legal.",
+    urgentText: "Usa herramientas oficiales para localizar a una persona detenida, información de corte o ayuda legal. Immigration AI no promete representación legal.",
     context: "Ayuda para tu camino", stage: "Tu etapa", directory: "Otros recursos", notChecked: "Aquí no se ha verificado la orientación actual. Consulta la fuente oficial y tu aviso.", educational: "Información educativa únicamente — no es asesoría legal.", unavailable: "Este recurso está actualmente bajo revisión.", home: "Inicio",
   },
 };
@@ -66,7 +66,7 @@ export default function ImmigrationHelp({ language = "en", caseProfile = {}, onB
       <div className="immigration-help-screen">
         <header className="immigration-help-header" inert={leaving ? true : undefined}>
           <button onClick={() => leaving ? closeLeaving() : setSelectedId(null)}>← {copy.back}</button>
-          <strong>CITIZENSHIP <span>AI</span></strong>
+          <strong>IMMIGRATION <span>AI</span></strong>
           <button className="immigration-help-language" onClick={() => onLanguageChange?.(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>
         </header>
         <main className="immigration-detail-wrap">
@@ -104,7 +104,7 @@ export default function ImmigrationHelp({ language = "en", caseProfile = {}, onB
     <div className="immigration-help-screen">
       <header className="immigration-help-header">
         <button className="icon-back-control" onClick={onBack} aria-label={copy.home}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg></button>
-        <strong>CITIZENSHIP <span>AI</span></strong>
+        <strong>IMMIGRATION <span>AI</span></strong>
         <button className="immigration-help-language" onClick={() => onLanguageChange?.(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>
       </header>
       <main className="immigration-help-content">

@@ -46,7 +46,7 @@ export function Profile({ language = "en", profile, onUpdate, onBack, onOpenCivi
     update("n400Profile", key, entries);
   }
   return <div className="app profile-screen">
-    <header className="profile-header"><button type="button" className="profile-tertiary" onClick={onBack}>← {copy.back}</button><span className="practice-brand">CITIZENSHIP <span>AI</span></span></header>
+    <header className="profile-header"><button type="button" className="profile-tertiary" onClick={onBack}>← {copy.back}</button></header>
     <main className="profile-content">
       <h1>{copy.title}</h1><p className="profile-intro">{copy.intro}</p>
       <p className="profile-privacy">{copy.privacy}</p>

@@ -1,0 +1,74 @@
+/* One material and interaction system; modules only choose a hue. */
+:root{--glass-accent:#175CD3;--glass-rgb:23,92,211;--glass-ink:#19314c;--glass-muted:#53667a;--glass-radius:18px;--glass-surface:rgba(255,255,255,.88);--glass-border:rgba(110,135,166,.22);--glass-shadow:0 5px 18px rgba(27,55,87,.055),inset 0 1px 0 #fff;--glass-blur:14px}
+html[data-glass-module=asylum],.asylum-surface{--glass-accent:#7944C6;--glass-rgb:121,68,198}
+html[data-glass-module=residency],.residency{--glass-accent:#168464;--glass-rgb:22,132,100}
+html[data-glass-module=citizenship],.citizenship-surface{--glass-accent:#175CD3;--glass-rgb:23,92,211}
+html[data-glass-module] :is(.citizenship-surface,.asylum-surface,.residency){--ui-accent:var(--glass-accent);--ui-soft:rgba(var(--glass-rgb),.07);--c-accent:var(--glass-accent);--c-soft:rgba(var(--glass-rgb),.07);--accent:var(--glass-accent)}
+/* The white canvas is preserved; only components receive the material. */
+.glass-card,.glass-study-card,.glass-modal,.glass-tabs,.mobile-dock-panel,
+#citizenship-root :is(.platform-card,.citizen-daily,.citizen-progress-link,.reading-card,.writing-practice-panel,.quiz-question-card,.results-card,.account-sheet,.journey-summary,.profile-section,.legal-item,.podcast-card),
+.asylum-surface :is(.card,.question,.scope),.residency :is(.res-panel,.res-soft){
+ background:linear-gradient(125deg,rgba(255,255,255,.96),rgba(var(--glass-rgb),.035)),var(--glass-surface)!important;
+ border:1px solid var(--glass-border)!important;border-radius:var(--glass-radius);box-shadow:var(--glass-shadow)!important;
+ backdrop-filter:blur(var(--glass-blur)) saturate(125%);-webkit-backdrop-filter:blur(var(--glass-blur)) saturate(125%);color:var(--glass-ink);
+}
+.glass-button,.glass-interview-control,#citizenship-root button,.asylum-surface button,.residency button,.mobile-dock button{
+ --button-shadow:0 2px 5px rgba(27,55,87,.035),inset 0 1px 0 rgba(255,255,255,.85);
+ border-radius:12px;box-shadow:var(--button-shadow);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background-color .16s ease;
+}
+.glass-button{font:inherit;min-height:44px;padding:10px 16px;border:1px solid var(--glass-border);background:var(--glass-surface);color:var(--glass-accent);cursor:pointer}
+@media(hover:hover){.glass-button:hover:not(:disabled),#citizenship-root button:hover:not(:disabled),.asylum-surface button:hover:not(:disabled),.residency button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 7px 18px rgba(var(--glass-rgb),.12),inset 0 1px 0 #fff;border-color:rgba(var(--glass-rgb),.38)}}
+.glass-button:active:not(:disabled),#citizenship-root button:active:not(:disabled),.asylum-surface button:active:not(:disabled),.residency button:active:not(:disabled){transform:translateY(1px) scale(.98);box-shadow:inset 0 2px 4px rgba(var(--glass-rgb),.12)}
+.glass-primary,#citizenship-root :is(.citizen-primary,.primary-button,.button-primary,.quiz-primary-action,.results-focus-button,.account-primary,.journey-primary,.reading-button),.asylum-surface .button:not(.secondary),.residency .res-primary{
+ background:linear-gradient(165deg,rgba(255,255,255,.12),transparent 60%),var(--glass-accent)!important;color:#fff!important;border:1px solid rgba(255,255,255,.45)!important;box-shadow:0 4px 12px rgba(var(--glass-rgb),.15),inset 0 1px 0 rgba(255,255,255,.3)!important;
+}
+.glass-tabs{display:flex;padding:5px;gap:5px;flex-wrap:wrap}
+.glass-tabs button{flex:1;background:transparent;border:1px solid transparent;color:var(--glass-muted)}
+.glass-tabs button[aria-current=page],#citizenship-root :is(.civics-modes button.active,.platform-module-nav button[aria-current=page]),.platform-module-nav button[aria-current=page]{color:var(--glass-accent)!important;background:rgba(var(--glass-rgb),.075)!important;border-color:rgba(var(--glass-rgb),.3)!important}
+#citizenship-root .platform-module-nav{border:1px solid var(--glass-border);border-radius:14px;gap:4px;padding:4px}
+#citizenship-root .platform-module-nav button{border-radius:10px;padding:10px 14px;box-shadow:none;flex:1;text-align:center}
+#citizenship-root .platform-card-icon,.icon,.detailicon{color:var(--glass-accent);background:linear-gradient(140deg,#fff9,rgba(var(--glass-rgb),.15));border:1px solid rgba(var(--glass-rgb),.12);box-shadow:inset 0 1px 0 #fff}
+#citizenship-root :is(.platform-eyebrow,.practice-eyebrow,.writing-eyebrow,.civics-study-eyebrow),.asylum-surface .eyebrow{color:var(--glass-accent)}
+.glass-progress,progress{width:100%;height:7px;appearance:none;border:0;border-radius:8px;overflow:hidden;background:#e2e9f0;accent-color:var(--glass-accent)}
+.glass-progress::-webkit-progress-bar,progress::-webkit-progress-bar{background:#e2e9f0;border-radius:8px}
+.glass-progress::-webkit-progress-value,progress::-webkit-progress-value{background:var(--glass-accent);border-radius:8px;transition:width .45s ease}
+progress::-moz-progress-bar{background:var(--glass-accent);border-radius:8px;transition:width .45s ease}
+#citizenship-root :is(.civics-deck-progress-track i,.quiz-session-track i,.writing-progress-track span),.residency .res-progress>span{background:var(--glass-accent);transition:width .45s ease}
+.glass-study-card{position:relative;perspective:1000px}
+.glass-study-card[data-flipped=true] .civics-study-content{animation:glass-flip-in .32s ease both;transform-origin:center}
+.glass-study-card[data-flipped=false] .civics-study-content{animation:glass-flip-out .28s ease both}
+@keyframes glass-flip-in{from{opacity:.3;transform:rotateY(-10deg) translateY(4px)}to{opacity:1;transform:none}}
+@keyframes glass-flip-out{from{opacity:.5;transform:rotateY(8deg)}to{opacity:1;transform:none}}
+.glass-achievement{position:absolute;right:16px;bottom:16px;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:var(--glass-accent);color:#fff;box-shadow:0 0 0 8px rgba(var(--glass-rgb),.08);pointer-events:none;animation:glass-achievement 1.1s ease both}
+@keyframes glass-achievement{0%{opacity:0;transform:scale(.75)}25%,70%{opacity:1;transform:scale(1)}100%{opacity:0;transform:translateY(-8px)}}
+[data-citizen-screen]{animation:glass-enter .2s ease both}
+@keyframes glass-enter{from{opacity:.7;transform:translateY(4px)}to{opacity:1;transform:none}}
+.glass-modal{padding:24px;max-width:min(90vw,460px);color:var(--glass-ink)}
+.glass-modal::backdrop{background:rgba(16,31,50,.28);backdrop-filter:blur(3px)}
+.glass-preferences{padding:22px;margin:20px 0}
+.glass-preferences h2{margin:0;font-size:20px}
+.glass-preferences p{font-size:14px;color:var(--glass-muted)}
+.glass-preferences label{display:flex;align-items:center;gap:12px;min-height:48px;font-size:14px}
+.glass-preferences input{width:18px;height:18px;accent-color:var(--glass-accent)}
+body.in-call{--glass-accent:#175CD3;--glass-rgb:23,92,211}
+body[data-call-module=asylum]{--glass-accent:#7944C6;--glass-rgb:121,68,198}
+body[data-call-module=residency]{--glass-accent:#168464;--glass-rgb:22,132,100}
+body.in-call .call-controls .glass-interview-control{border:1px solid rgba(var(--glass-rgb),.25);background:linear-gradient(145deg,#fff,rgba(var(--glass-rgb),.08));color:var(--glass-accent);box-shadow:0 3px 10px rgba(var(--glass-rgb),.07),inset 0 1px 0 #fff}
+body.in-call .call-controls .glass-interview-control[aria-pressed=true]{background:rgba(var(--glass-rgb),.14);border-color:rgba(var(--glass-rgb),.5)}
+body.in-call .call-controls .call-end{background:#d93644!important;border-color:#d93644!important;color:#fff!important}
+.call-state.speaking>span{background:var(--glass-accent);animation:glass-speaking 1s ease-in-out infinite}
+.call-state.listening>span{background:#bcebd8;box-shadow:0 0 0 4px #bcebd81a}
+@keyframes glass-speaking{50%{box-shadow:0 0 0 5px rgba(var(--glass-rgb),.18)}}
+/* Opaque and low-motion variants preserve contrast and every control. */
+html[data-reduce-transparency=true]{--glass-surface:#fff;--glass-blur:0px;--glass-shadow:0 1px 3px #19314c0a}
+html[data-reduce-transparency=true] :is(.glass-card,.glass-study-card,.glass-modal,.glass-tabs,.mobile-dock-panel),html[data-reduce-transparency=true] #citizenship-root :is(.platform-card,.citizen-daily,.reading-card,.writing-practice-panel,.quiz-question-card,.account-sheet),html[data-reduce-transparency=true] .asylum-surface .card,html[data-reduce-transparency=true] .residency .res-panel{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html[data-reduce-motion=true] *,html[data-reduce-motion=true] *::before,html[data-reduce-motion=true] *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+html[data-reduce-motion=true] button:hover,html[data-reduce-motion=true] button:active{transform:none!important}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}button:hover,button:active{transform:none!important}}
+@media(prefers-reduced-transparency:reduce){:root{--glass-surface:#fff;--glass-blur:0px}.glass-card,.glass-study-card,.glass-modal,.glass-tabs,.mobile-dock-panel{background:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@media(forced-colors:active){.glass-button,.glass-card,.glass-study-card,.glass-tabs,.glass-modal{border:1px solid CanvasText;box-shadow:none;background:Canvas!important;color:CanvasText!important}.glass-button[aria-current=page]{outline:2px solid Highlight}}
+@media(max-width:700px){#citizenship-root .platform-module-nav button{padding:9px 6px;font-size:12px}.glass-card{--glass-radius:16px}}
+html[data-reduce-transparency=true] *,html[data-reduce-transparency=true] *::before,html[data-reduce-transparency=true] *::after{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html[data-reduce-transparency=true] :is(.glass-button,.mobile-dock-toggle,.glass-tabs,.glass-card,.glass-modal,.glass-study-card,.platform-card,.citizen-daily,.citizen-progress-link,.reading-card,.writing-practice-panel,.quiz-question-card,.results-card,.account-sheet,.journey-summary,.profile-section,.legal-item,.podcast-card,.res-panel,.res-soft),html[data-reduce-transparency=true] .asylum-surface :is(.card,.question,.scope){background-color:#fff!important;background-image:none!important}
+@media(prefers-reduced-transparency:reduce){*{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.platform-card,.citizen-daily,.reading-card,.writing-practice-panel,.quiz-question-card,.results-card,.account-sheet,.journey-summary,.profile-section,.legal-item,.podcast-card,.asylum-surface .card,.res-panel{background:#fff!important}}
+html[data-reduce-transparency=true] .glass-primary{background:var(--glass-accent)!important;color:#fff!important}

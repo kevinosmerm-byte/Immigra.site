@@ -7,9 +7,9 @@ const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "
 const css = await readFile(new URL("../src/App.css", import.meta.url), "utf8");
 const logo = await readFile(new URL("../public/app-icon-192.png", import.meta.url));
 
-test("Home renders the Citizenship AI wordmark without a header icon", () => {
+test("module home delegates visual identity to the platform shell", () => {
   assert.doesNotMatch(app, /className="home-brand-logo"/);
-  assert.match(app, /className="home-brand-wordmark">Citizenship <strong>AI<\/strong>/);
+  assert.match(app, /<PlatformHome/);
   assert.doesNotMatch(app, /className="brand-main"/);
   assert.ok(logo.byteLength > 1000);
 });

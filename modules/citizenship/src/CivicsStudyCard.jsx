@@ -1,3 +1,4 @@
+import {GlassStudyCard} from '../../../shared/design-system/Glass.jsx';
 import { useEffect } from "react";
 
 export function CivicsStudyCard({
@@ -58,7 +59,7 @@ export function CivicsStudyCard({
   };
 
   return (
-    <article
+    <GlassStudyCard flipped={answerVisible} mastered={mastered}
       className={`civics-study-card ${answerVisible ? "answer-visible" : ""} ${mastered ? "is-mastered" : ""}`}
       role="group"
       aria-label={answerVisible ? `${copy.answer}: ${answers.join(", ")}` : `${copy.question}: ${question}. ${copy.reveal}`}
@@ -142,6 +143,6 @@ export function CivicsStudyCard({
       </div>
 
       {footer && <div onClick={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onTouchEnd={event => event.stopPropagation()}>{footer}</div>}
-    </article>
+    </GlassStudyCard>
   );
 }

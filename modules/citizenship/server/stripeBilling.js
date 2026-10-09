@@ -52,7 +52,7 @@ export function getBillingConfiguration() {
     enabled: configured && isTrue(process.env.STRIPE_BILLING_ENABLED),
     configured,
     currency: PRO_PLAN.currency,
-    monthlyPriceCents: PRO_PLAN.monthlyPriceCents,
+    monthlyPriceCents: PRO_PLAN.regularMonthlyPriceCents,
     introductoryMonthlyPriceCents: PRO_PLAN.introductoryMonthlyPriceCents,
     annualPriceCents: PRO_PLAN.annualPriceCents,
     introductoryOfferEnabled: Boolean(process.env.STRIPE_PRICE_MONTHLY_INTRO?.trim()),

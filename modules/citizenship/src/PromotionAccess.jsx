@@ -10,8 +10,8 @@ const COPY = {
   en: {
     eyebrow: "LAUNCH PROMOTION",
     title: "You've completed your free AI practices",
-    body: "Keep preparing for your citizenship interview. Expanded AI practice will become part of Citizenship AI Pro in the future.",
-    pro: "CITIZENSHIP AI PRO",
+    body: "Keep preparing for your citizenship interview. Expanded AI practice will become part of Immigration AI Pro in the future.",
+    pro: "IMMIGRATION AI PRO",
     proDetail: "More AI practice · No ads · Advanced interview training",
     launchPrice: "Launch price",
     regularPrice: "then $5.99/month",
@@ -28,8 +28,8 @@ const COPY = {
   es: {
     eyebrow: "PROMOCIÓN DE LANZAMIENTO",
     title: "Completaste tus prácticas gratuitas con IA",
-    body: "Continúa preparándote para tu entrevista de ciudadanía. En el futuro, la práctica ampliada con IA formará parte de Citizenship AI Pro.",
-    pro: "CITIZENSHIP AI PRO",
+    body: "Continúa preparándote para tu entrevista de ciudadanía. En el futuro, la práctica ampliada con IA formará parte de Immigration AI Pro.",
+    pro: "IMMIGRATION AI PRO",
     proDetail: "Más práctica con IA · Sin anuncios · Entrenamiento avanzado",
     launchPrice: "Precio de lanzamiento",
     regularPrice: "luego $5.99/mes",

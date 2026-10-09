@@ -97,7 +97,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", i
       <div className="quiz-path-screen">
         <header className="practice-header quiz-path-header">
           <button className="back-button" onClick={onBack}>← {copy.back}</button>
-          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
+          
         </header>
         <main className="quiz-path-content">
           <section className="quiz-path-intro">

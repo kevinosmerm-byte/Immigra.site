@@ -1,0 +1,19 @@
+.mobile-dock{display:none}
+@media(max-width:750px){
+ .mobile-dock{display:flex;position:fixed;bottom:max(8px,env(safe-area-inset-bottom));left:12px;right:12px;align-items:center;flex-direction:column;z-index:20;pointer-events:none}
+ .mobile-dock-toggle{display:flex;align-items:center;justify-content:center;gap:8px;min-width:96px;min-height:44px;padding:8px 14px;border:1px solid #d6e0e8;border-radius:24px;background:#fffffff5;color:#37536b;font-size:12px;box-shadow:0 3px 12px #182e4310;pointer-events:auto;cursor:pointer}
+ .mobile-dock-toggle>span{width:18px;height:3px;border-radius:4px;background:#9eafbc}
+ .mobile-dock-panel{width:min(100%,420px);margin-bottom:8px;padding:8px;background:#fff;border:1px solid #dce5ec;border-radius:20px;box-shadow:0 8px 32px #142b4220;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .2s,transform .2s,visibility .2s;pointer-events:none}
+ .mobile-dock.is-open .mobile-dock-panel{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+ .mobile-dock nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+ .mobile-dock nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;border-radius:12px;min-height:58px;min-width:0;padding:6px 2px;background:#fff;color:#254c6b;font-size:11px}
+ .mobile-dock nav button:hover,.mobile-dock nav button[aria-expanded=true]{background:#edf4f9}
+ .mobile-dock nav svg{width:23px;height:23px}
+ .dock-help{font-size:23px;line-height:23px}
+ .mobile-dock-modules{display:grid;gap:4px;border-bottom:1px solid #e0e7ed;margin-bottom:6px;padding-bottom:6px}
+ .mobile-dock-modules button{border:0;border-radius:10px;min-height:44px;text-align:left;padding:10px 14px;color:#254c6b;background:#fff;font-size:14px}
+ #main,#main:has(.citizenship-surface),#main:has(.asylum-surface){padding-bottom:52px}
+ #root>footer{padding-bottom:72px}
+}
+body.in-call .mobile-dock{display:none!important}
+@media(prefers-reduced-motion:reduce){.mobile-dock-panel{transition:none}}

@@ -26,7 +26,7 @@ const COPY = {
     usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", pricing: "PRO PRICING", launchPrice: "Launch offer", regularPrice: "Regular $5.99/month", annualPrice: "$49.99/year", pricingStatus: "Purchases are not active yet.", monthly: "MONTHLY", yearly: "ANNUAL · SAVE 30%", manageSubscription: "MANAGE SUBSCRIPTION", secureCheckout: "Secure checkout by Stripe", billingError: "We could not open secure billing. Please try again.", openingCheckout: "OPENING…", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.", deleteAccount: "DELETE ACCOUNT", deleteTitle: "Permanently delete account?", deleteBody: "This removes your cloud account, AI allowances, and usage records. Local study progress on this device is not removed.", deletePrompt: "Type DELETE to confirm", deleting: "DELETING…", cancel: "CANCEL", deleteError: "We could not delete your account. Please try again.", deleteActiveSubscription: "Cancel your active web subscription from Manage Subscription before deleting the account.",
   },
   es: {
-    account: "Cuenta", title: "Tu cuenta de Citizenship AI", intro: "Inicia sesión para conectar de forma segura los futuros límites de IA y suscripciones entre tus dispositivos.",
+    account: "Cuenta", title: "Tu cuenta de Immigration AI", intro: "Inicia sesión para conectar de forma segura los futuros límites de IA y suscripciones entre tus dispositivos.",
     email: "Correo electrónico", placeholder: "tu@correo.com", send: "ENVIAR ENLACE SEGURO", sending: "ENVIANDO…",
     sent: "Revisa tu correo. Te enviamos un enlace seguro para iniciar sesión.", signedIn: "SESIÓN INICIADA", signOut: "CERRAR SESIÓN", close: "Cerrar panel de cuenta",
     optional: "Es opcional durante la promoción de lanzamiento. Puedes continuar usando la aplicación sin iniciar sesión.", unavailable: "Las cuentas se están preparando. Puedes continuar usando la aplicación normalmente.",
@@ -296,7 +296,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
       <section ref={modalRef} className="account-sheet" role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : "true"} aria-labelledby="account-title">
         <button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>
         <div className="account-mark" aria-hidden="true">◎</div>
-        <p className="account-eyebrow">CITIZENSHIP AI · {copy.account.toUpperCase()}</p>
+        <p className="account-eyebrow">IMMIGRATION AI · {copy.account.toUpperCase()}</p>
         <h2 id="account-title">{copy.title}</h2>
         <p className="account-intro">{copy.intro}</p>
         {!configured ? <div className="account-message">{copy.unavailable}</div> : loading ? <div className="account-loading" /> : session ? (

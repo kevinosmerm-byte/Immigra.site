@@ -1,0 +1,226 @@
+[
+  {
+    "path": "3dicons/notebook.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/notebook-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 79549,
+    "sha256": "ae5ae200828048269017d49fda03ee8d70001bbe0d87fb728a27ea43d9c41ec3"
+  },
+  {
+    "path": "3dicons/video-camera.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/video-camera-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 104416,
+    "sha256": "42a1dc9455b7ff8178f74fb80d7d0dcd758a1e674156681b6b43a5b1f12cb442"
+  },
+  {
+    "path": "3dicons/file-text.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/file-text-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 71947,
+    "sha256": "cfc7c13f11b2770bc4d0d88b7ca46bc3de020b8817274fee3f295e10918fc91a"
+  },
+  {
+    "path": "3dicons/pencil.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/pencil-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 35841,
+    "sha256": "1281b60222474a95559aa63822230fc1fefbe66047721e377921568c7d9e65d5"
+  },
+  {
+    "path": "3dicons/text.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/text-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 57673,
+    "sha256": "f51b0366d0784f693c2c22d5c310484cc027cc011d70603e0eb1608c774d0810"
+  },
+  {
+    "path": "3dicons/chart.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/chart-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 100251,
+    "sha256": "f77d29559d8af041bea0b3897081497b63095ed324339b064c3feff02b702485"
+  },
+  {
+    "path": "3dicons/chat-bubble.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/chat-bubble-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 55897,
+    "sha256": "f95529437f3f09e4ddeb894b965618e5677f07f9628a11b5489ebfd07c56c773"
+  },
+  {
+    "path": "3dicons/headphone.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/headphone-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 65111,
+    "sha256": "909a84dbdfb8e370e135580b3b38cb5cbb3a37a616a71adb0ceddcfeae2a5b48"
+  },
+  {
+    "path": "3dicons/calender.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/calender-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 83226,
+    "sha256": "a23f09088def9bf78301c352aa56cf70b5998364f03561e8ada3a2a16a54ab33"
+  },
+  {
+    "path": "3dicons/sheild.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/sheild-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 129390,
+    "sha256": "4dcbccd6177de616fd1f5da983bd6273cc72a8bf7359b4064d47495cf3a5d89f"
+  },
+  {
+    "path": "3dicons/folder.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/folder-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 62779,
+    "sha256": "325917e1b4659e9873d459b6e3079a047fe4519cb21f3b01aa05c7972592b067"
+  },
+  {
+    "path": "3dicons/copy.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/copy-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 75647,
+    "sha256": "5081e2a6fea6cc4bed84a91a7ff2138e93387399124ed43e52452f2f0675a93e"
+  },
+  {
+    "path": "3dicons/clock.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/clock-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 93655,
+    "sha256": "aedb1a7dce971808ade0a2a5ee0e70bd48876dd5a9a35dd9017e24552305c733"
+  },
+  {
+    "path": "3dicons/zoom.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/zoom-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 64574,
+    "sha256": "1586f4af91d60d9fa678184dc061c4190e97d69fab540a4fe80b2bc2807668aa"
+  },
+  {
+    "path": "3dicons/lock.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/lock-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 66772,
+    "sha256": "52615da4a9a3a9c3eb114aa816fb55eaae87450f7b9e2daf4f89f8b65097026b"
+  },
+  {
+    "path": "3dicons/heart.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/heart-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 52768,
+    "sha256": "2ee43d2754dd6d441bc3e1f5649280ba0959175295cfea92af8f406edc2219ad"
+  },
+  {
+    "path": "3dicons/travel.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/travel-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 121847,
+    "sha256": "348a80e71ebacfc37c09d2f4a43d5d873831c620916b51f42388b5b1d5433196"
+  },
+  {
+    "path": "3dicons/key.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/key-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 43945,
+    "sha256": "dfb43a628d1e5c178100cb648fadd9a1cb25daaf299f45d3e9d3880e2b2a50a1"
+  },
+  {
+    "path": "3dicons/bulb.png",
+    "source": "https://pub-821312cfd07a4061bf7b99c1f23ed29b.r2.dev/v1/dynamic/color/bulb-dynamic-color.png",
+    "license": "CC0-1.0",
+    "bytes": 83602,
+    "sha256": "23e2d1d30b7d5e72c63928ffc29be242cbfa6f6778e25ea7e62c40571855a4df"
+  },
+  {
+    "path": "fluent/open-book.png",
+    "source": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Open%20book/3D/open_book_3d.png",
+    "license": "MIT",
+    "bytes": 23903,
+    "sha256": "c6b7de9724d8ca47f900238d8cb34c2ac7346a12c8cea91c176b30f8a39d628d"
+  },
+  {
+    "path": "fluent/pencil.png",
+    "source": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/assets/Pencil/3D/pencil_3d.png",
+    "license": "MIT",
+    "bytes": 21796,
+    "sha256": "c33b52acc157fe010851709a6ba06ee7b9e107f9e421436c97fd4404c25dec3f"
+  },
+  {
+    "path": "hugeicons/home-01.svg",
+    "source": "https://raw.githubusercontent.com/hugeicons/hugeicons/main/icons/home-01.svg",
+    "license": "MIT",
+    "bytes": 642,
+    "sha256": "fe5f2e757b78d460945f10e16b3829c17d20a6ccb14216621d015454e356960d"
+  },
+  {
+    "path": "hugeicons/menu-01.svg",
+    "source": "https://raw.githubusercontent.com/hugeicons/hugeicons/main/icons/menu-01.svg",
+    "license": "MIT",
+    "bytes": 422,
+    "sha256": "151765e41da81e656650b44591b57561d040175a378dee65a3745373b2ed17f4"
+  },
+  {
+    "path": "hugeicons/mic-01.svg",
+    "source": "https://raw.githubusercontent.com/hugeicons/hugeicons/main/icons/mic-01.svg",
+    "license": "MIT",
+    "bytes": 532,
+    "sha256": "9f4e24e758e53d11547c3b95182589a7064b3cfb3800674dfcd87a3850228db1"
+  },
+  {
+    "path": "hugeicons/pause.svg",
+    "source": "https://raw.githubusercontent.com/hugeicons/hugeicons/main/icons/pause.svg",
+    "license": "MIT",
+    "bytes": 731,
+    "sha256": "bfdce1caf5b907644828aa6903431ba3ca794c0a5756b4cb0b391b8f0b7e99d5"
+  },
+  {
+    "path": "hugeicons/repeat.svg",
+    "source": "https://raw.githubusercontent.com/hugeicons/hugeicons/main/icons/repeat.svg",
+    "license": "MIT",
+    "bytes": 646,
+    "sha256": "c3c139cae3df86f18046146968f923f4040bb9375addfb0c11254f96a123206d"
+  },
+  {
+    "path": "hugeicons/search-01.svg",
+    "source": "https://raw.githubusercontent.com/hugeicons/hugeicons/main/icons/search-01.svg",
+    "license": "MIT",
+    "bytes": 420,
+    "sha256": "6ea6a84c2d51424070720491f7abae005258e9e114078ef10a9022b91cbcfecb"
+  },
+  {
+    "path": "hugeicons/settings-01.svg",
+    "source": "https://raw.githubusercontent.com/hugeicons/hugeicons/main/icons/settings-01.svg",
+    "license": "MIT",
+    "bytes": 2462,
+    "sha256": "b4a3722340b70f945ec50ed1bdb7d673afe8188e9544cf40a9a4e4ce03cd81ac"
+  },
+  {
+    "path": "hugeicons/arrow-right-01.svg",
+    "source": "https://raw.githubusercontent.com/hugeicons/hugeicons/main/icons/arrow-right-01.svg",
+    "license": "MIT",
+    "bytes": 257,
+    "sha256": "408bbc534c0b4112f52fe4477e0b0651591dcbc83f1762cc3eb77ea45015b1a5"
+  },
+  {
+    "path": "licencias/FLUENT-MIT.txt",
+    "source": "https://raw.githubusercontent.com/microsoft/fluentui-emoji/main/LICENSE",
+    "license": "MIT",
+    "bytes": 1141,
+    "sha256": "c2cfccb812fe482101a8f04597dfc5a9991a6b2748266c47ac91b6a5aae15383"
+  },
+  {
+    "path": "licencias/HUGEICONS-MIT.txt",
+    "source": "https://raw.githubusercontent.com/hugeicons/hugeicons/main/LICENSE.md",
+    "license": "MIT",
+    "bytes": 1066,
+    "sha256": "1658d8213209df7b9b86dfc05d724ede48d00dbc27abc15976ec7adec9601cde"
+  },
+  {
+    "path": "licencias/CC0.html",
+    "source": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.en",
+    "license": "CC0-1.0",
+    "bytes": 32223,
+    "sha256": "b43732f4c1463b087cf10d4daf8d8766514b2bf8f21bc5ef50905f95be227726"
+  }
+]
