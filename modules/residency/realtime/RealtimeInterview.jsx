@@ -1,3 +1,4 @@
+import {authenticatedFetch} from '../../../shared/authentication/fetch.mjs';
 import React,{useEffect,useRef,useState} from 'react';
 import {createRealtimeClient} from './client.mjs';
 import CallView from './CallView.jsx';
@@ -10,7 +11,7 @@ export default function RealtimeInterview({lang,relationshipType,mode,scenarioId
  const client=useRef(null),transcript=useRef(null),capturing=useRef(false),started=useRef(null),phaseRef=useRef(phase);phaseRef.current=phase;
  const t=(a,b)=>locale==='es'?a:b;
  useEffect(()=>{setLocale(lang);setReview(null);setCaptions([]);},[lang]);
- useEffect(()=>{const c=clientFactory({onState:setState,onError:code=>{if(code)setError(code);},onClear:()=>{setMuted(false);},onCaption:caption=>{setCaptions(old=>[...old.filter(c=>c.id!==caption.id||c.who!==caption.who),caption].slice(-8));if(capturing.current&&transcript.current){try{transcript.current=appendTurn(transcript.current,{speaker:caption.who==='ai'?'officer':'applicant',text:caption.text,eventId:caption.id||null});}catch{c.stop();setError('transcript-limit');}}}});client.current=c;
+ useEffect(()=>{const c=clientFactory({fetchImpl:authenticatedFetch,onState:setState,onError:code=>{if(code)setError(code);},onClear:()=>{setMuted(false);},onCaption:caption=>{setCaptions(old=>[...old.filter(c=>c.id!==caption.id||c.who!==caption.who),caption].slice(-8));if(capturing.current&&transcript.current){try{transcript.current=appendTurn(transcript.current,{speaker:caption.who==='ai'?'officer':'applicant',text:caption.text,eventId:caption.id||null});}catch{c.stop();setError('transcript-limit');}}}});client.current=c;
  const hide=()=>{if(document.hidden){c.stop();transcript.current=null;capturing.current=false;setCaptions([]);setReview(null);if(phaseRef.current==='call')setError('hidden');}};document.addEventListener('visibilitychange',hide);
  return()=>{document.removeEventListener('visibilitychange',hide);c.stop();transcript.current=null;capturing.current=false;};},[clientFactory,locale,relationshipType,mode,scenarioId]);
  useEffect(()=>{if(!active){client.current?.stop();transcript.current=null;capturing.current=false;setCaptions([]);setReview(null);setPhase('setup');}},[active]);

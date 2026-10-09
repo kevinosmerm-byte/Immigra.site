@@ -1,3 +1,4 @@
+import CallView from '../../../shared/interview-ui/CallView.jsx';
 import { InterviewWorkspace } from "./InterviewWorkspace.jsx";
 import { useEffect, useRef, useState } from "react";
 import sarahImage from "./assets/sarah.png";
@@ -78,6 +79,8 @@ const N400_FORM_EDITION = n400Bank.formEdition;
 
 export function N400InterviewPractice({ onExit, onComplete, onRestart, brainContext = {}, language = "en", userKey = "guest", onSaveN400Profile, requestVoiceAccess }) {
   const copy = COPY[language === "es" ? "es" : "en"];
+  const [callStarted,setCallStarted]=useState(false),[callPaused,setCallPaused]=useState(false),[captionsVisible,setCaptionsVisible]=useState(true),[elapsed,setElapsed]=useState(0);
+  useEffect(()=>{if(!callStarted||isNaN(elapsed))return;const timer=setInterval(()=>setElapsed(v=>v+1),1000);return()=>clearInterval(timer);},[callStarted]);
   const [flow, setFlow] = useState(() => createInitialFlow(brainContext));
   const [isListening, setIsListening] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
@@ -91,6 +94,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const [skipped, setSkipped] = useState(0);
   const [interviewer, setInterviewer] = useState("sarah");
   const recorderRef = useRef(null);
+  const captureGeneration=useRef(0);
   const microphonePendingRef = useRef(false);
   const speechRequestRef = useRef(0);
   const completionReportedRef = useRef(false);
@@ -132,6 +136,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   useEffect(() => {
     mountedRef.current = true;
     setCompanionSessionVisibility(false);
+    if(!callStarted)return ()=>{mountedRef.current=false;};
     const timer = setTimeout(() => {
       if (!soundEnabledRef.current) return;
       const requestId = ++speechRequestRef.current;
@@ -149,7 +154,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
       stopAppSpeech();
       setCompanionSessionVisibility(getCompanionVisibility());
     };
-  }, []);
+  }, [callStarted]);
 
   useEffect(() => {
     if (!isComplete || completionReportedRef.current) return;
@@ -230,10 +235,11 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const beginListening = async () => {
     if (!mountedRef.current || microphonePendingRef.current || recorderRef.current) return;
     microphonePendingRef.current = true;
+    const generation=captureGeneration.current;
     stopQuestionSpeech();
     try {
       const recorder = await startAudioRecording();
-      if (!mountedRef.current) { recorder.cancel?.(); return; }
+      if (!mountedRef.current||generation!==captureGeneration.current) { recorder.cancel?.(); return; }
       recorderRef.current = recorder;
       setIsListening(true);
       setAnswerStatus("");
@@ -243,6 +249,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   };
   const startListening = () => requestVoiceAccess ? requestVoiceAccess(beginListening) : beginListening();
   const stopListening = async () => {
+    const generation=captureGeneration.current;
     const recorder = recorderRef.current;
     recorderRef.current = null;
     setIsListening(false);
@@ -250,7 +257,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     setIsTranscribing(true);
     try {
       const transcript = await transcribeRecording(await recorder.stop());
-      if (!mountedRef.current) return;
+      if (!mountedRef.current||generation!==captureGeneration.current) return;
       if (transcript) acceptResponse(transcript);
       else setAnswerStatus("error");
     } catch { if (mountedRef.current) setAnswerStatus("error"); }
@@ -287,59 +294,11 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const question = flow.question;
   const section = SUB_BLOCK_LABELS[flow.state.currentSubBlock]?.[language === "es" ? 1 : 0] || flow.state.currentSubBlock;
   const canRemember = onSaveN400Profile && pendingResponse && !pendingResponse.question.id.startsWith("P_ANUMBER");
-  return (
-    <div className={`interview-screen n400-interview-screen live-interview-screen interviewer-${interviewer} ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
-      <header className="interview-header">
-        <button className="back-button interview-exit-button" onClick={onExit} aria-label={copy.exit}><span aria-hidden="true">×</span></button>
-        <div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>{copy.brand}</small></div>
-        <button className="more-button interview-repeat-button" onClick={() => speakQuestion(question.english)} disabled={isListening || isTranscribing} aria-label={copy.repeat} title={copy.repeat}>↻</button>
-      </header>
-      <InterviewWorkspace language={language} mode="n400" current={Math.min(reviewedCount + 1, totalConcepts)} total={totalConcepts} busy={isListening || isTranscribing} onReplay={() => speakQuestion(question.english)}>
-        <section className="sarah-live-stage" aria-label={`${interviewerName}, ${copy.interviewer}`}>
-          <div className="live-stage-media" aria-hidden="true">
-            <div className={`live-stage-motion-frame sarah-video-frame ${isKevin ? "kevin-motion-frame" : ""}`}>
-              {isKevin ? <><video src="/kevin-listening.mp4" className="live-sarah-video live-sarah-resting" autoPlay muted loop playsInline /><video src="/kevin-speaking.mp4" className="live-sarah-video live-sarah-speaking" autoPlay muted loop playsInline /></> : <><video src="/sarah-listening.mp4" poster={sarahImage} className="live-sarah-video live-sarah-resting" autoPlay muted loop playsInline /><video src="/sarah-speaking.mp4" poster={sarahSpeakingImage} className="live-sarah-video live-sarah-speaking" autoPlay muted loop playsInline /></>}
-            </div><div className="live-stage-mask"></div>
-          </div>
-          <div className="live-stage-topbar">
-            <div className="live-agent-badge"><span className="live-dot"></span><div><strong>{interviewerName}</strong><small>{copy.interviewer}</small></div></div>
-            <div className="live-interviewer-selector" role="group" aria-label={copy.officer}>
-              {["sarah", "kevin"].map(name => <button key={name} type="button" className={interviewer === name ? "active" : ""} disabled={isListening || isTranscribing} aria-pressed={interviewer === name} onClick={() => { setInterviewer(name); speakQuestion(question.english, name); }}>{name === "sarah" ? "Sarah" : "Kevin"}</button>)}
-            </div>
-            <span className="live-practice-badge">N-400 {N400_FORM_EDITION}</span>
-          </div>
-          <div className="live-stage-presence"><span>{copy.title}</span><strong>{interviewerName}</strong><small>{isSpeaking ? copy.speaking : isListening ? copy.listening : copy.ready}</small></div>
-          <section className="live-question-card n400-question-card" aria-live="polite">
-            <div className="live-question-header"><div className="ai-turn-indicator">{isSpeaking ? `${interviewerName} ${copy.spoken}` : isListening ? `${interviewerName} ${copy.heard}` : copy.turn}</div><span>{flow.state.currentBlock === "PERSONAL" ? copy.personal : copy.eligibility} · {section}</span></div>
-            <h2 className="question" lang="en">{question.english}</h2>
-            <div className="n400-session-progress" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress} aria-label={`${reviewedCount}/${totalConcepts} ${copy.concepts}`}><span style={{ width: `${progress}%` }}></span></div>
-            <small className="n400-progress-label">{reviewedCount} {copy.concepts} · {question.kind === "followup" ? copy.followup : copy.wording}</small>
-          </section>
-          <div className="live-voice-status" aria-live="polite"><span>{isTranscribing ? copy.preparing : isSpeaking ? `${interviewerName} ${copy.spoken}…` : isListening ? copy.voiceListening : copy.voiceReady}</span></div>
-        </section>
-        {flow.state.caseStage === "INTERVIEW_SCHEDULED" && <p className="n400-context-summary">{copy.interviewSoon}</p>}
-        {question.knownAnswer && !pendingResponse && <details className="n400-known-answer"><summary>{copy.reference}</summary><p>{question.knownAnswer}</p><button className="secondary-button" disabled={isListening || isTranscribing} onClick={() => acceptResponse(question.knownAnswer)}>{copy.useSaved}</button></details>}
-        <section className="live-answer-feedback" aria-live="polite">
-          {answer && <div className={`answer-preview ${answerStatus}`}><span>{copy.input}</span><p>{answer}</p><div className="answer-result">{answerStatus === "recorded" ? copy.recorded : answerStatus === "incomplete" ? copy.incomplete : ""}</div></div>}
-          {answerStatus === "error" && <p role="alert">{copy.error}</p>}
-        </section>
-        <section className="live-interview-controls" aria-label={copy.title}>
-          {!pendingResponse ? <>
-            <form className="n400-text-response" onSubmit={event => { event.preventDefault(); acceptResponse(draft); }}>
-              <label htmlFor="n400-text-answer">{copy.typed}</label>
-              <textarea id="n400-text-answer" value={draft} rows={3} maxLength={1600} disabled={isListening || isTranscribing} onFocus={stopQuestionSpeech} onChange={event => setDraft(event.target.value)} aria-describedby="n400-privacy-note" />
-              <button className="primary-button" type="submit" disabled={!draft.trim() || isListening || isTranscribing}>{copy.submit}</button>
-            </form>
-            <button className={`secondary-button live-mic-button ${isListening ? "listening" : ""}`} onClick={isListening ? stopListening : startListening} disabled={isTranscribing} aria-label={isListening ? copy.stop : copy.microphone} aria-pressed={isListening}><svg className="workspace-microphone-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>{isListening ? copy.finish : copy.record}</button>
-            <button className="live-skip-button" onClick={skipQuestion} disabled={isListening || isTranscribing}>{copy.skip}</button>
-          </> : <>
-            <button className="primary-button" onClick={continueResponse} disabled={saveStatus === "saving"}>{copy.continue}</button>
-            {canRemember && <div className="n400-confirm-response"><button className="tertiary-button" onClick={rememberResponse} disabled={saveStatus === "saving" || saveStatus === "saved"}>{saveStatus === "saving" ? copy.preparing : saveStatus === "saved" ? copy.remembered : copy.remember}</button>{saveStatus === "error" && <p role="alert">{copy.saveError}</p>}</div>}
-          </>}
-          <details className="workspace-privacy"><summary>{language === "es" ? "Privacidad" : "Privacy"}</summary><p className="n400-privacy-note" id="n400-privacy-note">{copy.privacy}</p></details>
-          <div className="live-score-summary n400-session-summary" role="group" aria-label={copy.progress}><span>{reviewedCount} {copy.reviewed}</span><span>{skipped} {copy.skipped}</span></div>
-        </section>
-      </InterviewWorkspace>
-    </div>
-  );
+  if(!callStarted)return <section className="call-setup"><h1>N-400</h1><p>{copy.title}</p><label>{copy.officer}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><p>{copy.privacy}</p><button className="primary-button" onClick={()=>setCallStarted(true)}>{language==='es'?'Comenzar entrevista':'Start interview'}</button></section>;
+  const paused=()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallPaused(v=>!v);};
+  return <CallView moduleId="citizenship" lang={language} state={callPaused?'paused':isTranscribing?'processing':isSpeaking?'speaking':'listening'} elapsed={elapsed} muted={!isListening} captions={[{who:'ai',text:question.english},...(answer?[{who:'user',text:answer}]:[])]} showCaptions={captionsVisible} onCaptions={()=>setCaptionsVisible(v=>!v)} onMic={()=>{if(!callPaused&&!isTranscribing&&!pendingResponse)(isListening?stopListening:startListening)();}} onRepeat={()=>speakQuestion(question.english)} onPause={paused} onSuspend={()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallPaused(true);}} onFinish={()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallStarted(false);setIsComplete(true);}} interviewerName={interviewerName} interviewType="N-400" mediaBase={'/modules/citizenship/'+interviewer+'-'} mode="personal" error={answerStatus==='error'?copy.error:null}>
+   {pendingResponse?<><p>{copy.recorded}</p><button onClick={continueResponse} disabled={callPaused||saveStatus==='saving'}>{copy.continue}</button>{canRemember&&<button onClick={rememberResponse} disabled={saveStatus==='saving'||saveStatus==='saved'}>{saveStatus==='saved'?copy.remembered:copy.remember}</button>}</>:<form onSubmit={e=>{e.preventDefault();acceptResponse(draft);}}><input aria-label={copy.input} value={draft} maxLength={1600} disabled={callPaused||isListening||isTranscribing} onFocus={stopQuestionSpeech} onChange={e=>setDraft(e.target.value)}/><button disabled={callPaused||isListening||isTranscribing||!draft.trim()}>{copy.submit}</button></form>}
+   {answerStatus==='incomplete'&&<p role="status">{copy.incomplete}</p>}
+   {callPaused&&<><button onClick={()=>{setCallPaused(false);skipQuestion();}}>{copy.skip}</button>{question.knownAnswer&&!pendingResponse&&<details><summary>{copy.reference}</summary><p>{question.knownAnswer}</p><button onClick={()=>acceptResponse(question.knownAnswer)}>{copy.useSaved}</button></details>}</>}
+  </CallView>;
 }

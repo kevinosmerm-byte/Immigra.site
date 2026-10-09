@@ -20,7 +20,7 @@ import { Profile } from "./Profile.jsx";
 import CaseJourney from "./CaseJourney.jsx";
 import { getCaseStageLabel } from "./caseTracker.js";
 import { getQuizProgress, recordQuizAttempt } from "./quizLearning.js";
-import { readAppRoute, appRouteHash } from "./appRoutes.js";
+import { readAppRoute, appRouteHash } from "../routes.mjs";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
 import { civicsQuestionBank } from "./civicsQuestionBank.js";
@@ -885,7 +885,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   </div>;
 }
 
-function AppContent({ userKey }) {
+function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   const { runTransition } = useProgressGate();
   // 1. TODOS LOS HOOKS (ESTADOS) VAN AQUÍ ARRIBA SIN EXCEPCIÓN
   const [navigation, setNavigation] = useState(() => createNavigationHistory(
@@ -960,6 +960,7 @@ function AppContent({ userKey }) {
     window.addEventListener("popstate", handleRoute);
     return () => { window.removeEventListener("hashchange", handleRoute); window.removeEventListener("popstate", handleRoute); };
   }, []);
+  useEffect(()=>{if(platformLanguage)setLanguage(platformLanguage);},[platformLanguage]);
   useEffect(() => { document.documentElement.lang = language; }, [language]);
 
   const [profileRevision, setProfileRevision] = useState(0);
@@ -1426,6 +1427,7 @@ function AppContent({ userKey }) {
   const setPreferredLanguage = (nextLanguage) => {
     const value = nextLanguage === "es" ? "es" : "en";
     setLanguage(value);
+    onPlatformLanguageChange?.(value);
     saveLocalValue(LANGUAGE_STORAGE_KEY, value);
   };
 
@@ -2237,8 +2239,8 @@ function AppContent({ userKey }) {
   const showNavigation = onboardingComplete && !["interview", "coach", "reading", "writing"].includes(screen);
   return <div className={showNavigation ? "global-navigation-shell" : undefined}>{renderScreen()}{accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}{showNavigation && <BottomNavigation screen={screen} language={language} onNavigate={navigateTo} />}</div>;
 }
-export default function App() {
+export default function App({platformLanguage,onPlatformLanguageChange}={}) {
   const { session } = useAccount();
   const userKey = session?.user?.id || "guest";
-  return <ProgressGate key={userKey}><AppContent key={userKey} userKey={userKey} /></ProgressGate>;
+  return <ProgressGate key={userKey}><AppContent key={userKey} userKey={userKey} platformLanguage={platformLanguage} onPlatformLanguageChange={onPlatformLanguageChange} /></ProgressGate>;
 }

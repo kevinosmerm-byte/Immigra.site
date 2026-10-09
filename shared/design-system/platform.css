@@ -1,0 +1,21 @@
+/* Shared visual chrome; domain-specific evaluators remain unchanged. */
+:root{--platform-surface:#f7f8fa;--platform-ink:#182331;--platform-border:#dce2e9;--platform-radius:18px}
+#main:has(.citizenship-surface),#main:has(.asylum-surface){max-width:none;padding:0 0 70px}
+.citizenship-surface,.asylum-surface{min-height:75dvh;background:var(--platform-surface);color:var(--platform-ink);font-family:Inter,system-ui,sans-serif}
+.citizenship-surface .bottom-navigation,.asylum-surface .bottom-nav,.asylum-surface>header,.asylum-surface>footer{display:none!important}
+.citizenship-surface .home-screen{background:var(--platform-surface)!important}
+.citizenship-surface button,.asylum-surface button{font-family:inherit}
+.citizenship-surface .practice-brand{font-size:14px}
+.asylum-surface #content{max-width:1200px;margin:auto}
+.asylum-surface .card,.citizenship-surface .practice-option{border-radius:var(--platform-radius);box-shadow:0 4px 20px #18233108}
+body.in-call .citizenship-surface #citizenship-root{z-index:auto;background:transparent;min-height:0}
+#root>header{background:#fff;color:#182331;border-bottom:1px solid #e3e7ed}
+#root>header .brand,#root>header nav button{color:#182331}
+.citizenship-surface #citizenship-root{position:relative!important;z-index:auto!important;min-height:0!important;background:transparent!important}
+.citizenship-surface .global-bottom-navigation{position:static!important;transform:none!important;display:flex!important;justify-content:center;flex-wrap:wrap;width:100%!important;max-width:none!important;border-radius:0;background:#f4f8fc!important;box-shadow:none!important;z-index:auto!important}
+.citizenship-surface .navigation-handle{display:none!important}
+.citizenship-surface .global-navigation-shell{padding-bottom:0!important}
+.citizenship-surface .home-screen,.citizenship-surface .practice-screen{background-image:none!important}
+.asylum-surface{--purple:#6741a5;--green:#6741a5}
+html[data-theme=dark] .citizenship-surface{background:#132337;color:#e5edf6}
+html[data-theme=dark] .citizenship-surface .global-bottom-navigation{background:#132337!important}

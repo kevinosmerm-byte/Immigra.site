@@ -1,3 +1,4 @@
+import {getSessionToken} from '../../../shared/authentication/fetch.mjs';
 import { Capacitor } from "@capacitor/core";
 
 // Production requests stay on the page's own domain and are relayed by the
@@ -5,7 +6,7 @@ import { Capacitor } from "@capacitor/core";
 // a custom API target from .env.
 const isLocalDevelopment = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 const configuredBaseUrl = Capacitor.isNativePlatform()
-  ? "https://citizenshipai.us/api"
+  ? import.meta.env.VITE_PLATFORM_API_URL || "/api"
   : isLocalDevelopment
   ? import.meta.env.VITE_API_BASE_URL || "/api"
   : "/api";

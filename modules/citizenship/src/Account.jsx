@@ -18,7 +18,7 @@ function createAccountClient(url, publishableKey) {
 
 const COPY = {
   en: {
-    account: "Account", title: "Your Citizenship AI account", intro: "Sign in to securely connect future AI allowances and subscriptions across your devices.",
+    account: "Account", title: "Your Immigration AI account", intro: "Sign in to securely connect future AI allowances and subscriptions across your devices.",
     email: "Email address", placeholder: "you@example.com", send: "SEND SECURE SIGN-IN LINK", sending: "SENDING…",
     sent: "Check your email. We sent you a secure sign-in link.", signedIn: "SIGNED IN", signOut: "SIGN OUT", close: "Close account panel",
     optional: "Optional during the launch promotion. You can continue using the app without signing in.", unavailable: "Accounts are being prepared. You can continue using the app normally.",

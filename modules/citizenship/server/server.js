@@ -724,12 +724,8 @@ app.use((error, req, res, _next) => {
   return res.status(500).json({ error: "Unexpected server error." });
 });
 
-const PORT = Number(process.env.PORT) || 3001;
-app.listen(PORT, "0.0.0.0", error => {
-  if (error) {
-    console.error("Citizenship AI server could not start. Check the configured port.");
-    process.exitCode = 1;
-    return;
-  }
-  console.log(`Citizenship AI server running on port ${PORT}`);
-});
+export {app};
+if(process.argv[1] && new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/,'$1').replaceAll('%20',' ')===process.argv[1].replaceAll('\\','/')){
+ const PORT=Number(process.env.PORT)||3001;
+ app.listen(PORT,'127.0.0.1',()=>console.log('CitizenshipAI local API: '+PORT));
+}

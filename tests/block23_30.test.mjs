@@ -7,7 +7,7 @@ import {comparePracticeReports} from '../modules/residency/report/progress.mjs';
 import {createFamilyProfile,canShareProfile} from '../modules/residency/accounts/family.mjs';
 import {aggregateUsage,usageGate} from '../modules/residency/admin/usage.mjs';
 import {releaseGate,REQUIRED_CHECKS} from '../modules/residency/platform/releaseGate.mjs';
-test('three engine registry',()=>{assert.equal(engineStatus('asylum').status,'local_copy_connected');assert.equal(routeFor('residency'),'/residency')});
+test('three engine registry',()=>{assert.equal(engineStatus('asylum').status,'native_integrated_development');assert.equal(routeFor('residency'),'/residency')});
 test('strict engine boundary',()=>{assert.throws(()=>assertEngineScope('citizenship',{engine:'residency'}));assert.equal(assertEngineScope('residency',{engine:'residency'}),true)});
 test('planner advances without claims',()=>assert.equal(planNextTurn({memory:createMemory()}).action,'advance'));
 test('planner asks grounded clarification only',()=>{let m=createMemory();m=recordClaim(m,{topic:'wedding',statement:'2021',questionId:'wedding-date'});m=recordClaim(m,{topic:'wedding',statement:'2022',questionId:'wedding-date'});assert.equal(planNextTurn({memory:m}).action,'clarify');assert.equal(planNextTurn({memory:m,followupsUsed:3}).action,'advance')});
