@@ -108,3 +108,11 @@ html[data-reduce-transparency=true] .call-screen.voice-first[data-module] .call-
 .call-screen.voice-first[data-module] .call-bottom-dock .call-response > button { grid-column: 6; grid-row: 1; width: 100%; padding: 6px 2px; }
 .call-screen.voice-first[data-module] .call-bottom-dock .call-response > :not(button) { grid-column: 1 / -1; }
 .call-screen.voice-first[data-module] .call-bottom-dock .call-response > form { margin-top: 8px; }
+
+/* Adapt the shared dock to the controls actually supported by each interview. */
+.call-screen.voice-first[data-module] .call-bottom-dock { grid-template-columns: repeat(5,minmax(0,1fr)); }
+.call-screen.voice-first[data-module] .call-bottom-dock:has(.call-skip) { grid-template-columns: repeat(6,minmax(0,1fr)); }
+.call-screen.voice-first[data-module] .call-bottom-dock > .call-response { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; grid-column: 1 / -1; background: transparent; border: 0; backdrop-filter: none; padding: 0; margin: 0; min-width: 0; max-width: 100%; max-height: none; }
+.call-screen.voice-first[data-module] .call-bottom-dock .call-response > button { grid-column: auto; grid-row: auto; width: auto; max-width: none; height: auto; min-height: 44px; padding: 8px 14px; }
+.call-screen.voice-first[data-module] .call-bottom-dock .call-response > :not(button) { flex-basis: 100%; }
+.call-screen.voice-first[data-module] .call-bottom-dock .call-response:has(> form:only-child) { margin: 0; }
