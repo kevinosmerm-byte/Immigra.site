@@ -351,7 +351,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
                 <p>{language === "es" ? "7 días gratis. Después se cobra el precio del plan elegido con renovación automática. Se requiere un método de pago. Cancela antes de que termine la prueba para evitar el cobro; gestiona tu suscripción en Mi cuenta." : "7 days free. Then the selected plan price is charged with automatic renewal. A payment method is required. Cancel before the trial ends to avoid a charge; manage your subscription in My account."}</p><em>{copy.secureCheckout}</em>
               </div>
             )
-          ) : <><button className="account-billing-manage" type="button" disabled>{language==='es'?'Actualizar a PRO →':'Upgrade to PRO →'}</button><em>{copy.pricingStatus}</em></>}
+          ) : <><button className="account-billing-manage" type="button" disabled>{language==='es'?'Actualizar a PRO →':'Upgrade to PRO →'}</button><em>{webBillingEnabled ? (language === 'es' ? 'Inicia sesión con tu correo para comenzar los 7 días gratis de PRO.' : 'Sign in with your email to start your 7-day PRO trial.') : copy.pricingStatus}</em></>}
           {billingError && <p className="account-status error account-billing-error">{copy.billingError}</p>}
           {Capacitor.isNativePlatform() && <><button type="button" disabled>{language === "es" ? "Restaurar compra" : "Restore Purchase"}</button><small>{language === "es" ? "Las compras y la restauración en la tienda todavía no están disponibles." : "Store purchases and restoration are not available yet."}</small></>}
         </GlassSection>
