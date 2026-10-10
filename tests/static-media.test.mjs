@@ -16,5 +16,14 @@ test('media supports mobile byte ranges, suffixes, HEAD and invalid ranges',asyn
   const bad=await fetch(url,{headers:{Range:'bytes=20-30'}});assert.equal(bad.status,416);
   const head=await fetch(url,{method:'HEAD'});assert.equal(head.headers.get('content-length'),'10');assert.equal(await head.text(),'');
   const full=await fetch(url);assert.equal(full.status,200);assert.equal(await full.text(),'0123456789');
+  assert.equal(full.headers.get('cache-control'),'public, max-age=3600');
+  const cached=await fetch(url,{headers:{'If-None-Match':full.headers.get('etag')}});assert.equal(cached.status,304);
  }finally{await new Promise(r=>server.close(r));await rm(dir,{recursive:true});}
+});
+
+test('text assets are compressed and HTML revalidates',async()=>{
+ const dir=await mkdtemp(path.join(os.tmpdir(),'text-test-'));const file=path.join(dir,'index.html');const body='<html>'+ 'content '.repeat(1000)+'</html>';await writeFile(file,body);
+ const server=http.createServer((req,res)=>serveFile(req,res,file,'text/html; charset=utf-8'));await new Promise(r=>server.listen(0,'127.0.0.1',r));
+ try{const response=await fetch(`http://127.0.0.1:${server.address().port}`,{headers:{'Accept-Encoding':'gzip'}});assert.equal(response.headers.get('content-encoding'),'gzip');assert.equal(response.headers.get('cache-control'),'no-cache');assert.equal(await response.text(),body);}
+ finally{await new Promise(r=>server.close(r));await rm(dir,{recursive:true});}
 });
