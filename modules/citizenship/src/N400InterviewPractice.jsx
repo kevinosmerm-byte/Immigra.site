@@ -1,3 +1,4 @@
+import ConversationInterview from '../../../shared/interview-ui/ConversationInterview.jsx';
 import AnswerFeedback from '../../../shared/interview-ui/AnswerFeedback.jsx';
 import CallView from '../../../shared/interview-ui/CallView.jsx';
 import { useEffect, useRef, useState } from "react";
@@ -77,6 +78,7 @@ const N400_FORM_EDITION = n400Bank.formEdition;
 
 export function N400InterviewPractice({ onExit, onComplete, onRestart, brainContext = {}, language = "en", userKey = "guest", onSaveN400Profile, requestVoiceAccess }) {
   const copy = COPY[language === "es" ? "es" : "en"];
+  const [conversation,setConversation]=useState(false);
   const [microphoneError,setMicrophoneError]=useState("");
   const [callStarted,setCallStarted]=useState(false),[callPaused,setCallPaused]=useState(false),[captionsVisible,setCaptionsVisible]=useState(true),[elapsed,setElapsed]=useState(0);
   useEffect(()=>{if(!callStarted||isNaN(elapsed))return;const timer=setInterval(()=>setElapsed(v=>v+1),1000);return()=>clearInterval(timer);},[callStarted]);
@@ -273,6 +275,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     else advanceToNextConcept(recordN400Answer(flow.state, question, ""));
   };
 
+  if(conversation)return <ConversationInterview moduleId="citizenship" lang={language} avatar={interviewer} initialQuestion={flow.question?.english||""} onBack={()=>setConversation(false)}/>;
   if (isComplete) return (
     <div className="interview-screen">
       <div className="results-card n400-results-card">
@@ -293,7 +296,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const question = flow.question;
   const section = SUB_BLOCK_LABELS[flow.state.currentSubBlock]?.[language === "es" ? 1 : 0] || flow.state.currentSubBlock;
   const canRemember = onSaveN400Profile && pendingResponse && !pendingResponse.question.id.startsWith("P_ANUMBER");
-  if(!callStarted)return <section className="call-setup"><h1>N-400</h1><p>{copy.title}</p><label>{copy.officer}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><p>{copy.privacy}</p><button className="primary-button" onClick={()=>setCallStarted(true)}>{language==='es'?'Comenzar entrevista':'Start interview'}</button></section>;
+  if(!callStarted)return <section className="call-setup"><h1>N-400</h1><p>{copy.title}</p><label>{copy.officer}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><p>{copy.privacy}</p><button className="primary-button" onClick={()=>setConversation(true)}>{language==='es'?'Conversar con IA':'Converse with AI'}</button><button onClick={()=>setCallStarted(true)}>{language==='es'?'Comenzar entrevista':'Start interview'}</button></section>;
   const paused=()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallPaused(v=>!v);};
   return <CallView onSkip={skipQuestion} skipDisabled={Boolean(pendingResponse)} moduleId="citizenship" lang={language} state={callPaused?'paused':isTranscribing?'processing':isSpeaking?'speaking':'listening'} elapsed={elapsed} muted={!isListening} captions={[{who:'ai',text:question.english},...(answer?[{who:'user',text:answer}]:[])]} showCaptions={captionsVisible} onCaptions={()=>setCaptionsVisible(v=>!v)} onMic={()=>{if(!callPaused&&!isTranscribing&&!pendingResponse)(isListening?stopListening:startListening)();}} onRepeat={()=>speakQuestion(question.english)} onPause={paused} onSuspend={()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallPaused(true);}} onFinish={()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallStarted(false);setIsComplete(true);}} interviewerName={interviewerName} interviewType="N-400" mediaBase={'/modules/citizenship/'+interviewer+'-'} mode="personal" error={answerStatus==='error'?microphoneError||copy.error:null}>
    {pendingResponse?<><p>{copy.recorded}</p><button onClick={continueResponse} disabled={callPaused||saveStatus==='saving'}>{copy.continue}</button>{canRemember&&<button onClick={rememberResponse} disabled={saveStatus==='saving'||saveStatus==='saved'}>{saveStatus==='saved'?copy.remembered:copy.remember}</button>}</>:<form onSubmit={e=>{e.preventDefault();acceptResponse(draft);}}><input aria-label={copy.input} value={draft} maxLength={1600} disabled={callPaused||isListening||isTranscribing} onFocus={stopQuestionSpeech} onChange={e=>setDraft(e.target.value)}/><button disabled={callPaused||isListening||isTranscribing||!draft.trim()}>{copy.submit}</button></form>}

@@ -42,6 +42,8 @@ const FEATURE_LABELS = {
 };
 
 export function AccountProvider({ children }) {
+  const [signInError] = useState(() => new URLSearchParams(window.location.hash.slice(1)).has('error'));
+  useEffect(() => { if (signInError) window.location.hash = '/account'; }, [signInError]);
   const [client, setClient] = useState(() => createAccountClient(browserSupabaseUrl, browserSupabaseKey));
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -105,7 +107,7 @@ export function AccountProvider({ children }) {
   }, [session?.access_token]);
 
   const value = useMemo(() => ({
-    configured: Boolean(client), session, loading, usage, promotionAccess, aiFeatureAvailability, billing,
+    configured: Boolean(client), session, loading, usage, promotionAccess, aiFeatureAvailability, billing, signInError,
     sendMagicLink: (email) => client.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` },
@@ -198,7 +200,7 @@ export function AccountProvider({ children }) {
       window.location.assign(result.url);
       return true;
     },
-  }), [client, session, loading, usage, promotionAccess, aiFeatureAvailability, billing]);
+  }), [client, session, loading, usage, promotionAccess, aiFeatureAvailability, billing, signInError]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 }
@@ -219,7 +221,7 @@ export function AccountButton({ language = "en", onClick }) {
 
 export function AccountSheet({ language = "en", onClose, embedded = false }) {
   const modalRef = useModalFocus(!embedded, onClose);
-  const { configured, session, loading, usage, billing, promotionAccess, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, openBillingPortal } = useAccount();
+  const { configured, session, loading, usage, billing, promotionAccess, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, openBillingPortal, signInError } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
@@ -241,9 +243,11 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
     event.preventDefault();
     if (!email.trim() || submitting) return;
     setSubmitting(true); setStatus("");
-    const { error } = await sendMagicLink(email.trim());
-    setStatus(error ? "error" : "sent");
-    setSubmitting(false);
+    try {
+      const { error } = await sendMagicLink(email.trim());
+      setStatus(error ? "error" : "sent");
+    } catch { setStatus("error"); }
+    finally { setSubmitting(false); }
   };
 
   const downloadAccountData = async () => {
@@ -297,6 +301,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
       <section ref={modalRef} className="account-sheet" role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : "true"} aria-labelledby="account-title">
         {!embedded&&<button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>}
         <div className="liquid-page-heading"><span>{language==='es'?'TU CUENTA':'YOUR ACCOUNT'}</span><h1 id="account-title">{language==='es'?'Tu cuenta de Immigration AI':'Your Immigration AI account'}</h1><p>{language==='es'?'Gestiona tu suscripción, revisa tus límites y administra tu cuenta.':'Manage your subscription, review your limits and manage your account.'}</p></div>
+        {signInError&&!session&&!status&&<p role="alert">{language==='es'?'El enlace de acceso no es válido o ha caducado. Solicita uno nuevo y abre únicamente el correo más reciente.':'The sign-in link is invalid or expired. Request a new link and open only the latest email.'}</p>}
         {!configured ? <div className="account-message">{copy.unavailable}</div> : loading ? <div className="account-loading" /> : session ? (
           <>
             <GlassCard className="account-overview"><span className="glass-icon" aria-hidden="true"><GlassIcon name="◎"/></span><div className="account-identity"><span>{copy.signedIn}</span><strong>{session.user.email}</strong></div>

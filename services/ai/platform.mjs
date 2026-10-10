@@ -9,4 +9,4 @@ async function reserveAsylumQuota(userId,bucket="asylum-analysis",limit=2){
  if(!response.ok)throw new Error('QUOTA_UNAVAILABLE');
  const result=await response.json();return result.allowed===true;
 }
-export const app=createPlatformRouter({citizenship,requireAccount,getUsageSnapshot,reserveAsylumQuota,reserveInterviewQuota:id=>reserveAsylumQuota(id,'interview-feedback',30),reserveAudioQuota:id=>reserveAsylumQuota(id,'asylum-transcription',30),env:{...process.env,OPENAI_TEXT_MODEL:process.env.OPENAI_TEXT_MODEL||'gpt-4o-mini'}});
+export const app=createPlatformRouter({citizenship,requireAccount,getUsageSnapshot,reserveAsylumQuota,reserveConversationQuota:id=>reserveAsylumQuota(id,'interview-conversation',3),reserveInterviewQuota:id=>reserveAsylumQuota(id,'interview-feedback',30),reserveAudioQuota:id=>reserveAsylumQuota(id,'asylum-transcription',30),env:{...process.env,OPENAI_TEXT_MODEL:process.env.OPENAI_TEXT_MODEL||'gpt-4o-mini'}});
