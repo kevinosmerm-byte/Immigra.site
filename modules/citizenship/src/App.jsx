@@ -446,7 +446,6 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   {readyForNext&&answerStatus!=='correct'&&<details><summary>{t('Official answers','Respuestas oficiales')}</summary><ul>{question.acceptedAnswers?.map(x=><li key={x}>{x}</li>)}</ul></details>}
   {!readyForNext&&<button disabled={paused||isListening||isTranscribing} onClick={handleSkip}>{t("I don't know",'No lo sé')}</button>}
   {language==='es'&&answer&&<p>{questionSpanish(question)}</p>}
-  <p>{currentQuestion+1}/{questions.length} · {correctAnswers} {t('correct','correctas')} · {incorrectAnswers} {t('to review','por repasar')}</p>
   </CallView>;
 }
 
