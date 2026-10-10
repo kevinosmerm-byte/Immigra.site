@@ -1,3 +1,4 @@
+import {TEMPORARY_INTERVIEW_TESTING} from '../../../shared/interview-ui/access-policy.mjs';
 import { useEffect, useRef, useState } from "react";
 import { useAccount } from "./accountContext.js";
 import { AccountSheet } from "./Account.jsx";
@@ -12,7 +13,7 @@ export function ProgressGate({ children }) {
   const [showPro, setShowPro] = useState(false);
   const seen = useRef(new Set());
   const offer = (module, preferredLanguage) => {
-    if (usage?.tier === "pro") return;
+    if (TEMPORARY_INTERVIEW_TESTING || usage?.tier === "pro") return;
     const key = `citizenshipai.pro-notice.v2:${session?.user?.id || "guest"}`;
     if (seen.current.has(key)) return;
     try { if (!claimProNotice(localStorage, session?.user?.id)) return; } catch { /* Memory fallback. */ }

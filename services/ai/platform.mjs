@@ -1,3 +1,4 @@
+import {reserveInterviewAccess as reserveAccess} from './interview-quota.mjs';
 import {createHash} from 'node:crypto';
 import {app as citizenship} from '../../modules/citizenship/server/server.js';
 import {requireAccount,getUsageSnapshot,consumeDistributedRateLimit} from '../../modules/citizenship/server/accountService.js';
@@ -15,7 +16,6 @@ async function reserveAsylumQuota(userId,bucket="asylum-analysis",limit=2){
  }
 }
 async function reserveInterviewAccess(id,bucket,limit,globalLimit){
- if(id.startsWith('guest:')&&!await reserveAsylumQuota('public-interviews-global',bucket+'-public',globalLimit))return false;
- return reserveAsylumQuota(id,bucket,limit);
+ return reserveAccess({id,bucket,limit,globalLimit,reserve:reserveAsylumQuota,env:process.env});
 }
 export const app=createPlatformRouter({citizenship,requireAccount,getUsageSnapshot,reserveAsylumQuota,reserveConversationQuota:id=>reserveInterviewAccess(id,'interview-conversation',3,100),reserveInterviewQuota:id=>reserveInterviewAccess(id,'interview-feedback',30,1000),reserveAudioQuota:id=>reserveInterviewAccess(id,'asylum-transcription',30,1000),env:{...process.env,OPENAI_TEXT_MODEL:process.env.OPENAI_TEXT_MODEL||'gpt-4o-mini'}});

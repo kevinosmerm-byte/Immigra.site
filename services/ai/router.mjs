@@ -1,4 +1,4 @@
-import {TEMPORARY_PUBLIC_INTERVIEWS} from '../../shared/interview-ui/access-policy.mjs';
+import {TEMPORARY_PUBLIC_INTERVIEWS,interviewTestingEnabled} from '../../shared/interview-ui/access-policy.mjs';
 import {createGuestAccess} from './guest-access.mjs';
 import {logDiagnostic} from '../../shared/interview-ui/diagnostics.mjs';
 import {aosFeedback} from '../../modules/residency/src/aosFeedback.mjs';
@@ -16,7 +16,7 @@ export function createPlatformRouter({citizenship,requireAccount,getUsageSnapsho
  const interviewAccess=(req,res,next)=>publicAccess&&!req.get('authorization')?guestAccess(req,res,next):requireAccount(req,res,next);
  const interviews=createInterviewAIEngine({env,fetchImpl:analysisFetch,reserveSessionQuota:reserveConversationQuota,reserveTurnQuota:reserveInterviewQuota});
  const interviewError=(res,error)=>{const code=error?.message;logDiagnostic('INTERVIEW_ERROR',{code,status:error?.status});const known={LOCAL_EVALUATOR_REQUIRED:400,STALE_QUESTION:409,INTERVIEW_COMPLETE:409,GUEST_SESSION_EXPIRED:401,PROVIDER_AUTH_FAILED:502,PROVIDER_ACCESS_DENIED:502,PROVIDER_BAD_REQUEST:502,INVALID_PROVIDER_SESSION:502,QUOTA_UNAVAILABLE:503,AI_NOT_CONFIGURED:503,INVALID_SETTINGS:400,INVALID_SDP:400,INVALID_INPUT:400,DAILY_LIMIT:429,SESSION_EXPIRED:410,SESSION_LIMIT:429,TURN_IN_PROGRESS:409,PROVIDER_LIMIT:502,PROVIDER_UNAVAILABLE:502,INCOMPLETE_EVALUATION:502,INVALID_EVALUATION:502,UNGROUNDED_EVALUATION:502};return res.status(known[code]||503).json({error:known[code]?code:'INTERVIEW_UNAVAILABLE'});};
- app.get('/api/interview/status',(_req,res)=>res.json({ready:interviews.available(),authentication_required:!publicAccess,max_duration_seconds:600}));
+ app.get('/api/interview/status',(_req,res)=>res.json({ready:interviews.available(),authentication_required:!publicAccess,max_duration_seconds:600,testing_access:interviewTestingEnabled(env)}));
  app.post('/api/interview/sessions',interviewAccess,express.json({limit:'48kb'}),async(req,res)=>{try{res.json(await interviews.start(req.account.userId,req.body));}catch(error){interviewError(res,error);}});
  app.post('/api/interview/sessions/:id/turn',interviewAccess,express.json({limit:'12kb'}),async(req,res)=>{try{res.json(await interviews.turn(req.account.userId,req.params.id,req.body));}catch(error){interviewError(res,error);}});
  app.delete('/api/interview/sessions/:id',interviewAccess,async(req,res)=>{await interviews.close(req.params.id,req.account.userId);res.status(204).end();});
