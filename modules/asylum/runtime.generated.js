@@ -184,9 +184,9 @@ window.AsiloData = {"questions": [{"id": "Q0001", "category": "IDENTITY", "subca
   const say=(es,english)=>{if(!dead)status.textContent=en?english:es;};
   const stopMic=()=>{clearTimeout(timer);if(recognizer){const old=recognizer;recognizer=null;old.onend=null;old.onresult=null;old.onerror=null;try{old.abort();}catch{}}document.getElementById('mic-start')?.setAttribute('aria-pressed','false');};
   const stop=()=>{generation++;clearTimeout(readTimer);speaking=false;window.speechSynthesis?.cancel();stopMic();config.video(false);};
-  const listen=()=>{
+  const listen=(manual=false)=>{
    if(dead)return;stop();
-   if(!config.microphone){say('El micrófono no fue autorizado al iniciar. Puedes escribir o iniciar una nueva práctica con voz.','Microphone was not enabled at the start. Type or start a new voice practice.');return;}
+   if(!config.microphone&&!manual){say('El micrófono no fue autorizado al iniciar. Puedes escribir o iniciar una nueva práctica con voz.','Microphone was not enabled at the start. Type or start a new voice practice.');return;}
    if(!Recognition){say('Este navegador no admite dictado. Abre la práctica en un navegador compatible o escribe tu respuesta.','Speech recognition is unavailable in this browser. Use a compatible browser or type your answer.');return;}
    const r=new Recognition();recognizer=r;r.lang=en?'en-US':'es-ES';r.continuous=true;r.interimResults=true;
    r.onstart=()=>{if(dead||recognizer!==r)return;say('Micrófono activo. Habla; después detén y revisa la transcripción.','Microphone on. Speak, then stop and review the transcript.');document.getElementById('mic-start')?.setAttribute('aria-pressed','true');};
@@ -207,7 +207,7 @@ window.AsiloData = {"questions": [{"id": "Q0001", "category": "IDENTITY", "subca
    readTimer=setTimeout(()=>{if(!dead&&speaking&&!window.speechSynthesis.speaking)say('El navegador bloqueó la lectura automática. Pulsa Repetir pregunta.','Your browser blocked automatic playback. Press Repeat question.');},4000);
   };
   document.getElementById('voice-repeat').onclick=read;
-  document.getElementById('mic-start').onclick=listen;
+  document.getElementById('mic-start').onclick=()=>listen(true);
   document.getElementById('voice-stop').onclick=()=>{generation++;speaking=false;clearTimeout(readTimer);clearTimeout(timer);window.speechSynthesis?.cancel();config.video(false);if(recognizer){try{recognizer.stop();}catch{stopMic();}}else stopMic();say('Finalizando dictado. Revisa la transcripción antes de continuar.','Finishing dictation. Review the transcript before continuing.');};
   const hidden=()=>{if(document.hidden){stop();say('Micrófono pausado al salir de la pestaña.','Microphone paused when leaving the tab.');}};
   document.addEventListener('visibilitychange',hidden);

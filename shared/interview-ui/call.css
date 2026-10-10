@@ -19,3 +19,25 @@ body.in-call{overflow:hidden;overscroll-behavior:none}body.in-call #root>header,
 @media(prefers-reduced-motion:reduce){.call-controls button{transition:none}}
 
 .call-response{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);width:min(92%,540px);background:#172330ed;border-radius:14px;padding:8px;max-height:35%;overflow:auto}.call-stage:has(.call-response) .call-captions{bottom:auto;top:50px;max-height:23%}.call-response form{display:flex;gap:6px}.call-response input{min-width:0;flex:1;padding:10px;border-radius:8px;border:1px solid #869aaa}.call-response button{padding:9px;border-radius:8px;background:#dfeaf4;color:#182331;border:0}.call-response p{font-size:12px;margin:4px}.call-response details{font-size:12px}.call-screen .call-controls{box-sizing:border-box}
+/* Asylum: readable question and answer area beside the interviewer. */
+.call-screen[data-module=asylum]{background:#f4f8fc!important;color:#172b3d;}
+.call-screen[data-module=asylum] .call-top{background:#fff!important;padding:16px 28px;border-bottom:1px solid #d8e2ec}
+.call-screen[data-module=asylum] .call-top :is(strong,p,span,time){color:#123a63!important}
+.call-screen[data-module=asylum] .call-stage{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,1fr);grid-template-rows:auto auto 1fr auto;gap:16px;padding:24px;max-width:1160px;width:calc(100% - 48px);margin:16px auto 0;box-sizing:border-box;background:#fff!important;border:1px solid #d8e2ec;border-radius:20px;overflow:auto;align-items:start}
+.call-screen[data-module=asylum] .call-stage video{grid-column:1;grid-row:1/5;border-radius:14px;height:100%;max-height:100%;object-fit:contain;background:#edf2f7}
+.call-screen[data-module=asylum] :is(.call-state,.call-captions,.call-response,.call-alert){position:static;transform:none;width:auto;max-height:none;grid-column:2;color:#172b3d!important;box-sizing:border-box;backdrop-filter:none}
+.call-screen[data-module=asylum] .call-state{grid-row:1;justify-self:start;background:#edf4f9;border:1px solid #d8e2ec;color:#123a63!important}
+.call-screen[data-module=asylum] .call-captions{grid-row:2;background:#f4f8fc;border:0;padding:20px;text-align:left;font-size:18px;line-height:1.6}
+.call-screen[data-module=asylum] .call-captions :is(p,b){color:#172b3d!important}
+.call-screen[data-module=asylum] .call-response{grid-row:4;background:#fff;padding:0;overflow:visible}
+.call-screen[data-module=asylum] .call-response form{display:flex;flex-wrap:wrap;gap:10px}
+.call-screen[data-module=asylum] .call-response input{width:100%;flex-basis:100%;min-height:52px;background:#fff;color:#172b3d;border:1px solid #9baec1;font-size:16px;box-sizing:border-box}
+.call-screen[data-module=asylum] .call-response button{min-height:44px;padding:12px 22px;background:#2563a6;color:#fff}
+.call-screen[data-module=asylum] .call-alert{grid-row:3;align-self:start;background:#fff5e9;border:1px solid #d8b991;text-align:left;padding:16px}
+.call-screen[data-module=asylum] .call-alert p{color:#684516!important;line-height:1.5}
+.call-screen[data-module=asylum] .call-controls{width:min(100%,760px);background:#f4f8fc!important;gap:12px;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.call-screen[data-module=asylum] .call-controls button{width:100%;height:auto;min-height:68px;margin:0;border-radius:14px;background:#fff!important;color:#2563a6!important;border:1px solid #c3d2e0;box-shadow:none;gap:8px}
+.call-screen[data-module=asylum] .call-controls button span{position:static;color:#123a63!important;white-space:normal;font-size:13px}
+.call-screen[data-module=asylum] .call-controls .call-end{background:#c92a3a!important;color:#fff!important;border-color:#c92a3a}
+.call-screen[data-module=asylum] .call-controls .call-end span{color:#fff!important}
+@media(max-width:700px){.call-screen[data-module=asylum] .call-stage{width:calc(100% - 24px);margin-top:10px;padding:12px;gap:10px;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto auto}.call-screen[data-module=asylum] .call-stage video{grid-column:1;grid-row:1;max-height:28dvh}.call-screen[data-module=asylum] :is(.call-state,.call-captions,.call-response,.call-alert){grid-column:1;grid-row:auto}.call-screen[data-module=asylum] .call-captions{font-size:16px;padding:12px}.call-screen[data-module=asylum] .call-controls{gap:5px;padding-inline:8px}.call-screen[data-module=asylum] .call-controls button span{font-size:11px}.call-screen[data-module=asylum] .call-top{padding:10px 16px}}
