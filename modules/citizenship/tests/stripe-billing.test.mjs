@@ -90,3 +90,10 @@ test("Web checkout is hidden from native store builds and account deletion canno
   assert.match(routes, /active_subscription_requires_cancellation/);
   assert.match(routes, /getBillingIdentity\(req\.account\.userId\)/);
 });
+
+test("Trial subscriptions retain Pro access for the seven-day trial period",()=>{
+ assert.equal(getBillingConfiguration().trialDays,7);
+ const result=mapStripeSubscription({status:"trialing",current_period_start:1800000000,current_period_end:1800604800});
+ assert.equal(result.tier,"pro");
+ assert.equal(Date.parse(result.periodEnd)-Date.parse(result.periodStart),7*86400000);
+});

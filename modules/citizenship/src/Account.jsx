@@ -348,7 +348,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
               <div className="account-billing-actions">
                 <button type="button" onClick={() => startBillingAction("monthly")} disabled={Boolean(billingAction)}><b>{copy.monthly}</b><small>${(Number(billing.introductoryOfferEnabled ? billing.introductoryMonthlyPriceCents : billing.monthlyPriceCents) / 100).toFixed(2)}/mo</small></button>
                 <button type="button" onClick={() => startBillingAction("annual")} disabled={Boolean(billingAction)}><b>{language==='es'?'ANUAL':'ANNUAL'}</b><small>${(Number(billing.annualPriceCents || PRO_PLAN.annualPriceCents) / 100).toFixed(2)}/yr</small></button>
-                <em>{copy.secureCheckout}</em>
+                <p>{language === "es" ? "7 días gratis. Después se cobra el precio del plan elegido con renovación automática. Se requiere un método de pago. Cancela antes de que termine la prueba para evitar el cobro; gestiona tu suscripción en Mi cuenta." : "7 days free. Then the selected plan price is charged with automatic renewal. A payment method is required. Cancel before the trial ends to avoid a charge; manage your subscription in My account."}</p><em>{copy.secureCheckout}</em>
               </div>
             )
           ) : <><button className="account-billing-manage" type="button" disabled>{language==='es'?'Actualizar a PRO →':'Upgrade to PRO →'}</button><em>{copy.pricingStatus}</em></>}
