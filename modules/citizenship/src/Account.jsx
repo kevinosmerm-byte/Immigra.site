@@ -232,7 +232,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
   const [billingAction, setBillingAction] = useState("");
   const [billingError, setBillingError] = useState(false);
   const usageFeatures = usage?.features
-    ? Object.entries(usage.features).filter(([, item]) => item?.enabled)
+    ? Object.entries(usage.features).filter(([feature, item]) => feature !== "coach" && item?.enabled)
     : [];
   const webBillingEnabled = billing?.enabled && !Capacitor.isNativePlatform();
 

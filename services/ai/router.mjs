@@ -15,6 +15,7 @@ export function createPlatformRouter({citizenship,requireAccount,getUsageSnapsho
  // No production grants/ledger have been approved or deployed for new domains.
  // Keep the original domain handlers intact; never use Citizenship Pro as a grant.
  app.post(['/api/asylum/analyze','/api/realtime/session'],requireAccount,(req,res)=>res.status(503).json({error:status(req.path.includes('/asylum/')?'asylum':'residency').reason}));
+ app.post('/api/coach',(_req,res)=>res.status(410).json({error:'FEATURE_REMOVED'}));
  const paid=new Set(['/evaluate-writing','/transcribe','/evaluate-reading','/coach','/avatar/session']);
  app.use('/api',(req,res,next)=>{
   if(!paid.has(req.path))return next();

@@ -49,5 +49,5 @@ test("both languages offer the same primary action and supporting destinations",
 test("all interview and English tools remain accessible under Practice", () => {
   for (const id of ["interview-n400", "interview-civics", "reading", "writing", "podcasts"]) assert.ok(app.includes('id:"' + id + '"'));
   assert.match(app, /startInterview\("full"\)/);
-  assert.match(app, /navigateTo\("coach"\)/);
+  assert.doesNotMatch(home, /onOpenFeature\('coach'\)/);
 });

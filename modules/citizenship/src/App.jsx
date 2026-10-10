@@ -674,6 +674,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   };
 
   const navigateTo = (nextScreen, options) => {
+    if (nextScreen === "coach") nextScreen = "home";
     if (["civics", "quiz", "vocabulary", "choose", "connect", "reading", "writing", "interview"].includes(nextScreen) && nextScreen !== screen) recordAccountEvent("practice_started", nextScreen).catch(() => {});
     setNavigation((current) => navigateForward(current, nextScreen, options));
     window.history.pushState(null, "", appRouteHash(nextScreen, nextScreen === "interview" ? interviewMode : undefined));
@@ -725,7 +726,8 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
       navigateTo("civics");
       return;
     }
-    const feature = key === "writing" ? "writing" : key === "coach" ? "coach" : "speaking";
+    if (key === "coach") return;
+    const feature = key === "writing" ? "writing" : "speaking";
     startAiFeature(feature, () => navigateTo(key === "writing" ? "writing" : key === "coach" ? "coach" : "reading"));
   };
 
@@ -1289,7 +1291,6 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
         <SectionNavigation items={practiceItems} language={language} onNavigate={id => id.startsWith("interview-") ? startInterview(id.slice(10)) : navigateTo(id)} />
         <details className="practice-more"><summary>{t("More practice options", "Más opciones de práctica")}</summary><div className="practice-option-links">
           <button className="button-secondary" onClick={() => startInterview("full")}>{t("Live interview", "Entrevista en vivo")}</button>
-          <button className="button-secondary" onClick={() => startAiFeature("coach", () => navigateTo("coach"))}>{t("English conversation", "Conversación en inglés")}</button>
           <button className="button-secondary" onClick={() => navigateTo("vocabulary")}>{t("Vocabulary", "Vocabulario")}</button>
           <button className="button-secondary" onClick={() => navigateTo("choose")}>{t("Choose an answer", "Elegir respuesta")}</button>
           <button className="button-secondary" onClick={() => navigateTo("connect")}>{t("Connect answers", "Conectar respuestas")}</button>
