@@ -101,3 +101,10 @@ html[data-reduce-transparency=true] .call-screen.voice-first[data-module] :is(.c
 .call-screen.voice-first[data-module] > .call-response > button { background: rgba(245,250,255,.65); color: #123a63; min-height: 36px; padding: 6px 14px; }
 @media(max-width:440px) { .call-screen.voice-first[data-module] .call-bottom-dock { gap: 3px; padding: 8px 5px; width: calc(100% - 16px); border-radius: 22px; } .call-screen.voice-first[data-module] .call-bottom-dock button { font-size: 9px; border-radius: 15px; height: 54px; min-height: 54px; } .call-screen.voice-first[data-module] .call-bottom-dock .call-main-mic { width: 52px; height: 52px; min-height: 52px; } }
 html[data-reduce-transparency=true] .call-screen.voice-first[data-module] .call-bottom-dock { background: var(--liquid-solid,#f4f8fc); backdrop-filter: none; }
+
+.call-screen.voice-first[data-module] .call-captions-toggle { position: absolute; z-index: 4; top: 12px; right: 20px; width: 44px; height: 44px; min-height: 44px; padding: 10px; border: 1px solid #ffffff80; border-radius: 50%; background: rgba(245,250,255,.5); color: #123a63; backdrop-filter: blur(20px); }
+.call-screen.voice-first[data-module] .call-captions-toggle svg { width: 24px; height: 24px; }
+.call-screen.voice-first[data-module] .call-bottom-dock > .call-response { display: contents; }
+.call-screen.voice-first[data-module] .call-bottom-dock .call-response > button { grid-column: 6; grid-row: 1; width: 100%; padding: 6px 2px; }
+.call-screen.voice-first[data-module] .call-bottom-dock .call-response > :not(button) { grid-column: 1 / -1; }
+.call-screen.voice-first[data-module] .call-bottom-dock .call-response > form { margin-top: 8px; }
