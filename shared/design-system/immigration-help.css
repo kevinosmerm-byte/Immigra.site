@@ -49,3 +49,13 @@ html[data-theme=dark]  .citizenship-surface .immigration-help-screen.immigration
 .citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-help-hero{padding-top:36px}
 .citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-help-hero>span{font-family:inherit}
 .citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-help-search::before,.citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-help-search::after{content:none}
+
+.citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-leaving-card{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;background:rgba(255,255,255,.35)!important;padding:36px;max-width:660px;border:1px solid #ffffffb8!important}
+.citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-leaving-card h1{font-size:clamp(24px,3vw,36px)!important;line-height:1.2;margin:0;font-family:inherit}
+.citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-leaving-card p{margin:0;font-size:15px;line-height:1.65}
+.citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-leaving-icon{display:grid;place-items:center;width:72px;height:72px;border-radius:24px;background:#ffffff80;border:1px solid #fff;font-size:32px;color:var(--color-primary,#2563a6)}
+.citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-destination{padding:12px 24px;border-radius:30px;background:#ffffff65;border:1px solid #ffffffb8;font-weight:650;color:var(--color-navy,#123a63);overflow-wrap:anywhere;max-width:100%}
+.citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-leaving-card>a{display:flex;justify-content:center;align-items:center;gap:12px;min-height:52px;width:100%;padding:14px 20px;border-radius:26px;background:var(--color-primary,#2563a6);color:#fff!important;text-decoration:none;font-size:15px;font-weight:600}
+.citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-leaving-card>button{width:100%;min-height:48px;border-radius:26px!important;border:1px solid #ffffffbf;background:#ffffff65!important;color:var(--color-navy,#123a63)!important;font-size:15px}
+@media(max-width:600px){.citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-leaving-card{padding:26px 20px;gap:16px}}
+html[data-theme=dark] .citizenship-surface .immigration-help-screen.immigration-help-embedded .immigration-leaving-card{background:#123a63c9!important}

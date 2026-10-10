@@ -1,3 +1,4 @@
+import EmailProfile from '../../../shared/EmailProfile.jsx';
 import CoachCall from '../CoachCall.jsx';
 import CallView from '../../../shared/interview-ui/CallView.jsx';
 import PlatformHome from '../PlatformHome.jsx';
@@ -1055,6 +1056,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
     return <ImmigrationHelp language={language} caseProfile={brainContext.caseProfile} n400Profile={brainContext.n400Profile} onLanguageChange={setPreferredLanguage} onBack={() => goBack("home")} />;
   }
 
+  if (screen === "profile" && platformLanguage) return <EmailProfile language={language}/>;
   if (screen === "profile") return <Profile language={language} profile={brainProfile.profile} onUpdate={brainProfile.updateProfile} onBack={() => goBack("home")} onOpenCivicProfile={() => navigateTo("civicProfile")} onOpenAccount={() => setAccountOpen(true)} onOpenSettings={() => navigateTo("settings")} cloudStatus={brainProfile.cloudStatus} onSaveCloud={brainProfile.saveToCloud} onRestoreCloud={brainProfile.restoreFromCloud} onDeleteCloud={brainProfile.deleteFromCloud} onReset={brainProfile.resetProfile} />;
   if (screen === "uscisTracker") return <CaseJourney language={language} userKey={userKey} caseProfile={brainContext.caseProfile} n400Profile={brainContext.n400Profile} onUpdate={caseProfile => brainProfile.updateProfile({ caseProfile })} onNavigate={(destination, options) => destination === "interview" ? startInterview(options?.mode || "n400") : navigateTo(destination, options)} onBack={() => goBack("home")} />;
   if (screen === "civicProfile") return <MyCivicsProfile key={`${userKey}:${profileRevision}`} userKey={userKey} language={language} userProfile={brainContext.userProfile} n400Profile={brainContext.n400Profile} profile={civicProfile} refreshStatus={civicRefreshStatus} onProfileUpdate={userProfile => brainProfile.updateProfile({userProfile})} onSave={profile => { saveCivicProfile(profile, userKey); setProfileRevision(value => value + 1); }} onBack={() => goBack("profile")} />;
