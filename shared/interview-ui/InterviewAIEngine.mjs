@@ -21,20 +21,22 @@ export function createInterviewAIEngine({env=globalThis,fetchImpl=authenticatedF
  return {close,
  async start(next){
   if(next.consent!==true){onError('CONSENT_REQUIRED');return false;}
-  close();settings=next;onError('');onState('connecting');const token=generation;abort=new AbortController();const signal=abort.signal;timer=setTimeout(()=>{if(token===generation)fail('CONNECTION_TIMEOUT');},45000);
+  close();settings=next;onError('');onState('connecting');const token=generation;let awaitingMic=false,outputActive=false,playbackStarted=false;abort=new AbortController();const signal=abort.signal;timer=setTimeout(()=>{if(token===generation)fail(awaitingMic?'MICROPHONE_TIMEOUT':'CONNECTION_TIMEOUT');},45000);
   try{
    if(next.transport==='voice'){
     if(!env.RTCPeerConnection||!env.navigator?.mediaDevices?.getUserMedia)throw Error('VOICE_UNSUPPORTED');
-    const acquired=await env.navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:false});
-    if(token!==generation){acquired.getTracks().forEach(t=>t.stop());return false;}stream=acquired;diagnostic('MIC_PERMISSION_GRANTED');if(!stream.getAudioTracks().length)throw Error('MICROPHONE_DISCONNECTED');
+    awaitingMic=true;const acquired=await env.navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:false});
+    awaitingMic=false;if(token!==generation){acquired.getTracks().forEach(t=>t.stop());return false;}stream=acquired;diagnostic('MIC_PERMISSION_GRANTED');if(!stream.getAudioTracks().length)throw Error('MICROPHONE_DISCONNECTED');
     muted=false;stream.getTracks().forEach(t=>t.onended=()=>{if(token===generation)fail('MICROPHONE_DISCONNECTED');});pc=new env.RTCPeerConnection();const peer=pc;
-    stream.getTracks().forEach(t=>peer.addTrack(t,stream));audio=new env.Audio();audio.autoplay=true;audio.onplaying=()=>{if(token===generation)diagnostic('AI_AUDIO_PLAYING');};
+    stream.getTracks().forEach(t=>peer.addTrack(t,stream));audio=new env.Audio();audio.autoplay=true;audio.onplaying=()=>{playbackStarted=true;if(token===generation&&outputActive&&!paused)diagnostic('AI_AUDIO_PLAYING');};
     peer.ontrack=e=>{if(token!==generation)return;audio.srcObject=e.streams?.[0]||(env.MediaStream?new env.MediaStream([e.track]):null);if(!audio.srcObject){report('CONNECTION_FAILED');return;}audio.play().catch(()=>report('PLAYBACK_BLOCKED'));};
     peer.onconnectionstatechange=()=>{if(token===generation&&['failed','disconnected'].includes(peer.connectionState))fail('CONNECTION_LOST');};
     dc=peer.createDataChannel('oai-events');
     dc.onopen=()=>{if(token!==generation)return;clearTimeout(timer);diagnostic('REALTIME_CONNECTED');onState('listening');send({type:'response.create'});};
     dc.onmessage=e=>{
      if(token!==generation)return;let m;try{m=JSON.parse(e.data);}catch{return;}
+     if(m.type==='output_audio_buffer.started'){outputActive=true;if(playbackStarted&&!audio?.paused&&!audio?.muted&&!paused)diagnostic('AI_AUDIO_PLAYING');}
+     if(['output_audio_buffer.stopped','output_audio_buffer.cleared'].includes(m.type))outputActive=false;
      if(m.type==='session.created')diagnostic('OPENAI_SESSION_CREATED');
      if(m.type==='input_audio_buffer.speech_started'){diagnostic('MIC_AUDIO_CAPTURED');diagnostic('USER_AUDIO_RECEIVED');if(m.item_id)questionByItem.set(m.item_id,lastQuestion);}
      if(m.type==='input_audio_buffer.committed')diagnostic('USER_TURN_COMPLETED');
@@ -54,7 +56,7 @@ export function createInterviewAIEngine({env=globalThis,fetchImpl=authenticatedF
     const created=await json('/api/interview/sessions',next,'POST',signal);if(token!==generation){void json('/api/interview/sessions/'+created.id,null,'DELETE',null).catch(()=>{});return false;}session=created;clearTimeout(timer);await review('','',token);
    }
    if(token!==generation)return false;deadline=setTimeout(()=>{if(token===generation)fail('SESSION_EXPIRED');},Math.max(0,session.expires_at-Date.now()));return true;
-  }catch(error){if(token===generation)fail(error.name==='NotAllowedError'?'MICROPHONE_DENIED':error.message||'CONNECTION_FAILED');return false;}
+  }catch(error){if(token===generation)fail(error.name==='NotAllowedError'?'MICROPHONE_DENIED':error.name==='NotFoundError'?'MICROPHONE_DISCONNECTED':error.message||'CONNECTION_FAILED');return false;}
  },
  sendText(text){if(!session||paused||!text.trim())return false;const answer=text.trim().slice(0,5000),token=generation;onError('');
   if(settings.transport==='voice'){send({type:'response.cancel'});send({type:'output_audio_buffer.clear'});if(!send({type:'conversation.item.create',item:{type:'message',role:'user',content:[{type:'input_text',text:answer}]}}))return false;send({type:'response.create'});}

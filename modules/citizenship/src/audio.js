@@ -63,14 +63,15 @@ export async function startAudioRecording() {
   };
 }
 
-export async function transcribeRecording(recording) {
+export async function transcribeRecording(recording, { publicInterview = false } = {}) {
   const formData = new FormData();
   formData.append("audio", recording.blob, recording.fileName);
 
-  const response = await apiFetch("/transcribe", {
+  if(publicInterview)formData.append("language", "en");
+  const response = await (publicInterview ? fetch("/api/interview/transcribe", {method:"POST",headers:{"x-audio-consent":"interview-audio-v1"},body:formData}) : apiFetch("/transcribe", {
     method: "POST",
     body: formData,
-  });
+  }));
 
   if (!response.ok) {
     const error = new Error("Transcription failed.");

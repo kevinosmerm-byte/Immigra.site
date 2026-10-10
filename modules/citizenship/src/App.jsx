@@ -1,3 +1,4 @@
+import {TEMPORARY_PUBLIC_INTERVIEWS} from '../../../shared/interview-ui/access-policy.mjs';
 import '../../../shared/design-system/citizenship-exercises.css';
 import {GlassCard,GlassProgress} from '../../../shared/design-system/Glass.jsx';
 import EmailProfile from '../../../shared/EmailProfile.jsx';
@@ -411,7 +412,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     if (!recorder) return;
     setIsTranscribing(true);
     try {
-      const transcript = await transcribeRecording(await recorder.stop());
+      const transcript = await transcribeRecording(await recorder.stop(), {publicInterview:TEMPORARY_PUBLIC_INTERVIEWS});
       if (mountedRef.current && generation===captureGeneration.current) { if (transcript) { setTypedAnswer(transcript); evaluateInterviewAnswer(transcript, "spoken"); } else setAnswerStatus("error"); }
     } catch (error) { if (mountedRef.current && generation===captureGeneration.current) {setMicrophoneError(audioErrorMessage(error,language));setAnswerStatus("error");} }
     finally { if (mountedRef.current && generation===captureGeneration.current) setIsTranscribing(false); }
@@ -693,7 +694,13 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   const startAiFeature = (feature, continuation) => {
     requestAiSession(feature, continuation, language);
   };
-  const requestVoiceAccess = continuation => requestAiSession("classicInterview", continuation, language);
+  const requestVoiceAccess = continuation => {
+    if(TEMPORARY_PUBLIC_INTERVIEWS){
+      if(window.confirm(language==='es'?'Enviar esta respuesta de voz a OpenAI para transcribirla y compararla con las respuestas oficiales. No se guarda la grabación. ¿Continuar?':'Send this spoken answer to OpenAI for transcription and comparison with official answers. The recording is not saved. Continue?'))continuation();
+      return;
+    }
+    return requestAiSession("classicInterview", continuation, language);
+  };
 
 
   const startInterview = (mode = "full") => {

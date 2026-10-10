@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createInterviewAIEngine,InterviewSessionManager,validateSettings,validateEvaluation,interviewInstructions} from '../services/ai/interview-engine.mjs';
+import {createInterviewAIEngine,InterviewSessionManager,validateSettings,validateEvaluation,interviewInstructions,evaluationSchemaFor} from '../services/ai/interview-engine.mjs';
 import {AvatarConversationController} from '../shared/interview-ui/InterviewAIEngine.mjs';
 const settings={module:'asylum',locale:'es',consent:true,transport:'text'};
 const result={answer_status:'incomplete',consistency_status:'insufficient_context',educational_feedback:'Puedes aclarar la fecha.',suggested_follow_up:'¿En qué año ocurrió?',next_action:'clarify',evidence:[],topic:'chronology',difficulty:'easy'};
@@ -15,3 +15,8 @@ test('provider errors do not append a fake response or evaluation',async()=>{con
 test('simultaneous turns do not overwrite context or double-evaluate',async()=>{let release;const pending=new Promise(r=>release=r);const {engine}=fixture({fetchImpl:async()=>{await pending;return Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify(result)}]}]});}});const s=await engine.start('a',settings);const first=engine.turn('a',s.id,{answer:'One'});await assert.rejects(engine.turn('a',s.id,{answer:'Two'}),/TURN_IN_PROGRESS/);release();await first;await engine.close(s.id,'a');});
 test('WebRTC creates SDP on server, uses VAD interruption and hangs up at server deadline',async()=>{const calls=[];const {engine,manager}=fixture({ttl:30,fetchImpl:async(url,options)=>{calls.push({url,options});if(url.endsWith('/hangup'))return new Response(null,{status:200});return new Response('v=0\r\nanswer',{headers:{location:'/v1/realtime/calls/rtc_test'}});}});const s=await engine.start('a',{...settings,transport:'voice',sdp:'v=0\r\noffer'});assert.equal(s.sdp,'v=0\r\nanswer');assert.equal('client_secret' in s,false);const config=JSON.parse(calls[0].options.body.get('session'));assert.equal(config.audio.input.turn_detection.interrupt_response,true);assert.equal(config.audio.input.turn_detection.create_response,true);await new Promise(r=>setTimeout(r,60));assert.equal(manager.sessions.size,0);assert.ok(calls.some(c=>c.url.endsWith('/rtc_test/hangup')));});
 test('avatar reacts to provider events rather than timers',()=>{assert.equal(AvatarConversationController('input_audio_buffer.speech_started'),'listening');assert.equal(AvatarConversationController('response.created'),'thinking');assert.equal(AvatarConversationController('output_audio_buffer.started'),'speaking');assert.equal(AvatarConversationController('unknown'),null);});
+
+test('provider evidence schema permits only actual user quotations and none for a greeting',()=>{
+ assert.equal(evaluationSchemaFor([]).properties.evidence.maxItems,0);
+ assert.deepEqual(evaluationSchemaFor([{role:'user',text:'Actual words.'},{role:'assistant',text:'Not user evidence'}]).properties.evidence.items.enum,['Actual words.']);
+});

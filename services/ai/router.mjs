@@ -63,6 +63,7 @@ export function createPlatformRouter({citizenship,requireAccount,getUsageSnapsho
  app.post('/api/residency/conversation',requireAccount,express.json({limit:'48kb'}),async(req,res)=>{const result=await aosFeedback(req.body,{env,fetchImpl:analysisFetch,reserveQuota:reserveInterviewQuota,userId:req.account.userId});res.status(result.status).json(result);});
  app.post(['/api/realtime/session'],requireAccount,(req,res)=>res.status(503).json({error:status(req.path.includes('/asylum/')?'asylum':'residency').reason}));
  app.post('/api/coach',(_req,res)=>res.status(410).json({error:'FEATURE_REMOVED'}));
+ if(reserveAudioQuota)mountAsylumTranscription(app,{requireAccount:interviewAccess,env,reserveQuota:reserveAudioQuota,path:'/api/interview/transcribe',consent:'interview-audio-v1'});
  if(reserveAudioQuota)mountAsylumTranscription(app,{requireAccount,env,reserveQuota:reserveAudioQuota});
  const paid=new Set(['/evaluate-writing','/transcribe','/evaluate-reading','/coach','/avatar/session']);
  app.use('/api',(req,res,next)=>{
