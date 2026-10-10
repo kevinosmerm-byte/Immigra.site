@@ -13,11 +13,11 @@ function fixture({evaluateTurn}={}){
 }
 const drain=()=>new Promise(resolve=>setImmediate(resolve));
 test('consent precedes microphone and paid network access',async()=>{const f=fixture();assert.equal(await f.engine.start({...settings,consent:false}),false);assert.equal(f.micCalls(),0);assert.equal(f.requests.length,0);});
-test('automatic voice uses server SDP, active mic, interruption, and real event states',async()=>{const f=fixture();await f.engine.start(settings);const dc=f.peer().channel;assert.equal(f.tracks[0].enabled,true);assert.equal(f.requests[0].url,'/api/interview/sessions');assert.ok(!f.requests.some(r=>r.url.includes('openai.com')));dc.onmessage({data:JSON.stringify({type:'output_audio_buffer.started'})});assert.equal(f.states.at(-1),'speaking');dc.onmessage({data:JSON.stringify({type:'input_audio_buffer.speech_started',item_id:'u'})});assert.equal(f.states.at(-1),'listening');f.engine.close();assert.equal(f.tracks[0].stopped,true);assert.ok(f.requests.some(r=>r.options.method==='DELETE'));});
+test('automatic voice uses server SDP, active mic, interruption, and real event states',async()=>{const f=fixture();await f.engine.start(settings);const dc=f.peer().channel;assert.equal(f.tracks[0].enabled,false);assert.equal(f.requests[0].url,'/api/interview/sessions');assert.ok(!f.requests.some(r=>r.url.includes('openai.com')));dc.onmessage({data:JSON.stringify({type:'output_audio_buffer.started'})});assert.equal(f.states.at(-1),'speaking');dc.onmessage({data:JSON.stringify({type:'input_audio_buffer.speech_started',item_id:'u'})});assert.equal(f.states.at(-1),'listening');f.engine.close();assert.equal(f.tracks[0].stopped,true);assert.ok(f.requests.some(r=>r.options.method==='DELETE'));});
 test('delayed transcription is evaluated against the question at speech start',async()=>{const f=fixture();await f.engine.start(settings);await drain();const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});emit({type:'response.output_audio_transcript.done',item_id:'q1',transcript:'When?'});emit({type:'input_audio_buffer.speech_started',item_id:'u1'});emit({type:'response.output_audio_transcript.done',item_id:'q2',transcript:'Where?'});emit({type:'conversation.item.input_audio_transcription.completed',item_id:'u1',transcript:'2022'});emit({type:'conversation.item.input_audio_transcription.completed',item_id:'u1',transcript:'2022'});await drain();const requests=f.requests.filter(r=>r.url.endsWith('/turn'));assert.equal(requests.length,2);assert.equal(JSON.parse(requests[1].options.body).question,'Which year?');f.engine.close();});
 test('text mode never requests microphone and uses same session for each turn',async()=>{const f=fixture();await f.engine.start({...settings,transport:'text'});assert.equal(f.micCalls(),0);assert.equal(f.engine.sendText('My son'),true);await drain();assert.equal(f.requests.filter(r=>r.url==='/api/interview/sessions').length,1);assert.equal(f.reviews.at(-1).answer,'My son');f.engine.close();});
 test('late permission resolution after close releases tracks without connecting',async()=>{const f=fixture();let release;f.env.navigator.mediaDevices.getUserMedia=()=>new Promise(r=>release=r);const pending=f.engine.start(settings);f.engine.close();release(f.stream);assert.equal(await pending,false);assert.equal(f.tracks[0].stopped,true);assert.equal(f.requests.length,0);});
-test('pause stops mic and output and blocks text; resumed microphone preserves mute',async()=>{const f=fixture();await f.engine.start(settings);f.engine.pause(true);assert.equal(f.tracks[0].enabled,false);assert.equal(f.engine.sendText('No'),false);f.engine.pause(false);assert.equal(f.tracks[0].enabled,true);f.engine.toggleMic();f.engine.pause(true);f.engine.pause(false);assert.equal(f.tracks[0].enabled,false);f.engine.close();});
+test('pause stops mic and output and blocks text; resumed microphone preserves mute',async()=>{const f=fixture();await f.engine.start(settings);await drain();f.peer().channel.onmessage({data:JSON.stringify({type:'output_audio_buffer.stopped'})});f.engine.pause(true);assert.equal(f.tracks[0].enabled,false);assert.equal(f.engine.sendText('No'),false);f.engine.pause(false);assert.equal(f.tracks[0].enabled,true);f.engine.toggleMic();f.engine.pause(true);f.engine.pause(false);assert.equal(f.tracks[0].enabled,false);f.engine.close();});
 
 test('phase logs require provider evidence, not just an open microphone',async()=>{
  const f=fixture();await f.engine.start(settings);
@@ -68,7 +68,7 @@ test('recovered provider error clears while an unresolved evaluation remains vis
  await f.engine.start({...settings,module:'citizenship'});await drain();
  const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});
  emit({type:'error',error:{code:'temporary_error'}});
- assert.equal(f.errors.at(-1),'PROVIDER_UNAVAILABLE');
+ assert.equal(f.errors.at(-1),'AI_SPEECH_FAILED');
  emit({type:'response.done',response:{status:'completed'}});
  assert.equal(f.errors.at(-1),'');
  fail=true;
@@ -92,4 +92,34 @@ test('successful transcription does not conceal blocked audio; playing clears it
  emit({type:'conversation.item.input_audio_transcription.completed',item_id:'u1',transcript:'Test'});await drain();
  assert.equal(f.errors.at(-1),'PLAYBACK_BLOCKED');
  remote.onplaying();assert.equal(f.errors.at(-1),'');f.engine.close();
+});
+
+test('N400 speech failure releases microphone and retries speech without repeating evaluation',async()=>{
+ let calls=0;
+ const f=fixture({evaluateTurn:async({answer})=>{calls++;return {next_question:answer?'Have you used another name?':'What name do you use legally?',suggested_follow_up:'Continue',educational_feedback:answer?'Your answer is clear.':''};}});
+ await f.engine.start({...settings,module:'citizenship'});await drain();
+ const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});
+ emit({type:'output_audio_buffer.stopped'});
+ emit({type:'conversation.item.input_audio_transcription.completed',item_id:'u1',transcript:'Ana Example'});await drain();
+ assert.equal(f.reviews.length,1);assert.equal(f.tracks[0].enabled,false);
+ emit({type:'response.done',response:{status:'failed'}});
+ assert.equal(f.tracks[0].enabled,true);assert.equal(f.errors.at(-1),'AI_SPEECH_FAILED');
+ f.engine.retryEvaluation();assert.equal(calls,2);assert.equal(f.tracks[0].enabled,false);
+ emit({type:'response.done',response:{status:'completed'}});emit({type:'output_audio_buffer.stopped'});
+ const speech=f.peer().channel.sent.filter(m=>m.type==='response.create').at(-1);
+ assert.match(speech.response.instructions,/Have you used another name/);
+ emit({type:'output_audio_buffer.stopped'});assert.equal(f.tracks[0].enabled,true);
+ assert.equal(f.errors.at(-1),'');assert.equal(f.reviews.length,1);f.engine.close();
+});
+
+
+test('cleared audio reopens mic except while an evaluation is pending',async()=>{
+ let release;const f=fixture({evaluateTurn:async({answer})=>answer?new Promise(r=>release=r):{next_question:'Name?',suggested_follow_up:'Name?'}});
+ await f.engine.start({...settings,module:'citizenship'});await drain();const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});
+ emit({type:'output_audio_buffer.cleared'});assert.equal(f.tracks[0].enabled,true);
+ emit({type:'conversation.item.input_audio_transcription.completed',item_id:'u',transcript:'Ana Example'});await drain();
+ emit({type:'output_audio_buffer.cleared'});assert.equal(f.tracks[0].enabled,false);
+ release({next_question:'Another name?',suggested_follow_up:'Another name?'});await drain();
+ emit({type:'response.done',response:{status:'completed',output:[]}});assert.equal(f.tracks[0].enabled,true);assert.equal(f.errors.at(-1),'AI_SPEECH_FAILED');
+ f.engine.close();
 });

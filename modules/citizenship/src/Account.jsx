@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import {TEMPORARY_PUBLIC_INTERVIEWS} from '../../../shared/interview-ui/access-policy.mjs';
 import {GlassCard,GlassSection,GlassProgress,GlassIcon} from '../../../shared/design-system/Glass.jsx';
 import { useModalFocus } from "./useModalFocus.js";
@@ -298,8 +299,8 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
     }
   };
 
-  return (
-    <div className={embedded ? "account-page" : "account-backdrop"} role="presentation" onMouseDown={(event) => { if (!embedded && event.target === event.currentTarget) onClose(); }}>
+  const content = (
+    <div className={embedded ? "account-page" : "account-backdrop citizenship-surface"} role="presentation" onClick={(event) => { if (!embedded && event.target === event.currentTarget) onClose(); }}>
       <section ref={modalRef} className="account-sheet" role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : "true"} aria-labelledby="account-title">
         {!embedded&&<button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>}
         <div className="liquid-page-heading"><span>{language==='es'?'TU CUENTA':'YOUR ACCOUNT'}</span><h1 id="account-title">{language==='es'?'Tu cuenta de Immigration AI':'Your Immigration AI account'}</h1><p>{language==='es'?'Gestiona tu suscripción, revisa tus límites y administra tu cuenta.':'Manage your subscription, review your limits and manage your account.'}</p></div>
@@ -387,4 +388,5 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
       </section>
     </div>
   );
+  return embedded ? content : createPortal(content, document.body);
 }
