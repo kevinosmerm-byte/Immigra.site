@@ -3,3 +3,6 @@
 body:has(.ambient-background) #root,body:has(.ambient-background) #main{background:transparent!important}
 body:has(.ambient-background) :is(.citizenship-surface,.asylum-surface,.residency){background:transparent!important}
 body:has(.ambient-background) .citizenship-surface :is(.practice-screen,.writing-ai-screen,.quiz-path-screen,.progress-simple-screen,.profile-screen,.journey-screen,.settings-screen,.legal-screen,.podcast-library-screen,.study-guide-screen,.interview-screen,.home-screen){background:transparent!important}
+
+body:has(.ambient-background) #root>footer{background:transparent!important;border:0!important;box-shadow:none!important;color:#34475b}body:has(.ambient-background) #root>footer button{background:transparent!important;color:inherit}
+
