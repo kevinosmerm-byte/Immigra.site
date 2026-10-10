@@ -1,5 +1,5 @@
 import http from 'node:http';
-import {readFile} from 'node:fs/promises';
+import {serveFile} from './server/static-file.mjs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const base=path.dirname(fileURLToPath(import.meta.url));
@@ -22,7 +22,7 @@ for(const [name,port,dir] of [['ImmigrationAI',configuredPort,'dist']]){
    const relative=pathname==='/'?'index.html':pathname.replace(/^\/+/, '');
    if(relative.split('/').some(s=>s.startsWith('.')||s.startsWith('_'))){res.writeHead(404);return res.end();}
    const target=path.resolve(root,relative);if(!target.startsWith(root+path.sep)){res.writeHead(403);return res.end();}
-   const data=await readFile(target);res.writeHead(200,{'Content-Type':mime[path.extname(target)]||'application/octet-stream','Cache-Control':'no-store'});res.end(data);
+   await serveFile(req,res,target,mime[path.extname(target)]||'application/octet-stream');
   }catch{res.writeHead(404);res.end('Not found');}
  });
  server.on('error',error=>{console.error(name+': '+error.code);for(const s of servers)s.close();process.exitCode=1;});
