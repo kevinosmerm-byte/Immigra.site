@@ -58,3 +58,49 @@
 #root #main #citizenship-root .results-card h1{font-size:clamp(32px,4vw,48px);color:var(--liquid-text)}
 #root #main #citizenship-root :is(.result-stat,.interview-review-plan){background:var(--liquid-surface)!important;border:1px solid var(--liquid-border)!important;border-radius:20px!important;padding:22px;color:var(--liquid-text)!important}
 #root #main #citizenship-root .results-card button{min-height:48px;border-radius:18px!important}
+
+/* Live avatar entry uses the same glass material as the interview controls. */
+#root #main #citizenship-root .did-live-avatar { width: min(100%,620px); box-sizing: border-box; margin: 20px auto; padding: 20px; overflow: hidden; border: 1px solid var(--liquid-border,#ffffffb3); border-radius: 28px; background: var(--liquid-surface,#ffffff8c); backdrop-filter: blur(20px) saturate(160%); box-shadow: inset 0 1px 0 #fff9,0 16px 45px #173f6220; }
+#root #main #citizenship-root .did-live-avatar-intro { display: flex; flex-direction: column; align-items: stretch; gap: 16px; padding: 4px 0 20px; background: transparent; }
+#root #main #citizenship-root .did-live-avatar-intro h2 { margin: 0; text-align: center; font-size: 26px; letter-spacing: -.025em; color: var(--liquid-text,#172b3d); }
+#root #main #citizenship-root .did-live-avatar button { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 54px; padding: 14px 18px; border-radius: 18px; font-size: 15px; font-weight: 650; transition: transform .28s,box-shadow .28s; }
+#root #main #citizenship-root .did-live-avatar .button-primary { color: #fff; border: 1px solid #c0e5ff; background: linear-gradient(125deg,#329fff,#0963ef); box-shadow: inset 0 1px 0 #ffffff80,0 6px 20px #1677ec30; }
+#root #main #citizenship-root .did-live-avatar .button-secondary { color: var(--liquid-text,#173a63); border: 1px solid var(--liquid-border,#ffffffb3); background: var(--liquid-surface,#ffffff8c); box-shadow: inset 0 1px 0 #ffffff80,0 4px 14px #18395b0d; }
+#root #main #citizenship-root .did-live-avatar-close { margin: 18px 0 0; }
+#root #main #citizenship-root .did-live-stage { border-radius: 22px; overflow: hidden; }
+#root #main #citizenship-root .did-live-fallback-label { background: rgba(238,246,255,.7); color: #173a63; border: 1px solid #ffffffb3; border-radius: 18px; backdrop-filter: blur(20px) saturate(160%); box-shadow: 0 4px 18px #18395b15; }
+#root #main #citizenship-root .did-live-fallback-label :is(span,strong) { color: #173a63; }
+#root #main #citizenship-root .did-live-avatar button:focus-visible { outline: 3px solid #126eff; outline-offset: 3px; }
+@media(hover:hover) { #root #main #citizenship-root .did-live-avatar button:hover { transform: translateY(-2px); } }
+@media(prefers-reduced-motion:reduce) { #root #main #citizenship-root .did-live-avatar button { transition: none; transform: none; } }
+html[data-reduce-transparency=true] #root #main #citizenship-root :is(.did-live-avatar,.did-live-fallback-label) { background: var(--liquid-solid,#f4f8fc); backdrop-filter: none; }
+
+/* Writing reference: broad audio surface, answer area, results and primary action. */
+#root #main #citizenship-root .writing-practice-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; width: 100%; max-width: 1160px; padding: 0; background: transparent; border: 0; box-shadow: none; backdrop-filter: none; }
+#root #main #citizenship-root .writing-ai-content { max-width: 1200px; margin: auto; padding: 24px; }
+#root #main #citizenship-root .writing-top-section { grid-column: 1 / -1; order: 0; min-height: 190px; padding: 20px 12px; background: url('../../modules/citizenship/src/assets/citizenship-background.png') right center / auto 100% no-repeat; border-radius: 24px; }
+#root #main #citizenship-root .writing-ai-title { font-size: clamp(36px,5vw,60px); letter-spacing: -.045em; }
+#root #main #citizenship-root .writing-ai-intro { font-size: 19px; }
+#root #main #citizenship-root .writing-question-card { grid-column: 1 / -1; order: 1; min-height: 180px; padding: 24px; border-radius: 24px; background: var(--liquid-surface,#ffffff8c); backdrop-filter: blur(20px) saturate(160%); border: 1px solid var(--liquid-border,#ffffffb3); box-shadow: inset 0 1px 0 #fff9,0 10px 30px #1746750d; }
+#root #main #citizenship-root .writing-question-header { border: 0; margin-bottom: 18px; }
+#root #main #citizenship-root .writing-question-label { font-size: 19px; letter-spacing: 0; text-transform: none; color: var(--liquid-text,#173a63); }
+#root #main #citizenship-root .dictation-audio-prompt { width: 100%; }
+#root #main #citizenship-root .dictation-speak-btn { width: 100%; min-height: 84px; border-radius: 22px; padding: 12px 24px; background: linear-gradient(110deg,#ffffff88,#b9dcff66); border: 1px solid #ffffffb3; }
+#root #main #citizenship-root .dictation-speak-btn .speaker-icon { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(145deg,#34b8ff,#0767fc); color: white; box-shadow: 0 5px 20px #2589fb40; }
+#root #main #citizenship-root .dictation-replay-copy strong { font-size: 19px; }
+#root #main #citizenship-root .writing-progress-strip { grid-column: 1 / -1; order: 2; margin: 0; padding: 16px 22px; border-radius: 20px; background: var(--liquid-surface,#ffffff8c); }
+#root #main #citizenship-root .writing-ai-input { grid-column: 1 / -1; order: 3; min-height: 165px; padding: 24px; font-size: 20px; border-radius: 24px; border: 1px solid var(--liquid-border,#ffffffb3); background: var(--liquid-surface,#ffffff8c); backdrop-filter: blur(20px) saturate(160%); }
+#root #main #citizenship-root .writing-performance { grid-column: 1; order: 4; margin: 0; padding: 20px; border-radius: 24px; }
+#root #main #citizenship-root .writing-ai-button { grid-column: 2; order: 4; margin: 0; min-height: 86px; align-self: stretch; border-radius: 24px; background: linear-gradient(125deg,#19a7ff,#0963ef); color: white; box-shadow: 0 8px 24px #1677ec30; }
+#root #main #citizenship-root .writing-check-copy strong { font-size: 21px; }
+#root #main #citizenship-root .writing-ai-evaluation { grid-column: 1 / -1; order: 5; }
+#root #main #citizenship-root .writing-context { margin-top: 16px; }
+@media(max-width:650px) { #root #main #citizenship-root .writing-ai-content { padding: 12px; } #root #main #citizenship-root .writing-practice-panel { grid-template-columns: 1fr; } #root #main #citizenship-root :is(.writing-performance,.writing-ai-button) { grid-column: 1; } #root #main #citizenship-root .writing-top-section { background-image: none; min-height: auto; } }
+
+#root #main #citizenship-root .quiz-path-intro { background: transparent; border: 0; box-shadow: none; padding: 12px 0 20px; }
+#root #main #citizenship-root .quiz-path-header .back-button { min-height: 44px; padding: 10px 18px; border-radius: 20px; background: var(--liquid-surface,#ffffff8c); border: 1px solid var(--liquid-border,#ffffffb3); box-shadow: 0 4px 14px #173f6210; }
+#root #main #citizenship-root .quiz-path-progress-ring { position: relative; display: grid; place-items: center; width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; background: conic-gradient(#1684ff var(--quiz-progress),#c9ddf0 0); box-shadow: 0 3px 14px #268cff16; }
+#root #main #citizenship-root .quiz-path-progress-ring::before { content: ''; position: absolute; inset: 6px; width: auto; height: auto; border-radius: 50%; background: #eef6ff; }
+#root #main #citizenship-root .quiz-path-progress-ring b { position: relative; z-index: 1; color: #1761a5; font-size: 16px; }
+
+#root #main #citizenship-root .quiz-path-intro { background: transparent !important; box-shadow: none !important; }
