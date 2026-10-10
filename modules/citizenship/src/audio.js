@@ -73,9 +73,21 @@ export async function transcribeRecording(recording) {
   });
 
   if (!response.ok) {
-    throw new Error("Transcription failed.");
+    const error = new Error("Transcription failed.");
+    error.status = response.status;
+    throw error;
   }
 
   const { transcript = "" } = await response.json();
   return transcript.trim();
+}
+
+export function audioErrorMessage(error,language="es") {
+ const es=language==='es';
+ if(error?.name==='NotAllowedError')return es?'Permite el acceso al micrófono en tu navegador y vuelve a intentarlo.':'Allow microphone access in your browser and retry.';
+ if(error?.status===401)return es?'Inicia sesión en Mi cuenta para transcribir tu respuesta.':'Sign in to transcribe your answer.';
+ if(error?.status===403)return es?'Tu sesión no autoriza la transcripción. Revisa el acceso en Mi cuenta.':'Your session does not authorize transcription. Check your account access.';
+ if(error?.status===429)return es?'Se alcanzó el límite de transcripción. Puedes continuar escribiendo.':'The transcription limit was reached. You can continue typing.';
+ if(error?.status>=500)return es?'El servicio de transcripción no está disponible. Tu micrófono no es el problema; reintenta o escribe.':'The transcription service is unavailable. Retry or type your answer.';
+ return es?'No se pudo obtener audio. Revisa el micrófono o responde escribiendo.':'Could not obtain audio. Check the microphone or type your answer.';
 }

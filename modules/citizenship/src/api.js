@@ -44,6 +44,8 @@ export function apiFetch(path, options) {
     if (aiRequestContext.sessionId) headers.set("X-Citizenship-AI-Session", aiRequestContext.sessionId);
     if (aiRequestContext.feature) headers.set("X-Citizenship-AI-Feature", aiRequestContext.feature);
   }
+  const token = getSessionToken();
+  if (token && !headers.has("Authorization")) headers.set("Authorization", `Bearer ${token}`);
   return fetch(apiUrl(path), { ...options, headers });
 }
 

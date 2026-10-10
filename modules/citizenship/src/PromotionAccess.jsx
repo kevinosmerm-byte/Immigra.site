@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { useModalFocus } from "./useModalFocus.js";
 import { useEffect, useRef, useState } from "react";
 import { getAiFeatureConfig, PROMOTION_ACCESS_CONFIG } from "../shared/featureAccessConfig.js";
@@ -172,7 +173,7 @@ export function PromotionAccessProvider({ children }) {
   return (
     <PromotionAccessContext.Provider value={{ requestAiSession, finishActiveAiSession, getAiUsageSummary }}>
       {children}
-      {pending && feature && (
+      {pending && feature && createPortal(
         <div className="promotion-access-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) close(); }}>
           <section ref={modalRef} className="promotion-access-sheet" role="dialog" aria-modal="true" aria-labelledby="promotion-access-title">
             <button className="promotion-access-close" onClick={close} type="button" aria-label={copy.close}>×</button>
@@ -186,7 +187,7 @@ export function PromotionAccessProvider({ children }) {
             {!pending.blocked && <button className="promotion-access-continue" onClick={continuePromotion} type="button"><span>{copy.continue}</span><b>→</b></button>}
             <p className="promotion-access-note">{copy.note}</p>
           </section>
-        </div>
+        </div>, document.body
       )}
     </PromotionAccessContext.Provider>
   );

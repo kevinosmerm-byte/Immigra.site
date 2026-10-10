@@ -131,3 +131,7 @@ html[data-reduce-transparency=true] .call-screen.voice-first[data-module] .call-
 #root :is(.call-setup,.platform-call-start) > button:active { transform: translateY(1px); }
 @media(prefers-reduced-motion:reduce) { #root :is(.call-setup,.platform-call-start) > button { transition: none; transform: none; } }
 html[data-reduce-transparency=true] #root :is(.call-setup,.platform-call-start) { background: var(--liquid-solid,#f4f8fc); backdrop-filter: none; }
+
+/* Reviewed transcripts remain actionable in voice mode. */
+.call-screen.voice-first[data-input-mode=voice] .call-response form.has-reviewed-answer{display:flex!important;gap:10px;flex-wrap:wrap}
+.promotion-access-backdrop{z-index:10000!important}
