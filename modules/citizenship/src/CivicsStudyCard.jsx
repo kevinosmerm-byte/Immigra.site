@@ -1,3 +1,4 @@
+import '../../../shared/design-system/civics-study.css';
 import {GlassStudyCard} from '../../../shared/design-system/Glass.jsx';
 import { useEffect } from "react";
 
@@ -58,9 +59,24 @@ export function CivicsStudyCard({
     touchRef.current = null;
   };
 
+  const favoriteControl = (
+    <button
+      type="button"
+      className={`civics-study-favorite ${favorite ? "active" : ""}`}
+      aria-pressed={favorite}
+      aria-label={favorite ? copy.removeFavorite : copy.addFavorite}
+      onClick={(event) => {
+        event.stopPropagation();
+        onToggleFavorite();
+      }}
+    >
+      <span aria-hidden="true">{favorite ? "★" : "☆"}</span>
+    </button>
+  );
+
   return (
     <GlassStudyCard flipped={answerVisible} mastered={mastered}
-      className={`civics-study-card ${answerVisible ? "answer-visible" : ""} ${mastered ? "is-mastered" : ""}`}
+      className={`civics-study-card liquid-glass ${answerVisible ? "answer-visible" : ""} ${mastered ? "is-mastered" : ""}`}
       role="group"
       aria-label={answerVisible ? `${copy.answer}: ${answers.join(", ")}` : `${copy.question}: ${question}. ${copy.reveal}`}
       onClick={() => {
@@ -86,21 +102,6 @@ export function CivicsStudyCard({
             <strong>CIVICS</strong>
           </div>
         )}
-        <div className="civics-study-media-gradient" aria-hidden="true"></div>
-        <span className="civics-study-counter">{questionNumber} / {totalQuestions}</span>
-        {mastered && <span className="civics-study-mastered" aria-label={copy.mastered}>✓</span>}
-        <button
-          type="button"
-          className={`civics-study-favorite ${favorite ? "active" : ""}`}
-          aria-pressed={favorite}
-          aria-label={favorite ? copy.removeFavorite : copy.addFavorite}
-          onClick={(event) => {
-            event.stopPropagation();
-            onToggleFavorite();
-          }}
-        >
-          <span aria-hidden="true">{favorite ? "★" : "☆"}</span>
-        </button>
       </div>
 
       <div className="civics-study-body">
@@ -142,7 +143,7 @@ export function CivicsStudyCard({
         </div>
       </div>
 
-      {footer && <div onClick={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onTouchEnd={event => event.stopPropagation()}>{footer}</div>}
+      {footer && <div onClick={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onTouchEnd={event => event.stopPropagation()}>{typeof footer === "function" ? footer({favoriteControl, questionNumber, totalQuestions}) : footer}</div>}
     </GlassStudyCard>
   );
 }

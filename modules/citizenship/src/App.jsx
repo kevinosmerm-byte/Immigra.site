@@ -1,3 +1,4 @@
+import {GlassCard} from '../../../shared/design-system/Glass.jsx';
 import EmailProfile from '../../../shared/EmailProfile.jsx';
 import CoachCall from '../CoachCall.jsx';
 import CallView from '../../../shared/interview-ui/CallView.jsx';
@@ -1181,13 +1182,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
 
     return (
       <div className="practice-screen civics-screen">
-        <header className="practice-header">
-          <button className="back-button" onClick={() => goBack("practice")}>
-            ← {previousScreenLabel("practice")}
-          </button>
-          
-        </header>
-        <main className="civics-deck-content">
+        <GlassCard as="main" className="civics-deck-content">
           <section className="civics-deck-hero" aria-labelledby="civics-deck-title">
             <div className="civics-deck-icon" aria-hidden="true">▤</div>
             <div className="civics-deck-heading">
@@ -1244,10 +1239,10 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
                   }}
                   onNavigate={changeCivicsCard}
                   copy={copy}
-                  footer={<div className="civics-card-controls">
+                  footer={({favoriteControl,questionNumber,totalQuestions})=><div className="civics-card-controls">
               <div className="civics-deck-navigation">
                 <button onClick={() => changeCivicsCard(-1)} aria-label={t("Previous question", "Pregunta anterior")}><span>←</span>{isSpanish ? "Anterior" : "Previous"}</button>
-                <div className="civics-readable-stats" aria-live="polite"><span><strong>{civicsIndex + 1} / 128</strong><em>{isSpanish ? "Tarjeta actual" : "Current card"}</em></span><span><strong>{civicsMastered.length}</strong><em>{copy.mastered}</em></span><span><strong>{civicsNeedsPractice.length}</strong><em>{copy.review}</em></span></div>
+                <div className="civics-readable-stats" aria-live="polite"><span><strong>{questionNumber} / {totalQuestions}</strong><em>{isSpanish ? "Tarjeta actual" : "Current card"}</em></span>{favoriteControl}<span><strong>{civicsMastered.length}</strong><em>{copy.mastered}</em></span><span><strong>{civicsNeedsPractice.length}</strong><em>{copy.review}</em></span></div>
                 <button className="next" onClick={() => changeCivicsCard(1)} aria-label={t("Next question", "Pregunta siguiente")}>{isSpanish ? "Siguiente" : "Next"}<span>→</span></button>
               </div>
 
@@ -1272,7 +1267,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
           ) : (
             <section className="civics-favorites-empty"><span>☆</span><p>{civicsStudyMode === "mistakes" ? (isSpanish ? "No tienes errores pendientes de repasar." : "No mistakes waiting for review.") : copy.empty}</p><button onClick={() => setCivicsStudyMode("study")}>{copy.cards}</button></section>
           )}
-        </main>
+        </GlassCard>
       </div>
     );
   }
