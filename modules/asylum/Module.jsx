@@ -1,33 +1,21 @@
 import ConversationInterview from '../../shared/interview-ui/ConversationInterview.jsx';
-import AnswerFeedback from '../../shared/interview-ui/AnswerFeedback.jsx';
-import {authorizeAsylumAudio} from './server-voice.mjs';
 import {ModuleNavigation} from '../../shared/design-system/Components.jsx';
 import React,{useEffect,useRef,useState} from 'react';
 import {mountAsylum} from './runtime.generated.js';
-import CallView from '../../shared/interview-ui/CallView.jsx';
 import './packages/design/style.css';
 import './packages/design/master.css';
 import '../../shared/design-system/platform.css';
 import '../../shared/design-system/asylum-home.css';
 export default function Asylum({lang='es'}){
- const [smart,setSmart]=useState(true);
  const [route,setRoute]=useState(()=>window.location.hash.split('/')[2]||'practice');
  useEffect(()=>{if(/^#\/asylum\/?$/.test(window.location.hash))window.location.hash='/asylum/practice';const sync=()=>setRoute(window.location.hash.split('/')[2]||'practice');window.addEventListener('hashchange',sync);return()=>window.removeEventListener('hashchange',sync);},[]);
  const items=lang==='es'?[['practice','Inicio'],['fiction','Casos ficticios'],['case-workspace','Mi expediente'],['full-bank','Preguntas'],['practice-report','Informe'],['vault','Mis datos']]:[['practice','Home'],['fiction','Fictional cases'],['case-workspace','My case'],['full-bank','Questions'],['practice-report','Report'],['vault','My data']];
- const ref=useRef();const [call,setCall]=useState(null),[paused,setPaused]=useState(false),[captions,setCaptions]=useState(true),[draft,setDraft]=useState(''),[mic,setMic]=useState(false),[speaking,setSpeaking]=useState(false),[elapsed,setElapsed]=useState(0),[error,setError]=useState(''),[processing,setProcessing]=useState(false);
- const [audioLevel,setAudioLevel]=useState(0),[voiceStatus,setVoiceStatus]=useState(''),[lastTranscript,setLastTranscript]=useState('');
- useEffect(()=>{const host=ref.current;const receive=e=>setLastTranscript(e.detail);host.addEventListener('asylum-transcript',receive);return()=>host.removeEventListener('asylum-transcript',receive);},[]);
- const click=selector=>ref.current?.querySelector(selector)?.click();
- useEffect(()=>mountAsylum(ref.current,c=>{setCall(c);setDraft('');setPaused(false);setError('');}),[]);
- useEffect(()=>{if(!call)return;const observer=new MutationObserver(()=>{setMic(ref.current.querySelector('#mic-start')?.getAttribute('aria-pressed')==='true');setSpeaking(ref.current.querySelector('#interviewer-video')?.getAttribute('src')?.includes('-speaking')||false);const text=ref.current.querySelector('#voice-status')?.textContent||'';setVoiceStatus(text);setAudioLevel(Number(ref.current.querySelector('#voice-status')?.getAttribute('data-audio-level')||0));setProcessing(/Transcribiendo|Transcribing/.test(text));setError(/denegado|denied|no est|unavailable|no pudo|failed|autorizar|authorize|sesión|Sign in|límite|limit|detectó|detected/i.test(text)?text:'');setDraft(ref.current.querySelector('#master-answer')?.value||'');});observer.observe(ref.current,{subtree:true,attributes:true,childList:true,characterData:true});return()=>observer.disconnect();},[call]);
- useEffect(()=>{if(smart)call?.stop();},[call,smart]);
- const inCall=!!call;
- useEffect(()=>{if(!inCall){setElapsed(0);return;}const id=setInterval(()=>setElapsed(v=>v+1),1000);return()=>clearInterval(id);},[inCall]);
- const update=value=>{const input=ref.current.querySelector('#master-answer');if(input){input.value=value;input.dispatchEvent(new Event('input',{bubbles:true}));}setDraft(value);};
- return <>{!inCall&&<ModuleNavigation items={items} current={route} label="Asilo" onNavigate={id=>{window.location.hash='/asylum/'+id;}}/>}<section className="asylum-surface" data-asylum-route={route} ref={ref} hidden={inCall}/>{call&&smart&&<ConversationInterview moduleId="asylum" lang={call.language} avatar={call.interviewer} mode={call.mode} initialQuestion={call.question} context={call.context||''} onLocal={()=>setSmart(false)} onBack={()=>{call.stop();setCall(null);window.location.hash='/asylum/setup';}}/>}{call&&!smart&&<CallView moduleId="asylum" lang={call.language} state={paused?'paused':processing?'processing':speaking?'speaking':'listening'} elapsed={elapsed} muted={!mic} captions={[{who:'ai',text:call.question}]} showCaptions={captions} onCaptions={()=>setCaptions(v=>!v)} onMic={()=>{if(!paused&&(mic||authorizeAsylumAudio(call.language)))click(mic?'#voice-stop':'#mic-start');}} onRepeat={()=>click('#voice-repeat')} onPause={()=>{if(paused){setPaused(false);}else{call.stop();setPaused(true);}}} onSuspend={()=>{call.stop();setPaused(true);}} onFinish={()=>{call.stop();click('[data-master="finish"]');}} interviewerName={call.interviewer==='kevin'?'Kevin':'Sahara'} interviewType={call.language==='es'?'Asilo':'Asylum'} mediaBase={'/modules/asylum/assets/'+call.interviewer+'-'} mode={call.mode} error={error}>
- <div aria-live="polite"><p>{voiceStatus}</p>{mic&&<><meter min="0" max="1" value={audioLevel} aria-label={call.language==='es'?'Nivel del micrófono':'Microphone level'}/><button type="button" onClick={()=>click('#voice-stop')}>{call.language==='es'?'Terminé de hablar · Transcribir':'Done speaking · Transcribe'}</button></>}{lastTranscript&&<p><strong>{call.language==='es'?'Última transcripción: ':'Last transcript: '}</strong>{lastTranscript}</p>}</div>
- <form className={draft.trim()?"has-reviewed-answer":""} onSubmit={e=>{e.preventDefault();click('[data-master="answer"]');}}><input aria-label={call.language==='es'?'Respuesta revisada':'Reviewed answer'} placeholder={call.language==='es'?'Activa el micrófono o escribe tu respuesta':'Turn on the microphone or type your answer'} value={draft} disabled={paused} maxLength={10000} onChange={e=>update(e.target.value)}/><button disabled={paused||!draft.trim()}>{call.language==='es'?'Continuar':'Continue'}</button></form>
- <AnswerFeedback module="asylum" question={call.question} answer={draft} lang={call.language} domain={call.mode==='personal'?'personal':'synthetic'} disabled={paused||mic||processing}/>
- {paused&&<details><summary>{call.language==='es'?'Revisar y opciones':'Review and options'}</summary><button onClick={()=>click('[data-master="uncertain"]')}>No recuerdo / Unsure</button><button onClick={()=>click('[data-master="skip"]')}>Omitir / Skip</button><p>La evaluación opcional y la revisión del expediente se conservan en el módulo.</p><button onClick={()=>{call.stop();setCall(null);}}>Abrir revisión de respuesta</button></details>}
- </CallView>}</>;
+ const ref=useRef(null);
+ const [call,setCall]=useState(null);
+ useEffect(()=>mountAsylum(ref.current,setCall),[]);
+ return <>
+  {!call&&<ModuleNavigation items={items} current={route} label="Asilo" onNavigate={id=>{window.location.hash='/asylum/'+id;}}/>}
+  <section className="asylum-surface" data-asylum-route={route} ref={ref} hidden={Boolean(call)}/>
+  {call&&<ConversationInterview moduleId="asylum" lang={call.language} avatar={call.interviewer} mode={call.mode} initialQuestion={call.question} context={call.context||''} onBack={()=>{call.stop();setCall(null);window.location.hash='/asylum/setup';}}/>}
+ </>;
 }
