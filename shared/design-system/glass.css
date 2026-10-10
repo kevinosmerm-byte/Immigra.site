@@ -72,3 +72,25 @@ html[data-reduce-transparency=true] *,html[data-reduce-transparency=true] *::bef
 html[data-reduce-transparency=true] :is(.glass-button,.mobile-dock-toggle,.glass-tabs,.glass-card,.glass-modal,.glass-study-card,.platform-card,.citizen-daily,.citizen-progress-link,.reading-card,.writing-practice-panel,.quiz-question-card,.results-card,.account-sheet,.journey-summary,.profile-section,.legal-item,.podcast-card,.res-panel,.res-soft),html[data-reduce-transparency=true] .asylum-surface :is(.card,.question,.scope){background-color:#fff!important;background-image:none!important}
 @media(prefers-reduced-transparency:reduce){*{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.platform-card,.citizen-daily,.reading-card,.writing-practice-panel,.quiz-question-card,.results-card,.account-sheet,.journey-summary,.profile-section,.legal-item,.podcast-card,.asylum-surface .card,.res-panel{background:#fff!important}}
 html[data-reduce-transparency=true] .glass-primary{background:var(--glass-accent)!important;color:#fff!important}
+/* Home entry cards: isolated liquid-glass treatment. */
+#main>.cards{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:24px}
+#main>.cards>.card{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;min-height:340px;padding:34px 28px 28px;border-radius:28px;border:1px solid rgba(255,255,255,.72);background:rgba(255,255,255,.94);color:#182e43;box-shadow:0 12px 32px rgba(27,48,73,.09),0 2px 6px rgba(27,48,73,.035),inset 0 1px 0 rgba(255,255,255,.95);transition:transform 300ms ease,box-shadow 300ms ease,background-color 300ms ease,border-color 300ms ease}
+@supports ((backdrop-filter:blur(20px)) or (-webkit-backdrop-filter:blur(20px))){#main>.cards>.card{background:rgba(255,255,255,.55);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%)}}
+#main>.cards>.card:before{content:"";position:absolute;pointer-events:none;inset:0;border-radius:inherit;background:linear-gradient(145deg,rgba(255,255,255,.32),transparent 40%);box-shadow:inset 0 1px 1px rgba(255,255,255,.7);z-index:-1}
+#main>.cards>.card>.icon{flex:0 0 80px;width:80px;height:80px;display:grid;place-items:center;margin:0 auto;border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(255,255,255,.28));border:1px solid rgba(255,255,255,.85);box-shadow:0 7px 24px color-mix(in srgb,var(--accent) 12%,transparent),inset 0 1px 1px #fff;color:var(--accent)}
+#main>.cards>.card>.icon .premium-icon{display:grid;place-items:center;width:64px;height:64px;margin:0}
+#main>.cards>.card>.icon img{width:64px;height:64px;object-fit:contain}
+#main>.cards>.card h2{width:100%;margin:24px 0 10px;font-size:28px;line-height:1.2;font-weight:650;color:#182e43;letter-spacing:-.7px}
+#main>.cards>.card p{max-width:260px;margin:0 auto;font-size:15px;line-height:1.6;color:#405064;min-height:48px}
+#main>.cards>.card>.link{display:block;align-self:center;margin-top:auto;padding-top:26px;font-weight:650;font-size:15px;line-height:1.5;color:var(--accent)}
+#main>.cards>.card:last-child>.link{color:#11694e}
+@media(hover:hover) and (pointer:fine){#main>.cards>.card:hover{transform:translateY(-4px);background-color:rgba(255,255,255,.68);border-color:rgba(255,255,255,.95);box-shadow:0 18px 40px rgba(27,48,73,.13),inset 0 1px 2px #fff}}
+#main>.cards>.card:active{transform:translateY(-1px) scale(.985);box-shadow:0 5px 16px rgba(27,48,73,.09),inset 0 1px 2px #fff}
+#main>.cards>.card:focus-visible{outline:3px solid #175cd3;outline-offset:5px}
+@media(min-width:701px) and (max-width:950px){#main>.cards{gap:16px}#main>.cards>.card{padding:28px 18px;min-height:350px}#main>.cards>.card h2{font-size:24px}}
+@media(max-width:700px){#main>.cards{grid-template-columns:minmax(0,1fr);gap:20px;justify-items:center}#main>.cards>.card{width:100%;max-width:440px;min-height:320px;padding:28px 24px;border-radius:26px}#main>.cards>.card h2{font-size:26px}}
+@media(prefers-reduced-motion:reduce){#main>.cards>.card{transition:none!important}#main>.cards>.card:hover,#main>.cards>.card:active{transform:none}}
+html[data-reduce-motion=true] #main>.cards>.card{transition:none!important;transform:none!important}
+html[data-reduce-transparency=true] #main>.cards>.card{background:#f7f9fc;backdrop-filter:none;-webkit-backdrop-filter:none}
+@media(prefers-reduced-transparency:reduce){#main>.cards>.card{background:#f7f9fc;backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(forced-colors:active){#main>.cards>.card{background:Canvas;border:1px solid ButtonText}#main>.cards>.card :is(h2,p,.link){color:ButtonText}}
