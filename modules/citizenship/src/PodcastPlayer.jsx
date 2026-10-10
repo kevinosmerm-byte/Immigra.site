@@ -1,3 +1,4 @@
+import '../../../shared/design-system/citizenship-podcasts.css';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { formatPodcastTime, PodcastContext, PODCASTS, usePodcast } from "./podcastContext.js";
 
@@ -170,11 +171,11 @@ export function PodcastLibrary({ onBack, language = "en" }) {
         </div>
         <div className="podcast-card-grid">
           {PODCASTS.map((item) => (
-            <button className="podcast-card" key={item.id} onClick={() => player.selectTrack(item)}>
+            <button className="podcast-card liquid-glass" key={item.id} onClick={() => player.selectTrack(item)}>
               <PodcastArtwork track={item} />
               <span className="podcast-card-copy">
                 <small>{item.flag} {item.language}</small>
-                <strong>{item.title}</strong>
+                <strong>{item.title}</strong>{player.track?.id===item.id&&player.duration>0&&<span className="podcast-card-progress"><progress value={player.currentTime} max={player.duration} aria-label={es?"Progreso del podcast":"Podcast progress"}/><small>{player.formatTime(player.currentTime)} / {player.formatTime(player.duration)}</small></span>}
                 <span>{es ? "Abrir reproductor" : "Open player"} <b><PodcastIcon kind="play" /></b></span>
               </span>
             </button>
@@ -200,7 +201,7 @@ function PodcastFullPlayer({ onBack, language = "en" }) {
         <strong>{es ? "REPRODUCIENDO" : "NOW PLAYING"}</strong>
         <button onClick={leavePlayer} aria-label={es ? "Volver al inicio" : "Back to Home"}><PodcastIcon kind="close" /></button>
       </header>
-      <main className="podcast-full-player">
+      <main className="podcast-full-player liquid-glass">
         <PodcastArtwork track={player.track} />
         <section className="podcast-track-info">
           <small>{player.track.flag} {player.track.language}</small>

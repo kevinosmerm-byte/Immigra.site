@@ -11,7 +11,7 @@ export function createRealtimeClient({env=globalThis,fetchImpl=fetch,onState=()=
  function send(message){if(dc?.readyState==='open'){dc.send(JSON.stringify(message));return true;}return false;}
  return {
   stop,
-  async start(settings,alreadyStopped=false){
+  async start(settings,alreadyStopped=false,{startMuted=false}={}){
    if(!alreadyStopped)stop();onError('');if(settings.consent!==true){onError('consent-required');return false;}
    if(!env.RTCPeerConnection||!env.navigator?.mediaDevices?.getUserMedia){onError('unsupported');return false;}
    let captionChars=0;const captionIds=new Set();
@@ -22,7 +22,7 @@ export function createRealtimeClient({env=globalThis,fetchImpl=fetch,onState=()=
     const status=await fetchImpl('/api/realtime/status',{signal});if(!alive())return false;
     if(!status.ok||!(await status.json()).ready)throw Error('not-configured');if(!alive())return false;
     const mic=await env.navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true},video:false});
-    if(!alive()){mic.getTracks().forEach(t=>t.stop());return false;}stream=mic;
+    if(!alive()){mic.getTracks().forEach(t=>t.stop());return false;}stream=mic;muted=startMuted;mic.getAudioTracks().forEach(track=>{track.enabled=!muted;});
     mic.getTracks().forEach(t=>t.onended=()=>{if(alive())fail('microphone-ended');});
     const response=await fetchImpl('/api/realtime/session',{method:'POST',headers:{'Content-Type':'application/json','X-Immigration-Client':'local-demo'},body:JSON.stringify(settings),signal});
     if(!alive())return false;if(!response.ok)throw Error(response.status===429?'rate-limit':'session-unavailable');
@@ -47,6 +47,7 @@ export function createRealtimeClient({env=globalThis,fetchImpl=fetch,onState=()=
     await peer.setRemoteDescription({type:'answer',sdp});return alive();
    }catch(e){if(alive())fail(e.name==='NotAllowedError'?'permission-denied':['not-configured','rate-limit','session-unavailable','negotiation-failed'].includes(e.message)?e.message:'connection-failed');return false;}
   },
+  sendText(text){if(paused||!String(text||"").trim())return false;const sent=send({type:"conversation.item.create",item:{type:"message",role:"user",content:[{type:"input_text",text:String(text).trim().slice(0,5000)}]}});if(sent){onCaption({id:"typed-"+Date.now(),who:"user",text:String(text).trim().slice(0,5000)});send({type:"response.create"});}return sent;},
   toggleMic(){muted=!muted;stream?.getAudioTracks().forEach(t=>t.enabled=!muted&&!paused);return muted;},
   setPaused(value){paused=value===true;stream?.getAudioTracks().forEach(t=>t.enabled=!muted&&!paused);if(audio)audio.muted=paused;if(paused){send({type:'response.cancel'});send({type:'output_audio_buffer.clear'});send({type:'input_audio_buffer.clear'});}onState(paused?'paused':'listening');return paused;},
   interrupt(){send({type:'response.cancel'});send({type:'output_audio_buffer.clear'});},

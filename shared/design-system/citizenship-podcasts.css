@@ -1,0 +1,35 @@
+#root #main #citizenship-root .podcast-screen{background:transparent!important;min-height:0;color:var(--liquid-text)}
+#root #main #citizenship-root .podcast-header{background:transparent!important;border:0;padding:12px 0;box-shadow:none}
+#root #main #citizenship-root .podcast-header>strong,#root #main #citizenship-root .podcast-header-live{display:none}
+#root #main #citizenship-root .podcast-header button{width:48px;height:48px;border:1px solid var(--liquid-border);border-radius:20px;background:var(--liquid-surface)!important;color:var(--liquid-text)!important}
+#root #main #citizenship-root .podcast-icon{width:24px;height:24px;stroke:currentColor;stroke-width:1.8;fill:none}
+#root #main #citizenship-root .podcast-library{max-width:1260px;margin:auto;padding:10px 0 32px;background:transparent!important}
+#root #main #citizenship-root .podcast-library-intro{position:relative;isolation:isolate;padding:12px 0 28px;background:transparent!important}
+#root #main #citizenship-root .podcast-library-intro:before{content:'';position:absolute;inset:-60px 0 -20px 30%;background:url('../../modules/citizenship/src/assets/citizenship-background.png') center/cover;opacity:.25;mask-image:radial-gradient(ellipse,#000 10%,transparent 70%);z-index:-1;pointer-events:none}
+#root #main #citizenship-root .podcast-library h1{font-size:clamp(36px,4.5vw,56px);color:var(--liquid-text)!important;letter-spacing:-.035em}
+#root #main #citizenship-root .podcast-library-intro p{font-size:20px;color:var(--liquid-muted)!important}
+#root #main #citizenship-root .podcast-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+#root #main #citizenship-root .podcast-card{display:grid;grid-template-columns:140px minmax(0,1fr);gap:24px;padding:24px;border-radius:28px!important;min-height:242px;text-align:left;align-items:center;color:var(--liquid-text)!important}
+#root #main #citizenship-root .podcast-artwork{width:140px;height:190px;min-width:0;border-radius:22px;background:linear-gradient(180deg,#123a6310,#123a63bb),url('../../modules/citizenship/src/assets/citizenship-background.png') 70% center/cover!important;overflow:hidden;position:relative;box-shadow:0 8px 24px #123a6320}
+#root #main #citizenship-root .podcast-artwork>strong,#root #main #citizenship-root .podcast-artwork>small{display:none}
+#root #main #citizenship-root .podcast-artwork-live{position:absolute;left:12px;top:12px;padding:4px 8px;border-radius:12px;background:#ffffffc9;color:#123a63;font-size:11px}
+#root #main #citizenship-root .podcast-artwork-mic{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:44px;height:44px;color:white;background:#2563a655;border-radius:50%;display:grid;place-items:center}
+#root #main #citizenship-root .podcast-artwork-mic svg{width:32px;height:32px;stroke:currentColor;fill:none;stroke-width:1.7}
+#root #main #citizenship-root .podcast-card-copy{display:flex;flex-direction:column;gap:14px;min-width:0}
+#root #main #citizenship-root .podcast-card-copy>small{color:var(--color-primary,#2563a6)!important;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+#root #main #citizenship-root .podcast-card-copy>strong{font-size:22px;line-height:1.3;color:var(--liquid-text)!important}
+#root #main #citizenship-root .podcast-card-copy>span{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14px;color:var(--liquid-muted)!important}
+#root #main #citizenship-root .podcast-card-copy b{display:grid;place-items:center;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#4da3e6,#2563a6);color:white;flex-shrink:0}
+#root #main #citizenship-root .podcast-card-progress{flex-wrap:wrap}#root #main #citizenship-root .podcast-card-progress progress{width:100%;height:7px;accent-color:#2563a6}
+#root #main #citizenship-root .podcast-full-player{max-width:760px;width:calc(100% - 24px);padding:30px;margin:14px auto 32px;border-radius:28px!important;box-sizing:border-box;color:var(--liquid-text)}
+#root #main #citizenship-root .podcast-full-player .podcast-artwork{width:180px;height:220px;margin:auto}
+#root #main #citizenship-root .podcast-track-info h1{font-size:clamp(26px,3.5vw,38px);line-height:1.2;color:var(--liquid-text)!important}
+#root #main #citizenship-root .podcast-track-info :is(small,span),#root #main #citizenship-root .podcast-timeline{color:var(--liquid-muted)!important}
+#root #main #citizenship-root .podcast-timeline input{accent-color:var(--color-primary,#2563a6);min-height:44px}
+#root #main #citizenship-root .podcast-controls button{width:58px;height:58px;border-radius:50%;border:1px solid var(--liquid-border);background:var(--liquid-surface)!important;color:var(--liquid-text)!important}
+#root #main #citizenship-root .podcast-controls .podcast-main-play{width:80px;height:80px;background:linear-gradient(135deg,#4da3e6,#2563a6)!important;color:white!important}
+#root #main #citizenship-root .podcast-speed{background:var(--liquid-surface);border-radius:20px;border:1px solid var(--liquid-border);padding:6px}
+#root #main #citizenship-root .podcast-speed button{min-height:44px;color:var(--liquid-text)!important;border-radius:14px}
+#root #main #citizenship-root .podcast-speed button.active{background:#2563a6!important;color:white!important}
+@media(max-width:1000px){#root #main #citizenship-root .podcast-card{grid-template-columns:110px minmax(0,1fr);padding:18px;gap:16px}#root #main #citizenship-root .podcast-card .podcast-artwork{width:110px;height:160px}#root #main #citizenship-root .podcast-card-copy>strong{font-size:19px}}
+@media(max-width:700px){#root #main #citizenship-root .podcast-card-grid{grid-template-columns:1fr}#root #main #citizenship-root .podcast-full-player{padding:20px}}

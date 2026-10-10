@@ -103,7 +103,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", i
           <section className="quiz-path-intro">
             <span>{copy.eyebrow}</span><h1>{copy.title}</h1><p>{copy.intro}</p>
           </section>
-          <section className="quiz-path-progress" aria-label={copy.progress}>
+          <section className="quiz-path-progress liquid-glass" aria-label={copy.progress}>
             <div><span>{copy.progress}</span><strong>{summary.attempted} / 128</strong><small>{copy.practiced} · {summary.mastered} {copy.mastered}</small></div>
             <div className="quiz-path-progress-ring" style={{ "--quiz-progress": `${summary.attemptedPercent * 3.6}deg` }}><b>{summary.attemptedPercent}%</b></div>
           </section>
@@ -112,7 +112,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", i
               const labels = copy.modes[level.id];
               const recommended = summary.recommended === level.id;
               return (
-                <button key={level.id} className={`quiz-level-card${recommended ? " recommended" : ""}`} onClick={() => startMode(level.id)}>
+                <button key={level.id} className={`quiz-level-card liquid-glass${recommended ? " recommended" : ""}`} onClick={() => startMode(level.id)}>
                   <span className="quiz-level-icon">{level.icon}</span>
                   <span className="quiz-level-copy"><small>{language === "es" ? "NIVEL" : "LEVEL"} {level.level}</small><strong>{labels[0]}</strong><em>{labels[1]}</em></span>
                   <span className="quiz-level-state">{recommended ? copy.recommended : `${summary.averages[level.id]}%`}<b>→</b></span>
@@ -155,7 +155,7 @@ export default function QuizLearningPath({ language = "en", userKey = "guest", i
       </header>
       <div className="quiz-session-track"><i style={{ width: `${((questionIndex + 1) / session.length) * 100}%` }} /></div>
       <main className="quiz-session-content">
-        <section className="quiz-question-card">
+        <section className="quiz-question-card liquid-glass">
           <div className="quiz-question-meta"><span>{copy.category[question.category]}</span><em>#{question.questionId}</em></div>
           {mode === "vocabulary" ? (
             <>

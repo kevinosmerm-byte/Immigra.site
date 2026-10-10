@@ -1,0 +1,60 @@
+/* Exercise layouts share the Liquid Glass material and existing controls. */
+#root #main #citizenship-root :is(.reading-practice-screen,.writing-ai-screen,.quiz-path-screen){background:transparent!important;min-height:0;box-shadow:none!important}
+#root #main #citizenship-root :is(.reading-practice-screen .practice-header,.writing-ai-header,.quiz-session-header){background:transparent!important;border:0!important;padding:12px 0;box-shadow:none!important}
+#root #main #citizenship-root :is(.reading-practice-screen .practice-content,.writing-ai-content,.quiz-session-content){width:100%;max-width:1120px;margin:auto;padding:18px 0 36px;background:transparent!important;border:0!important;box-shadow:none!important}
+#root #main #citizenship-root :is(.reading-practice-screen h1,.writing-ai-title,.quiz-question-card h1,.platform-call-start h1){font-family:Inter,system-ui,sans-serif!important;font-size:clamp(34px,4.5vw,54px)!important;letter-spacing:-.035em;color:var(--liquid-text)!important;line-height:1.15}
+#root #main #citizenship-root :is(.reading-practice-screen .practice-intro,.writing-ai-intro){font-size:19px;line-height:1.6;color:var(--liquid-muted)!important}
+#root #main #citizenship-root .reading-card{width:90%;max-width:1040px;margin:28px auto 0;padding:26px;border-radius:28px!important}
+#root #main #citizenship-root .reading-card-heading{display:flex;align-items:center;gap:22px;background:transparent!important;padding:0 0 22px;color:var(--color-primary,#2563a6)}
+#root #main #citizenship-root .reading-card-icon{width:76px;height:76px;flex-shrink:0;display:grid;place-items:center;border:1px solid var(--liquid-border);border-radius:24px;background:var(--liquid-surface);color:var(--color-primary,#2563a6)}
+#root #main #citizenship-root .reading-card-icon svg{width:38px;height:38px;fill:none;stroke:currentColor;stroke-width:1.7}
+#root #main #citizenship-root .reading-label{font-size:20px;color:var(--color-primary,#2563a6)!important;font-weight:700}
+#root #main #citizenship-root .reading-session-progress{margin-left:auto;display:flex;gap:18px;align-items:center;min-width:160px}
+#root #main #citizenship-root .reading-card-count{white-space:nowrap;color:var(--liquid-text)!important;font-size:16px}
+#root #main #citizenship-root .reading-session-progress progress{width:150px;max-width:100%;height:10px;accent-color:var(--color-primary,#2563a6)}
+#root #main #citizenship-root .reading-sentence-panel{padding:30px;border-radius:24px!important;position:relative;margin-bottom:24px}
+#root #main #citizenship-root .reading-sentence{font-size:clamp(25px,3.1vw,40px)!important;line-height:1.3;color:var(--liquid-text)!important;margin:8px 64px 22px 0;overflow-wrap:anywhere}
+#root #main #citizenship-root .reading-sentence-panel .writing-spanish{font-size:clamp(17px,2vw,23px);line-height:1.5;color:var(--liquid-muted)!important;margin:0;background:transparent!important}
+#root #main #citizenship-root .reading-audio{position:absolute;right:20px;top:30px;display:grid;place-items:center;width:50px;height:50px;border-radius:50%!important;border:1px solid var(--liquid-border)!important;background:var(--liquid-surface)!important;color:var(--color-primary,#2563a6)!important}
+#root #main #citizenship-root .reading-audio svg{width:25px;height:25px;stroke:currentColor;fill:none;stroke-width:1.8}
+#root #main #citizenship-root .reading-button{width:100%;display:flex;align-items:center;gap:24px;padding:18px 24px;min-height:100px;border:1px solid var(--liquid-border)!important;border-radius:24px!important;background:linear-gradient(120deg,#4da3e6,#2563a6)!important;color:white!important;box-shadow:0 8px 24px #2563a62b!important}
+#root #main #citizenship-root .reading-button :is(small,strong){color:white!important}
+#root #main #citizenship-root .reading-button strong{font-size:24px}
+#root #main #citizenship-root .reading-button-icon{width:66px;height:66px;display:grid;place-items:center;border-radius:50%;background:#ffffff20;border:1px solid #ffffff88}
+#root #main #citizenship-root .reading-button-icon svg{width:32px;height:32px}
+#root #main #citizenship-root .reading-button.recording{background:linear-gradient(120deg,#c92a3a,#962432)!important}
+#root #main #citizenship-root .writing-practice-panel{max-width:980px;width:100%;margin:auto;padding:32px;border-radius:28px!important}
+#root #main #citizenship-root :is(.writing-progress-strip,.writing-performance,.writing-question-card,.writing-ai-input,.quiz-vocabulary-grid>div,.quiz-preferred-answer){background:var(--liquid-surface)!important;backdrop-filter:var(--liquid-filter);border:1px solid var(--liquid-border)!important;border-radius:20px!important;color:var(--liquid-text)!important;box-shadow:0 5px 20px #123a6309!important}
+#root #main #citizenship-root :is(.writing-question-label,.writing-translation-label,.dictation-replay-copy small,.writing-progress-copy,.writing-performance small,.quiz-question-meta,.quiz-preferred-answer small){color:var(--liquid-muted)!important}
+#root #main #citizenship-root :is(.writing-ai-button,.quiz-primary-action,.platform-call-start>button){min-height:56px;border-radius:20px!important;padding:14px 22px;background:linear-gradient(120deg,#4da3e6,#2563a6)!important;color:white!important;border:1px solid var(--liquid-border)!important}
+#root #main #citizenship-root .writing-ai-button :is(small,strong,span){color:white!important}
+#root #main #citizenship-root .writing-ai-input{min-height:100px;padding:18px;font-size:17px}
+#root #main #citizenship-root .quiz-question-card{max-width:920px;padding:30px;margin:auto;border-radius:28px!important}
+#root #main #citizenship-root .quiz-vocabulary-grid>div{padding:22px;min-height:95px}
+#root #main #citizenship-root .quiz-vocabulary-grid strong{font-size:20px;color:var(--liquid-text)}
+#root #main #citizenship-root .platform-call-start{width:calc(100% - 32px);max-width:740px;margin:36px auto;padding:34px;border-radius:28px!important;color:var(--liquid-text)}
+#root #main #citizenship-root .platform-call-start select{min-height:52px;padding:12px;border:1px solid var(--liquid-border);border-radius:16px;background:var(--liquid-surface);color:var(--liquid-text)}
+#root #main #citizenship-root :is(.reading-button,.writing-ai-button,.reading-audio):disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:700px){#root #main #citizenship-root .reading-card{width:100%;padding:18px}#root #main #citizenship-root .reading-card-heading{flex-wrap:wrap;gap:14px}#root #main #citizenship-root .reading-session-progress{width:100%;margin:0;justify-content:space-between}#root #main #citizenship-root .reading-session-progress progress{width:65%}#root #main #citizenship-root .reading-sentence-panel{padding:20px}#root #main #citizenship-root .reading-sentence{margin-right:44px}#root #main #citizenship-root .reading-audio{right:10px;top:22px;width:44px;height:44px}#root #main #citizenship-root .reading-button{padding:16px;gap:14px}#root #main #citizenship-root .reading-button strong{font-size:20px}#root #main #citizenship-root :is(.writing-practice-panel,.quiz-question-card,.platform-call-start){padding:20px}#root #main #citizenship-root .quiz-vocabulary-grid{grid-template-columns:1fr}}
+#root #main #citizenship-root .reading-sentence-panel .writing-spanish{font-family:Inter,system-ui,sans-serif!important;font-style:normal}
+#root #main #citizenship-root .reading-label:before{display:none!important}
+#root #main #citizenship-root .reading-card:before{display:none!important}
+#root #main #citizenship-root .reading-card-heading small{font-size:12px;color:var(--liquid-muted)!important;letter-spacing:.08em}
+#root #main #citizenship-root .reading-button-copy small{font-size:12px;letter-spacing:.08em}
+#root #main #citizenship-root :is(.quiz-path-content,.study-guide-screen,.study-guide-main,.study-guide-screen .practice-header,.quiz-path-header,.interview-screen:has(.results-card)){background:transparent!important;box-shadow:none!important;border:0!important}
+#root #main #citizenship-root .quiz-path-content{max-width:1000px;width:100%;padding:24px 0;margin:auto}
+#root #main #citizenship-root .quiz-path-intro h1{font-size:clamp(32px,4vw,50px);color:var(--liquid-text)}
+#root #main #citizenship-root :is(.quiz-path-progress,.quiz-level-card){border-radius:24px!important;padding:22px;margin-bottom:14px;color:var(--liquid-text)!important}
+#root #main #citizenship-root .quiz-level-icon{border-radius:18px;background:#4da3e625!important;color:var(--color-primary,#2563a6)!important}
+#root #main #citizenship-root :is(.quiz-level-copy small,.quiz-level-state,.quiz-path-intro>span,.quiz-question-meta span,.quiz-session-title span){color:var(--color-primary,#2563a6)!important}
+#root #main #citizenship-root .quiz-choice-list button{background:var(--liquid-surface)!important;border:1px solid var(--liquid-border)!important;border-radius:18px!important;min-height:64px;color:var(--liquid-text)!important;padding:16px}
+#root #main #citizenship-root .quiz-choice-list button.correct{border-color:#21835b!important;background:#d9f3e5!important;color:#154e36!important}
+#root #main #citizenship-root .quiz-choice-list button.incorrect{border-color:#c92a3a!important;background:#ffeded!important;color:#8d1d29!important}
+#root #main #citizenship-root .study-guide-reader{background:var(--liquid-surface)!important;backdrop-filter:var(--liquid-filter);border:1px solid var(--liquid-border)!important;border-radius:24px!important;overflow:hidden}
+#root #main #citizenship-root .study-guide-toolbar{background:var(--liquid-surface)!important;border-bottom:1px solid var(--liquid-border)!important;color:var(--liquid-text)}
+#root #main #citizenship-root .study-guide-toolbar button{min-height:44px;min-width:44px;border-radius:14px!important}
+#root #main #citizenship-root .study-guide-heading h1{font-size:clamp(32px,4vw,48px);color:var(--liquid-text)}
+#root #main #citizenship-root .results-card{max-width:850px;width:calc(100% - 32px);padding:30px;border-radius:28px!important;margin:28px auto;color:var(--liquid-text)}
+#root #main #citizenship-root .results-card h1{font-size:clamp(32px,4vw,48px);color:var(--liquid-text)}
+#root #main #citizenship-root :is(.result-stat,.interview-review-plan){background:var(--liquid-surface)!important;border:1px solid var(--liquid-border)!important;border-radius:20px!important;padding:22px;color:var(--liquid-text)!important}
+#root #main #citizenship-root .results-card button{min-height:48px;border-radius:18px!important}

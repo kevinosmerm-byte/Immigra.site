@@ -46,8 +46,9 @@ test("both languages offer the same primary action and supporting destinations",
   assert.notEqual(getNextAction(es).label, getNextAction(en).label);
 });
 
-test("all interview and English tools remain accessible under Practice", () => {
-  for (const id of ["interview-n400", "interview-civics", "reading", "writing", "podcasts"]) assert.ok(app.includes('id:"' + id + '"'));
-  assert.match(app, /startInterview\("full"\)/);
+test("primary practice destinations remain available without extra options", async () => {
+  const practice = await readFile(new URL("../PlatformPractice.jsx", import.meta.url), "utf8");
+  for (const id of ["interview-n400", "interview-civics", "reading", "writing", "podcasts"]) assert.ok(practice.includes("'" + id + "'"));
+  assert.doesNotMatch(practice, /practice-more|More practice options/);
   assert.doesNotMatch(home, /onOpenFeature\('coach'\)/);
 });

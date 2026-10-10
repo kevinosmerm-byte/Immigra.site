@@ -10,13 +10,14 @@ import {
 } from "../src/n400InterviewEngine.js";
 
 const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+const practice = await readFile(new URL("../PlatformPractice.jsx", import.meta.url), "utf8");
 const styles = await readFile(new URL("../src/App.css", import.meta.url), "utf8");
 const companion = await readFile(new URL("../src/companion.js", import.meta.url), "utf8");
 const n400Component = await readFile(new URL("../src/N400InterviewPractice.jsx", import.meta.url), "utf8");
 const bank = JSON.parse(await readFile(new URL("../src/data/n400InterviewBank.json", import.meta.url), "utf8"));
 
 test("grouped practice keeps N-400 accessible through the existing interview destination", () => {
-  assert.match(app, /interview-n400/);
+  assert.match(practice, /interview-n400/);
   assert.match(app, /N-400/);
   assert.match(app, /id\.startsWith\("interview-"\) \? startInterview\(id\.slice\(10\)\)/);
   assert.match(app, /<N400InterviewPractice/);

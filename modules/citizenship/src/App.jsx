@@ -1,4 +1,5 @@
-import {GlassCard} from '../../../shared/design-system/Glass.jsx';
+import '../../../shared/design-system/citizenship-exercises.css';
+import {GlassCard,GlassProgress} from '../../../shared/design-system/Glass.jsx';
 import EmailProfile from '../../../shared/EmailProfile.jsx';
 import CoachCall from '../CoachCall.jsx';
 import CallView from '../../../shared/interview-ui/CallView.jsx';
@@ -14,7 +15,7 @@ import {ModuleNavigation} from '../../../shared/design-system/Components.jsx';
 import { lazy, Suspense, useState, useEffect, useRef, useCallback } from "react";
 import "./App.css";
 import "./BrandPalette.css";
-import { SectionNavigation } from "./SectionNavigation.jsx";
+import PlatformPractice from "../PlatformPractice.jsx";
 import { buildBrainContext, getDailyStudyPlan, getNextAction } from "./brain.js";
 import { useBrainProfile } from "./useBrainProfile.js";
 import { Profile } from "./Profile.jsx";
@@ -410,14 +411,14 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     setIsTranscribing(true);
     try {
       const transcript = await transcribeRecording(await recorder.stop());
-      if (mountedRef.current && generation===captureGeneration.current) { if (transcript) evaluateInterviewAnswer(transcript, "spoken"); else setAnswerStatus("error"); }
+      if (mountedRef.current && generation===captureGeneration.current) { if (transcript) { setTypedAnswer(transcript); evaluateInterviewAnswer(transcript, "spoken"); } else setAnswerStatus("error"); }
     } catch { if (mountedRef.current && generation===captureGeneration.current) setAnswerStatus("error"); }
     finally { if (mountedRef.current && generation===captureGeneration.current) setIsTranscribing(false); }
   };
   if (isInterviewComplete) {
     const gradedCount = correctAnswers + incorrectAnswers;
     const scorePercentage = gradedCount ? Math.round(correctAnswers / gradedCount * 100) : null;
-    return <div className="interview-screen"><div className="results-card">
+    return <div className="interview-screen"><div className="results-card liquid-glass">
       <div className="results-eyebrow">{t("Practice interview complete", "Práctica de entrevista completada")}</div>
       <h1>{t("Interview Complete", "Entrevista completada")}</h1>
       <div className="results-score">{correctAnswers}<span> / {gradedCount}</span></div><div className="results-percentage">{scorePercentage === null ? "—" : `${scorePercentage}%`}</div>
@@ -438,8 +439,8 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   </div>;
   const question = questions[currentQuestion];
   const suspend=()=>{captureGeneration.current++;recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setIsTranscribing(false);stopQuestionSpeech();setPaused(true);};
-  if(!callStarted)return <section className="platform-panel platform-call-start"><h1>{t('Civics interview','Entrevista cívica')}</h1><p>{t('Choose your interviewer. Speak or type your responses.','Elige tu entrevistador. Puedes responder hablando o escribiendo.')}</p><label>{t('Interviewer','Entrevistador')}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><button onClick={()=>setCallStarted(true)}>{t('Begin interview','Comenzar entrevista')}</button></section>;
-  return <CallView moduleId="citizenship" lang={language} interviewerName={interviewerName} interviewType={t('Civics interview','Entrevista cívica')} mediaBase={'/modules/citizenship/'+interviewer+'-'} state={paused?'paused':isTranscribing?'processing':isSpeaking?'speaking':'listening'} elapsed={elapsed} muted={!isListening} captions={[{who:'ai',text:questionText(question)},...(answer?[{who:'user',text:answer}]:[])]} showCaptions={captions} onCaptions={()=>setCaptions(x=>!x)} onMic={()=>{if(!paused&&!isTranscribing&&!readyForNext)(isListening?stopListening:startListening)();}} onRepeat={()=>{suspend();setPaused(false);speakQuestion(questionText(question));}} onPause={()=>{if(paused)setPaused(false);else suspend();}} onSuspend={suspend} onFinish={()=>{suspend();setEndedEarly(true);setCallStarted(false);setIsInterviewComplete(true);}} error={answerStatus==='error'?t('Microphone unavailable. Try again or type your answer.','Micrófono no disponible. Inténtalo de nuevo o escribe tu respuesta.'):''}>
+  if(!callStarted)return <section className="platform-panel platform-call-start liquid-glass"><h1>{t('Civics interview','Entrevista cívica')}</h1><p>{t('Choose your interviewer. Speak or type your responses.','Elige tu entrevistador. Puedes responder hablando o escribiendo.')}</p><label>{t('Interviewer','Entrevistador')}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><button onClick={()=>setCallStarted(true)}>{t('Begin interview','Comenzar entrevista')}</button></section>;
+  return <CallView moduleId="citizenship" lang={language} interviewerName={interviewerName} interviewType={t('Civics interview','Entrevista cívica')} mediaBase={'/modules/citizenship/'+interviewer+'-'} state={paused?'paused':isTranscribing?'processing':isSpeaking?'speaking':'listening'} elapsed={elapsed} muted={!isListening} captions={[{who:'ai',text:questionText(question)},...(answer?[{who:'user',text:answer}]:[])]} showCaptions={captions} onCaptions={()=>setCaptions(x=>!x)} progress={{current:currentQuestion+1,total:questions.length}} onMic={()=>{if(!paused&&!isTranscribing&&!readyForNext)(isListening?stopListening:startListening)();}} onRepeat={()=>{suspend();setPaused(false);speakQuestion(questionText(question));}} onPause={()=>{if(paused)setPaused(false);else suspend();}} onSuspend={suspend} onFinish={()=>{suspend();setEndedEarly(true);setCallStarted(false);setIsInterviewComplete(true);}} error={answerStatus==='error'?t('Microphone unavailable. Try again or type your answer.','Micrófono no disponible. Inténtalo de nuevo o escribe tu respuesta.'):''}>
   {feedback&&<p role="status">{feedback}</p>}
   {readyForNext?<button disabled={paused} onClick={goToNextQuestion}>{t('Continue','Continuar')}</button>:<form onSubmit={e=>{e.preventDefault();evaluateInterviewAnswer(typedAnswer);}}><input aria-label={t('Your response','Tu respuesta')} value={typedAnswer} maxLength={1600} disabled={paused||isListening||isTranscribing} onFocus={stopQuestionSpeech} onChange={e=>setTypedAnswer(e.target.value)}/><button disabled={paused||!typedAnswer.trim()||isListening||isTranscribing}>{t('Check','Comprobar')}</button></form>}
   {readyForNext&&answerStatus!=='correct'&&<details><summary>{t('Official answers','Respuestas oficiales')}</summary><ul>{question.acceptedAnswers?.map(x=><li key={x}>{x}</li>)}</ul></details>}
@@ -543,7 +544,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   }, [session, userKey]);
   const { civicProfile, refreshStatus: civicRefreshStatus } = useCivicProfile(userKey, brainProfile.profile);
   const trackerCopy = CASE_TRACKER_COPY[language];
-  
+
   const [civicsViewed, setCivicsViewed] = useState(() => {
     const saved = readLocalJson(userKey === "guest" ? "civicsViewed" : "civicsViewed:" + userKey, []);
     return Array.isArray(saved) ? saved : [];
@@ -1094,7 +1095,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
     );
   }
 
-  if (screen === "coach") return <CoachCall language={language} started={coachMode==='conversation'} speaking={coachSpeaking} listening={coachListening} thinking={coachThinking} reply={coachReply} history={coachHistory} onStart={()=>{setCoachReply("");setCoachMode("conversation");speakCoachReply("Hi! I'm Sarah. Let's practice English together. Tell me about yourself.");}} onMic={coachListening?stopCoachListening:startCoachListening} onRepeat={()=>speakCoachReply(coachReply||"Hi! I'm Sarah. Let's practice English together. Tell me about yourself.")} onSuspend={suspendCoach} onExit={()=>{suspendCoach();setCoachMode('welcome');goBack('home');}}/>;
+  if (screen === "coach") return <CoachCall language={language} started={coachMode==='conversation'} speaking={coachSpeaking} listening={coachListening} thinking={coachThinking} reply={coachReply} history={coachHistory} onText={sendCoachMessage} onStart={()=>{setCoachReply("");setCoachMode("conversation");speakCoachReply("Hi! I'm Sarah. Let's practice English together. Tell me about yourself.");}} onMic={coachListening?stopCoachListening:startCoachListening} onRepeat={()=>speakCoachReply(coachReply||"Hi! I'm Sarah. Let's practice English together. Tell me about yourself.")} onSuspend={suspendCoach} onExit={()=>{suspendCoach();setCoachMode('welcome');goBack('home');}}/>;
   // Control de pantallas de la aplicación
   // Control de pantallas de la aplicación
   if (screen === "civics") {
@@ -1273,30 +1274,9 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   }
 
   if (screen === "practice") {
-    const practiceItems = [
-      {id:"interview-n400",label:"N-400",es:"N-400"}, {id:"interview-civics",label:"Interview",es:"Entrevista"},
-      {id:"civics",label:"Civics",es:"Civismo"}, {id:"quiz",label:"Quiz",es:"Examen"},
-      {id:"reading",label:"Reading",es:"Lectura"}, {id:"writing",label:"Writing",es:"Escritura"},
-      {id:"podcasts",label:"Listening",es:"Escuchar"},
-    ];
-    if (dailyPlan.focus === "oath_preparation") practiceItems.unshift({id:"uscisTracker",label:"Oath",es:"Juramento"});
-    return <div className="practice-screen">
-      <header className="practice-header"><button className="back-button" onClick={() => goBack("home")}>← {previousScreenLabel("home")}</button></header>
-      <main className="practice-content">
-        <h1>{t("Practice", "Práctica")}</h1><p className="practice-intro">{t("A plan that fits your next step.", "Un plan para tu próximo paso.")}</p>
-        <section className="brain-today"><h2>{nextAction.label}</h2><p>{nextAction.detail}</p><button type="button" className="button-primary" onClick={continueDailyPlan}>{t("Continue today's practice", "Continuar la práctica de hoy")} →</button></section>
-        <SectionNavigation items={practiceItems} language={language} onNavigate={id => id.startsWith("interview-") ? startInterview(id.slice(10)) : navigateTo(id)} />
-        <details className="practice-more"><summary>{t("More practice options", "Más opciones de práctica")}</summary><div className="practice-option-links">
-          <button className="button-secondary" onClick={() => startInterview("full")}>{t("Live interview", "Entrevista en vivo")}</button>
-          <button className="button-secondary" onClick={() => navigateTo("vocabulary")}>{t("Vocabulary", "Vocabulario")}</button>
-          <button className="button-secondary" onClick={() => navigateTo("choose")}>{t("Choose an answer", "Elegir respuesta")}</button>
-          <button className="button-secondary" onClick={() => navigateTo("connect")}>{t("Connect answers", "Conectar respuestas")}</button>
-          <button className="button-secondary" onClick={() => navigateTo("english")}>{t("English skills", "Habilidades de inglés")}</button>
-          <button className="button-secondary" onClick={() => navigateTo("civicsGuide")}>{t("Official study guide", "Guía oficial")}</button>
-          <button className="button-secondary" onClick={() => navigateTo("progress")}>{t("Progress", "Progreso")}</button>
-        </div></details>
-      </main>
-    </div>;
+    return <PlatformPractice language={language} plan={dailyPlan} nextAction={nextAction}
+      onContinue={continueDailyPlan} onProgress={() => navigateTo("progress")}
+      onNavigate={id => id.startsWith("interview-") ? startInterview(id.slice(10)) : navigateTo(id)} />;
   }
 
   if (screen === "english") {
@@ -1306,7 +1286,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
           <button className="back-button" onClick={() => goBack("practice")}>
             ← {previousScreenLabel("practice")}
           </button>
-          
+
         </header>
         <main className="practice-content">
           <div className="practice-eyebrow">{t("ENGLISH PREPARATION", "Preparación de inglés")}</div>
@@ -1346,13 +1326,13 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
           <button className="back-button" onClick={() => goBack("english")}>
             ← {previousScreenLabel("english")}
           </button>
-          
+
         </header>
         <main className="practice-content">
           <div className="practice-eyebrow">{t("ENGLISH · READING", "Inglés · Lectura")}</div>
           <h1>{t("Reading.", "Lectura.")}</h1>
           <p className="practice-intro">{t("Read the sentence aloud and practice your English.", "Lee la oración en voz alta y practica tu inglés.")}</p>
-          <div className="reading-card">
+          <div className="reading-card liquid-glass">
             <div className="reading-card-heading">
               <span className="reading-card-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24"><path d="M7 4.5h8.5A2.5 2.5 0 0 1 18 7v12H8a3 3 0 0 1-3-3V6.5a2 2 0 0 1 2-2Z"/><path d="M8 4.5V16h10M10.5 9H15M10.5 12H15"/></svg>
@@ -1361,10 +1341,10 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
                 <small>{t("ENGLISH PRACTICE", "Práctica de inglés")}</small>
                 <div className="reading-label">{t("READ THIS SENTENCE", "Lee esta oración")}</div>
               </div>
-              <span className="reading-card-count">{readingIndex + 1} / {readingSentences.length}</span>
+              <div className="reading-session-progress"><span className="reading-card-count">{readingIndex + 1} / {readingSentences.length}</span><GlassProgress value={readingIndex + 1} max={readingSentences.length} label={t("Sentence progress", "Progreso de oraciones")}/></div>
             </div>
-            <div className="reading-sentence">{readingSentences[readingIndex].english}</div>
-            <div className="writing-spanish">{readingSentences[readingIndex].spanish}</div>
+            <div className="reading-sentence-panel liquid-glass"><button type="button" className="reading-audio" disabled={isReading || isAIThinking} aria-label={t("Listen to the sentence", "Escuchar la oración")} onClick={() => speakAppText(readingSentences[readingIndex].english, { profile: "female", rate: 0.85, pitch: 1.08 })}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10"/></svg></button><div className="reading-sentence" lang="en">{readingSentences[readingIndex].english}</div>
+            <div className="writing-spanish">{readingSentences[readingIndex].spanish}</div></div>
             {aiMessage && (
               <div className="ai-reading-feedback" role="status" aria-live="polite">
                 <div className="ai-reading-label">{t("AI HEARD", "Lo que escuchamos")}</div>
@@ -1388,9 +1368,9 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
               </span>
               <span className="reading-button-copy">
                 <small>{isReading ? t("Recording", "Grabando") : t("Your turn", "Tu turno")}</small>
-                <strong>{isReading ? t("Stop and review", "Detener y revisar") : t("Start reading", "Comenzar lectura")}</strong>
+                <strong>{isReading ? t("Stop and review", "Detener y revisar") : isAIThinking ? t("Analyzing your reading…", "Analizando tu lectura…") : t("Start reading", "Comenzar lectura")}</strong>
               </span>
-              <span className="reading-button-arrow" aria-hidden="true">{isReading ? "■" : "→"}</span>
+
             </button>
           </div>
         </main>
@@ -1408,7 +1388,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
           <div className="writing-ai-brand">IMMIGRATION <span>AI</span></div>
         </header>
         <main className="writing-ai-content">
-          <section className="writing-practice-panel">
+          <section className="writing-practice-panel liquid-glass">
           <div className="writing-top-section">
             <div>
               <div className="writing-eyebrow">{t("ENGLISH · WRITING DICTATION", "Inglés · Dictado")}</div>

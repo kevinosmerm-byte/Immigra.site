@@ -77,7 +77,7 @@ test("writing review stays visible until the learner chooses the next action", a
 test("writing practice uses one unified compact panel without changing its actions", async () => {
   const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
   const css = await readFile(new URL("../src/App.css", import.meta.url), "utf8");
-  assert.match(app, /className="writing-practice-panel"/);
+  assert.match(app, /className="writing-practice-panel liquid-glass"/);
   assert.match(app, /className="writing-progress-strip"/);
   assert.match(app, /onClick=\{checkWriting\}/);
   assert.match(app, /onClick=\{nextWritingSentence\}/);
