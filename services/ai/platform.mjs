@@ -1,13 +1,18 @@
+import {createHash} from 'node:crypto';
 import {app as citizenship} from '../../modules/citizenship/server/server.js';
-import {requireAccount,getUsageSnapshot} from '../../modules/citizenship/server/accountService.js';
+import {requireAccount,getUsageSnapshot,consumeDistributedRateLimit} from '../../modules/citizenship/server/accountService.js';
 import {createPlatformRouter} from './router.mjs';
 async function reserveAsylumQuota(userId,bucket="asylum-analysis",limit=2){
- const response=await fetch(process.env.SUPABASE_URL+'/rest/v1/rpc/consume_api_rate_limit',{
-  method:'POST',signal:AbortSignal.timeout(10000),headers:{apikey:process.env.SUPABASE_SECRET_KEY,'content-type':'application/json'},
-  body:JSON.stringify({p_bucket:bucket,p_subject_hash:userId,p_limit:limit,p_window_seconds:86400})
- });
- if(!response.ok)throw new Error('QUOTA_UNAVAILABLE');
- const result=await response.json();return result.allowed===true;
+ try{
+  const result=await consumeDistributedRateLimit({bucket,subjectHash:createHash('sha256').update(userId).digest('hex'),limit,windowSeconds:86400});
+  if(!result)throw Error('missing quota');
+  return result.allowed===true;
+ }catch(error){
+  // Only database error codes; never error messages, subjects or database content.
+  const code=error?.cause?.code;
+  console.error('[interview-quota]',JSON.stringify({code:['PGRST202','42501','P0001','42P01','PGRST301'].includes(code)?code:'QUOTA_UNAVAILABLE'}));
+  throw Error('QUOTA_UNAVAILABLE');
+ }
 }
 async function reserveInterviewAccess(id,bucket,limit,globalLimit){
  if(id.startsWith('guest:')&&!await reserveAsylumQuota('public-interviews-global',bucket+'-public',globalLimit))return false;
