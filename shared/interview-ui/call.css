@@ -41,3 +41,20 @@ body.in-call{overflow:hidden;overscroll-behavior:none}body.in-call #root>header,
 .call-screen[data-module=asylum] .call-controls .call-end{background:#c92a3a!important;color:#fff!important;border-color:#c92a3a}
 .call-screen[data-module=asylum] .call-controls .call-end span{color:#fff!important}
 @media(max-width:700px){.call-screen[data-module=asylum] .call-stage{width:calc(100% - 24px);margin-top:10px;padding:12px;gap:10px;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto auto}.call-screen[data-module=asylum] .call-stage video{grid-column:1;grid-row:1;max-height:28dvh}.call-screen[data-module=asylum] :is(.call-state,.call-captions,.call-response,.call-alert){grid-column:1;grid-row:auto}.call-screen[data-module=asylum] .call-captions{font-size:16px;padding:12px}.call-screen[data-module=asylum] .call-controls{gap:5px;padding-inline:8px}.call-screen[data-module=asylum] .call-controls button span{font-size:11px}.call-screen[data-module=asylum] .call-top{padding:10px 16px}}
+/* Calm interview workspace with a defined video stage and conversation panel. */
+.call-screen[data-module=asylum]{font-family:Inter,system-ui,sans-serif;background:#eef3f8!important}
+.call-screen[data-module=asylum] .call-top{padding:18px 32px;background:#123a63!important;border:0}
+.call-screen[data-module=asylum] .call-top :is(strong,p,span,time){color:#fff!important}
+.call-screen[data-module=asylum] .call-top p{opacity:.8;letter-spacing:.025em}
+.call-screen[data-module=asylum] .call-stage{border:1px solid #dbe4ee;box-shadow:0 12px 40px #123a6310;gap:22px;padding:24px;border-radius:24px;grid-template-columns:minmax(0,1.2fr) minmax(300px,1fr)}
+.call-screen[data-module=asylum] .call-stage video{background:#e5edf5;border-radius:18px}
+.call-screen[data-module=asylum] .call-state{font-weight:600;letter-spacing:.02em;font-size:12px;padding:10px 14px;background:#edf5fc}
+.call-screen[data-module=asylum] .call-state>span{background:#2563a6;box-shadow:0 0 0 4px #2563a612}
+.call-screen[data-module=asylum] .call-captions{background:transparent;border-left:3px solid #4da3e6;border-radius:0;padding:8px 0 8px 20px;font-size:clamp(18px,1.7vw,24px);line-height:1.55}
+.call-screen[data-module=asylum] .call-captions b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;color:#456b8b!important}
+.call-screen[data-module=asylum] .conversation-hint{color:#526b81;font-size:13px;line-height:1.6;margin:0 0 14px}
+.call-screen[data-module=asylum] .call-response input{background:#f8fafc;border-color:#ccd9e5;border-radius:12px;padding:15px;min-height:60px}
+.call-screen[data-module=asylum] .call-controls{background:transparent!important;padding-top:18px;gap:12px}
+.call-screen[data-module=asylum] .call-controls button{border-radius:16px;min-height:72px;box-shadow:0 3px 10px #123a6308}
+.call-screen[data-module=asylum] .call-controls button:hover{border-color:#4da3e6;box-shadow:0 4px 14px #123a6318}
+@media(max-width:700px){.call-screen[data-module=asylum] .call-stage{grid-template-columns:minmax(0,1fr);padding:14px;gap:12px;border-radius:18px}.call-screen[data-module=asylum] .call-top{padding:12px 18px}.call-screen[data-module=asylum] .call-captions{font-size:17px;padding-left:12px}.call-screen[data-module=asylum] .call-controls{gap:6px}.call-screen[data-module=asylum] .call-controls button{min-height:64px}.call-screen[data-module=asylum] .conversation-hint{font-size:12px}}
