@@ -506,7 +506,9 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
     window.matchMedia?.("(prefers-color-scheme: light)").matches ?? false
   );
   const [onboardingComplete, setOnboardingComplete] = useState(
-    () => readLocalValue(ONBOARDING_STORAGE_KEY) === "complete"
+    // The platform already supplies the language and entry screen. Do not
+    // replay the standalone welcome or record consent on the user's behalf.
+    () => Boolean(platformLanguage) || readLocalValue(ONBOARDING_STORAGE_KEY) === "complete"
   );
   const [accountOpen, setAccountOpen] = useState(false);
   const { session, recordAccountEvent } = useAccount();
