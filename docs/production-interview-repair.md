@@ -10,6 +10,12 @@ Status: partial repair, **not an end-to-end voice acceptance pass**.
 - The Codex browser's microphone attempt timed out before `MIC_PERMISSION_GRANTED`. No captured audio, OpenAI voice session, WebRTC connection, transcription or audible response was demonstrated in that attempt. A separate microphone-permission timeout now identifies this stage.
 - Provider HTTP errors previously collapsed into a generic message. Diagnostics now distinguish request, credential, access and rate-limit failures without recording response bodies.
 
+## Final production checkpoint
+
+Code commit `286ad5e` was confirmed Live in Render. A fresh run of the synthetic text test passed for **all three modules**: realProvider, hasFeedback, hasFollowUp and contextReference were all true. The evidence schema now restricts citations to actual user text. The earlier Residency failures below are retained as diagnostic history, not the latest result. One successful run is not a comprehensive conversational quality evaluation.
+
+The public browser N-400 test also displayed validated feedback for a fictional answer without an account. Screenshot: `production-text-evaluation.png` in the task workspace. The voice attempt still timed out before microphone permission; physical audio remains unverified.
+
 ## Production checks actually performed
 
 On `https://immigra.site`, synthetic text was submitted through the public session API, evaluated by OpenAI and then deleted from server session memory:
