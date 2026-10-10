@@ -3,7 +3,7 @@ import {serveFile} from './server/static-file.mjs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 const base=path.dirname(fileURLToPath(import.meta.url));
-const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.webmanifest':'application/manifest+json','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.mp4':'video/mp4','.m4a':'audio/mp4','.pdf':'application/pdf','.wasm':'application/wasm'};
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.webmanifest':'application/manifest+json','.ico':'image/vnd.microsoft.icon','.webp':'image/webp','.png':'image/png','.jpg':'image/jpeg','.svg':'image/svg+xml','.mp4':'video/mp4','.m4a':'audio/mp4','.pdf':'application/pdf','.wasm':'application/wasm'};
 try{process.loadEnvFile(path.join(base,'.env'));}catch(e){if(e.code!=='ENOENT')throw e;}
 process.env.CORS_ORIGIN ||= 'http://127.0.0.1:4388,http://localhost:4388';
 const backend=process.env.PLATFORM_BACKEND_ENABLED==='true'?(await import('./services/ai/platform.mjs')).app:null;

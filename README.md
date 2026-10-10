@@ -1,3 +1,5 @@
+![Immigration AI — icono oficial](public/app-icon-192.png)
+
 # Immigration AI · plataforma unificada de desarrollo 0.31.0
 
 Una sola aplicación con los motores de CitizenshipAI, AsiloAI y ResidencyAI. Los proyectos originales no se modificaron. Esta entrega integra los módulos y las llamadas principales; aún NO cumple todos los criterios de producción de la instrucción maestra.

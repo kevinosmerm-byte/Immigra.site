@@ -1,6 +1,6 @@
-/* Keep the original cards; show only the central reference icons. */
+/* Original home cards with the supplied module icons. */
 #main > .cards > .card .icon { background:transparent; box-shadow:none; border:0; }
-.reference-icon { position:relative; display:block; width:112px; height:112px; overflow:hidden; border-radius:28px; }
-.reference-icon img { position:absolute; width:260px; max-width:none; height:390px; left:-74px; top:-105px; object-fit:fill; }
-.reference-icon--asylum img { top:-98px; }
-.reference-icon--residency img { top:-108px; }
+.reference-icon { display:block; width:112px; height:112px; overflow:hidden; border-radius:24px; }
+.reference-icon img { display:block; width:100%; height:100%; object-fit:contain; }
+
+.brand .official-brand-icon{width:36px;height:36px;object-fit:contain;border-radius:9px;vertical-align:middle;margin-right:9px}
