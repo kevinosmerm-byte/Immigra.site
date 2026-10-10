@@ -1,0 +1,34 @@
+#main > .cards { grid-template-columns:repeat(3,minmax(0,380px)); justify-content:center; }
+.entry-module { min-width:0; text-align:center; }
+.entry-title { margin:0 0 16px; color:#10233f; font-size:28px; line-height:1.2; }
+.main-card {
+  width:380px;
+  height:340px;
+  border-radius:28px;
+  box-sizing:border-box;
+}
+#main .entry-module > .card.illustrated-entry {
+  position:relative;
+  display:block;
+  max-width:100%;
+  min-height:0;
+  padding:0;
+  overflow:hidden;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  margin-inline:auto;
+  cursor:pointer;
+}
+#main .entry-module > .card.illustrated-entry::before { display:none; }
+.entry-artwork { display:block; width:100%; height:100%; object-fit:contain; }
+#main .entry-module > .card.illustrated-entry:focus-visible { outline:3px solid var(--accent); outline-offset:5px; }
+@media(max-width:700px) {
+  #main > .cards { grid-template-columns:minmax(0,380px); gap:28px; }
+  .entry-title { font-size:25px; }
+}
+@media(forced-colors:active) {
+  #main .entry-module > .card.illustrated-entry { border:2px solid ButtonText; }
+}
