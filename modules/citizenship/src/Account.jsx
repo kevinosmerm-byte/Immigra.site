@@ -1,3 +1,4 @@
+import {TEMPORARY_PUBLIC_INTERVIEWS} from '../../../shared/interview-ui/access-policy.mjs';
 import {GlassCard,GlassSection,GlassProgress,GlassIcon} from '../../../shared/design-system/Glass.jsx';
 import { useModalFocus } from "./useModalFocus.js";
 import { createClient } from "@supabase/supabase-js";
@@ -108,7 +109,7 @@ export function AccountProvider({ children }) {
 
   const value = useMemo(() => ({
     configured: Boolean(client), session, loading, usage, promotionAccess, aiFeatureAvailability, billing, signInError,
-    sendMagicLink: (email) => client.auth.signInWithOtp({
+    sendMagicLink: (email) => TEMPORARY_PUBLIC_INTERVIEWS ? Promise.resolve({error: new Error("Account links temporarily disabled")}) : client.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` },
     }),
@@ -208,6 +209,7 @@ export function AccountProvider({ children }) {
 export function AccountButton({ language = "en", onClick }) {
   const { session } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
+  if (TEMPORARY_PUBLIC_INTERVIEWS && !session) return null;
   return (
     <button className={`home-account-button${session ? " signed-in" : ""}`} onClick={onClick} type="button" aria-label={copy.account}>
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -329,7 +331,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
               </div></GlassSection>
             )}
           </>
-        ) : (
+        ) : TEMPORARY_PUBLIC_INTERVIEWS ? <p role="status">{copy.optional}</p> : (
           <form onSubmit={submit}>
             <label className="account-label" htmlFor="account-email">{copy.email}</label>
             <input id="account-email" className="account-input" type="email" inputMode="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={copy.placeholder} required />

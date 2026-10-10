@@ -1,7 +1,13 @@
+import {logDiagnostic} from '../../shared/interview-ui/diagnostics.mjs';
 // Server only. Session content is ephemeral and never logged or persisted.
 import {randomUUID} from 'node:crypto';
 import {selectAosQuestions} from '../../modules/residency/src/aosEngine.mjs';
 
+async function providerError(response){
+ const code=({400:'PROVIDER_BAD_REQUEST',401:'PROVIDER_AUTH_FAILED',403:'PROVIDER_ACCESS_DENIED',429:'PROVIDER_LIMIT'})[response.status]||'PROVIDER_UNAVAILABLE';
+ logDiagnostic('INTERVIEW_ERROR',{code,status:response.status});
+ const error=Error(code);error.status=response.status;return error;
+}
 const enumString=values=>({type:'string',enum:values});
 export const evaluationSchema={type:'object',additionalProperties:false,required:['answer_status','consistency_status','educational_feedback','suggested_follow_up','next_action','evidence','topic','difficulty'],properties:{
  answer_status:enumString(['adequate','incomplete','ambiguous','clarification_needed','not_understood','uncertain']),
@@ -43,7 +49,7 @@ export async function InterviewResponseEvaluator(session,{fetchImpl=fetch,env,an
  const history=[...session.history,...(answer?[{role:'user',text:answer}]:[])];
  const response=await fetchImpl('https://api.openai.com/v1/responses',{method:'POST',signal:AbortSignal.timeout(30000),headers:{authorization:`Bearer ${env.OPENAI_API_KEY}`,'content-type':'application/json'},body:JSON.stringify({model:env.OPENAI_TEXT_MODEL||'gpt-4o-mini',store:false,max_output_tokens:1100,instructions:session.instructions+`
  Return the required JSON educational assessment. No honesty or eligibility scores. evidence contains up to TWO exact contiguous quotations from user turns only. possible_discrepancy requires two quotations about the SAME fact/event, otherwise insufficient_context. Uncertainty is valid, not an error. Feedback addresses clarity, relevance and comprehension, never the correctness of a personal biography. ${conversation?'suggested_follow_up is your next brief conversational intervention and exactly ONE appropriate question, using context. For the initial greeting (no answer yet), feedback and evidence are empty.':'Evaluate the last user answer only; suggested_follow_up is empty unless clarification is useful. Do not introduce a competing new topic while the live interview is speaking.'} If unable to understand, ask to repeat. For uncertain answers accept uncertainty and continue; do not pressure for details.`,input:JSON.stringify({question,history}),text:{format:{type:'json_schema',name:'interview_response',strict:true,schema:evaluationSchema}}})});
- if(!response.ok)throw Error(response.status===429?'PROVIDER_LIMIT':'PROVIDER_UNAVAILABLE');
+ if(!response.ok)throw await providerError(response);
  const payload=await response.json();if(payload.status!=='completed')throw Error('INCOMPLETE_EVALUATION');
  let value;try{value=JSON.parse((payload.output||[]).filter(x=>x.type==='message').flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text).join(''));}catch{throw Error('INVALID_EVALUATION');}
  if(!validateEvaluation(value,history))throw Error('UNGROUNDED_EVALUATION');
@@ -52,7 +58,7 @@ export async function InterviewResponseEvaluator(session,{fetchImpl=fetch,env,an
 export function createInterviewAIEngine({env,fetchImpl=fetch,reserveSessionQuota,reserveTurnQuota,manager=new InterviewSessionManager()}){
  const starting=new Set();
  const available=()=>env.PLATFORM_AI_ENABLED==='true'&&Boolean(env.OPENAI_API_KEY&&reserveSessionQuota&&reserveTurnQuota);
- const hangup=async s=>{if(s?.callId){try{await fetchImpl(`https://api.openai.com/v1/realtime/calls/${encodeURIComponent(s.callId)}/hangup`,{method:'POST',headers:{authorization:`Bearer ${env.OPENAI_API_KEY}`},signal:AbortSignal.timeout(10000)});}catch{/* No content in logs. Provider also enforces its session lifetime. */}}};
+ const hangup=async s=>{if(s?.callId){try{await fetchImpl(`https://api.openai.com/v1/realtime/calls/${encodeURIComponent(s.callId)}/hangup`,{method:'POST',headers:{authorization:`Bearer ${env.OPENAI_API_KEY}`},signal:AbortSignal.timeout(10000)});}catch{logDiagnostic('INTERVIEW_ERROR',{code:'HANGUP_FAILED'});}}};
  const close=async(id,owner)=>{const s=manager.get(id,owner);if(!s)return;manager.remove(id);await hangup(s);};
  return {available,manager,close,
  async start(owner,body){
@@ -70,8 +76,8 @@ export function createInterviewAIEngine({env,fetchImpl=fetch,reserveSessionQuota
    if(body.transport==='voice'){
     const form=new FormData();form.set('sdp',body.sdp);form.set('session',JSON.stringify({type:'realtime',model:env.OPENAI_REALTIME_MODEL||'gpt-realtime-2.1',instructions:s.instructions,output_modalities:['audio'],max_output_tokens:400,audio:{input:{transcription:{model:'gpt-4o-mini-transcribe',language:settings.locale},turn_detection:{type:'server_vad',create_response:true,interrupt_response:true}},output:{voice:settings.avatar==='kevin'?'cedar':'marin'}}}));
     const r=await fetchImpl('https://api.openai.com/v1/realtime/calls',{method:'POST',headers:{authorization:`Bearer ${env.OPENAI_API_KEY}`},body:form,signal:AbortSignal.timeout(30000)});
-    if(!r.ok)throw Error(r.status===429?'PROVIDER_LIMIT':'PROVIDER_UNAVAILABLE');
-    const location=r.headers.get('location')||'';const match=location.match(/\/calls\/(rtc_[a-zA-Z0-9_-]+)$/);if(!match)throw Error('INVALID_PROVIDER_SESSION');s.callId=match[1];sdp=await r.text();
+    if(!r.ok)throw await providerError(r);
+    const location=r.headers.get('location')||'';const match=location.match(/\/calls\/(rtc_[a-zA-Z0-9_-]+)$/);if(!match)throw Error('INVALID_PROVIDER_SESSION');s.callId=match[1];sdp=await r.text();if(!sdp.startsWith('v=0'))throw Error('INVALID_PROVIDER_SESSION');logDiagnostic('OPENAI_SESSION_CREATED',{module:settings.module,transport:'voice'});
    }
    // The deadline is on the server, not a client-controlled duration.
    s.timer=setTimeout(()=>{manager.remove(s.id);void hangup(s);},manager.ttl);s.timer.unref?.();
@@ -87,10 +93,12 @@ export function createInterviewAIEngine({env,fetchImpl=fetch,reserveSessionQuota
   s.busy=true;
   try{
    if(!await reserveTurnQuota(owner))throw Error('DAILY_LIMIT');
+   logDiagnostic('EVALUATION_REQUESTED',{module:s.settings.module,transport:s.transport});
    const result=await InterviewResponseEvaluator(s,{fetchImpl,env,answer:body.answer,question:body.question||'',conversation:s.transport==='text'});
    if(!manager.get(id,owner))throw Error('SESSION_EXPIRED');
    if(body.answer){if(s.transport==='voice'&&body.question)s.history.push({role:'assistant',text:body.question});s.history.push({role:'user',text:body.answer});s.evaluations.push(result);}
    if(s.transport==='text'&&result.suggested_follow_up)s.history.push({role:'assistant',text:result.suggested_follow_up});
+   logDiagnostic('EVALUATION_COMPLETED',{module:s.settings.module,transport:s.transport});
    return {...result,provider:'OpenAI'};
   }finally{s.busy=false;}
  }

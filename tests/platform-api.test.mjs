@@ -50,3 +50,16 @@ test('interview feedback supports all personal modules with consent and a shared
  assert.deepEqual(owners,['A','A','A']);assert.equal(calls,3);
  allowed=false;assert.equal((await send(payload)).status,429);assert.equal(calls,3);
 });
+
+test('temporary public interviews retain signed ownership, quota and origin protections',async t=>{
+ const f=await fixture(t,{PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock'},{reserveConversationQuota:async()=>true,reserveInterviewQuota:async()=>true});
+ const options={method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({module:'asylum',locale:'es',consent:true,transport:'text'})};
+ const start=await f.request('/api/interview/sessions',options);assert.equal(start.status,200);
+ const session=await start.json(),cookie=start.headers.get('set-cookie').split(';')[0];
+ assert.equal((await f.request('/api/interview/sessions/'+session.id,{method:'DELETE'})).status,401);
+ assert.equal((await f.request('/api/interview/sessions/'+session.id,{method:'DELETE',headers:{cookie}})).status,204);
+ assert.equal((await f.request('/api/interview/sessions',{...options,headers:{...options.headers,origin:'https://evil.example'}})).status,403);
+ assert.equal((await f.request('/api/v1/me/access',{headers:{cookie}})).status,401);
+ const off=await fixture(t,{INTERVIEW_PUBLIC_ACCESS:'false',PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock'},{reserveConversationQuota:async()=>true,reserveInterviewQuota:async()=>true});
+ assert.equal((await off.request('/api/interview/sessions',options)).status,401);
+});
