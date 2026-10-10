@@ -1,7 +1,8 @@
+import {mountAsylumTranscription} from './asylum-transcription.mjs';
 import {handle as analyzeAsylum} from '../../modules/asylum/services/analysis/worker.mjs';
 import express from '../../modules/citizenship/node_modules/express/index.js';
 // Dependencies are injected for HTTP tests without credentials or paid calls.
-export function createPlatformRouter({citizenship,requireAccount,getUsageSnapshot,reserveAsylumQuota,analysisFetch=fetch,env={}}){
+export function createPlatformRouter({citizenship,requireAccount,getUsageSnapshot,reserveAsylumQuota,reserveAudioQuota,analysisFetch=fetch,env={}}){
  const app=express();app.disable('x-powered-by');
  const allowedOrigins=new Set(['http://127.0.0.1:4388','http://localhost:4388',...(env.CORS_ORIGIN||'').split(',').map(origin=>origin.trim()).filter(Boolean)]);
  app.use((req,res,next)=>{res.set('Cache-Control','no-store');const origin=req.get('origin');if(origin&&!allowedOrigins.has(origin))return res.status(403).json({error:'ORIGIN_DENIED'});next();});
@@ -31,6 +32,7 @@ export function createPlatformRouter({citizenship,requireAccount,getUsageSnapsho
  });
  app.post(['/api/realtime/session'],requireAccount,(req,res)=>res.status(503).json({error:status(req.path.includes('/asylum/')?'asylum':'residency').reason}));
  app.post('/api/coach',(_req,res)=>res.status(410).json({error:'FEATURE_REMOVED'}));
+ if(reserveAudioQuota)mountAsylumTranscription(app,{requireAccount,env,reserveQuota:reserveAudioQuota});
  const paid=new Set(['/evaluate-writing','/transcribe','/evaluate-reading','/coach','/avatar/session']);
  app.use('/api',(req,res,next)=>{
   if(!paid.has(req.path))return next();
