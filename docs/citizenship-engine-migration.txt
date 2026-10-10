@@ -98,3 +98,18 @@ Real production microphone -> transcription -> evaluation -> audible feedback
 -> next question in all four modules, including mobile, must be witnessed.
 Bank N-400 English wording and existing residency Spanish wording are preserved;
 this migration does not create or verify new translations.
+
+PRODUCTION CHECKPOINT
+Render deployed bf40305 successfully (dep-db5asf7avr4c73eutt90), 2026-10-10
+21:30:53 UTC. The actual N-400, Asylum and Residency APIs returned validated
+OpenAI assessments and follow-ups using fictional text. Residency's scripted
+context-keyword heuristic was false; this is not proof of a contextual spoken
+conversation. The authoritative bank, rather than keyword appearance, controls
+normal next questions.
+In the production browser, Civics accepted "Republic", returned "Correcto"
+and advanced to the supreme-law question. "The Moon" received the bank answer
+"(U.S.) Constitution" and advanced again, without a separate Continue button.
+The summary identified two official-bank evaluations (not OpenAI grading).
+A real microphone connection was requested in the controlled browser; it ended
+in MICROPHONE_TIMEOUT before MIC_PERMISSION_GRANTED (21:34:14 UTC). Human microphone
+and phone tests remain required. A test request was sent to the user.
