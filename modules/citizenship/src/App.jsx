@@ -274,6 +274,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   const [useStandardInterview, setUseStandardInterview] = useState(false);
   const recorderRef = useRef(null);
   const microphonePendingRef = useRef(false);
+  const voiceAuthorizedForInterview = useRef(false);
   const mountedRef = useRef(false);
   const completionReportedRef = useRef(false);
   const speechRequestRef = useRef(0);
@@ -403,7 +404,13 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     } catch (error) { if (mountedRef.current && generation===captureGeneration.current) {setMicrophoneError(audioErrorMessage(error,language));setAnswerStatus("error");} }
     finally { microphonePendingRef.current = false; }
   };
-  const startListening = () => requestVoiceAccess ? requestVoiceAccess(beginListening) : beginListening();
+  const startListening = () => {
+    if (voiceAuthorizedForInterview.current || !requestVoiceAccess) return beginListening();
+    return requestVoiceAccess(() => {
+      voiceAuthorizedForInterview.current = true;
+      return beginListening();
+    });
+  };
   const stopListening = async () => {
     const generation=captureGeneration.current;
     const recorder = recorderRef.current;
@@ -696,7 +703,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   };
   const requestVoiceAccess = continuation => {
     if(TEMPORARY_PUBLIC_INTERVIEWS){
-      if(window.confirm(language==='es'?'Enviar esta respuesta de voz a OpenAI para transcribirla y compararla con las respuestas oficiales. No se guarda la grabación. ¿Continuar?':'Send this spoken answer to OpenAI for transcription and comparison with official answers. The recording is not saved. Continue?'))continuation();
+      if(window.confirm(language==='es'?'Autorizar las respuestas de voz de esta entrevista para transcribirlas con OpenAI. Se comparan localmente con las 128 preguntas oficiales; no se guardan las grabaciones. ¿Continuar?':'Authorize spoken answers for this interview to be transcribed by OpenAI. Answers are compared locally with the 128 official questions; recordings are not saved. Continue?'))continuation();
       return;
     }
     return requestAiSession("classicInterview", continuation, language);
