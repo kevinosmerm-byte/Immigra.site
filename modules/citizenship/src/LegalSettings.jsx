@@ -1,4 +1,5 @@
-import {GlassPreferences} from '../../../shared/design-system/Glass.jsx';
+import {useAccount} from './accountContext.js';
+import {GlassPreferences,GlassCard,GlassSection,GlassToggle,GlassAccordion,GlassIcon,useGlass} from '../../../shared/design-system/Glass.jsx';
 import { useEffect, useState } from "react";
 import { getCompanionVisibility, setCompanionVisibility } from "./companionEvents.js";
 import { THEME_PREFERENCES, THEME_STORAGE_KEY } from "./theme.js";
@@ -213,8 +214,19 @@ export function Onboarding({ language, onLanguageChange, onComplete }) {
   );
 }
 
-export function LegalSettings({ onBack, onRestartOnboarding, language = "en", themePreference = "dark", onThemeChange }) {
-  const [openSection, setOpenSection] = useState("privacy");
+export function LegalSettings({ embedded = false, onBack, onRestartOnboarding, language = "en", themePreference = "dark", onThemeChange }) {
+  const {preferences,setPreferences}=useGlass();
+  const {session,exportAccountData}=useAccount();
+  const [exporting,setExporting]=useState(false);
+  const [exportError,setExportError]=useState(false);
+  const es=language==='es';
+  const t=(spanish,english)=>es?spanish:english;
+  const downloadData=async()=>{
+    if(exporting||!session)return;
+    setExporting(true);setExportError(false);
+    try{const blob=await exportAccountData();if(!blob)throw new Error('Unavailable');const url=URL.createObjectURL(blob);const link=document.createElement('a');link.href=url;link.download=`citizenship-ai-account-${new Date().toISOString().slice(0,10)}.json`;link.click();URL.revokeObjectURL(url);}catch{setExportError(true);}finally{setExporting(false);}
+  };
+  const [openSection, setOpenSection] = useState("");
   const [cleared, setCleared] = useState(false);
   const [companionVisible, setCompanionVisible] = useState(getCompanionVisibility);
   const spanishTitles = { privacy: "Política de privacidad", terms: "Términos de uso", ai: "Aviso sobre la IA", government: "Aviso de independencia gubernamental", sources: "Fuentes y ayuda profesional" };
@@ -232,6 +244,36 @@ export function LegalSettings({ onBack, onRestartOnboarding, language = "en", th
     window.dispatchEvent(new Event("citizenshipai:local-data-cleared"));
     setCleared(true);
 };
+
+  if(embedded)return <div className="liquid-settings">
+    <div className="liquid-page-heading"><span>{t('CONFIGURACIÓN','SETTINGS')}</span><h1>{t('Privacidad y preferencias','Privacy and preferences')}</h1><p>{t('Controla tu experiencia en Immigration AI. Personaliza cómo se ve y cómo se utilizan tus datos.','Control your Immigration AI experience. Personalize its appearance and how your data is used.')}</p></div>
+    <GlassSection icon="⚙" title={t('Preferencias de la aplicación','App preferences')} description={t('Personaliza tu experiencia de uso.','Personalize your experience.')}>
+      <div className="liquid-preferences-grid">
+        <GlassCard className="glass-theme-choice"><span className="glass-icon" aria-hidden="true"><GlassIcon name="☼"/></span><label htmlFor="liquid-theme">{t('Apariencia','Appearance')}</label><p>{t('Sigue tu dispositivo o elige un tema.','Follow your device or choose a theme.')}</p><select id="liquid-theme" value={themePreference} onChange={e=>onThemeChange?.(e.target.value)}>{THEME_PREFERENCES.map(value=><option key={value} value={value}>{({system:t('Sistema','System'),light:t('Claro','Light'),dark:t('Oscuro','Dark')})[value]}</option>)}</select></GlassCard>
+        {[
+          ['reduceTransparency','◧',t('Reducir transparencia','Reduce transparency'),t('Disminuye los efectos visuales.','Reduce visual effects.')],
+          ['reduceMotion','∿',t('Reducir movimiento','Reduce motion'),t('Limita las animaciones.','Limit animations.')],
+          ['haptics','▯',t('Vibración','Vibration'),typeof navigator.vibrate==='function'?t('Respuesta al interactuar.','Feedback on interaction.'):t('No disponible en este navegador.','Unavailable in this browser.')],
+        ].map(([key,icon,label,description])=><GlassToggle key={key} icon={icon} label={label} description={description} checked={Boolean(preferences[key])} disabled={key==='haptics'&&typeof navigator.vibrate!=='function'} onChange={e=>setPreferences(p=>({...p,[key]:e.target.checked}))}/>)}
+      </div>
+      <GlassAccordion title={t('Compañero de estudio','Study companion')}><p>{t('El compañero reacciona a las actividades de práctica en este dispositivo. No recibe tus respuestas, grabaciones ni información personal.','The companion reacts locally to practice events. It does not receive your answers, recordings, or personal information.')}</p><button onClick={()=>setCompanionVisible(setCompanionVisibility(!companionVisible))} aria-pressed={companionVisible}>{companionVisible?t('Ocultar compañero de estudio','Hide study companion'):t('Mostrar compañero de estudio','Show study companion')}</button><button onClick={onRestartOnboarding}>{t('Revisar la información de bienvenida','Review first-launch information again')}</button></GlassAccordion>
+    </GlassSection>
+    <GlassSection icon="♧" title={t('Tus datos y privacidad','Your data and privacy')} description={t('Administra la información guardada en tu dispositivo y cuenta.','Manage information stored on your device and account.')}>
+      <div className="liquid-data-grid">
+        <GlassCard as="button" disabled={!session||exporting} onClick={downloadData}><span className="glass-icon" aria-hidden="true"><GlassIcon name="↓"/></span><strong>{exporting?t('Preparando…','Preparing…'):t('Exportar mis datos','Export my data')}</strong><span>{session?t('Descarga los datos de tu cuenta en JSON.','Download your account data as JSON.'):t('Inicia sesión en Mi cuenta para exportar.','Sign in through My account to export.')}</span></GlassCard>
+        <GlassCard as="button" onClick={clearLocalData}><span className="glass-icon danger" aria-hidden="true"><GlassIcon name="⌫"/></span><strong>{t('Eliminar datos locales','Delete local data')}</strong><span>{t('Preferencias y progreso de ciudadanía de este dispositivo. La nube permanece.','Citizenship preferences and progress on this device. Cloud data remains.')}</span></GlassCard>
+        <GlassCard as="a" href="#/asylum/vault"><span className="glass-icon" aria-hidden="true"><GlassIcon name="⇩"/></span><strong>{t('Datos de asilo','Asylum data')}</strong><span>{t('Administra el expediente y su exportación cifrada.','Manage your case file and encrypted export.')}</span></GlassCard>
+      </div>
+      {exportError&&<p role="alert">{t('No pudimos preparar los datos. Inténtalo nuevamente.','We could not prepare your data. Please try again.')}</p>}
+      {cleared&&<p role="status">{t('Datos locales borrados. La copia de la nube permanece.','Local data cleared. Your cloud copy remains.')}</p>}
+      <p>{t('La cuenta y sus datos en servidores se administran desde Mi cuenta. Borrar datos locales no elimina tu cuenta ni los datos de otros dispositivos.','Manage your account and server data through My account. Clearing local data does not delete your account or data on other devices.')} <a href="#/account">{t('Mi cuenta →','My account →')}</a></p>
+    </GlassSection>
+    <GlassSection icon="▤" title={t('Documentos legales','Legal documents')} description={t('Consulta la información completa sobre nuestras políticas y términos.','Read our complete policies and terms.')}>
+      {legalSections.map(section=><GlassAccordion key={section.id} title={es?spanishTitles[section.id]:section.title}><div lang={language}>{es?<SpanishLegalContent id={section.id}/>:section.content}</div></GlassAccordion>)}
+      <GlassAccordion title={t('Contacto y soporte','Contact / Support')}><p>{t('Para preguntas sobre soporte, privacidad, accesibilidad o datos, escribe a','For support, privacy, accessibility, or data questions, contact')} <a href="mailto:info@citizenshipai.us">info@citizenshipai.us</a>.</p><a href="#privacy">citizenshipai.us/#privacy</a></GlassAccordion>
+    </GlassSection>
+    <GlassSection icon="i" title={t('Tu privacidad es importante','Your privacy matters')} description={t('Las preferencias y parte del progreso se guardan en este dispositivo. La cuenta y los servicios conectados también utilizan servidores, según la política de privacidad. Herramienta educativa independiente; no ofrece asesoría legal ni es un servicio del gobierno.','Preferences and some progress are stored on this device. Your account and connected services also use servers, as explained in the privacy policy. Independent educational tool; not legal advice or a government service.')}/>
+  </div>;
 
   return (
     <div className="app settings-screen">

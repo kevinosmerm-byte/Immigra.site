@@ -1,3 +1,4 @@
+import {GlassCard,GlassSection,GlassProgress,GlassIcon} from '../../../shared/design-system/Glass.jsx';
 import { useModalFocus } from "./useModalFocus.js";
 import { createClient } from "@supabase/supabase-js";
 import { Capacitor } from "@capacitor/core";
@@ -218,7 +219,7 @@ export function AccountButton({ language = "en", onClick }) {
 
 export function AccountSheet({ language = "en", onClose, embedded = false }) {
   const modalRef = useModalFocus(!embedded, onClose);
-  const { configured, session, loading, usage, billing, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, openBillingPortal } = useAccount();
+  const { configured, session, loading, usage, billing, promotionAccess, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, openBillingPortal } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("");
@@ -294,37 +295,67 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
   return (
     <div className={embedded ? "account-page" : "account-backdrop"} role="presentation" onMouseDown={(event) => { if (!embedded && event.target === event.currentTarget) onClose(); }}>
       <section ref={modalRef} className="account-sheet" role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : "true"} aria-labelledby="account-title">
-        <button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>
-        <div className="account-mark" aria-hidden="true">◎</div>
-        <p className="account-eyebrow">IMMIGRATION AI · {copy.account.toUpperCase()}</p>
-        <h2 id="account-title">{copy.title}</h2>
-        <p className="account-intro">{copy.intro}</p>
+        {!embedded&&<button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>}
+        <div className="liquid-page-heading"><span>{language==='es'?'TU CUENTA':'YOUR ACCOUNT'}</span><h1 id="account-title">{language==='es'?'Tu cuenta de Immigration AI':'Your Immigration AI account'}</h1><p>{language==='es'?'Gestiona tu suscripción, revisa tus límites y administra tu cuenta.':'Manage your subscription, review your limits and manage your account.'}</p></div>
         {!configured ? <div className="account-message">{copy.unavailable}</div> : loading ? <div className="account-loading" /> : session ? (
           <>
-            <div className="account-identity"><span>{copy.signedIn}</span><strong>{session.user.email}</strong></div>
-            <div className="account-access"><span>{copy.usage}</span><strong>{usage?.tier === "pro" ? "PRO" : copy.free}</strong><small>{copy.promotion}</small></div>
+            <GlassCard className="account-overview"><span className="glass-icon" aria-hidden="true"><GlassIcon name="◎"/></span><div className="account-identity"><span>{copy.signedIn}</span><strong>{session.user.email}</strong></div>
+            <div className="account-access"><span>{copy.usage}</span><strong>{usage?.tier === "pro" ? "PRO" : copy.free}</strong>{promotionAccess&&<small>{copy.promotion}</small>}</div>
             {usage?.metering?.total && (
               <p className="account-metering-note">
                 <strong>{Number(usage.metering.total.requests) || 0}</strong> {copy.requests}
               </p>
             )}
+            </GlassCard>
             {usageFeatures.length > 0 && (
-              <div className="account-usage-summary" aria-label={copy.usageTitle}>
+              <GlassSection className="account-usage-summary" icon="▥" title={language==='es'?'Tu uso de IA':'Your AI usage'} description={language==='es'?'Consulta tus límites disponibles. También se aplican límites diarios.':'Review your allowances. Daily limits also apply.'}><div className="account-usage-grid">
                 <span className="account-usage-title">{copy.usageTitle}</span>
                 {usageFeatures.map(([feature, item]) => {
-                  const limit = Math.max(0, Number(item.freeLimit) || 0);
+                  const pro=usage?.tier==="pro";
+                  const limit = Math.max(0, Number(pro?item.proMonthlyLimit:item.freeLimit) || 0);
                   const used = Math.min(limit, Math.max(0, Number(item.freeUsed) || 0));
                   return (
-                    <div className="account-usage-row" key={feature}>
+                    <GlassCard className="account-usage-row" key={feature}><span className="glass-icon" aria-hidden="true"><GlassIcon name={({writing:"✎",speaking:"♬",realInterview:"◎",classicInterview:"▤"})[feature]}/></span>
                       <span>{FEATURE_LABELS[language === "es" ? "es" : "en"][feature] || feature}</span>
-                      <strong>{used}/{limit}</strong>
-                      <small>{Math.max(0, limit - used)} {copy.available}</small>
-                    </div>
+                      {pro?<><strong>{limit} {language==='es'?'sesiones al mes':'sessions per month'}</strong><small>{language==='es'?'Consumo mensual no disponible en este resumen.':'Monthly consumption unavailable in this summary.'}</small></>:<><strong>{used} {copy.used} / {limit}</strong><small>{Math.max(0, limit - used)} {copy.available} · {language==='es'?'Prueba gratuita':'Free trial'}</small><GlassProgress value={used} max={limit||1} label={`${used} / ${limit}`}/></>}
+                    </GlassCard>
                   );
                 })}
-              </div>
+              </div></GlassSection>
             )}
-            <button className="account-primary account-export" onClick={downloadAccountData} disabled={exporting} type="button">
+          </>
+        ) : (
+          <form onSubmit={submit}>
+            <label className="account-label" htmlFor="account-email">{copy.email}</label>
+            <input id="account-email" className="account-input" type="email" inputMode="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={copy.placeholder} required />
+            <button className="account-primary" disabled={submitting} type="submit"><span>{submitting ? copy.sending : copy.send}</span><b>→</b></button>
+            {status && <p className={`account-status ${status}`}>{status === "sent" ? copy.sent : copy.error}</p>}
+          </form>
+        )}
+        <GlassSection className="account-pricing" icon="♔" title="Plan PRO" description={language==='es'?'Descubre las herramientas y beneficios de Immigration AI PRO.':'Explore Immigration AI PRO tools and benefits.'}>
+          <h2>{language === "es" ? "Qué incluye PRO" : "What PRO includes"}</h2>
+          <ul className="pro-plan-benefits">
+            <li>{AI_FEATURE_ACCESS.speaking.proMonthlyLimit} {language === "es" ? "sesiones de lectura al mes" : "reading sessions per month"}</li>
+            <li>{AI_FEATURE_ACCESS.writing.proMonthlyLimit} {language === "es" ? "sesiones de escritura al mes" : "writing sessions per month"}</li>
+            <li>{AI_FEATURE_ACCESS.classicInterview.proMonthlyLimit} {language === "es" ? "sesiones de entrevista clásica al mes" : "classic interview sessions per month"}</li>
+            <li>{PRO_PLAN.liveAvatarMonthlySessions} {language === "es" ? "sesión de Real Interview al mes" : "Real Interview session per month"}</li>
+          </ul>
+          <p>{language === "es" ? "Consulta tus límites disponibles en esta cuenta. Se aplican límites diarios de uso." : "Check your available allowances in this account. Daily usage limits apply."}</p>
+          {webBillingEnabled && session ? (
+            usage?.tier === "pro" ? (
+              <button className="account-billing-manage" type="button" onClick={() => startBillingAction("portal")} disabled={Boolean(billingAction)}>{billingAction ? copy.openingCheckout : copy.manageSubscription}</button>
+            ) : (
+              <div className="account-billing-actions">
+                <button type="button" onClick={() => startBillingAction("monthly")} disabled={Boolean(billingAction)}><b>{copy.monthly}</b><small>${(Number(billing.introductoryOfferEnabled ? billing.introductoryMonthlyPriceCents : billing.monthlyPriceCents) / 100).toFixed(2)}/mo</small></button>
+                <button type="button" onClick={() => startBillingAction("annual")} disabled={Boolean(billingAction)}><b>{language==='es'?'ANUAL':'ANNUAL'}</b><small>${(Number(billing.annualPriceCents || PRO_PLAN.annualPriceCents) / 100).toFixed(2)}/yr</small></button>
+                <em>{copy.secureCheckout}</em>
+              </div>
+            )
+          ) : <><button className="account-billing-manage" type="button" disabled>{language==='es'?'Actualizar a PRO →':'Upgrade to PRO →'}</button><em>{copy.pricingStatus}</em></>}
+          {billingError && <p className="account-status error account-billing-error">{copy.billingError}</p>}
+          {Capacitor.isNativePlatform() && <><button type="button" disabled>{language === "es" ? "Restaurar compra" : "Restore Purchase"}</button><small>{language === "es" ? "Las compras y la restauración en la tienda todavía no están disponibles." : "Store purchases and restoration are not available yet."}</small></>}
+        </GlassSection>
+        {session&&<GlassSection className="account-management" icon="⚙" title={language==='es'?'Administración de la cuenta':'Account management'} description={language==='es'?'Gestiona y protege tu información.':'Manage and protect your information.'}><div className="account-management-grid">            <button className="account-primary account-export" onClick={downloadAccountData} disabled={exporting} type="button">
               <span>{exporting ? copy.exporting : copy.exportData}</span><b>↓</b>
             </button>
             {exportError && <p className="account-status error">{copy.exportError}</p>}
@@ -344,43 +375,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
                 {deleteError && <p className="account-status error">{deleteError === "active_subscription_requires_cancellation" ? copy.deleteActiveSubscription : copy.deleteError}</p>}
               </div>
             )}
-          </>
-        ) : (
-          <form onSubmit={submit}>
-            <label className="account-label" htmlFor="account-email">{copy.email}</label>
-            <input id="account-email" className="account-input" type="email" inputMode="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder={copy.placeholder} required />
-            <button className="account-primary" disabled={submitting} type="submit"><span>{submitting ? copy.sending : copy.send}</span><b>→</b></button>
-            {status && <p className={`account-status ${status}`}>{status === "sent" ? copy.sent : copy.error}</p>}
-          </form>
-        )}
-        <div className="account-pricing" aria-label={copy.pricing}>
-          <h2>{language === "es" ? "Qué incluye PRO" : "What PRO includes"}</h2>
-          <ul className="pro-plan-benefits">
-            <li>{AI_FEATURE_ACCESS.speaking.proMonthlyLimit} {language === "es" ? "sesiones de lectura al mes" : "reading sessions per month"}</li>
-            <li>{AI_FEATURE_ACCESS.writing.proMonthlyLimit} {language === "es" ? "sesiones de escritura al mes" : "writing sessions per month"}</li>
-            <li>{AI_FEATURE_ACCESS.classicInterview.proMonthlyLimit} {language === "es" ? "sesiones de entrevista clásica al mes" : "classic interview sessions per month"}</li>
-            <li>{PRO_PLAN.liveAvatarMonthlySessions} {language === "es" ? "sesión de Real Interview al mes" : "Real Interview session per month"}</li>
-          </ul>
-          <p>{language === "es" ? "Consulta tus límites disponibles en esta cuenta. Se aplican límites diarios de uso." : "Check your available allowances in this account. Daily usage limits apply."}</p>
-          <span>{copy.pricing}</span>
-          <div>
-            <strong>{billing?.enabled && !billing.introductoryOfferEnabled ? copy.regularPrice : `${copy.launchPrice} $${(PRO_PLAN.introductoryMonthlyPriceCents / 100).toFixed(2)}/mo`}</strong>
-            <small>{billing?.enabled && !billing.introductoryOfferEnabled ? copy.annualPrice : `${copy.regularPrice} · ${copy.annualPrice}`}</small>
-          </div>
-          {webBillingEnabled && session ? (
-            usage?.tier === "pro" ? (
-              <button className="account-billing-manage" type="button" onClick={() => startBillingAction("portal")} disabled={Boolean(billingAction)}>{billingAction ? copy.openingCheckout : copy.manageSubscription}</button>
-            ) : (
-              <div className="account-billing-actions">
-                <button type="button" onClick={() => startBillingAction("monthly")} disabled={Boolean(billingAction)}><b>{copy.monthly}</b><small>${(Number(billing.introductoryOfferEnabled ? billing.introductoryMonthlyPriceCents : billing.monthlyPriceCents) / 100).toFixed(2)}/mo</small></button>
-                <button type="button" onClick={() => startBillingAction("annual")} disabled={Boolean(billingAction)}><b>{copy.yearly}</b><small>${(Number(billing.annualPriceCents || PRO_PLAN.annualPriceCents) / 100).toFixed(2)}/yr</small></button>
-                <em>{copy.secureCheckout}</em>
-              </div>
-            )
-          ) : <em>{copy.pricingStatus}</em>}
-          {billingError && <p className="account-status error account-billing-error">{copy.billingError}</p>}
-          {Capacitor.isNativePlatform() && <><button type="button" disabled>{language === "es" ? "Restaurar compra" : "Restore Purchase"}</button><small>{language === "es" ? "Las compras y la restauración en la tienda todavía no están disponibles." : "Store purchases and restoration are not available yet."}</small></>}
-        </div>
+</div></GlassSection>}
         <p className="account-note">{copy.optional}</p>
       </section>
     </div>

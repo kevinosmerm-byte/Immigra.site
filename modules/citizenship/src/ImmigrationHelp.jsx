@@ -1,3 +1,4 @@
+import {GlassCard} from '../../../shared/design-system/Glass.jsx';
 import { useMemo, useRef, useState } from "react";
 import { useModalFocus } from "./useModalFocus.js";
 import { getJourneyStageLabel } from "./caseTracker.js";
@@ -150,10 +151,10 @@ export default function ImmigrationHelp({ language = "en", caseProfile = {}, onB
 
 function ResourceCard({ item, copy, onOpen, featured = false }) {
   return (
-    <button className={featured ? "immigration-resource-card featured" : "immigration-resource-card"} onClick={() => onOpen(item)}>
+    <GlassCard as="button" className={featured ? "immigration-resource-card featured" : "immigration-resource-card"} onClick={() => onOpen(item)}>
       <span className="immigration-resource-icon">{item.icon}</span>
       <span className="immigration-resource-copy"><small>{item.agency}</small><strong>{item.title}</strong><p>{item.description}</p><em>✓ {copy.official}</em></span>
       <span className="immigration-resource-arrow">{copy.open} <span aria-hidden="true">→</span></span>
-    </button>
+    </GlassCard>
   );
 }
