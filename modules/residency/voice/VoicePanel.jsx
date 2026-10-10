@@ -2,9 +2,9 @@ import React,{useEffect,useRef,useState} from 'react';
 import {createVoiceController,speechSupport,videoForState} from './voiceAdapter.mjs';
 import './voice.css';
 const videoUrls={listening:import.meta.env.BASE_URL+'interviewer/listening.mp4',speaking:import.meta.env.BASE_URL+'interviewer/speaking.mp4'};
-export default function VoicePanel({question,lang,active,draft,onDraft,sessionId}){
+export default function VoicePanel({question,lang,active,draft,onDraft,sessionId,defaultEnabled=false}){
  const t=(es,en)=>lang==='es'?es:en;
- const [enabled,setEnabled]=useState(false),[consent,setConsent]=useState(false),[state,setState]=useState('idle'),[error,setError]=useState(''),[interim,setInterim]=useState(''),[muted,setMuted]=useState(false),[missing,setMissing]=useState({}),[reduced,setReduced]=useState(false);
+ const [enabled,setEnabled]=useState(defaultEnabled),[consent,setConsent]=useState(false),[state,setState]=useState('idle'),[error,setError]=useState(''),[interim,setInterim]=useState(''),[muted,setMuted]=useState(false),[missing,setMissing]=useState({}),[reduced,setReduced]=useState(false);
  const controller=useRef(null),draftRef=useRef(draft),changeRef=useRef(onDraft),baseRef=useRef('');draftRef.current=draft;changeRef.current=onDraft;
  const support=speechSupport();const videoState=videoForState(state);const videoRef=useRef(null);
  useEffect(()=>{const media=window.matchMedia('(prefers-reduced-motion: reduce)');const update=()=>setReduced(media.matches);update();media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
