@@ -35,3 +35,18 @@ test('asylum validates consent before quota and charges only verified identity',
  allow=false;assert.equal((await send(payload)).status,429);assert.equal(paid,1);
  fail=true;assert.equal((await send(payload)).status,503);assert.equal(paid,1);
 });
+
+test('interview feedback supports all personal modules with consent and a shared bounded quota',async t=>{
+ let calls=0,allowed=true;const owners=[];
+ const f=await fixture(t,{PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock',OPENAI_TEXT_MODEL:'mock',SUPABASE_URL:'mock',SUPABASE_SECRET_KEY:'mock'},{reserveAsylumQuota:async()=>true,reserveInterviewQuota:async id=>{owners.push(id);return allowed;},analysisFetch:async()=>{calls++;return Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({observations:[{quote:'I moved in May',kind:'clear_detail'}]})}]}]});}});
+ const payload={module:'asylum',question:'When did you move?',text:'I moved in May',task:'interview_feedback',source_id:'test',domain:'synthetic',language:'en',consent:true,consent_version:'interview-feedback-v1'};
+ const send=(body,auth=true)=>f.request('/api/interview/feedback',{method:'POST',headers:{'content-type':'application/json',...(auth?{authorization:'Bearer A'}:{})},body:JSON.stringify(body)});
+ assert.equal((await send(payload,false)).status,401);
+ assert.equal((await send({...payload,consent:false})).status,400);
+ assert.equal((await send({...payload,module:'civics'})).status,400);
+ assert.equal((await send({...payload,task:'excerpts'})).status,400);
+ assert.equal(calls,0);assert.equal(owners.length,0);
+ for(const module of ['asylum','n400','residency']){const r=await send({...payload,module});assert.equal(r.status,200);assert.equal((await r.json()).observations[0].kind,'clear_detail');}
+ assert.deepEqual(owners,['A','A','A']);assert.equal(calls,3);
+ allowed=false;assert.equal((await send(payload)).status,429);assert.equal(calls,3);
+});

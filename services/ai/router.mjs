@@ -2,7 +2,7 @@ import {mountAsylumTranscription} from './asylum-transcription.mjs';
 import {handle as analyzeAsylum} from '../../modules/asylum/services/analysis/worker.mjs';
 import express from '../../modules/citizenship/node_modules/express/index.js';
 // Dependencies are injected for HTTP tests without credentials or paid calls.
-export function createPlatformRouter({citizenship,requireAccount,getUsageSnapshot,reserveAsylumQuota,reserveAudioQuota,analysisFetch=fetch,env={}}){
+export function createPlatformRouter({citizenship,requireAccount,getUsageSnapshot,reserveAsylumQuota,reserveAudioQuota,reserveInterviewQuota,analysisFetch=fetch,env={}}){
  const app=express();app.disable('x-powered-by');
  const allowedOrigins=new Set(['http://127.0.0.1:4388','http://localhost:4388',...(env.CORS_ORIGIN||'').split(',').map(origin=>origin.trim()).filter(Boolean)]);
  app.use((req,res,next)=>{res.set('Cache-Control','no-store');const origin=req.get('origin');if(origin&&!allowedOrigins.has(origin))return res.status(403).json({error:'ORIGIN_DENIED'});next();});
@@ -29,6 +29,22 @@ export function createPlatformRouter({citizenship,requireAccount,getUsageSnapsho
   if(quotaDenied)return res.status(429).json({error:'DAILY_LIMIT'});
   if(quotaFailed)return res.status(503).json({error:'QUOTA_UNAVAILABLE'});
   res.status(response.status).type('json').send(await response.text());
+ });
+ // Educational answer feedback is separate from realtime voice and source extraction.
+ app.post('/api/interview/feedback',requireAccount,express.json({limit:'24kb'}),async(req,res)=>{
+  if(!status('asylum').ready||!reserveInterviewQuota)return res.status(503).json({error:'AI_NOT_CONFIGURED'});
+  if(!['n400','asylum','residency'].includes(req.body?.module))return res.status(400).json({error:'INVALID_MODULE'});
+  if(req.body.task!=='interview_feedback')return res.status(400).json({error:'INVALID_TASK'});
+  let denied=false,failed=false;
+  const guarded=async(...args)=>{
+   try{if(!await reserveInterviewQuota(req.account.userId)){denied=true;throw Error('quota');}}catch(e){if(!denied)failed=true;throw e;}
+   return analysisFetch(...args);
+  };
+  const request=new Request('https://immigration-ai.internal/api/analyze',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(req.body)});
+  const result=await analyzeAsylum(request,{AI_ENABLED:'true',OPENAI_API_KEY:env.OPENAI_API_KEY,OPENAI_MODEL:env.OPENAI_TEXT_MODEL},guarded,{authorized:true});
+  if(denied)return res.status(429).json({error:'DAILY_LIMIT'});
+  if(failed)return res.status(503).json({error:'QUOTA_UNAVAILABLE'});
+  res.status(result.status).type('json').send(await result.text());
  });
  app.post(['/api/realtime/session'],requireAccount,(req,res)=>res.status(503).json({error:status(req.path.includes('/asylum/')?'asylum':'residency').reason}));
  app.post('/api/coach',(_req,res)=>res.status(410).json({error:'FEATURE_REMOVED'}));

@@ -1,0 +1,4 @@
+.answer-feedback{margin-top:12px;padding:12px;border:1px solid #b8cce077;border-radius:16px;background:#f1f6ffbb;color:#172b3d;max-height:280px;overflow:auto;text-align:left;font-size:14px}
+.answer-feedback label{display:flex;align-items:flex-start;gap:8px;line-height:1.45}
+.answer-feedback input[type=checkbox],.call-screen.voice-first[data-module] .answer-feedback input[type=checkbox]{flex:none;width:18px;min-width:18px;height:18px;min-height:18px;padding:0;margin:2px 0}
+.answer-feedback button{margin-top:10px}.answer-feedback p{margin:8px 0;line-height:1.45}
