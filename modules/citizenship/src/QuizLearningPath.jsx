@@ -16,7 +16,7 @@ const COPY = {
     progress: "Your progress", practiced: "questions practiced", mastered: "questions mastered", recommended: "Recommended next",
     quick: "Quick challenge · 10 questions", question: "Question", continue: "Continue",
     check: "Check answer", placeholder: "Type any official acceptable answer…", correct: "Correct",
-    review: "Review this one", incomplete: "Add the remaining official answer.", preferred: "Recommended answer to memorize",
+    incorrect: "That answer does not match an official answer.", compare: "Compare your answer with the official USCIS answers.", review: "Review this one", incomplete: "Add the remaining official answer.", preferred: "Recommended answer to memorize",
     accepted: "Other official acceptable answers", dynamic: "This answer changes. Verify the current official answer before practicing.",
     finish: "Session complete", finishBody: "Your per-question progress has been saved.", path: "Return to learning path",
     modes: {
@@ -32,7 +32,7 @@ const COPY = {
     progress: "Tu progreso", practiced: "preguntas practicadas", mastered: "preguntas dominadas", recommended: "Siguiente recomendado",
     quick: "Desafío rápido · 10 preguntas", question: "Pregunta", continue: "Continuar",
     check: "Comprobar respuesta", placeholder: "Escribe cualquier respuesta oficial aceptable…", correct: "Correcto",
-    review: "Repasa esta pregunta", incomplete: "Agrega la respuesta oficial que falta.", preferred: "Respuesta recomendada para memorizar",
+    incorrect: "Esa respuesta no coincide con una respuesta oficial.", compare: "Compara tu respuesta con las respuestas oficiales de USCIS.", review: "Repasa esta pregunta", incomplete: "Agrega la respuesta oficial que falta.", preferred: "Respuesta recomendada para memorizar",
     accepted: "Otras respuestas oficiales aceptables", dynamic: "Esta respuesta cambia. Verifica la respuesta oficial actual antes de practicar.",
     finish: "Sesión completada", finishBody: "Tu progreso por pregunta quedó guardado.", path: "Volver a la ruta de aprendizaje",
     modes: {
@@ -194,7 +194,7 @@ function QuizFeedback({ result, question, copy, onNext }) {
   return (
     <div className={`quiz-feedback ${correct ? "correct" : "review"}`} role="status">
       <strong>{correct ? `✓ ${copy.correct}` : copy.review}</strong>
-      {!correct && <p>{result.status === "incomplete" ? copy.incomplete : result.feedback}</p>}
+      {!correct && <p>{result.status === "incomplete" ? copy.incomplete : result.status === "review" ? copy.compare : copy.incorrect}</p>}
       <div><small>{copy.preferred}</small><b>{question.preferredAnswer || copy.dynamic}</b></div>
       {question.acceptedAnswers.length > 1 && <details><summary>{copy.accepted}</summary><ul>{question.acceptedAnswers.slice(question.minimumAnswersRequired || 1).map((item) => <li key={item}>{item}</li>)}</ul></details>}
       <button onClick={() => onNext()}>{copy.continue} →</button>

@@ -3,7 +3,7 @@
 import {readFileSync} from 'node:fs';
 import n400Bank from '../../modules/citizenship/src/data/n400InterviewBank.json' with {type:'json'};
 import {createN400InterviewState,selectNextN400Question,recordN400Answer,recordN400FollowUpAnswer,getContextualN400FollowUps,createN400FollowUpPrompt,parseYesNo} from '../../modules/citizenship/src/n400InterviewEngine.js';
-import {selectAosQuestions,isUncertain} from '../../modules/residency/src/aosEngine.mjs';
+import {selectAosQuestions,isUncertain,aosQuestion} from '../../modules/residency/src/aosEngine.mjs';
 import {normalizeEvaluation} from '../../shared/interview-ui/evaluation-result.mjs';
 
 const asylumBank=readFileSync(new URL('../../modules/asylum/master-package/03_question_bank/question_bank.jsonl',import.meta.url),'utf8').trim().split(/\r?\n/).map(line=>JSON.parse(line));
@@ -13,7 +13,7 @@ const architecture=questions=>{
 };
 export function domainBank(settings){
   if(settings.module==='citizenship')return n400Bank;
-  if(settings.module==='residency')return architecture(selectAosQuestions({route:settings.route,count:30,random:()=>0.5}).map(q=>({id:q.id,concept:q.id,block:q.dificultad,subBlock:'FAMILY',canonicalPracticePrompt:q.pregunta_es,answerType:'text',followUps:[],sourceRefs:[q.fuente]})));
+  if(settings.module==='residency')return architecture(selectAosQuestions({route:settings.route,...(settings.practiceOptions||{count:12}),random:()=>0.5}).map(q=>({id:q.id,concept:q.id,block:q.dificultad,subBlock:'FAMILY',canonicalPracticePrompt:aosQuestion(q,settings.locale),answerType:'text',followUps:[],sourceRefs:[q.fuente]})));
   return architecture(asylumBank.filter(q=>q.uscis_enabled===1).map(q=>({id:q.id,concept:q.id,block:q.category,subBlock:q.subcategory,canonicalPracticePrompt:settings.locale==='es'?q.question_es:q.question_en,answerType:'text',followUps:[]})));
 }
 export function createDomainInterview(settings){

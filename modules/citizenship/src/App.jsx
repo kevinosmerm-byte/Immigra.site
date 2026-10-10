@@ -859,12 +859,12 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
 
   const checkWriting = async () => {
     if (!writingAnswer.trim()) {
-      setAiMessage("Please write your answer first.");
+      setAiMessage(t("Please write your answer first.", "Primero escribe tu respuesta."));
       return;
     }
     setIsAIThinking(true);
     emitCompanionState("thinking");
-    setAiMessage("Checking your writing...");
+    setAiMessage(t("Checking your writing...", "Revisando tu escritura…"));
     try {
       const sentence = writingSentences[writingIndex];
       const localResult = evaluateWritingSentence(sentence, writingAnswer);

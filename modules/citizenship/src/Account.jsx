@@ -303,9 +303,9 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
     <div className={embedded ? "account-page" : "account-backdrop citizenship-surface"} role="presentation" onClick={(event) => { if (!embedded && event.target === event.currentTarget) onClose(); }}>
       <section ref={modalRef} className="account-sheet" role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : "true"} aria-labelledby="account-title">
         {!embedded&&<button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>}
-        <div className="liquid-page-heading"><span>{language==='es'?'TU CUENTA':'YOUR ACCOUNT'}</span><h1 id="account-title">{language==='es'?'Tu cuenta de Immigration AI':'Your Immigration AI account'}</h1><p>{language==='es'?'Gestiona tu suscripción, revisa tus límites y administra tu cuenta.':'Manage your subscription, review your limits and manage your account.'}</p></div>
+        <div className="liquid-page-heading"><span>{language==='es'?'TU CUENTA':'YOUR ACCOUNT'}</span><h1 id="account-title">{language==='es'?'Tu cuenta de Immigration AI':'Your Immigration AI account'}</h1><p>{TEMPORARY_PUBLIC_INTERVIEWS&&!session?(language==='es'?'Las entrevistas están abiertas temporalmente para pruebas.':'Interviews are temporarily open for testing.'):(language==='es'?'Gestiona tu suscripción, revisa tus límites y administra tu cuenta.':'Manage your subscription, review your limits and manage your account.')}</p></div>
         {signInError&&!session&&!status&&<p role="alert">{language==='es'?'El enlace de acceso no es válido o ha caducado. Solicita uno nuevo y abre únicamente el correo más reciente.':'The sign-in link is invalid or expired. Request a new link and open only the latest email.'}</p>}
-        {!configured ? <div className="account-message">{copy.unavailable}</div> : loading ? <div className="account-loading" /> : session ? (
+        {TEMPORARY_PUBLIC_INTERVIEWS&&!session ? null : !configured ? <div className="account-message">{copy.unavailable}</div> : loading ? <div className="account-loading" /> : session ? (
           <>
             <GlassCard className="account-overview"><span className="glass-icon" aria-hidden="true"><GlassIcon name="◎"/></span><div className="account-identity"><span>{copy.signedIn}</span><strong>{session.user.email}</strong></div>
             <div className="account-access"><span>{copy.usage}</span><strong>{usage?.tier === "pro" ? "PRO" : copy.free}</strong>{promotionAccess&&<small>{copy.promotion}</small>}</div>
@@ -340,7 +340,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
             {status && <p className={`account-status ${status}`}>{status === "sent" ? copy.sent : copy.error}</p>}
           </form>
         )}
-        <GlassSection className="account-pricing" icon="♔" title="Plan PRO" description={language==='es'?'Descubre las herramientas y beneficios de Immigration AI PRO.':'Explore Immigration AI PRO tools and benefits.'}>
+        {(!TEMPORARY_PUBLIC_INTERVIEWS||session)?<GlassSection className="account-pricing" icon="♔" title="Plan PRO" description={language==='es'?'Descubre las herramientas y beneficios de Immigration AI PRO.':'Explore Immigration AI PRO tools and benefits.'}>
           <h2>{language === "es" ? "Qué incluye PRO" : "What PRO includes"}</h2>
           <ul className="pro-plan-benefits">
             <li>{AI_FEATURE_ACCESS.speaking.proMonthlyLimit} {language === "es" ? "sesiones de lectura al mes" : "reading sessions per month"}</li>
@@ -362,7 +362,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
           ) : <><button className="account-billing-manage" type="button" disabled>{language==='es'?'Actualizar a PRO →':'Upgrade to PRO →'}</button><em>{webBillingEnabled ? (language === 'es' ? 'Inicia sesión con tu correo para comenzar los 7 días gratis de PRO.' : 'Sign in with your email to start your 7-day PRO trial.') : copy.pricingStatus}</em></>}
           {billingError && <p className="account-status error account-billing-error">{copy.billingError}</p>}
           {Capacitor.isNativePlatform() && <><button type="button" disabled>{language === "es" ? "Restaurar compra" : "Restore Purchase"}</button><small>{language === "es" ? "Las compras y la restauración en la tienda todavía no están disponibles." : "Store purchases and restoration are not available yet."}</small></>}
-        </GlassSection>
+        </GlassSection>:<p role="status">{language==='es'?'Acceso temporal de pruebas: no necesitas contratar PRO ni iniciar sesión para practicar entrevistas. Se mantienen límites globales del servicio.':'Temporary testing access: no PRO subscription or sign-in is needed to practice interviews. Global service limits still apply.'}</p>}
         {session&&<GlassSection className="account-management" icon="⚙" title={language==='es'?'Administración de la cuenta':'Account management'} description={language==='es'?'Gestiona y protege tu información.':'Manage and protect your information.'}><div className="account-management-grid">            <button className="account-primary account-export" onClick={downloadAccountData} disabled={exporting} type="button">
               <span>{exporting ? copy.exporting : copy.exportData}</span><b>↓</b>
             </button>
