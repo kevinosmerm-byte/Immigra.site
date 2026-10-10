@@ -18,7 +18,7 @@ window.asiloQuestions = [
 (function(){
  'use strict';
  const names={kevin:{es:/\b(pablo|raul|raúl|jorge|juan|diego|eddy|reed|rocko)\b/i,en:/\b(david|mark|george|james|richard|ravi|sean|daniel|alex|fred|tom|eddy|reed|rocko)\b/i},sahara:{es:/\b(helena|laura|sabina|monica|mónica|paulina|marisol|flo|sandy|shelley)\b/i,en:/\b(zira|hazel|susan|catherine|linda|heera|samantha|victoria|karen|moira|tessa|flo|sandy|shelley)\b/i}};
- function select(voices,character,language){const lang=language.slice(0,2),pattern=names[character]?.[lang];if(!pattern)return null;return voices.filter(v=>v.lang.toLowerCase().startsWith(lang)&&pattern.test(v.name)).sort((a,b)=>Number(b.lang.toLowerCase()===language.toLowerCase())-Number(a.lang.toLowerCase()===language.toLowerCase()))[0]||voices.find(v=>Object.values(names[character]).some(p=>p.test(v.name)))||null;}
+ function select(voices,character,language){const lang=language.slice(0,2),pattern=names[character]?.[lang];if(!pattern)return null;return voices.filter(v=>v.lang.toLowerCase().startsWith(lang)&&pattern.test(v.name)).sort((a,b)=>Number(b.lang.toLowerCase()===language.toLowerCase())-Number(a.lang.toLowerCase()===language.toLowerCase()))[0]||voices.find(v=>v.lang.toLowerCase().startsWith(lang))||null;}
  window.AsiloCharacterVoices={select,apply(utterance,character){const voice=select(window.speechSynthesis?.getVoices()||[],character,utterance.lang);if(!voice)return false;utterance.voice=voice;utterance.rate=.94;utterance.pitch=1;return true;}};
  // Trigger asynchronous browser voice discovery before the user starts speaking.
  window.speechSynthesis?.getVoices();
@@ -199,7 +199,7 @@ window.AsiloData = {"questions": [{"id": "Q0001", "category": "IDENTITY", "subca
    stop();if(dead)return;
    if(!window.speechSynthesis){say('La lectura de voz no está disponible. Puedes leer la pregunta y activar el micrófono.','Speech playback is unavailable. Read the question and start the microphone.');return;}
    const u=new SpeechSynthesisUtterance(config.question),token=generation;u.lang=en?'en-US':'es-ES';speaking=true;
-   if(window.AsiloCharacterVoices&&!window.AsiloCharacterVoices.apply(u,'kevin')){speaking=false;say('No hay una voz masculina compatible en español. Instala la voz Pablo o Raúl en tu dispositivo y vuelve a abrir la app.','No compatible male English voice is available. Install David or Mark on your device and reopen the app.');return;}
+   if(window.AsiloCharacterVoices&&!window.AsiloCharacterVoices.apply(u,'kevin')){speaking=false;say('No hay una voz en español disponible. Activa una voz en español en tu dispositivo y vuelve a abrir la app.','No English voice is available. Enable an English voice on your device and reopen the app.');return;}
    u.onstart=()=>{if(!dead&&speaking&&token===generation){clearTimeout(readTimer);config.video(true);say('Kevin · Voz masculina: '+(u.voice?.name||'voz del navegador')+(u.voice&&!u.voice.lang.startsWith(en?'en':'es')?' · El acento depende del idioma de esta voz.':''),'Kevin · Male voice: '+(u.voice?.name||'browser voice'));}};
    u.onend=()=>{if(dead||!speaking||token!==generation)return;speaking=false;config.video(false);if(config.microphone)listen();else say('Pregunta terminada. Puedes escribir tu respuesta.','Question finished. You can type your answer.');};
    u.onerror=()=>{if(dead||!speaking||token!==generation)return;speaking=false;config.video(false);say('No se pudo reproducir la voz. Pulsa Repetir pregunta o activa el micrófono.','Voice playback failed. Repeat the question or start the microphone.');};
