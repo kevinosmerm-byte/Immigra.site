@@ -1,3 +1,6 @@
+import ConversationInterview from '../../../shared/interview-ui/ConversationInterview.jsx';
+import {createCivicsConversation} from '../../../shared/interview-ui/civics-conversation.mjs';
+import {normalizeEvaluation} from '../../../shared/interview-ui/evaluation-result.mjs';
 import {TEMPORARY_PUBLIC_INTERVIEWS} from '../../../shared/interview-ui/access-policy.mjs';
 import '../../../shared/design-system/citizenship-exercises.css';
 import {GlassCard,GlassProgress} from '../../../shared/design-system/Glass.jsx';
@@ -28,7 +31,7 @@ import sarahSpeakingImage from "./assets/sarah-speaking.png";
 import { civicsQuestionBank } from "./civicsQuestionBank.js";
 import { evaluateCivicsAnswer } from "./civicsAnswerEvaluator.js";
 import { apiJson } from "./api";
-import { startAudioRecording, transcribeRecording, audioErrorMessage } from "./audio";
+import { createRecordingSession, startAudioRecording, transcribeRecording, audioErrorMessage } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
 import { getPracticeEvents, getPracticeSummary, recordPracticeEvent, getModuleProgress, saveModuleProgress, recordCivicsMistake, migrateLegacyCivicsProgress, getN400LearningProgress } from "./progress";
 import { PodcastLibrary } from "./PodcastPlayer";
@@ -255,6 +258,8 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       .sort((left, right) => (rank.get(left.questionId) ?? Number.MAX_SAFE_INTEGER) - (rank.get(right.questionId) ?? Number.MAX_SAFE_INTEGER) || left.questionId - right.questionId)
       .slice(0, mode === "civics" ? 10 : 5);
   });
+  const [automaticCivics,setAutomaticCivics]=useState(false);
+  const civicConversation=useRef(null);
   const [currentQuestion, setCurrentQuestion] = useState(checkpoint?.questionIndex || 0);
   const [isListening, setIsListening] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
@@ -272,6 +277,9 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   useEffect(()=>{if(!callStarted||isInterviewComplete)return;const timer=setInterval(()=>setElapsed(x=>x+1),1000);return()=>clearInterval(timer);},[callStarted,isInterviewComplete]);
   const [interviewer, setInterviewer] = useState("sarah");
   const [useStandardInterview, setUseStandardInterview] = useState(false);
+  const recordingSession = useRef(null);
+  if (!recordingSession.current) recordingSession.current = createRecordingSession();
+  useEffect(() => { if (isInterviewComplete) recordingSession.current.close(); }, [isInterviewComplete]);
   const recorderRef = useRef(null);
   const microphonePendingRef = useRef(false);
   const voiceAuthorizedForInterview = useRef(false);
@@ -335,6 +343,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       clearTimeout(speechTimerRef.current);
       speechRequestRef.current += 1;
       recorderRef.current?.cancel?.();
+      recordingSession.current.close();
       stopAppSpeech();
     };
   }, [questions, mode, checkpoint, useStandardInterview, callStarted]);
@@ -396,7 +405,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     const generation=captureGeneration.current;
     stopQuestionSpeech();
     try {
-      const recorder = await startAudioRecording();
+      const recorder = await startAudioRecording({session:recordingSession.current});
       if (!mountedRef.current || generation!==captureGeneration.current) { recorder.cancel?.(); return; }
       recorderRef.current = recorder;
       setIsListening(true); setAnswerStatus("");
@@ -424,6 +433,13 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     } catch (error) { if (mountedRef.current && generation===captureGeneration.current) {setMicrophoneError(audioErrorMessage(error,language));setAnswerStatus("error");} }
     finally { if (mountedRef.current && generation===captureGeneration.current) setIsTranscribing(false); }
   };
+  if (automaticCivics) return <ConversationInterview moduleId="citizenship" domain="civics" lang={language} avatar={interviewer} evaluateTurn={civicConversation.current} onStart={()=>{setCorrectAnswers(checkpoint?.score||0);setIncorrectAnswers(checkpoint?.incorrect||0);setIsInterviewComplete(false);setCurrentQuestion(checkpoint?.questionIndex||0);setMissedQuestions((checkpoint?.missedIds||[]).map(id=>({id,english:civicsQuestionBank.find(q=>q.questionId===id)?.question||""})));}} onReview={review=>{
+    setAnswerStatus(review.original_status);
+    setCurrentQuestion(Math.min(review.completed,questions.length-1));
+    if(review.original_status==="correct") {setCorrectAnswers(n=>n+1);onQuestionResult?.(review.reviewed_question_id,true,{mode:"spoken",source:"interview",helpUsed:[]});}
+    if(review.original_status==="incorrect") {setIncorrectAnswers(n=>n+1);addMissedQuestion(questions.find(q=>q.questionId===review.reviewed_question_id));onQuestionResult?.(review.reviewed_question_id,false,{mode:"spoken",source:"interview",helpUsed:[]});}
+    if(review.next_action==="finish")setIsInterviewComplete(true);
+  }} onBack={()=>{setAutomaticCivics(false);}}/>;
   if (isInterviewComplete) {
     const gradedCount = correctAnswers + incorrectAnswers;
     const scorePercentage = gradedCount ? Math.round(correctAnswers / gradedCount * 100) : null;
@@ -448,9 +464,9 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   </div>;
   const question = questions[currentQuestion];
   const suspend=()=>{captureGeneration.current++;recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setIsTranscribing(false);stopQuestionSpeech();setPaused(true);};
-  if(!callStarted)return <section className="platform-panel platform-call-start liquid-glass"><h1>{t('Civics interview','Entrevista cívica')}</h1><p>{t('Choose your interviewer. Speak or type your responses.','Elige tu entrevistador. Puedes responder hablando o escribiendo.')}</p><label>{t('Interviewer','Entrevistador')}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><button onClick={()=>setCallStarted(true)}>{t('Begin interview','Comenzar entrevista')}</button></section>;
+  if(!callStarted)return <section className="platform-panel platform-call-start liquid-glass"><h1>{t('Civics interview','Entrevista cívica')}</h1><p>{t('Choose your interviewer. Speak or type your responses.','Elige tu entrevistador. Puedes responder hablando o escribiendo.')}</p><label>{t('Interviewer','Entrevistador')}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><button onClick={()=>{civicConversation.current=createCivicsConversation(questions,{locale:language,startIndex:currentQuestion});setAutomaticCivics(true);}}>{t('Begin interview','Comenzar entrevista')}</button></section>;
   return <CallView moduleId="citizenship" lang={language} interviewerName={interviewerName} interviewType={t('Civics interview','Entrevista cívica')} mediaBase={'/modules/citizenship/'+interviewer+'-'} state={paused?'paused':isTranscribing?'processing':isSpeaking?'speaking':'listening'} elapsed={elapsed} muted={!isListening} captions={[{who:'ai',text:questionText(question)},...(answer?[{who:'user',text:answer}]:[])]} showCaptions={captions} onCaptions={()=>setCaptions(x=>!x)} onSkip={handleSkip} skipDisabled={readyForNext} progress={{current:currentQuestion+1,total:questions.length}} onMic={()=>{if(!paused&&!isTranscribing&&!readyForNext)(isListening?stopListening:startListening)();}} onRepeat={()=>{suspend();setPaused(false);speakQuestion(questionText(question));}} onPause={()=>{if(paused)setPaused(false);else suspend();}} onSuspend={suspend} onFinish={()=>{suspend();setEndedEarly(true);setCallStarted(false);setIsInterviewComplete(true);}} error={answerStatus==='error'?microphoneError||t('No audio detected. Try again.','No se detectó audio. Inténtalo de nuevo.'):''}>
-  {feedback&&<p role="status">{feedback}</p>}
+  {feedback&&<p role="status" data-evaluation-status={normalizeEvaluation({status:answerStatus},"civics").status}>{feedback}</p>}
   {readyForNext?<button disabled={paused} onClick={goToNextQuestion}>{t('Continue','Continuar')}</button>:<form onSubmit={e=>{e.preventDefault();evaluateInterviewAnswer(typedAnswer);}}><input aria-label={t('Your response','Tu respuesta')} value={typedAnswer} maxLength={1600} disabled={paused||isListening||isTranscribing} onFocus={stopQuestionSpeech} onChange={e=>setTypedAnswer(e.target.value)}/><button disabled={paused||!typedAnswer.trim()||isListening||isTranscribing}>{t('Check','Comprobar')}</button></form>}
   {readyForNext&&answerStatus!=='correct'&&<details><summary>{t('Official answers','Respuestas oficiales')}</summary><ul>{question.acceptedAnswers?.map(x=><li key={x}>{x}</li>)}</ul></details>}
   {language==='es'&&answer&&<p>{questionSpanish(question)}</p>}

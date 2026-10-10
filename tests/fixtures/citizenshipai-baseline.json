@@ -1,0 +1,6160 @@
+{
+  "reference": "c3acd894ebca6cac0e5502292bced6d5ea045a44",
+  "rows": [
+    {
+      "id": 1,
+      "cases": [
+        {
+          "answer": "Republic",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Republic"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Republic",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Republic"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "cases": [
+        {
+          "answer": "(U.S.) Constitution",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(U.S.) Constitution"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(U.S.) Constitution",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(U.S.) Constitution"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "cases": [
+        {
+          "answer": "Forms the government",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Forms the government"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Forms the government",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Forms the government"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "cases": [
+        {
+          "answer": "Self-government",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Self-government"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Self-government",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Self-government"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "cases": [
+        {
+          "answer": "Amendments",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Amendments"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Amendments",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Amendments"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "cases": [
+        {
+          "answer": "(The basic) rights of Americans",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(The basic) rights of Americans"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(The basic) rights of Americans",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(The basic) rights of Americans"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "cases": [
+        {
+          "answer": "Twenty-seven (27)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Twenty-seven (27)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Twenty-seven (27)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Twenty-seven (27)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "cases": [
+        {
+          "answer": "It says America is free from British control.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "It says America is free from British control."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "It says America is free from British control.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "It says America is free from British control."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "cases": [
+        {
+          "answer": "Declaration of Independence",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Declaration of Independence"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Declaration of Independence",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Declaration of Independence"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "cases": [
+        {
+          "answer": "Equality; Liberty",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Equality",
+              "Liberty"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Equality",
+          "result": {
+            "status": "incomplete",
+            "action": "retry",
+            "matchedAnswers": [
+              "Equality"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Please give 2 different answers."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "cases": [
+        {
+          "answer": "Declaration of Independence",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Declaration of Independence"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Declaration of Independence",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Declaration of Independence"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "cases": [
+        {
+          "answer": "Capitalism",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Capitalism"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Capitalism",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Capitalism"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "cases": [
+        {
+          "answer": "Everyone must follow the law.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Everyone must follow the law."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Everyone must follow the law.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Everyone must follow the law."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "cases": [
+        {
+          "answer": "Declaration of Independence",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Declaration of Independence"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Declaration of Independence",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Declaration of Independence"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "cases": [
+        {
+          "answer": "So one part does not become too powerful",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "So one part does not become too powerful"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "So one part does not become too powerful",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "So one part does not become too powerful"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "cases": [
+        {
+          "answer": "Legislative, executive, and judicial",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Legislative, executive, and judicial"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Legislative, executive, and judicial",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Legislative, executive, and judicial"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "cases": [
+        {
+          "answer": "Executive branch",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Executive branch"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Executive branch",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Executive branch"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "cases": [
+        {
+          "answer": "(U.S.) Congress",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(U.S.) Congress"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(U.S.) Congress",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(U.S.) Congress"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "cases": [
+        {
+          "answer": "Senate and House (of Representatives)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Senate and House (of Representatives)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Senate and House (of Representatives)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Senate and House (of Representatives)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "cases": [
+        {
+          "answer": "Writes laws",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Writes laws"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Writes laws",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Writes laws"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "cases": [
+        {
+          "answer": "One hundred (100)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "One hundred (100)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "One hundred (100)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "One hundred (100)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "cases": [
+        {
+          "answer": "Six (6) years",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Six (6) years"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Six (6) years",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Six (6) years"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "cases": [
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        },
+        {
+          "answer": "unknown",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "cases": [
+        {
+          "answer": "Four hundred thirty-five (435)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Four hundred thirty-five (435)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Four hundred thirty-five (435)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Four hundred thirty-five (435)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "cases": [
+        {
+          "answer": "Two (2) years",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Two (2) years"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Two (2) years",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Two (2) years"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "cases": [
+        {
+          "answer": "To more closely follow public opinion",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "To more closely follow public opinion"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "To more closely follow public opinion",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "To more closely follow public opinion"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "cases": [
+        {
+          "answer": "Two (2)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Two (2)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Two (2)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Two (2)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "cases": [
+        {
+          "answer": "Equal representation (for small states)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Equal representation (for small states)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Equal representation (for small states)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Equal representation (for small states)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "cases": [
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        },
+        {
+          "answer": "unknown",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "cases": [
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        },
+        {
+          "answer": "unknown",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "cases": [
+        {
+          "answer": "Citizens of their state",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens of their state"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Citizens of their state",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens of their state"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "cases": [
+        {
+          "answer": "Citizens from their state",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens from their state"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Citizens from their state",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens from their state"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "cases": [
+        {
+          "answer": "Citizens in their (congressional) district",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens in their (congressional) district",
+              "Citizens in their district"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Citizens in their (congressional) district",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens in their (congressional) district",
+              "Citizens in their district"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "cases": [
+        {
+          "answer": "Citizens from their (congressional) district",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens from their (congressional) district"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Citizens from their (congressional) district",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens from their (congressional) district"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 35,
+      "cases": [
+        {
+          "answer": "(Because of) the state’s population",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Because of) the state’s population"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(Because of) the state’s population",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Because of) the state’s population"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 36,
+      "cases": [
+        {
+          "answer": "Four (4) years",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Four (4) years"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Four (4) years",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Four (4) years"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "cases": [
+        {
+          "answer": "(Because of) the 22nd Amendment",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Because of) the 22nd Amendment"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(Because of) the 22nd Amendment",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Because of) the 22nd Amendment"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "cases": [
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        },
+        {
+          "answer": "unknown",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 39,
+      "cases": [
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        },
+        {
+          "answer": "unknown",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 40,
+      "cases": [
+        {
+          "answer": "The Vice President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The Vice President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "The Vice President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The Vice President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 41,
+      "cases": [
+        {
+          "answer": "Signs bills into law",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Signs bills into law"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Signs bills into law",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Signs bills into law"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 42,
+      "cases": [
+        {
+          "answer": "The President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "The President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 43,
+      "cases": [
+        {
+          "answer": "The President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "The President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 44,
+      "cases": [
+        {
+          "answer": "The President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "The President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 45,
+      "cases": [
+        {
+          "answer": "The President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "The President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "cases": [
+        {
+          "answer": "President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 47,
+      "cases": [
+        {
+          "answer": "Advises the President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Advises the President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Advises the President (of the United States)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Advises the President (of the United States)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "cases": [
+        {
+          "answer": "Attorney General; Secretary of Agriculture",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Attorney General",
+              "Secretary of Agriculture"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Attorney General",
+          "result": {
+            "status": "incomplete",
+            "action": "retry",
+            "matchedAnswers": [
+              "Attorney General"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Please give 2 different answers."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "cases": [
+        {
+          "answer": "It decides who is elected president.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "It decides who is elected president."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "It decides who is elected president.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "It decides who is elected president."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "cases": [
+        {
+          "answer": "Supreme Court",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Supreme Court"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Supreme Court",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Supreme Court"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "cases": [
+        {
+          "answer": "Reviews laws",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Reviews laws"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Reviews laws",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Reviews laws"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "cases": [
+        {
+          "answer": "Supreme Court",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Supreme Court"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Supreme Court",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Supreme Court"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "cases": [
+        {
+          "answer": "Nine (9)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Nine (9)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Nine (9)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Nine (9)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "cases": [
+        {
+          "answer": "Five (5)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Five (5)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Five (5)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Five (5)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "cases": [
+        {
+          "answer": "(For) life",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(For) life"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(For) life",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(For) life"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "cases": [
+        {
+          "answer": "To be independent (of politics)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "To be independent (of politics)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "To be independent (of politics)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "To be independent (of politics)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "cases": [
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        },
+        {
+          "answer": "unknown",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "cases": [
+        {
+          "answer": "Print paper money",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Print paper money"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Print paper money",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Print paper money"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "cases": [
+        {
+          "answer": "Provide schooling and education",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Provide schooling and education"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Provide schooling and education",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Provide schooling and education"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "cases": [
+        {
+          "answer": "(It states that the) powers not given to the federal government belong to the states or to the people.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(It states that the) powers not given to the federal government belong to the states or to the people."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(It states that the) powers not given to the federal government belong to the states or to the people.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(It states that the) powers not given to the federal government belong to the states or to the people."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "cases": [
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        },
+        {
+          "answer": "unknown",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "cases": [
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        },
+        {
+          "answer": "unknown",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "review",
+            "action": "review",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "Tu respuesta parece correcta, pero revisemos la respuesta oficial"
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "cases": [
+        {
+          "answer": "Citizens eighteen (18) and older (can vote).",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens eighteen (18) and older (can vote).",
+              "Any citizen can vote. (Women and men can vote.)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Citizens eighteen (18) and older (can vote).",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens eighteen (18) and older (can vote).",
+              "Any citizen can vote. (Women and men can vote.)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "cases": [
+        {
+          "answer": "Citizens",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Citizens",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Citizens"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "cases": [
+        {
+          "answer": "Freedom of expression; Freedom of speech; Freedom of assembly",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Freedom of expression",
+              "Freedom of speech",
+              "Freedom of assembly"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Freedom of expression",
+          "result": {
+            "status": "incomplete",
+            "action": "retry",
+            "matchedAnswers": [
+              "Freedom of expression"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Please give 3 different answers."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "cases": [
+        {
+          "answer": "The United States",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The United States"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "The United States",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The United States"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "cases": [
+        {
+          "answer": "Give up loyalty to other countries; Defend the (U.S.) Constitution",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Give up loyalty to other countries",
+              "Defend the (U.S.) Constitution"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Give up loyalty to other countries",
+          "result": {
+            "status": "incomplete",
+            "action": "retry",
+            "matchedAnswers": [
+              "Give up loyalty to other countries"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Please give 2 different answers."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "cases": [
+        {
+          "answer": "Be born in the United States, under the conditions set by the 14th Amendment",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Be born in the United States, under the conditions set by the 14th Amendment"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Be born in the United States, under the conditions set by the 14th Amendment",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Be born in the United States, under the conditions set by the 14th Amendment"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "cases": [
+        {
+          "answer": "Vote; Run for office",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Vote",
+              "Run for office"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Vote",
+          "result": {
+            "status": "incomplete",
+            "action": "retry",
+            "matchedAnswers": [
+              "Vote"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Please give 2 different answers."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 70,
+      "cases": [
+        {
+          "answer": "Vote",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Vote"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Vote",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Vote"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 71,
+      "cases": [
+        {
+          "answer": "Required by law",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Required by law"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Required by law",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Required by law"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "cases": [
+        {
+          "answer": "Required by law",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Required by law"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Required by law",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Required by law"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 73,
+      "cases": [
+        {
+          "answer": "Freedom",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Freedom"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Freedom",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Freedom"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 74,
+      "cases": [
+        {
+          "answer": "American Indians",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "American Indians"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "American Indians",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "American Indians"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 75,
+      "cases": [
+        {
+          "answer": "Africans",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Africans"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Africans",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Africans"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 76,
+      "cases": [
+        {
+          "answer": "American Revolution",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "American Revolution"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "American Revolution",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "American Revolution"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 77,
+      "cases": [
+        {
+          "answer": "High taxes",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "High taxes"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "High taxes",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "High taxes"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 78,
+      "cases": [
+        {
+          "answer": "(Thomas) Jefferson",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Thomas) Jefferson"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(Thomas) Jefferson",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Thomas) Jefferson"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 79,
+      "cases": [
+        {
+          "answer": "July 4, 1776",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "July 4, 1776"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "July 4, 1776",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "July 4, 1776"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 80,
+      "cases": [
+        {
+          "answer": "(Battle of) Bunker Hill",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Battle of) Bunker Hill"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(Battle of) Bunker Hill",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Battle of) Bunker Hill"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 81,
+      "cases": [
+        {
+          "answer": "New Hampshire; Massachusetts; Rhode Island; Connecticut; New York",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "New Hampshire",
+              "Massachusetts",
+              "Rhode Island",
+              "Connecticut",
+              "New York"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "New Hampshire",
+          "result": {
+            "status": "incomplete",
+            "action": "retry",
+            "matchedAnswers": [
+              "New Hampshire"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Please give 5 different answers."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 82,
+      "cases": [
+        {
+          "answer": "(U.S.) Constitution",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(U.S.) Constitution"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(U.S.) Constitution",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(U.S.) Constitution"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 83,
+      "cases": [
+        {
+          "answer": "(James) Madison",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(James) Madison"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(James) Madison",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(James) Madison"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 84,
+      "cases": [
+        {
+          "answer": "They helped people understand the (U.S.) Constitution.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "They helped people understand the (U.S.) Constitution."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "They helped people understand the (U.S.) Constitution.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "They helped people understand the (U.S.) Constitution."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 85,
+      "cases": [
+        {
+          "answer": "Founded the first free public libraries",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Founded the first free public libraries"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Founded the first free public libraries",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Founded the first free public libraries"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 86,
+      "cases": [
+        {
+          "answer": "“Father of Our Country”",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "“Father of Our Country”"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "“Father of Our Country”",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "“Father of Our Country”"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 87,
+      "cases": [
+        {
+          "answer": "Writer of the Declaration of Independence",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Writer of the Declaration of Independence"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Writer of the Declaration of Independence",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Writer of the Declaration of Independence"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 88,
+      "cases": [
+        {
+          "answer": "“Father of the Constitution”",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "“Father of the Constitution”"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "“Father of the Constitution”",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "“Father of the Constitution”"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 89,
+      "cases": [
+        {
+          "answer": "First Secretary of the Treasury",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "First Secretary of the Treasury"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "First Secretary of the Treasury",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "First Secretary of the Treasury"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 90,
+      "cases": [
+        {
+          "answer": "Louisiana Territory",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Louisiana Territory",
+              "Louisiana"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Louisiana Territory",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Louisiana Territory",
+              "Louisiana"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 91,
+      "cases": [
+        {
+          "answer": "War of 1812",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "War of 1812"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "War of 1812",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "War of 1812"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 92,
+      "cases": [
+        {
+          "answer": "The Civil War",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The Civil War"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "The Civil War",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The Civil War"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 93,
+      "cases": [
+        {
+          "answer": "(Battle of) Fort Sumter",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Battle of) Fort Sumter"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(Battle of) Fort Sumter",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Battle of) Fort Sumter"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 94,
+      "cases": [
+        {
+          "answer": "Freed the slaves (Emancipation Proclamation)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Freed the slaves (Emancipation Proclamation)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Freed the slaves (Emancipation Proclamation)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Freed the slaves (Emancipation Proclamation)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 95,
+      "cases": [
+        {
+          "answer": "Freed the slaves",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Freed the slaves"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Freed the slaves",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Freed the slaves"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 96,
+      "cases": [
+        {
+          "answer": "The Civil War",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The Civil War"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "The Civil War",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The Civil War"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 97,
+      "cases": [
+        {
+          "answer": "14th Amendment",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "14th Amendment"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "14th Amendment",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "14th Amendment"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 98,
+      "cases": [
+        {
+          "answer": "After the Civil War",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "After the Civil War"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "After the Civil War",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "After the Civil War"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 99,
+      "cases": [
+        {
+          "answer": "Susan B. Anthony",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Susan B. Anthony"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Susan B. Anthony",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Susan B. Anthony"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 100,
+      "cases": [
+        {
+          "answer": "World War I",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "World War I"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "World War I",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "World War I"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "cases": [
+        {
+          "answer": "Because Germany attacked U.S. (civilian) ships",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Because Germany attacked U.S. (civilian) ships"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Because Germany attacked U.S. (civilian) ships",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Because Germany attacked U.S. (civilian) ships"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 102,
+      "cases": [
+        {
+          "answer": "1920",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "1920"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "1920",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "1920"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "cases": [
+        {
+          "answer": "Longest economic recession in modern history",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Longest economic recession in modern history"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Longest economic recession in modern history",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Longest economic recession in modern history"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 104,
+      "cases": [
+        {
+          "answer": "The Great Crash (1929)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The Great Crash (1929)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "The Great Crash (1929)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The Great Crash (1929)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 105,
+      "cases": [
+        {
+          "answer": "(Franklin) Roosevelt",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Franklin) Roosevelt"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(Franklin) Roosevelt",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Franklin) Roosevelt"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 106,
+      "cases": [
+        {
+          "answer": "(Bombing of) Pearl Harbor",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Bombing of) Pearl Harbor"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(Bombing of) Pearl Harbor",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Bombing of) Pearl Harbor"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 107,
+      "cases": [
+        {
+          "answer": "General during World War II",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "General during World War II"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "General during World War II",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "General during World War II"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 108,
+      "cases": [
+        {
+          "answer": "Soviet Union",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Soviet Union"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Soviet Union",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Soviet Union"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 109,
+      "cases": [
+        {
+          "answer": "Communism",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Communism"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Communism",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Communism"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 110,
+      "cases": [
+        {
+          "answer": "To stop the spread of communism",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "To stop the spread of communism"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "To stop the spread of communism",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "To stop the spread of communism"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 111,
+      "cases": [
+        {
+          "answer": "To stop the spread of communism",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "To stop the spread of communism"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "To stop the spread of communism",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "To stop the spread of communism"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 112,
+      "cases": [
+        {
+          "answer": "Fought to end racial discrimination",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Fought to end racial discrimination"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Fought to end racial discrimination",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Fought to end racial discrimination"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 113,
+      "cases": [
+        {
+          "answer": "Fought for civil rights",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Fought for civil rights"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Fought for civil rights",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Fought for civil rights"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 114,
+      "cases": [
+        {
+          "answer": "To force the Iraqi military from Kuwait",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "To force the Iraqi military from Kuwait"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "To force the Iraqi military from Kuwait",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "To force the Iraqi military from Kuwait"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 115,
+      "cases": [
+        {
+          "answer": "Terrorists attacked the United States",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Terrorists attacked the United States"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Terrorists attacked the United States",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Terrorists attacked the United States"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 116,
+      "cases": [
+        {
+          "answer": "(Global) War on Terror",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Global) War on Terror"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(Global) War on Terror",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Global) War on Terror"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 117,
+      "cases": [
+        {
+          "answer": "Apache",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Apache"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Apache",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Apache"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 118,
+      "cases": [
+        {
+          "answer": "Light bulb",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Light bulb"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Light bulb",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Light bulb"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 119,
+      "cases": [
+        {
+          "answer": "Washington, D.C.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Washington, D.C."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Washington, D.C.",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Washington, D.C."
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 120,
+      "cases": [
+        {
+          "answer": "New York (Harbor)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "New York (Harbor)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "New York (Harbor)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "New York (Harbor)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 121,
+      "cases": [
+        {
+          "answer": "(Because there were) 13 original colonies",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Because there were) 13 original colonies"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(Because there were) 13 original colonies",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Because there were) 13 original colonies"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 122,
+      "cases": [
+        {
+          "answer": "(Because there is) one star for each state",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Because there is) one star for each state",
+              "(Because) each star represents a state",
+              "(Because there are) 50 states"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "(Because there is) one star for each state",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "(Because there is) one star for each state",
+              "(Because) each star represents a state",
+              "(Because there are) 50 states"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 123,
+      "cases": [
+        {
+          "answer": "The Star-Spangled Banner",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The Star-Spangled Banner"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "The Star-Spangled Banner",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "The Star-Spangled Banner"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 124,
+      "cases": [
+        {
+          "answer": "Out of many, one",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Out of many, one"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "Out of many, one",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "Out of many, one"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 125,
+      "cases": [
+        {
+          "answer": "A holiday to celebrate U.S. independence (from Britain)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "A holiday to celebrate U.S. independence (from Britain)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "A holiday to celebrate U.S. independence (from Britain)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "A holiday to celebrate U.S. independence (from Britain)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 126,
+      "cases": [
+        {
+          "answer": "New Year’s Day; Martin Luther King, Jr. Day; Presidents Day (Washington’s Birthday)",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "New Year’s Day",
+              "Martin Luther King, Jr. Day",
+              "Presidents Day (Washington’s Birthday)"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "New Year’s Day",
+          "result": {
+            "status": "incomplete",
+            "action": "retry",
+            "matchedAnswers": [
+              "New Year’s Day"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Please give 3 different answers."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 127,
+      "cases": [
+        {
+          "answer": "A holiday to honor soldiers who died in military service",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "A holiday to honor soldiers who died in military service"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "A holiday to honor soldiers who died in military service",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "A holiday to honor soldiers who died in military service"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    },
+    {
+      "id": 128,
+      "cases": [
+        {
+          "answer": "A holiday to honor people in the (U.S.) military",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "A holiday to honor people in the (U.S.) military"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "A holiday to honor people in the (U.S.) military",
+          "result": {
+            "status": "correct",
+            "action": "advance",
+            "matchedAnswers": [
+              "A holiday to honor people in the (U.S.) military"
+            ],
+            "needsSemanticReview": false,
+            "feedback": "Correct."
+          }
+        },
+        {
+          "answer": "bananas on Mars",
+          "result": {
+            "status": "incorrect",
+            "action": "repeat",
+            "matchedAnswers": [],
+            "needsSemanticReview": false,
+            "feedback": "That answer does not match an official answer."
+          }
+        },
+        {
+          "answer": "",
+          "result": {
+            "status": "incorrect",
+            "action": "retry",
+            "matchedAnswers": [],
+            "needsSemanticReview": false
+          }
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "text": "Secretary of War (Defense)",
+      "variants": [
+        "Secretary of War Defense",
+        "Secretary of War",
+        "Secretary of Defense"
+      ],
+      "normalized": "secretary of war defense"
+    },
+    {
+      "text": "The Great Compromise (Connecticut Compromise)",
+      "variants": [
+        "The Great Compromise Connecticut Compromise",
+        "The Great Compromise",
+        "Connecticut Compromise"
+      ],
+      "normalized": "the great compromise connecticut compromise"
+    },
+    {
+      "text": "twenty-seven (27)",
+      "variants": [
+        "twenty-seven 27",
+        "twenty-seven",
+        "27"
+      ],
+      "normalized": "twenty seven 27"
+    }
+  ]
+}

@@ -7,12 +7,32 @@ function selectMimeType() {
   return preferredMimeTypes.find((type) => MediaRecorder.isTypeSupported(type));
 }
 
-export async function startAudioRecording() {
+// Owned by one interview component; never shared across users or modules.
+// Disabled between answers, released when the interview ends or unmounts.
+export function createRecordingSession() {
+  let stream = null, generation = 0;
+  return {
+    async acquire() {
+      if (!stream || stream.getAudioTracks().some(track => track.readyState === "ended")) {
+        const token = generation;
+        const acquired = await navigator.mediaDevices.getUserMedia({ audio: true });
+        if (token !== generation) { acquired.getTracks().forEach(track => track.stop()); throw new Error("Recording session closed."); }
+        stream = acquired;
+      }
+      stream.getAudioTracks().forEach(track => { track.enabled = true; });
+      return stream;
+    },
+    release(acquired) { acquired.getAudioTracks().forEach(track => { track.enabled = false; }); },
+    close() { generation++; stream?.getTracks().forEach(track => track.stop()); stream = null; },
+  };
+}
+
+export async function startAudioRecording({ session } = {}) {
   if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
     throw new Error("Microphone recording is not supported on this device.");
   }
 
-  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  const stream = session ? await session.acquire() : await navigator.mediaDevices.getUserMedia({ audio: true });
   const preferredMimeType = selectMimeType();
   const recorder = preferredMimeType
     ? new MediaRecorder(stream, { mimeType: preferredMimeType })
@@ -23,7 +43,8 @@ export async function startAudioRecording() {
   const recording = new Promise((resolve, reject) => {
     const releaseStream = () => {
       clearTimeout(automaticStopTimer);
-      stream.getTracks().forEach((track) => track.stop());
+      if (session) session.release(stream);
+      else stream.getTracks().forEach((track) => track.stop());
     };
 
     recorder.ondataavailable = (event) => {
@@ -58,7 +79,8 @@ export async function startAudioRecording() {
     },
     cancel: () => {
       if (recorder.state !== "inactive") recorder.stop();
-      stream.getTracks().forEach((track) => track.stop());
+      if (session) session.release(stream);
+      else stream.getTracks().forEach((track) => track.stop());
     },
   };
 }

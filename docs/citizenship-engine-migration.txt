@@ -1,0 +1,100 @@
+CITIZENSHIPAI -> IMMIGRATION AI: audit and automatic-turn migration
+2026-10-10
+Reference repository: kevinosmerm-byte/citizenshipai
+Reference commit: c3acd894ebca6cac0e5502292bced6d5ea045a44
+Destination branch: design/citizenship-visual
+
+VERIFIED ROOT CAUSE
+The N-400 engine, official civics evaluator, banks and progress functions had
+not been lost. The shared AI conversation bypassed them, and Realtime VAD
+created an independent response before the evaluation finished. The civics
+standard UI still required manual recording/continuation. N-400 local voice
+also requested application consent again for each answer.
+
+COMPARISON BEFORE / AFTER
+n400InterviewEngine.js: IDENTICAL (normalized line endings)
+civicsAnswerEvaluator.js: IDENTICAL (normalized line endings)
+civicsQuestionBank.js: IDENTICAL (normalized line endings)
+N400InterviewPractice.jsx: ADAPTED; original core functions retained
+progress.js: IDENTICAL (normalized line endings)
+data/n400InterviewBank.json: IDENTICAL (normalized line endings)
+data/uscis2025Civics.json: IDENTICAL (normalized line endings)
+
+ORIGINAL FUNCTION | ORIGINAL FILE | DESTINATION | CHANGE | TEST | RESULT
+getN400ApplicantProfile | src/n400InterviewEngine.js | modules/citizenship/src/n400InterviewEngine.js | EXISTS AND WORKS; explicit confirmation retained; no automatic persistent profile writes | Original suite + interview-domain.test.mjs; engine snapshot | PASS
+parseYesNo | src/n400InterviewEngine.js | modules/citizenship/src/n400InterviewEngine.js | EXISTS, formerly disconnected from shared AI; reused unchanged by domain adapter | Original suite + interview-domain.test.mjs; engine snapshot | PASS
+conditionsMatch | src/n400InterviewEngine.js | modules/citizenship/src/n400InterviewEngine.js | EXISTS, formerly disconnected from shared AI; reused unchanged by domain adapter | Original suite + interview-domain.test.mjs; engine snapshot | PASS
+createN400InterviewState | src/n400InterviewEngine.js | modules/citizenship/src/n400InterviewEngine.js | EXISTS, formerly disconnected from shared AI; reused unchanged by domain adapter | Original suite + interview-domain.test.mjs; engine snapshot | PASS
+selectNextN400Question | src/n400InterviewEngine.js | modules/citizenship/src/n400InterviewEngine.js | EXISTS, formerly disconnected from shared AI; reused unchanged by domain adapter | Original suite + interview-domain.test.mjs; engine snapshot | PASS
+getContextualN400FollowUps | src/n400InterviewEngine.js | modules/citizenship/src/n400InterviewEngine.js | EXISTS, formerly disconnected from shared AI; reused unchanged by domain adapter | Original suite + interview-domain.test.mjs; engine snapshot | PASS
+recordN400Answer | src/n400InterviewEngine.js | modules/citizenship/src/n400InterviewEngine.js | EXISTS, formerly disconnected from shared AI; reused unchanged by domain adapter | Original suite + interview-domain.test.mjs; engine snapshot | PASS
+recordN400FollowUpAnswer | src/n400InterviewEngine.js | modules/citizenship/src/n400InterviewEngine.js | EXISTS, formerly disconnected from shared AI; reused unchanged by domain adapter | Original suite + interview-domain.test.mjs; engine snapshot | PASS
+createN400FollowUpPrompt | src/n400InterviewEngine.js | modules/citizenship/src/n400InterviewEngine.js | EXISTS, formerly disconnected from shared AI; reused unchanged by domain adapter | Original suite + interview-domain.test.mjs; engine snapshot | PASS
+confirmN400ProfileAnswer | src/n400InterviewEngine.js | modules/citizenship/src/n400InterviewEngine.js | EXISTS AND WORKS; explicit confirmation retained; no automatic persistent profile writes | Original suite + interview-domain.test.mjs; engine snapshot | PASS
+normalizeCivicsAnswer | src/civicsAnswerEvaluator.js | modules/citizenship/src/civicsAnswerEvaluator.js | EXISTS AND WORKS; unchanged deterministic grading; normalized UI adapter only | 512 original-result fixtures + official variants + original tests | PASS
+officialAnswerVariants | src/civicsAnswerEvaluator.js | modules/citizenship/src/civicsAnswerEvaluator.js | EXISTS AND WORKS; unchanged deterministic grading; normalized UI adapter only | 512 original-result fixtures + official variants + original tests | PASS
+evaluateCivicsAnswer | src/civicsAnswerEvaluator.js | modules/citizenship/src/civicsAnswerEvaluator.js | EXISTS AND WORKS; unchanged deterministic grading; normalized UI adapter only | 512 original-result fixtures + official variants + original tests | PASS
+civicsQuestionBank | src/civicsQuestionBank.js | modules/citizenship/src/civicsQuestionBank.js | EXISTS AND WORKS; unchanged bank and applicable dynamic resolution | Original bank/source tests + 128-question baseline | PASS
+getCivicsQuestion | src/civicsQuestionBank.js | modules/citizenship/src/civicsQuestionBank.js | EXISTS AND WORKS; unchanged bank and applicable dynamic resolution | Original bank/source tests + 128-question baseline | PASS
+progressMetrics | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+getModuleProgress | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+saveModuleProgress | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+getN400LearningProgress | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+recordN400Review | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+getContinueStudying | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+migrateLegacyCivicsProgress | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+recordCivicsMistake | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+getPracticeEvents | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+recordPracticeEvent | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+clearPracticeEvents | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+getPracticeSummary | src/progress.js | modules/citizenship/src/progress.js | EXISTS AND WORKS; unchanged; connected conversation concept IDs to recordN400Review | Original progress tests; no personal answers persisted | PASS
+
+ADAPTED FILES
+services/ai/interview-domain.mjs: imports original N-400 functions; wraps
+320 asylum questions by block and selected family-route questions; ephemeral
+statements in chronological turn order; at most one AI clarification per
+concept; original N-400 follow-ups retained. Uncertainty is not a profile fact.
+services/ai/interview-engine.mjs: authoritative server question, transactional
+turn commit, retry ID, no civics model grading, avatar-independent evaluator,
+server VAD 1200 ms with noise reduction; automatic provider response disabled.
+shared/interview-ui/InterviewAIEngine.mjs: one WebRTC stream; final transcript
+only; automatic evaluation; deduplication; sequential spoken feedback/question;
+mic disabled during interviewer playback; pause/retry/repeat reuse the session.
+shared/interview-ui/civics-conversation.mjs: original official evaluator over
+already resolved questions; automatic next question; no paid evaluation call.
+shared/interview-ui/evaluation-result.mjs: normalized UI statuses only.
+ConversationInterview.jsx and App.jsx: wire the existing shared interface,
+original progress, and local civics adapter. No new routes or CSS.
+N400InterviewPractice.jsx and audio.js: retain original local flow and explicit
+profile confirmation, remember session consent, reuse microphone stream until
+end/unmount. Other audio consumers retain their previous default behavior.
+router.mjs / diagnostics.mjs: bounded error codes and content-free phase logs.
+
+LOCAL VALIDATION
+Original reference: 233/233 tests before edits.
+Destination CitizenshipAI quality: 232/232 tests; lint, build, mobile, iOS and
+App Store checks pass. Platform: 146/146 at pre-publication checkpoint.
+512 fixtures were generated by running the ORIGINAL evaluator, not by the
+adapter. Correct, incorrect, incomplete and missing dynamic-answer cases match.
+Production acceptance is NOT established by these tests or the build.
+
+PRODUCTION ACCEPTANCE CHECKLIST (REAL MICROPHONE REQUIRED)
+For each of Civics, N-400, Asylum and Residency:
+1. Open immigra.site in a real browser, start conversation, allow the microphone.
+2. Say a fictional answer; do not press Send, Evaluate or Continue.
+3. Pause about 1.2 seconds. Confirm final transcript, feedback then next question.
+4. Answer twice more without another permission prompt. Try a brief thinking
+   pause, 'I need a moment', 'I do not remember', and resuming/repeating.
+5. Confirm only one evaluation for each final transcript, no echo, and correct
+   category-specific questions. End and confirm microphone releases.
+6. Repeat on a phone and with each avatar. Never use real private case details
+   for QA. Browser permission policies may require a new grant after revocation.
+Expected safe logs: SPEAKING_QUESTION, LISTENING, USER_SPEAKING,
+TURN_COMPLETE, TRANSCRIBING, EVALUATING, SPEAKING_FEEDBACK,
+SPEAKING_NEXT_QUESTION plus provider/capture diagnostics. No transcript/key logs.
+
+PENDING
+Real production microphone -> transcription -> evaluation -> audible feedback
+-> next question in all four modules, including mobile, must be witnessed.
+Bank N-400 English wording and existing residency Spanish wording are preserved;
+this migration does not create or verify new translations.

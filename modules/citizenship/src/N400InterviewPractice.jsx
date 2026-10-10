@@ -1,9 +1,10 @@
+import {TEMPORARY_PUBLIC_INTERVIEWS} from '../../../shared/interview-ui/access-policy.mjs';
 import ConversationInterview from '../../../shared/interview-ui/ConversationInterview.jsx';
 import AnswerFeedback from '../../../shared/interview-ui/AnswerFeedback.jsx';
 import CallView from '../../../shared/interview-ui/CallView.jsx';
 import { useEffect, useRef, useState } from "react";
 import n400Bank from "./data/n400InterviewBank.json";
-import { startAudioRecording, transcribeRecording, audioErrorMessage } from "./audio";
+import { createRecordingSession, startAudioRecording, transcribeRecording, audioErrorMessage } from "./audio";
 import { speakAppText, stopAppSpeech } from "./speech";
 import { recordN400Review } from "./progress.js";
 import {
@@ -94,6 +95,9 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const [isComplete, setIsComplete] = useState(false);
   const [skipped, setSkipped] = useState(0);
   const [interviewer, setInterviewer] = useState("sarah");
+  const recordingSession = useRef(null);
+  if (!recordingSession.current) recordingSession.current = createRecordingSession();
+  useEffect(() => { if (isComplete) recordingSession.current.close(); }, [isComplete]);
   const recorderRef = useRef(null);
   const captureGeneration=useRef(0);
   const microphonePendingRef = useRef(false);
@@ -152,6 +156,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
       clearTimeout(speechTimerRef.current);
       speechRequestRef.current += 1;
       recorderRef.current?.cancel?.();
+      recordingSession.current.close();
       stopAppSpeech();
       setCompanionSessionVisibility(getCompanionVisibility());
     };
@@ -239,7 +244,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     const generation=captureGeneration.current;
     stopQuestionSpeech();
     try {
-      const recorder = await startAudioRecording();
+      const recorder = await startAudioRecording({session:recordingSession.current});
       if (!mountedRef.current||generation!==captureGeneration.current) { recorder.cancel?.(); return; }
       recorderRef.current = recorder;
       setIsListening(true);
@@ -248,7 +253,8 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     } catch (error) { if (mountedRef.current) {setMicrophoneError(audioErrorMessage(error,language));setAnswerStatus("error");} }
     finally { microphonePendingRef.current = false; }
   };
-  const startListening = () => requestVoiceAccess ? requestVoiceAccess(beginListening) : beginListening();
+  const voiceAuthorized = useRef(false);
+  const startListening = () => !requestVoiceAccess || voiceAuthorized.current ? beginListening() : requestVoiceAccess(() => { voiceAuthorized.current = true; beginListening(); });
   const stopListening = async () => {
     const generation=captureGeneration.current;
     const recorder = recorderRef.current;
@@ -257,7 +263,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     if (!recorder) return;
     setIsTranscribing(true);
     try {
-      const transcript = await transcribeRecording(await recorder.stop());
+      const transcript = await transcribeRecording(await recorder.stop(), {publicInterview:TEMPORARY_PUBLIC_INTERVIEWS});
       if (!mountedRef.current||generation!==captureGeneration.current) return;
       if (transcript) acceptResponse(transcript);
       else setAnswerStatus("error");
@@ -275,7 +281,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     else advanceToNextConcept(recordN400Answer(flow.state, question, ""));
   };
 
-  if(conversation)return <ConversationInterview moduleId="citizenship" lang={language} avatar={interviewer} initialQuestion={flow.question?.english||""} onBack={()=>setConversation(false)}/>;
+  if(conversation)return <ConversationInterview moduleId="citizenship" lang={language} avatar={interviewer} initialQuestion={flow.question?.english||""} context={JSON.stringify({n400Profile:confirmedProfileRef.current,learningProfile:brainContext.learningProfile})} onReview={review=>{if(review.reviewed_kind!=="concept")return;const needsPractice=["uncertain","incomplete","ambiguous","needs_clarification"].includes(review.status);recordN400Review({reviewedConceptIds:needsPractice?[]:[review.reviewed_concept_id],skippedConceptIds:needsPractice?[review.reviewed_concept_id]:[]},userKey);}} onBack={()=>setConversation(false)}/>;
   if (isComplete) return (
     <div className="interview-screen">
       <div className="results-card n400-results-card">
