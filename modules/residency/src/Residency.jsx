@@ -1,3 +1,4 @@
+import AosPractice from './AosPractice.jsx';
 import AnswerFeedback from '../../../shared/interview-ui/AnswerFeedback.jsx';
 import {PremiumIcon} from '../../../shared/design-system/PremiumIcon.jsx';
 import LocalTools from './LocalTools.jsx';
@@ -10,7 +11,8 @@ import React,{useState,useRef,useEffect} from 'react';
 import {createLocalAdapter,relationships,scenarioList,translatedQuestion} from './adapter.mjs';
 import './residency.css';
 const names={marriage_husband_petitioner:['Esposo pide a esposa','Husband petitions for wife'],marriage_wife_petitioner:['Esposa pide a esposo','Wife petitions for husband'],child_petitions_mother:['Hijo/a pide a madre','Child petitions for mother'],child_petitions_father:['Hijo/a pide a padre','Child petitions for father'],parent_petitions_child:['Padre/madre pide a hijo/a','Parent petitions for child']};
-export default function Residency({lang,onHome,active=true}){
+export default function Residency(props){const [legacy,setLegacy]=useState(false);return legacy?<><button className="res-secondary" onClick={()=>setLegacy(false)}>Volver al simulador de ajuste de estatus</button><LegacyResidency {...props}/></>:<AosPractice {...props} onLegacy={()=>setLegacy(true)}/>;}
+function LegacyResidency({lang,onHome,active=true}){
  const t=(es,en)=>lang==='es'?es:en;
  const [toolsOpen,setToolsOpen]=useState(false);
  const [showReport,setShowReport]=useState(false);

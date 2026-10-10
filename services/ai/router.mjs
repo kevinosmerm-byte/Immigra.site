@@ -1,3 +1,4 @@
+import {aosFeedback} from '../../modules/residency/src/aosFeedback.mjs';
 import {mountAsylumTranscription} from './asylum-transcription.mjs';
 import {handle as analyzeAsylum} from '../../modules/asylum/services/analysis/worker.mjs';
 import express from '../../modules/citizenship/node_modules/express/index.js';
@@ -46,6 +47,7 @@ export function createPlatformRouter({citizenship,requireAccount,getUsageSnapsho
   if(failed)return res.status(503).json({error:'QUOTA_UNAVAILABLE'});
   res.status(result.status).type('json').send(await result.text());
  });
+ app.post('/api/residency/conversation',requireAccount,express.json({limit:'48kb'}),async(req,res)=>{const result=await aosFeedback(req.body,{env,fetchImpl:analysisFetch,reserveQuota:reserveInterviewQuota,userId:req.account.userId});res.status(result.status).json(result);});
  app.post(['/api/realtime/session'],requireAccount,(req,res)=>res.status(503).json({error:status(req.path.includes('/asylum/')?'asylum':'residency').reason}));
  app.post('/api/coach',(_req,res)=>res.status(410).json({error:'FEATURE_REMOVED'}));
  if(reserveAudioQuota)mountAsylumTranscription(app,{requireAccount,env,reserveQuota:reserveAudioQuota});
