@@ -156,8 +156,10 @@ export function PromotionAccessProvider({ children }) {
 
   const modalRef = useModalFocus(Boolean(pending), close);
   const copy = pending ? COPY[pending.language] : COPY.en;
-  const blockedTitle = pending?.reason === "quota_exhausted" ? copy.quotaTitle : copy.unavailableTitle;
-  const blockedBody = pending?.reason === "quota_exhausted" ? copy.quotaBody : copy.unavailableBody;
+  const accountRequired = pending?.reason === "account_required";
+  const spanish = pending?.language === "es";
+  const blockedTitle = accountRequired ? (spanish ? "Inicia sesión para practicar con IA" : "Sign in to practice with AI") : pending?.reason === "quota_exhausted" ? copy.quotaTitle : copy.unavailableTitle;
+  const blockedBody = accountRequired ? (spanish ? "Entra en tu cuenta para consultar tus sesiones disponibles y comenzar la práctica." : "Sign in to check your available sessions and start practicing.") : pending?.reason === "quota_exhausted" ? copy.quotaBody : copy.unavailableBody;
   const feature = pending ? getAiFeatureConfig(pending.feature) : null;
   const localUsage = pending ? getAiUsageSummary().features[pending.feature] : null;
   const remoteUsage = pending ? accountUsage?.features?.[pending.feature] : null;
@@ -175,10 +177,11 @@ export function PromotionAccessProvider({ children }) {
           <section ref={modalRef} className="promotion-access-sheet" role="dialog" aria-modal="true" aria-labelledby="promotion-access-title">
             <button className="promotion-access-close" onClick={close} type="button" aria-label={copy.close}>×</button>
             <div className="promotion-access-orb" aria-hidden="true">✦</div>
-            <p className="promotion-access-eyebrow">{copy.eyebrow}</p>
+            <p className="promotion-access-eyebrow">{accountRequired ? (spanish ? "TU CUENTA" : "YOUR ACCOUNT") : copy.eyebrow}</p>
             <h2 id="promotion-access-title">{pending.blocked ? blockedTitle : copy.title}</h2>
-            <div className="promotion-access-feature"><span>{feature.label}</span><strong>{usage?.limit || 2} / {usage?.limit || 2}</strong></div>
+            <div className="promotion-access-feature"><span>{feature.label}</span>{!accountRequired && remoteUsage && <strong>{usage.used} / {usage.limit}</strong>}</div>
             <p className="promotion-access-body">{pending.blocked ? blockedBody : copy.body}</p>
+            {accountRequired && <button className="promotion-access-continue" type="button" onClick={() => { close(); window.location.hash = "/account"; }}><span>{spanish ? "Iniciar sesión" : "Sign in"}</span><b>→</b></button>}
             {!pending.blocked && <div className="promotion-access-divider"><span></span><small>LAUNCH ACCESS</small><span></span></div>}
             {!pending.blocked && <button className="promotion-access-continue" onClick={continuePromotion} type="button"><span>{copy.continue}</span><b>→</b></button>}
             <p className="promotion-access-note">{copy.note}</p>
