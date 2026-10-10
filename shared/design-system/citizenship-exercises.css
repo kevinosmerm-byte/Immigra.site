@@ -104,3 +104,18 @@ html[data-reduce-transparency=true] #root #main #citizenship-root :is(.did-live-
 #root #main #citizenship-root .quiz-path-progress-ring b { position: relative; z-index: 1; color: #1761a5; font-size: 16px; }
 
 #root #main #citizenship-root .quiz-path-intro { background: transparent !important; box-shadow: none !important; }
+
+/* Quiet, dismissible invitation; preserve the existing eligibility and actions. */
+html body #root #citizenship-root .pro-benefits-notice { display: grid; grid-template-columns: auto minmax(0,1fr) auto auto; align-items: center; gap: 14px; margin: 14px 0; padding: 16px 18px; border: 1px solid var(--liquid-border,#ffffffa6) !important; border-radius: 22px; background: var(--liquid-surface,#ffffff8c) !important; color: var(--liquid-text,#172b3d) !important; backdrop-filter: blur(20px) saturate(160%); box-shadow: none !important; }
+html body #root #citizenship-root .pro-benefits-badge { padding: 9px 8px; border-radius: 12px; color: #326797 !important; background: #dceafb99 !important; font-size: 10px; letter-spacing: .05em; }
+html body #root #citizenship-root .pro-benefits-notice strong { font-size: 14px; font-weight: 600; color: var(--liquid-text,#172b3d) !important; }
+html body #root #citizenship-root .pro-benefits-notice p { margin: 5px 0; font-size: 13px; color: var(--liquid-muted,#536984) !important; }
+html body #root #citizenship-root .pro-benefits-notice small { font-size: 11px; color: var(--liquid-muted,#536984) !important; }
+html body #root #citizenship-root .pro-benefits-notice .pro-benefits-action { min-height: 44px; padding: 10px 16px; border: 1px solid #a8c4df70 !important; border-radius: 15px; background: #e1eefb88 !important; color: #245782 !important; box-shadow: none !important; font-size: 13px; font-weight: 600; }
+html body #root #citizenship-root .pro-benefits-notice .pro-benefits-dismiss { width: 44px; min-width: 44px; height: 44px; min-height: 44px; padding: 0; border: 0 !important; border-radius: 50%; background: transparent !important; color: var(--liquid-muted,#536984) !important; font-size: 22px; box-shadow: none !important; }
+html body #root #citizenship-root .pro-benefits-notice button:focus-visible { outline: 2px solid #267bcc; outline-offset: 3px; }
+@media(max-width:600px) { html body #root #citizenship-root .pro-benefits-notice { grid-template-columns: auto minmax(0,1fr) 44px; gap: 10px; padding: 14px; } html body #root #citizenship-root .pro-benefits-notice .pro-benefits-dismiss { grid-column: 3; grid-row: 1; } html body #root #citizenship-root .pro-benefits-notice .pro-benefits-action { grid-column: 2; justify-self: start; } }
+html[data-reduce-transparency=true] body #root #citizenship-root .pro-benefits-notice { background: var(--liquid-solid,#f4f8fc) !important; backdrop-filter: none; }
+
+#root #main #citizenship-root :is(.live-interview-screen,.live-avatar-only-screen,.live-interview-screen .interview-header,.live-avatar-only-content,.did-live-avatar-intro,.did-live-avatar-recovery) { background: transparent !important; box-shadow: none !important; }
+#root #main #citizenship-root .did-live-avatar { background: var(--liquid-surface,#ffffff8c) !important; }

@@ -88,13 +88,20 @@ export function PodcastProvider({ children }) {
     if (audioRef.current) audioRef.current.playbackRate = next;
   }, []);
 
+  const dismissPlayer = useCallback(() => {
+    const audio = audioRef.current;
+    if (audio) { audio.pause(); audio.removeAttribute("src"); audio.load(); }
+    setPlaying(false); setTrack(null); setFullPlayerOpen(false);
+    setCurrentTime(0); setDuration(0); setError("");
+  }, []);
+
   const value = useMemo(() => ({
     track, playing, currentTime, duration, speed, error, fullPlayerOpen,
-    selectTrack, togglePlayback, seekTo, skip, changeSpeed,
+    selectTrack, togglePlayback, seekTo, skip, changeSpeed, dismissPlayer,
     openFullPlayer: () => track && setFullPlayerOpen(true),
     closeFullPlayer: () => setFullPlayerOpen(false),
     formatTime: formatPodcastTime,
-  }), [track, playing, currentTime, duration, speed, error, fullPlayerOpen, selectTrack, togglePlayback, seekTo, skip, changeSpeed]);
+  }), [track, playing, currentTime, duration, speed, error, fullPlayerOpen, selectTrack, togglePlayback, seekTo, skip, changeSpeed, dismissPlayer]);
 
   return (
     <PodcastContext.Provider value={value}>
@@ -147,6 +154,7 @@ function PodcastMiniPlayer() {
       <button className="podcast-mini-toggle" onClick={player.togglePlayback} aria-label={player.playing ? (es ? "Pausar podcast" : "Pause podcast") : (es ? "Reproducir podcast" : "Play podcast")}>
         <PodcastIcon kind={player.playing ? "pause" : "play"} />
       </button>
+      <button className="podcast-mini-dismiss" onClick={player.dismissPlayer} aria-label={es ? "Cerrar podcast y detener audio" : "Close podcast and stop audio"}><PodcastIcon kind="close" /></button>
       <div className="podcast-mini-progress"><span style={{ width: `${progress}%` }}></span></div>
     </aside>
   );

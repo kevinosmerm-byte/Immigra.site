@@ -33,3 +33,6 @@
 #root #main #citizenship-root .podcast-speed button.active{background:#2563a6!important;color:white!important}
 @media(max-width:1000px){#root #main #citizenship-root .podcast-card{grid-template-columns:110px minmax(0,1fr);padding:18px;gap:16px}#root #main #citizenship-root .podcast-card .podcast-artwork{width:110px;height:160px}#root #main #citizenship-root .podcast-card-copy>strong{font-size:19px}}
 @media(max-width:700px){#root #main #citizenship-root .podcast-card-grid{grid-template-columns:1fr}#root #main #citizenship-root .podcast-full-player{padding:20px}}
+
+#root .podcast-mini-dismiss { flex: 0 0 44px; width: 44px; height: 44px; padding: 10px; border: 1px solid var(--liquid-border,#ffffffb3); border-radius: 50%; color: var(--liquid-text,#173a63); background: var(--liquid-surface,#ffffff8c); }
+#root .podcast-mini-open { min-width: 0; flex: 1; }

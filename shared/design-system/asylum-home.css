@@ -1,0 +1,127 @@
+/* Shared Liquid Glass material, with the asylum violet accent. */
+#root #main .asylum-surface[data-asylum-route="practice"] { background: transparent !important; color: var(--liquid-text,#14213c); }
+#root #main .asylum-surface[data-asylum-route="practice"] :is(.workspace,.main,.content,.app-main) { background: transparent !important; }
+#root #main .asylum-surface[data-asylum-route="practice"] .page-head { padding: 30px 0 24px; background: transparent; }
+#root #main .asylum-surface[data-asylum-route="practice"] h1 { font-size: clamp(36px,5vw,60px); line-height: 1.1; letter-spacing: -.04em; margin: 14px 0; }
+#root #main .asylum-surface[data-asylum-route="practice"] .eyebrow { color: #7139e8; }
+#root #main .asylum-surface[data-asylum-route="practice"] .cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
+#root #main .asylum-surface[data-asylum-route="practice"] .card { display: flex; flex-direction: column; align-items: flex-start; padding: 26px; border: 1px solid var(--liquid-border,#ffffffb3) !important; border-radius: 28px; background: var(--liquid-surface,#ffffff8c) !important; backdrop-filter: blur(20px) saturate(160%); box-shadow: inset 0 1px 0 #fff9,0 10px 30px #513b8910; }
+#root #main .asylum-surface[data-asylum-route="practice"] .card .premium-icon { width: 90px; height: 90px; border-radius: 24px; margin-bottom: 18px; background: linear-gradient(135deg,#ffffffb3,#dbceff88); border: 1px solid #ffffffcc; box-shadow: 0 8px 24px #894bf422; }
+#root #main .asylum-surface[data-asylum-route="practice"] .card .premium-icon img { width: 100%; height: 100%; object-fit: contain; }
+#root #main .asylum-surface[data-asylum-route="practice"] .card .eyebrow { border: 1px solid #ffffffb3; border-radius: 20px; padding: 6px 12px; font-size: 11px; background: #eee7ff66; }
+#root #main .asylum-surface[data-asylum-route="practice"] .card h2 { font-size: clamp(23px,2.5vw,31px); line-height: 1.2; letter-spacing: -.025em; margin: 20px 0 12px; }
+#root #main .asylum-surface[data-asylum-route="practice"] .card p { color: var(--liquid-muted,#536984); font-size: 16px; line-height: 1.55; margin: 0 0 26px; }
+#root #main .asylum-surface[data-asylum-route="practice"] .card > .button { margin-top: auto; width: 100%; min-height: 58px; display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border: 1px solid #d9bcff !important; border-radius: 18px; background: linear-gradient(125deg,#a568fc,#6935ec) !important; color: white !important; font-size: 16px; font-weight: 650; box-shadow: 0 6px 18px #8246e52b; }
+#root #main .asylum-surface[data-asylum-route="practice"] .card > .button::after { content: '→'; font-size: 24px; }
+#root #main .asylum-surface[data-asylum-route="practice"] .card:nth-child(2) > .button { background: linear-gradient(125deg,#8584ff,#5549ef) !important; }
+#root #main .asylum-surface[data-asylum-route="practice"] .actions { display: flex; gap: 16px; padding: 20px; margin-top: 18px; border: 1px solid #ffffffb3; border-radius: 24px; background: var(--liquid-surface,#ffffff8c); backdrop-filter: blur(20px) saturate(160%); }
+#root #main .asylum-surface[data-asylum-route="practice"] .actions .button { flex: 1; border-radius: 18px; min-height: 64px; padding: 16px; background: #ffffff66 !important; color: #5d36ad !important; border: 1px solid #ffffffb3; }
+#root #main:has(.asylum-surface) > .platform-module-nav { border-radius: 28px; background: var(--liquid-surface,#ffffff8c); border: 1px solid #ffffffb3; box-shadow: none; padding: 6px; }
+#root #main:has(.asylum-surface) .platform-module-nav button[aria-current=page] { color: #6935ec !important; background: #e6dcff99 !important; border-radius: 22px; box-shadow: none !important; }
+@media(max-width:850px) { #root #main .asylum-surface[data-asylum-route="practice"] .cards { grid-template-columns: 1fr; } #root #main .asylum-surface[data-asylum-route="practice"] .actions { flex-direction: column; } }
+html[data-reduce-transparency=true] #root #main .asylum-surface[data-asylum-route="practice"] :is(.card,.actions) { background: var(--liquid-solid,#f4f8fc) !important; backdrop-filter: none; }
+
+#root #main .asylum-surface[data-asylum-route='practice'] :is(#content,header) { background: transparent !important; }
+
+/* Let the particle background show through the asylum landing surfaces. */
+html:not([data-reduce-transparency=true]) #root #main .asylum-surface[data-asylum-route="practice"] :is(.card,.actions) { background: rgba(255,255,255,.24) !important; -webkit-backdrop-filter: blur(20px) saturate(160%); backdrop-filter: blur(20px) saturate(160%); border: 1px solid rgba(255,255,255,.65) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.55),0 8px 24px rgba(49,35,82,.04); }
+html:not([data-reduce-transparency=true]) #root #main .asylum-surface[data-asylum-route="practice"] .actions .button { background: rgba(255,255,255,.18) !important; }
+html:not([data-reduce-transparency=true]) #root #main:has(.asylum-surface[data-asylum-route="practice"]) .platform-module-nav { background: rgba(255,255,255,.28) !important; backdrop-filter: blur(20px) saturate(160%); box-shadow: none !important; }
+@supports not ((backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px))) { #root #main .asylum-surface[data-asylum-route="practice"] :is(.card,.actions) { background: rgba(245,247,253,.88) !important; } }
+
+#root #main .asylum-surface[data-asylum-route='practice'] :is(.app,.app-inner) { background: transparent !important; box-shadow: none !important; }
+
+#root #main .asylum-surface[data-asylum-route="fiction"] :is(#content,.app,.app-inner,header) { background: transparent !important; box-shadow: none !important; }
+#root #main .asylum-surface[data-asylum-route="fiction"] h1 { font-size: clamp(32px,4vw,48px); letter-spacing: -.035em; }
+#root #main .asylum-surface #fiction-country { width: 100%; min-height: 56px; padding: 14px 18px; margin: 10px 0 22px; border: 1px solid #ffffffb3; border-radius: 18px; background: rgba(255,255,255,.35) !important; color: var(--liquid-text,#172b3d); backdrop-filter: blur(20px) saturate(160%); font-size: 16px; }
+#root #main .asylum-surface #scenario-list { display: grid; grid-template-columns: 1fr; gap: 12px; }
+#root #main .asylum-surface #scenario-list .card { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px 24px; align-items: center; padding: 20px 24px; border: 1px solid #ffffffa6; border-radius: 22px; background: rgba(255,255,255,.28) !important; backdrop-filter: blur(20px) saturate(160%); box-shadow: inset 0 1px 0 #ffffff80; }
+#root #main .asylum-surface #scenario-list .card :is(.eyebrow,h3,p) { grid-column: 1; margin: 0; }
+#root #main .asylum-surface #scenario-list .card .button { grid-column: 2; grid-row: 1 / 4; min-height: 46px; border-radius: 16px; padding: 12px 18px; color: #6333c1; background: #eee5ff99; border: 1px solid #ffffffb3; }
+#root #main .asylum-surface #scenario-list .scenario-empty { padding: 28px; text-align: center; border: 1px solid #ffffff99; border-radius: 22px; background: #ffffff30; color: var(--liquid-muted,#536984); }
+@media(max-width:600px) { #root #main .asylum-surface #scenario-list .card { grid-template-columns: 1fr; } #root #main .asylum-surface #scenario-list .card .button { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 8px; } }
+html[data-reduce-transparency=true] #root #main .asylum-surface :is(#fiction-country,#scenario-list .card) { background: var(--liquid-solid,#f4f8fc) !important; backdrop-filter: none; }
+
+/* Consistent setup and consent surfaces. */
+#root #main .asylum-surface:is([data-asylum-route="setup"],[data-asylum-route="disclaimer"]) :is(#content,.app,.app-inner,header) { background: transparent !important; box-shadow: none !important; }
+#root #main .asylum-surface:is([data-asylum-route="setup"],[data-asylum-route="disclaimer"]) .app-inner { max-width: 960px; margin-inline: auto; }
+#root #main .asylum-surface:is([data-asylum-route="setup"],[data-asylum-route="disclaimer"]) h1 { font-size: clamp(30px,4vw,46px); line-height: 1.15; letter-spacing: -.035em; margin: 18px 0 28px; }
+#root #main .asylum-surface:is([data-asylum-route="setup"],[data-asylum-route="disclaimer"]) .card { padding: clamp(20px,4vw,36px); margin: 16px 0; border: 1px solid rgba(255,255,255,.75); border-radius: 26px; background: rgba(255,255,255,.28) !important; backdrop-filter: blur(20px) saturate(160%); box-shadow: inset 0 1px 0 #ffffff88,0 8px 24px #4931780a; color: var(--liquid-text,#172b3d); }
+#root #main .asylum-surface:is([data-asylum-route="setup"],[data-asylum-route="disclaimer"]) .card p { color: var(--liquid-muted,#536984); font-size: 15px; line-height: 1.7; }
+#root #main .asylum-surface[data-asylum-route="setup"] .interviewer-intro { padding: 16px 20px; border-radius: 18px; background: #eae2ff55; border: 1px solid #ffffff80; }
+#root #main .asylum-surface[data-asylum-route="setup"] .interviewer-intro strong { color: #6333ad; font-size: 18px; }
+#root #main .asylum-surface[data-asylum-route="setup"] label { display: block; margin: 22px 0 8px; font-size: 14px; font-weight: 600; }
+#root #main .asylum-surface[data-asylum-route="setup"] select { width: 100%; min-height: 54px; padding: 12px 16px; font-size: 16px; color: var(--liquid-text,#172b3d); border: 1px solid #ffffffb3; border-radius: 16px; background: #ffffff55 !important; }
+#root #main .asylum-surface:is([data-asylum-route="setup"],[data-asylum-route="disclaimer"]) .button { display: inline-flex; justify-content: center; align-items: center; min-height: 52px; padding: 14px 24px; border-radius: 17px; border: 1px solid #ddc8ff; background: linear-gradient(125deg,#9b68ed,#713ad4) !important; color: #fff !important; font-size: 15px; font-weight: 600; margin: 8px 8px 0 0; box-shadow: 0 5px 16px #7543cc20; }
+#root #main .asylum-surface:is([data-asylum-route="setup"],[data-asylum-route="disclaimer"]) .button.secondary { background: #ffffff55 !important; color: #6937ae !important; box-shadow: none; border-color: #ffffffa6; }
+#root #main .asylum-surface[data-asylum-route="disclaimer"] .check-row { display: flex; align-items: flex-start; gap: 12px; padding: 16px; margin: 12px 0; border: 1px solid #ffffff99; border-radius: 16px; background: #ffffff33; line-height: 1.55; }
+#root #main .asylum-surface[data-asylum-route="disclaimer"] .check-row input { flex: 0 0 20px; width: 20px; height: 20px; margin-top: 2px; accent-color: #7943d8; }
+#root #main .asylum-surface:is([data-asylum-route="setup"],[data-asylum-route="disclaimer"]) :is(button,select,input,a):focus-visible { outline: 3px solid #9967e7; outline-offset: 3px; }
+@media(max-width:600px) { #root #main .asylum-surface:is([data-asylum-route="setup"],[data-asylum-route="disclaimer"]) .button { width: 100%; margin-right: 0; } }
+html[data-reduce-transparency=true] #root #main .asylum-surface:is([data-asylum-route="setup"],[data-asylum-route="disclaimer"]) .card { background: var(--liquid-solid,#f4f8fc) !important; backdrop-filter: none; }
+
+#root #main .asylum-surface[data-asylum-route="practice-report"] :is(#content,.app,.app-inner,header) { background: transparent !important; box-shadow: none !important; }
+#root #main .asylum-surface[data-asylum-route="practice-report"] h1 { font-size: clamp(30px,4vw,46px); line-height: 1.15; letter-spacing: -.035em; }
+#root #main .asylum-surface[data-asylum-route="practice-report"] .cards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; margin: 24px 0; }
+#root #main .asylum-surface[data-asylum-route="practice-report"] .card { padding: 24px; border: 1px solid #ffffffb3; border-radius: 24px; background: rgba(255,255,255,.28) !important; backdrop-filter: blur(20px) saturate(160%); box-shadow: inset 0 1px 0 #ffffff88; }
+#root #main .asylum-surface[data-asylum-route="practice-report"] .number { display: block; font-size: 38px; line-height: 1.15; font-weight: 700; color: #7540c4 !important; }
+#root #main .asylum-surface[data-asylum-route="practice-report"] .card h3 { font-size: 16px; margin: 12px 0 0; color: var(--liquid-text,#172b3d); }
+#root #main .asylum-surface[data-asylum-route="practice-report"] .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+#root #main .asylum-surface[data-asylum-route="practice-report"] .button { min-height: 50px; padding: 13px 20px; border: 1px solid #ddc8ff; border-radius: 16px; background: linear-gradient(125deg,#9b68ed,#713ad4) !important; color: white !important; font-weight: 600; }
+#root #main .asylum-surface[data-asylum-route="practice-report"] .button.secondary { background: #ffffff55 !important; color: #6937ae !important; border-color: #ffffffb3; box-shadow: none; }
+#root #main .asylum-surface[data-asylum-route="practice-report"] details { margin: 12px 0; padding: 18px; border: 1px solid #ffffff99; border-radius: 18px; background: #ffffff40; }
+@media(max-width:650px) { #root #main .asylum-surface[data-asylum-route="practice-report"] .cards { grid-template-columns: repeat(2,minmax(0,1fr)); } #root #main .asylum-surface[data-asylum-route="practice-report"] .actions .button { flex: 1 1 100%; text-align: center; } }
+html[data-reduce-transparency=true] #root #main .asylum-surface[data-asylum-route="practice-report"] .card { background: var(--liquid-solid,#f4f8fc) !important; backdrop-filter: none; }
+
+#root #main .asylum-surface[data-asylum-route="full-bank"] :is(#content,.app,.app-inner,header) { background: transparent !important; box-shadow: none !important; }
+#root #main .asylum-surface[data-asylum-route="full-bank"] .question { min-height: 240px; display: flex; flex-direction: column; justify-content: center; padding: clamp(24px,5vw,48px); margin: 22px 0 12px; border-radius: 28px; border: 1px solid #ffffffb3; background: #ffffff48 !important; backdrop-filter: blur(20px) saturate(160%); }
+#root #main .asylum-surface[data-asylum-route="full-bank"] .question h3 { font-size: clamp(23px,3vw,34px); line-height: 1.4; margin: 20px 0; }
+#root #main .asylum-surface[data-asylum-route="full-bank"] :is(select,input) { min-height: 48px; padding: 12px 16px; border-radius: 16px; border: 1px solid #ffffffa6; background: #ffffff55 !important; color: var(--liquid-text,#172b3d); }
+#root #main .asylum-surface .bank-deck-controls { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 16px; border-radius: 22px; border: 1px solid #ffffffa6; background: #ffffff48; backdrop-filter: blur(20px) saturate(160%); }
+#root #main .asylum-surface .bank-deck-controls .button { min-height: 46px; padding: 12px 18px; border-radius: 16px; background: #7944d8; color: white; }
+#root #main .asylum-surface .bank-deck-controls .button.secondary { background: #ffffff66; color: #6534b3; }
+#root #main .asylum-surface .bank-deck-controls button:disabled { opacity: .45; cursor: default; }
+html[data-reduce-transparency=true] #root #main .asylum-surface[data-asylum-route="full-bank"] :is(.question,.bank-deck-controls) { background: var(--liquid-solid,#f4f8fc) !important; backdrop-filter: none; }
+
+#root #main .asylum-surface[data-asylum-route="case-workspace"] :is(#content,.app,.app-inner,header) { background: transparent !important; box-shadow: none !important; }
+#root #main .asylum-surface[data-asylum-route="case-workspace"] h1 { font-size: clamp(34px,4vw,52px); letter-spacing: -.035em; }
+#root #main .asylum-surface .case-simple-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; margin-top: 20px; align-items: start; }
+#root #main .asylum-surface[data-asylum-route="case-workspace"] .card { padding: 28px; border: 1px solid #ffffffb3; border-radius: 26px; background: #ffffff48 !important; backdrop-filter: blur(20px) saturate(160%); box-shadow: inset 0 1px 0 #ffffff88; }
+#root #main .asylum-surface[data-asylum-route="case-workspace"] :is(input,select,textarea) { min-height: 48px; padding: 12px 16px; border-radius: 16px; border: 1px solid #ffffffb3; background: #ffffff66 !important; color: var(--liquid-text,#172b3d); }
+#root #main .asylum-surface[data-asylum-route="case-workspace"] textarea { min-height: 170px; }
+#root #main .asylum-surface[data-asylum-route="case-workspace"] input::file-selector-button { padding: 12px 16px; border: 0; border-radius: 12px; margin-right: 12px; color: white; background: #7d43d9; cursor: pointer; }
+#root #main .asylum-surface[data-asylum-route="case-workspace"] summary { padding: 14px 0; color: #6937ae; font-weight: 600; cursor: pointer; }
+#root #main .asylum-surface .case-next-steps ol { padding-left: 24px; }
+#root #main .asylum-surface .case-next-steps li { padding: 14px 0 18px 8px; }
+#root #main .asylum-surface .case-next-steps li::marker { color: #8249da; font-weight: 700; }
+#root #main .asylum-surface .case-next-steps p { line-height: 1.65; color: var(--liquid-muted,#536984); }
+#root #main .asylum-surface[data-asylum-route="case-workspace"] .button { min-height: 48px; border-radius: 16px; padding: 12px 18px; }
+@media(max-width:750px) { #root #main .asylum-surface .case-simple-layout { grid-template-columns: 1fr; } }
+html[data-reduce-transparency=true] #root #main .asylum-surface[data-asylum-route="case-workspace"] .card { background: var(--liquid-solid,#f4f8fc) !important; backdrop-filter: none; }
+
+/* Data controls: two clear actions, on the shared glass surface. */
+#root #main .asylum-surface[data-asylum-route="vault"] :is(.app,.app-inner,#content,header){background:transparent !important;box-shadow:none;}
+#root #main .asylum-surface[data-asylum-route="vault"] :is(.card,.empty){background:rgba(255,255,255,.24) !important;border:1px solid rgba(255,255,255,.7);border-radius:24px;backdrop-filter:blur(20px) saturate(160%);padding:24px;margin-bottom:18px;}
+#root #main .asylum-surface[data-asylum-route="vault"] input{min-height:46px;border-radius:14px;background:rgba(255,255,255,.35) !important;}
+#root #main .asylum-surface[data-asylum-route="vault"] .button{min-height:46px;border-radius:14px;margin-top:12px;}
+#root #main .asylum-surface[data-asylum-route="vault"] [data-master="delete-case"]{color:#a52a45;border-color:rgba(165,42,69,.25);background:rgba(255,255,255,.45);}
+
+/* Reference composition for the personal story workspace. */
+#root #main .asylum-surface[data-asylum-route="case-workspace"] header {padding:24px 0 12px;}
+#root #main .asylum-surface[data-asylum-route="case-workspace"] h1 {font-size:clamp(38px,5vw,66px);color:#080e40;}
+#root #main .asylum-surface[data-asylum-route="case-workspace"] .case-simple-layout {grid-template-columns:1.2fr 1fr;gap:14px;}
+#root #main .asylum-surface[data-asylum-route="case-workspace"] .case-options {margin:0;}
+#root #main .asylum-surface .case-upload-zone {text-align:center;border:2px dashed #bfa4ff66;border-radius:24px;padding:34px 20px 24px;}
+#root #main .asylum-surface .case-upload-zone h2 {font-size:30px;margin:20px 0 8px;color:#080e40;}
+#root #main .asylum-surface .case-upload-icon {display:inline-grid;place-items:center;width:90px;height:90px;border-radius:50%;font-size:52px;color:#8040ed;background:radial-gradient(circle,#c9a5ff88,transparent 72%);}
+#root #main .asylum-surface .case-file-input {position:absolute;width:1px;height:1px;opacity:0;min-height:0!important;overflow:hidden;padding:0!important;}
+#root #main .asylum-surface .case-file-button {display:inline-flex;align-items:center;justify-content:center;cursor:pointer;background:linear-gradient(135deg,#a269f5,#742cdf)!important;color:white!important;box-shadow:0 8px 22px #793adb25;font-size:18px;margin:12px 0;}
+#root #main .asylum-surface .case-upload-zone:focus-within {outline:2px solid #8a50ec;outline-offset:3px;}
+#root #main .asylum-surface .case-privacy {padding:18px 4px;color:#50668b;line-height:1.65;}
+#root #main .asylum-surface .case-next-steps h2 {font-size:28px;color:#080e40;margin-top:0;}
+#root #main .asylum-surface .case-next-steps ol {list-style:none;counter-reset:steps;padding:0;}
+#root #main .asylum-surface .case-next-steps li {counter-increment:steps;position:relative;padding:20px 0 20px 76px;min-height:112px;}
+#root #main .asylum-surface .case-next-steps li:before {content:counter(steps);position:absolute;left:0;top:18px;display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:linear-gradient(140deg,#fff9,#bfa0ff44);color:#8040ec;font-size:28px;font-weight:700;border:1px solid #ffffff99;}
+#root #main .asylum-surface .case-next-steps li p {margin:8px 0 0;}
+#root #main .asylum-surface .case-continue {display:flex;justify-content:center;background:linear-gradient(135deg,#a269f5,#742cdf)!important;color:white!important;text-decoration:none;}
+@media(max-width:750px){#root #main .asylum-surface[data-asylum-route="case-workspace"] .case-simple-layout{grid-template-columns:1fr;}}

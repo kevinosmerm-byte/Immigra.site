@@ -43,3 +43,11 @@
 #root #main #citizenship-root .platform-module-nav button{display:flex;align-items:center;justify-content:center;gap:14px}
 #root #main #citizenship-root .platform-module-nav svg{width:26px;height:26px;flex-shrink:0}
 @media(max-width:600px){#root #main #citizenship-root .platform-module-nav button{gap:4px;flex-direction:column}#root #main #citizenship-root .platform-module-nav svg{width:20px;height:20px}}
+
+/* One shadow-free navigation bar across citizenship screens. */
+#root #main #citizenship-root .platform-module-nav,
+#root #main #citizenship-root .platform-module-nav button,
+#root #main #citizenship-root .platform-module-nav button[aria-current=page] { box-shadow: none !important; filter: none !important; }
+#root #main #citizenship-root :is(.quiz-path-header,.quiz-session-header) { box-shadow: none !important; filter: none !important; background: transparent !important; }
+#root #main #citizenship-root :is(.quiz-path-header,.quiz-session-header)::before,
+#root #main #citizenship-root :is(.quiz-path-header,.quiz-session-header)::after { box-shadow: none !important; background: transparent !important; }

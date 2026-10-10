@@ -1745,7 +1745,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
     </>
   );
   };
-  const showNavigation = onboardingComplete && !["interview", "coach", "reading", "writing"].includes(screen);
+  const showNavigation = onboardingComplete && !["interview", "coach"].includes(screen);
   return <div data-citizen-screen={screen} className={showNavigation ? "global-navigation-shell" : undefined}>{showNavigation && <ModuleNavigation current={screen} onNavigate={navigateTo} label={language==='es'?'Ciudadanía':'Citizenship'} items={language==='es'?[['home','Resumen'],['civics','128 preguntas'],['practice','Practicar'],['progress','Progreso']]:[['home','Overview'],['civics','128 questions'],['practice','Practice'],['progress','Progress']]}/>} {renderScreen()}{accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}</div>;
 }
 export default function App({platformLanguage,onPlatformLanguageChange}={}) {
