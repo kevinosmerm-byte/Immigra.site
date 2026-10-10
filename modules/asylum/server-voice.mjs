@@ -8,7 +8,7 @@ export function authorizeAsylumAudio(language){
 export function resetAsylumAudioConsent(){consent=false;}
 export class AsylumAudioRecognition{
  async start(){
-  this.cancelled=false;this.chunks=[];this.controller=new AbortController();
+  this.cancelled=false;this.stopping=false;this.chunks=[];this.controller=new AbortController();
   if(!consent){this.onerror?.({error:'consent-required'});return;}
   if(!getSessionToken()){this.onerror?.({error:'login-required'});return;}
   try{
@@ -24,16 +24,16 @@ export class AsylumAudioRecognition{
    const analyser=this.context.createAnalyser();analyser.fftSize=2048;this.context.createMediaStreamSource(this.stream).connect(analyser);
    const samples=new Float32Array(analyser.fftSize);let lastVoice=Date.now();this.heard=false;
    this.recorder.start(250);this.onstart?.();
-   this.poll=setInterval(()=>{analyser.getFloatTimeDomainData(samples);const rms=Math.sqrt(samples.reduce((sum,v)=>sum+v*v,0)/samples.length);if(rms>.018){this.heard=true;lastVoice=Date.now();}if(this.heard&&Date.now()-lastVoice>3000)this.stop();},100);
+   this.poll=setInterval(()=>{analyser.getFloatTimeDomainData(samples);const rms=Math.sqrt(samples.reduce((sum,v)=>sum+v*v,0)/samples.length);this.onlevel?.(Math.min(1,rms*12));if(rms>.008){this.heard=true;lastVoice=Date.now();}if(this.heard&&Date.now()-lastVoice>3000)this.stop();},100);
    this.limit=setTimeout(()=>{if(this.heard)this.stop();else{this.abort();this.onerror?.({error:'no-speech'});}},60000);
   }catch(error){this.abort();this.onerror?.({error:error.name==='NotAllowedError'?'not-allowed':'audio-capture'});}
  }
  release(){clearInterval(this.poll);clearTimeout(this.limit);this.stream?.getTracks().forEach(t=>t.stop());this.context?.close().catch(()=>{});}
- stop(){this.release();if(this.recorder?.state==='recording')this.recorder.stop();}
+ stop(){if(this.stopping)return;this.stopping=true;if(this.recorder?.state==='recording')this.recorder.stop();this.release();}
  abort(){this.cancelled=true;this.controller?.abort();this.stop();}
  async send(){
   if(this.cancelled)return;
-  if(!this.heard){this.onend?.();return;}
+  if(!this.heard){this.onerror?.({error:'no-speech'});return;}
   try{
    this.onprocessing?.();
    const blob=new Blob(this.chunks,{type:this.recorder.mimeType||'audio/webm'});
@@ -45,6 +45,7 @@ export class AsylumAudioRecognition{
    if(!response.ok){this.onerror?.({error:response.status===401?'login-required':response.status===429?'quota-exceeded':'transcription-failed'});return;}
    const {transcript}=await response.json();if(this.cancelled)return;
    if(transcript?.trim()){const result=[{transcript}];result.isFinal=true;this.onresult?.({resultIndex:0,results:[result]});}
+   if(!transcript?.trim()){this.onerror?.({error:'no-speech'});return;}
    this.onend?.();
   }catch{if(!this.cancelled)this.onerror?.({error:'transcription-failed'});}
   finally{this.chunks=[];}

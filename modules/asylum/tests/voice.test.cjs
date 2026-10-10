@@ -5,7 +5,7 @@ function harness(){
  class Recognition{constructor(){recognizers.push(this)}start(){this.onstart?.()}abort(){aborted++}stop(){this.onend?.()}}
  const win={SpeechRecognition:Recognition,addEventListener(){},speechSynthesis:{speak(u){spoken.push(u);u.onstart?.()},cancel(){}}};
  const doc={getElementById:id=>elements[id],addEventListener(){},removeEventListener(){}};
- vm.runInNewContext(fs.readFileSync('apps/web/interview-voice.js','utf8'),{window:win,document:doc,SpeechSynthesisUtterance:class{constructor(text){this.text=text}},Event:class{},setTimeout:(fn,ms)=>{timers.set(++timerId,{fn,ms});return timerId;},clearTimeout:id=>timers.delete(id)});
+ vm.runInNewContext(fs.readFileSync('apps/web/interview-voice.js','utf8'),{window:win,document:doc,SpeechSynthesisUtterance:class{constructor(text){this.text=text}},CustomEvent:class{constructor(type,options){this.type=type;this.detail=options.detail;}},Event:class{},setTimeout:(fn,ms)=>{timers.set(++timerId,{fn,ms});return timerId;},clearTimeout:id=>timers.delete(id)});
  return {win,elements,spoken,recognizers,tick:ms=>{for(const [id,timer] of [...timers])if(timer.ms===ms){timers.delete(id);timer.fn();}},aborted:()=>aborted};
 }
 test('question reads automatically then microphone starts only after speech ends',()=>{const h=harness();h.win.AsiloVoice.mount({question:'Pregunta',language:'es',microphone:true,video(){}});assert.equal(h.spoken.length,1);assert.equal(h.recognizers.length,0);h.spoken[0].onend();assert.equal(h.recognizers.length,1);assert.equal(h.recognizers[0].lang,'es-ES')});
