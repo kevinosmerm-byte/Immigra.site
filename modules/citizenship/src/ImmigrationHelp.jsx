@@ -30,7 +30,7 @@ function normalizeSearch(value) {
   return value.toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9-]+/g, " ").trim();
 }
 
-export default function ImmigrationHelp({ language = "en", caseProfile = {}, onBack, onLanguageChange }) {
+export default function ImmigrationHelp({ language = "en", caseProfile = {}, onBack, onLanguageChange, embedded = false }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [journeyCategory, setJourneyCategory] = useState(() => getJourneyHelpCategory(caseProfile.currentStage));
@@ -58,16 +58,16 @@ export default function ImmigrationHelp({ language = "en", caseProfile = {}, onB
   const contextual = useMemo(() => getContextualHelpResources(caseProfile.currentStage, language), [caseProfile.currentStage, language]);
   const journeyResources = (JOURNEY_HELP_RESOURCE_IDS[journeyCategory] || []).map(id => resources.find(item => item.id === id)).filter(Boolean);
 
-  const openDetail = (item) => { setSelectedId(item.id); setLeaving(false); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const openDetail = (item) => { setSelectedId(item.id); setLeaving(false); window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); };
   const destination = selected ? new URL(selected.official_url).hostname.replace(/^www\./, "") : "";
 
   if (selected) {
     return (
-      <div className="immigration-help-screen">
+      <div className={`immigration-help-screen${embedded ? " immigration-help-embedded" : ""}`}>
         <header className="immigration-help-header" inert={leaving ? true : undefined}>
           <button onClick={() => leaving ? closeLeaving() : setSelectedId(null)}>← {copy.back}</button>
-          <strong>IMMIGRATION <span>AI</span></strong>
-          <button className="immigration-help-language" onClick={() => onLanguageChange?.(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>
+          {!embedded && <strong>IMMIGRATION <span>AI</span></strong>}
+          {!embedded && <button className="immigration-help-language" onClick={() => onLanguageChange?.(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>}
         </header>
         <main className="immigration-detail-wrap">
           {leaving && (
@@ -101,11 +101,11 @@ export default function ImmigrationHelp({ language = "en", caseProfile = {}, onB
   }
 
   return (
-    <div className="immigration-help-screen">
+    <div className={`immigration-help-screen${embedded ? " immigration-help-embedded" : ""}`}>
       <header className="immigration-help-header">
         <button className="icon-back-control" onClick={onBack} aria-label={copy.home}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" /></svg></button>
-        <strong>IMMIGRATION <span>AI</span></strong>
-        <button className="immigration-help-language" onClick={() => onLanguageChange?.(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>
+        {!embedded && <strong>IMMIGRATION <span>AI</span></strong>}
+        {!embedded && <button className="immigration-help-language" onClick={() => onLanguageChange?.(language === "en" ? "es" : "en")}>{language === "en" ? "EN" : "ES"}</button>}
       </header>
       <main className="immigration-help-content">
         <section className="immigration-help-hero">
@@ -113,7 +113,7 @@ export default function ImmigrationHelp({ language = "en", caseProfile = {}, onB
           <h1>{copy.title}</h1>
           <p>{copy.subtitle}</p>
           <label className="immigration-help-search">
-            <span>⌕</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
             <input value={query} onChange={(event) => { setQuery(event.target.value); if (event.target.value.trim()) setDirectoryOpen(true); }} placeholder={copy.search} aria-label={copy.search} />
           </label>
         </section>
@@ -137,8 +137,8 @@ export default function ImmigrationHelp({ language = "en", caseProfile = {}, onB
           <summary>{copy.directory}</summary>
           <div className="immigration-section-heading"><span>{copy.all}</span><i>{filtered.length}</i></div>
           <div className="immigration-category-scroll" aria-label={copy.all}>
-            <button className={category === "all" ? "active" : ""} onClick={() => setCategory("all")}>{copy.all}</button>
-            {IMMIGRATION_CATEGORIES.map(([id, en, es]) => <button key={id} className={category === id ? "active" : ""} onClick={() => setCategory(id)}>{language === "es" ? es : en}</button>)}
+            <button className={category === "all" ? "active" : ""} aria-pressed={category === "all"} onClick={() => setCategory("all")}>{copy.all}</button>
+            {IMMIGRATION_CATEGORIES.map(([id, en, es]) => <button key={id} className={category === id ? "active" : ""} aria-pressed={category === id} onClick={() => setCategory(id)}>{language === "es" ? es : en}</button>)}
           </div>
           {filtered.length ? <div className="immigration-resource-list">{filtered.map((item) => <ResourceCard key={item.id} item={item} copy={copy} onOpen={openDetail} />)}</div> : <div className="immigration-empty">{copy.noResults}</div>}
         </details>
@@ -153,7 +153,7 @@ function ResourceCard({ item, copy, onOpen, featured = false }) {
     <button className={featured ? "immigration-resource-card featured" : "immigration-resource-card"} onClick={() => onOpen(item)}>
       <span className="immigration-resource-icon">{item.icon}</span>
       <span className="immigration-resource-copy"><small>{item.agency}</small><strong>{item.title}</strong><p>{item.description}</p><em>✓ {copy.official}</em></span>
-      <span className="immigration-resource-arrow">→</span>
+      <span className="immigration-resource-arrow">{copy.open} <span aria-hidden="true">→</span></span>
     </button>
   );
 }

@@ -75,7 +75,7 @@ html[data-reduce-transparency=true] .glass-primary{background:var(--glass-accent
 /* Home entry cards: isolated liquid-glass treatment. */
 #main>.cards{grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:24px}
 #main>.cards>.card{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0;min-height:340px;padding:34px 28px 28px;border-radius:28px;border:1px solid rgba(255,255,255,.72);background:rgba(255,255,255,.94);color:#182e43;box-shadow:0 12px 32px rgba(27,48,73,.09),0 2px 6px rgba(27,48,73,.035),inset 0 1px 0 rgba(255,255,255,.95);transition:transform 300ms ease,box-shadow 300ms ease,background-color 300ms ease,border-color 300ms ease}
-@supports ((backdrop-filter:blur(20px)) or (-webkit-backdrop-filter:blur(20px))){#main>.cards>.card{background:rgba(255,255,255,.55);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%)}}
+@supports ((backdrop-filter:blur(20px)) or (-webkit-backdrop-filter:blur(20px))){#main>.cards>.card{background:var(--entry-glass-surface);backdrop-filter:var(--entry-glass-filter);-webkit-backdrop-filter:var(--entry-glass-filter)}}
 #main>.cards>.card:before{content:"";position:absolute;pointer-events:none;inset:0;border-radius:inherit;background:linear-gradient(145deg,rgba(255,255,255,.32),transparent 40%);box-shadow:inset 0 1px 1px rgba(255,255,255,.7);z-index:-1}
 #main>.cards>.card>.icon{flex:0 0 80px;width:80px;height:80px;display:grid;place-items:center;margin:0 auto;border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(255,255,255,.28));border:1px solid rgba(255,255,255,.85);box-shadow:0 7px 24px color-mix(in srgb,var(--accent) 12%,transparent),inset 0 1px 1px #fff;color:var(--accent)}
 #main>.cards>.card>.icon .premium-icon{display:grid;place-items:center;width:64px;height:64px;margin:0}
@@ -94,3 +94,5 @@ html[data-reduce-motion=true] #main>.cards>.card{transition:none!important;trans
 html[data-reduce-transparency=true] #main>.cards>.card{background:#f7f9fc;backdrop-filter:none;-webkit-backdrop-filter:none}
 @media(prefers-reduced-transparency:reduce){#main>.cards>.card{background:#f7f9fc;backdrop-filter:none;-webkit-backdrop-filter:none}}
 @media(forced-colors:active){#main>.cards>.card{background:Canvas;border:1px solid ButtonText}#main>.cards>.card :is(h2,p,.link){color:ButtonText}}
+
+:root{--entry-glass-surface:rgba(255,255,255,.55);--entry-glass-filter:blur(20px) saturate(160%);--entry-glass-radius:28px;--entry-glass-shadow:0 12px 32px rgba(27,48,73,.09),0 2px 6px rgba(27,48,73,.035),inset 0 1px 0 rgba(255,255,255,.95)}
