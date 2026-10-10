@@ -61,3 +61,35 @@ test('one microphone stream; only final transcripts evaluate once; feedback prec
  assert.equal(f.requests.filter(r=>r.url.endsWith('/turn')).length,0);
  f.engine.close();
 });
+
+test('recovered provider error clears while an unresolved evaluation remains visible',async()=>{
+ let fail=false;
+ const f=fixture({evaluateTurn:async()=>{if(fail)throw Error('EVALUATION_UNAVAILABLE');return {next_question:'Your name?',suggested_follow_up:'Your name?'};}});
+ await f.engine.start({...settings,module:'citizenship'});await drain();
+ const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});
+ emit({type:'error',error:{code:'temporary_error'}});
+ assert.equal(f.errors.at(-1),'PROVIDER_UNAVAILABLE');
+ emit({type:'response.done',response:{status:'completed'}});
+ assert.equal(f.errors.at(-1),'');
+ fail=true;
+ emit({type:'conversation.item.input_audio_transcription.completed',item_id:'u1',transcript:'Test'});await drain();
+ assert.equal(f.errors.at(-1),'EVALUATION_UNAVAILABLE');
+ emit({type:'response.done',response:{status:'completed'}});
+ assert.equal(f.errors.at(-1),'EVALUATION_UNAVAILABLE');
+ fail=false;f.engine.retryEvaluation();await drain();
+ assert.equal(f.errors.at(-1),'');assert.equal(f.reviews.length,1);
+ f.engine.close();
+});
+
+test('successful transcription does not conceal blocked audio; playing clears it',async()=>{
+ const f=fixture();let remote;
+ f.env.Audio=class{constructor(){remote=this;}play(){return Promise.reject(Error('blocked'));}pause(){}};
+ await f.engine.start(settings);await drain();
+ const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});
+ f.peer().ontrack({streams:[f.stream]});await drain();
+ emit({type:'conversation.item.input_audio_transcription.failed'});
+ assert.equal(f.errors.at(-1),'TRANSCRIPTION_FAILED');
+ emit({type:'conversation.item.input_audio_transcription.completed',item_id:'u1',transcript:'Test'});await drain();
+ assert.equal(f.errors.at(-1),'PLAYBACK_BLOCKED');
+ remote.onplaying();assert.equal(f.errors.at(-1),'');f.engine.close();
+});
