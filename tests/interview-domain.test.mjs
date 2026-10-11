@@ -90,3 +90,35 @@ test('automatic civics grades official answers locally, advances, retries incomp
   const retry=await createCivicsConversation([multiple])({answer:multiple.acceptedAnswers[0],turnId:'partial'});
   assert.equal(retry.status,'incomplete');assert.equal(retry.question_id,String(multiple.questionId));
 });
+
+for(const module of ['asylum','residency'])for(const locale of ['es','en']){
+ test(`${module} ${locale}: incomplete answers advance without repeating or exhausting one topic`,()=>{
+  let flow=createDomainInterview({module,locale,route:'MATRIMONIO'});const ids=[];const topics=[];
+  for(let i=0;i<10&&flow.question;i++){
+   const q=flow.question;ids.push(q.id);topics.push(module==='asylum'?q.block:q.subBlock);
+   flow=advance(flow,'Example',{answer_status:'incomplete',next_action:'clarify',suggested_follow_up:q.english,educational_feedback:''});
+   if(flow.question)assert.notEqual(flow.question.id,q.id);
+  }
+  assert.equal(ids.length,new Set(ids).size);assert.ok(new Set(topics).size>=3);
+ });
+ test(`${module} ${locale}: discrepancy clarification is bounded and paraphrases are rejected`,()=>{
+  let flow=createDomainInterview({module,locale,route:'MATRIMONIO'});
+  const evaluation={answer_status:'ambiguous',next_action:'clarify',consistency_status:'possible_discrepancy',suggested_follow_up:locale==='es'?'¿A cuál de los dos eventos te refieres?':'Which of the two events do you mean?',educational_feedback:''};
+  flow=advance(flow,'Example',evaluation);assert.equal(flow.question.kind,'followup');
+  flow=advance(flow,'Example',evaluation);assert.equal(flow.question.kind,'concept');
+  const id=flow.question.id;flow=advance(flow,'Example',evaluation);assert.notEqual(flow.question.id,id);assert.equal(flow.question.kind,'concept');
+  const current=flow.question;flow=advance(flow,'Example',{...evaluation,suggested_follow_up:current.english});assert.notEqual(flow.question.id,current.id);
+ });
+}
+
+test('asylum automatic bank excludes filler variants and unbound contextual templates',()=>{
+ for(const locale of ['es','en']){
+  const bank=domainBank({module:'asylum',locale});
+  assert.ok(bank.questions.some(q=>q.id==='AS-SUP-001'));
+  assert.ok(!bank.questions.some(q=>q.id==='Q0113'||q.id==='Q0102'||q.id==='Q0084'));
+  for(const q of bank.questions)assert.doesNotMatch(q.canonicalPracticePrompt,/[{}]|Could you tell me more about this/);
+  let flow=createDomainInterview({module:'asylum',locale}),seen=new Set();
+  while(flow.question){assert.ok(!seen.has(flow.question.id));seen.add(flow.question.id);flow=advance(flow,'No recuerdo');}
+  assert.equal(seen.size,bank.questions.length);
+ }
+});

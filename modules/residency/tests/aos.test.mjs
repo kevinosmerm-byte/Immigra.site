@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {aosQuestions,aosRoutes,selectAosQuestions,difficulty,isUncertain} from '../src/aosEngine.mjs';
 import {aosFeedback} from '../src/aosFeedback.mjs';
 test('AOS bank preserves 300 unique questions, three isolated routes and progressive difficulty',()=>{
- assert.equal(aosQuestions.length,300);assert.equal(new Set(aosQuestions.map(q=>q.id)).size,300);
+ assert.equal(aosQuestions.filter(q=>/^AOS-\d+$/.test(q.id)).length,300);assert.equal(aosQuestions.length,309);assert.equal(new Set(aosQuestions.map(q=>q.id)).size,309);
  for(const route of Object.keys(aosRoutes))for(const count of [6,12,30,100]){
   const selected=selectAosQuestions({route,count,random:()=>.5});assert.equal(selected.length,count);assert.equal(new Set(selected.map(q=>q.id)).size,count);assert(selected.every(q=>q.ruta===route));
   assert.deepEqual(selected.map(difficulty),selected.map(difficulty).sort());assert.equal(new Set(selected.map(difficulty)).size,3);assert(new Set(selected.map(q=>q.bloque)).size>=Math.min(3,count));

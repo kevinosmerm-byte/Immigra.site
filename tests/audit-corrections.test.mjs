@@ -7,7 +7,7 @@ import {validateSettings,InterviewResponseEvaluator,currentTurnSchema} from '../
 import {createAsylumHtml,translateAsylumStatic} from '../modules/asylum/localization.mjs';
 
 test('all 300 original AOS IDs have an English translation without modifying Spanish questions',()=>{
- assert.equal(aosQuestions.length,300);assert.deepEqual(Object.keys(english).sort(),aosQuestions.map(q=>q.id).sort());
+ const originals=aosQuestions.filter(q=>/^AOS-\d+$/.test(q.id));assert.equal(originals.length,300);assert.deepEqual(Object.keys(english).sort(),originals.map(q=>q.id).sort());
  for(const q of aosQuestions){assert.equal(aosQuestion(q,'es'),q.pregunta_es);assert.ok(aosQuestion(q,'en').length>12,q.id);assert.doesNotMatch(aosQuestion(q,'en'),/[¿¡]/);}
  for(const route of ['MATRIMONIO','HIJO_A_PADRES','PADRES_A_HIJOS']){const es=domainBank({module:'residency',locale:'es',route}),en=domainBank({module:'residency',locale:'en',route});assert.deepEqual(es.questions.map(q=>q.id),en.questions.map(q=>q.id));assert.notEqual(es.questions[0].canonicalPracticePrompt,en.questions[0].canonicalPracticePrompt);}
 });
