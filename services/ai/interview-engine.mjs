@@ -1,7 +1,8 @@
+import {isNextQuestionCommand} from '../../shared/interview-ui/commands.mjs';
 import {logDiagnostic} from '../../shared/interview-ui/diagnostics.mjs';
 // Server only. Session content is ephemeral and never logged or persisted.
 import {randomUUID} from 'node:crypto';
-import {createDomainInterview,recordDomainTurn,advanceDomainTurn,domainIntervention,uncertainAnswer} from './interview-domain.mjs';
+import {createDomainInterview,recordDomainTurn,advanceDomainTurn,domainIntervention,uncertainAnswer,skipDomainQuestion} from './interview-domain.mjs';
 
 async function providerError(response){
  const code=({400:'PROVIDER_BAD_REQUEST',401:'PROVIDER_AUTH_FAILED',403:'PROVIDER_ACCESS_DENIED',429:'PROVIDER_LIMIT'})[response.status]||'PROVIDER_UNAVAILABLE';
@@ -95,7 +96,7 @@ export function createInterviewAIEngine({env,fetchImpl=fetch,reserveSessionQuota
   try{
    let sdp;
    if(body.transport==='voice'){
-    const form=new FormData();form.set('sdp',body.sdp);form.set('session',JSON.stringify({type:'realtime',model:env.OPENAI_REALTIME_MODEL||'gpt-realtime-2.1',instructions:s.instructions,output_modalities:['audio'],max_output_tokens:400,audio:{input:{transcription:{model:'gpt-4o-mini-transcribe',language:settings.domain==='civics'?'en':settings.locale},noise_reduction:{type:'near_field'},turn_detection:{type:'server_vad',threshold:0.5,prefix_padding_ms:300,silence_duration_ms:1200,create_response:false,interrupt_response:true}},output:{voice:settings.avatar==='kevin'?'cedar':'marin'}}}));
+    const form=new FormData();form.set('sdp',body.sdp);form.set('session',JSON.stringify({type:'realtime',model:env.OPENAI_REALTIME_MODEL||'gpt-realtime-2.1',instructions:s.instructions,output_modalities:['audio'],max_output_tokens:400,audio:{input:{transcription:{model:'gpt-4o-mini-transcribe',language:settings.locale},noise_reduction:{type:'near_field'},turn_detection:{type:'server_vad',threshold:0.5,prefix_padding_ms:300,silence_duration_ms:1200,create_response:false,interrupt_response:true}},output:{voice:settings.avatar==='kevin'?'cedar':'marin'}}}));
     const r=await fetchImpl('https://api.openai.com/v1/realtime/calls',{method:'POST',headers:{authorization:`Bearer ${env.OPENAI_API_KEY}`},body:form,signal:AbortSignal.timeout(30000)});
     if(!r.ok)throw await providerError(r);
     const location=r.headers.get('location')||'';const match=location.match(/\/calls\/(rtc_[a-zA-Z0-9_-]+)$/);if(!match)throw Error('INVALID_PROVIDER_SESSION');s.callId=match[1];sdp=await r.text();if(!sdp.startsWith('v=0'))throw Error('INVALID_PROVIDER_SESSION');logDiagnostic('OPENAI_SESSION_CREATED',{module:settings.module,transport:'voice'});
@@ -117,6 +118,12 @@ export function createInterviewAIEngine({env,fetchImpl=fetch,reserveSessionQuota
    if(body.turnId&&s.lastTurn?.id===body.turnId)return s.lastTurn.result;
    if(body.questionId&&body.questionId!==s.flow.question?.id)throw Error('STALE_QUESTION');
    if(!body.answer.trim())return {suggested_follow_up:domainIntervention(s.flow,s.settings.locale),next_question:s.flow.question?.english||'',question_id:s.flow.question?.id,revision:s.flow.revision,provider:'question-bank',status:'evaluation_unavailable',educational_feedback:''};
+   if(isNextQuestionCommand(body.answer)){
+    s.flow=skipDomainQuestion(s.flow);
+    const output={suggested_follow_up:domainIntervention(s.flow,s.settings.locale),next_question:s.flow.question?.english||'',question_id:s.flow.question?.id||null,revision:s.flow.revision,provider:'question-bank',status:'skipped',educational_feedback:'',next_action:s.flow.question?'continue':'finish'};
+    if(typeof body.turnId==='string'&&body.turnId.length<=80)s.lastTurn={id:body.turnId,result:output};
+    return output;
+   }
    if(!await reserveTurnQuota(owner))throw Error('DAILY_LIMIT');
    // Work on a copy: a failed evaluator leaves the original question retryable.
    const recorded=recordDomainTurn(s.flow,body.answer);

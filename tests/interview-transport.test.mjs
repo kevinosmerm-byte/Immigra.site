@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createInterviewAIEngine} from '../shared/interview-ui/InterviewAIEngine.mjs';
 const settings={module:'asylum',locale:'es',consent:true,transport:'voice'};
-function fixture({evaluateTurn}={}){
+function fixture({evaluateTurn,disconnectGraceMs}={}){
  const tracks=[{enabled:true,stop(){this.stopped=true;}}],stream={getTracks:()=>tracks,getAudioTracks:()=>tracks},states=[],captions=[],reviews=[],requests=[],errors=[],diagnostics=[];let peer,micCalls=0;
  class Peer{constructor(){peer=this;}addTrack(){}createDataChannel(){this.channel={readyState:'open',sent:[],send(s){this.sent.push(JSON.parse(s));},close(){}};return this.channel;}async createOffer(){return {sdp:'v=0\r\noffer'};}async setLocalDescription(){}async setRemoteDescription(){this.channel.onopen();}close(){this.closed=true;}}
  class Audio{play(){return Promise.resolve();}pause(){}}
  const env={RTCPeerConnection:Peer,Audio,navigator:{mediaDevices:{getUserMedia:async()=>{micCalls++;return stream;}}}};
  const fetchImpl=async(url,options)=>{requests.push({url,options});return options.method==='DELETE'?new Response(null,{status:204}):Response.json(url.endsWith('/turn')?{suggested_follow_up:'Which year?',educational_feedback:'Please clarify.',provider:'OpenAI'}:{id:'test',sdp:'v=0\r\nanswer',expires_at:Date.now()+600000});};
- const engine=createInterviewAIEngine({env,fetchImpl,evaluateTurn,onState:x=>states.push(x),onCaption:x=>captions.push(x),onEvaluation:x=>reviews.push(x),onError:x=>errors.push(x),onDiagnostic:(phase,data)=>diagnostics.push({phase,...data})});
+ const engine=createInterviewAIEngine({env,fetchImpl,evaluateTurn,disconnectGraceMs,onState:x=>states.push(x),onCaption:x=>captions.push(x),onEvaluation:x=>reviews.push(x),onError:x=>errors.push(x),onDiagnostic:(phase,data)=>diagnostics.push({phase,...data})});
  return {engine,env,fetchImpl,tracks,stream,states,captions,reviews,requests,errors,diagnostics,peer:()=>peer,micCalls:()=>micCalls};
 }
 const drain=()=>new Promise(resolve=>setImmediate(resolve));
@@ -122,4 +122,22 @@ test('cleared audio reopens mic except while an evaluation is pending',async()=>
  release({next_question:'Another name?',suggested_follow_up:'Another name?'});await drain();
  emit({type:'response.done',response:{status:'completed',output:[]}});assert.equal(f.tracks[0].enabled,true);assert.equal(f.errors.at(-1),'AI_SPEECH_FAILED');
  f.engine.close();
+});
+
+test('mobile transient disconnect preserves the session and microphone',async()=>{
+ const f=fixture({disconnectGraceMs:20});await f.engine.start(settings);await drain();
+ const peer=f.peer();peer.connectionState='disconnected';peer.onconnectionstatechange();
+ assert.equal(peer.closed,undefined);assert.ok(!f.errors.includes('CONNECTION_LOST'));
+ peer.connectionState='connected';peer.onconnectionstatechange();
+ await new Promise(r=>setTimeout(r,30));assert.equal(peer.closed,undefined);assert.equal(f.micCalls(),1);f.engine.close();
+});
+test('sustained disconnect still reports a real error and releases audio',async()=>{
+ const f=fixture({disconnectGraceMs:10});await f.engine.start(settings);await drain();
+ f.peer().connectionState='disconnected';f.peer().onconnectionstatechange();
+ await new Promise(r=>setTimeout(r,20));assert.equal(f.errors.at(-1),'CONNECTION_LOST');assert.equal(f.tracks[0].stopped,true);
+});
+test('confirmed new output clears stale speech failure without hiding evaluation errors',async()=>{
+ const f=fixture();await f.engine.start(settings);await drain();const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});
+ emit({type:'response.done',response:{status:'failed'}});assert.equal(f.errors.at(-1),'AI_SPEECH_FAILED');
+ emit({type:'output_audio_buffer.started'});assert.equal(f.errors.at(-1),'');f.engine.close();
 });

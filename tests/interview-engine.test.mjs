@@ -39,3 +39,13 @@ test('civics cannot accidentally invoke the personal AI evaluator',async()=>{
 test('avatar changes do not alter evaluator instructions',()=>{
  assert.equal(interviewInstructions({...settings,avatar:'kevin'}),interviewInstructions({...settings,avatar:'sahara'}));
 });
+test('next question skips without evaluator, quota, fabricated feedback or answer history',async()=>{
+ const {engine,manager,requests}=fixture();
+ const session=await engine.start('skip-owner',{...settings,module:'citizenship'});
+ const first=await engine.turn('skip-owner',session.id,{answer:''});
+ const result=await engine.turn('skip-owner',session.id,{answer:'Siguiente pregunta',turnId:'command',questionId:first.question_id});
+ assert.equal(result.status,'skipped');assert.equal(result.educational_feedback,'');assert.notEqual(first.question_id,result.question_id);
+ assert.equal(requests.length,0);assert.equal(manager.get(session.id,'skip-owner').history.length,0);
+ assert.deepEqual(await engine.turn('skip-owner',session.id,{answer:'Siguiente pregunta',turnId:'command',questionId:first.question_id}),result);
+ await engine.close(session.id,'skip-owner');
+});
