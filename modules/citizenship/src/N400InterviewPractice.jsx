@@ -1,3 +1,5 @@
+import {n400PracticeBank} from '../../../shared/interview-ui/n400-language.mjs';
+import {isNextQuestionCommand} from '../../../shared/interview-ui/commands.mjs';
 import {TEMPORARY_PUBLIC_INTERVIEWS} from '../../../shared/interview-ui/access-policy.mjs';
 import ConversationInterview from '../../../shared/interview-ui/ConversationInterview.jsx';
 import AnswerFeedback from '../../../shared/interview-ui/AnswerFeedback.jsx';
@@ -23,9 +25,9 @@ import {
   setCompanionSessionVisibility,
 } from "./companionEvents.js";
 
-function createInitialFlow(context) {
-  const initialState = createN400InterviewState(n400Bank, {}, context);
-  const selection = selectNextN400Question(n400Bank, initialState);
+function createInitialFlow(context, bank=n400Bank) {
+  const initialState = createN400InterviewState(bank, {}, context);
+  const selection = selectNextN400Question(bank, initialState);
   return { ...selection, followUpQueue: [] };
 }
 
@@ -78,12 +80,13 @@ const COPY = {
 const N400_FORM_EDITION = n400Bank.formEdition;
 
 export function N400InterviewPractice({ onExit, onComplete, onRestart, brainContext = {}, language = "en", userKey = "guest", onSaveN400Profile, requestVoiceAccess }) {
+  const bank=n400PracticeBank(n400Bank,language);
   const copy = COPY[language === "es" ? "es" : "en"];
   const [conversation,setConversation]=useState(false);
   const [microphoneError,setMicrophoneError]=useState("");
   const [callStarted,setCallStarted]=useState(false),[callPaused,setCallPaused]=useState(false),[captionsVisible,setCaptionsVisible]=useState(true),[elapsed,setElapsed]=useState(0);
   useEffect(()=>{if(!callStarted||isNaN(elapsed))return;const timer=setInterval(()=>setElapsed(v=>v+1),1000);return()=>clearInterval(timer);},[callStarted]);
-  const [flow, setFlow] = useState(() => createInitialFlow(brainContext));
+  const [flow, setFlow] = useState(() => createInitialFlow(brainContext,bank));
   const [isListening, setIsListening] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -109,6 +112,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const reviewedConceptsRef = useRef(new Set());
   const skippedConceptsRef = useRef(new Set());
   const initialQuestionRef = useRef(flow.question?.english || "");
+  useEffect(()=>{if(!callStarted&&!conversation){const next=createInitialFlow(brainContext,n400PracticeBank(n400Bank,language));setFlow(next);initialQuestionRef.current=next.question?.english||'';}},[language]);
   const soundEnabledRef = useRef(brainContext.preferences?.soundEnabled !== false);
   const isKevin = interviewer === "kevin";
   const interviewerName = isKevin ? "Kevin" : "Sarah";
@@ -122,7 +126,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     if (!soundEnabledRef.current || !mountedRef.current) { setIsSpeaking(false); return; }
     setIsSpeaking(true);
     try {
-      await speakAppText(text, { profile: selectedInterviewer === "kevin" ? "male" : "female" });
+      await speakAppText(text, { language, profile: selectedInterviewer === "kevin" ? "male" : "female" });
     } finally {
       if (mountedRef.current && requestId === speechRequestRef.current) setIsSpeaking(false);
     }
@@ -146,7 +150,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
       if (!soundEnabledRef.current) return;
       const requestId = ++speechRequestRef.current;
       setIsSpeaking(true);
-      speakAppText(`Welcome. We will review your Form N-400 in two parts. First, I will ask about your personal information. ${initialQuestionRef.current}`, { profile: "female" })
+      speakAppText(`${language==='es'?'Bienvenido. Repasaremos su formulario N-400. Primero le preguntaré sobre su información personal.':'Welcome. We will review your Form N-400 in two parts. First, I will ask about your personal information.'} ${initialQuestionRef.current}`, { language, profile: 'female' })
         .finally(() => { if (mountedRef.current && requestId === speechRequestRef.current) setIsSpeaking(false); });
     }, 500);
     speechTimerRef.current = timer;
@@ -181,10 +185,10 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const finishInterview = (state) => {
     setFlow({ state, question: null, transition: "", followUpQueue: [] });
     setIsComplete(true);
-    speakQuestion("Thank you. That concludes this Form N-400 practice review.");
+    speakQuestion(language==='es'?'Gracias. Ha terminado esta práctica del formulario N-400.':'Thank you. That concludes this Form N-400 practice review.');
   };
   const advanceToNextConcept = (state) => {
-    const selection = selectNextN400Question(n400Bank, state);
+    const selection = selectNextN400Question(bank, state);
     resetQuestionUi();
     if (!selection.question) { finishInterview(selection.state); return; }
     setFlow({ ...selection, followUpQueue: [] });
@@ -201,6 +205,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     const transcript = String(value || "").trim();
     const question = flow.question;
     if (!question || !transcript || pendingResponse) return;
+    if(isNextQuestionCommand(transcript)){skipQuestion();return;}
     stopQuestionSpeech();
     setAnswer(transcript);
     if (question.answerType === "yes_no" && parseYesNo(transcript) === null) {
@@ -224,7 +229,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
       const [first, ...remaining] = followUps;
       resetQuestionUi();
       setFlow({ state, question: first, transition: "", followUpQueue: remaining });
-      queueQuestionSpeech(`Thank you. ${first.english}`);
+      queueQuestionSpeech(`${language==='es'?'Gracias.':'Thank you.'} ${first.english}`);
     } else advanceToNextConcept(state);
   };
   const rememberResponse = async () => {
@@ -263,7 +268,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     if (!recorder) return;
     setIsTranscribing(true);
     try {
-      const transcript = await transcribeRecording(await recorder.stop(), {publicInterview:TEMPORARY_PUBLIC_INTERVIEWS});
+      const transcript = await transcribeRecording(await recorder.stop(), {publicInterview:TEMPORARY_PUBLIC_INTERVIEWS,language});
       if (!mountedRef.current||generation!==captureGeneration.current) return;
       if (transcript) acceptResponse(transcript);
       else setAnswerStatus("error");

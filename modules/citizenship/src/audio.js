@@ -85,11 +85,11 @@ export async function startAudioRecording({ session } = {}) {
   };
 }
 
-export async function transcribeRecording(recording, { publicInterview = false } = {}) {
+export async function transcribeRecording(recording, { publicInterview = false, language = "en" } = {}) {
   const formData = new FormData();
   formData.append("audio", recording.blob, recording.fileName);
 
-  if(publicInterview)formData.append("language", "en");
+  if(publicInterview)formData.append("language", language === "es" ? "es" : "en");
   const response = await (publicInterview ? fetch("/api/interview/transcribe", {method:"POST",headers:{"x-audio-consent":"interview-audio-v1"},body:formData}) : apiFetch("/transcribe", {
     method: "POST",
     body: formData,

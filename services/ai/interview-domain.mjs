@@ -1,5 +1,4 @@
-import promptsEs from './n400-prompts.es.json' with {type:'json'};
-import followupsEs from './n400-followups.es.json' with {type:'json'};
+import {n400PracticeBank} from '../../shared/interview-ui/n400-language.mjs';
 // Domain adapters, not independent interview engines. All selection and recording
 // below delegate to the unchanged CitizenshipAI engine. Data lives in one session.
 import {readFileSync} from 'node:fs';
@@ -14,7 +13,7 @@ const architecture=questions=>{
   return {questions,interviewArchitecture:{blockOrder,subBlockOrder:Object.fromEntries(blockOrder.map(b=>[b,[...new Set(questions.filter(q=>q.block===b).map(q=>q.subBlock))]])),transitionScripts:{}}};
 };
 export function domainBank(settings){
-  if(settings.module==='citizenship')return settings.locale==='es'?{...n400Bank,questions:n400Bank.questions.map(q=>({...q,canonicalPracticePrompt:promptsEs[q.id],alternatePhrasings:[],followUps:q.followUps.map(text=>followupsEs[text])}))}:n400Bank;
+  if(settings.module==='citizenship')return n400PracticeBank(n400Bank,settings.locale);
   if(settings.module==='residency')return architecture(selectAosQuestions({route:settings.route,...(settings.practiceOptions||{count:12}),random:()=>0.5}).map(q=>({id:q.id,concept:q.id,block:q.dificultad,subBlock:'FAMILY',canonicalPracticePrompt:aosQuestion(q,settings.locale),answerType:'text',followUps:[],sourceRefs:[q.fuente]})));
   return architecture(asylumBank.filter(q=>q.uscis_enabled===1).map(q=>({id:q.id,concept:q.id,block:q.category,subBlock:q.subcategory,canonicalPracticePrompt:settings.locale==='es'?q.question_es:q.question_en,answerType:'text',followUps:[]})));
 }
