@@ -716,7 +716,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   };
 
   const startAiFeature = (feature, continuation) => {
-    requestAiSession(feature, continuation, language);
+    requestAiSession(feature, continuation, language, { allowLocal: feature === "writing" || feature === "speaking" });
   };
   const requestVoiceAccess = continuation => {
     if(TEMPORARY_PUBLIC_INTERVIEWS){

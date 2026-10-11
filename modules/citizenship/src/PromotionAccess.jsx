@@ -86,7 +86,7 @@ export function PromotionAccessProvider({ children }) {
     return () => window.removeEventListener("pagehide", finishBeforeLeaving);
   }, [finishAiSession]);
 
-  const beginSession = async (feature, continuation, language = "en") => {
+  const beginSession = async (feature, continuation, language = "en", allowLocal = false) => {
     await finishActiveAiSession("auto");
     let serverSession = null;
     if (session) {
@@ -101,6 +101,7 @@ export function PromotionAccessProvider({ children }) {
       } catch (error) {
         setAiRequestContext(null);
         if (error?.decision?.allowed === false) {
+          if (allowLocal) { continuation(); return; }
           continuationRef.current = null;
           setPending({
             feature,
@@ -121,26 +122,31 @@ export function PromotionAccessProvider({ children }) {
     continuation(serverSession);
   };
 
-  const requestAiSession = (feature, continuation, language = "en") => {
+  const requestAiSession = (feature, continuation, language = "en", { allowLocal = false } = {}) => {
+    // Study screens are usable locally; opening them must not wait for account
+    // metering or an optional AI service. Server authorization is unchanged.
+    if (allowLocal) { continuation(); continuation = () => {}; }
     const config = getAiFeatureConfig(feature);
     if (!config) {
       continuation();
       return;
     }
     if (aiFeatureAvailability?.[feature] === false) {
+      if (allowLocal) { continuation(); return; }
       continuationRef.current = null;
       setPending({ feature, language: language === "es" ? "es" : "en", blocked: true, reason: "feature_unavailable" });
       return;
     }
     if (!session && promotionAccess === false) {
+      if (allowLocal) { continuation(); return; }
       continuationRef.current = null;
       setPending({ feature, language: language === "es" ? "es" : "en", blocked: true, reason: "account_required" });
       return;
     }
-    if (PROMOTION_ACCESS_CONFIG.promotionActive && promotionAccess !== false && shouldShowPromotionNotice(feature)) {
+    if (!allowLocal && PROMOTION_ACCESS_CONFIG.promotionActive && promotionAccess !== false && shouldShowPromotionNotice(feature)) {
       window.dispatchEvent(new CustomEvent("citizenshipai:pro-benefits", { detail: { feature, language } }));
     }
-    beginSession(feature, continuation, language);
+    beginSession(feature, continuation, language, allowLocal);
   };
 
   const close = () => {
