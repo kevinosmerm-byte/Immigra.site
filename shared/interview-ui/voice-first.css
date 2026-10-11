@@ -142,3 +142,10 @@ html[data-reduce-transparency=true] #root :is(.call-setup,.platform-call-start) 
 .call-screen.voice-first[data-module] .call-captions{position:relative;inset:auto;flex:0 0 auto;max-height:24dvh;overflow-y:auto;overflow-wrap:anywhere;margin:0;font-size:clamp(16px,2vw,18px)}
 .call-screen.voice-first[data-module] .call-alert{position:relative;inset:auto;flex:0 0 auto}
 @media(max-height:600px){.call-screen.voice-first[data-module] .call-stage video{height:180px}.call-screen.voice-first[data-module] .call-captions{max-height:160px}}
+
+/* Larger portrait crop, with captions still occupying their own row. */
+.call-screen.voice-first[data-module] .call-stage video{height:clamp(300px,52dvh,560px);object-fit:cover;object-position:center 28%;border-radius:24px}
+.call-screen.voice-first[data-module] .call-alert{padding:10px 14px;border:1px solid var(--color-border,#d8e2ec);border-radius:16px;background:rgba(244,248,252,.85);box-shadow:none;font-size:12px;text-align:left}
+.call-screen.voice-first[data-module] .call-alert p{margin:0 0 8px;color:var(--color-text,#172b3d)!important;line-height:1.4}
+.call-screen.voice-first[data-module] .call-alert button{min-height:44px;padding:8px 14px;color:var(--color-navy,#123a63);background:transparent;border:1px solid var(--color-border,#d8e2ec);border-radius:12px}
+@media(max-height:600px){.call-screen.voice-first[data-module] .call-stage video{height:260px}}
