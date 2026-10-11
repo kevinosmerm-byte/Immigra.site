@@ -654,6 +654,17 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   const [isReading, setIsReading] = useState(false);
   const [readingIndex, setReadingIndex] = useState(() => getModuleProgress(userKey).reading?.questionIndex || 0);
   const readingRecorderRef = useRef(null);
+  const readingGeneration = useRef(0), readingPending = useRef(false), readingTimer = useRef(null);
+  const readingSession = useRef(null);
+  const [readingConsent, setReadingConsent] = useState(false);
+  useEffect(() => {
+    setIsReading(false);setIsAIThinking(false);
+    return () => {
+      readingGeneration.current++;clearTimeout(readingTimer.current);
+      readingRecorderRef.current?.cancel();readingRecorderRef.current=null;
+      readingSession.current?.close();readingSession.current=null;
+    };
+  }, [screen]);
   const [writingAnswer, setWritingAnswer] = useState("");
   const [writingGoodCount, setWritingGoodCount] = useState(0);
   const [writingNeedsPracticeCount, setWritingNeedsPracticeCount] = useState(0);
@@ -983,59 +994,39 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   };
 
   const startReading = async () => {
+    if(!readingConsent || readingPending.current || readingRecorderRef.current || isAIThinking)return;
+    const token=readingGeneration.current;readingPending.current=true;clearTimeout(readingTimer.current);stopAppSpeech();
+    if(!readingSession.current)readingSession.current=createRecordingSession();
     try {
-      readingRecorderRef.current = await startAudioRecording();
-      setIsAIThinking(true);
-      setIsReading(true);
+      const recorder=await startAudioRecording({session:readingSession.current});
+      if(token!==readingGeneration.current){recorder.cancel();return;}
+      readingRecorderRef.current=recorder;setIsAIThinking(true);setIsReading(true);
       setAiMessage(t("Listening to your reading…", "Escuchando tu lectura…"));
-      emitCompanionState("thinking", { message: language === "es" ? "Te escucho. Lee con calma." : "I'm listening. Read at your own pace." });
-    } catch {
-      console.error("Reading microphone error:");
-      setIsAIThinking(false);
-      setAiMessage(t("Allow microphone access and try again.", "Permite el acceso al micrófono e inténtalo otra vez."));
-    } finally {coachMicPending.current=false;}
+    } catch(error) {
+      if(token===readingGeneration.current){setIsAIThinking(false);setAiMessage(audioErrorMessage(error,language));}
+    } finally {readingPending.current=false;}
   };
 
   const stopReading = async () => {
-    const recorder = readingRecorderRef.current;
-    readingRecorderRef.current = null;
-    setIsReading(false);
-    if (!recorder) return;
-
+    const recorder=readingRecorderRef.current,token=readingGeneration.current;
+    readingRecorderRef.current=null;setIsReading(false);
+    if(!recorder)return;
     try {
       setAiMessage(t("Reviewing your reading…", "Revisando tu lectura…"));
-      const transcript = await transcribeRecording(await recorder.stop());
-      if (!transcript) {
-        setAiMessage(t("We could not hear your reading. Please try again.", "No pudimos escuchar tu lectura. Inténtalo otra vez."));
-        return;
-      }
-
-      const result = await apiJson("/evaluate-reading", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sentence: readingSentences[readingIndex].english,
-          transcript,
-        }),
-      });
-
-      if (result.accuracy === "Excellent" || result.accuracy === "Good") {
-        playCorrectSound();
-        emitCompanionResult(true);
-      } else {
-        playIncorrectSound();
-        emitCompanionResult(false);
-      }
-      recordPractice({ module: "reading", score: result.score, outcome: result.accuracy });
-
-      setAiMessage(`${result.score}% — ${result.accuracy}\n\n${result.feedback}`);
-      setTimeout(nextReadingSentence, 3000);
-    } catch {
-      console.error("Reading AI error:");
-      setAiMessage(t("We could not review your reading. Please try again.", "No pudimos revisar tu lectura. Inténtalo otra vez."));
-    } finally {
-      setIsAIThinking(false);
-    }
+      const transcript=await transcribeRecording(await recorder.stop(),{publicInterview:true,language:"en"});
+      if(token!==readingGeneration.current)return;
+      if(!transcript){setAiMessage(t("We could not hear your reading. Please try again.","No pudimos escuchar tu lectura. Inténtalo otra vez."));return;}
+      const result=await apiJson("/interview/reading",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sentence:readingSentences[readingOrder[readingIndex]].english,transcript,locale:language,consent:readingConsent})});
+      if(token!==readingGeneration.current)return;
+      const good=result.accuracy==="Excellent"||result.accuracy==="Good";
+      if(good)playCorrectSound();else playIncorrectSound();
+      emitCompanionResult(good);recordPractice({module:"reading",score:result.score,outcome:result.accuracy});
+      const accuracy=language==='es'?({Excellent:'Excelente',Good:'Bien','Needs Practice':'Necesita práctica'})[result.accuracy]:result.accuracy;
+      setAiMessage(`${transcript}\n\n${result.score}% — ${accuracy}\n${result.feedback}`);
+      readingTimer.current=setTimeout(()=>{if(token===readingGeneration.current)nextReadingSentence();},6000);
+    } catch(error) {
+      if(token===readingGeneration.current)setAiMessage(t("We could not review your reading. Please try again.","No pudimos revisar tu lectura. Inténtalo otra vez."));
+    } finally {if(token===readingGeneration.current)setIsAIThinking(false);}
   };
 
   const setPreferredLanguage = (nextLanguage) => {
@@ -1373,8 +1364,8 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
               </div>
               <div className="reading-session-progress"><span className="reading-card-count">{readingIndex + 1} / {readingSentences.length}</span><GlassProgress value={readingIndex + 1} max={readingSentences.length} label={t("Sentence progress", "Progreso de oraciones")}/></div>
             </div>
-            <div className="reading-sentence-panel liquid-glass"><button type="button" className="reading-audio" disabled={isReading || isAIThinking} aria-label={t("Listen to the sentence", "Escuchar la oración")} onClick={() => speakAppText(readingSentences[readingIndex].english, { profile: "female", rate: 0.85, pitch: 1.08 })}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10"/></svg></button><div className="reading-sentence" lang="en">{readingSentences[readingIndex].english}</div>
-            <div className="writing-spanish">{readingSentences[readingIndex].spanish}</div></div>
+            <div className="reading-sentence-panel liquid-glass"><button type="button" className="reading-audio" disabled={isReading || isAIThinking} aria-label={t("Listen to the sentence", "Escuchar la oración")} onClick={() => speakAppText(readingSentences[readingOrder[readingIndex]].english, { profile: "female", rate: 0.85, pitch: 1.08 })}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10"/></svg></button><div className="reading-sentence" lang="en">{readingSentences[readingOrder[readingIndex]].english}</div>
+            <div className="writing-spanish">{readingSentences[readingOrder[readingIndex]].spanish}</div></div>
             {aiMessage && (
               <div className="ai-reading-feedback" role="status" aria-live="polite">
                 <div className="ai-reading-label">{t("AI HEARD", "Lo que escuchamos")}</div>
@@ -1383,10 +1374,11 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
                 </div>
               </div>
             )}
+            <label><input type="checkbox" checked={readingConsent} disabled={isReading||isAIThinking} onChange={e=>setReadingConsent(e.target.checked)}/>{t("I authorize sending this recording and transcript to OpenAI for educational feedback. This app does not save recordings; provider retention policies apply.","Autorizo enviar esta grabación y su transcripción a OpenAI para comentarios educativos. La app no guarda grabaciones; se aplican las políticas de retención del proveedor.")}</label>
             <button
               className={`reading-button ${isReading ? "recording" : ""}`}
               onClick={isReading ? stopReading : startReading}
-              disabled={isAIThinking && !isReading}
+              disabled={!readingConsent || (isAIThinking && !isReading)}
               type="button"
             >
               <span className="reading-button-icon" aria-hidden="true">

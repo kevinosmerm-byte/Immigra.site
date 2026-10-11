@@ -63,3 +63,13 @@ test('temporary public interviews retain signed ownership, quota and origin prot
  const off=await fixture(t,{INTERVIEW_PUBLIC_ACCESS:'false',PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock'},{reserveConversationQuota:async()=>true,reserveInterviewQuota:async()=>true});
  assert.equal((await off.request('/api/interview/sessions',options)).status,401);
 });
+
+test('public reading uses guest identity, consent and quota; private mode requires login',async t=>{
+ let calls=0;const env={PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock',OPENAI_TEXT_MODEL:'mock'};
+ const f=await fixture(t,env,{reserveInterviewQuota:async id=>{assert.match(id,/^guest:/);return true;},analysisFetch:async()=>{calls++;return Response.json({output_text:JSON.stringify({score:100,accuracy:'Excellent',feedback:'Clear reading.'})});}});
+ const send=(f,consent)=>f.request('/api/interview/reading',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({consent,sentence:'Adams was President.',transcript:'Adams was President.',locale:'en'})});
+ assert.equal((await send(f,false)).status,400);assert.equal(calls,0);
+ const response=await send(f,true);assert.equal(response.status,200);assert.match(response.headers.get('set-cookie'),/HttpOnly; Secure; SameSite=Strict/);assert.equal(calls,1);
+ const privateApp=await fixture(t,{...env,INTERVIEW_PUBLIC_ACCESS:'false'});
+ assert.equal((await send(privateApp,true)).status,401);
+});

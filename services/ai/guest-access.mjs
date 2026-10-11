@@ -8,7 +8,7 @@ export function createGuestAccess({secret,now=Date.now}) {
   if(/^[a-f0-9-]{36}$/.test(id||'')&&/^\d{13}$/.test(expires||'')&&/^[a-f0-9]{64}$/.test(signature||'')&&Number(expires)>now())valid=timingSafeEqual(Buffer.from(sign(id+'.'+expires)),Buffer.from(signature));
   let owner=id;
   if(!valid){
-   if(!['/api/interview/sessions','/api/interview/transcribe'].includes(req.path))return res.status(401).json({error:'GUEST_SESSION_EXPIRED'});
+   if(!['/api/interview/sessions','/api/interview/transcribe','/api/interview/reading'].includes(req.path))return res.status(401).json({error:'GUEST_SESSION_EXPIRED'});
    owner=randomUUID();const value=owner+'.'+(now()+86400000);
    res.setHeader('Set-Cookie',`__Host-interview_guest=${value}.${sign(value)}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=86400`);
   }

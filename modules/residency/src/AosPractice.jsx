@@ -1,5 +1,5 @@
 import aosUiEn from './aos-ui.en.json';
-import {aosQuestion,aosRoutesEn,aosTopic} from './aosEngine.mjs';
+import {aosQuestion,aosQuestions,aosRoutesEn,aosTopic} from './aosEngine.mjs';
 import RealtimeInterview from '../realtime/RealtimeInterview.jsx';
 import React,{useEffect,useRef,useState} from 'react';
 import {selectAosQuestions,aosRoutes,isUncertain} from './aosEngine.mjs';
@@ -39,7 +39,7 @@ export default function AosPractice({onHome,onLegacy,active,lang='es'}){
  const labels={clear:t("Detalle expresado con claridad"),clarify:t("Puedes aclarar esta expresión"),uncertain:t("Es válido no recordar"),context:t("Conviene aclarar el contexto")};
  if(beta)return <RealtimeInterview lang={lang} practiceOptions={{petitionerStatus:status,age,marital,count}} relationshipType={route==='MATRIMONIO'?'marriage_husband_petitioner':route==='HIJO_A_PADRES'?'child_petitions_mother':'parent_petitions_child'} mode="personal" scenarioId={null} active={active} onBack={()=>setBeta(false)}/>;
  return <section className="aos-practice"><button className="aos-back" onClick={onHome}>{t("← Volver al inicio")}</button><header><p className="aos-eyebrow">{t("RESIDENCIA · AJUSTE DE ESTATUS")}</p><h1>{finished?t("Tu resumen de práctica"):session?t("Conversemos, una pregunta a la vez"):t("Practica tu entrevista familiar")}</h1><p>{t("Práctica educativa. No sustituye asesoría legal ni representa una entrevista oficial de USCIS.")}</p></header>
- {!session?<form className="aos-glass aos-setup" onSubmit={start}><div className="aos-heading"><img src="/images/home/residency-icon.webp" alt=""/><div><h2>{t("Configura tu práctica")}</h2><p>{t("300 preguntas educativas · Español e inglés")}</p></div></div>
+ {!session?<form className="aos-glass aos-setup" onSubmit={start}><div className="aos-heading"><img src="/images/home/residency-icon.webp" alt=""/><div><h2>{t("Configura tu práctica")}</h2><p>{aosQuestions.length} {lang==='es'?'preguntas educativas · Español e inglés':'educational questions · Spanish and English'}</p></div></div>
  <div className="aos-sahara"><video src="/interviewer/listening.mp4" poster="/modules/citizenship/sarah.png" muted autoPlay loop playsInline preload="metadata" aria-label={t("Sahara, entrevistadora virtual")}/><div><h3>{t("Sahara · Tu entrevistadora")}</h3><p>{t("Practica hablando por micrófono o escribiendo.")}</p><button type="button" className="aos-primary" onClick={()=>setBeta(true)}>{t("Conversar con Sahara · Beta")}</button></div></div>
  <label>{t("¿Qué familiar presentó la petición?")}<select value={route} onChange={e=>{setRoute(e.target.value);setStatus(e.target.value==='HIJO_A_PADRES'?'citizen':'unknown');}}>{Object.entries(routeLabels).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>
  <label>{t("Situación del peticionario")}<select value={status} onChange={e=>setStatus(e.target.value)}><option value="unknown">{t("No estoy seguro / necesito revisar")}</option><option value="citizen">{t("Ciudadano estadounidense")}</option><option value="resident">{t("Residente permanente")}</option></select></label>
