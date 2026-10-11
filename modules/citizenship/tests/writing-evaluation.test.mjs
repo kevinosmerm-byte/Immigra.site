@@ -92,3 +92,10 @@ test('English writing feedback preserves scores and translates corrections',asyn
  const en=localizeWritingResult(exact,'en');assert.equal(en.feedback,'Correct!');assert.equal(en.score,100);assert.equal(en.resultLabel,'Correct');
  assert.deepEqual(localizeWritingResult(exact,'es'),exact);
 });
+
+test('dictation does not accept reversed words or removed negation',()=>{
+ const reversed=evaluateWritingSentence({english:'Adams was President.'},'President was Adams.');
+ assert.equal(reversed.accuracy,'Needs Practice');assert.match(reversed.feedback,/orden/);
+ const negative=evaluateWritingSentence({english:'Citizens cannot vote here.'},'Citizens vote here.');
+ assert.equal(negative.accuracy,'Needs Practice');assert.match(negative.feedback,/negación/);
+});

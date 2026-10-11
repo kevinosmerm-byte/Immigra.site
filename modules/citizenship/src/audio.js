@@ -27,7 +27,7 @@ export function createRecordingSession() {
   };
 }
 
-export async function startAudioRecording({ session } = {}) {
+export async function startAudioRecording({ session, onComplete, silenceMs = 0 } = {}) {
   if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
     throw new Error("Microphone recording is not supported on this device.");
   }
@@ -38,11 +38,13 @@ export async function startAudioRecording({ session } = {}) {
     ? new MediaRecorder(stream, { mimeType: preferredMimeType })
     : new MediaRecorder(stream);
   const chunks = [];
-  let automaticStopTimer;
+  let automaticStopTimer, silenceTimer, audioContext, cancelled = false;
+  const cleanupMonitor = () => { clearInterval(silenceTimer); audioContext?.close().catch(() => {}); };
 
   const recording = new Promise((resolve, reject) => {
     const releaseStream = () => {
       clearTimeout(automaticStopTimer);
+      cleanupMonitor();
       if (session) session.release(stream);
       else stream.getTracks().forEach((track) => track.stop());
     };
@@ -67,7 +69,27 @@ export async function startAudioRecording({ session } = {}) {
     };
   });
 
+  // Register completion immediately, including errors and automatic recorder stops.
+  if (onComplete) recording.then(() => { if (!cancelled) onComplete(); }, () => { if (!cancelled) onComplete(); });
   recorder.start();
+  if (silenceMs && (window.AudioContext || window.webkitAudioContext)) {
+    try {
+      const Context = window.AudioContext || window.webkitAudioContext;
+      audioContext = new Context();
+      const analyser = audioContext.createAnalyser();
+      analyser.fftSize = 2048;
+      audioContext.createMediaStreamSource(stream).connect(analyser);
+      const samples = new Float32Array(analyser.fftSize);
+      let heardSpeech = false, lastSpeech = performance.now();
+      audioContext.resume().catch(() => {});
+      silenceTimer = window.setInterval(() => {
+        analyser.getFloatTimeDomainData(samples);
+        const rms = Math.sqrt(samples.reduce((sum, sample) => sum + sample * sample, 0) / samples.length);
+        if (rms > 0.015) { heardSpeech = true; lastSpeech = performance.now(); }
+        if (heardSpeech && performance.now() - lastSpeech >= silenceMs && recorder.state !== "inactive") recorder.stop();
+      }, 100);
+    } catch { cleanupMonitor(); } // Manual stop and the duration limit remain available.
+  }
   automaticStopTimer = window.setTimeout(() => {
     if (recorder.state !== "inactive") recorder.stop();
   }, MAX_RECORDING_DURATION_MS);
@@ -78,6 +100,8 @@ export async function startAudioRecording({ session } = {}) {
       return recording;
     },
     cancel: () => {
+      cancelled = true;
+      cleanupMonitor();
       if (recorder.state !== "inactive") recorder.stop();
       if (session) session.release(stream);
       else stream.getTracks().forEach((track) => track.stop());

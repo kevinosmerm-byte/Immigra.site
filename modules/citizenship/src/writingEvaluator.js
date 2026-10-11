@@ -38,7 +38,7 @@ function matchWords(expectedTokens, answerTokens) {
     const found = exact || remaining.find((item) => !item.used && limitedTypo(item.word, expected));
     if (!found) return { expected, matched: false, typo: false };
     found.used = true;
-    return { expected, matched: true, typo: found.word !== expected, actual: found.word };
+    return { expected, matched: true, typo: found.word !== expected, actual: found.word, index: found.index };
   });
   return { matches, extras: remaining.filter((item) => !item.used).map((item) => item.word) };
 }
@@ -88,7 +88,7 @@ export function evaluateWritingSentence(sentence, answer) {
   }
   const expectedWords = tokens(expected);
   const answerWords = tokens(answer);
-  const unexpectedNegation = answerWords.some((word) => NEGATIONS.has(word)) && !expectedWords.some((word) => NEGATIONS.has(word));
+  const unexpectedNegation = answerWords.some((word) => NEGATIONS.has(word)) !== expectedWords.some((word) => NEGATIONS.has(word));
   if (unexpectedNegation) {
     return { status: "needs_practice", resultLabel: "Necesita práctica", accuracy: "Needs Practice", score: 40, feedback: "La negación cambia el significado de la oración. Inténtalo de nuevo.", needsSemanticReview: false, details: writingDetails(expected, answer) };
   }
@@ -101,6 +101,9 @@ export function evaluateWritingSentence(sentence, answer) {
 
   const comparison = matchWords(expectedWords, answerWords);
   const matched = comparison.matches.filter((item) => item.matched);
+  if(matched.some((item,index)=>index>0&&item.index<matched[index-1].index)) {
+    return {status:"needs_practice",resultLabel:"Necesita práctica",accuracy:"Needs Practice",score:50,feedback:"Revisa el orden de las palabras y escribe la oración en el orden que escuchaste.",needsSemanticReview:false,details:writingDetails(expected,answer,comparison)};
+  }
   const essential = new Set(sentence.essentialWords || []);
   const missingEssential = comparison.matches.filter((item) => essential.has(item.expected) && !item.matched);
   const coverage = matched.length / expectedWords.length;
@@ -122,6 +125,8 @@ export function localizeWritingResult(result, language='es') {
     'Escribe la oración completa para continuar.':'Write the complete sentence to continue.',
     'La negación cambia el significado de la oración. Inténtalo de nuevo.':'The negation changes the meaning of the sentence. Try again.',
     '¡Correcto!':'Correct!',
+    'Revisa el orden de las palabras y escribe la oración en el orden que escuchaste.':'Review the word order and write the sentence in the order you heard.',
+    'La revisión automática del significado no está disponible. Compara las oraciones o inténtalo otra vez; esta respuesta no tiene una calificación definitiva.':'Automatic meaning review is unavailable. Compare the sentences or try again; this answer has not received a final grade.',
     'Tu oración es correcta. El punto final es recomendable, pero no cambia el resultado.':'Your sentence is correct. A final period is recommended, but does not change the result.',
     '¡Correcto! La oración comunica el significado esperado; revisa los detalles de escritura.':'Correct! The sentence conveys the expected meaning; review the writing details.',
     'La oración parece cercana; revisaremos el significado.':'The sentence is close, but its meaning needs review.',

@@ -129,3 +129,31 @@ html[data-reduce-transparency=true] body #root #citizenship-root .pro-benefits-n
 
 #root #main #citizenship-root :is(.live-interview-screen,.live-avatar-only-screen,.live-interview-screen .interview-header,.live-avatar-only-content,.did-live-avatar-intro,.did-live-avatar-recovery) { background: transparent !important; box-shadow: none !important; }
 #root #main #citizenship-root .did-live-avatar { background: var(--liquid-surface,#ffffff8c) !important; }
+
+/* Feedback must use the current glass palette, including after an answer is submitted. */
+#root #main #citizenship-root :is(.writing-ai-evaluation,.ai-reading-feedback){
+ box-sizing:border-box;position:relative;inset:auto;width:100%;min-width:0;max-width:100%;height:auto;max-height:none;
+ padding:clamp(16px,3vw,24px);margin:16px 0;display:flex;flex-direction:column;gap:14px;
+ background:var(--liquid-surface,#ffffffb8)!important;color:var(--color-text,#172b3d)!important;
+ border:1px solid var(--liquid-border,#d8e2ec)!important;border-radius:24px!important;
+ box-shadow:inset 0 1px 0 #ffffffb3,0 8px 24px #123a6310!important;backdrop-filter:blur(20px) saturate(150%);
+ overflow-wrap:anywhere;white-space:normal;
+}
+#root #main #citizenship-root :is(.writing-ai-evaluation,.ai-reading-feedback) :is(p,strong,span,small,div){min-width:0;max-width:100%;color:var(--color-text,#172b3d)!important;overflow-wrap:anywhere;text-shadow:none}
+#root #main #citizenship-root :is(.writing-evaluation-label,.ai-reading-label,.writing-answer-comparison small){font-size:12px;line-height:1.5;font-weight:700;letter-spacing:.04em;color:var(--color-primary,#2563a6)!important}
+#root #main #citizenship-root :is(.writing-evaluation-text,.ai-reading-text,.writing-answer-comparison p,.writing-detail-list){font-size:16px;line-height:1.6;white-space:pre-wrap;color:var(--color-text,#172b3d)!important}
+#root #main #citizenship-root .writing-evaluation-heading{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+#root #main #citizenship-root .writing-evaluation-heading strong{font-size:21px;line-height:1.3}
+#root #main #citizenship-root .writing-evaluation-score{font-size:24px;font-weight:800;color:var(--color-primary,#2563a6)!important}
+#root #main #citizenship-root .writing-answer-comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%}
+#root #main #citizenship-root .writing-answer-comparison>div{background:#e8f1f9a6!important;border:1px solid var(--color-border,#d8e2ec)!important;border-radius:16px;padding:16px;min-width:0}
+#root #main #citizenship-root .writing-detail-list{background:#e8f1f980!important;border-left:3px solid var(--color-primary,#2563a6);border-radius:12px;padding:14px}
+#root #main #citizenship-root .writing-ai-evaluation.needs-practice{border-color:#c92a3a70!important}
+#root #main #citizenship-root .writing-ai-evaluation.is-correct{border-color:#24815e70!important}
+#root #main #citizenship-root .writing-review-actions{display:flex;flex-wrap:wrap;gap:12px;width:100%;justify-content:flex-end}
+#root #main #citizenship-root :is(.writing-review-actions button,.reading-review-next){box-sizing:border-box;max-width:100%;min-width:0;min-height:48px;height:auto;padding:12px 18px;border-radius:16px!important;white-space:normal;line-height:1.4;font-size:16px;overflow-wrap:anywhere}
+#root #main #citizenship-root :is(.writing-review-continue,.reading-review-next){background:linear-gradient(120deg,#317cc5,#2563a6)!important;color:#fff!important;border:1px solid #2563a6!important}
+#root #main #citizenship-root .writing-review-retry{background:#e8f1f9!important;color:var(--color-navy,#123a63)!important;border:1px solid var(--color-border,#d8e2ec)!important}
+#root #main #citizenship-root :is(.writing-practice-panel,.writing-ai-content,.reading-card,.reading-practice-screen .practice-content){box-sizing:border-box;min-width:0;max-width:100%}
+@media(max-width:650px){#root #main #citizenship-root .writing-answer-comparison{grid-template-columns:minmax(0,1fr)}#root #main #citizenship-root .writing-review-actions button{flex:1 1 160px}#root #main #citizenship-root .writing-ai-content{padding-inline:0}#root #main #citizenship-root .writing-ai-evaluation{grid-column:1!important}}
+html[data-reduce-transparency=true] #root #main #citizenship-root :is(.writing-ai-evaluation,.ai-reading-feedback){background:var(--color-background,#f4f8fc)!important;backdrop-filter:none}

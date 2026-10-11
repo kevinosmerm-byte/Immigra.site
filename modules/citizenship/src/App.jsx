@@ -657,6 +657,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   const readingGeneration = useRef(0), readingPending = useRef(false), readingTimer = useRef(null);
   const readingSession = useRef(null);
   const [readingConsent, setReadingConsent] = useState(false);
+  const [readingResult, setReadingResult] = useState(null);
   useEffect(() => {
     setIsReading(false);setIsAIThinking(false);
     return () => {
@@ -843,6 +844,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   };
 
   const nextReadingSentence = () => runTransition({ module: "reading", completed: readingIndex + 1, total: readingOrder.length, busy: Boolean(readingRecorderRef.current) }, () => {
+    setReadingResult(null);
     saveModuleProgress("reading", { completed: readingIndex + 1, total: readingOrder.length, questionIndex: (readingIndex + 1) % readingOrder.length, questionIds: readingOrder.map(index => index + 1) }, userKey);
     setReadingIndex((currentIndex) => {
       const nextIndex = currentIndex + 1;
@@ -889,6 +891,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
           });
         } catch {
           console.warn("Semantic writing review unavailable; using deterministic review.");
+          result={...localResult,feedback:t("Automatic meaning review is unavailable. Compare the sentences or try again; this answer has not received a final grade.","La revisión automática del significado no está disponible. Compara las oraciones o inténtalo otra vez; esta respuesta no tiene una calificación definitiva.")};
         }
       }
       const completeResult = {
@@ -902,13 +905,13 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
         setWritingGoodCount((count) => count + 1);
         playCorrectSound();
         emitCompanionResult(true);
-      } else {
+      } else if (completeResult.accuracy === "Needs Practice") {
         setWritingNeedsPracticeCount((count) => count + 1);
         playIncorrectSound();
         emitCompanionResult(false);
       }
       const resultLabel = completeResult.resultLabel || (completeResult.accuracy === "Excellent" ? "Correcta" : completeResult.accuracy === "Good" ? "Correcta con observaciones" : "Necesita práctica");
-      recordPractice({ module: "writing", score: completeResult.score, outcome: resultLabel });
+      if(completeResult.score!==null)recordPractice({ module: "writing", score: completeResult.score, outcome: resultLabel });
       setWritingEvaluation(localizeWritingResult({ ...completeResult, resultLabel }, language));
       setAiMessage("");
     } catch {
@@ -995,10 +998,10 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
 
   const startReading = async () => {
     if(!readingConsent || readingPending.current || readingRecorderRef.current || isAIThinking)return;
-    const token=readingGeneration.current;readingPending.current=true;clearTimeout(readingTimer.current);stopAppSpeech();
+    const token=readingGeneration.current;readingPending.current=true;clearTimeout(readingTimer.current);setReadingResult(null);stopAppSpeech();
     if(!readingSession.current)readingSession.current=createRecordingSession();
     try {
-      const recorder=await startAudioRecording({session:readingSession.current});
+      const recorder=await startAudioRecording({session:readingSession.current,silenceMs:1600,onComplete:()=>{if(token===readingGeneration.current)void stopReading();}});
       if(token!==readingGeneration.current){recorder.cancel();return;}
       readingRecorderRef.current=recorder;setIsAIThinking(true);setIsReading(true);
       setAiMessage(t("Listening to your reading…", "Escuchando tu lectura…"));
@@ -1023,7 +1026,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
       emitCompanionResult(good);recordPractice({module:"reading",score:result.score,outcome:result.accuracy});
       const accuracy=language==='es'?({Excellent:'Excelente',Good:'Bien','Needs Practice':'Necesita práctica'})[result.accuracy]:result.accuracy;
       setAiMessage(`${transcript}\n\n${result.score}% — ${accuracy}\n${result.feedback}`);
-      readingTimer.current=setTimeout(()=>{if(token===readingGeneration.current)nextReadingSentence();},6000);
+      setReadingResult(result);
     } catch(error) {
       if(token===readingGeneration.current)setAiMessage(t("We could not review your reading. Please try again.","No pudimos revisar tu lectura. Inténtalo otra vez."));
     } finally {if(token===readingGeneration.current)setIsAIThinking(false);}
@@ -1368,12 +1371,13 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
             <div className="writing-spanish">{readingSentences[readingOrder[readingIndex]].spanish}</div></div>
             {aiMessage && (
               <div className="ai-reading-feedback" role="status" aria-live="polite">
-                <div className="ai-reading-label">{t("AI HEARD", "Lo que escuchamos")}</div>
+                <div className="ai-reading-label">{readingResult?t("YOUR READING REVIEW", "Tu evaluación de lectura"):t("READING STATUS", "Estado de lectura")}</div>
                 <div className="ai-reading-text">
-                  {aiMessage.replace('I heard: "', '').replace('"', '')}
+                  {aiMessage}
                 </div>
               </div>
             )}
+            {readingResult&&<button className="reading-review-next" onClick={nextReadingSentence}>{t("Next sentence →","Siguiente oración →")}</button>}
             <label><input type="checkbox" checked={readingConsent} disabled={isReading||isAIThinking} onChange={e=>setReadingConsent(e.target.checked)}/>{t("I authorize sending this recording and transcript to OpenAI for educational feedback. This app does not save recordings; provider retention policies apply.","Autorizo enviar esta grabación y su transcripción a OpenAI para comentarios educativos. La app no guarda grabaciones; se aplican las políticas de retención del proveedor.")}</label>
             <button
               className={`reading-button ${isReading ? "recording" : ""}`}
@@ -1515,7 +1519,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
             </div>
           )}
           {writingEvaluation && (
-            <div className={`writing-ai-evaluation ${writingEvaluation.accuracy === "Needs Practice" ? "needs-practice" : "is-correct"}`} role="status" aria-live="polite">
+            <div className={`writing-ai-evaluation ${["Excellent","Good"].includes(writingEvaluation.accuracy) ? "is-correct" : "needs-practice"}`} role="status" aria-live="polite">
               <div className="writing-evaluation-heading">
                 <div>
                   <div className="writing-evaluation-label">{t("REVIEW YOUR ANSWER", "Revisa tu respuesta")}</div>
@@ -1543,7 +1547,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
               )}
               <div className="writing-review-actions">
                 {writingEvaluation.accuracy !== "Excellent" && writingEvaluation.accuracy !== "Good" && (
-                  <button type="button" className="writing-review-retry" onClick={() => setWritingEvaluation(null)}>{t("Try again · Intentar otra vez", "Intentar otra vez")}</button>
+                  <button type="button" className="writing-review-retry" onClick={() => setWritingEvaluation(null)}>{t("Try again", "Intentar otra vez")}</button>
                 )}
                 <button type="button" className="writing-review-continue" onClick={nextWritingSentence}>{t("Next sentence →", "Siguiente oración →")}</button>
               </div>
