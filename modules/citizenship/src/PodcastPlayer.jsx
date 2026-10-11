@@ -1,3 +1,4 @@
+import {appRouteHash} from '../routes.mjs';
 import '../../../shared/design-system/citizenship-podcasts.css';
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { formatPodcastTime, PodcastContext, PODCASTS, usePodcast } from "./podcastContext.js";
@@ -147,7 +148,7 @@ function PodcastMiniPlayer() {
   const progress = player.duration ? (player.currentTime / player.duration) * 100 : 0;
   return (
     <aside className="podcast-mini-player" aria-label={es ? "Reproduciendo" : "Now playing"}>
-      <button className="podcast-mini-open" onClick={() => { player.openFullPlayer(); window.location.hash = "podcasts"; }} aria-label={es ? "Abrir reproductor de podcast" : "Open full podcast player"}>
+      <button className="podcast-mini-open" onClick={() => { player.openFullPlayer(); window.location.hash = appRouteHash("podcasts"); }} aria-label={es ? "Abrir reproductor de podcast" : "Open full podcast player"}>
         <PodcastArtwork track={player.track} compact />
         <span><small>{es ? "REPRODUCIENDO" : "NOW PLAYING"}</small><strong>{player.track.title}</strong></span>
       </button>
