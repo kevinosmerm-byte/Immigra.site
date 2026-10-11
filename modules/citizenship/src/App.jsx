@@ -43,7 +43,7 @@ import { AccountSheet } from "./Account.jsx";
 import { useAccount } from "./accountContext.js";
 import { ProgressDashboard } from "./ProgressDashboard.jsx";
 import { writingSentences } from "./writingSentences.js";
-import { evaluateWritingSentence } from "./writingEvaluator.js";
+import { evaluateWritingSentence, localizeWritingResult } from "./writingEvaluator.js";
 import { CivicsStudyCard } from "./CivicsStudyCard.jsx";
 import { createNavigationHistory, navigateBack, navigateForward } from "./navigationHistory.js";
 import { getCivicsVisual } from "./data/civicsVisuals.js";
@@ -909,7 +909,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
       }
       const resultLabel = completeResult.resultLabel || (completeResult.accuracy === "Excellent" ? "Correcta" : completeResult.accuracy === "Good" ? "Correcta con observaciones" : "Necesita práctica");
       recordPractice({ module: "writing", score: completeResult.score, outcome: resultLabel });
-      setWritingEvaluation({ ...completeResult, resultLabel });
+      setWritingEvaluation(localizeWritingResult({ ...completeResult, resultLabel }, language));
       setAiMessage("");
     } catch {
       console.error("Writing evaluation error:");
@@ -1518,7 +1518,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
             <div className={`writing-ai-evaluation ${writingEvaluation.accuracy === "Needs Practice" ? "needs-practice" : "is-correct"}`} role="status" aria-live="polite">
               <div className="writing-evaluation-heading">
                 <div>
-                  <div className="writing-evaluation-label">{t("REVIEW YOUR ANSWER · REVISA TU RESPUESTA", "Revisa tu respuesta")}</div>
+                  <div className="writing-evaluation-label">{t("REVIEW YOUR ANSWER", "Revisa tu respuesta")}</div>
                   <strong>{writingEvaluation.resultLabel}</strong>
                 </div>
                 <span className="writing-evaluation-score">{writingEvaluation.score == null ? "—" : `${writingEvaluation.score}%`}</span>
@@ -1526,26 +1526,26 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
               <p className="writing-evaluation-text">{writingEvaluation.feedback}</p>
               <div className="writing-answer-comparison">
                 <div>
-                  <small>{t("YOUR ANSWER · TU RESPUESTA", "Tu respuesta")}</small>
+                  <small>{t("YOUR ANSWER", "Tu respuesta")}</small>
                   <p>{writingEvaluation.writtenAnswer}</p>
                 </div>
                 <div className="expected">
-                  <small>{t("CORRECT SENTENCE · ORACIÓN CORRECTA", "Oración correcta")}</small>
+                  <small>{t("CORRECT SENTENCE", "Oración correcta")}</small>
                   <p>{writingEvaluation.expectedAnswer}</p>
                 </div>
               </div>
               {(writingEvaluation.details?.missingWords?.length > 0 || writingEvaluation.details?.extraWords?.length > 0 || writingEvaluation.details?.corrections?.length > 0) && (
                 <div className="writing-detail-list">
-                  {writingEvaluation.details.missingWords?.length > 0 && <p><strong>{t("Missing / Faltó:", "Faltó:")}</strong> {writingEvaluation.details.missingWords.join(", ")}</p>}
+                  {writingEvaluation.details.missingWords?.length > 0 && <p><strong>{t("Missing:", "Faltó:")}</strong> {writingEvaluation.details.missingWords.join(", ")}</p>}
                   {writingEvaluation.details.extraWords?.length > 0 && <p><strong>Extra:</strong> {writingEvaluation.details.extraWords.join(", ")}</p>}
-                  {writingEvaluation.details.corrections?.length > 0 && <p><strong>{t("Spelling / Ortografía:", "Ortografía:")}</strong> {writingEvaluation.details.corrections.map((item) => `${item.written} → ${item.expected}`).join(", ")}</p>}
+                  {writingEvaluation.details.corrections?.length > 0 && <p><strong>{t("Spelling:", "Ortografía:")}</strong> {writingEvaluation.details.corrections.map((item) => `${item.written} → ${item.expected}`).join(", ")}</p>}
                 </div>
               )}
               <div className="writing-review-actions">
                 {writingEvaluation.accuracy !== "Excellent" && writingEvaluation.accuracy !== "Good" && (
                   <button type="button" className="writing-review-retry" onClick={() => setWritingEvaluation(null)}>{t("Try again · Intentar otra vez", "Intentar otra vez")}</button>
                 )}
-                <button type="button" className="writing-review-continue" onClick={nextWritingSentence}>{t("Next sentence · Siguiente →", "Siguiente oración →")}</button>
+                <button type="button" className="writing-review-continue" onClick={nextWritingSentence}>{t("Next sentence →", "Siguiente oración →")}</button>
               </div>
             </div>
           )}

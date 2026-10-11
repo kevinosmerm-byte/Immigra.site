@@ -66,9 +66,9 @@ test("the exact canonical sentence is fully correct", () => {
 
 test("writing review stays visible until the learner chooses the next action", async () => {
   const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
-  assert.match(app, /REVIEW YOUR ANSWER · REVISA TU RESPUESTA/);
-  assert.match(app, /YOUR ANSWER · TU RESPUESTA/);
-  assert.match(app, /CORRECT SENTENCE · ORACIÓN CORRECTA/);
+  assert.match(app, /REVIEW YOUR ANSWER/);
+  assert.match(app, /YOUR ANSWER/);
+  assert.match(app, /CORRECT SENTENCE/);
   assert.match(app, /onClick=\{nextWritingSentence\}>\{t\("Next sentence/);
   assert.match(app, /Semantic writing review unavailable; using deterministic review/);
   assert.doesNotMatch(app, /setTimeout\(\(\) => \{\s*nextWritingSentence\(\)/);
@@ -84,4 +84,11 @@ test("writing practice uses one unified compact panel without changing its actio
   assert.doesNotMatch(app, /onClick=\{openCoachFrom\}/);
   assert.match(css, /Writing Practice — unified, compact visual composition/);
   assert.match(css, /@media \(max-width: 700px\)/);
+});
+
+test('English writing feedback preserves scores and translates corrections',async()=>{
+ const {localizeWritingResult}=await import('../src/writingEvaluator.js');
+ const exact=evaluateWritingSentence({english:'Adams was President.'},'Adams was President.');
+ const en=localizeWritingResult(exact,'en');assert.equal(en.feedback,'Correct!');assert.equal(en.score,100);assert.equal(en.resultLabel,'Correct');
+ assert.deepEqual(localizeWritingResult(exact,'es'),exact);
 });

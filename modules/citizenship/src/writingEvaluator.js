@@ -115,3 +115,19 @@ export function evaluateWritingSentence(sentence, answer) {
   }
   return { status: "needs_practice", resultLabel: "Necesita práctica", accuracy: "Needs Practice", score: Math.round(coverage * 60), feedback: "Faltan palabras esenciales o cambió el significado. Inténtalo de nuevo.", needsSemanticReview: false, details: writingDetails(expected, answer, comparison) };
 }
+
+export function localizeWritingResult(result, language='es') {
+  if(language!=='en')return result;
+  const feedback={
+    'Escribe la oración completa para continuar.':'Write the complete sentence to continue.',
+    'La negación cambia el significado de la oración. Inténtalo de nuevo.':'The negation changes the meaning of the sentence. Try again.',
+    '¡Correcto!':'Correct!',
+    'Tu oración es correcta. El punto final es recomendable, pero no cambia el resultado.':'Your sentence is correct. A final period is recommended, but does not change the result.',
+    '¡Correcto! La oración comunica el significado esperado; revisa los detalles de escritura.':'Correct! The sentence conveys the expected meaning; review the writing details.',
+    'La oración parece cercana; revisaremos el significado.':'The sentence is close, but its meaning needs review.',
+    'Faltan palabras esenciales o cambió el significado. Inténtalo de nuevo.':'Essential words are missing or the meaning changed. Try again.',
+  };
+  const typo=result.feedback?.match(/^¡Correcto! Hay un pequeño error de ortografía: (.+)$/);
+  const capital=result.feedback?.match(/^¡Correcto! Recuerda comenzar (.+) con mayúscula\.$/);
+  return {...result,resultLabel:({Excellent:'Correct',Good:'Correct with observations','Needs Review':'Review needed','Needs Practice':'Needs practice'})[result.accuracy]||'Review needed',feedback:feedback[result.feedback]||(typo?`Correct! There is a small spelling error: ${typo[1]}`:capital?`Correct! Remember to capitalize ${capital[1]}.`:'Compare your answer with the expected sentence and review the listed differences.')};
+}
