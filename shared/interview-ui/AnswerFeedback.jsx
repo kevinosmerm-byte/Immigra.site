@@ -1,7 +1,7 @@
 import React,{useEffect,useRef,useState} from 'react';
 import {authenticatedFetch} from '../authentication/fetch.mjs';
 import './answer-feedback.css';
-export default function AnswerFeedback({module,question,answer,lang='es',domain='personal',disabled=false,consentProvided=false}){
+export default function AnswerFeedback({module,question,answer,lang='es',domain='personal',disabled=false,consentProvided=false,automatic=false}){
  const es=lang==='es',t=(a,b)=>es?a:b;
  const [consent,setConsent]=useState(false),[busy,setBusy]=useState(false),[result,setResult]=useState(null),[error,setError]=useState('');
  const generation=useRef(0),controller=useRef(null);
@@ -21,10 +21,12 @@ export default function AnswerFeedback({module,question,answer,lang='es',domain=
   }catch{if(current===generation.current)setError(t('No se pudo conectar con la evaluación. Inténtalo de nuevo.','Could not connect to the review service. Please retry.'));}
   finally{clearTimeout(timeout);if(current===generation.current)setBusy(false);}
  }
+ useEffect(()=>{if(automatic&&consentProvided&&!disabled&&answer?.trim())void review();},[automatic,consentProvided,disabled,module,question,answer]);
  if(consentProvided&&!answer?.trim())return null;
- return <section className="answer-feedback" aria-label={t('Evaluación de respuesta','Answer review')}>
+ if(automatic&&!busy&&!error&&!result)return null;
+ return <section className={automatic?"answer-feedback answer-feedback-automatic":"answer-feedback"} aria-label={t('Evaluación de respuesta','Answer review')}>
   {!consentProvided&&<label><input type="checkbox" checked={consent} disabled={busy||disabled} onChange={e=>setConsent(e.target.checked)}/>{t('Autorizo enviar esta pregunta y respuesta a OpenAI para revisar su claridad.','I authorize sending this question and answer to OpenAI to review clarity.')}</label>}
-  <button type="button" onClick={review} disabled={disabled||busy||!(consentProvided||consent)||!answer?.trim()}>{busy?t('Evaluando…','Reviewing…'):t('Evaluar respuesta con IA','Review answer with AI')}</button>
-  <div role="status">{error}{result&&<><p>{t('Evaluación de claridad completada. No evalúa elegibilidad ni aprobación.','Clarity review completed. This does not assess eligibility or approval.')}</p>{result.length?result.map((o,i)=><p key={i}><strong>{o.kind==='clear_detail'?t('Detalle expresado','Stated detail'):o.kind==='uncertainty'?t('Incertidumbre expresada: es válido no recordar','Acknowledged uncertainty: it is valid not to remember'):t('Referencia que puedes aclarar','Reference you may clarify')}</strong>: “{o.quote}”</p>):<p>{t('No se identificaron observaciones específicas en esta respuesta.','No specific observations were identified in this answer.')}</p>}</>}</div>
+  {!automatic&&<button type="button" onClick={review} disabled={disabled||busy||!(consentProvided||consent)||!answer?.trim()}>{busy?t('Evaluando…','Reviewing…'):t('Evaluar respuesta con IA','Review answer with AI')}</button>}
+  <div role="status">{automatic&&busy&&<p>{t('Evaluando tu respuesta…','Reviewing your response…')}</p>}{error}{result&&<><p>{t('Evaluación de claridad completada. No evalúa elegibilidad ni aprobación.','Clarity review completed. This does not assess eligibility or approval.')}</p>{result.length?result.map((o,i)=><p key={i}><strong>{o.kind==='clear_detail'?t('Detalle expresado','Stated detail'):o.kind==='uncertainty'?t('Incertidumbre expresada: es válido no recordar','Acknowledged uncertainty: it is valid not to remember'):t('Referencia que puedes aclarar','Reference you may clarify')}</strong>: “{o.quote}”</p>):<p>{t('No se identificaron observaciones específicas en esta respuesta.','No specific observations were identified in this answer.')}</p>}</>}</div>
  </section>;
 }
