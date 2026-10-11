@@ -25,7 +25,10 @@ export async function handle(request,env,fetcher=fetch,context={}){
  if(content.some(x=>x.type==='refusal'))return reply(422,{error:'ANALYSIS_UNAVAILABLE'});
  const result=JSON.parse(content.filter(x=>x.type==='output_text').map(x=>x.text).join(''));
  if(feedback){if(!Array.isArray(result.observations)||result.observations.length>6||result.observations.some(x=>typeof x.quote!=='string'||!x.quote.trim()||!input.text.includes(x.quote)||!feedbackKinds.includes(x.kind)))return reply(502,{error:'UNGROUNDED_OUTPUT'});return reply(200,{source_id:input.source_id,domain:input.domain,requires_review:true,observations:result.observations});}
- if(!Array.isArray(result.excerpts)||result.excerpts.length>20||result.excerpts.some(x=>typeof x.quote!=='string'||!x.quote.trim()||!input.text.includes(x.quote)||!['date','place','event','uncertainty'].includes(x.category)))return reply(502,{error:'UNGROUNDED_OUTPUT'});
+ if(!Array.isArray(result.excerpts)||result.excerpts.length>20)return reply(502,{error:'UNGROUNDED_OUTPUT'});
+ const valid=result.excerpts.filter(x=>x&&typeof x.quote==='string'&&x.quote.trim()&&input.text.includes(x.quote)&&['date','place','event','uncertainty'].includes(x.category));
+ if(result.excerpts.length&&!valid.length)return reply(502,{error:'UNGROUNDED_OUTPUT'});
+ result.excerpts=valid;
  return reply(200,{source_id:input.source_id,domain:input.domain,requires_review:true,excerpts:result.excerpts.map(x=>({quote:x.quote,category:x.category,user_confirmed:false}))});
  }catch{return reply(502,{error:'ANALYSIS_UNAVAILABLE'});}
 }
