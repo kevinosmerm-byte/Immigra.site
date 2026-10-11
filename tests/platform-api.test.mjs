@@ -26,7 +26,7 @@ test('configured ImmigrationAI origin is allowed and unrelated origins are rejec
 
 test('asylum validates consent before quota and charges only verified identity',async t=>{
  const owners=[];let paid=0,allow=true,fail=false;
- const f=await fixture(t,{PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock',OPENAI_TEXT_MODEL:'mock',SUPABASE_URL:'mock',SUPABASE_SECRET_KEY:'mock'},{reserveAsylumQuota:async id=>{owners.push(id);if(fail)throw Error('offline');return allow;},analysisFetch:async()=>{paid++;return Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({excerpts:[{quote:'A fictional event',category:'event'}]})}]}]});}});
+ const f=await fixture(t,{INTERVIEW_PUBLIC_ACCESS:'false',PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock',OPENAI_TEXT_MODEL:'mock',SUPABASE_URL:'mock',SUPABASE_SECRET_KEY:'mock'},{reserveAsylumQuota:async id=>{owners.push(id);if(fail)throw Error('offline');return allow;},analysisFetch:async()=>{paid++;return Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({excerpts:[{quote:'A fictional event',category:'event'}]})}]}]});}});
  const payload={text:'A fictional event',source_id:'synthetic-test',domain:'synthetic',language:'en',consent:true,consent_version:'ai-excerpts-v1',userId:'attacker'};
  const send=(body,auth=true)=>f.request('/api/asylum/analyze',{method:'POST',headers:{'content-type':'application/json',...(auth?{authorization:'Bearer A'}:{})},body:JSON.stringify(body)});
  assert.equal((await send(payload,false)).status,401);
@@ -72,4 +72,13 @@ test('public reading uses guest identity, consent and quota; private mode requir
  const response=await send(f,true);assert.equal(response.status,200);assert.match(response.headers.get('set-cookie'),/HttpOnly; Secure; SameSite=Strict/);assert.equal(calls,1);
  const privateApp=await fixture(t,{...env,INTERVIEW_PUBLIC_ACCESS:'false'});
  assert.equal((await send(privateApp,true)).status,401);
+});
+
+test('document analysis during public testing uses signed guest identity, consent and bounded quota',async t=>{
+ const owners=[];let calls=0;
+ const f=await fixture(t,{PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock',OPENAI_TEXT_MODEL:'mock',SUPABASE_URL:'mock',SUPABASE_SECRET_KEY:'mock'},{reserveAsylumQuota:async()=>true,reserveInterviewQuota:async id=>{owners.push(id);return true;},analysisFetch:async()=>{calls++;return Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:'{"excerpts":[]}'}]}]});}});
+ const payload={text:'Fictional document',source_id:'test',domain:'synthetic',language:'en',consent:true,consent_version:'ai-excerpts-v1'};
+ const send=body=>f.request('/api/asylum/analyze',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});
+ assert.equal((await send({...payload,consent:false})).status,400);assert.equal(calls,0);
+ const response=await send(payload);assert.equal(response.status,200);assert.match(response.headers.get('set-cookie'),/HttpOnly/);assert.match(owners[0],/^guest:/);assert.equal(calls,1);
 });

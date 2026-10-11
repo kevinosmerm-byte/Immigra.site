@@ -30,15 +30,15 @@ export function createPlatformRouter({citizenship,requireAccount,getUsageSnapsho
  };
  app.get('/api/v1/me/access',requireAccount,async(req,res)=>res.json({identity:req.account.userId,citizenship:{authority:'immigration-ai',usage:await getUsageSnapshot(req.account.userId)},asylum:status('asylum'),residency:status('residency')}));
  app.get('/api/asylum/session',requireAccount,(req,res)=>res.json({authenticated:true,provider:'supabase'}));
- for(const [module,path] of [['asylum','/api/asylum/status'],['residency','/api/realtime/status']])app.get(path,(req,res)=>res.json({...status(module),authentication_required:true}));
+ for(const [module,path] of [['asylum','/api/asylum/status'],['residency','/api/realtime/status']])app.get(path,(req,res)=>res.json({...status(module),authentication_required:module==='asylum'?!publicAccess:true}));
  // Asylum uses its own bounded allowance; residency remains disabled.
  // Keep the original domain handlers intact; never use Citizenship Pro as a grant.
- app.post('/api/asylum/analyze',requireAccount,express.text({type:'application/json',limit:'24kb'}),async(req,res)=>{
+ app.post('/api/asylum/analyze',interviewAccess,express.text({type:'application/json',limit:'24kb'}),async(req,res)=>{
   if(!status('asylum').ready)return res.status(503).json({error:status('asylum').reason});
   const request=new Request('https://immigration-ai.internal/api/analyze',{method:'POST',headers:{'content-type':req.get('content-type')||''},body:req.body||''});
   let quotaDenied=false,quotaFailed=false;
   const guardedFetch=async(...args)=>{
-   try{if(!await reserveAsylumQuota(req.account.userId)){quotaDenied=true;throw new Error('quota');}}catch(error){if(!quotaDenied)quotaFailed=true;throw error;}
+   try{if(!await (req.account.userId.startsWith('guest:')?reserveInterviewQuota:reserveAsylumQuota)(req.account.userId)){quotaDenied=true;throw new Error('quota');}}catch(error){if(!quotaDenied)quotaFailed=true;throw error;}
    return analysisFetch(...args);
   };
   const response=await analyzeAsylum(request,{AI_ENABLED:'true',OPENAI_API_KEY:env.OPENAI_API_KEY,OPENAI_MODEL:env.OPENAI_TEXT_MODEL},guardedFetch,{authorized:true});

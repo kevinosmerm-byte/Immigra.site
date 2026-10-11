@@ -1,3 +1,4 @@
+import {sourcePracticeQuestions} from './source-practice.mjs';
 import {isNextQuestionCommand} from '../../shared/interview-ui/commands.mjs';
 import {logDiagnostic} from '../../shared/interview-ui/diagnostics.mjs';
 // Server only. Session content is ephemeral and never logged or persisted.
@@ -92,8 +93,10 @@ export function createInterviewAIEngine({env,fetchImpl=fetch,reserveSessionQuota
   // Persistent database quota is consumed before any paid provider call.
   if(!await reserveSessionQuota(owner))throw Error('DAILY_LIMIT');
   for(const old of [...manager.sessions.values()])if(old.owner===owner)await close(old.id,owner);
-  const s=manager.create(owner,settings);s.instructions=interviewInstructions(settings);s.transport=body.transport;s.flow=settings.domain==='civics'?null:createDomainInterview(settings);
+  const s=manager.create(owner,settings);s.instructions=interviewInstructions(settings);s.transport=body.transport;s.flow=null;
   try{
+   const sourceQuestions=settings.module==='asylum'&&settings.context.trim()?await sourcePracticeQuestions(settings,{env,fetchImpl,reserveQuota:()=>reserveTurnQuota(owner)}):[];
+   s.flow=settings.domain==='civics'?null:createDomainInterview({...settings,sourceQuestions});
    let sdp;
    if(body.transport==='voice'){
     const form=new FormData();form.set('sdp',body.sdp);form.set('session',JSON.stringify({type:'realtime',model:env.OPENAI_REALTIME_MODEL||'gpt-realtime-2.1',instructions:s.instructions,output_modalities:['audio'],max_output_tokens:400,audio:{input:{transcription:{model:'gpt-4o-mini-transcribe',language:settings.locale},noise_reduction:{type:'near_field'},turn_detection:{type:'server_vad',threshold:0.5,prefix_padding_ms:300,silence_duration_ms:1200,create_response:false,interrupt_response:true}},output:{voice:settings.avatar==='kevin'?'cedar':'marin'}}}));

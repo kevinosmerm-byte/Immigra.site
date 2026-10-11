@@ -20,7 +20,8 @@ const architecture=questions=>{
 export function domainBank(settings){
   if(settings.module==='citizenship')return n400PracticeBank(n400Bank,settings.locale);
   if(settings.module==='residency')return architecture(selectAosQuestions({route:settings.route,...(settings.practiceOptions||{count:12}),random:()=>0.5}).map(q=>({id:q.id,concept:q.id,block:q.dificultad,subBlock:q.bloque,canonicalPracticePrompt:aosQuestion(q,settings.locale),answerType:'text',followUps:[],sourceRefs:[q.fuente]})));
-  return architecture([...asylumBank,...supplemental.asylum].filter(q=>q.uscis_enabled===1&&q.question_type==='neutral_factual'&&(asylumStandalone.has(q.id)||q.id.startsWith('AS-SUP-'))).map(q=>({id:q.id,concept:q.id,block:q.category,subBlock:q.subcategory,canonicalPracticePrompt:settings.locale==='es'?q.question_es:q.question_en,answerType:'text',followUps:[],sourceRefs:q.source?[q.source]:[]})));
+  const general=architecture([...asylumBank,...supplemental.asylum].filter(q=>q.uscis_enabled===1&&q.question_type==='neutral_factual'&&(asylumStandalone.has(q.id)||q.id.startsWith('AS-SUP-'))).map(q=>({id:q.id,concept:q.id,block:q.category,subBlock:q.subcategory,canonicalPracticePrompt:settings.locale==='es'?q.question_es:q.question_en,answerType:'text',followUps:[],sourceRefs:q.source?[q.source]:[]})));
+  return architecture([...(settings.sourceQuestions||[]),...general.questions]);
 }
 // Rotate least-recently used topics instead of exhausting a whole block. Residency
 // retains the selected family route and easy -> moderate -> difficult progression.
@@ -47,7 +48,7 @@ function distinctClarification(text,question){
 }
 export function createDomainInterview(settings){
   const bank=domainBank(settings);
-  if(settings.module==='asylum'&&settings.initialQuestion){const first=bank.questions.find(q=>q.canonicalPracticePrompt===settings.initialQuestion);if(first){bank.questions=[first,...bank.questions.filter(q=>q!==first)];bank.interviewArchitecture.blockOrder=[first.block,...bank.interviewArchitecture.blockOrder.filter(b=>b!==first.block)];}}
+  if(settings.module==='asylum'&&!settings.sourceQuestions?.length&&settings.initialQuestion){const first=bank.questions.find(q=>q.canonicalPracticePrompt===settings.initialQuestion);if(first){bank.questions=[first,...bank.questions.filter(q=>q!==first)];bank.interviewArchitecture.blockOrder=[first.block,...bank.interviewArchitecture.blockOrder.filter(b=>b!==first.block)];}}
   // Only the optional, displayed and explicitly shared context may seed N-400.
   let context={};
   if(settings.module==='citizenship'&&settings.context){try{const data=JSON.parse(settings.context);if(data&&typeof data==='object'){const profile=data.n400Profile||{};context={n400Profile:{answers:Object.fromEntries(Object.entries(profile.answers||{}).filter(([id,value])=>n400Bank.questions.some(q=>q.id===id)&&typeof value==='string'&&value.length<=1000)),flags:profile.flags||{}},learningProfile:{weakN400ConceptIds:Array.isArray(data.learningProfile?.weakN400ConceptIds)?data.learningProfile.weakN400ConceptIds.filter(x=>typeof x==='string'):[],recentN400Mistakes:[]}};}}catch{/* Narrative context is not a confirmed profile. */}}

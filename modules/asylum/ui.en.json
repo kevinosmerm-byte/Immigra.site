@@ -149,5 +149,6 @@
   "No hay diferencias estructuradas para comparar. Esto no significa que todo el expediente sea consistente.": "There are no structured differences to compare. This does not mean the whole case is consistent.",
   "La entrevista usa IA con tu autorización. El análisis de fuentes se abre por separado y requiere su propio permiso.": "Interview practice uses AI with your permission. Source analysis opens separately and requires its own permission.",
   "La entrevista de voz envía audio a OpenAI con tu autorización. Las respuestas completas se transcriben y evalúan automáticamente. También puedes escribir, pausar o terminar la sesión.": "The voice interview sends audio to OpenAI with your permission. Completed answers are transcribed and evaluated automatically. You can also type, pause or end the session.",
-  "Guarda la fuente local para revisarla. El análisis con IA es opcional y pide autorización por separado.": "Save the local source to review. AI analysis is optional and asks for separate permission."
+  "Guarda la fuente local para revisarla. El análisis con IA es opcional y pide autorización por separado.": "Save the local source to review. AI analysis is optional and asks for separate permission.",
+  "Servicio preparado para pruebas con tu autorización.": "Ready for testing with your consent."
 }
