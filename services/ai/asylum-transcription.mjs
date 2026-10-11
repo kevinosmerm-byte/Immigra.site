@@ -10,10 +10,12 @@ export function mountAsylumTranscription(app,{requireAccount,env,reserveQuota,tr
   if(!req.file||!/^audio\/(webm|mp4|ogg|wav|mpeg)(;|$)/.test(req.file.mimetype)||!['es','en'].includes(req.body.language))return res.status(400).json({error:'INVALID_AUDIO'});
   try{
    if(!await reserveQuota(req.account.userId))return res.status(429).json({error:'DAILY_LIMIT'});
-   const file=new File([req.file.buffer],'answer.'+(req.file.mimetype.includes('mp4')?'mp4':'webm'),{type:req.file.mimetype});
+   const mime=req.file.mimetype.split(';')[0];
+   const extension={'audio/mp4':'mp4','audio/webm':'webm','audio/ogg':'ogg','audio/wav':'wav','audio/mpeg':'mp3'}[mime];
+   const file=new File([req.file.buffer],`answer.${extension}`,{type:mime});
    const run=transcribe||((input)=>new OpenAI({apiKey:env.OPENAI_API_KEY,timeout:30000,maxRetries:0}).audio.transcriptions.create(input));
    const result=await run({file,model:'gpt-4o-mini-transcribe',language:req.body.language});
    res.json({transcript:typeof result.text==='string'?result.text.slice(0,10000):''});
-  }catch{res.status(503).json({error:'TRANSCRIPTION_UNAVAILABLE'});}
+  }catch(error){console.error('TRANSCRIPTION_FAILED',{status:Number(error?.status)||null,code:typeof error?.code==='string'?error.code.slice(0,80):null});res.status(503).json({error:'TRANSCRIPTION_UNAVAILABLE'});}
  });
 }
