@@ -5,6 +5,7 @@ import { CONVERSATION_TOPICS, currentConversationPrompt, normalizeCoachFeedback 
 import { EDUCATION_NOTICE } from "../src/educationNotice.js";
 import { asksForLegalDecision } from "../shared/educationalScope.js";
 import OpenAI from "openai";
+import { logProviderFailure } from "./providerDiagnostics.js";
 import multer from "multer";
 import { createHmac } from "node:crypto";
 import { createCaseStatusProvider, getUscisConfig } from "./uscisService.js";
@@ -339,12 +340,13 @@ ${answer}
 
     res.json(result);
 
-  } catch {
+  } catch (error) {
     if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
-    console.error("Writing evaluation unavailable.");
+    const diagnostic = logProviderFailure(error, "writing");
 
     res.status(500).json({
-      error: "Unable to evaluate writing."
+      error: "Unable to evaluate writing.",
+      code: diagnostic.category
     });
   }
 });
@@ -387,12 +389,13 @@ app.post("/transcribe", requireAiFeature("speaking", ["speaking", "coach", "clas
       transcript: transcription.text
     });
 
-  } catch {
+  } catch (error) {
     if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: "gpt-4o-mini-transcribe" }).catch(() => {});
-    console.error("Speech transcription unavailable.");
+    const diagnostic = logProviderFailure(error, "transcribe");
 
     res.status(500).json({
-      error: "Unable to transcribe audio."
+      error: "Unable to transcribe audio.",
+      code: diagnostic.category
     });
   }
 });
@@ -502,12 +505,13 @@ ${transcript}
 
     res.json(result);
 
-  } catch {
+  } catch (error) {
     if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
-    console.error("Reading evaluation unavailable.");
+    const diagnostic = logProviderFailure(error, "reading");
 
     res.status(500).json({
-      error: "Unable to evaluate reading."
+      error: "Unable to evaluate reading.",
+      code: diagnostic.category
     });
   }
 });
@@ -595,12 +599,13 @@ ${message}
 
     res.json(guided ? normalizeCoachFeedback(result, guided.language) : result);
 
-  } catch {
+  } catch (error) {
     if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
-    console.error("Conversation practice unavailable.");
+    const diagnostic = logProviderFailure(error, "coach");
 
     res.status(500).json({
-      error: "Unable to connect to AI Coach."
+      error: "Unable to connect to AI Coach.",
+      code: diagnostic.category
     });
   }
 });

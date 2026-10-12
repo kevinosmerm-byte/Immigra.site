@@ -82,8 +82,10 @@ export function defaultPracticeLanguage(topic, language) {
   return language === "es" ? "es" : "en";
 }
 
-export function createConversationFlow(topic = "citizenship", language = "en") {
-  return { topic: Object.hasOwn(CONVERSATION_TOPICS, topic) ? topic : "citizenship", language: language === "es" ? "es" : "en", index: 0, answered: [], skipped: [], complete: false };
+export function createConversationFlow(topic = "citizenship", language = "en", promptOrder) {
+  const safeTopic = Object.hasOwn(CONVERSATION_TOPICS, topic) ? topic : "citizenship";
+  const order = Array.isArray(promptOrder) ? [...new Set(promptOrder.filter(index => Number.isInteger(index) && index >= 0 && index < CONVERSATION_TOPICS[safeTopic].prompts.length))] : null;
+  return { topic: safeTopic, language: language === "es" ? "es" : "en", index: order?.[0] ?? 0, answered: [], skipped: [], complete: order?.length === 0, ...(order ? { order } : {}) };
 }
 
 export function currentConversationPrompt(flow) {
@@ -93,9 +95,11 @@ export function currentConversationPrompt(flow) {
 
 export function advanceConversation(flow, skipped = false) {
   if (flow.complete) return flow;
-  const index = flow.index + 1;
+  const position = flow.order ? flow.order.indexOf(flow.index) + 1 : flow.index + 1;
+  const complete = position >= (flow.order?.length ?? CONVERSATION_TOPICS[flow.topic].prompts.length);
+  const index = flow.order ? (flow.order[position] ?? flow.index) : position;
   return {
-    ...flow, index, complete: index >= CONVERSATION_TOPICS[flow.topic].prompts.length,
+    ...flow, index, complete,
     answered: skipped ? flow.answered : [...flow.answered, flow.index],
     skipped: skipped ? [...flow.skipped, flow.index] : flow.skipped,
   };

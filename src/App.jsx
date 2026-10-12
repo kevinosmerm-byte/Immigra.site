@@ -31,7 +31,7 @@ import { LegalSettings, Onboarding } from "./LegalSettings";
 import { getPracticeEvents, getPracticeSummary, recordPracticeEvent, getModuleProgress, saveModuleProgress, recordCivicsMistake, migrateLegacyCivicsProgress, getN400LearningProgress } from "./progress";
 import { PodcastLibrary } from "./PodcastPlayer";
 import { usePromotionAccess } from "./promotionAccessContext.js";
-import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
+import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";
 import ImmigrationHelp from "./ImmigrationHelp";
 import { speakAppText, stopAppSpeech } from "./speech";
 import { AccountButton, AccountSheet } from "./Account.jsx";
@@ -49,7 +49,10 @@ import { EducationNotice } from "./EducationNotice.jsx";
 import { StudyPreparation } from "./StudyPreparation.jsx";
 import { studyGoal } from "../shared/studyPreparation.js";
 import { useVoiceResponse } from "./useVoiceResponse.js";
-import { boundedPracticeOutcome, conversationIntent } from "./conversationFlow.js";
+import { conversationIntent } from "./conversationFlow.js";
+import { InterviewAdvanceControls } from "./InterviewAdvanceControls.jsx";
+import { useAutomaticAdvance } from "./useAutomaticAdvance.js";
+import { chooseInterviewQuestions, markInterviewQuestionReviewed, shuffleInterviewQuestions } from "./interviewQuestionMemory.js";
 import { normalizeThemePreference, initialThemePreference, resolveTheme, THEME_STORAGE_KEY, APPEARANCE_STORAGE_KEY, APPEARANCE_VERSION } from "./theme.js";
 
 
@@ -665,12 +668,12 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   });
   const [questions] = useState(() => {
     const profile = civicProfile || brainContext.civicProfile;
-    if (checkpoint) return checkpoint.questionIds.map(id => resolveCivicsQuestion(civicsQuestionBank.find(question => question.questionId === id), { profile }));
-    const prioritizedIds = getDailyStudyPlan(brainContext).items.flatMap(item => item.questionIds || []);
-    const rank = new Map(prioritizedIds.map((id, index) => [id, index]));
-    return civicsQuestionBank.map(question => resolveCivicsQuestion(question, { profile }))
-      .sort((left, right) => (rank.get(left.questionId) ?? Number.MAX_SAFE_INTEGER) - (rank.get(right.questionId) ?? Number.MAX_SAFE_INTEGER) || left.questionId - right.questionId)
-      .slice(0, mode === "civics" ? 10 : 5);
+    if (checkpoint) {
+      const saved = checkpoint.questionIds.map(id => resolveCivicsQuestion(civicsQuestionBank.find(question => question.questionId === id), { profile }));
+      return [...saved.slice(0, checkpoint.questionIndex), ...shuffleInterviewQuestions(saved.slice(checkpoint.questionIndex))];
+    }
+    return chooseInterviewQuestions("civics", civicsQuestionBank, question => question.questionId, userKey)
+      .slice(0, mode === "civics" ? 10 : 5).map(question => resolveCivicsQuestion(question, { profile }));
   });
   const [currentQuestion, setCurrentQuestion] = useState(checkpoint?.questionIndex || 0);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -682,12 +685,9 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   const [correctAnswers, setCorrectAnswers] = useState(checkpoint?.score || 0);
   const [incorrectAnswers, setIncorrectAnswers] = useState(checkpoint?.incorrect || 0);
   const [missedQuestions, setMissedQuestions] = useState(() => (checkpoint?.missedIds || []).map(id => ({ id, english: civicsQuestionBank.find(question => question.questionId === id)?.question || "" })));
-  const attemptsRef = useRef(0);
   const settledRef = useRef(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   const [interviewer, setInterviewer] = useState("sarah");
-  const [useStandardInterview, setUseStandardInterview] = useState(false);
-  const [useGuidedConversation, setUseGuidedConversation] = useState(true);
   const mountedRef = useRef(false);
   const completionReportedRef = useRef(false);
   const speechRequestRef = useRef(0);
@@ -735,7 +735,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   };
   useEffect(() => {
     mountedRef.current = true;
-    if (mode !== "full" || useStandardInterview) speechTimerRef.current = setTimeout(() => {
+    if (mode !== "full") speechTimerRef.current = setTimeout(() => {
       if (!soundEnabledRef.current) return;
       const requestId = ++speechRequestRef.current;
       setIsSpeaking(true);
@@ -749,18 +749,22 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       speechRequestRef.current += 1;
       stopAppSpeech();
     };
-  }, [questions, mode, checkpoint, useStandardInterview]);
-  const goToNextQuestion = () => runTransition({ module: "interview", completed: currentQuestion + 1, total: questions.length, busy: isListening || isTranscribing }, () => {
+  }, [questions, mode, checkpoint]);
+  const goToNextQuestion = () => {
+    if (!settledRef.current || isInterviewComplete) return;
+    return runTransition({ module: "interview", completed: currentQuestion + 1, total: questions.length, busy: isListening || isTranscribing }, () => {
     stopQuestionSpeech();
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion >= questions.length) { setIsInterviewComplete(true); speakQuestion("Thank you. That concludes this practice interview."); return; }
     setCurrentQuestion(nextQuestion);
-    setAnswer(""); setTypedAnswer(""); setAnswerStatus(""); setFeedback(""); setReadyForNext(false); attemptsRef.current = 0; settledRef.current = false;
+    setAnswer(""); setTypedAnswer(""); setAnswerStatus(""); setFeedback(""); setReadyForNext(false); settledRef.current = false;
     speechTimerRef.current = setTimeout(() => speakQuestion(questionText(questions[nextQuestion])), 250);
-  });
+    });
+  };
   const handleSkip = (fromVoice = false) => {
     if (isListening || (isTranscribing && fromVoice !== true) || readyForNext || settledRef.current) return;
     settledRef.current = true;
+    markInterviewQuestionReviewed("civics", questionKey(questions[currentQuestion]), userKey);
     setIncorrectAnswers(count => count + 1);
     addMissedQuestion(questions[currentQuestion]);
     onQuestionResult?.(questionKey(questions[currentQuestion]), false, { mode: "written", source: "interview", helpUsed: [] });
@@ -780,46 +784,42 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       setFeedback(t("Give a short answer. You can skip this question if you are not sure.", "Da una respuesta breve. Puedes omitir esta pregunta si no estás seguro."));
       return;
     }
-    attemptsRef.current += 1;
     stopQuestionSpeech();
     setAnswer(transcript);
     const activeQuestion = questions[currentQuestion];
     // The official civics evaluator is deterministic; neither typed nor spoken answers consume an AI evaluation quota.
     const result = evaluateCivicsAnswer(activeQuestion, transcript);
+    markInterviewQuestionReviewed("civics", questionKey(activeQuestion), userKey);
     setAnswerStatus(result.status);
     if (result.status === "correct") {
       settledRef.current = true;
       setCorrectAnswers(count => count + 1);
       onQuestionResult?.(questionKey(activeQuestion), true, { mode: answerMode, source: "interview", helpUsed: [] });
       setReadyForNext(true);
-      setFeedback(t("Correct. Continue when you are ready.", "Correcto. Continúa cuando estés listo."));
+      setFeedback(t("Correct. Moving to the next question shortly.", "Correcto. Enseguida pasamos a la siguiente pregunta."));
       emitCompanionResult(true);
     } else if (result.status === "review") {
       settledRef.current = true;
       setReadyForNext(true);
       setFeedback(t("Compare your response with the official answers. This response was not graded.", "Compara tu respuesta con las respuestas oficiales. Esta respuesta no se calificó."));
       emitCompanionState("support");
-    } else if (boundedPracticeOutcome(result.status, attemptsRef.current) === "advance") {
+    } else {
       settledRef.current = true;
       setIncorrectAnswers(count => count + 1);
       addMissedQuestion(activeQuestion);
       onQuestionResult?.(questionKey(activeQuestion), false, { mode: answerMode, source: "interview", helpUsed: [] });
       setReadyForNext(true);
-      setFeedback(t("Review the official answers, then continue. You do not need to get this right to move on.", "Repasa las respuestas oficiales y continúa. No necesitas acertar para avanzar."));
+      setFeedback(t("Review the official answers. Moving on shortly; pause if you want more time.", "Repasa las respuestas oficiales. Enseguida avanzamos; pausa si necesitas más tiempo."));
       emitCompanionResult(false);
-    } else {
-      setFeedback(result.status === "incomplete"
-        ? t(`Please give ${activeQuestion.minimumAnswersRequired} different answers, or skip to continue.`, `Da ${activeQuestion.minimumAnswersRequired} respuestas distintas, o salta para continuar.`)
-        : t("You can try once more or skip this question.", "Puedes intentar una vez más u omitir esta pregunta."));
-      emitCompanionState("support");
     }
   };
   const voice = useVoiceResponse({
-    turnKey: `${currentQuestion}:${useStandardInterview}:${isInterviewComplete}`,
+    turnKey: `${currentQuestion}:${isInterviewComplete}`,
     onTranscript: transcript => evaluateInterviewAnswer(transcript, "spoken"),
     beforeListen: stopQuestionSpeech, requestVoiceAccess,
   });
   const { isListening, isTranscribing, startListening, stopListening } = voice;
+  const automaticAdvance = useAutomaticAdvance({ enabled: readyForNext && !isInterviewComplete, turnKey: currentQuestion, busy: isListening || isTranscribing, onAdvance: goToNextQuestion });
   if (isInterviewComplete) {
     const gradedCount = correctAnswers + incorrectAnswers;
     const scorePercentage = gradedCount ? Math.round(correctAnswers / gradedCount * 100) : null;
@@ -838,11 +838,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       <button className="results-secondary-button" onClick={onExit}>{t("Back to Home", "Volver al inicio")}</button>
     </div></div>;
   }
-  if (mode === "full" && useGuidedConversation && !useStandardInterview) return <ConversationPractice initialTopic={studyGoal(brainContext.preferences?.studyGoal)} language={language} soundEnabled={soundEnabled} onBack={onExit} onComplete={onComplete} onLiveAvatar={() => setUseGuidedConversation(false)} />;
-  if (mode === "full" && !useStandardInterview) return <div className="interview-screen live-interview-screen live-avatar-only-screen">
-    <header className="interview-header"><button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit live interview", "Salir de la entrevista")}><span aria-hidden="true">×</span></button><div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>{t("LIVE N-400 + CIVICS INTERVIEW", "ENTREVISTA N-400 + CIVISMO")}</small></div></header>
-    <main className="interview-content live-avatar-only-content"><DidLiveAvatar autoStart language={language} onStandardInterview={() => setUseStandardInterview(true)} /></main>
-  </div>;
+  if (mode === "full") return <ConversationPractice userKey={userKey} initialTopic={studyGoal(brainContext.preferences?.studyGoal)} language={language} soundEnabled={soundEnabled} onBack={onExit} onComplete={onComplete} />;
   const question = questions[currentQuestion];
   return <div className={`interview-screen n400-interview-screen live-interview-screen interviewer-${interviewer} ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
     <header className="interview-header">
@@ -872,7 +868,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
         {(answerStatus === "error" || voice.error) && <p role="alert">{t("We couldn't record your response. Try again or type it below.", "No pudimos grabar tu respuesta. Inténtalo otra vez o escríbela abajo.")}</p>}
       </section>
       <section className="live-interview-controls" aria-label={t("Interview controls", "Controles de entrevista")}>
-        {readyForNext ? <button className="primary-button" onClick={goToNextQuestion}>{t("Continue", "Continuar")}</button> : <>
+        {readyForNext ? <InterviewAdvanceControls language={language} paused={automaticAdvance.paused} onPause={automaticAdvance.pause} onContinue={goToNextQuestion} /> : <>
           <form className="n400-text-response" onSubmit={event => { event.preventDefault(); evaluateInterviewAnswer(typedAnswer); }}><label htmlFor="civics-interview-answer">{t("Type your answer", "Escribe tu respuesta")}</label><textarea id="civics-interview-answer" rows={3} maxLength={1600} value={typedAnswer} disabled={isListening || isTranscribing} onFocus={stopQuestionSpeech} onChange={event => setTypedAnswer(event.target.value)} /><button className="primary-button" disabled={!typedAnswer.trim() || isListening || isTranscribing}>{t("Check response", "Comprobar respuesta")}</button></form>
           <button className={`secondary-button live-mic-button ${isListening ? "listening" : ""}`} onClick={isListening ? stopListening : startListening} disabled={isTranscribing} aria-pressed={isListening} aria-label={isListening ? t("Stop recording answer", "Terminar de grabar respuesta") : t("Start recording answer", "Comenzar a grabar respuesta")}><svg className="workspace-microphone-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>{isListening ? t("Finish recording", "Terminar grabación") : t("Speak your answer", "Responder con voz")}</button>
           <button className="live-skip-button" onClick={() => handleSkip()} disabled={isListening || isTranscribing}>{t("I don't know", "No lo sé")}</button>
@@ -1440,7 +1436,7 @@ function AppContent({ userKey }) {
   }
 
   if (screen === "coach") {
-    return <ConversationPractice key={`${userKey}:${studyGoal(brainContext.preferences.studyGoal)}`} initialTopic={studyGoal(brainContext.preferences.studyGoal)} language={language} soundEnabled={soundEnabled} onBack={() => goBack("english")} onPractice={recordPractice} />;
+    return <ConversationPractice userKey={userKey} key={`${userKey}:${studyGoal(brainContext.preferences.studyGoal)}`} initialTopic={studyGoal(brainContext.preferences.studyGoal)} language={language} soundEnabled={soundEnabled} onBack={() => goBack("english")} onPractice={recordPractice} />;
   }
   // Control de pantallas de la aplicación
   // Control de pantallas de la aplicación
@@ -2073,12 +2069,10 @@ function AppContent({ userKey }) {
           key={`n400-${interviewRunId}`}
           onExit={() => goBack("home")}
           onComplete={({ score, outcome }) => recordPractice({ module: "interview", score, outcome })}
-          onRestart={() => setInterviewRunId((current) => current + 1)}
           brainContext={brainContext}
           language={language}
           userKey={userKey}
           requestVoiceAccess={requestVoiceAccess}
-          onSaveN400Profile={n400Profile => brainProfile.updateProfile({n400Profile})}
         />
       );
     }

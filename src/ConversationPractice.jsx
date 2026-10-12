@@ -6,13 +6,15 @@ import { useContinuousVoice } from "./useContinuousVoice.js";
 import { advanceConversation, CONVERSATION_TOPICS, conversationCorrection, conversationIntent, createConversationFlow, currentConversationPrompt, defaultPracticeLanguage, normalizeCoachFeedback } from "./conversationFlow.js";
 import sarahImage from "./assets/sarah.png";
 import "./ConversationPractice.css";
+import { chooseInterviewQuestions, markInterviewQuestionReviewed } from "./interviewQuestionMemory.js";
 import { EducationNotice } from "./EducationNotice.jsx";
 import { studyGoal } from "../shared/studyPreparation.js";
 
-export function ConversationPractice({ language = "en", initialTopic = "citizenship", soundEnabled = true, onBack, onPractice, onComplete, onLiveAvatar }) {
+export function ConversationPractice({ language = "en", initialTopic = "citizenship", userKey = "guest", soundEnabled = true, onBack, onPractice, onComplete }) {
   const es = language === "es";
   const t = (en, spanish) => es ? spanish : en;
-  const [flow, setFlow] = useState(() => createConversationFlow(studyGoal(initialTopic), language));
+  const newFlow = (topic, selectedLanguage) => createConversationFlow(topic, selectedLanguage, chooseInterviewQuestions(topic, CONVERSATION_TOPICS[topic].prompts.map((_, index) => index), index => index, userKey));
+  const [flow, setFlow] = useState(() => newFlow(studyGoal(initialTopic), language));
   const [started, setStarted] = useState(false);
   const [interviewer, setInterviewer] = useState("sarah");
   const [draft, setDraft] = useState("");
@@ -58,6 +60,7 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
   }, []);
 
   const advance = (response, skipped = false, base = flow, resume = null) => {
+    markInterviewQuestionReviewed(base.topic, base.index, userKey);
     const next = resume || advanceConversation(base, skipped);
     setRevision(null);
     continuous.discardTurn();
@@ -172,7 +175,7 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
   const restart = () => {
     completionReported.current = false;
     continuous.pause(); voice.cancel(); stopSpeech();
-    setStarted(false); setFlow(createConversationFlow(flow.topic, flow.language));
+    setStarted(false); setFlow(newFlow(flow.topic, flow.language));
     setHistory([]); setLastExchange(null); setRevision(null); setFeedback(null); setDraft(""); setError("");
   };
   return <div className="practice-screen coach-screen coach-video-call-screen conversation-practice">
@@ -183,12 +186,13 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
     <main className="coach-conversation-content coach-video-call-content">
       <h1>{t("Practice a conversation", "Practica una conversación")}</h1>
       <p className="conversation-intro">{t("Practice expressing your own information. This is speaking practice, not an assessment of your case. You may skip any topic or use fictional examples.", "Practica cómo expresar tu propia información. Es práctica de conversación, no una evaluación de tu caso. Puedes omitir cualquier tema o usar ejemplos ficticios.")}</p>
+      <p>{t("Reviewed question identifiers help avoid repeats on this device. Your answer text is not saved. After all available questions, another randomized review cycle begins.", "Los identificadores de preguntas repasadas ayudan a evitar repeticiones en este dispositivo. No se guarda el texto de tus respuestas. Al terminar todas las preguntas disponibles, comienza otro repaso en orden aleatorio.")}</p>
       <EducationNotice language={language} compact />
       <div className="conversation-options">
-        <label>{t("Topic", "Tema")}<select aria-label={t("Topic", "Tema")} value={flow.topic} disabled={started} onChange={event => setFlow(createConversationFlow(event.target.value, defaultPracticeLanguage(event.target.value, flow.language)))}>
+        <label>{t("Topic", "Tema")}<select aria-label={t("Topic", "Tema")} value={flow.topic} disabled={started} onChange={event => setFlow(newFlow(event.target.value, defaultPracticeLanguage(event.target.value, flow.language)))}>
           {Object.entries(CONVERSATION_TOPICS).map(([key, topic]) => <option key={key} value={key}>{topic.label[es ? 1 : 0]}</option>)}
         </select></label>
-        <label>{t("Practice language", "Idioma de práctica")}<select aria-label={t("Practice language", "Idioma de práctica")} value={flow.language} disabled={started} onChange={event => setFlow(createConversationFlow(flow.topic, event.target.value))}>
+        <label>{t("Practice language", "Idioma de práctica")}<select aria-label={t("Practice language", "Idioma de práctica")} value={flow.language} disabled={started} onChange={event => setFlow(newFlow(flow.topic, event.target.value))}>
           <option value="en">English</option><option value="es">Español</option>
         </select></label>
         <label>{t("Practice partner", "Con quién practicas")}<select aria-label={t("Practice partner", "Con quién practicas")} value={interviewer} disabled={busy} onChange={event => { stopSpeech(); setInterviewer(event.target.value); }}>
@@ -242,12 +246,11 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
               <textarea id="conversation-answer" value={draft} maxLength={2000} rows={3} disabled={busy} onFocus={() => { if (continuous.connected) continuous.pause(); stopSpeech(); }} onChange={event => setDraft(event.target.value)} />
               <button className="primary-button" disabled={busy || !draft.trim()}>{t("Send answer", "Enviar respuesta")}</button>
             </form>
-            <p>{Math.min(flow.index + 1, 6)} / 6 · {flow.language === "es" ? "Español" : "English"} · {t("One topic at a time", "Un tema a la vez")}</p>
+            <p>{Math.min(flow.answered.length + flow.skipped.length + 1, flow.order?.length ?? 6)} / {flow.order?.length ?? 6} · {flow.language === "es" ? "Español" : "English"} · {t("One topic at a time", "Un tema a la vez")}</p>
           </>}
         </section>
       </div>
       <p className="conversation-hint">{t("Answers stay in this session. Voice transcription and AI feedback use the existing external services. Do not share private identifiers. These prompts are language exercises, not an official interview question bank.", "Las respuestas permanecen en esta sesión. La transcripción y los comentarios de IA usan los servicios externos existentes. No compartas identificadores privados. Son ejercicios de lenguaje, no un banco oficial de preguntas de entrevista.")}</p>
-      {onLiveAvatar && <button className="secondary-button" onClick={onLiveAvatar}>{t("Try the optional live avatar", "Probar el avatar en vivo opcional")}</button>}
     </main>
   </div>;
 }

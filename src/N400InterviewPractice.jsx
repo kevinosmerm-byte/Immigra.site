@@ -1,15 +1,17 @@
 import { InterviewWorkspace } from "./InterviewWorkspace.jsx";
 import { EducationNotice } from "./EducationNotice.jsx";
 import { useEffect, useRef, useState } from "react";
+import { useAutomaticAdvance } from "./useAutomaticAdvance.js";
+import { InterviewAdvanceControls } from "./InterviewAdvanceControls.jsx";
+import { shuffleInterviewQuestions } from "./interviewQuestionMemory.js";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
 import n400Bank from "./data/n400InterviewBank.json";
 import { useVoiceResponse } from "./useVoiceResponse.js";
 import { conversationIntent } from "./conversationFlow.js";
 import { speakAppText, stopAppSpeech } from "./speech";
-import { recordN400Review } from "./progress.js";
+import { recordN400Review, getN400LearningProgress } from "./progress.js";
 import {
-  confirmN400ProfileAnswer,
   createN400FollowUpPrompt,
   createN400InterviewState,
   getContextualN400FollowUps,
@@ -24,8 +26,14 @@ import {
   setCompanionSessionVisibility,
 } from "./companionEvents.js";
 
-function createInitialFlow(context) {
+function createInitialFlow(context, userKey, restart = false) {
   const initialState = createN400InterviewState(n400Bank, {}, context);
+  initialState.practiceQuestionOrder = shuffleInterviewQuestions(n400Bank.questions.map(question => question.id));
+  if (!restart) {
+    const progress = getN400LearningProgress(userKey);
+    const known = new Set(n400Bank.questions.map(question => question.concept || question.id));
+    initialState.askedConceptIDs = Object.keys(progress.concepts).filter(id => known.has(id));
+  }
   const selection = selectNextN400Question(n400Bank, initialState);
   return { ...selection, followUpQueue: [] };
 }
@@ -48,7 +56,7 @@ const COPY = {
   en: {
     brand: "INTERACTIVE N-400 PRACTICE", title: "N-400 interview practice", complete: "Practice Review Complete",
     reviewed: "reviewed", skipped: "skipped", concepts: "concepts reviewed", personal: "Personal information", eligibility: "Application review",
-    results: "Your responses were used for this practice session without deciding eligibility or providing legal conclusions. Only answers you explicitly confirmed were remembered.",
+    results: "Your responses were used for this practice session without deciding eligibility or providing legal conclusions. Only reviewed question identifiers are remembered to avoid repetition; your response text is not saved.",
     restart: "PRACTICE N-400 AGAIN", home: "Back to Home", exit: "Exit N-400 practice", repeat: "Repeat question",
     officer: "Choose your practice interviewer", interviewer: "Practice interviewer", speaking: "Speaking with you", listening: "Listening to your answer", ready: "Ready for your response",
     turn: "Your turn", spoken: "is speaking", heard: "is listening", followup: "Contextual follow-up", wording: "One wording per concept",
@@ -57,13 +65,13 @@ const COPY = {
     microphone: "Start recording answer", stop: "Stop recording answer", preparing: "Preparing your response…", skip: "Skip this question",
     recorded: "Response recorded for this session", incomplete: "Please answer yes or no. An uncertain response will not be saved as No.", error: "We couldn't record your response. Please try again or type it below.",
     reference: "Your saved information", useSaved: "Use saved answer for this practice", remember: "Confirm and remember this answer", remembered: "Answer remembered", saveError: "We couldn't remember this answer. You can continue practicing.",
-    privacy: "Practice answers stay in this session. Remember an answer only if it accurately reflects your information. A-Numbers are never remembered.",
+    privacy: "Your answers remain only in this session. Only reviewed or skipped question identifiers are saved to avoid repetition; no response text or A-Numbers are saved.",
     progress: "N-400 session progress", completedMessage: "You completed the N-400 practice review.", support: "Take your time. Answer yes or no.", encouragement: "Response recorded. Keep going.", interviewSoon: "Your interview preparation uses the information you already provided.",
   },
   es: {
     brand: "PRÁCTICA INTERACTIVA N-400", title: "Práctica de entrevista N-400", complete: "Práctica completada",
     reviewed: "repasados", skipped: "omitidas", concepts: "conceptos repasados", personal: "Información personal", eligibility: "Revisión de solicitud",
-    results: "Tus respuestas se usaron en esta práctica sin decidir elegibilidad ni dar conclusiones legales. Solo se recordaron las respuestas que confirmaste expresamente.",
+    results: "Tus respuestas se usaron en esta práctica sin decidir elegibilidad ni dar conclusiones legales. Solo se recuerdan los identificadores de preguntas repasadas para evitar repetirlas; no se guarda el texto de tus respuestas.",
     restart: "PRACTICAR N-400 OTRA VEZ", home: "Volver al inicio", exit: "Salir de la práctica N-400", repeat: "Repetir pregunta",
     officer: "Elige quién dirige la práctica", interviewer: "Entrevistador de práctica", speaking: "Hablando contigo", listening: "Escuchando tu respuesta", ready: "Listo para tu respuesta",
     turn: "Tu turno", spoken: "está hablando", heard: "está escuchando", followup: "Pregunta de seguimiento", wording: "Una variación por concepto",
@@ -72,31 +80,29 @@ const COPY = {
     microphone: "Comenzar a grabar respuesta", stop: "Terminar de grabar respuesta", preparing: "Preparando tu respuesta…", skip: "Omitir esta pregunta",
     recorded: "Respuesta registrada para esta sesión", incomplete: "Responde sí o no. Una respuesta incierta no se guardará como No.", error: "No pudimos grabar tu respuesta. Inténtalo otra vez o escríbela abajo.",
     reference: "Tu información guardada", useSaved: "Usar respuesta guardada en esta práctica", remember: "Confirmar y recordar esta respuesta", remembered: "Respuesta recordada", saveError: "No pudimos recordar esta respuesta. Puedes seguir practicando.",
-    privacy: "Las respuestas de práctica permanecen en esta sesión. Recuerda una respuesta solo si corresponde a tu información. Los números A nunca se guardan.",
+    privacy: "Tus respuestas quedan solo en esta sesión. Se guardan identificadores de preguntas repasadas u omitidas para evitar repetirlas; no se guarda el texto de respuestas ni números A.",
     progress: "Progreso de la sesión N-400", completedMessage: "Completaste la práctica N-400.", support: "Tómate tu tiempo. Responde sí o no.", encouragement: "Respuesta registrada. Sigue adelante.", interviewSoon: "Tu preparación de entrevista utiliza la información que ya proporcionaste.",
   },
 };
 const N400_FORM_EDITION = n400Bank.formEdition;
 
-export function N400InterviewPractice({ onExit, onComplete, onRestart, brainContext = {}, language = "en", userKey = "guest", onSaveN400Profile, requestVoiceAccess }) {
+export function N400InterviewPractice({ onExit, onComplete, brainContext = {}, language = "en", userKey = "guest", requestVoiceAccess }) {
   const copy = COPY[language === "es" ? "es" : "en"];
-  const [flow, setFlow] = useState(() => createInitialFlow(brainContext));
+  const [flow, setFlow] = useState(() => createInitialFlow(brainContext, userKey));
+  const [sessionRun, setSessionRun] = useState(0);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [answer, setAnswer] = useState("");
   const [draft, setDraft] = useState("");
   const [answerStatus, setAnswerStatus] = useState("");
   const [pendingResponse, setPendingResponse] = useState(null);
-  const [saveStatus, setSaveStatus] = useState("");
-  const [isComplete, setIsComplete] = useState(false);
+  const [isComplete, setIsComplete] = useState(() => !flow.question);
   const [skipped, setSkipped] = useState(0);
   const [interviewer, setInterviewer] = useState("sarah");
-  const clarificationAttemptsRef = useRef(0);
   const responseLockedRef = useRef(false);
   const speechRequestRef = useRef(0);
   const completionReportedRef = useRef(false);
   const speechTimerRef = useRef(null);
   const mountedRef = useRef(false);
-  const confirmedProfileRef = useRef(brainContext.n400Profile || { answers: {}, flags: {} });
   const reviewedConceptsRef = useRef(new Set());
   const skippedConceptsRef = useRef(new Set());
   const initialQuestionRef = useRef(flow.question?.english || "");
@@ -133,7 +139,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     mountedRef.current = true;
     setCompanionSessionVisibility(false);
     const timer = setTimeout(() => {
-      if (!soundEnabledRef.current) return;
+      if (!soundEnabledRef.current || !initialQuestionRef.current) return;
       const requestId = ++speechRequestRef.current;
       setIsSpeaking(true);
       speakAppText(`Welcome. We will review your Form N-400 in two parts. First, I will ask about your personal information. ${initialQuestionRef.current}`, { profile: "female" })
@@ -157,7 +163,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     emitCompanionState("celebration", { message: copy.completedMessage });
   }, [isComplete, onComplete, copy.completedMessage]);
 
-  const resetQuestionUi = () => { clarificationAttemptsRef.current = 0; responseLockedRef.current = false; setAnswer(""); setDraft(""); setAnswerStatus(""); setPendingResponse(null); setSaveStatus(""); };
+  const resetQuestionUi = () => { responseLockedRef.current = false; setAnswer(""); setDraft(""); setAnswerStatus(""); setPendingResponse(null); };
   const recordConceptReview = (question, skippedReview = false) => {
     const conceptId = question.conceptId;
     if (!conceptId) return;
@@ -199,22 +205,18 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     stopQuestionSpeech();
     setAnswer(transcript);
     if (question.answerType === "yes_no" && parseYesNo(transcript) === null) {
-      clarificationAttemptsRef.current += 1;
-      if (clarificationAttemptsRef.current >= 2) {
-        responseLockedRef.current = true;
-        setAnswerStatus("uncertain");
-        const state = question.kind === "followup" ? recordN400FollowUpAnswer(flow.state, question, "") : recordN400Answer(flow.state, question, "");
-        setPendingResponse({ question, transcript, state, uncertain: true });
-        return;
-      }
-      setAnswerStatus("incomplete");
-      emitCompanionState("support", { message: copy.support });
+      responseLockedRef.current = true;
+      setAnswerStatus("uncertain");
+      const state = question.kind === "followup" ? recordN400FollowUpAnswer(flow.state, question, "") : recordN400Answer(flow.state, question, "");
+      setPendingResponse({ question, transcript, state, uncertain: true });
+      recordConceptReview(question, true);
       return;
     }
     const state = question.kind === "followup" ? recordN400FollowUpAnswer(flow.state, question, transcript) : recordN400Answer(flow.state, question, transcript);
     responseLockedRef.current = true;
     setAnswerStatus("recorded");
     setPendingResponse({ question, transcript, state });
+    recordConceptReview(question);
     emitCompanionState("progress", { message: copy.encouragement });
   };
   const continueResponse = () => {
@@ -238,22 +240,12 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
       queueQuestionSpeech(`Thank you. ${first.english}`);
     } else advanceToNextConcept(state);
   };
-  const rememberResponse = async () => {
-    if (!pendingResponse || pendingResponse.uncertain || !onSaveN400Profile || saveStatus === "saving") return;
-    const profile = confirmN400ProfileAnswer(confirmedProfileRef.current, pendingResponse.question, pendingResponse.transcript);
-    if (!profile) return;
-    setSaveStatus("saving");
-    try {
-      await onSaveN400Profile(profile);
-      confirmedProfileRef.current = profile;
-      if (mountedRef.current) setSaveStatus("saved");
-    } catch { if (mountedRef.current) setSaveStatus("error"); }
-  };
   const voice = useVoiceResponse({
     turnKey: `${flow.question?.id}:${isComplete}`,
     onTranscript: acceptResponse, beforeListen: stopQuestionSpeech, requestVoiceAccess,
   });
   const { isListening, isTranscribing, startListening, stopListening } = voice;
+  const automaticAdvance = useAutomaticAdvance({ enabled: Boolean(pendingResponse) && !isComplete, turnKey: `${sessionRun}:${flow.question?.id}`, busy: isListening || isTranscribing, onAdvance: continueResponse });
   const skipQuestion = (fromVoice = false) => {
     if (isListening || (isTranscribing && fromVoice !== true)) return;
     stopQuestionSpeech();
@@ -276,7 +268,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
           <div className="result-stat correct"><strong>{reviewedCount}</strong><small>{copy.reviewed}</small></div>
           <div className="result-stat incorrect"><strong>{skipped}</strong><small>{copy.skipped}</small></div>
         </div>
-        <button className="results-focus-button" onClick={onRestart}>{copy.restart}</button>
+        <button className="results-focus-button" onClick={() => { setSessionRun(value => value + 1); completionReportedRef.current = false; reviewedConceptsRef.current.clear(); skippedConceptsRef.current.clear(); resetQuestionUi(); setSkipped(0); setIsComplete(false); const next = createInitialFlow(brainContext, userKey, true); setFlow(next); queueQuestionSpeech(next.question.english); }}>{copy.restart}</button>
         <button className="results-secondary-button" onClick={onExit}>{copy.home}</button>
       </div>
     </div>
@@ -284,7 +276,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
 
   const question = flow.question;
   const section = SUB_BLOCK_LABELS[flow.state.currentSubBlock]?.[language === "es" ? 1 : 0] || flow.state.currentSubBlock;
-  const canRemember = onSaveN400Profile && pendingResponse && !pendingResponse.uncertain && !pendingResponse.question.id.startsWith("P_ANUMBER");
+
   return (
     <div className={`interview-screen n400-interview-screen live-interview-screen interviewer-${interviewer} ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
       <header className="interview-header">
@@ -331,8 +323,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
             <button className={`secondary-button live-mic-button ${isListening ? "listening" : ""}`} onClick={isListening ? stopListening : startListening} disabled={isTranscribing} aria-label={isListening ? copy.stop : copy.microphone} aria-pressed={isListening}><svg className="workspace-microphone-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>{isListening ? copy.finish : copy.record}</button>
             <button className="live-skip-button" onClick={() => skipQuestion()} disabled={isListening || isTranscribing}>{copy.skip}</button>
           </> : <>
-            <button className="primary-button" onClick={continueResponse} disabled={saveStatus === "saving"}>{copy.continue}</button>
-            {canRemember && <div className="n400-confirm-response"><button className="tertiary-button" onClick={rememberResponse} disabled={saveStatus === "saving" || saveStatus === "saved"}>{saveStatus === "saving" ? copy.preparing : saveStatus === "saved" ? copy.remembered : copy.remember}</button>{saveStatus === "error" && <p role="alert">{copy.saveError}</p>}</div>}
+            <InterviewAdvanceControls language={language} paused={automaticAdvance.paused} onPause={automaticAdvance.pause} onContinue={continueResponse} />
           </>}
           <details className="workspace-privacy"><summary>{language === "es" ? "Privacidad" : "Privacy"}</summary><p className="n400-privacy-note" id="n400-privacy-note">{copy.privacy}</p></details>
           <EducationNotice language={language} compact />

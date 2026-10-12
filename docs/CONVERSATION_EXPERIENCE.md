@@ -1,9 +1,10 @@
 # Conversaciones con Sarah y Kevin
 
 La conversación guiada está disponible desde conversación/coach y es la entrada
-por defecto de la entrevista completa. Conserva el avatar D-ID como alternativa
-opcional; el agente externo controla su propio diálogo y no recibe estas nuevas
-reglas de avance.
+por defecto de la entrevista completa. Todas las entrevistas accesibles desde
+estos flujos usan el motor propio para controlar preguntas y continuidad. El
+avatar D-ID externo ya no se ofrece dentro de la entrevista; su código y API
+siguen disponibles para una integración separada futura.
 
 Antes de empezar se eligen tema, idioma y Sarah/Kevin. Ciudadanía, asilo y ajuste
 de estatus conservan el idioma elegido; cambiar de tema no fuerza inglés.
@@ -14,7 +15,10 @@ del dispositivo.
 
 ## Flujo y límites
 
-- La aplicación controla una agenda breve de seis temas sin repeticiones.
+- La aplicación controla un banco breve de seis preguntas por tema. Al volver
+  elige al azar entre las pendientes; no vuelve siempre a la primera. Conserva
+  únicamente índices de preguntas repasadas u omitidas, separados por cuenta y
+  tema en este dispositivo. Al agotar un banco comienza otro repaso aleatorio.
   El modelo recibe la pregunta actual e historial acotado y devuelve comentarios
   estructurados, sin generar la siguiente pregunta. No se añade otro proveedor
   ni un segundo servicio de pago.
@@ -29,11 +33,16 @@ del dispositivo.
   Grabaciones y transcripciones tardías se invalidan al salir o cambiar de pregunta.
   Las peticiones tienen una espera acotada y no se reintentan automáticamente.
 - Las entrevistas cívicas conservan la evaluación determinista y el banco USCIS.
-  Dos respuestas incorrectas o incompletas ofrecen repaso y permiten continuar.
-  En N-400, una segunda respuesta ambigua permite avanzar sin guardarla como
-  Sí/No. El banco N-400 y la entrevista cívica dedicados siguen siendo prácticas
+  Tras una respuesta revisada avanzan automáticamente después de 2,5 segundos,
+  incluso si fue incorrecta; Pausar para repasar mantiene la pregunta y Continuar
+  permite avanzar inmediatamente. En N-400, una respuesta ambigua permite
+  avanzar sin guardarla como Sí/No. El banco N-400 y la entrevista cívica dedicados siguen siendo prácticas
   de preguntas en inglés; el selector bilingüe pertenece a la conversación guiada.
-- No se guardan historiales ni audio en almacenamiento local. El modelo ayuda
+- Civismo conserva el punto de avance y mezcla las preguntas pendientes al
+  volver. N-400 evita conceptos ya repasados y aleatoriza las preguntas dentro
+  del bloque actual, respetando condiciones y seguimientos. Su botón de guardar
+  respuestas se eliminó; solo persiste el registro de conceptos repasados.
+- No se guardan respuestas, historiales ni audio en almacenamiento local. El modelo ayuda
   a expresarse, no decide elegibilidad, credibilidad o estrategia legal, ni inventa
   relatos de asilo. Los nuevos temas son ejercicios de comunicación, no bancos
   oficiales de entrevista. La política y retención de los proveedores externos
