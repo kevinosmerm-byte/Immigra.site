@@ -1382,6 +1382,8 @@ function AppContent({ userKey }) {
   if (screen === "settings") {
     return (
       <LegalSettings
+        key={window.location.hash}
+        initialSection={window.location.hash.startsWith("#privacy") ? "privacy" : "education"}
         onBack={() => {
           window.history.replaceState(null, "", window.location.pathname);
           goBack("home");
