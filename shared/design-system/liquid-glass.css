@@ -76,3 +76,29 @@ html[data-theme=dark] #root>header button,html[data-theme=dark] #root>footer{col
 html[data-theme=dark] #root #main :is(.hero,.email-profile>header,.immigration-help-hero){--color-navy:#e4edf7;--glass-muted:#bdcde0;color:#e4edf7!important}
 html[data-theme=dark] #root #main .hero :is(h1,p,.eyebrow){color:#e4edf7!important}
 html[data-theme=dark] #root #main .glass-icon{color:#8bc7ff}
+
+/* Account PRO action: liquid glass without fading the disabled label. */
+#root #main .account-page .account-billing-manage{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:48px;max-width:100%;padding:13px 24px;margin:8px 16px 8px 0;
+  border:1px solid var(--liquid-border)!important;border-radius:18px;
+  background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(255,255,255,.24) 48%,rgba(77,163,230,.16)),var(--liquid-surface)!important;
+  color:var(--liquid-text)!important;-webkit-text-fill-color:var(--liquid-text);
+  font:650 15px/1.4 Inter,system-ui,sans-serif;letter-spacing:.01em;
+  backdrop-filter:var(--liquid-filter);-webkit-backdrop-filter:var(--liquid-filter);
+  box-shadow:inset 0 1px 1px #fff,inset 0 -1px 2px #2563a624,0 6px 18px #123a631a;
+  opacity:1!important;filter:none!important;cursor:pointer;
+  transition:transform 180ms ease,box-shadow 180ms ease;
+}
+#root #main .account-page .account-billing-manage:disabled{cursor:not-allowed;border-color:var(--color-border,#d8e2ec)!important;box-shadow:inset 0 1px 1px #ffffffcc,0 3px 10px #123a6310}
+#root #main .account-page .account-billing-manage:focus-visible{outline:3px solid var(--color-primary,#2563a6);outline-offset:4px}
+#root #main .account-page .account-billing-manage+em{display:inline-block;max-width:100%;font-style:normal;line-height:1.6;color:var(--liquid-muted)}
+html[data-theme=dark] #root #main .account-page .account-billing-manage{background:linear-gradient(145deg,#ffffff24,#ffffff05 48%,#4da3e620),var(--liquid-surface)!important;box-shadow:inset 0 1px 1px #ffffff40,0 6px 18px #0002}
+@media(hover:hover){#root #main .account-page .account-billing-manage:not(:disabled):hover{transform:translateY(-2px);box-shadow:inset 0 1px 1px #ffffffcc,0 10px 24px #123a6326}}
+@media(max-width:600px){#root #main .account-page .account-billing-manage{width:100%;margin-right:0}}
+html[data-reduce-transparency=true] #root #main .account-page .account-billing-manage{background:var(--liquid-solid)!important;backdrop-filter:none;-webkit-backdrop-filter:none}
+@media(prefers-reduced-transparency:reduce){#root #main .account-page .account-billing-manage{background:var(--liquid-solid)!important;backdrop-filter:none;-webkit-backdrop-filter:none}}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){#root #main .account-page .account-billing-manage{background:var(--liquid-solid)!important}}
+html[data-reduce-motion=true] #root #main .account-page .account-billing-manage{transition:none;transform:none}
+@media(prefers-reduced-motion:reduce){#root #main .account-page .account-billing-manage{transition:none;transform:none}}
+@media(forced-colors:active){#root #main .account-page .account-billing-manage{background:ButtonFace!important;color:ButtonText!important;-webkit-text-fill-color:ButtonText;border:1px solid ButtonText!important;box-shadow:none}#root #main .account-page .account-billing-manage:disabled{color:GrayText!important;-webkit-text-fill-color:GrayText;border-color:GrayText!important}}
