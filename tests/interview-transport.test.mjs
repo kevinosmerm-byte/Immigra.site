@@ -141,3 +141,18 @@ test('confirmed new output clears stale speech failure without hiding evaluation
  emit({type:'response.done',response:{status:'failed'}});assert.equal(f.errors.at(-1),'AI_SPEECH_FAILED');
  emit({type:'output_audio_buffer.started'});assert.equal(f.errors.at(-1),'');f.engine.close();
 });
+
+test('late second VAD fragment cannot evaluate the next question or block further answers',async()=>{
+ const calls=[];let release;
+ const f=fixture({evaluateTurn:async request=>{calls.push(request);if(!request.answer)return {next_question:'First?',question_id:'q1'};if(request.answer==='first fragment')await new Promise(r=>release=r);return {next_question:'Second?',question_id:'q2',educational_feedback:'Clear.'};}});
+ await f.engine.start(settings);await drain();const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});
+ emit({type:'output_audio_buffer.stopped'});
+ for(const id of ['a','b'])emit({type:'input_audio_buffer.speech_started',item_id:id});
+ emit({type:'input_audio_buffer.committed',item_id:'a'});assert.equal(f.tracks[0].enabled,false);
+ emit({type:'conversation.item.input_audio_transcription.completed',item_id:'a',transcript:'first fragment'});await drain();
+ emit({type:'conversation.item.input_audio_transcription.completed',item_id:'b',transcript:'late fragment'});
+ release();await drain();await drain();
+ assert.equal(calls.filter(x=>x.answer).length,1);assert.equal(f.reviews.length,1);assert.ok(!f.errors.includes('STALE_QUESTION'));
+ emit({type:'output_audio_buffer.stopped'});emit({type:'output_audio_buffer.stopped'});
+ assert.equal(f.tracks[0].enabled,true);assert.equal(f.engine.sendText('answer to second'),true);await drain();assert.equal(calls.at(-1).questionId,'q2');f.engine.close();
+});
