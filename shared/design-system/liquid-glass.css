@@ -51,6 +51,7 @@ html[data-reduce-motion=true] #root #main .liquid-glass{transition:none!importan
 #root #main .account-page .account-access{margin-left:auto}#root #main .account-page .account-access strong{color:#13734f!important}
 #root #main .account-page :is(.account-usage-summary,.account-pricing,.account-management){margin-bottom:24px}
 .account-usage-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+#root #main .account-usage-grid>.account-usage-title{grid-column:1/-1}
 #root #main .account-usage-row{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:20px;line-height:1.5}
 #root #main .account-usage-row>span:not(.glass-icon){font-weight:650}#root #main .account-usage-row small{color:var(--liquid-muted)}
 #root #main .account-usage-row progress{width:100%;height:8px;accent-color:#2563a6}

@@ -8,7 +8,6 @@ export default function PlatformHome({language,onStartInterview,onStartN400Inter
  const viewed=practiceSummary?.civics?.viewed||0;
  const progress=Math.min(100,Math.round(viewed/128*100));
  const activities=[
-  ['words',t('Conversación guiada','Guided conversation'),t('Sarah o Kevin · español e inglés.','Sarah or Kevin · Spanish and English.'),()=>onNavigate('coach')],
   ['128',t('128 preguntas oficiales','128 official questions'),t('Estudia las preguntas y respuestas oficiales.','Study the official questions and answers.'),()=>onOpenFeature('civics')],
   ['civics',t('Entrevista cívica','Civics interview'),t('Practica una pregunta a la vez.','Practice one question at a time.'),onStartCivicsInterview],
   ['N-400',t('Entrevista N-400','N-400 interview'),t('Repasa tu solicitud conversando.','Review your application through conversation.'),onStartN400Interview],
