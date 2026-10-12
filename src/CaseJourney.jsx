@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { EducationNotice } from "./EducationNotice.jsx";
 import "./Journey.css";
 import {
   CASE_STAGES, JOURNEY_OFFICIAL_LINKS, formatJourneyDate, getJourneyChecklistProgress,
@@ -126,6 +127,7 @@ export default function CaseJourney({ language = "en", userKey = "guest", casePr
     <header className="practice-header journey-header"><button className="back-button" type="button" onClick={onBack}>← {copy.back}</button><span className="practice-brand">CITIZENSHIP <span>AI</span></span></header>
     <main className="journey-main">
       <div className="journey-heading"><h1>{copy.title}</h1><p>{copy.independent}</p></div>
+      <EducationNotice language={language} compact />
       <section className="journey-summary" aria-labelledby="journey-stage-title">
         <span className="journey-eyebrow">{stage ? copy.current : copy.unknown}</span>
         <h2 id="journey-stage-title">{stage ? getJourneyStageLabel(stage, language) : copy.unknownText}</h2>

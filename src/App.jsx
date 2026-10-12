@@ -45,6 +45,9 @@ import { getCivicsVisual } from "./data/civicsVisuals.js";
 import { emitCompanionResult, emitCompanionState, emitCompanionContext } from "./companionEvents.js";
 import { N400InterviewPractice } from "./N400InterviewPractice.jsx";
 import { ConversationPractice } from "./ConversationPractice.jsx";
+import { EducationNotice } from "./EducationNotice.jsx";
+import { StudyPreparation } from "./StudyPreparation.jsx";
+import { studyGoal } from "../shared/studyPreparation.js";
 import { useVoiceResponse } from "./useVoiceResponse.js";
 import { boundedPracticeOutcome, conversationIntent } from "./conversationFlow.js";
 import { normalizeThemePreference, initialThemePreference, resolveTheme, THEME_STORAGE_KEY, APPEARANCE_STORAGE_KEY, APPEARANCE_VERSION } from "./theme.js";
@@ -630,17 +633,19 @@ function Home({
         <button className="home-progress-link" onClick={onOpenProgress}>
           <span className="home-progress-symbol preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l4-5 4 2 4-7"/><path d="M16 5h4v4"/></svg></span>
           <span><strong>{language === "es" ? "Mi progreso" : "My progress"}</strong><small>{language === "es" ? "Ver mi actividad y resultados" : "View my activity and results"}</small></span>
-          <span className="home-progress-count">{civicsProgress}% <span aria-hidden="true">→</span><span className="reference-progress-track" aria-hidden="true"><i style={{width:`${civicsProgress}%`}} /></span></span>
+          <span className="home-progress-count">{studyGoal(context.preferences?.studyGoal) === "citizenship" ? `${civicsProgress}%` : (language === "es" ? "Ver" : "View")} <span aria-hidden="true">→</span>{studyGoal(context.preferences?.studyGoal) === "citizenship" && <span className="reference-progress-track" aria-hidden="true"><i style={{width:`${civicsProgress}%`}} /></span>}</span>
         </button>
 
         <section className="legacy-new-tools" aria-label={language === "es" ? "Mi preparación" : "My preparation"}>
           <div className="legacy-tools-links">
             <button onClick={() => onNavigate("profile")}><span className="preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg></span><span className="preparation-copy"><strong>{language === "es" ? "Mi perfil" : "My profile"}</strong><small>{language === "es" ? "Datos y preferencias" : "Details and preferences"}</small></span><span className="preparation-arrow" aria-hidden="true">→</span></button>
-            <button onClick={() => onNavigate("uscisTracker")}><span className="preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h6a4 4 0 0 1 0 8H9a3 3 0 0 0-3 3v4"/></svg></span><span className="preparation-copy"><strong>{language === "es" ? "Mi proceso" : "My journey"}</strong><small>{getCaseStageLabel(context.caseProfile.currentStage || "PREPARING_N400", language)}</small></span><span className="preparation-arrow" aria-hidden="true">→</span></button>
+            <button onClick={() => onNavigate("uscisTracker")}><span className="preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h6a4 4 0 0 1 0 8H9a3 3 0 0 0-3 3v4"/></svg></span><span className="preparation-copy"><strong>{language === "es" ? "Mi proceso N-400" : "My N-400 journey"}</strong><small>{getCaseStageLabel(context.caseProfile.currentStage || "PREPARING_N400", language)}</small></span><span className="preparation-arrow" aria-hidden="true">→</span></button>
           </div>
+          <button className="study-guide-entry" onClick={() => onNavigate("preparation")}><strong>{language === "es" ? "Mi guía de preparación" : "My preparation guide"}</strong><span>{language === "es" ? "Ciudadanía, asilo o ajuste de estatus · estudio y ayuda profesional" : "Citizenship, asylum or adjustment · study and professional help"}</span></button>
           <details className="legacy-daily-plan"><summary><span className="preparation-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="16" rx="3"/><path d="M8 3v4M16 3v4M4 11h16m-12 5 3 3 5-5"/></svg></span><span className="preparation-copy"><strong>{language === "es" ? "Mi plan de hoy" : "My daily plan"}</strong><small>{language === "es" ? "Tu próximo paso de estudio" : "Your next study step"}</small></span><span className="preparation-arrow" aria-hidden="true">⌄</span></summary><h3>{nextAction.label}</h3><p>{nextAction.detail}</p><button onClick={onContinue}>{language === "es" ? "Continuar mi plan" : "Continue my plan"} →</button><ol>{plan.items.map(item => <li key={item.id}>{item.label} · {item.minutes} min</li>)}</ol></details>
         </section>
 
+        <EducationNotice language={language} compact />
       </main>
 
 
@@ -833,7 +838,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       <button className="results-secondary-button" onClick={onExit}>{t("Back to Home", "Volver al inicio")}</button>
     </div></div>;
   }
-  if (mode === "full" && useGuidedConversation && !useStandardInterview) return <ConversationPractice language={language} soundEnabled={soundEnabled} onBack={onExit} onComplete={onComplete} onLiveAvatar={() => setUseGuidedConversation(false)} />;
+  if (mode === "full" && useGuidedConversation && !useStandardInterview) return <ConversationPractice initialTopic={studyGoal(brainContext.preferences?.studyGoal)} language={language} soundEnabled={soundEnabled} onBack={onExit} onComplete={onComplete} onLiveAvatar={() => setUseGuidedConversation(false)} />;
   if (mode === "full" && !useStandardInterview) return <div className="interview-screen live-interview-screen live-avatar-only-screen">
     <header className="interview-header"><button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit live interview", "Salir de la entrevista")}><span aria-hidden="true">×</span></button><div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>{t("LIVE N-400 + CIVICS INTERVIEW", "ENTREVISTA N-400 + CIVISMO")}</small></div></header>
     <main className="interview-content live-avatar-only-content"><DidLiveAvatar autoStart language={language} onStandardInterview={() => setUseStandardInterview(true)} /></main>
@@ -1121,16 +1126,18 @@ function AppContent({ userKey }) {
     else begin();
   };
 
-  const continueDailyPlan = () => {
-    if (nextAction.module === "interview") { startInterview(nextAction.mode || "civics"); return; }
-    if (nextAction.module === "civics" && nextAction.questionIds?.length) {
-      const index = civicsQuestionBank.findIndex(question => question.questionId === nextAction.questionIds[0]);
+  const startStudyActivity = item => {
+    if (["coach", "reading", "writing"].includes(item.module)) { openPracticeModule(item.module); return; }
+    if (item.module === "interview") { startInterview(item.mode || "civics"); return; }
+    if (item.module === "civics" && item.questionIds?.length) {
+      const index = civicsQuestionBank.findIndex(question => question.questionId === item.questionIds[0]);
       if (index >= 0) setCivicsIndex(index);
       setCivicsStudyMode("study");
     }
-    if (nextAction.module === "quiz") setPlannedQuizMode(nextAction.mode || "recall");
-    navigateTo(nextAction.module || "practice");
+    if (item.module === "quiz") setPlannedQuizMode(item.mode || "recall");
+    navigateTo(item.module || "practice");
   };
+  const continueDailyPlan = () => startStudyActivity(nextAction);
 
   const openPracticeModule = (key) => {
     if (key === "quiz") { navigateTo("quiz"); return; }
@@ -1392,9 +1399,10 @@ function AppContent({ userKey }) {
   }
 
   if (screen === "immigrationHelp") {
-    return <ImmigrationHelp language={language} caseProfile={brainContext.caseProfile} n400Profile={brainContext.n400Profile} onLanguageChange={setPreferredLanguage} onBack={() => goBack("home")} />;
+    return <ImmigrationHelp language={language} studyGoal={studyGoal(brainContext.preferences.studyGoal)} caseProfile={brainContext.caseProfile} n400Profile={brainContext.n400Profile} onLanguageChange={setPreferredLanguage} onBack={() => goBack("home")} />;
   }
 
+  if (screen === "preparation") return <StudyPreparation key={userKey} context={brainContext} language={language} onUpdate={brainProfile.updateProfile} onLanguageChange={setPreferredLanguage} onPractice={startStudyActivity} onNavigate={navigateTo} onBack={() => goBack("home")} sessionOnly={brainProfile.cloudStatus === "session_only"} />;
   if (screen === "profile") return <Profile language={language} profile={brainProfile.profile} onUpdate={brainProfile.updateProfile} onBack={() => goBack("home")} onOpenCivicProfile={() => navigateTo("civicProfile")} onOpenAccount={() => setAccountOpen(true)} onOpenSettings={() => navigateTo("settings")} cloudStatus={brainProfile.cloudStatus} onSaveCloud={brainProfile.saveToCloud} onRestoreCloud={brainProfile.restoreFromCloud} onDeleteCloud={brainProfile.deleteFromCloud} onReset={brainProfile.resetProfile} />;
   if (screen === "uscisTracker") return <CaseJourney language={language} userKey={userKey} caseProfile={brainContext.caseProfile} n400Profile={brainContext.n400Profile} onUpdate={caseProfile => brainProfile.updateProfile({ caseProfile })} onNavigate={(destination, options) => destination === "interview" ? startInterview(options?.mode || "n400") : navigateTo(destination, options)} onBack={() => goBack("home")} />;
   if (screen === "civicProfile") return <MyCivicsProfile key={`${userKey}:${profileRevision}`} userKey={userKey} language={language} userProfile={brainContext.userProfile} n400Profile={brainContext.n400Profile} profile={civicProfile} refreshStatus={civicRefreshStatus} onProfileUpdate={userProfile => brainProfile.updateProfile({userProfile})} onSave={profile => { saveCivicProfile(profile, userKey); setProfileRevision(value => value + 1); }} onBack={() => goBack("profile")} />;
@@ -1432,7 +1440,7 @@ function AppContent({ userKey }) {
   }
 
   if (screen === "coach") {
-    return <ConversationPractice key={userKey} language={language} soundEnabled={soundEnabled} onBack={() => goBack("english")} onPractice={recordPractice} />;
+    return <ConversationPractice key={`${userKey}:${studyGoal(brainContext.preferences.studyGoal)}`} initialTopic={studyGoal(brainContext.preferences.studyGoal)} language={language} soundEnabled={soundEnabled} onBack={() => goBack("english")} onPractice={recordPractice} />;
   }
   // Control de pantallas de la aplicación
   // Control de pantallas de la aplicación
@@ -1628,7 +1636,7 @@ function AppContent({ userKey }) {
     return <div className="practice-screen">
       <header className="practice-header"><button className="back-button" onClick={() => goBack("home")}>← {previousScreenLabel("home")}</button><div className="practice-brand">CITIZENSHIP <span>AI</span></div></header>
       <main className="practice-content">
-        <h1>{t("Practice", "Práctica")}</h1><p className="practice-intro">{t("A plan that fits your next step.", "Un plan para tu próximo paso.")}</p>
+        <h1>{t("Practice", "Práctica")}</h1><EducationNotice language={language} compact /><button className="secondary-button" onClick={() => navigateTo("preparation")}>{t("Open my preparation guide", "Abrir mi guía de preparación")}</button><p className="practice-intro">{t("A plan that fits your next step.", "Un plan para tu próximo paso.")}</p>
         <section className="brain-today"><h2>{nextAction.label}</h2><p>{nextAction.detail}</p><button type="button" className="button-primary" onClick={continueDailyPlan}>{t("Continue today's practice", "Continuar la práctica de hoy")} →</button></section>
         <SectionNavigation items={practiceItems} language={language} onNavigate={id => id.startsWith("interview-") ? startInterview(id.slice(10)) : navigateTo(id)} />
         <details className="practice-more"><summary>{t("More practice options", "Más opciones de práctica")}</summary><div className="practice-option-links">

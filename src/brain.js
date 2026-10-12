@@ -4,11 +4,12 @@ import { DEFAULT_TEST_VERSION, getCivicsCategory } from "./civicsVersions.js";
 import { resolveCivicsQuestion } from "./dynamicCivicsData.js";
 import { buildDailyPlan } from "./learning.js";
 import { getPracticeSummary } from "./progress.js";
+import { studyGoal } from "../shared/studyPreparation.js";
 
 /**
  * @typedef {Object} StudyPlanItem
  * @property {string} id
- * @property {"civics"|"quiz"|"interview"|"reading"|"writing"|"podcasts"|"immigrationHelp"|"uscisTracker"} module
+ * @property {"civics"|"quiz"|"interview"|"reading"|"writing"|"podcasts"|"immigrationHelp"|"uscisTracker"|"coach"} module
  * @property {string} [mode]
  * @property {number[]} questionIds Stable official question IDs, never bank indexes.
  * @property {number} minutes
@@ -169,6 +170,8 @@ function daysUntil(date, now, timeZone) {
 /** @param {StudyPlanItem["module"]} module @param {string|null|undefined} mode @param {string} reason @param {string} language */
 function itemCopy(module, mode, reason, language) {
   const es = language === "es";
+  if (module === "coach") return { label: es ? "Practica cómo expresarte" : "Practice expressing yourself", detail: es ? "Conversa con Sarah o Kevin en el idioma que elijas. Puedes omitir temas o corregirte." : "Talk with Sarah or Kevin in your chosen language. You can skip topics or correct yourself." };
+  if (reason === "authorized_help") return { label: es ? "Revisa fuentes y ayuda profesional" : "Review sources and professional help", detail: es ? "Usa fuentes oficiales y prepara preguntas para un abogado o representante autorizado." : "Use official sources and prepare questions for an attorney or authorized representative." };
   if (module === "uscisTracker") {
     if (reason === "oath_preparation") return { label: es ? "Prepara tu ceremonia de juramento" : "Prepare for your oath ceremony", detail: es ? "Revisa tu aviso y los documentos de tu ceremonia." : "Review your notice and ceremony documents." };
     if (reason === "evidence_requested") return { label: es ? "Revisa tu solicitud de evidencia" : "Review your evidence request", detail: es ? "Confirma las instrucciones y la fecha límite en el aviso de USCIS." : "Confirm the instructions and deadline in your USCIS notice." };
@@ -198,6 +201,7 @@ export function getDailyStudyPlan(context, options = {}) {
   const learning = context.learningProfile || {};
   const summary = learning.summary || getPracticeSummary(array(learning.practiceEvents));
   const stage = context.caseProfile?.currentStage || "PREPARING_N400";
+  const goal = studyGoal(context.preferences?.studyGoal);
   const interviewDate = context.caseProfile?.interviewDate || context.immigrationProfile?.interviewDate || null;
   const interviewTime = context.caseProfile?.interviewTime || context.immigrationProfile?.interviewTime || null;
   let timeZone = context.preferences?.timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -206,10 +210,10 @@ export function getDailyStudyPlan(context, options = {}) {
   const preInterviewStages = ["PREPARING_N400", "N400_FILED", "RECEIPT_RECEIVED", "BIOMETRICS_PENDING", "BIOMETRICS_COMPLETED", "INTERVIEW_PENDING", "INTERVIEW_SCHEDULED"];
   // A date already confirmed in Profile informs preparation without rewriting a
   // saved journey milestone. Completed stages and evidence requests keep priority.
-  const prepareForKnownInterview = preInterviewStages.includes(stage) && knownInterviewDays !== null && knownInterviewDays >= 0;
+  const prepareForKnownInterview = goal === "citizenship" && preInterviewStages.includes(stage) && knownInterviewDays !== null && knownInterviewDays >= 0;
   const preparationStage = prepareForKnownInterview ? "INTERVIEW_SCHEDULED" : stage;
   const inferredPreparation = preparationStage !== stage;
-  const daysUntilInterview = ["INTERVIEW_PENDING", "INTERVIEW_SCHEDULED"].includes(preparationStage) ? knownInterviewDays : null;
+  const daysUntilInterview = goal === "citizenship" && ["INTERVIEW_PENDING", "INTERVIEW_SCHEDULED"].includes(preparationStage) ? knownInterviewDays : null;
   const budgetValue = Number(options.availableStudyMinutes ?? context.preferences?.availableStudyMinutes);
   const budget = Number.isFinite(budgetValue) && budgetValue > 0 ? clamp(Math.round(budgetValue), 1, 120) : 8;
   const resolved = civicsQuestionBank.map(question => resolveCivicsQuestion(question, { profile: context.civicProfile }));
@@ -255,6 +259,13 @@ export function getDailyStudyPlan(context, options = {}) {
   } else if (stage === "ADDITIONAL_EVIDENCE") {
     focus = "evidence_requested";
     candidates = [{ module: "uscisTracker", weight: 5, reason: "evidence_requested" }, { ...civics, weight: 2 }, { ...n400, weight: 1 }];
+  }
+  if (goal !== "citizenship") {
+    focus = "communication_preparation";
+    candidates = [
+      { module: "coach", weight: 5, reason: "spoken_communication" },
+      { module: "immigrationHelp", weight: 3, reason: "authorized_help" },
+    ];
   }
   // Never prescribe zero-minute tasks or turn a one-minute preference into a long plan.
   candidates = candidates.slice(0, Math.min(candidates.length, budget));

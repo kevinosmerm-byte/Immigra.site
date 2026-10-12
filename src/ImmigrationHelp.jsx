@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from "react";
+import { EducationNotice } from "./EducationNotice.jsx";
 import { useModalFocus } from "./useModalFocus.js";
 import { getJourneyStageLabel } from "./caseTracker.js";
 import { IMMIGRATION_CATEGORIES, IMMIGRATION_RESOURCES, JOURNEY_HELP_CATEGORIES, JOURNEY_HELP_RESOURCE_IDS, getJourneyHelpCategory, getContextualHelpResources, localizedResource } from "./immigrationResources";
@@ -30,7 +31,7 @@ function normalizeSearch(value) {
   return value.toLocaleLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9-]+/g, " ").trim();
 }
 
-export default function ImmigrationHelp({ language = "en", caseProfile = {}, onBack, onLanguageChange }) {
+export default function ImmigrationHelp({ language = "en", studyGoal = "citizenship", caseProfile = {}, onBack, onLanguageChange }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [journeyCategory, setJourneyCategory] = useState(() => getJourneyHelpCategory(caseProfile.currentStage));
@@ -118,7 +119,12 @@ export default function ImmigrationHelp({ language = "en", caseProfile = {}, onB
           </label>
         </section>
 
-        {!query && <section className="immigration-section immigration-contextual-help" aria-labelledby="journey-help-title">
+        {!query && studyGoal !== "citizenship" && <section className="immigration-section" aria-label={copy.context}>
+          <h2>{language === "es" ? "Fuentes y orientación profesional" : "Sources and professional guidance"}</h2>
+          <p>{language === "es" ? "El objetivo de estudio no determina tu tipo de caso ni elegibilidad. Consulta tus avisos y a un profesional autorizado." : "Your study goal does not determine your case type or eligibility. Check your notices and consult an authorized professional."}</p>
+          <div className="immigration-resource-list">{["legal-help", "avoid-scams", ...(studyGoal === "asylum" ? ["eoir-case"] : ["uscis-forms"])].map(id => resources.find(item => item.id === id)).filter(Boolean).map(item => <ResourceCard key={item.id} item={item} copy={copy} onOpen={openDetail} />)}</div>
+        </section>}
+        {!query && studyGoal === "citizenship" && <section className="immigration-section immigration-contextual-help" aria-labelledby="journey-help-title">
           <div className="immigration-section-heading"><h2 id="journey-help-title">{copy.context}</h2></div>
           <p className="immigration-context-stage">{copy.stage}: {getJourneyStageLabel(caseProfile.currentStage || "PREPARING_N400", language)}</p>
           <div className="immigration-category-scroll" role="group" aria-label={copy.context}>
@@ -142,6 +148,7 @@ export default function ImmigrationHelp({ language = "en", caseProfile = {}, onB
           </div>
           {filtered.length ? <div className="immigration-resource-list">{filtered.map((item) => <ResourceCard key={item.id} item={item} copy={copy} onOpen={openDetail} />)}</div> : <div className="immigration-empty">{copy.noResults}</div>}
         </details>
+        <EducationNotice language={language} compact />
         <p className="immigration-footer-note">{copy.independent} {copy.educational}</p>
       </main>
     </div>

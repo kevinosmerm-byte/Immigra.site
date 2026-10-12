@@ -6,11 +6,13 @@ import { useContinuousVoice } from "./useContinuousVoice.js";
 import { advanceConversation, CONVERSATION_TOPICS, conversationCorrection, conversationIntent, createConversationFlow, currentConversationPrompt, defaultPracticeLanguage, normalizeCoachFeedback } from "./conversationFlow.js";
 import sarahImage from "./assets/sarah.png";
 import "./ConversationPractice.css";
+import { EducationNotice } from "./EducationNotice.jsx";
+import { studyGoal } from "../shared/studyPreparation.js";
 
-export function ConversationPractice({ language = "en", soundEnabled = true, onBack, onPractice, onComplete, onLiveAvatar }) {
+export function ConversationPractice({ language = "en", initialTopic = "citizenship", soundEnabled = true, onBack, onPractice, onComplete, onLiveAvatar }) {
   const es = language === "es";
   const t = (en, spanish) => es ? spanish : en;
-  const [flow, setFlow] = useState(() => createConversationFlow("citizenship", language));
+  const [flow, setFlow] = useState(() => createConversationFlow(studyGoal(initialTopic), language));
   const [started, setStarted] = useState(false);
   const [interviewer, setInterviewer] = useState("sarah");
   const [draft, setDraft] = useState("");
@@ -121,6 +123,11 @@ export function ConversationPractice({ language = "en", soundEnabled = true, onB
       });
       if (!active.current || id !== request.current) return false;
       const response = normalizeCoachFeedback(result, base.language);
+      if (result.educationalReferral === true) {
+        setFeedback(response);
+        speak(response.reply);
+        return true;
+      }
       setLastExchange({ flow: base, history: priorHistory, answer: message });
       setHistory([...priorHistory, { role: "assistant", content: currentConversationPrompt(base) }, { role: "user", content: message }, { role: "assistant", content: response.reply }].slice(-18));
       advance(response, false, base, resume);
@@ -176,6 +183,7 @@ export function ConversationPractice({ language = "en", soundEnabled = true, onB
     <main className="coach-conversation-content coach-video-call-content">
       <h1>{t("Practice a conversation", "Practica una conversación")}</h1>
       <p className="conversation-intro">{t("Practice expressing your own information. This is speaking practice, not an assessment of your case. You may skip any topic or use fictional examples.", "Practica cómo expresar tu propia información. Es práctica de conversación, no una evaluación de tu caso. Puedes omitir cualquier tema o usar ejemplos ficticios.")}</p>
+      <EducationNotice language={language} compact />
       <div className="conversation-options">
         <label>{t("Topic", "Tema")}<select aria-label={t("Topic", "Tema")} value={flow.topic} disabled={started} onChange={event => setFlow(createConversationFlow(event.target.value, defaultPracticeLanguage(event.target.value, flow.language)))}>
           {Object.entries(CONVERSATION_TOPICS).map(([key, topic]) => <option key={key} value={key}>{topic.label[es ? 1 : 0]}</option>)}

@@ -1,4 +1,5 @@
 import { InterviewWorkspace } from "./InterviewWorkspace.jsx";
+import { EducationNotice } from "./EducationNotice.jsx";
 import { useEffect, useRef, useState } from "react";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
@@ -334,6 +335,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
             {canRemember && <div className="n400-confirm-response"><button className="tertiary-button" onClick={rememberResponse} disabled={saveStatus === "saving" || saveStatus === "saved"}>{saveStatus === "saving" ? copy.preparing : saveStatus === "saved" ? copy.remembered : copy.remember}</button>{saveStatus === "error" && <p role="alert">{copy.saveError}</p>}</div>}
           </>}
           <details className="workspace-privacy"><summary>{language === "es" ? "Privacidad" : "Privacy"}</summary><p className="n400-privacy-note" id="n400-privacy-note">{copy.privacy}</p></details>
+          <EducationNotice language={language} compact />
           <div className="live-score-summary n400-session-summary" role="group" aria-label={copy.progress}><span>{reviewedCount} {copy.reviewed}</span><span>{skipped} {copy.skipped}</span></div>
         </section>
       </InterviewWorkspace>

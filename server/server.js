@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { CONVERSATION_TOPICS, currentConversationPrompt, normalizeCoachFeedback } from "../src/conversationFlow.js";
+import { EDUCATION_NOTICE } from "../src/educationNotice.js";
+import { asksForLegalDecision } from "../shared/educationalScope.js";
 import OpenAI from "openai";
 import multer from "multer";
 import { createHmac } from "node:crypto";
@@ -512,7 +514,6 @@ ${transcript}
 app.post("/coach", requireAiFeature("coach", ["coach", "realInterview"]), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
-    if (!requireOpenAI(res)) return;
     const message = readText(req.body?.message, 2_000);
     const history = safeHistory(req.body?.history);
     const interviewer = req.body?.interviewer === "kevin" ? "Kevin" : "Sarah";
@@ -523,6 +524,11 @@ app.post("/coach", requireAiFeature("coach", ["coach", "realInterview"]), requir
     if (!message) {
       return res.status(400).json({ error: "A message is required." });
     }
+    if (asksForLegalDecision(message)) {
+      const language = guided?.language === "es" ? "es" : "en";
+      return res.json({ reply: EDUCATION_NOTICE[language].short, correction: "", encouragement: "", educationalReferral: true });
+    }
+    if (!requireOpenAI(res)) return;
 
     providerAttempted = true;
     const response = await openai.responses.create({
@@ -550,6 +556,8 @@ Rules:
 ${guided ? "- This is guided practice. The application supplies the next question. Your reply, correction, and encouragement must contain NO questions. Give at most two short sentences of relevant feedback. Do not add a new topic, repeat the current prompt, or issue an immigration conclusion." : "- Use the conversation history to avoid repeating topics. Ask one relevant new follow-up only when it is useful."}
 - Do not pretend to be a real USCIS officer.
 - Do not provide legal advice.
+- We are not lawyers or a law firm. Do not imply attorney-client representation, government affiliation, legal eligibility, or a promised case outcome.
+- When the student asks about their legal case, evidence, forms, deadlines, strategy or immigration options, explain that this is educational practice and recommend a licensed immigration attorney or an authorized DOJ-accredited representative. Do not invent case-specific guidance.
 - This is communication practice, not a real immigration interview.
 
 Return ONLY valid JSON:

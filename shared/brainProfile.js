@@ -1,5 +1,6 @@
 // Shared allowlist for on-device and encrypted account profiles. Unknown facts
 // remain absent. Documents, A-numbers and arbitrary application state are rejected.
+import { STUDY_GOALS, safePreparationChecklists } from "./studyPreparation.js";
 export const BRAIN_PROFILE_VERSION = 1;
 export const CASE_STAGES = ["PREPARING_N400", "N400_FILED", "RECEIPT_RECEIVED", "BIOMETRICS_PENDING", "BIOMETRICS_COMPLETED", "INTERVIEW_PENDING", "INTERVIEW_SCHEDULED", "INTERVIEW_COMPLETED", "APPROVED", "OATH_SCHEDULED", "OATH_COMPLETED", "CITIZEN", "ADDITIONAL_EVIDENCE"];
 const FLAGS = ["married", "has_children", "has_travel", "group_weapon_use_yes", "criminal_history_yes", "probation_or_parole", "selective_service_applicable", "served_us_military", "former_us_military", "name_changed", "previously_married"];
@@ -78,6 +79,10 @@ export function sanitizeBrainProfile(value = {}) {
   const minutes = Number(input.preferences?.availableStudyMinutes);
   const preferences = { availableStudyMinutes: Number.isFinite(minutes) && minutes > 0 ? Math.max(1, Math.min(120, Math.round(minutes))) : 8 };
   if (["en", "es"].includes(input.preferences?.language)) preferences.language = input.preferences.language;
+  if (STUDY_GOALS.includes(input.preferences?.studyGoal)) preferences.studyGoal = input.preferences.studyGoal;
+  if (input.preferences?.preparationChecklists && typeof input.preferences.preparationChecklists === "object") {
+    preferences.preparationChecklists = safePreparationChecklists(input.preferences.preparationChecklists);
+  }
   return { userProfile, immigrationProfile, n400Profile, caseProfile, preferences };
 }
 
