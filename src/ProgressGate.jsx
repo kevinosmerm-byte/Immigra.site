@@ -12,7 +12,7 @@ export function ProgressGate({ children }) {
   const [showPro, setShowPro] = useState(false);
   const seen = useRef(new Set());
   const offer = (module, preferredLanguage) => {
-    if (usage?.tier === "pro") return;
+    if (usage?.tier === "pro" || usage?.access?.status === "trial_active") return;
     const key = `citizenshipai.pro-notice.v2:${session?.user?.id || "guest"}`;
     if (seen.current.has(key)) return;
     try { if (!claimProNotice(localStorage, session?.user?.id)) return; } catch { /* Memory fallback. */ }
@@ -38,7 +38,7 @@ export function ProgressGate({ children }) {
   return <ProgressGateContext.Provider value={{ runTransition }}>
     {notice && notice.userId === (session?.user?.id || "guest") && usage?.tier !== "pro" && !showPro && <aside className="pro-benefits-notice" aria-label={es ? "Beneficios de PRO" : "PRO benefits"}>
       <span className="pro-benefits-badge">PRO</span>
-      <div><strong>{es ? "Más práctica para tu entrevista" : "More practice for your interview"}</strong><p>{es ? "Sesiones adicionales de lectura, escritura y entrevistas con Sarah." : "Additional reading, writing and interview sessions with Sarah."}</p><small>{billing?.enabled ? (es ? "Consulta lo que incluye cada plan." : "See what each plan includes.") : (es ? "Conoce el plan. Las compras aún no están activas." : "Preview the plan. Purchases are not active yet.")}</small></div>
+      <div><strong>{es ? "Más práctica para tu entrevista" : "More practice for your interview"}</strong><p>{es ? "Entrevistas y práctica de IA después de tus 7 días gratuitos." : "Interviews and AI practice after your 7 free days."}</p><small>{billing?.enabled ? (es ? "Consulta lo que incluye cada plan." : "See what each plan includes.") : (es ? "Conoce el plan. Las compras aún no están activas." : "Preview the plan. Purchases are not active yet.")}</small></div>
       <button className="pro-benefits-action" onClick={() => { recordAccountEvent?.("pro_selected", notice.module).catch(() => {}); setShowPro(true); }}>{es ? "Ver beneficios de PRO" : "View PRO benefits"}</button>
       <button className="pro-benefits-dismiss" onClick={() => setNotice(null)} aria-label={es ? "Cerrar aviso de PRO" : "Dismiss PRO notice"}>×</button>
     </aside>}

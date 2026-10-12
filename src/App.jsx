@@ -30,6 +30,8 @@ import { startAudioRecording, transcribeRecording } from "./audio";
 import { LegalSettings, Onboarding } from "./LegalSettings";
 import { getPracticeEvents, getPracticeSummary, recordPracticeEvent, getModuleProgress, saveModuleProgress, recordCivicsMistake, migrateLegacyCivicsProgress, getN400LearningProgress } from "./progress";
 import { PodcastLibrary } from "./PodcastPlayer";
+import { PremiumPracticeBoundary } from "./PremiumPracticeBoundary.jsx";
+import { premiumFeatureForScreen } from "../shared/trialPolicy.js";
 import { usePromotionAccess } from "./promotionAccessContext.js";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";
 import ImmigrationHelp from "./ImmigrationHelp";
@@ -940,6 +942,7 @@ function AppContent({ userKey }) {
     () => readLocalValue(ONBOARDING_STORAGE_KEY) === "complete"
   );
   const [accountOpen, setAccountOpen] = useState(false);
+  useEffect(() => { const open = () => setAccountOpen(true); window.addEventListener("citizenshipai:account-request", open); return () => window.removeEventListener("citizenshipai:account-request", open); }, []);
   const { session, recordAccountEvent } = useAccount();
   const brainProfile = useBrainProfile(userKey, session);
   const t = useCallback((en, es) => language === "es" ? es : en, [language]);
@@ -1118,8 +1121,7 @@ function AppContent({ userKey }) {
       navigateTo("interview");
       window.history.replaceState(null, "", appRouteHash("interview", mode));
     };
-    if (mode === "full") startAiFeature("realInterview", begin);
-    else begin();
+    startAiFeature(mode === "full" ? "realInterview" : "classicInterview", begin);
   };
 
   const startStudyActivity = item => {
@@ -2118,7 +2120,7 @@ function AppContent({ userKey }) {
   );
   };
   const showNavigation = onboardingComplete && !["interview", "coach", "reading", "writing"].includes(screen);
-  return <div className={showNavigation ? "global-navigation-shell" : undefined}>{renderScreen()}{accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}{showNavigation && <BottomNavigation screen={screen} language={language} onNavigate={navigateTo} />}</div>;
+  return <div className={showNavigation ? "global-navigation-shell" : undefined}>{onboardingComplete && premiumFeatureForScreen(screen, interviewMode) ? <PremiumPracticeBoundary key={`${userKey}:${premiumFeatureForScreen(screen, interviewMode)}`} feature={premiumFeatureForScreen(screen, interviewMode)} language={language} onBack={() => navigateTo("practice")}>{renderScreen()}</PremiumPracticeBoundary> : renderScreen()}{accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}{showNavigation && <BottomNavigation screen={screen} language={language} onNavigate={navigateTo} />}</div>;
 }
 export default function App() {
   const { session } = useAccount();

@@ -12,7 +12,7 @@ import { createCaseStatusProvider, getUscisConfig } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
 import billingRoutes from "./billingRoutes.js";
 import { handleStripeWebhook } from "./stripeBilling.js";
-import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, isPromotionalAiAccessAllowed, recordAiUsageEvent } from "./accountService.js";
+import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, recordAiUsageEvent } from "./accountService.js";
 import { getCivicsQuestion } from "../src/civicsQuestionBank.js";
 import { resolveCivicsQuestion } from "../src/dynamicCivicsData.js";
 import { normalizeZipCode } from "../src/civicProfile.js";
@@ -20,7 +20,6 @@ import { evaluateCivicsAnswer } from "../src/civicsAnswerEvaluator.js";
 import { geocodeCivicAddress, resolveCivicProfile } from "./civicLocationService.js";
 import { findWritingSentence, getWritingSentence } from "../src/writingSentences.js";
 import { evaluateWritingSentence } from "../src/writingEvaluator.js";
-import { getDailyAiLimit } from "../shared/featureAccessConfig.js";
 
 dotenv.config();
 
@@ -142,20 +141,12 @@ function requestRateLimit(name, limit, windowMs, accountScoped = false) {
   };
 }
 
-const aiRateLimit = requestRateLimit("ai", 30, 10 * 60 * 1000);
-const transcriptionRateLimit = requestRateLimit("transcription", 10, 10 * 60 * 1000);
+const aiRateLimit = requestRateLimit("ai", 120, 60 * 1000);
+const transcriptionRateLimit = requestRateLimit("transcription", 120, 60 * 1000);
 const uscisRateLimit = requestRateLimit("uscis", 15, 10 * 60 * 1000);
 const avatarSessionRateLimit = requestRateLimit("avatar-session", 6, 10 * 60 * 1000);
-const accountRateLimit = requestRateLimit("account", 30, 10 * 60 * 1000);
-const dailyAiBudgets = new Map();
-function enforceAiDailyBudget(req, res, next) {
-  const avatar = req.path === "/avatar/session";
-  const limit = getDailyAiLimit(req.aiSession?.source, avatar);
-  const key = `daily-${avatar ? "avatar" : "ai"}-${limit}`;
-  if (!dailyAiBudgets.has(key)) dailyAiBudgets.set(key, requestRateLimit(key, limit, 24 * 60 * 60 * 1000, true));
-  return dailyAiBudgets.get(key)(req, res, next);
-}
-
+const accountRateLimit = requestRateLimit("account", 120, 60 * 1000);
+const billingRateLimit = requestRateLimit("billing", 30, 10 * 60 * 1000);
 function requireAiFeature(defaultFeature, allowedFeatures = [defaultFeature]) {
   return async (req, res, next) => {
     const requested = (req.get("x-citizenship-ai-feature") || "").trim();
@@ -173,18 +164,9 @@ function requireAiFeature(defaultFeature, allowedFeatures = [defaultFeature]) {
   };
 }
 
-async function requireAuthorizedAiAccess(req, res, next) {
-  if (req.aiSession?.id) return enforceAiDailyBudget(req, res, next);
-  try {
-    if (await isPromotionalAiAccessAllowed()) return enforceAiDailyBudget(req, res, next);
-  } catch (error) {
-    console.error("Promotion access check failed", { message: error.message, cause: error.cause?.code });
-    return res.status(503).json({ error: "AI access could not be verified.", code: "access_check_unavailable" });
-  }
-  return res.status(403).json({
-    error: "Start an authorized AI practice session before using this feature.",
-    code: "ai_session_required",
-  });
+function requireAuthorizedAiAccess(req, res, next) {
+  if (req.aiSession?.id && req.aiSession.feature === req.aiFeature) return next();
+  return res.status(403).json({ error: "Sign in and start an authorized practice session.", code: "ai_session_required" });
 }
 
 function enforceUscisManualCooldown(req, res) {
@@ -440,11 +422,11 @@ app.post("/civic-location/profile", uscisRateLimit, async (req, res) => {
 });
 
 // Account and AI-session accounting are introduced behind configuration. The
-// current launch promotion remains available until Supabase is configured.
+// Cost-generating practice requires server-verified account access.
 app.use("/account", accountRateLimit, accountRoutes);
 app.use("/api/account", accountRateLimit, accountRoutes);
-app.use("/api/billing", accountRateLimit, billingRoutes);
-app.use("/billing", accountRateLimit, billingRoutes);
+app.use("/api/billing", billingRateLimit, billingRoutes);
+app.use("/billing", billingRateLimit, billingRoutes);
 
 app.post("/evaluate-reading", requireAiFeature("speaking"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;

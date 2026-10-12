@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { requireAccount } from "./accountService.js";
+import { requireAccount, isPracticePolicyReady } from "./accountService.js";
 import { createCheckoutSession, createPortalSession } from "./stripeBilling.js";
 
 const router = Router();
@@ -11,6 +11,7 @@ router.post("/checkout-session", async (req, res) => {
     return res.status(400).json({ error: "Choose a monthly or annual plan.", code: "invalid_billing_interval" });
   }
   try {
+    if (!await isPracticePolicyReady()) return res.status(503).json({ error: "Subscription access is not ready yet.", code: "access_policy_unavailable" });
     const session = await createCheckoutSession({ userId: req.account.userId, email: req.account.email, interval });
     res.set("Cache-Control", "no-store");
     return res.status(201).json(session);

@@ -131,7 +131,7 @@ test("costly AI endpoints honor remote and emergency feature switches", async ()
   assert.match(server, /requireAiFeature\("realInterview"\)/);
   assert.match(server, /feature_check_unavailable/);
   assert.match(api, /X-Citizenship-AI-Feature/);
-  assert.match(promotion, /setAiRequestContext\(\{ feature \}\)/);
+  assert.match(promotion, /isVerifiedPracticeAccess/);
 });
 
 test("direct provider calls require an authorized session after promotion ends", async () => {
@@ -139,9 +139,9 @@ test("direct provider calls require an authorized session after promotion ends",
   const service = await readFile(new URL("../server/accountService.js", import.meta.url), "utf8");
   const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
 
-  assert.match(service, /PROMOTION_ACCESS_OVERRIDE/);
-  assert.match(service, /eq\("key", "launch_promotion"\)/);
-  assert.match(service, /allowContinueWithoutPayment/);
+  assert.doesNotMatch(service, /PROMOTION_ACCESS_OVERRIDE/);
+  assert.match(service, /get_practice_access/);
+  assert.match(service, /isVerifiedPracticeAccess/);
   assert.match(server, /requireAuthorizedAiAccess/);
   assert.match(server, /req\.aiSession\?\.id/);
   assert.match(server, /code: "ai_session_required"/);
@@ -182,9 +182,9 @@ test("signed-in users receive a compact per-feature allowance summary", async ()
   const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
 
   assert.match(account, /account-usage-summary/);
-  assert.match(account, /item\.freeUsed/);
-  assert.match(account, /item\.freeLimit/);
-  assert.match(account, /Math\.max\(0, limit - used\)/);
+  assert.match(account, /usage\?\.access\?\.allowed/);
+  assert.match(account, /Sin cuotas/);
+  assert.match(account, /trialEndsAt/);
 });
 
 test("usage snapshots aggregate provider units without embedding prices", async () => {
@@ -308,8 +308,8 @@ test("automatic session closure refunds empty sessions and completes used sessio
 
   assert.match(routes, /\["auto", "completed", "failed", "refunded"\]/);
   assert.match(service, /outcome === "auto"[\s\S]*telemetry\.requestCount > 0 \? "completed" : "refunded"/);
-  assert.match(promotion, /finishAiSession\(active\.sessionId, "auto", \{ keepalive: true \}\)/);
-  assert.match(promotion, /finishActiveAiSession\("auto"\)/);
+  assert.match(promotion, /finishAiSession\(current\.sessionId, "auto", \{ keepalive: true \}\)/);
+  assert.match(promotion, /finishActiveAiSession\("auto",/);
   assert.match(app, /finishActiveAiSessionRef\.current\("auto"\)/);
 });
 
@@ -320,10 +320,10 @@ test("explicit server access denials cannot fall through into an AI feature", as
 
   assert.match(account, /response\.status === 403 && decision\.allowed === false/);
   assert.match(account, /accessError\.decision = decision/);
-  assert.match(promotion, /error\?\.decision\?\.allowed === false/);
-  assert.match(promotion, /blocked: true/);
-  assert.match(promotion, /pending\.blocked \? blockedTitle : copy\.title/);
-  assert.match(promotion, /!pending\.blocked && <button className="promotion-access-continue"/);
+  assert.match(promotion, /deny\(error\?\.decision\?\.reason/);
+  assert.match(promotion, /isVerifiedPracticeAccess\(result\.access\)/);
+  assert.match(promotion, /return deny\("access_unavailable"\)/);
+  assert.doesNotMatch(promotion, /continuePromotion/);
 });
 
 test("the client follows the remote launch-promotion switch without a new release", async () => {
@@ -336,8 +336,8 @@ test("the client follows the remote launch-promotion switch without a new releas
   assert.match(routes, /isPromotionalAiAccessAllowed\(\)/);
   assert.match(account, /setPromotionAccess\(config\?\.promotionAccess !== false\)/);
   assert.match(account, /usage, promotionAccess/);
-  assert.match(promotion, /!session && promotionAccess === false/);
-  assert.match(promotion, /reason: "account_required"/);
+  assert.match(promotion, /!session\?\.access_token/);
+  assert.match(promotion, /deny\("account_required"\)/);
 });
 
 test("remote AI feature switches reach the client before a feature opens", async () => {
@@ -353,7 +353,7 @@ test("remote AI feature switches reach the client before a feature opens", async
   assert.match(routes, /aiFeatures,/);
   assert.match(account, /setAiFeatureAvailability\(config\?\.aiFeatures/);
   assert.match(promotion, /aiFeatureAvailability\?\.\[feature\] === false/);
-  assert.match(promotion, /reason: "feature_unavailable"/);
+  assert.match(promotion, /deny\("feature_unavailable"\)/);
 });
 
 test("the operations runbook documents safe shutdown and paid-launch gates", async () => {
@@ -363,7 +363,7 @@ test("the operations runbook documents safe shutdown and paid-launch gates", asy
 
   assert.match(architecture, /Abuse and recovery testing — complete/);
   assert.match(runbook, /DISABLED_AI_FEATURES/);
-  assert.match(runbook, /launch_promotion/);
+  assert.match(runbook, /practicePolicyReady/);
   assert.match(runbook, /A consumed rewarded credit is restored at most once/);
   assert.match(runbook, /Do not enable paid subscriptions or rewarded ads/);
   assert.doesNotMatch(runbook, /SUPABASE_SECRET_KEY\s*=|OPENAI_API_KEY\s*=|DID_API_KEY\s*=/);

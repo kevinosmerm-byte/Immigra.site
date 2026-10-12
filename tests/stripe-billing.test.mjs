@@ -22,18 +22,17 @@ test("Legacy introductory prices cannot override the advertised monthly plan", (
     process.env.STRIPE_PRICE_MONTHLY_INTRO = "price_test_intro";
     assert.equal(getBillingConfiguration().introductoryOfferEnabled, false);
     assert.equal(getBillingConfiguration().monthlyPriceCents, 599);
-    assert.equal(getBillingConfiguration().monthlyTrialDays, 7);
+    assert.equal(getBillingConfiguration().monthlyTrialDays, 0);
   } finally {
     if (previous === undefined) delete process.env.STRIPE_PRICE_MONTHLY_INTRO;
     else process.env.STRIPE_PRICE_MONTHLY_INTRO = previous;
   }
 });
 
-test("Only monthly Checkout receives a seven-day trial with safe cancellation", () => {
+test("Checkout does not restart the first-use seven-day trial", () => {
   const metadata = { user_id: "account-example" };
   assert.deepEqual(subscriptionDataForInterval("monthly", metadata), {
-    metadata, trial_period_days: 7,
-    trial_settings: { end_behavior: { missing_payment_method: "cancel" } },
+    metadata,
   });
   assert.deepEqual(subscriptionDataForInterval("annual", metadata), { metadata });
   assert.throws(() => subscriptionDataForInterval("weekly", metadata));

@@ -83,3 +83,5 @@ The web app is installable as a PWA today. A Google Play release additionally re
 ## iOS / App Store release
 
 The native iOS container lives in `ios/` and uses the same stable application id, `us.citizenshipai.app`. Run `npm run ios:sync` after every web release to build the Vite app and copy the current production assets and native plugins into Xcode. The final archive, signing, device testing, TestFlight upload, and App Store submission must be completed on a Mac using the current App Store-supported Xcode and iOS SDK. See `docs/IOS_READINESS.md` for the handoff checklist.
+
+Interview and AI access now uses a [seven-day trial from first use](docs/SEVEN_DAY_ACCESS.md), followed by subscription; local study remains free. Apply the documented Supabase migration before activating this policy in production.

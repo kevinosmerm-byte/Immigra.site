@@ -10,6 +10,7 @@ import {
   getPublicAiFeatureAvailability,
   getUsageSnapshot,
   isPromotionalAiAccessAllowed,
+  isPracticePolicyReady,
   recordProductEvent,
   requireAccount,
   startAiSession,
@@ -38,11 +39,15 @@ router.get("/public-config", async (_req, res) => {
     isPromotionalAiAccessAllowed(),
     getPublicAiFeatureAvailability(),
   ]);
+  const policyReady = await isPracticePolicyReady();
+  const billing = getBillingConfiguration();
   res.json({
     ...getPublicAccountConfiguration(),
     promotionAccess,
     aiFeatures,
-    billing: getBillingConfiguration(),
+    billing: { ...billing, enabled: billing.enabled && policyReady },
+    practicePolicyReady: policyReady,
+    trialPolicy: { days: 7, start: "first_premium_use", unlimited: true, requiresAccount: true },
   });
 });
 

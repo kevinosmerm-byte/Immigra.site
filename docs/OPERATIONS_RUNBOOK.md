@@ -5,7 +5,7 @@ This runbook describes production controls without containing credentials, keys,
 ## Current launch state
 
 - Free local study features remain available regardless of AI quota state.
-- Launch-promotion access is remotely controlled through the `launch_promotion` record in Supabase `app_settings`.
+- Premium practice uses the account-owned first-use trial and verified subscriptions described in [SEVEN_DAY_ACCESS.md](SEVEN_DAY_ACCESS.md). Perpetual anonymous promotion no longer grants access.
 - Each cost-generating AI feature is independently controlled by `ai_feature_config.enabled`.
 - Environment variable `DISABLED_AI_FEATURES` is the emergency override when database controls are unavailable.
 - Rewarded advertising remains inactive. Web subscriptions have a Stripe Checkout, Portal, and signed-webhook foundation, but `STRIPE_BILLING_ENABLED` remains false until the test-mode launch checklist passes.
@@ -18,12 +18,12 @@ This runbook describes production controls without containing credentials, keys,
 4. Confirm `/api/account/public-config` reports that feature as `false` without exposing any private configuration.
 5. Confirm a new provider request is rejected before OpenAI or D-ID is called.
 
-## Ending or restoring launch promotion
+## Trial activation and expiry
 
-- Set both `active` and `allowContinueWithoutPayment` deliberately in the `launch_promotion` JSON value.
-- The API caches this decision for at most 30 seconds.
-- The browser and packaged apps retrieve the current state from the public configuration endpoint; an app-store release is not required.
-- When promotion is disabled, anonymous users cannot start new costly sessions. Free local study remains accessible.
+- Apply `202610120001_seven_day_trial.sql` before deploying/enabling payments. Public configuration must report `practicePolicyReady: true`.
+- First-use dates belong to the account and cannot be reset by browser storage, another feature, a refunded session or a legacy promotion override.
+- Provider requests recheck expiry and subscription state even with a previously authorized session ID.
+- Missing policy/database access blocks premium practice and new Checkout, while free local study remains available.
 
 ## Incident checks
 

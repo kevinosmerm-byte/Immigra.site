@@ -2,7 +2,7 @@ import { useModalFocus } from "./useModalFocus.js";
 import { createClient } from "@supabase/supabase-js";
 import { Capacitor } from "@capacitor/core";
 import { useEffect, useMemo, useState } from "react";
-import { AI_FEATURE_ACCESS, PRO_PLAN } from "../shared/featureAccessConfig.js";
+import { PRO_PLAN } from "../shared/featureAccessConfig.js";
 import { AccountContext, useAccount } from "./accountContext.js";
 
 const browserSupabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
@@ -18,18 +18,18 @@ function createAccountClient(url, publishableKey) {
 
 const COPY = {
   en: {
-    account: "Account", title: "Your Citizenship AI account", intro: "Sign in to securely connect future AI allowances and subscriptions across your devices.",
+    account: "Account", title: "Your Citizenship AI account", intro: "Sign in to keep the same 7-day interview and AI trial dates across your devices. Free study does not require an account.",
     email: "Email address", placeholder: "you@example.com", send: "SEND SECURE SIGN-IN LINK", sending: "SENDING…",
     sent: "Check your email. We sent you a secure sign-in link.", signedIn: "SIGNED IN", signOut: "SIGN OUT", close: "Close account panel",
-    optional: "Optional during the launch promotion. You can continue using the app without signing in.", unavailable: "Accounts are being prepared. You can continue using the app normally.",
+    optional: "Free study needs no account. Sign in for your 7-day interview and AI trial, starting with your first use. No card is required.", unavailable: "Accounts are unavailable. Free study remains available; interview and AI access cannot be verified.",
     error: "We could not send the sign-in link. Please try again.", usage: "AI ACCESS", promotion: "Launch promotion active", free: "Free account",
     usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", pricing: "PRO PRICING", launchPrice: "Launch offer", regularPrice: "Regular $5.99/month", annualPrice: "$49.99/year", pricingStatus: "Purchases are not active yet.", monthly: "MONTHLY", yearly: "ANNUAL · SAVE 30%", manageSubscription: "MANAGE SUBSCRIPTION", secureCheckout: "Secure checkout by Stripe", billingError: "We could not open secure billing. Please try again.", openingCheckout: "OPENING…", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.", deleteAccount: "DELETE ACCOUNT", deleteTitle: "Permanently delete account?", deleteBody: "This removes your cloud account, AI allowances, and usage records. Local study progress on this device is not removed.", deletePrompt: "Type DELETE to confirm", deleting: "DELETING…", cancel: "CANCEL", deleteError: "We could not delete your account. Please try again.", deleteActiveSubscription: "Cancel your active web subscription from Manage Subscription before deleting the account.",
   },
   es: {
-    account: "Cuenta", title: "Tu cuenta de Citizenship AI", intro: "Inicia sesión para conectar de forma segura los futuros límites de IA y suscripciones entre tus dispositivos.",
+    account: "Cuenta", title: "Tu cuenta de Citizenship AI", intro: "Inicia sesión para conservar las mismas fechas de prueba de 7 días de entrevistas e IA entre tus dispositivos. El estudio gratuito no requiere cuenta.",
     email: "Correo electrónico", placeholder: "tu@correo.com", send: "ENVIAR ENLACE SEGURO", sending: "ENVIANDO…",
     sent: "Revisa tu correo. Te enviamos un enlace seguro para iniciar sesión.", signedIn: "SESIÓN INICIADA", signOut: "CERRAR SESIÓN", close: "Cerrar panel de cuenta",
-    optional: "Es opcional durante la promoción de lanzamiento. Puedes continuar usando la aplicación sin iniciar sesión.", unavailable: "Las cuentas se están preparando. Puedes continuar usando la aplicación normalmente.",
+    optional: "El estudio gratuito no requiere cuenta. Inicia sesión para probar entrevistas e IA durante 7 días desde tu primer uso. No necesitas tarjeta.", unavailable: "Las cuentas no están disponibles. El estudio gratuito sigue abierto; no podemos verificar el acceso a entrevistas e IA.",
     error: "No pudimos enviar el enlace. Inténtalo nuevamente.", usage: "ACCESO A IA", promotion: "Promoción de lanzamiento activa", free: "Cuenta gratuita",
     usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles", requests: "solicitudes al proveedor", pricing: "PRECIO PRO", launchPrice: "Oferta de lanzamiento", regularPrice: "Regular $5.99/mes", annualPrice: "$49.99/año", pricingStatus: "Las compras aún no están activas.", monthly: "MENSUAL", yearly: "ANUAL · AHORRA 30%", manageSubscription: "ADMINISTRAR SUSCRIPCIÓN", secureCheckout: "Pago seguro por Stripe", billingError: "No pudimos abrir el pago seguro. Inténtalo nuevamente.", openingCheckout: "ABRIENDO…", exportData: "DESCARGAR MIS DATOS", exporting: "PREPARANDO…", exportError: "No pudimos preparar los datos de tu cuenta. Inténtalo nuevamente.", deleteAccount: "ELIMINAR CUENTA", deleteTitle: "¿Eliminar la cuenta permanentemente?", deleteBody: "Esto elimina tu cuenta en la nube, límites de IA y registros de uso. El progreso local de estudio en este dispositivo no se elimina.", deletePrompt: "Escribe DELETE para confirmar", deleting: "ELIMINANDO…", cancel: "CANCELAR", deleteError: "No pudimos eliminar tu cuenta. Inténtalo nuevamente.", deleteActiveSubscription: "Cancela tu suscripción web activa desde Administrar suscripción antes de eliminar la cuenta.",
   },
@@ -302,7 +302,8 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
         {!configured ? <div className="account-message">{copy.unavailable}</div> : loading ? <div className="account-loading" /> : session ? (
           <>
             <div className="account-identity"><span>{copy.signedIn}</span><strong>{session.user.email}</strong></div>
-            <div className="account-access"><span>{copy.usage}</span><strong>{usage?.tier === "pro" ? "PRO" : copy.free}</strong><small>{copy.promotion}</small></div>
+            <div className="account-access"><span>{copy.usage}</span><strong>{usage?.tier === "pro" ? "PRO" : copy.free}</strong><small>{usage?.access?.status === "trial_active" ? (language === "es" ? "Prueba activa · sin cuotas de práctica" : "Trial active · no practice quotas") : usage?.access?.status === "trial_expired" ? (language === "es" ? "Prueba finalizada · suscripción necesaria" : "Trial ended · subscription required") : usage?.access?.status === "subscribed" ? (language === "es" ? "Suscripción activa" : "Subscription active") : (language === "es" ? "7 días gratis desde tu primera entrevista o uso de IA" : "7 days free from your first interview or AI use")}</small></div>
+            {usage?.access?.trialEndsAt && <p className="account-metering-note">{language === "es" ? "Tu prueba termina:" : "Your trial ends:"} {new Date(usage.access.trialEndsAt).toLocaleString(language === "es" ? "es-US" : "en-US")}</p>}
             {usage?.metering?.total && (
               <p className="account-metering-note">
                 <strong>{Number(usage.metering.total.requests) || 0}</strong> {copy.requests}
@@ -311,16 +312,8 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
             {usageFeatures.length > 0 && (
               <div className="account-usage-summary" aria-label={copy.usageTitle}>
                 <span className="account-usage-title">{copy.usageTitle}</span>
-                {usageFeatures.map(([feature, item]) => {
-                  const limit = Math.max(0, Number(item.freeLimit) || 0);
-                  const used = Math.min(limit, Math.max(0, Number(item.freeUsed) || 0));
-                  return (
-                    <div className="account-usage-row" key={feature}>
-                      <span>{FEATURE_LABELS[language === "es" ? "es" : "en"][feature] || feature}</span>
-                      <strong>{used}/{limit}</strong>
-                      <small>{Math.max(0, limit - used)} {copy.available}</small>
-                    </div>
-                  );
+                {usageFeatures.map(([feature]) => {
+                  return <div className="account-usage-row" key={feature}><span>{FEATURE_LABELS[language === "es" ? "es" : "en"][feature] || feature}</span><strong>{usage?.access?.allowed ? (language === "es" ? "Sin cuotas" : "No quotas") : (language === "es" ? "Suscripción / prueba" : "Subscription / trial")}</strong></div>;
                 })}
               </div>
             )}
@@ -356,10 +349,10 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
         <div className="account-pricing" aria-label={copy.pricing}>
           <h2>{language === "es" ? "Qué incluye PRO" : "What PRO includes"}</h2>
           <ul className="pro-plan-benefits">
-            <li>{AI_FEATURE_ACCESS.speaking.proMonthlyLimit} {language === "es" ? "sesiones de lectura al mes" : "reading sessions per month"}</li>
-            <li>{AI_FEATURE_ACCESS.writing.proMonthlyLimit} {language === "es" ? "sesiones de escritura al mes" : "writing sessions per month"}</li>
-            <li>{AI_FEATURE_ACCESS.classicInterview.proMonthlyLimit} {language === "es" ? "sesiones de entrevista clásica al mes" : "classic interview sessions per month"}</li>
-            <li>{PRO_PLAN.liveAvatarMonthlySessions} {language === "es" ? "sesión de Real Interview al mes" : "Real Interview session per month"}</li>
+            <li>{language === "es" ? "Entrevistas y conversaciones con Sarah o Kevin" : "Interviews and conversations with Sarah or Kevin"}</li>
+            <li>{language === "es" ? "Transcripción y comentarios de IA sin cuotas de práctica" : "Transcription and AI feedback without practice quotas"}</li>
+            <li>{language === "es" ? "Práctica de lectura y escritura con IA" : "AI-supported reading and writing practice"}</li>
+            <li>{language === "es" ? "El estudio básico sigue gratis sin suscripción" : "Basic study remains free without a subscription"}</li>
           </ul>
           <p>{language === "es" ? "Consulta tus límites disponibles en esta cuenta. Se aplican límites diarios de uso." : "Check your available allowances in this account. Daily usage limits apply."}</p>
           <span>{copy.pricing}</span>
@@ -375,7 +368,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
                 <button type="button" onClick={() => startBillingAction("monthly")} disabled={Boolean(billingAction)}><b>{billing.monthlyTrialDays === 7 ? (language === "es" ? "PROBAR 7 DÍAS GRATIS" : "START 7-DAY FREE TRIAL") : copy.monthly}</b><small>US${(Number(billing.monthlyPriceCents || PRO_PLAN.regularMonthlyPriceCents) / 100).toFixed(2)}/{language === "es" ? "mes" : "month"}</small></button>
                 <button type="button" onClick={() => startBillingAction("annual")} disabled={Boolean(billingAction)}><b>{copy.yearly}</b><small>${(Number(billing.annualPriceCents || PRO_PLAN.annualPriceCents) / 100).toFixed(2)}/yr</small></button>
                 <em>{copy.secureCheckout}</em>
-                {billing.monthlyTrialDays === 7 && <p>{language === "es" ? "Plan mensual: se requiere un método de pago. Después de 7 días se renueva automáticamente por US$5.99 al mes, más impuestos aplicables. Cancela antes de terminar la prueba para evitar el cobro. Administra o cancela desde tu cuenta. El plan anual no incluye prueba gratis." : "Monthly plan: payment method required. After 7 days, automatically renews at US$5.99/month plus applicable taxes. Cancel before the trial ends to avoid a charge. Manage or cancel from your account. The annual plan does not include a free trial."}</p>}
+                {<p>{language === "es" ? "La prueba gratuita dura 7 días desde el primer uso y no requiere tarjeta ni genera cobros automáticos. Suscribirte inicia el pago y la renovación automática al precio e intervalo mostrados, más impuestos aplicables. No se añade otra prueba de 7 días al comprar. Puedes administrar o cancelar desde tu cuenta." : "The free trial lasts 7 days from your first use, requires no card and causes no automatic charge. Subscribing starts payment and automatic renewal at the shown price and interval, plus applicable taxes. Purchasing does not add another 7-day trial. Manage or cancel from your account."}</p>}
               </div>
             )
           ) : <em>{copy.pricingStatus}</em>}

@@ -49,7 +49,7 @@ export function getBillingConfiguration() {
     configured,
     currency: PRO_PLAN.currency,
     monthlyPriceCents: PRO_PLAN.regularMonthlyPriceCents,
-    monthlyTrialDays: 7,
+    monthlyTrialDays: 0,
     annualPriceCents: PRO_PLAN.annualPriceCents,
     introductoryOfferEnabled: false,
   };
@@ -78,10 +78,7 @@ export function subscriptionDataForInterval(interval, metadata) {
   if (!["monthly", "annual"].includes(interval)) throw new Error("Unknown billing interval.");
   return {
     metadata,
-    ...(interval === "monthly" ? {
-      trial_period_days: 7,
-      trial_settings: { end_behavior: { missing_payment_method: "cancel" } },
-    } : {}),
+
   };
 }
 

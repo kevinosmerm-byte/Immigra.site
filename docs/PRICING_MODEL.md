@@ -1,28 +1,12 @@
-# Citizenship AI Pro pricing model
+# Citizenship AI Pro pricing and access
 
-## Approved offer
+The current access policy is [seven days from first premium use](SEVEN_DAY_ACCESS.md). The trial has no practice quotas, requires an account but no payment card, and never converts automatically into a paid subscription. After 168 hours, interviews and paid-provider practice require a verified subscription. Local study stays free.
 
-- Regular monthly price: **$5.99 USD**.
-- Introductory monthly price: **$4.99 USD**.
-- Annual price: **$49.99 USD**.
-- Billing remains inactive until verified App Store and Google Play purchases, renewals, cancellations and restoration have passed sandbox testing.
-
-The prices shown in the application are a preview, not a purchase control. Product identifiers and provider receipts must never become the source of truth for access; verified provider events update the existing neutral entitlement record.
-
-## Fair-use allowance
-
-| Feature | Pro sessions per month |
+| Web subscription | Existing USD price |
 | --- | ---: |
-| AI English Coach | 30 |
-| Classic Civics Interview | 15 |
-| Writing AI | 30 |
-| Speaking / Reading AI | 30 |
-| D-ID Real Interview | 1 |
+| Monthly | $5.99 |
+| Annual | $49.99 |
 
-The D-ID live-avatar session is intentionally limited because video streaming is the dominant variable provider cost. The standard non-avatar interview remains the primary practice experience. Limits may only be increased after reviewing server-recorded provider telemetry.
+Subscribing starts the purchased billing period and recurring billing; it does not restart the trial. No new introductory discount is advertised. Trial and subscribed practice have no daily/monthly session allowances. Operational burst protection and recording/session limits remain separate. The current interview screens use the application's own Sarah/Kevin experience.
 
-## Minimum sustainability assumptions
-
-The $4.99 introductory price assumes approximately 50 paying subscribers, a 15% store commission, bounded OpenAI responses, short microphone recordings and no more than one D-ID live-avatar session per Pro account each month. The regular $5.99 price provides additional room for refunds, heavier usage and provider-price changes.
-
-Do not activate billing if the actual store commission, provider consumption or operating cost makes the approved allowance unprofitable. Review the model after the first 30 days of measured paid usage.
+Payments remain conditional on installed database policy and valid Stripe configuration. Only verified provider events grant paid access; a checkout redirect or client-stored flag does not. Native purchase/restore integrations remain unavailable until separately configured and validated. Server telemetry tracks usage units so the operator can monitor actual provider costs; this document does not claim a guaranteed profit margin.
