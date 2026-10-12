@@ -23,9 +23,9 @@ const loadSupportedVoices = async () => {
   return [];
 };
 
-const findVoice = async (profile) => {
+const findVoice = async (profile, language) => {
   try {
-    return selectVoiceIndex(await loadSupportedVoices(), profile);
+    return selectVoiceIndex(await loadSupportedVoices(), profile, language);
   } catch {
     return undefined;
   }
@@ -46,6 +46,7 @@ export const speakAppText = async (text, options = {}) => {
   const requestId = ++speechRequest;
   const {
     profile = "female",
+    lang = "en-US",
     rate = voiceProfileDefaults(profile).rate,
     pitch = voiceProfileDefaults(profile).pitch,
     onStart,
@@ -57,10 +58,11 @@ export const speakAppText = async (text, options = {}) => {
     if (requestId !== speechRequest) return false;
     speechActive = true;
     onStart?.();
-    const voice = await findVoice(profile);
+    const voice = await findVoice(profile, lang);
+    if (requestId !== speechRequest) return false;
     await TextToSpeech.speak({
       text: text.trim(),
-      lang: "en-US",
+      lang,
       rate,
       pitch,
       volume: 1,

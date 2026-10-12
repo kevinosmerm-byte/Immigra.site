@@ -127,7 +127,7 @@ test("costly AI endpoints honor remote and emergency feature switches", async ()
   assert.match(service, /from\("ai_feature_config"\)[\s\S]*select\("enabled"\)/);
   assert.match(server, /app\.post\("\/evaluate", \(req, res\) =>/);
   assert.match(server, /requireAiFeature\("writing"\)/);
-  assert.match(server, /requireAiFeature\("coach"\)/);
+  assert.match(server, /requireAiFeature\("coach", \["coach", "realInterview"\]\)/);
   assert.match(server, /requireAiFeature\("realInterview"\)/);
   assert.match(server, /feature_check_unavailable/);
   assert.match(api, /X-Citizenship-AI-Feature/);

@@ -4,12 +4,13 @@ const MALE_VOICE = /(?:^|[^a-z])male(?:[^a-z]|$)|\b(?:aaron|alex|arthur|brian|ch
 const searchableName = (voice) => `${voice?.name || ""} ${voice?.voiceURI || ""}`;
 const normalizedLanguage = (voice) => String(voice?.lang || "").replace("_", "-").toLowerCase();
 
-const profileScore = (voice, profile) => {
+const profileScore = (voice, profile, requestedLanguage) => {
   const name = searchableName(voice);
   const language = normalizedLanguage(voice);
   const preferredPattern = profile === "male" ? MALE_VOICE : FEMALE_VOICE;
   const oppositePattern = profile === "male" ? FEMALE_VOICE : MALE_VOICE;
-  let score = language === "en-us" ? 40 : language.startsWith("en-") || language === "en" ? 20 : 0;
+  const requested = requestedLanguage.toLowerCase().replace("_", "-");
+  let score = language === requested ? 40 : 20;
 
   if (preferredPattern.test(name)) score += 1000;
   if (oppositePattern.test(name)) score -= 1000;
@@ -20,25 +21,26 @@ const profileScore = (voice, profile) => {
   return score;
 };
 
-const rankedEnglishVoices = (voices, profile) => voices
-  .map((voice, index) => ({ voice, index, score: profileScore(voice, profile) }))
+const rankedVoices = (voices, profile, language) => voices
+  .map((voice, index) => ({ voice, index, score: profileScore(voice, profile, language) }))
   .filter(({ voice }) => {
-    const language = normalizedLanguage(voice);
-    return language === "en" || language.startsWith("en-");
+    const candidate = normalizedLanguage(voice);
+    const base = language.toLowerCase().replace("_", "-").split("-")[0];
+    return candidate === base || candidate.startsWith(base + "-");
   })
   .sort((left, right) => right.score - left.score || left.index - right.index);
 
 /**
- * Selects an English voice while ensuring Sarah and Kevin do not silently fall
+ * Selects a voice in the requested language while ensuring Sarah and Kevin do not silently fall
  * back to the same first voice when a platform uses unfamiliar voice names.
  */
-export const selectVoiceIndex = (voices = [], profile = "female") => {
+export const selectVoiceIndex = (voices = [], profile = "female", language = "en-US") => {
   const normalizedProfile = profile === "male" ? "male" : "female";
-  const ranked = rankedEnglishVoices(voices, normalizedProfile);
+  const ranked = rankedVoices(voices, normalizedProfile, language);
   if (!ranked.length) return undefined;
 
   if (normalizedProfile === "male" && ranked.length > 1) {
-    const femaleIndex = rankedEnglishVoices(voices, "female")[0]?.index;
+    const femaleIndex = rankedVoices(voices, "female", language)[0]?.index;
     const distinctMale = ranked.find(({ index }) => index !== femaleIndex);
     if (distinctMale) return distinctMale.index;
   }

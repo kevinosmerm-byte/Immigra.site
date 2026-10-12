@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import sarahImage from "./assets/sarah.png";
 import sarahSpeakingImage from "./assets/sarah-speaking.png";
 import n400Bank from "./data/n400InterviewBank.json";
-import { startAudioRecording, transcribeRecording } from "./audio";
+import { useVoiceResponse } from "./useVoiceResponse.js";
+import { conversationIntent } from "./conversationFlow.js";
 import { speakAppText, stopAppSpeech } from "./speech";
 import { recordN400Review } from "./progress.js";
 import {
@@ -79,8 +80,6 @@ const N400_FORM_EDITION = n400Bank.formEdition;
 export function N400InterviewPractice({ onExit, onComplete, onRestart, brainContext = {}, language = "en", userKey = "guest", onSaveN400Profile, requestVoiceAccess }) {
   const copy = COPY[language === "es" ? "es" : "en"];
   const [flow, setFlow] = useState(() => createInitialFlow(brainContext));
-  const [isListening, setIsListening] = useState(false);
-  const [isTranscribing, setIsTranscribing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [answer, setAnswer] = useState("");
   const [draft, setDraft] = useState("");
@@ -90,8 +89,8 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const [isComplete, setIsComplete] = useState(false);
   const [skipped, setSkipped] = useState(0);
   const [interviewer, setInterviewer] = useState("sarah");
-  const recorderRef = useRef(null);
-  const microphonePendingRef = useRef(false);
+  const clarificationAttemptsRef = useRef(0);
+  const responseLockedRef = useRef(false);
   const speechRequestRef = useRef(0);
   const completionReportedRef = useRef(false);
   const speechTimerRef = useRef(null);
@@ -145,7 +144,6 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
       clearTimeout(timer);
       clearTimeout(speechTimerRef.current);
       speechRequestRef.current += 1;
-      recorderRef.current?.cancel?.();
       stopAppSpeech();
       setCompanionSessionVisibility(getCompanionVisibility());
     };
@@ -158,7 +156,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     emitCompanionState("celebration", { message: copy.completedMessage });
   }, [isComplete, onComplete, copy.completedMessage]);
 
-  const resetQuestionUi = () => { setAnswer(""); setDraft(""); setAnswerStatus(""); setPendingResponse(null); setSaveStatus(""); };
+  const resetQuestionUi = () => { clarificationAttemptsRef.current = 0; responseLockedRef.current = false; setAnswer(""); setDraft(""); setAnswerStatus(""); setPendingResponse(null); setSaveStatus(""); };
   const recordConceptReview = (question, skippedReview = false) => {
     const conceptId = question.conceptId;
     if (!conceptId) return;
@@ -189,22 +187,45 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const acceptResponse = (value) => {
     const transcript = String(value || "").trim();
     const question = flow.question;
-    if (!question || !transcript || pendingResponse) return;
+    if (!question || !transcript || pendingResponse || responseLockedRef.current) return;
+    const intent = conversationIntent(transcript);
+    if (intent === "repeat") { speakQuestion(question.english); return; }
+    if (intent === "skip") { skipQuestion(true); return; }
+    if (intent === "clarify") {
+      setAnswerStatus("incomplete");
+      return;
+    }
     stopQuestionSpeech();
     setAnswer(transcript);
     if (question.answerType === "yes_no" && parseYesNo(transcript) === null) {
+      clarificationAttemptsRef.current += 1;
+      if (clarificationAttemptsRef.current >= 2) {
+        responseLockedRef.current = true;
+        setAnswerStatus("uncertain");
+        const state = question.kind === "followup" ? recordN400FollowUpAnswer(flow.state, question, "") : recordN400Answer(flow.state, question, "");
+        setPendingResponse({ question, transcript, state, uncertain: true });
+        return;
+      }
       setAnswerStatus("incomplete");
       emitCompanionState("support", { message: copy.support });
       return;
     }
     const state = question.kind === "followup" ? recordN400FollowUpAnswer(flow.state, question, transcript) : recordN400Answer(flow.state, question, transcript);
+    responseLockedRef.current = true;
     setAnswerStatus("recorded");
     setPendingResponse({ question, transcript, state });
     emitCompanionState("progress", { message: copy.encouragement });
   };
   const continueResponse = () => {
     if (!pendingResponse) return;
-    const { state, question, transcript } = pendingResponse;
+    const { state, question, transcript, uncertain } = pendingResponse;
+    if (uncertain) {
+      recordConceptReview(question, true);
+      setSkipped(count => count + 1);
+      if (question.kind === "followup") continueFollowUps(state, flow);
+      else advanceToNextConcept(state);
+      return;
+    }
     recordConceptReview(question);
     if (question.kind === "followup") { continueFollowUps(state, flow); return; }
     const followUps = getContextualN400FollowUps(question, transcript, state.applicantProfile)
@@ -217,7 +238,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     } else advanceToNextConcept(state);
   };
   const rememberResponse = async () => {
-    if (!pendingResponse || !onSaveN400Profile || saveStatus === "saving") return;
+    if (!pendingResponse || pendingResponse.uncertain || !onSaveN400Profile || saveStatus === "saving") return;
     const profile = confirmN400ProfileAnswer(confirmedProfileRef.current, pendingResponse.question, pendingResponse.transcript);
     if (!profile) return;
     setSaveStatus("saving");
@@ -227,37 +248,13 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
       if (mountedRef.current) setSaveStatus("saved");
     } catch { if (mountedRef.current) setSaveStatus("error"); }
   };
-  const beginListening = async () => {
-    if (!mountedRef.current || microphonePendingRef.current || recorderRef.current) return;
-    microphonePendingRef.current = true;
-    stopQuestionSpeech();
-    try {
-      const recorder = await startAudioRecording();
-      if (!mountedRef.current) { recorder.cancel?.(); return; }
-      recorderRef.current = recorder;
-      setIsListening(true);
-      setAnswerStatus("");
-      emitCompanionState("thinking");
-    } catch { if (mountedRef.current) setAnswerStatus("error"); }
-    finally { microphonePendingRef.current = false; }
-  };
-  const startListening = () => requestVoiceAccess ? requestVoiceAccess(beginListening) : beginListening();
-  const stopListening = async () => {
-    const recorder = recorderRef.current;
-    recorderRef.current = null;
-    setIsListening(false);
-    if (!recorder) return;
-    setIsTranscribing(true);
-    try {
-      const transcript = await transcribeRecording(await recorder.stop());
-      if (!mountedRef.current) return;
-      if (transcript) acceptResponse(transcript);
-      else setAnswerStatus("error");
-    } catch { if (mountedRef.current) setAnswerStatus("error"); }
-    finally { if (mountedRef.current) setIsTranscribing(false); }
-  };
-  const skipQuestion = () => {
-    if (isListening || isTranscribing) return;
+  const voice = useVoiceResponse({
+    turnKey: `${flow.question?.id}:${isComplete}`,
+    onTranscript: acceptResponse, beforeListen: stopQuestionSpeech, requestVoiceAccess,
+  });
+  const { isListening, isTranscribing, startListening, stopListening } = voice;
+  const skipQuestion = (fromVoice = false) => {
+    if (isListening || (isTranscribing && fromVoice !== true)) return;
     stopQuestionSpeech();
     const question = flow.question;
     if (!question) return;
@@ -286,7 +283,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
 
   const question = flow.question;
   const section = SUB_BLOCK_LABELS[flow.state.currentSubBlock]?.[language === "es" ? 1 : 0] || flow.state.currentSubBlock;
-  const canRemember = onSaveN400Profile && pendingResponse && !pendingResponse.question.id.startsWith("P_ANUMBER");
+  const canRemember = onSaveN400Profile && pendingResponse && !pendingResponse.uncertain && !pendingResponse.question.id.startsWith("P_ANUMBER");
   return (
     <div className={`interview-screen n400-interview-screen live-interview-screen interviewer-${interviewer} ${isSpeaking ? "sarah-speaking-live" : isListening ? "sarah-listening-live" : "sarah-waiting-live"}`}>
       <header className="interview-header">
@@ -320,8 +317,8 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
         {flow.state.caseStage === "INTERVIEW_SCHEDULED" && <p className="n400-context-summary">{copy.interviewSoon}</p>}
         {question.knownAnswer && !pendingResponse && <details className="n400-known-answer"><summary>{copy.reference}</summary><p>{question.knownAnswer}</p><button className="secondary-button" disabled={isListening || isTranscribing} onClick={() => acceptResponse(question.knownAnswer)}>{copy.useSaved}</button></details>}
         <section className="live-answer-feedback" aria-live="polite">
-          {answer && <div className={`answer-preview ${answerStatus}`}><span>{copy.input}</span><p>{answer}</p><div className="answer-result">{answerStatus === "recorded" ? copy.recorded : answerStatus === "incomplete" ? copy.incomplete : ""}</div></div>}
-          {answerStatus === "error" && <p role="alert">{copy.error}</p>}
+          {answer && <div className={`answer-preview ${answerStatus}`}><span>{copy.input}</span><p>{answer}</p><div className="answer-result">{answerStatus === "recorded" ? copy.recorded : answerStatus === "incomplete" ? copy.incomplete : answerStatus === "uncertain" ? (language === "es" ? "La respuesta sigue siendo incierta. Puedes continuar; no se guardará como Sí o No." : "The response is still uncertain. You can continue; it will not be saved as Yes or No.") : ""}</div></div>}
+          {(answerStatus === "error" || voice.error) && <p role="alert">{copy.error}</p>}
         </section>
         <section className="live-interview-controls" aria-label={copy.title}>
           {!pendingResponse ? <>
@@ -331,7 +328,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
               <button className="primary-button" type="submit" disabled={!draft.trim() || isListening || isTranscribing}>{copy.submit}</button>
             </form>
             <button className={`secondary-button live-mic-button ${isListening ? "listening" : ""}`} onClick={isListening ? stopListening : startListening} disabled={isTranscribing} aria-label={isListening ? copy.stop : copy.microphone} aria-pressed={isListening}><svg className="workspace-microphone-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>{isListening ? copy.finish : copy.record}</button>
-            <button className="live-skip-button" onClick={skipQuestion} disabled={isListening || isTranscribing}>{copy.skip}</button>
+            <button className="live-skip-button" onClick={() => skipQuestion()} disabled={isListening || isTranscribing}>{copy.skip}</button>
           </> : <>
             <button className="primary-button" onClick={continueResponse} disabled={saveStatus === "saving"}>{copy.continue}</button>
             {canRemember && <div className="n400-confirm-response"><button className="tertiary-button" onClick={rememberResponse} disabled={saveStatus === "saving" || saveStatus === "saved"}>{saveStatus === "saving" ? copy.preparing : saveStatus === "saved" ? copy.remembered : copy.remember}</button>{saveStatus === "error" && <p role="alert">{copy.saveError}</p>}</div>}

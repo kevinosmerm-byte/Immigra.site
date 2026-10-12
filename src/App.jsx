@@ -44,6 +44,9 @@ import { createNavigationHistory, navigateBack, navigateForward } from "./naviga
 import { getCivicsVisual } from "./data/civicsVisuals.js";
 import { emitCompanionResult, emitCompanionState, emitCompanionContext } from "./companionEvents.js";
 import { N400InterviewPractice } from "./N400InterviewPractice.jsx";
+import { ConversationPractice } from "./ConversationPractice.jsx";
+import { useVoiceResponse } from "./useVoiceResponse.js";
+import { boundedPracticeOutcome, conversationIntent } from "./conversationFlow.js";
 import { normalizeThemePreference, initialThemePreference, resolveTheme, THEME_STORAGE_KEY, APPEARANCE_STORAGE_KEY, APPEARANCE_VERSION } from "./theme.js";
 
 
@@ -665,8 +668,6 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       .slice(0, mode === "civics" ? 10 : 5);
   });
   const [currentQuestion, setCurrentQuestion] = useState(checkpoint?.questionIndex || 0);
-  const [isListening, setIsListening] = useState(false);
-  const [isTranscribing, setIsTranscribing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [answer, setAnswer] = useState("");
   const [typedAnswer, setTypedAnswer] = useState("");
@@ -676,12 +677,12 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   const [correctAnswers, setCorrectAnswers] = useState(checkpoint?.score || 0);
   const [incorrectAnswers, setIncorrectAnswers] = useState(checkpoint?.incorrect || 0);
   const [missedQuestions, setMissedQuestions] = useState(() => (checkpoint?.missedIds || []).map(id => ({ id, english: civicsQuestionBank.find(question => question.questionId === id)?.question || "" })));
-  const [hasRetried, setHasRetried] = useState(false);
+  const attemptsRef = useRef(0);
+  const settledRef = useRef(false);
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   const [interviewer, setInterviewer] = useState("sarah");
   const [useStandardInterview, setUseStandardInterview] = useState(false);
-  const recorderRef = useRef(null);
-  const microphonePendingRef = useRef(false);
+  const [useGuidedConversation, setUseGuidedConversation] = useState(true);
   const mountedRef = useRef(false);
   const completionReportedRef = useRef(false);
   const speechRequestRef = useRef(0);
@@ -741,29 +742,40 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       mountedRef.current = false;
       clearTimeout(speechTimerRef.current);
       speechRequestRef.current += 1;
-      recorderRef.current?.cancel?.();
       stopAppSpeech();
     };
   }, [questions, mode, checkpoint, useStandardInterview]);
-  const goToNextQuestion = () => runTransition({ module: "interview", completed: currentQuestion + 1, total: questions.length, busy: Boolean(recorderRef.current) }, () => {
+  const goToNextQuestion = () => runTransition({ module: "interview", completed: currentQuestion + 1, total: questions.length, busy: isListening || isTranscribing }, () => {
     stopQuestionSpeech();
     const nextQuestion = currentQuestion + 1;
     if (nextQuestion >= questions.length) { setIsInterviewComplete(true); speakQuestion("Thank you. That concludes this practice interview."); return; }
     setCurrentQuestion(nextQuestion);
-    setAnswer(""); setTypedAnswer(""); setAnswerStatus(""); setFeedback(""); setReadyForNext(false); setHasRetried(false);
+    setAnswer(""); setTypedAnswer(""); setAnswerStatus(""); setFeedback(""); setReadyForNext(false); attemptsRef.current = 0; settledRef.current = false;
     speechTimerRef.current = setTimeout(() => speakQuestion(questionText(questions[nextQuestion])), 250);
   });
-  const handleSkip = () => {
-    if (isListening || isTranscribing || readyForNext) return;
+  const handleSkip = (fromVoice = false) => {
+    if (isListening || (isTranscribing && fromVoice !== true) || readyForNext || settledRef.current) return;
+    settledRef.current = true;
     setIncorrectAnswers(count => count + 1);
     addMissedQuestion(questions[currentQuestion]);
     onQuestionResult?.(questionKey(questions[currentQuestion]), false, { mode: "written", source: "interview", helpUsed: [] });
     emitCompanionResult(false);
-    goToNextQuestion();
+    if (fromVoice === true) {
+      setReadyForNext(true);
+      setFeedback(t("Skipped. Continue when you are ready.", "Pregunta omitida. Continúa cuando quieras."));
+    } else goToNextQuestion();
   };
   const evaluateInterviewAnswer = (value, answerMode = "written") => {
     const transcript = String(value || "").trim();
-    if (!transcript || readyForNext) return;
+    if (!transcript || readyForNext || settledRef.current) return;
+    const intent = conversationIntent(transcript);
+    if (intent === "repeat") { speakQuestion(questionText(questions[currentQuestion])); return; }
+    if (intent === "skip") { handleSkip(answerMode === "spoken"); return; }
+    if (intent === "clarify") {
+      setFeedback(t("Give a short answer. You can skip this question if you are not sure.", "Da una respuesta breve. Puedes omitir esta pregunta si no estás seguro."));
+      return;
+    }
+    attemptsRef.current += 1;
     stopQuestionSpeech();
     setAnswer(transcript);
     const activeQuestion = questions[currentQuestion];
@@ -771,58 +783,38 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     const result = evaluateCivicsAnswer(activeQuestion, transcript);
     setAnswerStatus(result.status);
     if (result.status === "correct") {
+      settledRef.current = true;
       setCorrectAnswers(count => count + 1);
       onQuestionResult?.(questionKey(activeQuestion), true, { mode: answerMode, source: "interview", helpUsed: [] });
       setReadyForNext(true);
       setFeedback(t("Correct. Continue when you are ready.", "Correcto. Continúa cuando estés listo."));
       emitCompanionResult(true);
     } else if (result.status === "review") {
+      settledRef.current = true;
       setReadyForNext(true);
       setFeedback(t("Compare your response with the official answers. This response was not graded.", "Compara tu respuesta con las respuestas oficiales. Esta respuesta no se calificó."));
       emitCompanionState("support");
-    } else if (result.status === "incomplete") {
-      setFeedback(t(`Please give ${activeQuestion.minimumAnswersRequired} different answers.`, `Da ${activeQuestion.minimumAnswersRequired} respuestas distintas.`));
-      emitCompanionState("support");
-    } else {
+    } else if (boundedPracticeOutcome(result.status, attemptsRef.current) === "advance") {
+      settledRef.current = true;
+      setIncorrectAnswers(count => count + 1);
+      addMissedQuestion(activeQuestion);
       onQuestionResult?.(questionKey(activeQuestion), false, { mode: answerMode, source: "interview", helpUsed: [] });
+      setReadyForNext(true);
+      setFeedback(t("Review the official answers, then continue. You do not need to get this right to move on.", "Repasa las respuestas oficiales y continúa. No necesitas acertar para avanzar."));
       emitCompanionResult(false);
-      if (hasRetried) {
-        setIncorrectAnswers(count => count + 1);
-        addMissedQuestion(activeQuestion);
-        setReadyForNext(true);
-        setFeedback(t("Review the official answers, then continue.", "Repasa las respuestas oficiales y continúa."));
-      } else {
-        setHasRetried(true);
-        setFeedback(t("Try this question once more.", "Intenta responder esta pregunta otra vez."));
-      }
+    } else {
+      setFeedback(result.status === "incomplete"
+        ? t(`Please give ${activeQuestion.minimumAnswersRequired} different answers, or skip to continue.`, `Da ${activeQuestion.minimumAnswersRequired} respuestas distintas, o salta para continuar.`)
+        : t("You can try once more or skip this question.", "Puedes intentar una vez más u omitir esta pregunta."));
+      emitCompanionState("support");
     }
   };
-  const beginListening = async () => {
-    if (!mountedRef.current || microphonePendingRef.current || recorderRef.current) return;
-    microphonePendingRef.current = true;
-    stopQuestionSpeech();
-    try {
-      const recorder = await startAudioRecording();
-      if (!mountedRef.current) { recorder.cancel?.(); return; }
-      recorderRef.current = recorder;
-      setIsListening(true); setAnswerStatus("");
-      emitCompanionState("thinking");
-    } catch { if (mountedRef.current) setAnswerStatus("error"); }
-    finally { microphonePendingRef.current = false; }
-  };
-  const startListening = () => requestVoiceAccess ? requestVoiceAccess(beginListening) : beginListening();
-  const stopListening = async () => {
-    const recorder = recorderRef.current;
-    recorderRef.current = null;
-    setIsListening(false);
-    if (!recorder) return;
-    setIsTranscribing(true);
-    try {
-      const transcript = await transcribeRecording(await recorder.stop());
-      if (mountedRef.current) { if (transcript) evaluateInterviewAnswer(transcript, "spoken"); else setAnswerStatus("error"); }
-    } catch { if (mountedRef.current) setAnswerStatus("error"); }
-    finally { if (mountedRef.current) setIsTranscribing(false); }
-  };
+  const voice = useVoiceResponse({
+    turnKey: `${currentQuestion}:${useStandardInterview}:${isInterviewComplete}`,
+    onTranscript: transcript => evaluateInterviewAnswer(transcript, "spoken"),
+    beforeListen: stopQuestionSpeech, requestVoiceAccess,
+  });
+  const { isListening, isTranscribing, startListening, stopListening } = voice;
   if (isInterviewComplete) {
     const gradedCount = correctAnswers + incorrectAnswers;
     const scorePercentage = gradedCount ? Math.round(correctAnswers / gradedCount * 100) : null;
@@ -841,6 +833,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       <button className="results-secondary-button" onClick={onExit}>{t("Back to Home", "Volver al inicio")}</button>
     </div></div>;
   }
+  if (mode === "full" && useGuidedConversation && !useStandardInterview) return <ConversationPractice language={language} soundEnabled={soundEnabled} onBack={onExit} onComplete={onComplete} onLiveAvatar={() => setUseGuidedConversation(false)} />;
   if (mode === "full" && !useStandardInterview) return <div className="interview-screen live-interview-screen live-avatar-only-screen">
     <header className="interview-header"><button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit live interview", "Salir de la entrevista")}><span aria-hidden="true">×</span></button><div className="interview-brand"><strong>CITIZENSHIP <span>AI</span></strong><small>{t("LIVE N-400 + CIVICS INTERVIEW", "ENTREVISTA N-400 + CIVISMO")}</small></div></header>
     <main className="interview-content live-avatar-only-content"><DidLiveAvatar autoStart language={language} onStandardInterview={() => setUseStandardInterview(true)} /></main>
@@ -871,13 +864,13 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       <section className="live-answer-feedback" aria-live="polite">
         {answer && <div className={`answer-preview ${answerStatus}`}><span>{t("Your response", "Tu respuesta")}</span><p>{answer}</p><div className="answer-result">{feedback}</div></div>}
         {readyForNext && answerStatus !== "correct" && question.acceptedAnswers?.length > 0 && <details className="n400-known-answer"><summary>{t("Official answers", "Respuestas oficiales")}</summary><ul>{question.acceptedAnswers.map(item => <li key={item} lang="en">{item}</li>)}</ul></details>}
-        {answerStatus === "error" && <p role="alert">{t("We couldn't record your response. Try again or type it below.", "No pudimos grabar tu respuesta. Inténtalo otra vez o escríbela abajo.")}</p>}
+        {(answerStatus === "error" || voice.error) && <p role="alert">{t("We couldn't record your response. Try again or type it below.", "No pudimos grabar tu respuesta. Inténtalo otra vez o escríbela abajo.")}</p>}
       </section>
       <section className="live-interview-controls" aria-label={t("Interview controls", "Controles de entrevista")}>
         {readyForNext ? <button className="primary-button" onClick={goToNextQuestion}>{t("Continue", "Continuar")}</button> : <>
           <form className="n400-text-response" onSubmit={event => { event.preventDefault(); evaluateInterviewAnswer(typedAnswer); }}><label htmlFor="civics-interview-answer">{t("Type your answer", "Escribe tu respuesta")}</label><textarea id="civics-interview-answer" rows={3} maxLength={1600} value={typedAnswer} disabled={isListening || isTranscribing} onFocus={stopQuestionSpeech} onChange={event => setTypedAnswer(event.target.value)} /><button className="primary-button" disabled={!typedAnswer.trim() || isListening || isTranscribing}>{t("Check response", "Comprobar respuesta")}</button></form>
           <button className={`secondary-button live-mic-button ${isListening ? "listening" : ""}`} onClick={isListening ? stopListening : startListening} disabled={isTranscribing} aria-pressed={isListening} aria-label={isListening ? t("Stop recording answer", "Terminar de grabar respuesta") : t("Start recording answer", "Comenzar a grabar respuesta")}><svg className="workspace-microphone-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg>{isListening ? t("Finish recording", "Terminar grabación") : t("Speak your answer", "Responder con voz")}</button>
-          <button className="live-skip-button" onClick={handleSkip} disabled={isListening || isTranscribing}>{t("I don't know", "No lo sé")}</button>
+          <button className="live-skip-button" onClick={() => handleSkip()} disabled={isListening || isTranscribing}>{t("I don't know", "No lo sé")}</button>
         </>}
         <div className="live-score-summary" role="group" aria-label={t("Current score", "Resultado actual")}><span>{correctAnswers} {t("correct", "correctas")}</span><span>{incorrectAnswers} {t("missed", "por repasar")}</span></div>
       </section>
@@ -908,7 +901,6 @@ function AppContent({ userKey }) {
     civicsGuide: "Study Guide",
     interview: "Interview",
   })[previousScreen || fallback] || "Back";
-  const [coachMode, setCoachMode] = useState("welcome");
   const [interviewMode, setInterviewMode] = useState(() => readAppRoute(window.location.hash).interviewMode);
   const [plannedQuizMode, setPlannedQuizMode] = useState(null);
   const [interviewRunId, setInterviewRunId] = useState(0);
@@ -1046,13 +1038,6 @@ function AppContent({ userKey }) {
     document.documentElement.scrollTop = 0;
     document.body.scrollTop = 0;
   }, [screen]);
-
-  const [coachListening, setCoachListening] = useState(false);
-  const [coachHistory, setCoachHistory] = useState([]);
-  const [coachReply, setCoachReply] = useState("");
-  const [coachThinking, setCoachThinking] = useState(false);
-  const [coachSpeaking, setCoachSpeaking] = useState(false);
-  const coachRecorderRef = useRef(null);
 
   const [isAIThinking, setIsAIThinking] = useState(false);
   const [aiMessage, setAiMessage] = useState("");
@@ -1305,69 +1290,6 @@ function AppContent({ userKey }) {
     }
   };
 
-  const speakCoachReply = async (text) => {
-    if (!text) return;
-    setCoachSpeaking(false);
-    await speakAppText(text, {
-      profile: "female",
-      rate: 0.92,
-      pitch: 1.05,
-      onStart: () => setCoachSpeaking(true),
-      onEnd: () => setCoachSpeaking(false),
-    });
-  };
-
-  const sendCoachMessage = async (message) => {
-    setCoachThinking(true);
-    try {
-      const result = await apiJson("/coach", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, history: coachHistory }),
-      });
-      setCoachReply(result.reply || "");
-      speakCoachReply(result.reply || "");
-      setCoachHistory((current) => [
-        ...current,
-        { role: "user", content: message },
-        { role: "assistant", content: result.reply || "" },
-      ]);
-      recordPractice({ module: "coach", outcome: "reply" });
-    } catch {
-      console.error("Coach AI error:");
-      setCoachReply(t("We could not connect. Please try again.", "No pudimos conectar. Inténtalo otra vez."));
-    } finally {
-      setCoachThinking(false);
-    }
-  };
-
-  const startCoachListening = async () => {
-    try {
-      coachRecorderRef.current = await startAudioRecording();
-      setCoachListening(true);
-      emitCompanionState("thinking", { message: language === "es" ? "Te escucho." : "I'm listening." });
-    } catch {
-      console.error("Coach microphone error:");
-      setCoachReply(t("Allow microphone access and try again.", "Permite el acceso al micrófono e inténtalo otra vez."));
-    }
-  };
-
-  const stopCoachListening = async () => {
-    const recorder = coachRecorderRef.current;
-    coachRecorderRef.current = null;
-    setCoachListening(false);
-    if (!recorder) return;
-
-    try {
-      const transcript = await transcribeRecording(await recorder.stop());
-      if (!transcript) throw new Error("No speech was detected.");
-      await sendCoachMessage(transcript);
-    } catch {
-      console.error("Coach transcription error:");
-      setCoachReply(t("We could not hear you. Please try again.", "No pudimos escucharte. Inténtalo otra vez."));
-    }
-  };
-
   const startReading = async () => {
     try {
       readingRecorderRef.current = await startAudioRecording();
@@ -1510,51 +1432,7 @@ function AppContent({ userKey }) {
   }
 
   if (screen === "coach") {
-    const conversationStarted = coachMode === "conversation";
-    return (
-      <div className="practice-screen coach-screen coach-video-call-screen">
-        <header className="practice-header">
-          <button className="back-button" onClick={() => { setCoachMode("welcome"); goBack("english"); }}>← {previousScreenLabel("english")}</button>
-          <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
-        </header>
-        <main className="coach-conversation-content coach-video-call-content">
-          <div className="practice-eyebrow">{t("AI ENGLISH COACH · VIDEO PRACTICE", "CONVERSACIÓN EN INGLÉS · PRÁCTICA EN VIDEO")}</div>
-          <div className={"coach-conversation-card coach-video-call-card " + (conversationStarted ? "started" : "ready")}>
-            <div className={"coach-conversation-avatar " + (coachSpeaking ? "speaking" : "listening")} role="img" aria-label={coachSpeaking ? t("Sarah speaking", "Sarah hablando") : t("Sarah ready to listen", "Sarah lista para escuchar")}>
-              <video src="/sarah-listening.mp4" poster={sarahImage} className="coach-avatar-video coach-avatar-listening" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
-              <video src="/sarah-speaking.mp4" poster={sarahSpeakingImage} className="coach-avatar-video coach-avatar-speaking" autoPlay muted loop playsInline preload="auto" aria-hidden="true" />
-              <div className="coach-video-call-overlay" aria-hidden="true"></div>
-              <div className="coach-video-call-identity"><span></span><div><strong>Sarah AI</strong><small>{t("English conversation coach", "Práctica de conversación en inglés")}</small></div></div>
-            </div>
-            <div className="coach-conversation-status" role="status" aria-live="polite">
-              <span></span>
-              {!conversationStarted ? t("Sarah is ready", "Sarah está lista") : coachListening ? t("Listening to you", "Te escucha") : coachThinking ? t("Preparing a response", "Preparando una respuesta") : coachSpeaking ? t("Sarah is speaking", "Sarah está hablando") : t("Conversation active", "Conversación activa")}
-            </div>
-            <div className="coach-message">
-              <div className="coach-message-label">SARAH</div>
-              <div className="coach-message-text" tabIndex={0}>{conversationStarted ? (coachReply || "Hi! I'm Sarah. Let's practice English together. Tell me about yourself.") : t("Ready when you are. Start a conversation to practice English.", "Cuando quieras, inicia una conversación para practicar inglés.")}</div>
-            </div>
-            <div className="coach-response-area">
-              {!conversationStarted ? (
-                <button className="coach-start-button coach-call-start-button" onClick={() => { setCoachReply(""); setCoachMode("conversation"); speakCoachReply("Hi! I'm Sarah. Let's practice English together. Tell me about yourself."); }} type="button">
-                  <span className="coach-call-icon" aria-hidden="true">▶</span>
-                  <span className="coach-call-copy"><small>{t("AI ENGLISH COACH", "Conversación en inglés")}</small><strong>{t("Start conversation", "Iniciar conversación")}</strong></span>
-                  <span className="coach-call-arrow" aria-hidden="true">→</span>
-                </button>
-              ) : (
-                <>
-                  <div className="coach-response-label">{t("YOUR RESPONSE", "Tu respuesta")}</div>
-                  <button className={"coach-mic-button " + (coachListening ? "listening" : "")} onClick={coachListening ? stopCoachListening : startCoachListening} disabled={coachThinking} aria-busy={coachThinking} type="button">
-                    <div className="coach-mic-icon-wrapper"><span className="mic-glyph">🎙</span></div>
-                    <span className="coach-mic-text">{coachThinking ? t("Preparing a response…", "Preparando una respuesta…") : coachListening ? t("Tap again when you finish", "Toca otra vez al terminar") : t("Tap the microphone to speak", "Toca el micrófono para hablar")}</span>
-                  </button>
-                </>
-              )}
-            </div>
-          </div>
-        </main>
-      </div>
-    );
+    return <ConversationPractice key={userKey} language={language} soundEnabled={soundEnabled} onBack={() => goBack("english")} onPractice={recordPractice} />;
   }
   // Control de pantallas de la aplicación
   // Control de pantallas de la aplicación
