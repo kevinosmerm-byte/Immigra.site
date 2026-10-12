@@ -83,3 +83,8 @@ Verified September 20, 2026 after the monetization-safety rollout:
 - The verification used only health and public-configuration reads; it did not invoke OpenAI, D-ID, USCIS or another usage-billed feature.
 
 The monetization foundation is ready for the iOS/App Store preparation phase. Rewarded advertising and paid subscriptions remain intentionally inactive until their provider-specific paid-launch gates are completed. Stripe web billing code is present but remains disabled until `docs/WEB_BILLING_SETUP.md` is completed.
+
+## Immigra first-use trial readiness (2026-10-12)
+
+Require `practicePolicyReady: true` in Immigra public configuration before release. Apply the first-use migration only to the Immigra database; never copy credentials or entitlements from CitizenshipAI. Account creation does not start the trial. A first authorized practice starts seven days without a card or automatic charge. Technical burst protection remains enabled. This port does not assert that billing, provider authentication, or a production deployment has been verified.
+

@@ -8,31 +8,31 @@ import {handle as analyzeAsylum} from '../../modules/asylum/services/analysis/wo
 import express from '../../modules/citizenship/node_modules/express/index.js';
 import {createInterviewAIEngine} from './interview-engine.mjs';
 // Dependencies are injected for HTTP tests without credentials or paid calls.
-export function createPlatformRouter({citizenship,requireAccount,getUsageSnapshot,reserveAsylumQuota,reserveAudioQuota,reserveInterviewQuota,reserveConversationQuota,analysisFetch=fetch,env={}}){
+export function createPlatformRouter({citizenship,requireAccount,requirePractice=(_req,res)=>res.status(503).json({error:"ACCESS_UNAVAILABLE"}),getUsageSnapshot,reserveAsylumQuota,reserveAudioQuota,reserveInterviewQuota,reserveConversationQuota,analysisFetch=fetch,env={}}){
  const app=express();app.disable('x-powered-by');
  const allowedOrigins=new Set(['http://127.0.0.1:4388','http://localhost:4388',...(env.CORS_ORIGIN||'').split(',').map(origin=>origin.trim()).filter(Boolean)]);
  app.use((req,res,next)=>{res.set('Cache-Control','no-store');const origin=req.get('origin');if(origin&&!allowedOrigins.has(origin))return res.status(403).json({error:'ORIGIN_DENIED'});next();});
  const publicAccess=env.INTERVIEW_PUBLIC_ACCESS==='false'?false:TEMPORARY_PUBLIC_INTERVIEWS;
  const guestAccess=createGuestAccess({secret:env.OPENAI_API_KEY});
- const interviewAccess=(req,res,next)=>publicAccess&&!req.get('authorization')?guestAccess(req,res,next):requireAccount(req,res,next);
+ const interviewAccess=(req,res,next)=>requireAccount(req,res,()=>requirePractice(req,res,next));
  const interviews=createInterviewAIEngine({env,fetchImpl:analysisFetch,reserveSessionQuota:reserveConversationQuota,reserveTurnQuota:reserveInterviewQuota});
  const interviewError=(res,error)=>{const code=error?.message;logDiagnostic('INTERVIEW_ERROR',{code,status:error?.status});const known={LOCAL_EVALUATOR_REQUIRED:400,STALE_QUESTION:409,INTERVIEW_COMPLETE:409,GUEST_SESSION_EXPIRED:401,PROVIDER_AUTH_FAILED:502,PROVIDER_ACCESS_DENIED:502,PROVIDER_BAD_REQUEST:502,INVALID_PROVIDER_SESSION:502,QUOTA_UNAVAILABLE:503,AI_NOT_CONFIGURED:503,INVALID_SETTINGS:400,INVALID_SDP:400,INVALID_INPUT:400,DAILY_LIMIT:429,SESSION_EXPIRED:410,SESSION_LIMIT:429,TURN_IN_PROGRESS:409,PROVIDER_LIMIT:502,PROVIDER_UNAVAILABLE:502,INCOMPLETE_EVALUATION:502,INVALID_EVALUATION:502,UNGROUNDED_EVALUATION:502};return res.status(known[code]||503).json({error:known[code]?code:'INTERVIEW_UNAVAILABLE'});};
- app.get('/api/interview/status',(_req,res)=>res.json({ready:interviews.available(),authentication_required:!publicAccess,max_duration_seconds:600,testing_access:interviewTestingEnabled(env)}));
+ app.get('/api/interview/status',(_req,res)=>res.json({ready:interviews.available(),authentication_required:true,max_duration_seconds:600,testing_access:interviewTestingEnabled(env)}));
  app.post('/api/interview/reading',interviewAccess,express.json({limit:'12kb'}),async(req,res)=>{const result=await readingFeedback(req.body,{env,fetchImpl:analysisFetch,reserveQuota:reserveInterviewQuota,userId:req.account.userId});res.status(result.status).json(result);});
  app.post('/api/interview/sessions',interviewAccess,express.json({limit:'48kb'}),async(req,res)=>{try{res.json(await interviews.start(req.account.userId,req.body));}catch(error){interviewError(res,error);}});
  app.post('/api/interview/sessions/:id/turn',interviewAccess,express.json({limit:'12kb'}),async(req,res)=>{try{res.json(await interviews.turn(req.account.userId,req.params.id,req.body));}catch(error){interviewError(res,error);}});
- app.delete('/api/interview/sessions/:id',interviewAccess,async(req,res)=>{await interviews.close(req.params.id,req.account.userId);res.status(204).end();});
+ app.delete('/api/interview/sessions/:id',requireAccount,async(req,res)=>{await interviews.close(req.params.id,req.account.userId);res.status(204).end();});
  const status=module=>{
   if(env.PLATFORM_AI_ENABLED!=='true')return {ready:false,reason:'AI_DISABLED'};
   if(!env.OPENAI_API_KEY||!env.SUPABASE_URL||!env.SUPABASE_SECRET_KEY||(module==='asylum'&&!env.OPENAI_TEXT_MODEL))return {ready:false,reason:'AI_NOT_CONFIGURED'};
-  if(module==='asylum'&&reserveAsylumQuota)return {ready:true,provider:'OpenAI',daily_limit:2};
+  if(module==='asylum'&&reserveAsylumQuota)return {ready:true,provider:'OpenAI',daily_limit:null,trial_days:7};
   return {ready:false,reason:'MODULE_POLICY_NOT_CONFIGURED'};
  };
  app.get('/api/v1/me/access',requireAccount,async(req,res)=>res.json({identity:req.account.userId,citizenship:{authority:'immigration-ai',usage:await getUsageSnapshot(req.account.userId)},asylum:status('asylum'),residency:status('residency')}));
  app.get('/api/asylum/session',requireAccount,(req,res)=>res.json({authenticated:true,provider:'supabase'}));
  for(const [module,path] of [['asylum','/api/asylum/status'],['residency','/api/realtime/status']])app.get(path,(req,res)=>res.json({...status(module),authentication_required:module==='asylum'?!publicAccess:true}));
- // Asylum uses its own bounded allowance; residency remains disabled.
- // Keep the original domain handlers intact; never use Citizenship Pro as a grant.
+ // Paid actions share Immigra's seven-day first-use policy.
+ // Domain handlers and source grounding remain isolated.
  app.post('/api/asylum/analyze',interviewAccess,express.text({type:'application/json',limit:'24kb'}),async(req,res)=>{
   if(!status('asylum').ready)return res.status(503).json({error:status('asylum').reason});
   const request=new Request('https://immigration-ai.internal/api/analyze',{method:'POST',headers:{'content-type':req.get('content-type')||''},body:req.body||''});
@@ -47,7 +47,7 @@ export function createPlatformRouter({citizenship,requireAccount,getUsageSnapsho
   res.status(response.status).type('json').send(await response.text());
  });
  // Educational answer feedback is separate from realtime voice and source extraction.
- app.post('/api/interview/feedback',requireAccount,express.json({limit:'24kb'}),async(req,res)=>{
+ app.post('/api/interview/feedback',interviewAccess,express.json({limit:'24kb'}),async(req,res)=>{
   if(!status('asylum').ready||!reserveInterviewQuota)return res.status(503).json({error:'AI_NOT_CONFIGURED'});
   if(!['n400','asylum','residency'].includes(req.body?.module))return res.status(400).json({error:'INVALID_MODULE'});
   if(req.body.task!=='interview_feedback')return res.status(400).json({error:'INVALID_TASK'});
@@ -62,11 +62,11 @@ export function createPlatformRouter({citizenship,requireAccount,getUsageSnapsho
   if(failed)return res.status(503).json({error:'QUOTA_UNAVAILABLE'});
   res.status(result.status).type('json').send(await result.text());
  });
- app.post('/api/residency/conversation',requireAccount,express.json({limit:'48kb'}),async(req,res)=>{const result=await aosFeedback(req.body,{env,fetchImpl:analysisFetch,reserveQuota:reserveInterviewQuota,userId:req.account.userId});res.status(result.status).json(result);});
+ app.post('/api/residency/conversation',interviewAccess,express.json({limit:'48kb'}),async(req,res)=>{const result=await aosFeedback(req.body,{env,fetchImpl:analysisFetch,reserveQuota:reserveInterviewQuota,userId:req.account.userId});res.status(result.status).json(result);});
  app.post(['/api/realtime/session'],requireAccount,(req,res)=>res.status(503).json({error:status(req.path.includes('/asylum/')?'asylum':'residency').reason}));
- app.post('/api/coach',(_req,res)=>res.status(410).json({error:'FEATURE_REMOVED'}));
+ // Guided coach is authorized by the citizenship backend using the same Immigra account.
  if(reserveAudioQuota)mountAsylumTranscription(app,{requireAccount:interviewAccess,env,reserveQuota:reserveAudioQuota,path:'/api/interview/transcribe',consent:'interview-audio-v1'});
- if(reserveAudioQuota)mountAsylumTranscription(app,{requireAccount,env,reserveQuota:reserveAudioQuota});
+ if(reserveAudioQuota)mountAsylumTranscription(app,{requireAccount:interviewAccess,env,reserveQuota:reserveAudioQuota});
  const paid=new Set(['/evaluate-writing','/transcribe','/evaluate-reading','/coach','/avatar/session']);
  app.use('/api',(req,res,next)=>{
   if(!paid.has(req.path))return next();

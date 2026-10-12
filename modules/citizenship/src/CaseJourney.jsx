@@ -124,7 +124,7 @@ export default function CaseJourney({ language = "en", userKey = "guest", casePr
 
   return <div className="app journey-screen" data-user-scope={userKey === "guest" ? "guest" : "account"}>
     <header className="practice-header journey-header"><button className="back-button" type="button" onClick={onBack}>← {copy.back}</button></header>
-    <main className="journey-main">
+    <main className="journey-main"><EducationNotice language={language} compact />
       <div className="journey-heading"><h1>{copy.title}</h1><p>{copy.independent}</p></div>
       <section className="journey-summary" aria-labelledby="journey-stage-title">
         <span className="journey-eyebrow">{stage ? copy.current : copy.unknown}</span>
@@ -187,3 +187,4 @@ export default function CaseJourney({ language = "en", userKey = "guest", casePr
 }
 
 export { CaseJourney };
+import { EducationNotice } from "./EducationNotice.jsx";

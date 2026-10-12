@@ -1,3 +1,4 @@
+import tailwindcss from "@tailwindcss/vite";
 import postcss from 'postcss';
 import {defineConfig} from 'vite';
 const scopeStyles={postcssPlugin:'domain-style-boundaries',Once(root,{result}){
@@ -14,4 +15,4 @@ const scopeStyles={postcssPlugin:'domain-style-boundaries',Once(root,{result}){
  const layer=postcss.atRule({name:'layer',params:'domain-layout'});
  for(const node of [...root.nodes])layer.append(node);root.append(layer);
 }};
-export default defineConfig({base:'./',build:{rollupOptions:{external:['/modules/asylum/vendor/pdfjs/pdf.mjs']}},esbuild:{jsx:'automatic'},resolve:{dedupe:['react','react-dom']},css:{postcss:{plugins:[scopeStyles]}},plugins:[{name:'citizenship-public-assets',enforce:'pre',transform(code,id){if(!id.replaceAll('\\','/').includes('/modules/citizenship/src/')||! /\.[jt]sx?$/.test(id))return;return code.replace(/(["'`])\/(?!api\/)([^"'`\n]+\.(?:png|jpg|svg|mp4|m4a|pdf)(?:[^"'`\n]*))\1/g,(_m,q,p)=>q+'/modules/citizenship/'+p+q);}}],server:{host:'127.0.0.1',proxy:{'/api':{target:'http://127.0.0.1:8787',changeOrigin:true}}}});
+export default defineConfig({base:'./',build:{rollupOptions:{external:['/modules/asylum/vendor/pdfjs/pdf.mjs']}},esbuild:{jsx:'automatic'},resolve:{dedupe:['react','react-dom']},css:{postcss:{plugins:[scopeStyles]}},plugins:[tailwindcss(),{name:'citizenship-public-assets',enforce:'pre',transform(code,id){if(!id.replaceAll('\\','/').includes('/modules/citizenship/src/')||! /\.[jt]sx?$/.test(id))return;return code.replace(/(["'`])\/(?!api\/)([^"'`\n]+\.(?:png|jpg|svg|mp4|m4a|pdf)(?:[^"'`\n]*))\1/g,(_m,q,p)=>q+'/modules/citizenship/'+p+q);}}],server:{host:'127.0.0.1',proxy:{'/api':{target:'http://127.0.0.1:8787',changeOrigin:true}}}});

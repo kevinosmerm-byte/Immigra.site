@@ -23,7 +23,9 @@ test("grouped practice keeps N-400 accessible through the existing interview des
   assert.match(app, /<N400InterviewPractice/);
   assert.doesNotMatch(app, /n400InterviewQuestions/);
   assert.match(app, /brainContext=\{brainContext\}/);
-  assert.match(n400Component, /onSaveN400Profile/);
+  assert.doesNotMatch(n400Component, /onSaveN400Profile|confirmN400ProfileAnswer|rememberResponse/);
+  assert.match(n400Component, /recordN400Review/);
+  assert.match(n400Component, /getN400LearningProgress/);
 });
 
 test("N-400 practice uses the versioned bank and can restart in place", () => {

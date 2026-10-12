@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
+import { isVerifiedPracticeAccess, TRIAL_POLICY_VERSION } from "../shared/trialPolicy.js";
 import { AI_FEATURE_ACCESS, getAiFeatureConfig } from "../shared/featureAccessConfig.js";
 import { getBrainProfile, setBrainProfile, deleteBrainProfile, getBrainProfileConfiguration } from "./brainProfileService.js";
 
@@ -15,7 +16,7 @@ const STALE_AI_SESSION_HOURS = Math.max(1, Number(process.env.AI_SESSION_STALE_H
 const FEATURE_AVAILABILITY_CACHE_MS = 30_000;
 const featureAvailabilityCache = new Map();
 const disabledAiFeatures = new Set((process.env.DISABLED_AI_FEATURES || "").split(",").map((item) => item.trim()).filter(Boolean));
-let promotionAccessCache = null;
+
 
 export function getAccountConfiguration() {
   return {
@@ -62,26 +63,18 @@ export async function isAiFeatureEnabled(feature) {
   return enabled;
 }
 
-export async function isPromotionalAiAccessAllowed() {
-  const override = (process.env.PROMOTION_ACCESS_OVERRIDE || "").trim().toLowerCase();
-  if (override === "enabled") return true;
-  if (override === "disabled") return false;
-  if (!supabase) return true;
-  if (promotionAccessCache && promotionAccessCache.expiresAt > Date.now()) {
-    return promotionAccessCache.allowed;
-  }
-  const { data, error } = await supabase
-    .from("app_settings")
-    .select("value")
-    .eq("key", "launch_promotion")
-    .maybeSingle();
-  if (error) {
-    console.error("Promotion access configuration unavailable; preserving launch access", { code: error.code || "" });
-    return true;
-  }
-  const allowed = data?.value?.active === true && data?.value?.allowContinueWithoutPayment === true;
-  promotionAccessCache = { allowed, expiresAt: Date.now() + FEATURE_AVAILABILITY_CACHE_MS };
-  return allowed;
+export async function isPromotionalAiAccessAllowed() { return false; }
+
+export async function getPracticeAccess(userId) {
+  const { data, error } = await supabase.rpc("get_practice_access", { p_user_id: userId });
+  throwDatabaseError(error, "Unable to verify practice access.");
+  return data;
+}
+
+export async function isPracticePolicyReady() {
+  if (!supabase) return false;
+  try { return (await getPracticeAccess(null))?.policyVersion === TRIAL_POLICY_VERSION; }
+  catch { return false; }
 }
 
 export async function getPublicAiFeatureAvailability() {
@@ -164,6 +157,11 @@ export async function attachOptionalAiSession(req, res, next) {
     return res.status(403).json({ error: "The AI session does not match this feature.", code: "ai_session_feature_mismatch" });
   }
 
+  let access;
+  try { access = await getPracticeAccess(authData.user.id); }
+  catch { return res.status(503).json({ error: "Practice access could not be verified.", code: "access_check_unavailable" }); }
+  if (!isVerifiedPracticeAccess(access)) return res.status(403).json({ error: "Your trial has ended. A subscription is required.", code: "trial_expired" });
+
   req.aiSession = { id: aiSession.id, feature: aiSession.feature, userId: authData.user.id, source: aiSession.source };
   res.set("X-Citizenship-AI-Session-Verified", "true");
   return next();
@@ -179,6 +177,7 @@ function throwDatabaseError(error, fallback) {
 export async function getUsageSnapshot(userId) {
   const { data, error } = await supabase.rpc("get_ai_usage_snapshot", { p_user_id: userId });
   throwDatabaseError(error, "Unable to read AI usage.");
+  if (data?.access?.policyVersion !== TRIAL_POLICY_VERSION) throw new Error("The seven-day access policy is not installed.");
   return data;
 }
 
@@ -241,6 +240,7 @@ export async function consumeDistributedRateLimit({ bucket, subjectHash, limit, 
 }
 
 export async function startAiSession({ userId, feature, idempotencyKey }) {
+  if (!await isAiFeatureEnabled(feature)) return { allowed: false, reason: "feature_unavailable" };
   await reconcileStaleAiSessions(userId);
   const { data, error } = await supabase.rpc("start_ai_session", {
     p_user_id: userId,
@@ -248,6 +248,7 @@ export async function startAiSession({ userId, feature, idempotencyKey }) {
     p_idempotency_key: idempotencyKey,
   });
   throwDatabaseError(error, "Unable to start AI session.");
+  if (data?.allowed && !isVerifiedPracticeAccess(data.access)) throw new Error("The seven-day access policy is not installed.");
   return data;
 }
 

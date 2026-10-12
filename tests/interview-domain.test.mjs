@@ -5,7 +5,7 @@ import n400Bank from '../modules/citizenship/src/data/n400InterviewBank.json' wi
 import {civicsQuestionBank} from '../modules/citizenship/src/civicsQuestionBank.js';
 import {evaluateCivicsAnswer,normalizeCivicsAnswer,officialAnswerVariants} from '../modules/citizenship/src/civicsAnswerEvaluator.js';
 import {createN400InterviewState,selectNextN400Question,recordN400Answer,getContextualN400FollowUps,confirmN400ProfileAnswer,getN400ApplicantProfile} from '../modules/citizenship/src/n400InterviewEngine.js';
-import {createDomainInterview,recordDomainTurn,advanceDomainTurn,domainBank} from '../services/ai/interview-domain.mjs';
+import {createDomainInterview as createRandomInterview,recordDomainTurn,advanceDomainTurn,domainBank} from '../services/ai/interview-domain.mjs';
 import {normalizeEvaluation} from '../shared/interview-ui/evaluation-result.mjs';
 import {createCivicsConversation} from '../shared/interview-ui/civics-conversation.mjs';
 const settings={module:'citizenship',locale:'en',avatar:'sahara'};
@@ -122,3 +122,6 @@ test('asylum automatic bank excludes filler variants and unbound contextual temp
   assert.equal(seen.size,bank.questions.length);
  }
 });
+// Fix the random source when comparing semantic ordering across avatars/locales.
+const createDomainInterview=settings=>createRandomInterview(settings,{random:()=>0.999999});
+

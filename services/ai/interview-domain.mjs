@@ -46,13 +46,20 @@ function distinctClarification(text,question){
   const common=[...a].filter(w=>b.has(w)).length;
   return common/Math.max(1,Math.min(a.size,b.size))<0.7;
 }
-export function createDomainInterview(settings){
+export function createDomainInterview(settings,{random=Math.random}={}){
   const bank=domainBank(settings);
   if(settings.module==='asylum'&&!settings.sourceQuestions?.length&&settings.initialQuestion){const first=bank.questions.find(q=>q.canonicalPracticePrompt===settings.initialQuestion);if(first){bank.questions=[first,...bank.questions.filter(q=>q!==first)];bank.interviewArchitecture.blockOrder=[first.block,...bank.interviewArchitecture.blockOrder.filter(b=>b!==first.block)];}}
   // Only the optional, displayed and explicitly shared context may seed N-400.
   let context={};
   if(settings.module==='citizenship'&&settings.context){try{const data=JSON.parse(settings.context);if(data&&typeof data==='object'){const profile=data.n400Profile||{};context={n400Profile:{answers:Object.fromEntries(Object.entries(profile.answers||{}).filter(([id,value])=>n400Bank.questions.some(q=>q.id===id)&&typeof value==='string'&&value.length<=1000)),flags:profile.flags||{}},learningProfile:{weakN400ConceptIds:Array.isArray(data.learningProfile?.weakN400ConceptIds)?data.learningProfile.weakN400ConceptIds.filter(x=>typeof x==='string'):[],recentN400Mistakes:[]}};}}catch{/* Narrative context is not a confirmed profile. */}}
-  const selection=selectDomainQuestion({module:settings.module,bank,state:createN400InterviewState(bank,{},context)});
+  const state=createN400InterviewState(bank,{},context);
+  const known=new Set(bank.questions.filter(q=>!(settings.sourceQuestions||[]).some(source=>source.id===q.id)).map(q=>q.concept||q.id));
+  state.askedConceptIDs=(settings.reviewedQuestionIds||[]).filter(id=>known.has(id));
+  const order=bank.questions.map(q=>q.id);
+  for(let i=order.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+  state.practiceQuestionOrder=order;
+  let selection=selectDomainQuestion({module:settings.module,bank,state});
+  if(!selection.question){state.askedConceptIDs=[];state.complete=false;selection=selectDomainQuestion({module:settings.module,bank,state});}
   return {module:settings.module,bank,...selection,followUpQueue:[],clarified:[],statements:[],revision:0};
 }
 export const uncertainAnswer=answer=>isUncertain(answer)||/\b(unsure|uncertain|maybe|quiz[aá]s|tal vez|cannot remember|can.t remember|necesito revisar|need to (check|review))\b/i.test(answer);

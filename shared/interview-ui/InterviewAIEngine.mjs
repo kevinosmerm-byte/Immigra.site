@@ -4,7 +4,7 @@ import {authenticatedFetch} from '../authentication/fetch.mjs';
 export function AvatarConversationController(event){
  return ({'response.created':'thinking','input_audio_buffer.speech_started':'listening','input_audio_buffer.speech_stopped':'thinking','output_audio_buffer.started':'speaking','output_audio_buffer.stopped':'listening','output_audio_buffer.cleared':'listening'})[event]||null;
 }
-export function createInterviewAIEngine({env=globalThis,fetchImpl=authenticatedFetch,onState=()=>{},onCaption=()=>{},onEvaluation=()=>{},onError=()=>{},onDiagnostic=logDiagnostic,evaluateTurn,disconnectGraceMs=10000}={}){
+export function createInterviewAIEngine({env=globalThis,fetchImpl=authenticatedFetch,onState=()=>{},onCaption=()=>{},onEvaluation=()=>{},onReviewed=()=>{},onError=()=>{},onDiagnostic=logDiagnostic,evaluateTurn,disconnectGraceMs=10000}={}){
  let generation=0,session=null,pc=null,dc=null,stream=null,audio=null,abort=null,timer=null,deadline=null,paused=false,muted=true,settings=null,lastQuestion='',questionId=null,pendingText=false,pendingSpeech=false,speechParts=[],speechPhase='SPEAKING_QUESTION',finishAfterSpeech=false,outputBusy=false,queue=Promise.resolve();
  const diagnostic=(phase,extra={})=>onDiagnostic(phase,{module:settings?.module,transport:settings?.transport,...extra});
  let disconnectTimer=null;
@@ -42,6 +42,7 @@ export function createInterviewAIEngine({env=globalThis,fetchImpl=authenticatedF
    if(token!==generation)return;
    failedReview=null;failedSpeech=null;recover('evaluation');lastQuestion=result.next_question||result.suggested_follow_up;questionId=result.question_id||null;finishAfterSpeech=result.next_action==='finish';
    speechParts=result.next_question?[...(answer&&result.educational_feedback?[{text:result.educational_feedback,phase:'SPEAKING_FEEDBACK'}]:[]),{text:result.next_question,phase:answer?'SPEAKING_NEXT_QUESTION':'SPEAKING_QUESTION'}]:[{text:result.suggested_follow_up,phase:answer?'SPEAKING_FEEDBACK':'SPEAKING_QUESTION'}];
+   if(answer&&result.reviewed_concept_id)onReviewed(result);
    if(answer&&result.status!=='skipped'){diagnostic('EVALUATION_COMPLETED');onEvaluation({answer,question,...result});}
    if(settings.transport==='text'){caption({id:crypto.randomUUID(),who:'ai',text:result.suggested_follow_up});onState(paused?'paused':'listening');}
    else speakIntervention();

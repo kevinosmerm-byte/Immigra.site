@@ -1,0 +1,30 @@
+.conversation-practice h1 { color: var(--color-navy); font-size: clamp(1.5rem, 4vw, 2rem); }
+.conversation-practice .conversation-intro { max-width: 65ch; line-height: 1.6; }
+.conversation-options { display: flex; flex-wrap: wrap; gap: 1rem; margin: 1rem 0; }
+.conversation-options label { display: grid; gap: .5rem; flex: 1 1 12rem; font-weight: 600; }
+.conversation-options select, .conversation-practice textarea { width: 100%; box-sizing: border-box; border: 1px solid var(--color-border); border-radius: .75rem; padding: .8rem; background: var(--color-white); color: var(--color-text); font: inherit; }
+.conversation-practice .coach-response-area { display: block; padding: 1rem; }
+.conversation-practice .conversation-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1rem 0; }
+.conversation-practice .conversation-actions button { flex: 1 1 9rem; min-height: 44px; }
+.conversation-practice form { display: grid; gap: .6rem; }
+.conversation-practice .conversation-auto { display: flex; gap: .6rem; align-items: center; }
+.conversation-practice .conversation-auto input { width: 20px; height: 20px; flex-shrink: 0; }
+.conversation-practice .conversation-hint { font-size: .9rem; line-height: 1.6; }
+.conversation-practice .conversation-feedback { padding: .8rem 1rem; background: var(--color-white-soft); color: var(--color-text); }
+.conversation-practice .conversation-error { color: var(--color-red); }
+.conversation-practice button:focus-visible, .conversation-practice select:focus-visible, .conversation-practice textarea:focus-visible { outline: 3px solid var(--color-ai); outline-offset: 3px; }
+.conversation-practice .coach-video-call-content > .coach-video-call-card { height: auto; min-height: 0; max-height: none; background: var(--color-white); color: var(--color-text); }
+.conversation-practice .coach-video-call-card .coach-conversation-avatar { position: relative; inset: auto; height: 280px; min-height: 0; border-radius: 20px 20px 0 0; }
+.conversation-practice .coach-video-call-card .coach-avatar-video { object-position: center 24%; }
+.conversation-practice .coach-video-call-card .coach-conversation-status,
+.conversation-practice .coach-video-call-card .coach-message,
+.conversation-practice .coach-video-call-card .coach-response-area { position: relative; inset: auto; margin: .75rem 1rem; color: var(--color-text); background: var(--color-white); backdrop-filter: none; }
+.conversation-practice .coach-video-call-card .coach-conversation-status { display: block; padding: .5rem; }
+.conversation-practice .coach-video-call-card .coach-message { box-shadow: none; padding: 1rem; border-color: var(--color-border); }
+.conversation-practice .coach-video-call-card .coach-message-text { max-height: none; overflow: visible; color: var(--color-text); }
+.conversation-practice .coach-video-call-card .coach-response-area { height: auto; min-height: 0; max-height: none; }
+.conversation-practice .coach-message-label { color: var(--color-navy); }
+html[data-theme="dark"] .conversation-practice h1 { color: var(--color-white); }
+.conversation-continuous { display: grid; gap: .8rem; padding: 1rem 0; border-bottom: 1px solid var(--color-border); }
+.conversation-manual { margin: 1rem 0; }
+.conversation-manual summary { cursor: pointer; padding: .7rem 0; font-weight: 600; }

@@ -2,6 +2,8 @@
 
 CitizenshipAI includes a server-side Stripe Checkout and Customer Portal integration. It is intentionally disabled by default. Do not switch on live payments until every test below passes.
 
+The account first-use trial is described in [SEVEN_DAY_ACCESS.md](SEVEN_DAY_ACCESS.md). Apply its database migration before enabling Checkout. It requires no card and does not create a subscription; purchasing afterward does not grant another seven days.
+
 ## Architecture and safety
 
 - The browser sends only `monthly` or `annual`; Stripe Price IDs stay on Render.
@@ -16,7 +18,6 @@ CitizenshipAI includes a server-side Stripe Checkout and Customer Portal integra
 1. Create the `Citizenship AI Pro` product.
 2. Create two recurring USD prices:
    - Monthly: `$5.99`.
-   - Optional launch monthly price: `$4.99`. This must be a real recurring Stripe Price; the app never advertises `$4.99` while sending a `$5.99` Price to Checkout.
    - Annual: `$49.99`.
 3. Enable and brand the Stripe Customer Portal. Allow customers to update payment details and cancel subscriptions.
 4. Decide whether Stripe Tax applies only after reviewing registrations and tax obligations. Keep automatic tax off until that review is complete.
@@ -30,7 +31,6 @@ STRIPE_BILLING_ENABLED=false
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_PRICE_MONTHLY=price_...
-STRIPE_PRICE_MONTHLY_INTRO=price_... # optional; remove it when the launch offer ends
 STRIPE_PRICE_ANNUAL=price_...
 STRIPE_AUTOMATIC_TAX=false
 APP_BASE_URL=https://citizenshipai.us

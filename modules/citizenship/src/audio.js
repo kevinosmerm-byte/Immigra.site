@@ -27,7 +27,7 @@ export function createRecordingSession() {
   };
 }
 
-export async function startAudioRecording({ session, onComplete, silenceMs = 0 } = {}) {
+export async function startAudioRecording({ session, onAutoStop, detectSilence = false, onComplete = onAutoStop, silenceMs = detectSilence ? 1500 : 0 } = {}) {
   if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === "undefined") {
     throw new Error("Microphone recording is not supported on this device.");
   }
@@ -109,14 +109,15 @@ export async function startAudioRecording({ session, onComplete, silenceMs = 0 }
   };
 }
 
-export async function transcribeRecording(recording, { publicInterview = false, language = "en" } = {}) {
+export async function transcribeRecording(recording, { publicInterview = false, language = "en", signal } = {}) {
   const formData = new FormData();
   formData.append("audio", recording.blob, recording.fileName);
 
-  if(publicInterview)formData.append("language", language === "es" ? "es" : "en");
-  const response = await (publicInterview ? apiFetch("/interview/transcribe", {method:"POST",headers:{"x-audio-consent":"interview-audio-v1"},body:formData}) : apiFetch("/transcribe", {
+  formData.append("language", language === "es" ? "es" : "en");
+  const response = await (publicInterview ? apiFetch("/interview/transcribe", {method:"POST",headers:{"x-audio-consent":"interview-audio-v1"},body:formData,signal}) : apiFetch("/transcribe", {
     method: "POST",
     body: formData,
+    signal,
   }));
 
   if (!response.ok) {

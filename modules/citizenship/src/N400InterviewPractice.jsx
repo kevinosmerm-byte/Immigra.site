@@ -1,3 +1,6 @@
+import {useAutomaticAdvance} from "./useAutomaticAdvance.js";
+import {InterviewAdvanceControls} from "./InterviewAdvanceControls.jsx";
+import {shuffleInterviewQuestions} from "./interviewQuestionMemory.js";
 import {n400PracticeBank} from '../../../shared/interview-ui/n400-language.mjs';
 import {isNextQuestionCommand} from '../../../shared/interview-ui/commands.mjs';
 import {TEMPORARY_PUBLIC_INTERVIEWS} from '../../../shared/interview-ui/access-policy.mjs';
@@ -8,9 +11,8 @@ import { useEffect, useRef, useState } from "react";
 import n400Bank from "./data/n400InterviewBank.json";
 import { createRecordingSession, startAudioRecording, transcribeRecording, audioErrorMessage } from "./audio";
 import { speakAppText, stopAppSpeech } from "./speech";
-import { recordN400Review } from "./progress.js";
+import { recordN400Review, getN400LearningProgress } from "./progress.js";
 import {
-  confirmN400ProfileAnswer,
   createN400FollowUpPrompt,
   createN400InterviewState,
   getContextualN400FollowUps,
@@ -25,9 +27,12 @@ import {
   setCompanionSessionVisibility,
 } from "./companionEvents.js";
 
-function createInitialFlow(context, bank=n400Bank) {
+function createInitialFlow(context, bank=n400Bank, userKey="guest", restart=false) {
   const initialState = createN400InterviewState(bank, {}, context);
-  const selection = selectNextN400Question(bank, initialState);
+  initialState.practiceQuestionOrder=shuffleInterviewQuestions(bank.questions.map(q=>q.id));
+  if(!restart){const known=new Set(bank.questions.map(q=>q.concept||q.id));initialState.askedConceptIDs=Object.keys(getN400LearningProgress(userKey).concepts).filter(id=>known.has(id));}
+  let selection = selectNextN400Question(bank, initialState);
+  if(!selection.question){initialState.askedConceptIDs=[];initialState.complete=false;selection=selectNextN400Question(bank,initialState);}
   return { ...selection, followUpQueue: [] };
 }
 
@@ -49,7 +54,7 @@ const COPY = {
   en: {
     brand: "INTERACTIVE N-400 PRACTICE", title: "N-400 interview practice", complete: "Practice Review Complete",
     reviewed: "reviewed", skipped: "skipped", concepts: "concepts reviewed", personal: "Personal information", eligibility: "Application review",
-    results: "Your responses were used for this practice session without deciding eligibility or providing legal conclusions. Only answers you explicitly confirmed were remembered.",
+    results: "Your responses were used for this practice session without deciding eligibility or providing legal conclusions. Only reviewed question identifiers are remembered, not personal responses.",
     restart: "PRACTICE N-400 AGAIN", home: "Back to Home", exit: "Exit N-400 practice", repeat: "Repeat question",
     officer: "Choose your practice interviewer", interviewer: "Practice interviewer", speaking: "Speaking with you", listening: "Listening to your answer", ready: "Ready for your response",
     turn: "Your turn", spoken: "is speaking", heard: "is listening", followup: "Contextual follow-up", wording: "One wording per concept",
@@ -58,13 +63,13 @@ const COPY = {
     microphone: "Start recording answer", stop: "Stop recording answer", preparing: "Preparing your response…", skip: "Skip this question",
     recorded: "Response recorded for this session", incomplete: "Please answer yes or no. An uncertain response will not be saved as No.", error: "We couldn't record your response. Please try again or type it below.",
     reference: "Your saved information", useSaved: "Use saved answer for this practice", remember: "Confirm and remember this answer", remembered: "Answer remembered", saveError: "We couldn't remember this answer. You can continue practicing.",
-    privacy: "Practice answers stay in this session. Remember an answer only if it accurately reflects your information. A-Numbers are never remembered.",
+    privacy: "Practice answers stay in this session. Only reviewed question identifiers are saved. A-Numbers are never remembered.",
     progress: "N-400 session progress", completedMessage: "You completed the N-400 practice review.", support: "Take your time. Answer yes or no.", encouragement: "Response recorded. Keep going.", interviewSoon: "Your interview preparation uses the information you already provided.",
   },
   es: {
     brand: "PRÁCTICA INTERACTIVA N-400", title: "Práctica de entrevista N-400", complete: "Práctica completada",
     reviewed: "repasados", skipped: "omitidas", concepts: "conceptos repasados", personal: "Información personal", eligibility: "Revisión de solicitud",
-    results: "Tus respuestas se usaron en esta práctica sin decidir elegibilidad ni dar conclusiones legales. Solo se recordaron las respuestas que confirmaste expresamente.",
+    results: "Tus respuestas se usaron en esta práctica sin decidir elegibilidad ni dar conclusiones legales. Solo se recuerdan identificadores de preguntas, no respuestas personales.",
     restart: "PRACTICAR N-400 OTRA VEZ", home: "Volver al inicio", exit: "Salir de la práctica N-400", repeat: "Repetir pregunta",
     officer: "Elige quién dirige la práctica", interviewer: "Entrevistador de práctica", speaking: "Hablando contigo", listening: "Escuchando tu respuesta", ready: "Listo para tu respuesta",
     turn: "Tu turno", spoken: "está hablando", heard: "está escuchando", followup: "Pregunta de seguimiento", wording: "Una variación por concepto",
@@ -73,13 +78,13 @@ const COPY = {
     microphone: "Comenzar a grabar respuesta", stop: "Terminar de grabar respuesta", preparing: "Preparando tu respuesta…", skip: "Omitir esta pregunta",
     recorded: "Respuesta registrada para esta sesión", incomplete: "Responde sí o no. Una respuesta incierta no se guardará como No.", error: "No pudimos grabar tu respuesta. Inténtalo otra vez o escríbela abajo.",
     reference: "Tu información guardada", useSaved: "Usar respuesta guardada en esta práctica", remember: "Confirmar y recordar esta respuesta", remembered: "Respuesta recordada", saveError: "No pudimos recordar esta respuesta. Puedes seguir practicando.",
-    privacy: "Las respuestas de práctica permanecen en esta sesión. Recuerda una respuesta solo si corresponde a tu información. Los números A nunca se guardan.",
+    privacy: "Las respuestas de práctica permanecen en esta sesión. Solo se guardan identificadores de preguntas repasadas. Los números A nunca se guardan.",
     progress: "Progreso de la sesión N-400", completedMessage: "Completaste la práctica N-400.", support: "Tómate tu tiempo. Responde sí o no.", encouragement: "Respuesta registrada. Sigue adelante.", interviewSoon: "Tu preparación de entrevista utiliza la información que ya proporcionaste.",
   },
 };
 const N400_FORM_EDITION = n400Bank.formEdition;
 
-export function N400InterviewPractice({ onExit, onComplete, onRestart, brainContext = {}, language = "en", userKey = "guest", onSaveN400Profile, requestVoiceAccess }) {
+export function N400InterviewPractice({ onExit, onComplete, onRestart, brainContext = {}, language = "en", userKey = "guest", requestVoiceAccess }) {
   const bank=n400PracticeBank(n400Bank,language);
   const copy = COPY[language === "es" ? "es" : "en"];
   const [conversation,setConversation]=useState(false);
@@ -87,7 +92,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const [microphoneError,setMicrophoneError]=useState("");
   const [callStarted,setCallStarted]=useState(false),[callPaused,setCallPaused]=useState(false),[captionsVisible,setCaptionsVisible]=useState(true),[elapsed,setElapsed]=useState(0);
   useEffect(()=>{if(!callStarted||isNaN(elapsed))return;const timer=setInterval(()=>setElapsed(v=>v+1),1000);return()=>clearInterval(timer);},[callStarted]);
-  const [flow, setFlow] = useState(() => createInitialFlow(brainContext,bank));
+  const [flow, setFlow] = useState(() => createInitialFlow(brainContext,bank,userKey));
   const [isListening, setIsListening] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -95,7 +100,6 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const [draft, setDraft] = useState("");
   const [answerStatus, setAnswerStatus] = useState("");
   const [pendingResponse, setPendingResponse] = useState(null);
-  const [saveStatus, setSaveStatus] = useState("");
   const [isComplete, setIsComplete] = useState(false);
   const [skipped, setSkipped] = useState(0);
   const [interviewer, setInterviewer] = useState("sarah");
@@ -113,7 +117,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const reviewedConceptsRef = useRef(new Set());
   const skippedConceptsRef = useRef(new Set());
   const initialQuestionRef = useRef(flow.question?.english || "");
-  useEffect(()=>{if(!callStarted&&!conversation){const next=createInitialFlow(brainContext,n400PracticeBank(n400Bank,language));setFlow(next);initialQuestionRef.current=next.question?.english||'';}},[language]);
+  useEffect(()=>{if(!callStarted&&!conversation){const next=createInitialFlow(brainContext,n400PracticeBank(n400Bank,language),userKey);setFlow(next);initialQuestionRef.current=next.question?.english||'';}},[language]);
   const soundEnabledRef = useRef(brainContext.preferences?.soundEnabled !== false);
   const isKevin = interviewer === "kevin";
   const interviewerName = isKevin ? "Kevin" : "Sarah";
@@ -210,8 +214,10 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     stopQuestionSpeech();
     setAnswer(transcript);
     if (question.answerType === "yes_no" && parseYesNo(transcript) === null) {
-      setAnswerStatus("incomplete");
-      emitCompanionState("support", { message: copy.support });
+      setAnswerStatus("uncertain");
+      const state=question.kind==="followup"?recordN400FollowUpAnswer(flow.state,question,""):recordN400Answer(flow.state,question,"");
+      setPendingResponse({question,transcript,state,uncertain:true});
+      recordConceptReview(question,true);
       return;
     }
     const state = question.kind === "followup" ? recordN400FollowUpAnswer(flow.state, question, transcript) : recordN400Answer(flow.state, question, transcript);
@@ -221,7 +227,8 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   };
   const continueResponse = () => {
     if (!pendingResponse) return;
-    const { state, question, transcript } = pendingResponse;
+    const { state, question, transcript, uncertain } = pendingResponse;
+    if(uncertain){if(question.kind==="followup")continueFollowUps(state,flow);else advanceToNextConcept(state);return;}
     recordConceptReview(question);
     if (question.kind === "followup") { continueFollowUps(state, flow); return; }
     const followUps = getContextualN400FollowUps(question, transcript, state.applicantProfile)
@@ -232,17 +239,6 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
       setFlow({ state, question: first, transition: "", followUpQueue: remaining });
       queueQuestionSpeech(`${language==='es'?'Gracias.':'Thank you.'} ${first.english}`);
     } else advanceToNextConcept(state);
-  };
-  const rememberResponse = async () => {
-    if (!pendingResponse || !onSaveN400Profile || saveStatus === "saving") return;
-    const profile = confirmN400ProfileAnswer(confirmedProfileRef.current, pendingResponse.question, pendingResponse.transcript);
-    if (!profile) return;
-    setSaveStatus("saving");
-    try {
-      await onSaveN400Profile(profile);
-      confirmedProfileRef.current = profile;
-      if (mountedRef.current) setSaveStatus("saved");
-    } catch { if (mountedRef.current) setSaveStatus("error"); }
   };
   const beginListening = async () => {
     if (!mountedRef.current || microphonePendingRef.current || recorderRef.current) return;
@@ -287,6 +283,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     else advanceToNextConcept(recordN400Answer(flow.state, question, ""));
   };
 
+  const automaticAdvance=useAutomaticAdvance({enabled:Boolean(pendingResponse)&&callStarted&&!isComplete,turnKey:flow.question?.id,busy:callPaused||isListening||isTranscribing,onAdvance:continueResponse});
   if(conversation)return <ConversationInterview moduleId="citizenship" lang={language} avatar={interviewer} initialQuestion={flow.question?.english||""} context={JSON.stringify({n400Profile:confirmedProfileRef.current,learningProfile:brainContext.learningProfile})} onReview={review=>{if(review.reviewed_kind!=="concept")return;const needsPractice=["uncertain","incomplete","ambiguous","needs_clarification"].includes(review.status);recordN400Review({reviewedConceptIds:needsPractice?[]:[review.reviewed_concept_id],skippedConceptIds:needsPractice?[review.reviewed_concept_id]:[]},userKey);}} onBack={()=>setConversation(false)}/>;
   if (isComplete) return (
     <div className="interview-screen">
@@ -307,12 +304,11 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
 
   const question = flow.question;
   const section = SUB_BLOCK_LABELS[flow.state.currentSubBlock]?.[language === "es" ? 1 : 0] || flow.state.currentSubBlock;
-  const canRemember = onSaveN400Profile && pendingResponse && !pendingResponse.question.id.startsWith("P_ANUMBER");
   if(!callStarted)return <section className="call-setup"><h1>N-400</h1><p>{copy.title}</p><label>{copy.officer}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><p>{copy.privacy}</p><button className="primary-button" onClick={()=>setConversation(true)}>{language==='es'?'Conversar con IA':'Converse with AI'}</button><label><input type="checkbox" checked={localAiConsent} onChange={e=>setLocalAiConsent(e.target.checked)}/>{language==='es'?'Autorizo enviar las preguntas y mis respuestas de esta sesión a OpenAI para evaluar claridad. La práctica local también funciona sin IA.':'I authorize sending questions and my responses from this session to OpenAI to review clarity. Local practice also works without AI.'}</label><button onClick={()=>setCallStarted(true)}>{language==='es'?'Comenzar entrevista':'Start interview'}</button></section>;
   const paused=()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallPaused(v=>!v);};
   return <CallView onSkip={skipQuestion} skipDisabled={Boolean(pendingResponse)} moduleId="citizenship" lang={language} state={callPaused?'paused':isTranscribing?'processing':isSpeaking?'speaking':'listening'} elapsed={elapsed} muted={!isListening} captions={[{who:'ai',text:question.english},...(answer?[{who:'user',text:answer}]:[])]} showCaptions={captionsVisible} onCaptions={()=>setCaptionsVisible(v=>!v)} onMic={()=>{if(!callPaused&&!isTranscribing&&!pendingResponse)(isListening?stopListening:startListening)();}} onRepeat={()=>speakQuestion(question.english)} onPause={paused} onSuspend={()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallPaused(true);}} onFinish={()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallStarted(false);setLocalAiConsent(false);setIsComplete(true);}} interviewerName={interviewerName} interviewType="N-400" mediaBase={'/modules/citizenship/'+interviewer+'-'} mode="personal" error={answerStatus==='error'?microphoneError||copy.error:null}>
-   {pendingResponse?<><p>{copy.recorded}</p><button onClick={continueResponse} disabled={callPaused||saveStatus==='saving'}>{copy.continue}</button>{canRemember&&<button onClick={rememberResponse} disabled={saveStatus==='saving'||saveStatus==='saved'}>{saveStatus==='saved'?copy.remembered:copy.remember}</button>}</>:<form onSubmit={e=>{e.preventDefault();acceptResponse(draft);}}><input aria-label={copy.input} value={draft} maxLength={1600} disabled={callPaused||isListening||isTranscribing} onFocus={stopQuestionSpeech} onChange={e=>setDraft(e.target.value)}/><button disabled={callPaused||isListening||isTranscribing||!draft.trim()}>{copy.submit}</button></form>}
-   {answerStatus==='incomplete'&&<p role="status">{copy.incomplete}</p>}
+   {pendingResponse?<><p>{copy.recorded}</p><InterviewAdvanceControls language={language} paused={automaticAdvance.paused||callPaused} onPause={automaticAdvance.pause} onContinue={continueResponse}/></>:<form onSubmit={e=>{e.preventDefault();acceptResponse(draft);}}><input aria-label={copy.input} value={draft} maxLength={1600} disabled={callPaused||isListening||isTranscribing} onFocus={stopQuestionSpeech} onChange={e=>setDraft(e.target.value)}/><button disabled={callPaused||isListening||isTranscribing||!draft.trim()}>{copy.submit}</button></form>}
+   {['incomplete','uncertain'].includes(answerStatus)&&<p role="status">{copy.incomplete}</p>}
    {localAiConsent&&<AnswerFeedback automatic consentProvided module="n400" question={question.english} answer={pendingResponse?.transcript||answer} lang={language} disabled={callPaused||isListening||isTranscribing}/>}
    {callPaused&&<>{question.knownAnswer&&!pendingResponse&&<details><summary>{copy.reference}</summary><p>{question.knownAnswer}</p><button onClick={()=>acceptResponse(question.knownAnswer)}>{copy.useSaved}</button></details>}</>}
   </CallView>;

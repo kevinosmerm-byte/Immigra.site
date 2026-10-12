@@ -1,0 +1,34 @@
+.study-preparation-content { width: min(100% - 2rem, 820px); margin: 0 auto; padding: 1.5rem 0 calc(var(--global-navigation-height, 80px) + 2rem); color: var(--color-text); }
+.study-guide-entry { display: grid; gap: .4rem; width: 100%; padding: 1rem; margin: 1rem 0; text-align: left; border: 1px solid var(--color-border); border-radius: 1rem; background: var(--button-secondary); color: var(--color-navy); cursor: pointer; }
+.study-guide-entry span { line-height: 1.5; }
+.study-preparation-content > h1 { color: var(--color-navy); font-size: clamp(1.6rem, 4vw, 2.3rem); }
+.study-preparation-content p { line-height: 1.6; }
+.study-choices { display: flex; flex-wrap: wrap; gap: 1rem; }
+.study-choices label { display: grid; gap: .5rem; flex: 1 1 12rem; font-weight: 600; }
+.study-choices select { width: 100%; min-height: 44px; box-sizing: border-box; padding: .8rem; border: 1px solid var(--color-border); border-radius: .75rem; background: var(--color-white); color: var(--color-text); font: inherit; }
+.study-goal-summary { font-weight: 700; }
+.study-card { padding: 1.25rem; margin: 1.25rem 0; background: var(--color-white); color: var(--color-text); border: 1px solid var(--color-border); border-radius: 1rem; }
+.study-card h2 { margin-top: 0; color: var(--color-navy); }
+.study-task-list { padding-left: 1.4rem; }
+.study-task-list li { padding: .6rem 0 1rem; }
+.study-task-list li > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .6rem; }
+.study-check-item { display: flex; align-items: flex-start; gap: .8rem; margin: 1rem 0; }
+.study-check-item input { width: 22px; height: 22px; flex-shrink: 0; }
+.study-check-item span { display: grid; gap: .35rem; }
+.study-check-item small { line-height: 1.6; }
+.study-actions { display: flex; flex-wrap: wrap; gap: .8rem; }
+.study-actions button { min-height: 44px; flex: 1 1 12rem; }
+.study-writing-lines { min-height: 2.2rem; border-bottom: 1px solid var(--color-border); margin: .6rem 0 1.5rem; }
+.study-care-note { padding: 1rem; border-left: 4px solid var(--color-ai); background: var(--color-white-soft); color: var(--color-text); }
+.study-preparation button:focus-visible, .study-preparation select:focus-visible, .study-check-item input:focus-visible { outline: 3px solid var(--color-ai); outline-offset: 3px; }
+html[data-theme="dark"] .study-preparation-content > h1, html[data-theme="dark"] .study-preparation-content > p:not(.study-care-note) { color: var(--color-white); }
+@media print {
+  body[data-app-screen="preparation"] .study-no-print,
+  body[data-app-screen="preparation"] .global-bottom-navigation,
+  body[data-app-screen="preparation"] .navigation-handle,
+  body[data-app-screen="preparation"] citizenship-companion { display: none !important; }
+  .study-preparation-content { width: 100%; padding: 0; color: #172B3D; }
+  .study-card, .education-notice { break-inside: avoid; box-shadow: none; background: white; color: #172B3D; }
+  .study-preparation { background: white; }
+  .study-preparation-content h1, .study-preparation-content h2, .study-preparation-content p { color: #172B3D !important; }
+}

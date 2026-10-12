@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {domainBank,createDomainInterview,recordDomainTurn,advanceDomainTurn} from '../services/ai/interview-domain.mjs';
+import {domainBank,createDomainInterview as createRandomInterview,recordDomainTurn,advanceDomainTurn} from '../services/ai/interview-domain.mjs';
 import {createCivicsConversation} from '../shared/interview-ui/civics-conversation.mjs';
 import {civicsQuestionBank} from '../modules/citizenship/src/civicsQuestionBank.js';
 import answersEs from '../shared/interview-ui/civics-answers.es.json' with {type:'json'};
@@ -35,3 +35,6 @@ test('civics next command reads only next question and retries do not skip twice
  assert.equal(result.status,'skipped');assert.equal(result.educational_feedback,'');assert.equal(result.next_question,civicsQuestionBank[1].questionSpanish);
  assert.deepEqual(await turn({answer:'siguiente pregunta',turnId:'skip'}),result);
 });
+// Fix the random source when comparing semantic ordering across avatars/locales.
+const createDomainInterview=settings=>createRandomInterview(settings,{random:()=>0.999999});
+

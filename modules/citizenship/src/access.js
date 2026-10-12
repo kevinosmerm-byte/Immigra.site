@@ -31,22 +31,18 @@ export function getAiUsageSummary() {
   const events = readSessionEvents();
   const features = Object.fromEntries(Object.entries(AI_FEATURE_ACCESS).map(([feature, config]) => {
     const sessionsStarted = events.filter((event) => event.feature === feature).length;
-    const includedUsed = Math.min(sessionsStarted, config.freeSessions);
+    const includedUsed = sessionsStarted;
     return [feature, {
       limit: config.freeSessions,
       used: includedUsed,
       sessionsStarted,
-      remaining: Math.max(0, config.freeSessions - includedUsed),
+      remaining: null,
     }];
   }));
   return { features };
 }
 
-export function shouldShowPromotionNotice(feature) {
-  const config = getAiFeatureConfig(feature);
-  if (!config) return false;
-  return (getAiUsageSummary().features[feature]?.sessionsStarted || 0) >= config.freeSessions;
-}
+export function shouldShowPromotionNotice() { return false; }
 
 export function recordAiSessionStart(feature) {
   if (!getAiFeatureConfig(feature)) return getAiUsageSummary();

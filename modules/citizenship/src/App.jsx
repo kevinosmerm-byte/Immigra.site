@@ -1,3 +1,6 @@
+import {ConversationPractice} from "./ConversationPractice.jsx";
+import {PremiumPracticeBoundary} from "./PremiumPracticeBoundary.jsx";
+import {chooseInterviewQuestions,markInterviewQuestionReviewed} from "./interviewQuestionMemory.js";
 import ConversationInterview from '../../../shared/interview-ui/ConversationInterview.jsx';
 import {createCivicsConversation} from '../../../shared/interview-ui/civics-conversation.mjs';
 import {normalizeEvaluation} from '../../../shared/interview-ui/evaluation-result.mjs';
@@ -244,19 +247,10 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   const captureGeneration=useRef(0);
   const [endedEarly,setEndedEarly]=useState(false);
   const t = (en, es) => language === "es" ? es : en;
-  const [checkpoint] = useState(() => {
-    const saved = getModuleProgress(userKey).interview;
-    const ids = Array.isArray(saved?.questionIds) ? saved.questionIds : [];
-    return mode === "civics" && saved && !saved.isComplete && ids.length && Number.isInteger(saved.questionIndex) && saved.questionIndex >= 0 && saved.questionIndex < ids.length && new Set(ids).size === ids.length && ids.every(id => civicsQuestionBank.some(question => question.questionId === id)) ? saved : null;
-  });
+  const checkpoint = null;
   const [questions] = useState(() => {
     const profile = civicProfile || brainContext.civicProfile;
-    if (checkpoint) return checkpoint.questionIds.map(id => resolveCivicsQuestion(civicsQuestionBank.find(question => question.questionId === id), { profile }));
-    const prioritizedIds = getDailyStudyPlan(brainContext).items.flatMap(item => item.questionIds || []);
-    const rank = new Map(prioritizedIds.map((id, index) => [id, index]));
-    return civicsQuestionBank.map(question => resolveCivicsQuestion(question, { profile }))
-      .sort((left, right) => (rank.get(left.questionId) ?? Number.MAX_SAFE_INTEGER) - (rank.get(right.questionId) ?? Number.MAX_SAFE_INTEGER) || left.questionId - right.questionId)
-      .slice(0, mode === "civics" ? 10 : 5);
+    return chooseInterviewQuestions("civics", civicsQuestionBank.map(question => resolveCivicsQuestion(question, {profile})), question=>question.questionId, userKey).slice(0,mode==="civics"?10:5);
   });
   const [automaticCivics,setAutomaticCivics]=useState(false);
   const civicConversation=useRef(null);
@@ -465,7 +459,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   </div>;
   const question = questions[currentQuestion];
   const suspend=()=>{captureGeneration.current++;recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setIsTranscribing(false);stopQuestionSpeech();setPaused(true);};
-  if(!callStarted)return <section className="platform-panel platform-call-start liquid-glass"><h1>{t('Civics interview','Entrevista cívica')}</h1><p>{t('Choose your interviewer. Speak or type your responses.','Elige tu entrevistador. Puedes responder hablando o escribiendo.')}</p><label>{t('Interviewer','Entrevistador')}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><button onClick={()=>{civicStart.current={correct:correctAnswers,incorrect:incorrectAnswers,index:currentQuestion,missed:missedQuestions};civicConversation.current=createCivicsConversation(questions,{locale:language,startIndex:currentQuestion});setAutomaticCivics(true);}}>{t('Begin interview','Comenzar entrevista')}</button></section>;
+  if(!callStarted)return <section className="platform-panel platform-call-start liquid-glass"><h1>{t('Civics interview','Entrevista cívica')}</h1><p>{t('Choose your interviewer. Speak or type your responses.','Elige tu entrevistador. Puedes responder hablando o escribiendo.')}</p><label>{t('Interviewer','Entrevistador')}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><button onClick={()=>{civicStart.current={correct:correctAnswers,incorrect:incorrectAnswers,index:currentQuestion,missed:missedQuestions};civicConversation.current=createCivicsConversation(questions,{locale:language,startIndex:currentQuestion,onReviewed:id=>markInterviewQuestionReviewed("civics",id,userKey)});setAutomaticCivics(true);}}>{t('Begin interview','Comenzar entrevista')}</button></section>;
   return <CallView moduleId="citizenship" lang={language} interviewerName={interviewerName} interviewType={t('Civics interview','Entrevista cívica')} mediaBase={'/modules/citizenship/'+interviewer+'-'} state={paused?'paused':isTranscribing?'processing':isSpeaking?'speaking':'listening'} elapsed={elapsed} muted={!isListening} captions={[{who:'ai',text:questionText(question)},...(answer?[{who:'user',text:answer}]:[])]} showCaptions={captions} onCaptions={()=>setCaptions(x=>!x)} onSkip={handleSkip} skipDisabled={readyForNext} progress={{current:currentQuestion+1,total:questions.length}} onMic={()=>{if(!paused&&!isTranscribing&&!readyForNext)(isListening?stopListening:startListening)();}} onRepeat={()=>{suspend();setPaused(false);speakQuestion(questionText(question));}} onPause={()=>{if(paused)setPaused(false);else suspend();}} onSuspend={suspend} onFinish={()=>{suspend();setEndedEarly(true);setCallStarted(false);setIsInterviewComplete(true);}} error={answerStatus==='error'?microphoneError||t('No audio detected. Try again.','No se detectó audio. Inténtalo de nuevo.'):''}>
   {feedback&&<p role="status" data-evaluation-status={normalizeEvaluation({status:answerStatus},"civics").status}>{feedback}</p>}
   {readyForNext?<button disabled={paused} onClick={goToNextQuestion}>{t('Continue','Continuar')}</button>:<form onSubmit={e=>{e.preventDefault();evaluateInterviewAnswer(typedAnswer);}}><input aria-label={t('Your response','Tu respuesta')} value={typedAnswer} maxLength={1600} disabled={paused||isListening||isTranscribing} onFocus={stopQuestionSpeech} onChange={e=>setTypedAnswer(e.target.value)}/><button disabled={paused||!typedAnswer.trim()||isListening||isTranscribing}>{t('Check','Comprobar')}</button></form>}
@@ -713,7 +707,6 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   };
 
   const navigateTo = (nextScreen, options) => {
-    if (nextScreen === "coach") nextScreen = "home";
     if (["civics", "quiz", "vocabulary", "choose", "connect", "reading", "writing", "interview"].includes(nextScreen) && nextScreen !== screen) recordAccountEvent("practice_started", nextScreen).catch(() => {});
     setNavigation((current) => navigateForward(current, nextScreen, options));
     window.history.pushState(null, "", appRouteHash(nextScreen, nextScreen === "interview" ? interviewMode : undefined));
@@ -771,7 +764,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
       navigateTo("civics");
       return;
     }
-    if (key === "coach") return;
+    if (key === "coach") { navigateTo("coach"); return; }
     const feature = key === "writing" ? "writing" : "speaking";
     startAiFeature(feature, () => navigateTo(key === "writing" ? "writing" : key === "coach" ? "coach" : "reading"));
   };
@@ -1119,7 +1112,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
     );
   }
 
-  if (screen === "coach") return <CoachCall language={language} started={coachMode==='conversation'} speaking={coachSpeaking} listening={coachListening} thinking={coachThinking} reply={coachReply} history={coachHistory} onText={sendCoachMessage} onStart={()=>{setCoachReply("");setCoachMode("conversation");speakCoachReply("Hi! I'm Sarah. Let's practice English together. Tell me about yourself.");}} onMic={coachListening?stopCoachListening:startCoachListening} onRepeat={()=>speakCoachReply(coachReply||"Hi! I'm Sarah. Let's practice English together. Tell me about yourself.")} onSuspend={suspendCoach} onExit={()=>{suspendCoach();setCoachMode('welcome');goBack('home');}}/>;
+  if (screen === "coach") return <ConversationPractice language={language} initialTopic={brainContext.preferences?.studyGoal} userKey={userKey} soundEnabled={soundEnabled} onBack={()=>goBack("home")} onPractice={recordPractice}/>;
   // Control de pantallas de la aplicación
   // Control de pantallas de la aplicación
   if (screen === "civics") {
@@ -1730,7 +1723,6 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
           language={language}
           userKey={userKey}
           requestVoiceAccess={requestVoiceAccess}
-          onSaveN400Profile={n400Profile => brainProfile.updateProfile({n400Profile})}
         />
       );
     }
@@ -1774,7 +1766,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   );
   };
   const showNavigation = onboardingComplete && !["interview", "coach"].includes(screen);
-  return <div data-citizen-screen={screen} className={showNavigation ? "global-navigation-shell" : undefined}>{showNavigation && <ModuleNavigation current={screen} onNavigate={navigateTo} label={language==='es'?'Ciudadanía':'Citizenship'} items={language==='es'?[['home','Resumen'],['civics','128 preguntas'],['practice','Practicar'],['progress','Progreso']]:[['home','Overview'],['civics','128 questions'],['practice','Practice'],['progress','Progress']]}/>} {renderScreen()}{accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}</div>;
+  return <div data-citizen-screen={screen} className={showNavigation ? "global-navigation-shell" : undefined}>{showNavigation && <ModuleNavigation current={screen} onNavigate={navigateTo} label={language==='es'?'Ciudadanía':'Citizenship'} items={language==='es'?[['home','Resumen'],['civics','128 preguntas'],['practice','Practicar'],['progress','Progreso']]:[['home','Overview'],['civics','128 questions'],['practice','Practice'],['progress','Progress']]}/>} {["interview","coach"].includes(screen)?<PremiumPracticeBoundary feature={screen==="coach"?"coach":"realInterview"} language={language} onBack={()=>navigateTo("practice")}>{renderScreen()}</PremiumPracticeBoundary>:renderScreen()}{accountOpen && <AccountSheet language={language} onClose={() => setAccountOpen(false)} />}</div>;
 }
 export default function App({platformLanguage,onPlatformLanguageChange}={}) {
   const { session } = useAccount();

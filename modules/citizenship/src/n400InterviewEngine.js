@@ -152,7 +152,9 @@ export function selectNextN400Question(bank, interviewState) {
     if (candidates.length) {
       // Focus weak concepts only inside the current block; preserve the bank's order otherwise.
       const priorities = state.priorityConceptIDs || [];
-      candidates.sort((a, b) => Number(priorities.includes(b.concept) || priorities.includes(b.id)) - Number(priorities.includes(a.concept) || priorities.includes(a.id)));
+      const order = new Map((state.practiceQuestionOrder || []).map((id, index) => [id, index]));
+      candidates.sort((a, b) => Number(priorities.includes(b.concept) || priorities.includes(b.id)) - Number(priorities.includes(a.concept) || priorities.includes(a.id))
+        || (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
       return { state, question: asPrompt(candidates[0], state), transition };
     }
 

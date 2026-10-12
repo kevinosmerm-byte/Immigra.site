@@ -5,7 +5,7 @@ import {normalizeEvaluation} from './evaluation-result.mjs';
 
 // Audio transport adapter over the original evaluator and already resolved bank.
 // No provider request, generated facts, or separate question dataset.
-export function createCivicsConversation(questions,{locale='en',startIndex=0}={}){
+export function createCivicsConversation(questions,{locale='en',startIndex=0,onReviewed=()=>{}}={}){
   let index=startIndex;
   const results=new Map();
   const text=q=>(locale==='es'&&(q?.questionSpanish||q?.spanish))||q?.question||q?.english||'';
@@ -16,7 +16,7 @@ export function createCivicsConversation(questions,{locale='en',startIndex=0}={}
     if(!question)throw Error('INTERVIEW_COMPLETE');
     if(!answer.trim())return {provider:'official-bank',question_id:String(question.questionId),next_question:text(question),suggested_follow_up:text(question),educational_feedback:''};
     if(isNextQuestionCommand(answer)){
-      index++;const next=questions[index],nextQuestion=text(next);
+      onReviewed(question.questionId);index++;const next=questions[index],nextQuestion=text(next);
       const result={status:'skipped',provider:'official-bank',educational_feedback:'',next_question:nextQuestion,suggested_follow_up:nextQuestion||t('Practice is complete.','La práctica ha terminado.'),question_id:next?String(next.questionId):null,next_action:next?'continue':'finish',completed:index};
       if(turnId)results.set(turnId,result);return result;
     }
@@ -30,7 +30,7 @@ export function createCivicsConversation(questions,{locale='en',startIndex=0}={}
       original.status==='incomplete'?t(`Please give ${question.minimumAnswersRequired} different answers.`,`Da ${question.minimumAnswersRequired} respuestas distintas.`):
       original.status==='review'?t('This response was not graded. Review the applicable official answers.','Esta respuesta no se calificó. Revisa las respuestas oficiales aplicables.'):
       t('Review the official answer: ','Repasa la respuesta oficial: ')+(translated||question.acceptedAnswers||[]).slice(0,question.minimumAnswersRequired).join('; ');
-    if(original.status!=='incomplete')index++;
+    if(original.status!=='incomplete'){onReviewed(question.questionId);index++;}
     const next=questions[index];
     const nextQuestion=text(next);
     const intervention=[feedback,nextQuestion||t('Practice is complete.','La práctica ha terminado.')].join(' ');

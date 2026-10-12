@@ -7,7 +7,7 @@ async function fixture(t,env={},dependencies={}){
  legacy.get('/account/public-config',(req,res)=>res.json({promotionAccess:true,billing:{enabled:false}}));
  legacy.post('/transcribe',(req,res)=>{calls++;res.json({session:req.get('x-citizenship-ai-session'),authority:'legacy'});});
  legacy.post('/billing/webhook',express.raw({type:'application/json'}),(req,res)=>res.json({raw:req.body.toString()}));
- const app=createPlatformRouter({citizenship:legacy,env,...dependencies,requireAccount:(req,res,next)=>{const token=req.get('authorization');if(!['Bearer A','Bearer B'].includes(token))return res.status(401).json({error:'AUTHENTICATION_REQUIRED'});req.account={userId:token.slice(-1)};next();},getUsageSnapshot:async id=>{usageUsers.push(id);return {owner:id,remaining:15};}});
+ const app=createPlatformRouter({citizenship:legacy,env,requirePractice:(_req,_res,next)=>next(),...dependencies,requireAccount:(req,res,next)=>{const token=req.get('authorization');if(!['Bearer A','Bearer B'].includes(token))return res.status(401).json({error:'AUTHENTICATION_REQUIRED'});req.account={userId:token.slice(-1)};next();},getUsageSnapshot:async id=>{usageUsers.push(id);return {owner:id,remaining:15};}});
  const server=app.listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));t.after(()=>new Promise(resolve=>{server.closeAllConnections();server.close(resolve);}));
  return {request:async(path,options)=>fetch(`http://127.0.0.1:${server.address().port}${path}`,options),calls:()=>calls,usageUsers};
 }
@@ -51,34 +51,16 @@ test('interview feedback supports all personal modules with consent and a shared
  allowed=false;assert.equal((await send(payload)).status,429);assert.equal(calls,3);
 });
 
-test('temporary public interviews retain signed ownership, quota and origin protections',async t=>{
- const f=await fixture(t,{PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock'},{reserveConversationQuota:async()=>true,reserveInterviewQuota:async()=>true});
- const options={method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({module:'asylum',locale:'es',consent:true,transport:'text'})};
- const start=await f.request('/api/interview/sessions',options);assert.equal(start.status,200);
- const session=await start.json(),cookie=start.headers.get('set-cookie').split(';')[0];
- assert.equal((await f.request('/api/interview/sessions/'+session.id,{method:'DELETE'})).status,401);
- assert.equal((await f.request('/api/interview/sessions/'+session.id,{method:'DELETE',headers:{cookie}})).status,204);
- assert.equal((await f.request('/api/interview/sessions',{...options,headers:{...options.headers,origin:'https://evil.example'}})).status,403);
- assert.equal((await f.request('/api/v1/me/access',{headers:{cookie}})).status,401);
- const off=await fixture(t,{INTERVIEW_PUBLIC_ACCESS:'false',PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock'},{reserveConversationQuota:async()=>true,reserveInterviewQuota:async()=>true});
- assert.equal((await off.request('/api/interview/sessions',options)).status,401);
+
+test('temporary flags cannot bypass account and trial authorization',async t=>{
+ let calls=0;
+ const f=await fixture(t,{INTERVIEW_PUBLIC_ACCESS:'true',INTERVIEW_TEST_ACCESS:'true',PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock'},{requirePractice:(_req,res)=>res.status(403).json({error:'TRIAL_EXPIRED'}),reserveInterviewQuota:async()=>{calls++;return true;}});
+ const payload={method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({consent:true})};
+ for(const path of ['/api/interview/sessions','/api/interview/reading','/api/interview/feedback','/api/asylum/analyze','/api/residency/conversation']){
+  assert.equal((await f.request(path,payload)).status,401);
+  assert.equal((await f.request(path,{...payload,headers:{...payload.headers,authorization:'Bearer A'}})).status,403);
+ }
+ assert.equal(calls,0);
+ const status=await (await f.request('/api/interview/status')).json();assert.equal(status.authentication_required,true);assert.equal(status.testing_access,false);
 });
 
-test('public reading uses guest identity, consent and quota; private mode requires login',async t=>{
- let calls=0;const env={PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock',OPENAI_TEXT_MODEL:'mock'};
- const f=await fixture(t,env,{reserveInterviewQuota:async id=>{assert.match(id,/^guest:/);return true;},analysisFetch:async()=>{calls++;return Response.json({output_text:JSON.stringify({score:100,accuracy:'Excellent',feedback:'Clear reading.'})});}});
- const send=(f,consent)=>f.request('/api/interview/reading',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({consent,sentence:'Adams was President.',transcript:'Adams was President.',locale:'en'})});
- assert.equal((await send(f,false)).status,400);assert.equal(calls,0);
- const response=await send(f,true);assert.equal(response.status,200);assert.match(response.headers.get('set-cookie'),/HttpOnly; Secure; SameSite=Strict/);assert.equal(calls,1);
- const privateApp=await fixture(t,{...env,INTERVIEW_PUBLIC_ACCESS:'false'});
- assert.equal((await send(privateApp,true)).status,401);
-});
-
-test('document analysis during public testing uses signed guest identity, consent and bounded quota',async t=>{
- const owners=[];let calls=0;
- const f=await fixture(t,{PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'mock',OPENAI_TEXT_MODEL:'mock',SUPABASE_URL:'mock',SUPABASE_SECRET_KEY:'mock'},{reserveAsylumQuota:async()=>true,reserveInterviewQuota:async id=>{owners.push(id);return true;},analysisFetch:async()=>{calls++;return Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:'{"excerpts":[]}'}]}]});}});
- const payload={text:'Fictional document',source_id:'test',domain:'synthetic',language:'en',consent:true,consent_version:'ai-excerpts-v1'};
- const send=body=>f.request('/api/asylum/analyze',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(body)});
- assert.equal((await send({...payload,consent:false})).status,400);assert.equal(calls,0);
- const response=await send(payload);assert.equal(response.status,200);assert.match(response.headers.get('set-cookie'),/HttpOnly/);assert.match(owners[0],/^guest:/);assert.equal(calls,1);
-});

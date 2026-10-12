@@ -1,5 +1,7 @@
 # Citizenship AI monetization architecture
 
+The current access rules are in [SEVEN_DAY_ACCESS.md](SEVEN_DAY_ACCESS.md). They supersede the historical count-based allowances and launch promotion described below.
+
 ## Decision
 
 Use Supabase Auth and Supabase Postgres behind the existing private Express API on Render. The browser and Capacitor apps authenticate with a publishable key. Only the Render service receives the private Supabase secret key and performs entitlement or usage mutations.

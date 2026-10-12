@@ -1,8 +1,9 @@
 export const PROMOTION_ACCESS_CONFIG = Object.freeze({
-  promotionActive: true,
-  allowContinueWithoutPayment: true,
-  proAvailable: false,
-  freeAllowanceType: "launch_trial",
+  promotionActive: false,
+  allowContinueWithoutPayment: false,
+  proAvailable: true,
+  freeAllowanceType: "seven_day_first_use",
+  trialDays: 7,
 });
 
 export const PRO_PLAN = Object.freeze({
@@ -16,11 +17,11 @@ export const PRO_PLAN = Object.freeze({
 });
 
 export const AI_FEATURE_ACCESS = Object.freeze({
-  coach: Object.freeze({ label: "AI English Coach", freeSessions: 2, rewardedAdsEnabled: true, proMonthlyLimit: 30 }),
-  classicInterview: Object.freeze({ label: "Classic Civics Interview", freeSessions: 2, rewardedAdsEnabled: true, proMonthlyLimit: 15 }),
-  writing: Object.freeze({ label: "Writing AI", freeSessions: 2, rewardedAdsEnabled: true, proMonthlyLimit: 30 }),
-  speaking: Object.freeze({ label: "Speaking / Reading AI", freeSessions: 2, rewardedAdsEnabled: true, proMonthlyLimit: 30 }),
-  realInterview: Object.freeze({ label: "Real Interview", freeSessions: 2, rewardedAdsEnabled: false, proMonthlyLimit: PRO_PLAN.liveAvatarMonthlySessions }),
+  coach: Object.freeze({ label: "AI English Coach", freeSessions: null, rewardedAdsEnabled: false, proMonthlyLimit: null }),
+  classicInterview: Object.freeze({ label: "Classic Civics Interview", freeSessions: null, rewardedAdsEnabled: false, proMonthlyLimit: null }),
+  writing: Object.freeze({ label: "Writing AI", freeSessions: null, rewardedAdsEnabled: false, proMonthlyLimit: null }),
+  speaking: Object.freeze({ label: "Speaking / Reading AI", freeSessions: null, rewardedAdsEnabled: false, proMonthlyLimit: null }),
+  realInterview: Object.freeze({ label: "Real Interview", freeSessions: null, rewardedAdsEnabled: false, proMonthlyLimit: null }),
 });
 
 export const FREE_AI_LIMITS = Object.freeze(Object.fromEntries(
@@ -28,15 +29,8 @@ export const FREE_AI_LIMITS = Object.freeze(Object.fromEntries(
 ));
 
 export function getAiFeatureConfig(feature) {
-  return AI_FEATURE_ACCESS[feature] || null;
+  return Object.hasOwn(AI_FEATURE_ACCESS, feature) ? AI_FEATURE_ACCESS[feature] : null;
 }
 
-// Additional server request ceilings apply even during the launch promotion.
-export const AI_DAILY_LIMITS = Object.freeze({
-  free: Object.freeze({ requests: 60, avatarSessions: 2 }),
-  pro: Object.freeze({ requests: 600, avatarSessions: 6 }),
-});
-export function getDailyAiLimit(verifiedSource, avatar = false) {
-  const tier = verifiedSource === "pro_allowance" ? "pro" : "free";
-  return AI_DAILY_LIMITS[tier][avatar ? "avatarSessions" : "requests"];
-}
+// Authorization is time-based. Burst protection is enforced separately.
+export function getDailyAiLimit() { return null; }

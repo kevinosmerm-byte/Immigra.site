@@ -1,6 +1,6 @@
-// Temporary production access requested by the owner. Does not grant account or billing access.
-export const TEMPORARY_PUBLIC_INTERVIEWS = true;
+// Legacy flags disabled: all premium practice uses the first-use account trial.
+export const TEMPORARY_PUBLIC_INTERVIEWS = false;
 
-// Temporary owner-requested testing; server can restore personal quotas immediately.
-export const TEMPORARY_INTERVIEW_TESTING = true;
+// Unlimited practice is time-based; technical burst protection remains.
+export const TEMPORARY_INTERVIEW_TESTING = false;
 export const interviewTestingEnabled = (env={}) => TEMPORARY_INTERVIEW_TESTING && env.INTERVIEW_TEST_ACCESS !== "false";

@@ -1,11 +1,11 @@
-import {reserveInterviewAccess as reserveAccess} from './interview-quota.mjs';
+import {createPracticeAccess} from './practice-access.mjs';
 import {createHash} from 'node:crypto';
 import {app as citizenship} from '../../modules/citizenship/server/server.js';
-import {requireAccount,getUsageSnapshot,consumeDistributedRateLimit} from '../../modules/citizenship/server/accountService.js';
+import {requireAccount,getUsageSnapshot,consumeDistributedRateLimit,getPracticeAccess,startAiSession,finishAiSession} from '../../modules/citizenship/server/accountService.js';
 import {createPlatformRouter} from './router.mjs';
-async function reserveAsylumQuota(userId,bucket="asylum-analysis",limit=2){
+async function reserveAsylumQuota(userId,bucket="asylum-analysis",limit=120,windowSeconds=60){
  try{
-  const result=await consumeDistributedRateLimit({bucket,subjectHash:createHash('sha256').update(userId).digest('hex'),limit,windowSeconds:86400});
+  const result=await consumeDistributedRateLimit({bucket,subjectHash:createHash('sha256').update(userId).digest('hex'),limit,windowSeconds});
   if(!result)throw Error('missing quota');
   return result.allowed===true;
  }catch(error){
@@ -16,6 +16,6 @@ async function reserveAsylumQuota(userId,bucket="asylum-analysis",limit=2){
  }
 }
 async function reserveInterviewAccess(id,bucket,limit,globalLimit){
- return reserveAccess({id,bucket,limit,globalLimit,reserve:reserveAsylumQuota,env:process.env});
+ return reserveAsylumQuota(id, bucket+'-burst', 120, 60);
 }
-export const app=createPlatformRouter({citizenship,requireAccount,getUsageSnapshot,reserveAsylumQuota,reserveConversationQuota:id=>reserveInterviewAccess(id,'interview-conversation',3,100),reserveInterviewQuota:id=>reserveInterviewAccess(id,'interview-feedback',30,1000),reserveAudioQuota:id=>reserveInterviewAccess(id,'asylum-transcription',30,1000),env:{...process.env,OPENAI_TEXT_MODEL:process.env.OPENAI_TEXT_MODEL||'gpt-4o-mini'}});
+export const app=createPlatformRouter({citizenship,requireAccount,requirePractice:createPracticeAccess({getPracticeAccess,startAiSession,finishAiSession}),getUsageSnapshot,reserveAsylumQuota,reserveConversationQuota:id=>reserveInterviewAccess(id,'interview-conversation',3,100),reserveInterviewQuota:id=>reserveInterviewAccess(id,'interview-feedback',30,1000),reserveAudioQuota:id=>reserveInterviewAccess(id,'asylum-transcription',30,1000),env:{...process.env,OPENAI_TEXT_MODEL:process.env.OPENAI_TEXT_MODEL||'gpt-4o-mini'}});

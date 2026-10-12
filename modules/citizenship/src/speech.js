@@ -27,7 +27,7 @@ const findVoice = async (profile,language="en") => {
   try {
     const voices=await loadSupportedVoices();
     if(language==="es"){const index=voices.findIndex(v=>v.lang?.startsWith("es"));return index>=0?index:undefined;}
-    return selectVoiceIndex(voices, profile);
+    return selectVoiceIndex(voices, profile, language);
   } catch {
     return undefined;
   }

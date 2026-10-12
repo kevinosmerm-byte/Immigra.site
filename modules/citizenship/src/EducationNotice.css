@@ -1,0 +1,7 @@
+.education-notice { margin: 1rem 0; padding: 1rem; border: 1px solid var(--color-border); border-radius: 1rem; background: var(--color-white-soft); color: var(--color-text); text-align: left; }
+.education-notice h2 { margin: 0 0 .6rem; font-size: 1.05rem; color: var(--color-navy); }
+.education-notice p { margin: 0; line-height: 1.6; }
+.education-notice.is-compact { font-size: .9rem; }
+.education-notice-links { display: flex; flex-wrap: wrap; gap: .7rem 1.2rem; margin-top: .7rem; }
+.education-notice-links a { color: var(--color-navy); text-decoration: underline; text-underline-offset: .15em; }
+.education-notice-links a:focus-visible { outline: 3px solid var(--color-ai); outline-offset: 3px; }
