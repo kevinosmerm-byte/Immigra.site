@@ -1,0 +1,88 @@
+/* Scoped to dictation: other learning modules keep their current layout. */
+/* Keep the editable field within a resized visual viewport; natural page scrolling remains available. */
+#root #main #citizenship-root .writing-compact textarea{max-height:min(140px,30dvh)!important}
+#root #main #citizenship-root .writing-compact{--writing-edge:var(--color-border,#d8e2ec);--writing-ink:var(--liquid-text,#172b3d);--writing-muted:var(--liquid-muted,#53667a);min-height:0!important;padding:0!important;color:var(--writing-ink);font-family:Inter,system-ui,sans-serif}
+#root #main #citizenship-root .writing-compact *{box-sizing:border-box;min-width:0}
+#root #main #citizenship-root .writing-compact .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+#root #main #citizenship-root .writing-compact .writing-ai-header{padding:4px 0!important;margin:0;min-height:44px}
+#root #main #citizenship-root .writing-compact .writing-ai-content{max-width:1000px!important;padding:6px 0 max(12px,env(safe-area-inset-bottom))!important;margin:0 auto!important}
+#root #main #citizenship-root .writing-compact .writing-practice-panel{display:flex!important;flex-direction:column;gap:10px;width:100%;max-width:1000px!important;padding:12px!important;margin:0!important;background:var(--liquid-surface,#ffffffb0)!important;border:1px solid var(--writing-edge)!important;border-radius:18px!important;box-shadow:0 6px 20px #123a630a!important}
+#root #main #citizenship-root .writing-compact :is(h1,h2,h3,p){margin:0;color:var(--writing-ink)!important;font-family:inherit;letter-spacing:normal;overflow-wrap:anywhere}
+#root #main #citizenship-root .writing-compact h1{font-size:20px!important;line-height:1.25!important}
+#root #main #citizenship-root .writing-compact h2{font-size:18px!important;line-height:1.25}
+#root #main #citizenship-root .writing-compact :is(p,small,summary){font-size:13px;line-height:1.4;color:var(--writing-muted)}
+#root #main #citizenship-root .writing-compact button{min-height:44px!important;height:auto;max-width:100%;padding:10px 16px!important;border-radius:14px!important;line-height:1.3;font:600 14px/1.3 Inter,system-ui,sans-serif;white-space:normal;cursor:pointer;transition:background-color .18s,box-shadow .18s}
+#root #main #citizenship-root .writing-compact button:disabled{opacity:.55;cursor:default}
+#root #main #citizenship-root .writing-compact :focus-visible{outline:3px solid var(--color-ai,#4da3e6);outline-offset:3px}
+#root #main #citizenship-root .writing-compact [tabindex='-1']:focus:not(:focus-visible){outline:none}
+#root #main #citizenship-root .writing-compact-heading{display:grid;grid-template-columns:44px minmax(0,1fr) 150px;align-items:center;gap:12px;padding:4px 2px}
+#root #main #citizenship-root .writing-compact-heading p{margin-top:4px;color:var(--writing-muted)!important}
+#root #main #citizenship-root .writing-compact-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#4da3e617;color:var(--color-primary,#2563a6)}
+#root #main #citizenship-root .writing-compact svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8}
+#root #main #citizenship-root .writing-compact-progress{display:grid;gap:7px;text-align:right;color:var(--writing-ink);font-size:14px}
+#root #main #citizenship-root .writing-compact-progress progress{appearance:none;width:100%;height:5px;border:0;border-radius:10px;overflow:hidden;background:var(--writing-edge);accent-color:var(--color-primary,#2563a6)}
+#root #main #citizenship-root .writing-compact-progress progress::-webkit-progress-bar{background:var(--writing-edge)}
+#root #main #citizenship-root .writing-compact-progress progress::-webkit-progress-value{background:var(--color-primary,#2563a6);border-radius:10px}
+#root #main #citizenship-root .writing-compact-progress progress::-moz-progress-bar{background:var(--color-primary,#2563a6)}
+#root #main #citizenship-root .writing-compact-exercise{display:grid;gap:10px;padding:12px;border:1px solid var(--writing-edge);border-radius:16px;background:var(--liquid-surface,#ffffffc0)}
+#root #main #citizenship-root .writing-compact-audio{display:flex;align-items:center;justify-content:space-between;gap:12px}
+#root #main #citizenship-root .writing-compact-listen{display:flex;align-items:center;gap:10px;background:transparent!important;border:0!important;box-shadow:none!important;color:var(--writing-ink)!important;padding:0!important;text-align:left}
+#root #main #citizenship-root .writing-compact-listen>span{display:grid;place-items:center;flex:0 0 44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#4da3e6,#2563a6);color:white}
+#root #main #citizenship-root .writing-compact-listen strong{color:var(--writing-ink)!important;font-size:15px}
+#root #main #citizenship-root .writing-compact-context{max-width:48%;color:var(--writing-muted)}
+#root #main #citizenship-root .writing-compact-context summary{min-height:44px;display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:600;color:var(--writing-muted)!important}
+#root #main #citizenship-root .writing-compact-context summary:before{content:'＋';color:var(--color-primary,#2563a6);font-size:18px}
+#root #main #citizenship-root .writing-compact-context[open] summary:before{content:'−'}
+#root #main #citizenship-root .writing-compact-context p{padding:8px 10px;border-radius:10px;background:#4da3e610}
+#root #main #citizenship-root .writing-compact-form{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:10px;align-items:stretch;margin:0}
+#root #main #citizenship-root .writing-compact .writing-ai-input{width:100%;min-height:52px!important;height:52px!important;max-height:140px;padding:12px!important;margin:0!important;border:1px solid var(--writing-edge)!important;border-radius:12px!important;resize:vertical;line-height:1.5;font:16px/1.5 Inter,system-ui,sans-serif;color:var(--writing-ink)!important;background:var(--liquid-solid,#f4f8fc)!important;box-shadow:none!important;scroll-margin-block:20px}
+#root #main #citizenship-root .writing-compact :is(.writing-ai-button,.writing-review-continue){display:block;margin:0!important;width:auto!important;background:linear-gradient(125deg,#317cc5,#2563a6)!important;border:1px solid #2563a6!important;color:#fff!important;box-shadow:0 3px 8px #2563a61a!important}
+#root #main #citizenship-root .writing-compact-result{padding:12px;border:1px solid #c92a3a55;border-radius:16px;background:var(--liquid-surface,#ffffffcc);scroll-margin-block:12px}
+#root #main #citizenship-root .writing-compact-result.is-correct{border-color:#24815e55}
+#root #main #citizenship-root .writing-compact-result.is-partial{border-color:#b37b2e80}
+#root #main #citizenship-root .writing-compact-result-heading{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:8px;align-items:center}
+#root #main #citizenship-root .writing-result-icon{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#c92a3a;color:white;font-weight:700}
+#root #main #citizenship-root .is-correct .writing-result-icon{background:#168358}
+#root #main #citizenship-root .is-partial .writing-result-icon{background:#956014}
+#root #main #citizenship-root .writing-compact-score{font-size:24px;line-height:1.1;text-align:right;color:var(--writing-ink)}
+#root #main #citizenship-root .writing-compact-score small{display:block;font-weight:400;font-size:11px}
+#root #main #citizenship-root .writing-compact-feedback{margin:4px 0 8px;font-size:13px}
+#root #main #citizenship-root .writing-compact-comparison{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+#root #main #citizenship-root .writing-compact-comparison>div{padding:8px 10px;border:1px solid #4da3e62b;border-radius:12px;background:#4da3e60c}
+#root #main #citizenship-root .writing-compact-comparison>.expected{border-color:#24815e2b;background:#24815e0c}
+#root #main #citizenship-root .writing-compact-comparison h3{font-size:12px;margin-bottom:4px;color:var(--color-primary,#2563a6)!important}
+#root #main #citizenship-root .writing-compact-comparison p{font-size:15px;line-height:1.4}
+#root #main #citizenship-root .writing-compact-details{margin-top:8px;display:grid;gap:4px}
+#root #main #citizenship-root .writing-compact-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 2px}
+#root #main #citizenship-root .writing-compact-stats{display:flex;gap:20px;flex-shrink:0;color:var(--writing-ink)}
+#root #main #citizenship-root .writing-compact-stats>span{display:grid;grid-template-columns:8px auto;column-gap:7px;align-items:center}
+#root #main #citizenship-root .writing-compact-stats small{grid-column:2;font-size:12px}
+#root #main #citizenship-root .writing-compact-stats i{width:8px;height:8px;border-radius:50%;background:#168358}
+#root #main #citizenship-root .writing-compact-stats i.needs{background:#c92a3a}
+#root #main #citizenship-root .writing-compact-actions{display:flex;gap:8px}
+#root #main #citizenship-root .writing-compact .writing-review-retry{background:var(--liquid-solid,#f4f8fc)!important;color:var(--writing-ink)!important;border:1px solid var(--writing-edge)!important}
+#root #main #citizenship-root .writing-compact.is-evaluated .writing-compact-exercise{padding-block:4px}
+@media(max-width:1023px){#root #main #citizenship-root .writing-compact .writing-practice-panel{gap:8px}#root #main #citizenship-root .writing-compact-heading{gap:8px;grid-template-columns:36px minmax(0,1fr) 90px}#root #main #citizenship-root .writing-compact-icon{width:36px;height:36px}}
+@media(max-width:767px){
+ #root #main #citizenship-root .writing-compact .writing-practice-panel{padding:10px!important;border-radius:16px!important}
+ #root #main #citizenship-root .writing-compact h1{font-size:17px!important}
+ #root #main #citizenship-root .writing-compact-heading{grid-template-columns:minmax(0,1fr) 62px}
+ #root #main #citizenship-root .writing-compact-icon{display:none}
+ #root #main #citizenship-root .writing-compact-heading p{display:none}
+ #root #main #citizenship-root .writing-compact-audio{flex-wrap:wrap;gap:4px}
+ #root #main #citizenship-root .writing-compact-context{max-width:100%;width:100%}
+ #root #main #citizenship-root .writing-compact-context summary{min-height:44px;font-size:12px}
+ #root #main #citizenship-root .writing-compact-form{grid-template-columns:minmax(0,1fr);gap:8px}
+ #root #main #citizenship-root .writing-compact-comparison{grid-template-columns:minmax(0,1fr);gap:6px}
+ #root #main #citizenship-root .writing-compact-comparison>div{padding:6px 8px}
+ #root #main #citizenship-root .writing-compact-result{padding:10px}
+ #root #main #citizenship-root .writing-compact h2{font-size:16px!important}
+ #root #main #citizenship-root .writing-compact-footer{flex-wrap:wrap;gap:8px}
+ #root #main #citizenship-root .writing-compact-actions{width:100%;flex-wrap:wrap}
+ #root #main #citizenship-root .writing-compact-actions button{flex:1 1 auto}
+ #root #main #citizenship-root .writing-compact.is-evaluated .writing-compact-context{display:none}
+ #root #main #citizenship-root .writing-compact.is-evaluated .writing-compact-listen>span{height:32px;flex-basis:32px}
+}
+@media(prefers-reduced-motion:reduce){#root #main #citizenship-root .writing-compact button{transition:none}}
+html[data-reduce-motion=true] #root #main #citizenship-root .writing-compact button{transition:none}
+html[data-reduce-transparency=true] #root #main #citizenship-root .writing-compact :is(.writing-practice-panel,.writing-compact-exercise,.writing-compact-result){background:var(--liquid-solid,#f4f8fc)!important}

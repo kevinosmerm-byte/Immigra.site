@@ -44,7 +44,8 @@ export function createVoiceController({env=globalThis,onState=()=>{},onTranscrip
      u.onstart=()=>{if(generation===token&&!disposed)emit('speaking');};
      u.onend=()=>{if(generation===token&&!disposed){utterance=null;emit('idle');}};
      u.onerror=e=>{if(generation===token&&!disposed){utterance=null;fail(e.error||'tts-error');}};
-     emit('speaking');env.speechSynthesis.speak(u);
+     // Keep the listening video while speech is queued; onstart switches to speaking.
+     emit('loading');env.speechSynthesis.speak(u);
     }catch{cancel();fail('tts-error');}
    };
    const chosen=selectSaharaVoice(env.speechSynthesis.getVoices?.()||[],locale);

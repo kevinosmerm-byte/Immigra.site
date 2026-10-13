@@ -66,24 +66,30 @@ test("the exact canonical sentence is fully correct", () => {
 
 test("writing review stays visible until the learner chooses the next action", async () => {
   const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
-  assert.match(app, /REVIEW YOUR ANSWER/);
-  assert.match(app, /YOUR ANSWER/);
-  assert.match(app, /CORRECT SENTENCE/);
-  assert.match(app, /onClick=\{nextWritingSentence\}>\{t\("Next sentence/);
+  const view = await readFile(new URL("../src/WritingPractice.jsx", import.meta.url), "utf8");
+  assert.match(view, /evaluation.resultLabel/);
+  assert.match(view, /Your answer/);
+  assert.match(view, /Correct sentence/);
+  assert.match(view, /onClick=\{onNext\}/);
+  assert.match(app, /onNext=\{nextWritingSentence\}/);
   assert.match(app, /Semantic writing review unavailable; using deterministic review/);
   assert.doesNotMatch(app, /setTimeout\(\(\) => \{\s*nextWritingSentence\(\)/);
 });
 
 test("writing practice uses one unified compact panel without changing its actions", async () => {
   const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
-  const css = await readFile(new URL("../src/App.css", import.meta.url), "utf8");
-  assert.match(app, /className="writing-practice-panel liquid-glass"/);
-  assert.match(app, /className="writing-progress-strip"/);
-  assert.match(app, /onClick=\{checkWriting\}/);
-  assert.match(app, /onClick=\{nextWritingSentence\}/);
+  const view = await readFile(new URL("../src/WritingPractice.jsx", import.meta.url), "utf8");
+  const css = await readFile(new URL("../../../shared/design-system/writing-compact.css", import.meta.url), "utf8");
+  assert.match(view, /className="writing-practice-panel"/);
+  assert.match(view, /<progress value=\{index\+1\} max=\{total\}/);
+  assert.match(app, /onCheck=\{checkWriting\}/);
+  assert.match(app, /onNext=\{nextWritingSentence\}/);
   assert.doesNotMatch(app, /onClick=\{openCoachFrom\}/);
-  assert.match(css, /Writing Practice — unified, compact visual composition/);
-  assert.match(css, /@media \(max-width: 700px\)/);
+  assert.match(css, /@media\(max-width:767px\)/);
+  assert.match(view, /readOnly=\{busy\}/);
+  assert.match(app, /if \(writingCheckPending.current \|\| isAIThinking \|\| writingEvaluation\) return/);
+  assert.equal((view.match(/onClick=\{onNext\}/g)||[]).length,1);
+  assert.match(view, /evaluation.score==null\?'—':`\$\{evaluation.score\}%`/);
 });
 
 test('English writing feedback preserves scores and translates corrections',async()=>{

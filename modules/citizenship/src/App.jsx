@@ -46,6 +46,7 @@ import { AccountSheet } from "./Account.jsx";
 import { useAccount } from "./accountContext.js";
 import { ProgressDashboard } from "./ProgressDashboard.jsx";
 import { writingSentences } from "./writingSentences.js";
+import WritingPractice from "./WritingPractice.jsx";
 import { evaluateWritingSentence, localizeWritingResult } from "./writingEvaluator.js";
 import { CivicsStudyCard } from "./CivicsStudyCard.jsx";
 import { createNavigationHistory, navigateBack, navigateForward } from "./navigationHistory.js";
@@ -665,6 +666,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   const [writingNeedsPracticeCount, setWritingNeedsPracticeCount] = useState(0);
   const [writingIndex, setWritingIndex] = useState(() => getModuleProgress(userKey).writing?.questionIndex || 0);
   const [writingEvaluation, setWritingEvaluation] = useState(null);
+  const writingCheckPending = useRef(false);
 
   const [readingOrder, setReadingOrder] = useState(() =>
     (getModuleProgress(userKey).reading?.questionIds.length === readingSentences.length ? getModuleProgress(userKey).reading.questionIds.map(id => id - 1) : [...readingSentences]
@@ -864,10 +866,12 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   });
 
   const checkWriting = async () => {
+    if (writingCheckPending.current || isAIThinking || writingEvaluation) return;
     if (!writingAnswer.trim()) {
       setAiMessage(t("Please write your answer first.", "Primero escribe tu respuesta."));
       return;
     }
+    writingCheckPending.current = true;
     setIsAIThinking(true);
     emitCompanionState("thinking");
     setAiMessage(t("Checking your writing...", "Revisando tu escritura…"));
@@ -911,6 +915,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
       console.error("Writing evaluation error:");
       setAiMessage(t("We could not review your writing. Please try again.", "No pudimos revisar tu escritura. Inténtalo otra vez."));
     } finally {
+      writingCheckPending.current = false;
       setIsAIThinking(false);
     }
   };
@@ -1398,158 +1403,10 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   }
 
   if (screen === "writing") {
-    return (
-      <div className="writing-ai-screen">
-        <header className="writing-ai-header">
-          <button className="writing-back-button" onClick={() => goBack("english")}>
-            ← <span>{previousScreenLabel("english")}</span>
-          </button>
-          <div className="writing-ai-brand">IMMIGRATION <span>AI</span></div>
-        </header>
-        <main className="writing-ai-content">
-          <section className="writing-practice-panel liquid-glass">
-          <div className="writing-top-section">
-            <div>
-              <div className="writing-eyebrow">{t("ENGLISH · WRITING DICTATION", "Inglés · Dictado")}</div>
-              <h1 className="writing-ai-title">{t("Writing", "Escritura")} <span>{t("Practice.", "Práctica.")}</span></h1>
-              <p className="writing-ai-intro">{t("Listen carefully to Sarah and type the sentence in English.", "Escucha a Sarah y escribe la oración en inglés.")}</p>
-            </div>
-            <div className="writing-ai-badge">
-              <div className="writing-ai-badge-icon">✎</div>
-              <div>
-                <strong>{t("AI AUDIO DICTATION", "Dictado en inglés")}</strong>
-                <small>{t("LISTENING & WRITING TEST", "Escucha y escritura")}</small>
-              </div>
-            </div>
-          </div>
-          <div className="writing-progress-strip" aria-label={`${t("Question", "Oración")} ${writingIndex + 1} ${t("of", "de")} ${writingSentences.length}`}>
-            <div className="writing-progress-copy">
-              <span>{t("Question", "Oración")} {writingIndex + 1} {t("of", "de")} {writingSentences.length}</span>
-              <strong>{writingIndex + 1} / {writingSentences.length}</strong>
-            </div>
-            <div className="writing-progress-track" aria-hidden="true">
-              <span style={{ width: `${((writingIndex + 1) / writingSentences.length) * 100}%` }} />
-            </div>
-          </div>
-          <div className="writing-performance">
-            <div className="writing-performance-title">AI PERFORMANCE</div>
-            <div className="writing-performance-content">
-              <div className="performance-item good">
-                <div className="performance-dot"></div>
-                <div>
-                  <strong>{String(writingGoodCount).padStart(2, "0")}</strong>
-                  <span>{t("GOOD", "Correctas")}</span>
-                </div>
-              </div>
-              <div className="performance-divider"></div>
-              <div className="performance-item needs">
-                <div className="performance-dot"></div>
-                <div>
-                  <strong>{String(writingNeedsPracticeCount).padStart(2, "0")}</strong>
-                  <span>{t("NEEDS PRACTICE", "Por practicar")}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="writing-question-card">
-            <div className="writing-question-header">
-              <div className="writing-question-label">
-                {t("Listen and type what you hear", "Escucha y escribe lo que oyes")}
-              </div>
-              <div className="writing-progress">
-                {writingIndex + 1} / {writingSentences.length}
-              </div>
-            </div>
-            <div className="dictation-audio-prompt">
-              <button
-                className="dictation-speak-btn"
-                onClick={() => {
-                  emitCompanionState("reading");
-                  speakAppText(writingSentences[writingIndex].english, { profile: "female", rate: 0.85, pitch: 1.08 });
-                }}
-                type="button"
-              >
-                <span className="speaker-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10" /></svg></span>
-                <span className="dictation-replay-copy"><small>{t("AUDIO PROMPT", "Oración en audio")}</small><strong>{t("Replay Sentence", "Escuchar otra vez")}</strong></span>
-                <span className="dictation-replay-arrow" aria-hidden="true">→</span>
-              </button>
-            </div>
-            <div className="writing-line"></div>
-            <details className="writing-context"><summary className="writing-translation-label">
-              <span>◎</span> {t("SPANISH TRANSLATION (CONTEXT)", "Traducción al español (contexto)")}
-            </summary>
-            <div className="writing-big-spanish">
-              {writingSentences[writingIndex].spanish}
-            </div></details>
-          </div>
-          <label className="sr-only" htmlFor="writing-practice-answer">
-            {t("Type the English sentence you hear", "Escribe la oración que escuchas en inglés")}
-          </label>
-          <textarea
-            id="writing-practice-answer"
-            className="writing-ai-input"
-            placeholder={t("Type what you hear in English...", "Escribe lo que escuchas en inglés…")}
-            value={writingAnswer}
-            aria-busy={isAIThinking}
-            readOnly={Boolean(writingEvaluation)}
-            onChange={(e) => setWritingAnswer(e.target.value)}
-          />
-          {!writingEvaluation && (
-            <button
-              className="writing-ai-button"
-              onClick={checkWriting}
-              disabled={isAIThinking}
-            >
-              <span className="writing-check-icon" aria-hidden="true">✓</span>
-              <span className="writing-check-copy"><small>{isAIThinking ? t("Reviewing", "Revisando") : t("Ready to review", "Lista para revisar")}</small><strong>{isAIThinking ? t("Reviewing…", "Revisando…") : t("Check writing", "Revisar escritura")}</strong></span>
-              <span className="writing-check-arrow" aria-hidden="true">→</span>
-            </button>
-          )}
-          {aiMessage && (
-            <div className="writing-ai-evaluation" role="status" aria-live="polite">
-              <div className="writing-evaluation-label">{t("AI EVALUATION", "Evaluación")}</div>
-              <div className="writing-evaluation-text">{aiMessage}</div>
-            </div>
-          )}
-          {writingEvaluation && (
-            <div className={`writing-ai-evaluation ${["Excellent","Good"].includes(writingEvaluation.accuracy) ? "is-correct" : "needs-practice"}`} role="status" aria-live="polite">
-              <div className="writing-evaluation-heading">
-                <div>
-                  <div className="writing-evaluation-label">{t("REVIEW YOUR ANSWER", "Revisa tu respuesta")}</div>
-                  <strong>{writingEvaluation.resultLabel}</strong>
-                </div>
-                <span className="writing-evaluation-score">{writingEvaluation.score == null ? "—" : `${writingEvaluation.score}%`}</span>
-              </div>
-              <p className="writing-evaluation-text">{writingEvaluation.feedback}</p>
-              <div className="writing-answer-comparison">
-                <div>
-                  <small>{t("YOUR ANSWER", "Tu respuesta")}</small>
-                  <p>{writingEvaluation.writtenAnswer}</p>
-                </div>
-                <div className="expected">
-                  <small>{t("CORRECT SENTENCE", "Oración correcta")}</small>
-                  <p>{writingEvaluation.expectedAnswer}</p>
-                </div>
-              </div>
-              {(writingEvaluation.details?.missingWords?.length > 0 || writingEvaluation.details?.extraWords?.length > 0 || writingEvaluation.details?.corrections?.length > 0) && (
-                <div className="writing-detail-list">
-                  {writingEvaluation.details.missingWords?.length > 0 && <p><strong>{t("Missing:", "Faltó:")}</strong> {writingEvaluation.details.missingWords.join(", ")}</p>}
-                  {writingEvaluation.details.extraWords?.length > 0 && <p><strong>Extra:</strong> {writingEvaluation.details.extraWords.join(", ")}</p>}
-                  {writingEvaluation.details.corrections?.length > 0 && <p><strong>{t("Spelling:", "Ortografía:")}</strong> {writingEvaluation.details.corrections.map((item) => `${item.written} → ${item.expected}`).join(", ")}</p>}
-                </div>
-              )}
-              <div className="writing-review-actions">
-                {writingEvaluation.accuracy !== "Excellent" && writingEvaluation.accuracy !== "Good" && (
-                  <button type="button" className="writing-review-retry" onClick={() => setWritingEvaluation(null)}>{t("Try again", "Intentar otra vez")}</button>
-                )}
-                <button type="button" className="writing-review-continue" onClick={nextWritingSentence}>{t("Next sentence →", "Siguiente oración →")}</button>
-              </div>
-            </div>
-          )}
-          </section>
-        </main>
-      </div>
-    );
+    return <WritingPractice t={t} sentence={writingSentences[writingIndex]} index={writingIndex} total={writingSentences.length}
+      answer={writingAnswer} onAnswer={setWritingAnswer} evaluation={writingEvaluation} message={aiMessage} busy={isAIThinking}
+      goodCount={writingGoodCount} needsCount={writingNeedsPracticeCount} onListen={()=>{emitCompanionState("reading");speakAppText(writingSentences[writingIndex].english,{profile:"female",rate:0.85,pitch:1.08});}}
+      onCheck={checkWriting} onRetry={()=>setWritingEvaluation(null)} onNext={nextWritingSentence} onBack={()=>goBack("english")} backLabel={previousScreenLabel("english")}/>;
   }
 
   if (screen === "uscisSandbox") {

@@ -1,0 +1,28 @@
+Writing compact QA — 2026-10-12
+
+Local browser fixture renders the actual WritingPractice component with the existing
+writingSentences and evaluateWritingSentence modules. No authenticated access bypass,
+paid request, database mutation or evaluation-service replacement was used.
+
+Viewport       Horizontal overflow   Next visible after 90% result
+375 x 667      No                    Yes (bottom 626 px)
+390 x 844      No                    Yes (bottom 616 px)
+360 x 800      No                    Yes (bottom 626 px)
+768 x 1024     No                    Yes (bottom 528 px)
+1366 x 768     No                    Yes (bottom 534 px)
+1920 x 1080    No                    Yes (bottom 534 px)
+
+All six: typed answer, verified, score and capitalization feedback visible, then
+Next cleared the draft and removed the previous result. No horizontal overflow.
+Additional checks: exact answer 100%; added negation 40% with retry; retry preserves
+draft; portrait/landscape preserves draft; Tab/Enter submits; result receives focus;
+translation starts closed and expands; shared speech function reported completion.
+
+Limitations: viewport simulation is not physical iOS/Android testing. Real virtual
+keyboard behavior, screen-reader speech output and human auditory quality were not
+verified. Semantic AI service was not called; its existing integration is unchanged.
+The fixture has a representative shell, not the complete signed-in production shell.
+
+Residency: supplied Speaking/no-speaking files match public/interviewer assets by
+SHA-256. The browser voice controller now waits for utterance.onstart before entering
+speaking; completion/cancel returns to the listening video. Covered by voice tests.
