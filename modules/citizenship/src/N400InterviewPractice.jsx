@@ -87,7 +87,8 @@ const N400_FORM_EDITION = n400Bank.formEdition;
 export function N400InterviewPractice({ onExit, onComplete, onRestart, brainContext = {}, language = "en", userKey = "guest", requestVoiceAccess }) {
   const bank=n400PracticeBank(n400Bank,language);
   const copy = COPY[language === "es" ? "es" : "en"];
-  const [conversation,setConversation]=useState(false);
+  // Default to the shared AI voice; local device speech remains an explicit choice.
+  const [conversation,setConversation]=useState(true);
   const [localAiConsent,setLocalAiConsent]=useState(false);
   const [microphoneError,setMicrophoneError]=useState("");
   const [callStarted,setCallStarted]=useState(false),[callPaused,setCallPaused]=useState(false),[captionsVisible,setCaptionsVisible]=useState(true),[elapsed,setElapsed]=useState(0);
