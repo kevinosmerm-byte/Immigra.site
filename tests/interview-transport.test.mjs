@@ -12,8 +12,25 @@ function fixture({evaluateTurn,disconnectGraceMs}={}){
  return {engine,env,fetchImpl,tracks,stream,states,captions,reviews,requests,errors,diagnostics,peer:()=>peer,micCalls:()=>micCalls};
 }
 const drain=()=>new Promise(resolve=>setImmediate(resolve));
+test('speaking avatar survives delayed input and generation events until output playback ends',async()=>{
+ const f=fixture();await f.engine.start({...settings,module:'residency'});await drain();
+ const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});
+ emit({type:'output_audio_buffer.started',response_id:'current'});
+ for(const type of ['input_audio_buffer.speech_started','input_audio_buffer.speech_stopped','input_audio_buffer.committed','response.created','conversation.item.input_audio_transcription.failed']){
+  emit({type,item_id:'late'});assert.equal(f.states.at(-1),'speaking',type);assert.equal(f.tracks[0].enabled,false);
+ }
+ emit({type:'response.done',response:{status:'completed',output:[{content:[{type:'output_audio'}]}]}});
+ assert.equal(f.states.at(-1),'speaking');assert.ok(!f.errors.includes('AI_SPEECH_FAILED'));
+ for(const type of ['output_audio_buffer.stopped','output_audio_buffer.cleared']){emit({type,response_id:'previous'});assert.equal(f.states.at(-1),'speaking');}
+ emit({type:'output_audio_buffer.stopped',response_id:'current'});assert.equal(f.states.at(-1),'listening');f.engine.close();
+});
+test('pause still immediately stops the avatar during active speech',async()=>{
+ const f=fixture();await f.engine.start(settings);await drain();
+ f.peer().channel.onmessage({data:JSON.stringify({type:'output_audio_buffer.started',response_id:'current'})});
+ f.engine.pause(true);assert.equal(f.states.at(-1),'paused');assert.equal(f.tracks[0].enabled,false);f.engine.close();assert.equal(f.states.at(-1),'idle');
+});
 test('consent precedes microphone and paid network access',async()=>{const f=fixture();assert.equal(await f.engine.start({...settings,consent:false}),false);assert.equal(f.micCalls(),0);assert.equal(f.requests.length,0);});
-test('automatic voice uses server SDP, active mic, interruption, and real event states',async()=>{const f=fixture();await f.engine.start(settings);const dc=f.peer().channel;assert.equal(f.tracks[0].enabled,false);assert.equal(f.requests[0].url,'/api/interview/sessions');assert.ok(!f.requests.some(r=>r.url.includes('openai.com')));dc.onmessage({data:JSON.stringify({type:'output_audio_buffer.started'})});assert.equal(f.states.at(-1),'speaking');dc.onmessage({data:JSON.stringify({type:'input_audio_buffer.speech_started',item_id:'u'})});assert.equal(f.states.at(-1),'listening');f.engine.close();assert.equal(f.tracks[0].stopped,true);assert.ok(f.requests.some(r=>r.options.method==='DELETE'));});
+test('automatic voice uses server SDP, active mic, interruption, and real event states',async()=>{const f=fixture();await f.engine.start(settings);const dc=f.peer().channel;assert.equal(f.tracks[0].enabled,false);assert.equal(f.requests[0].url,'/api/interview/sessions');assert.ok(!f.requests.some(r=>r.url.includes('openai.com')));dc.onmessage({data:JSON.stringify({type:'output_audio_buffer.started'})});assert.equal(f.states.at(-1),'speaking');dc.onmessage({data:JSON.stringify({type:'input_audio_buffer.speech_started',item_id:'u'})});assert.equal(f.states.at(-1),'speaking');f.engine.close();assert.equal(f.tracks[0].stopped,true);assert.ok(f.requests.some(r=>r.options.method==='DELETE'));});
 test('delayed transcription is evaluated against the question at speech start',async()=>{const f=fixture();await f.engine.start(settings);await drain();const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});emit({type:'response.output_audio_transcript.done',item_id:'q1',transcript:'When?'});emit({type:'input_audio_buffer.speech_started',item_id:'u1'});emit({type:'response.output_audio_transcript.done',item_id:'q2',transcript:'Where?'});emit({type:'conversation.item.input_audio_transcription.completed',item_id:'u1',transcript:'2022'});emit({type:'conversation.item.input_audio_transcription.completed',item_id:'u1',transcript:'2022'});await drain();const requests=f.requests.filter(r=>r.url.endsWith('/turn'));assert.equal(requests.length,2);assert.equal(JSON.parse(requests[1].options.body).question,'Which year?');f.engine.close();});
 test('text mode never requests microphone and uses same session for each turn',async()=>{const f=fixture();await f.engine.start({...settings,transport:'text'});assert.equal(f.micCalls(),0);assert.equal(f.engine.sendText('My son'),true);await drain();assert.equal(f.requests.filter(r=>r.url==='/api/interview/sessions').length,1);assert.equal(f.reviews.at(-1).answer,'My son');f.engine.close();});
 test('late permission resolution after close releases tracks without connecting',async()=>{const f=fixture();let release;f.env.navigator.mediaDevices.getUserMedia=()=>new Promise(r=>release=r);const pending=f.engine.start(settings);f.engine.close();release(f.stream);assert.equal(await pending,false);assert.equal(f.tracks[0].stopped,true);assert.equal(f.requests.length,0);});
