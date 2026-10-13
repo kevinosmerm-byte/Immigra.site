@@ -30,10 +30,10 @@ export function PremiumPracticeBoundary({ feature, language, onBack, children })
     return () => { active = false; clearTimeout(timer); window.removeEventListener("focus", expire); };
   }, [approved, activeAccess?.access?.accessEndsAt]);
   if (approved) return children;
-  return <main className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-[#030305] p-6 text-slate-100">
-    <h1 className="mb-4 text-xl text-slate-100!">{language === "es" ? "Entrevistas e IA" : "Interviews and AI"}</h1>
-    <p className="mb-4 text-slate-200!">{language === "es" ? "Prueba gratis 7 días desde tu primer uso. Después necesitas suscripción. El estudio sin servicios de pago sigue gratis." : "Try free for 7 days from your first use. A subscription is required afterward. Study tools without paid services remain free."}</p>
-    <button type="button" disabled={loading} onClick={() => requestAiSession(feature, () => setExpired(false), language)} className="mr-3 min-h-11 rounded-xl bg-indigo-600 px-4 py-3 text-white!">{language === "es" ? "Comprobar acceso" : "Check access"}</button>
-    <button type="button" onClick={onBack} className="min-h-11 rounded-xl border border-white/15 px-4 py-3 text-slate-100!">{language === "es" ? "Volver al estudio gratuito" : "Back to free study"}</button>
+  return <main className="premium-access-panel">
+    <h1 className="">{language === "es" ? "Entrevistas e IA" : "Interviews and AI"}</h1>
+    <p className="">{language === "es" ? "Prueba gratis 7 días desde tu primer uso. Después necesitas suscripción. El estudio sin servicios de pago sigue gratis." : "Try free for 7 days from your first use. A subscription is required afterward. Study tools without paid services remain free."}</p>
+    <button type="button" disabled={loading} onClick={() => requestAiSession(feature, () => setExpired(false), language)} className="premium-access-primary">{language === "es" ? "Comprobar acceso" : "Check access"}</button>
+    <button type="button" onClick={onBack} className="">{language === "es" ? "Volver al estudio gratuito" : "Back to free study"}</button>
   </main>;
 }

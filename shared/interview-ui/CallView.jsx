@@ -3,9 +3,11 @@ import React,{useEffect,useRef,useState} from 'react';
 import './call.css';
 import './voice-first.css';
 import {createPortal} from 'react-dom';
+import {interviewerMediaBase} from './interviewer-media.mjs';
 export function CallIcon({name}){const p={keyboard:<><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M6 9h1m3 0h1m3 0h1m3 0h1M6 12h1m3 0h1m3 0h1m3 0h1M7 16h10"/></>,mic:<><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></>,muted:<><path d="m3 3 18 18M9 9v3a3 3 0 0 0 5 2M9 5a3 3 0 0 1 6 0v4M5 10v2a7 7 0 0 0 12 5M19 10v2M12 19v3"/></>,repeat:<><path d="M4 9a8 8 0 1 1 0 6M4 3v6h6"/></>,pause:<><path d="M8 4v16M16 4v16"/></>,play:<path d="m8 4 12 8-12 8z"/>,captions:<><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9.5a3 3 0 1 0 0 5m8-5a3 3 0 1 0 0 5"/></>,end:<><path d="M4 15.5h3a1 1 0 0 0 1-1V12a12 12 0 0 1 8 0v2.5a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1V12C16 7.5 8 7.5 3 12v2.5a1 1 0 0 0 1 1Z"/></>};return <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{p[name]}</svg>}
 export default function CallView({lang,state,elapsed,muted,captions,showCaptions,onCaptions,onMic,onRepeat,onPause,onFinish,onReconnect,error,mode,onResumeAudio,interviewerName="Sahara",interviewType,mediaBase,children,onText,onSkip,skipDisabled=false,progress,onSuspend,moduleId="residency",continuousVoice=false,initialInputMode,onRetry,retryLabel}){
  const {preferences}=useGlass();
+ mediaBase=interviewerMediaBase(interviewerName,mediaBase,import.meta.env.BASE_URL);
  const [inputMode,setInputMode]=useState(()=>initialInputMode||(preferences.preferTyping?"keyboard":"voice"));
  const [textDraft,setTextDraft]=useState("");
  useEffect(()=>{const suspend=()=>{if(document.hidden)onSuspend?.();};document.addEventListener('visibilitychange',suspend);return()=>document.removeEventListener('visibilitychange',suspend);},[onSuspend]);

@@ -1,4 +1,34 @@
 /* Shared material. Page styles own layout; these tokens own every glass surface. */
+.trial-access-backdrop{position:fixed;inset:0;z-index:11000;display:grid;place-items:center;padding:20px;background:#123a6370;backdrop-filter:blur(12px);box-sizing:border-box}
+body #root .trial-access-panel,body #root .premium-access-panel{box-sizing:border-box;width:min(100%,560px);margin:24px auto;padding:32px;border-radius:28px;border:1px solid var(--liquid-border)!important;background:var(--liquid-solid)!important;color:var(--liquid-text)!important;box-shadow:var(--liquid-shadow);font-family:Inter,system-ui,sans-serif}
+body #root .trial-access-panel{position:relative;margin:0;max-height:calc(100dvh - 40px);overflow-y:auto;padding-top:80px}
+body #root :is(.trial-access-panel,.premium-access-panel) :is(h1,h2,p){color:var(--liquid-text)!important;line-height:1.6;margin:0 0 18px}
+body #root :is(.trial-access-panel,.premium-access-panel) :is(h1,h2){font-size:24px;line-height:1.2;letter-spacing:-.025em}
+body #root :is(.trial-access-panel,.premium-access-panel) button{min-height:48px;border-radius:16px!important;padding:12px 18px;font:600 14px/1.4 Inter,system-ui,sans-serif;background:var(--color-primary,#2563a6)!important;color:var(--color-white,#ffffff)!important;border:1px solid var(--color-primary,#2563a6)!important;cursor:pointer}
+body #root .trial-access-panel .trial-access-close{position:absolute;right:20px;top:18px;display:flex;align-items:center;gap:8px;min-width:94px;background:var(--liquid-hover)!important;color:var(--liquid-text)!important;border:1px solid var(--color-border,#d8e2ec)!important}
+body #root .trial-access-close span{font-size:23px;line-height:1;color:inherit!important}
+body #root .trial-access-action{width:100%;margin-bottom:18px}
+body #root .premium-access-panel button{margin:6px 10px 6px 0}
+body #root .premium-access-panel button:last-child{background:var(--liquid-hover)!important;color:var(--liquid-text)!important;border-color:var(--color-border,#d8e2ec)!important}
+body #root :is(.trial-access-panel,.premium-access-panel) button:focus-visible{outline:3px solid var(--color-ai,#4da3e6);outline-offset:3px}
+body #root :is(.trial-access-panel,.premium-access-panel) button:disabled{opacity:.6;cursor:wait}
+@media(max-width:600px){body #root :is(.trial-access-panel,.premium-access-panel){padding:24px}body #root .trial-access-panel{padding-top:80px}body #root .premium-access-panel button{width:100%;margin:6px 0}}
+/* Study-guide chrome only: the official document remains untouched. */
+#root #main .study-guide-heading,#root #main .study-guide-toolbar{background:var(--liquid-surface)!important;color:var(--liquid-text)!important;border:1px solid var(--liquid-border)!important;border-radius:26px;box-shadow:var(--liquid-shadow);backdrop-filter:var(--liquid-filter);-webkit-backdrop-filter:var(--liquid-filter)}
+#root #main .study-guide-heading{padding:24px;margin-bottom:18px;gap:20px}
+#root #main .study-guide-heading>div>span{color:var(--color-primary,#2563a6)!important}
+#root #main .study-guide-toolbar{margin:12px;padding:12px 16px;gap:14px}
+#root #main .study-guide-toolbar :is(label,strong,span){color:var(--liquid-text)!important}
+#root #main .study-guide-toolbar button,#root #main .study-guide-heading>a{min-width:44px;min-height:44px;border-radius:16px!important;background:var(--liquid-hover)!important;color:var(--liquid-text)!important;border:1px solid var(--liquid-border)!important;box-shadow:inset 0 1px 1px #ffffffa0,0 4px 12px #123a6310}
+#root #main .study-guide-toolbar input[type=range]{appearance:none;height:44px;background:transparent!important;accent-color:var(--color-primary,#2563a6);cursor:pointer}
+#root #main .study-guide-toolbar input[type=range]::-webkit-slider-runnable-track{height:7px;border-radius:20px;background:var(--color-border,#d8e2ec)}
+#root #main .study-guide-toolbar input[type=range]::-webkit-slider-thumb{appearance:none;width:22px;height:22px;margin-top:-8px;border:3px solid var(--color-white,#ffffff);border-radius:50%;background:var(--color-primary,#2563a6);box-shadow:0 2px 8px #123a6340}
+#root #main .study-guide-toolbar input[type=range]::-moz-range-track{height:7px;border-radius:20px;background:var(--color-border,#d8e2ec)}
+#root #main .study-guide-toolbar input[type=range]::-moz-range-thumb{width:18px;height:18px;border:3px solid var(--color-white,#ffffff);border-radius:50%;background:var(--color-primary,#2563a6)}
+#root #main .study-guide-toolbar :focus-visible{outline:3px solid var(--color-ai,#4da3e6);outline-offset:3px}
+html[data-reduce-transparency=true] #root #main :is(.study-guide-heading,.study-guide-toolbar){background:var(--liquid-solid)!important;backdrop-filter:none;-webkit-backdrop-filter:none}
+@media(prefers-reduced-transparency:reduce){#root #main :is(.study-guide-heading,.study-guide-toolbar){background:var(--liquid-solid)!important;backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media(max-width:600px){#root #main .study-guide-heading{padding:18px;flex-wrap:wrap}#root #main .study-guide-toolbar{margin:8px;padding:10px;gap:8px}}
 :root{--liquid-surface:rgba(255,255,255,.55);--liquid-hover:rgba(255,255,255,.68);--liquid-solid:#f4f8fc;--liquid-border:rgba(255,255,255,.75);--liquid-text:#172b3d;--liquid-muted:#53667a;--liquid-radius:28px;--liquid-filter:blur(20px) saturate(160%);--liquid-shadow:0 12px 32px #1b304917,inset 0 1px 1px #ffffffd9;--entry-glass-surface:var(--liquid-surface);--entry-glass-filter:var(--liquid-filter);--entry-glass-shadow:var(--liquid-shadow)}
 html[data-theme=dark]{--liquid-surface:rgba(18,40,64,.85);--liquid-hover:rgba(27,56,87,.93);--liquid-solid:#122840;--liquid-border:#ffffff30;--liquid-text:#e4edf7;--liquid-muted:#bdcde0;--liquid-shadow:0 12px 32px #0002,inset 0 1px 1px #ffffff20}
 #root #main .liquid-glass{background:var(--liquid-surface)!important;border:1px solid var(--liquid-border)!important;border-radius:var(--liquid-radius)!important;box-shadow:var(--liquid-shadow)!important;backdrop-filter:var(--liquid-filter)!important;-webkit-backdrop-filter:var(--liquid-filter)!important;color:var(--liquid-text)!important;font-family:Inter,system-ui,sans-serif;min-width:0;transition:transform 280ms ease,background-color 280ms ease,box-shadow 280ms ease}

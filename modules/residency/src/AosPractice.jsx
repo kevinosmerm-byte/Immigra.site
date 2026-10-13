@@ -11,6 +11,7 @@ import React,{useEffect,useRef,useState} from 'react';
 import {selectAosQuestions,aosRoutes,isUncertain} from './aosEngine.mjs';
 import {authenticatedFetch} from '../../../shared/authentication/fetch.mjs';
 import VoicePanel from '../voice/VoicePanel.jsx';
+import ResidencyCall from '../voice/ResidencyCall.jsx';
 import './aos.css';
 export default function AosPractice({onHome,onLegacy,active,lang='es'}){
  const {requestAiSession}=usePromotionAccess();const {session:account}=useAccount();
@@ -33,7 +34,7 @@ export default function AosPractice({onHome,onLegacy,active,lang='es'}){
   if(busy||!active||(!skip&&!draft.trim()))return;
   const answer=skip?t("Omitida"):draft.trim();
   if(skip){setTurns(t=>[...t,{question,answer,skipped:true}]);advance();return;}
-  if(!session.ai){setTurns(t=>[...t,{question,answer}]);setReview({observations:[],followup:'',local:true});return;}
+  if(!session.ai){setTurns(t=>[...t,{question,answer}]);advance();return;}
   const token=++generation.current;request.current=new AbortController();const timer=setTimeout(()=>request.current?.abort(),30000);setBusy(true);setError('');
   try{
    const r=await authenticatedFetch('/api/residency/conversation',{method:'POST',signal:request.current.signal,headers:{'content-type':'application/json'},body:JSON.stringify({question,answer,history:turns.filter(t=>!t.skipped).slice(-6).map(({question,answer})=>({question,answer})),allowFollowup:!followup&&!isUncertain(answer),consent:true})});
@@ -47,6 +48,7 @@ export default function AosPractice({onHome,onLegacy,active,lang='es'}){
  function next(){if(review.followup){setFollowup(review.followup);setDraft('');setReview(null);}else advance();}
  function finish(){generation.current++;request.current?.abort();setBusy(false);setFinished(true);}
  const labels={clear:t("Detalle expresado con claridad"),clarify:t("Puedes aclarar esta expresión"),uncertain:t("Es válido no recordar"),context:t("Conviene aclarar el contexto")};
+ if(session&&!finished&&!session.ai)return <PremiumPracticeBoundary feature="realInterview" language={lang} onBack={reset}><ResidencyCall question={{id:base.id,question}} lang={lang} active={active} draft={draft} onDraft={setDraft} onSubmit={()=>respond()} onSkip={()=>respond(true)} onFinish={finish}/></PremiumPracticeBoundary>;
  if(beta)return <RealtimeInterview lang={lang} practiceOptions={{petitionerStatus:status,age,marital,count}} relationshipType={route==='MATRIMONIO'?'marriage_husband_petitioner':route==='HIJO_A_PADRES'?'child_petitions_mother':'parent_petitions_child'} mode="personal" scenarioId={null} active={active} onBack={()=>setBeta(false)}/>;
  const content=<section className="aos-practice"><button className="aos-back" onClick={onHome}>{t("← Volver al inicio")}</button><header><p className="aos-eyebrow">{t("RESIDENCIA · AJUSTE DE ESTATUS")}</p><h1>{finished?t("Tu resumen de práctica"):session?t("Conversemos, una pregunta a la vez"):t("Practica tu entrevista familiar")}</h1><p>{t("Práctica educativa. No sustituye asesoría legal ni representa una entrevista oficial de USCIS.")}</p></header>
  {!session?<form className="aos-glass aos-setup" onSubmit={start}><div className="aos-heading"><img src="/images/home/residency-icon.webp" alt=""/><div><h2>{t("Configura tu práctica")}</h2><p>{aosQuestions.length} {lang==='es'?'preguntas educativas · Español e inglés':'educational questions · Spanish and English'}</p></div></div>

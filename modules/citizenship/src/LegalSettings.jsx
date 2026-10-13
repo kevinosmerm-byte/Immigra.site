@@ -235,7 +235,7 @@ export function LegalSettings({ embedded = false, onBack, onRestartOnboarding, l
   const [openSection, setOpenSection] = useState("");
   const [cleared, setCleared] = useState(false);
   const [companionVisible, setCompanionVisible] = useState(getCompanionVisibility);
-  const spanishTitles = { privacy: "Política de privacidad", terms: "Términos de uso", ai: "Aviso sobre la IA", government: "Aviso de independencia gubernamental", sources: "Fuentes y ayuda profesional" };
+  const spanishTitles = { education: "Uso educativo y funciones actuales", privacy: "Política de privacidad", terms: "Términos de uso", ai: "Aviso sobre la IA", government: "Aviso de independencia gubernamental", sources: "Fuentes y ayuda profesional" };
 
   useEffect(() => {
     const syncVisibility = (event) => setCompanionVisible(Boolean(event.detail?.visible));
