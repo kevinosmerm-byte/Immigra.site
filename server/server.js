@@ -1,4 +1,6 @@
 import express from "express";
+import { readStoryRequest } from "../shared/storyPractice.js";
+import { prepareStoryPractice } from "./storyPractice.js";
 import cors from "cors";
 import { APP_IDENTITY } from "../shared/appIdentity.js";
 import dotenv from "dotenv";
@@ -501,6 +503,24 @@ ${transcript}
     });
   }
 });
+app.post("/story/prepare", requireAiFeature("coach"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
+  let source;
+  try { source = readStoryRequest(req.body); }
+  catch (error) { return res.status(400).json({ error: "Check the story and authorization.", code: error.message }); }
+  if (!requireOpenAI(res)) return;
+  let providerAttempted = false;
+  try {
+    providerAttempted = true;
+    const result = await prepareStoryPractice(openai, OPENAI_TEXT_MODEL, source);
+    await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL, usage: result.usage });
+    return res.json({ analysis: result.analysis });
+  } catch (error) {
+    if (providerAttempted) await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL }).catch(() => {});
+    const diagnostic = logProviderFailure(error, "story_prepare");
+    return res.status(502).json({ error: "Unable to prepare educational practice.", code: diagnostic.category });
+  }
+});
+
 app.post("/coach", requireAiFeature("coach", ["coach", "realInterview"]), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {

@@ -18,6 +18,7 @@ const METERED_AI_PATHS = new Set([
   "/transcribe",
   "/evaluate-reading",
   "/coach",
+  "/story/prepare",
   "/avatar/session",
 ]);
 

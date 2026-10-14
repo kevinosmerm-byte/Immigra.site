@@ -145,7 +145,7 @@ test("direct provider calls require an authorized session after promotion ends",
   assert.match(server, /requireAuthorizedAiAccess/);
   assert.match(server, /req\.aiSession\?\.id/);
   assert.match(server, /code: "ai_session_required"/);
-  assert.equal((server.match(/requireAuthorizedAiAccess, (?:aiRateLimit|transcriptionRateLimit|avatarSessionRateLimit)/g) || []).length, 5);
+  assert.equal((server.match(/requireAuthorizedAiAccess, (?:aiRateLimit|transcriptionRateLimit|avatarSessionRateLimit)/g) || []).length, 6);
 });
 
 test("session completion aggregates trusted server usage events", async () => {
@@ -281,8 +281,8 @@ test("failed provider attempts remain visible in cost telemetry", async () => {
   const { readFile } = await import("node:fs/promises");
   const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
 
-  assert.equal((server.match(/let providerAttempted = false/g) || []).length, 5);
-  assert.equal((server.match(/if \(providerAttempted\) await recordProviderUsage/g) || []).length, 5);
+  assert.equal((server.match(/let providerAttempted = false/g) || []).length, 6);
+  assert.equal((server.match(/if \(providerAttempted\) await recordProviderUsage/g) || []).length, 6);
   assert.match(server, /provider: "d-id", model: "agents-client-key"/);
   assert.match(server, /model: "gpt-4o-mini-transcribe"/);
 });
