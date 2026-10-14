@@ -55,3 +55,14 @@ npm run dev -- --port 5174
 ```
 
 Use the inherited proxy and CA trust. A writable npm cache avoids the default cache permission failure without disabling package integrity checks. Official extraction additionally requires Python with `pypdf`: run `python scripts/extract-official-civics.py --check` from `modules/citizenship`.
+
+### 🧠 Advanced AI Brain Diagnostic Ledger — background, header and legal grouping
+
+* **Target File / Component:** `AmbientBackground.jsx`, `PlatformHeader.jsx`, `LegalSettings.jsx`, `LegalSafeguards.jsx`, and the shared `CallView.jsx`.
+* **Deep User Experience Impact (Pros & Cons):**
+  * *Pros:* The user-supplied video becomes the consistent decorative background across home, account, settings and all practice modules. The header uses one compact row with visible account/settings/language controls on mobile and desktop.
+  * *Friction Points:* The previous header used two rows on phones. The full legal notice appeared before settings rather than inside legal documents. A historical white-section rule overrode the inner notice background while its text remained light.
+* **Root-Cause Architectural Failure:** The old background only rendered video for a few hash routes. New opaque page utilities covered its layer, and call portals had a separate stacking context. The background is now mounted consistently, page backplanes are transparent, and call screens have their own decorative layer while the underlying background pauses. Motion preferences, hidden tabs, manual pause and failed playback retain safe handling. Legal disclosures now belong to the shared document list in both embedded and standalone layouts; important Tailwind background utilities resolve the low-contrast section.
+* **Production-Grade Implementation:** Shared media is `/media/ambient-20261014.mp4`, with a matching static poster. FFmpeg stream-copy preserved 1280×720 H.264 visual quality, removed the AAC track and enabled fast-start. The video is additionally muted in the component. The header is white, 61px high at 375px and 1280px, with black icons/text and touch targets at least 44px. The complete operator, educational and responsibility notice is collapsed under “Responsable y límites de responsabilidad” / “Operator and limitations of liability” in “Documentos legales” / “Legal documents”. Interviewer media and interview logic are unchanged.
+
+Validation includes all six principal routes at phone and desktop widths, no horizontal overflow, video decoding and mute state, pause/resume and reduced-motion handling, grouped legal disclosures in Spanish and English, and the existing interview-entry/video-state browser checks. Root tests and citizenship quality checks remain passing. The static release identifier is `2026-10-14-silent-background-compact-header` for live-domain verification.

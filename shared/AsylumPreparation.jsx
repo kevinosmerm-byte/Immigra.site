@@ -89,7 +89,7 @@ export function AsylumPreparation({ language = "es", onAnalyze = prepareStoryWit
       if (id === generation.current && approved === false) { setPhase(analysis ? "ready" : "idle"); setError(copy.errors.ACCESS_REQUIRED); }
     } catch { if (id === generation.current) { setPhase(analysis ? "ready" : "idle"); setError(copy.errors.default); } }
   };
-  return <section lang={practiceLanguage} className="min-h-dvh bg-[#030305] px-4! py-6! font-sans text-slate-100 sm:px-8!">
+  return <section lang={practiceLanguage} className="min-h-dvh bg-black/40 px-4! py-6! font-sans text-slate-100 sm:px-8!">
     <div className="mx-auto! max-w-3xl space-y-6!">
       <button type="button" className={secondary} onClick={onBack}><StepIcon kind="back" />{copy.leave}</button>
       <header><p className="mb-3! text-lg font-semibold text-purple-300!">IMMIGRA · {practiceLanguage === "es" ? "PRÁCTICA DE ASILO" : "ASYLUM PRACTICE"}</p><h1 className="text-3xl font-bold text-slate-100! sm:text-4xl">{copy.title}</h1><p className="mt-4! text-xl leading-relaxed text-slate-200!">{copy.intro}</p></header>

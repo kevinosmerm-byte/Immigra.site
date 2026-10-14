@@ -1,3 +1,4 @@
+import LegalOperatorNotice from "../../../shared/LegalOperatorNotice.jsx";
 import {useAccount} from './accountContext.js';
 import {GlassPreferences,GlassCard,GlassSection,GlassToggle,GlassAccordion,GlassIcon,useGlass} from '../../../shared/design-system/Glass.jsx';
 import { useEffect, useState } from "react";
@@ -48,6 +49,7 @@ const COPY = {
 };
 
 const legalSections = [
+  { id: "responsibility", title: "Operator and limitations of liability", content: <LegalOperatorNotice language="en" /> },
   { id: "education", title: "Educational use and current features", content: <CurrentPracticeDisclosure /> },
   {
     id: "privacy",
@@ -141,6 +143,7 @@ function SpanishPrivacyPolicy() {
 }
 
 function SpanishLegalContent({ id }) {
+  if (id === "responsibility") return <LegalOperatorNotice language="es" />;
   if (id === "education") return <CurrentPracticeDisclosure language="es" />;
   if (id === "privacy") return <SpanishPrivacyPolicy />;
   if (id === "terms") return <>
@@ -235,7 +238,7 @@ export function LegalSettings({ embedded = false, onBack, onRestartOnboarding, l
   const [openSection, setOpenSection] = useState("");
   const [cleared, setCleared] = useState(false);
   const [companionVisible, setCompanionVisible] = useState(getCompanionVisibility);
-  const spanishTitles = { education: "Uso educativo y funciones actuales", privacy: "Política de privacidad", terms: "Términos de uso", ai: "Aviso sobre la IA", government: "Aviso de independencia gubernamental", sources: "Fuentes y ayuda profesional" };
+  const spanishTitles = { responsibility: "Responsable y límites de responsabilidad", education: "Uso educativo y funciones actuales", privacy: "Política de privacidad", terms: "Términos de uso", ai: "Aviso sobre la IA", government: "Aviso de independencia gubernamental", sources: "Fuentes y ayuda profesional" };
 
   useEffect(() => {
     const syncVisibility = (event) => setCompanionVisible(Boolean(event.detail?.visible));

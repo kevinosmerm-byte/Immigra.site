@@ -6,3 +6,8 @@
 @source "../shared/LegalOperatorNotice.jsx";
 @source "../shared/LegalSafeguards.jsx";
 @source "../shared/interview-ui/InterviewerPicker.jsx";
+
+@source "../shared/design-system/AmbientBackground.jsx";
+@source "../shared/SharedTools.jsx";
+
+@source "../modules/residency/src/ResidencyPracticeSetup.jsx";

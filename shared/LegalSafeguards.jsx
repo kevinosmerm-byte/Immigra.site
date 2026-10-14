@@ -21,7 +21,7 @@ const safeguards = {
 
 export function LegalSafeguards({ language = "en" }) {
   const copy = safeguards[language === "es" ? "es" : "en"];
-  return <section className="my-5 space-y-3 rounded-2xl border border-white/10 bg-[#030305]/90 p-4 text-slate-200 backdrop-blur-md" aria-label={copy.title}>
+  return <section className="my-5! space-y-3! rounded-2xl! border! border-white/10! bg-[#030305]/90! p-4! text-slate-200! backdrop-blur-md!" aria-label={copy.title}>
     <h3 className="text-base font-semibold text-slate-100!">{copy.title}</h3>
     {copy.paragraphs.map((paragraph) => <p className="leading-relaxed text-slate-200!" key={paragraph}>{paragraph}</p>)}
   </section>;
