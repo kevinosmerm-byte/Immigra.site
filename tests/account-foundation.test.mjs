@@ -64,7 +64,7 @@ test("privacy disclosure accurately describes content-free product telemetry", a
 
   assert.match(legal, /limited, account-linked product and cost telemetry/);
   assert.match(legal, /not to contain complete conversations, recordings, transcripts, practice answers, receipt numbers, or case details/);
-  assert.match(legal, /Account panel exports account records, the explicitly saved encrypted profile and technical usage/);
+  assert.match(legal, /Account panel exports account records, the saved cloud profile in a readable, unencrypted JSON file, and technical usage/);
   assert.match(legal, /asks you to agree before sending a snapshot/);
   assert.match(legal, /server encrypts personal, immigration, N-400 and journey data before saving/);
   assert.match(legal, /Browser storage is not an encrypted vault/);
