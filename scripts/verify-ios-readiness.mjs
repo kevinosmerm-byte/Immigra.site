@@ -18,11 +18,11 @@ assert.match(info, /NSCameraUsageDescription/);
 assert.match(info, /ITSAppUsesNonExemptEncryption[\s\S]*<false\/>/);
 
 const privacy = await readFile("ios/App/App/PrivacyInfo.xcprivacy", "utf8");
-assert.match(privacy, /NSPrivacyTracking<\/key><false\/>/);
+assert.match(privacy, /NSPrivacyTracking<\/key>\s*<false\s*\/>/);
 assert.match(privacy, /NSPrivacyCollectedDataTypeEmailAddress/);
 assert.match(privacy, /NSPrivacyCollectedDataTypeAudioData/);
 assert.match(privacy, /NSPrivacyCollectedDataTypePhotosorVideos/);
-assert.doesNotMatch(privacy, /NSPrivacyCollectedDataTypeTracking<\/key><true\/>/);
+assert.doesNotMatch(privacy, /NSPrivacyCollectedDataTypeTracking<\/key>\s*<true\s*\/>/);
 
 const project = await readFile("ios/App/App.xcodeproj/project.pbxproj", "utf8");
 assert.match(project, /PRODUCT_BUNDLE_IDENTIFIER = us\.citizenshipai\.app/);

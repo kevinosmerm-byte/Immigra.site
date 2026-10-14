@@ -1,4 +1,4 @@
-# CitizenshipAI
+# Immigra
 
 A practice application for the U.S. naturalization process. It includes the 128 civics questions, reading and writing exercises, an English coach, a practice interview, progress tracking, and an optional USCIS case-status connection.
 
@@ -47,7 +47,7 @@ Set these values on the server, not in the browser:
 
 ```text
 PORT=3001
-CORS_ORIGIN=https://citizenshipai.us,https://www.citizenshipai.us
+CORS_ORIGIN=https://immigra.site,https://www.immigra.site
 OPENAI_API_KEY=...
 USCIS_ENV=sandbox
 USCIS_SANDBOX_CLIENT_ID=...
@@ -60,19 +60,19 @@ After USCIS explicitly grants Production access, set `USCIS_ENV=production` and 
 
 ## Recommended hosting
 
-Deploy the Vite frontend to **Cloudflare Pages** and the Express API to **Render**. Cloudflare Pages uses `npm run build` and publishes `dist`. The included `functions/api/[[path]].js` proxy keeps production browser requests on the Citizenship AI origin and forwards them to Render. Set the `API_ORIGIN` Pages environment variable to the Render HTTPS origin if it differs from the default. The included `render.yaml` configures Render to run `npm ci`, start the API with `npm run start`, and verify `/health`.
+Deploy the Vite frontend to **Cloudflare Pages** and the Express API to **Render**. Cloudflare Pages uses `npm run build` and publishes `dist`. The included `functions/api/[[path]].js` proxy keeps production browser requests on the Immigra origin and forwards them to Render. Set the `API_ORIGIN` Pages environment variable to the Render HTTPS origin if it differs from the default. The included `render.yaml` configures Render to run `npm ci`, start the API with `npm run start`, and verify `/health`.
 
-In Render, enter the API and USCIS credentials as secret environment variables. Set `CORS_ORIGIN` to `https://citizenshipai.us,https://www.citizenshipai.us`.
+In Render, enter the API and USCIS credentials as secret environment variables. Set `CORS_ORIGIN` to `https://immigra.site,https://www.immigra.site`.
 
 ## PWA installation
 
-CitizenshipAI includes a web app manifest and service worker. After deployment with HTTPS, users can choose **Add to Home Screen** on iPhone or Android to install it like an app. The offline cache contains the application interface only; requests involving voice, AI, or USCIS case status are never cached.
+Immigra includes a web app manifest and service worker. After deployment with HTTPS, users can choose **Add to Home Screen** on iPhone or Android to install it like an app. The offline cache contains the application interface only; requests involving voice, AI, or USCIS case status are never cached.
 
 ## Privacy and safety
 
 - Voice recordings are sent only to the transcription service for the active request and are not stored by this application.
 - Receipt numbers are used only to make the active USCIS Sandbox status request and are not stored by this application. Server diagnostics may include a masked receipt number, environment, result, and USCIS trace ID; never the full receipt number or case response.
-- The first launch requires acknowledgement of the independent educational-use and AI disclaimers. Legal & Privacy is permanently available in Settings and at `https://citizenshipai.us/#privacy`.
+- The first launch requires acknowledgement of the independent educational-use and AI disclaimers. Legal & Privacy is permanently available in Settings and at `https://immigra.site/#privacy`.
 - Before Play Store submission, add a public support contact, complete the Play Console Data safety and content-rating forms, and use the exact same disclosures as the in-app privacy policy.
 - Do not expose API keys or USCIS credentials in frontend variables, source code, screenshots, or Git commits.
 
@@ -85,3 +85,7 @@ The web app is installable as a PWA today. A Google Play release additionally re
 The native iOS container lives in `ios/` and uses the same stable application id, `us.citizenshipai.app`. Run `npm run ios:sync` after every web release to build the Vite app and copy the current production assets and native plugins into Xcode. The final archive, signing, device testing, TestFlight upload, and App Store submission must be completed on a Mac using the current App Store-supported Xcode and iOS SDK. See `docs/IOS_READINESS.md` for the handoff checklist.
 
 Interview and AI access now uses a [seven-day trial from first use](docs/SEVEN_DAY_ACCESS.md), followed by subscription; local study remains free. Apply the documented Supabase migration before activating this policy in production.
+
+La preparación nativa vigente de Immigra, productos propuestos y pendientes de las tiendas se registra en [docs/IMMIGRA_STORE_RELEASE.md](docs/IMMIGRA_STORE_RELEASE.md).
+
+Análisis económico con supuestos explícitos: [docs/IMMIGRA_COST_ANALYSIS.md](docs/IMMIGRA_COST_ANALYSIS.md). Simulador independiente: [reports/immigra-cost-calculator.html](reports/immigra-cost-calculator.html).

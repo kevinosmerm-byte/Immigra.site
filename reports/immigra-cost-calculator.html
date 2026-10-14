@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Immigra · costos estimados</title>
+<style>body{margin:0;background:#030305;color:#e2e8f0;font:16px system-ui,sans-serif}main{max-width:820px;margin:auto;padding:32px 20px}h1,h2{color:#f8fafc}p{line-height:1.6;color:#cbd5e1}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}label{display:grid;gap:8px}input{background:#111827;border:1px solid #475569;border-radius:12px;color:white;font:inherit;padding:12px;min-height:22px}input:focus{outline:2px solid #a78bfa}section{border:1px solid #ffffff24;border-radius:20px;background:#ffffff06;padding:22px;margin:24px 0}output{font-size:28px;color:#86efac}small{color:#cbd5e1;line-height:1.5}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:12px 4px;border-bottom:1px solid #334155}</style>
+<main><h1>Immigra: simulador de costos</h1><p>Estimación de equilibrio en USD. Tarifas usadas como supuestos, sin facturas verificadas. No incluye impuestos, sueldo del desarrollador, publicidad ni costos de D-ID. La suscripción ChatGPT no paga la API de la app.</p>
+<section><div class="grid">
+<label>Fijos mensuales ($)<input id="fixed" type="number" min="0" step="0.01" value="16.92"></label>
+<label>Suscriptores de pago<input id="paid" type="number" min="1" step="1" value="50"></label>
+<label>Conversación por usuario (min/mes)<input id="minutes" type="number" min="0" value="300"></label>
+<label>Costo por minuto de conversación ($)<input id="rate" type="number" min="0" step="0.0001" value="0.0039"></label>
+<label>Prueba por cuenta gratuita (min)<input id="trial" type="number" min="0" value="70"></label>
+<label>Conversión a pago (%)<input id="conversion" type="number" min="0.1" max="100" step="0.1" value="20"></label>
+<label>Permanencia para repartir adquisición (meses)<input id="retention" type="number" min="1" step="1" value="3"></label>
+<label>Soporte por suscriptor ($/mes)<input id="support" type="number" min="0" step="0.01" value="0.5"></label>
+<label>Comisión variable de pago (%)<input id="fee" type="number" min="0" max="99" step="0.1" value="15"></label>
+<label>Comisión fija por cobro ($)<input id="flat" type="number" min="0" step="0.01" value="0"></label>
+</div><p>Usa 15% solo si corresponde al programa/tipo de suscripción de tu tienda; prueba también 30%. Para Stripe sustituye por la tarifa efectiva y el cargo fijo de tu contrato.</p></section>
+<section aria-live="polite"><h2>Precio de equilibrio mensual</h2><output id="minimum"></output><p id="details"></p><table><thead><tr><th>Precio mensual</th><th>Margen estimado por suscriptor</th></tr></thead><tbody id="comparison"></tbody></table></section>
+<p>La prueba de siete días no tiene cuotas. Sin medir el uso real no podemos asegurar un máximo de gasto. El modelo reparte adquisición en meses: el desembolso de pruebas iniciales puede ser mayor durante el lanzamiento. Un margen positivo aquí no garantiza rentabilidad.</p>
+<script>
+const fields=[...document.querySelectorAll('input')];const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n);
+function recalculate(){if(fields.some(x=>!x.checkValidity()||x.value==='')){document.querySelector('#minimum').textContent='Revisa los valores';document.querySelector('#details').textContent='';document.querySelector('#comparison').replaceChildren();return}const v=Object.fromEntries(fields.map(x=>[x.id,Number(x.value)]));const ai=v.minutes*v.rate;const acquisition=v.trial*v.rate/(v.conversion/100)/v.retention;const cost=v.fixed/v.paid+ai+acquisition+v.support;const minimum=(cost+v.flat)/(1-v.fee/100);document.querySelector('#minimum').textContent=money(minimum);document.querySelector('#details').textContent=`IA por usuario: ${money(ai)} · Pruebas amortizadas: ${money(acquisition)} · Fijos por suscriptor: ${money(v.fixed/v.paid)} · Soporte: ${money(v.support)}.`;document.querySelector('#comparison').replaceChildren(...[4.99,5.99,6.99,7.99,9.99].map(price=>{const row=document.createElement('tr');for(const text of [money(price),money(price*(1-v.fee/100)-v.flat-cost)]){const cell=document.createElement('td');cell.textContent=text;row.append(cell)}return row}))}fields.forEach(x=>x.addEventListener('input',recalculate));recalculate();
+</script></main></html>

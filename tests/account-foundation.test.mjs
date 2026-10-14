@@ -225,7 +225,7 @@ test("account deletion requires an explicit confirmation and uses the admin API"
   assert.match(routes, /confirmation !== "DELETE"/);
   assert.match(service, /auth\.admin\.deleteUser\(userId\)/);
   assert.match(account, /deleteConfirmation !== "DELETE"/);
-  assert.match(account, /Local study progress on this device is not removed/);
+  assert.match(account, /Local study data remains on this device until you clear it in Settings/);
 });
 
 test("rate limits are shared atomically without storing raw IP addresses", async () => {

@@ -66,6 +66,7 @@ export async function isAiFeatureEnabled(feature) {
 export async function isPromotionalAiAccessAllowed() { return false; }
 
 export async function getPracticeAccess(userId) {
+  if (userId) await (await import("./nativeStoreService.js")).refreshNativeEntitlement(userId, { getBillingIdentity, getNativePurchaseRecords, applyVerifiedEntitlementEvent });
   const { data, error } = await supabase.rpc("get_practice_access", { p_user_id: userId });
   throwDatabaseError(error, "Unable to verify practice access.");
   return data;
@@ -113,7 +114,7 @@ export async function getBillingIdentity(userId) {
   if (!supabase) throw new Error("Account service is not configured.");
   const { data, error } = await supabase
     .from("entitlements")
-    .select("tier, status, provider, provider_customer_id")
+    .select("tier, status, provider, provider_customer_id, period_end")
     .eq("user_id", userId)
     .maybeSingle();
   throwDatabaseError(error, "Unable to read subscription identity.");
@@ -122,6 +123,7 @@ export async function getBillingIdentity(userId) {
     status: data.status,
     provider: data.provider,
     providerCustomerId: data.provider_customer_id,
+    periodEnd: data.period_end,
   } : null;
 }
 
@@ -175,6 +177,7 @@ function throwDatabaseError(error, fallback) {
 }
 
 export async function getUsageSnapshot(userId) {
+  await (await import("./nativeStoreService.js")).refreshNativeEntitlement(userId, { getBillingIdentity, getNativePurchaseRecords, applyVerifiedEntitlementEvent });
   const { data, error } = await supabase.rpc("get_ai_usage_snapshot", { p_user_id: userId });
   throwDatabaseError(error, "Unable to read AI usage.");
   if (data?.access?.policyVersion !== TRIAL_POLICY_VERSION) throw new Error("The seven-day access policy is not installed.");
@@ -240,6 +243,7 @@ export async function consumeDistributedRateLimit({ bucket, subjectHash, limit, 
 }
 
 export async function startAiSession({ userId, feature, idempotencyKey }) {
+  await (await import("./nativeStoreService.js")).refreshNativeEntitlement(userId, { getBillingIdentity, getNativePurchaseRecords, applyVerifiedEntitlementEvent });
   if (!await isAiFeatureEnabled(feature)) return { allowed: false, reason: "feature_unavailable" };
   await reconcileStaleAiSessions(userId);
   const { data, error } = await supabase.rpc("start_ai_session", {
@@ -401,4 +405,29 @@ export async function applyVerifiedEntitlementEvent(event) {
   });
   throwDatabaseError(error, "Unable to apply verified entitlement event.");
   return data;
+}
+
+export async function isNativeStoreSchemaReady() {
+  if (!supabase) return false;
+  const { error } = await supabase.from("native_store_purchases").select("user_id").limit(0);
+  return !error;
+}
+export async function getNativePurchaseRecords(userId, provider) {
+  const { data, error } = await supabase.from("native_store_purchases").select("provider,encrypted_reference").eq("user_id", userId).eq("provider", provider).order("updated_at", { ascending: false }).limit(10);
+  throwDatabaseError(error, "Native purchase unavailable.");
+  return data || [];
+}
+export async function claimNativePurchase({ userId, provider, referenceHash, encryptedReference }) {
+  const { error } = await supabase.from("native_store_purchases").upsert({ provider, reference_hash: referenceHash, user_id: userId, encrypted_reference: encryptedReference }, { onConflict: "provider,reference_hash", ignoreDuplicates: true });
+  throwDatabaseError(error, "Native purchase unavailable.");
+  const { data, error: readError } = await supabase.from("native_store_purchases").select("user_id").eq("provider", provider).eq("reference_hash", referenceHash).single();
+  throwDatabaseError(readError, "Native purchase unavailable.");
+  if (data.user_id !== userId) throw new Error("purchase_owner_or_product_mismatch");
+}
+
+export async function recordAiFeedback({ userId, feature, reason, responseText }) {
+  const { error: purgeError } = await supabase.rpc("purge_expired_ai_feedback");
+  throwDatabaseError(purgeError, "Feedback unavailable.");
+  const { error } = await supabase.from("ai_feedback_reports").insert({ user_id: userId, feature, reason, response_text: responseText });
+  throwDatabaseError(error, "Feedback unavailable.");
 }

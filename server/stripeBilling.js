@@ -1,5 +1,6 @@
 import Stripe from "stripe";
 import { PRO_PLAN } from "../shared/featureAccessConfig.js";
+import { APP_IDENTITY } from "../shared/appIdentity.js";
 import { applyVerifiedEntitlementEvent, getBillingIdentity } from "./accountService.js";
 
 const PRICE_KEYS = Object.freeze({
@@ -26,13 +27,13 @@ function priceIdForInterval(interval) {
 }
 
 function appBaseUrl() {
-  const configured = process.env.APP_BASE_URL?.trim() || "https://citizenshipai.us";
+  const configured = process.env.APP_BASE_URL?.trim() || APP_IDENTITY.origin;
   try {
     const url = new URL(configured);
     if (!/^https?:$/.test(url.protocol)) throw new Error("Invalid protocol");
     return url.origin;
   } catch {
-    return "https://citizenshipai.us";
+    return APP_IDENTITY.origin;
   }
 }
 

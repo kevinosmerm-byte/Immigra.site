@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>Citizenship AI</string>
+        <string>Immigra</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -25,9 +25,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Citizenship AI uses the microphone only when you choose to record a spoken practice answer.</string>
+	<string>Immigra uses the microphone only when you choose to record a spoken practice answer.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Citizenship AI may use the camera only when you choose to participate in the optional live avatar experience.</string>
+	<string>Immigra may use the camera only when you choose to participate in the optional live avatar experience.</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UIApplicationSceneManifest</key>

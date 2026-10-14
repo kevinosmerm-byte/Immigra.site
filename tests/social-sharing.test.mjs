@@ -6,14 +6,14 @@ const index = await readFile(new URL("../index.html", import.meta.url), "utf8");
 const shareImage = await readFile(new URL("../public/citizenshipai-share.png", import.meta.url));
 
 test("the public site exposes a complete large social sharing card", () => {
-  assert.match(index, /<link rel="canonical" href="https:\/\/citizenshipai\.us\/" \/>/);
+  assert.match(index, /<link rel="canonical" href="https:\/\/immigra\.site\/" \/>/);
   assert.match(index, /property="og:type" content="website"/);
-  assert.match(index, /property="og:title" content="CitizenshipAI — Your Interview\. Your Future\."/);
-  assert.match(index, /property="og:image" content="https:\/\/citizenshipai\.us\/citizenshipai-share\.png"/);
+  assert.match(index, /property="og:title" content="Immigra — Your Interview\. Your Future\."/);
+  assert.match(index, /property="og:image" content="https:\/\/immigra\.site\/citizenshipai-share\.png"/);
   assert.match(index, /property="og:image:width" content="1734"/);
   assert.match(index, /property="og:image:height" content="907"/);
   assert.match(index, /name="twitter:card" content="summary_large_image"/);
-  assert.match(index, /name="twitter:image" content="https:\/\/citizenshipai\.us\/citizenshipai-share\.png"/);
+  assert.match(index, /name="twitter:image" content="https:\/\/immigra\.site\/citizenshipai-share\.png"/);
 });
 
 test("the social image is a correctly sized PNG within common preview limits", () => {

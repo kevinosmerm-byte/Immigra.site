@@ -11,6 +11,7 @@ import { createHmac } from "node:crypto";
 import { createCaseStatusProvider, getUscisConfig } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
 import billingRoutes from "./billingRoutes.js";
+import nativeStoreRoutes from "./nativeStoreRoutes.js";
 import { handleStripeWebhook } from "./stripeBilling.js";
 import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, recordAiUsageEvent } from "./accountService.js";
 import { getCivicsQuestion } from "../src/civicsQuestionBank.js";
@@ -427,6 +428,7 @@ app.use("/account", accountRateLimit, accountRoutes);
 app.use("/api/account", accountRateLimit, accountRoutes);
 app.use("/api/billing", billingRateLimit, billingRoutes);
 app.use("/billing", billingRateLimit, billingRoutes);
+app.use(["/native-billing", "/api/native-billing"], billingRateLimit, nativeStoreRoutes);
 
 app.post("/evaluate-reading", requireAiFeature("speaking"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;

@@ -1,3 +1,5 @@
+> La preparación actual de Immigra se describe en [IMMIGRA_STORE_RELEASE.md](../docs/IMMIGRA_STORE_RELEASE.md). Las notas de promoción/pagos inactivos de este documento son históricas y no deben copiarse para el envío actual.
+
 # Citizenship AI — App Store Connect copy-and-paste guide
 
 Use this sheet when the Apple Developer membership shows the paid team and the app record can be created. Public-facing copy is already stored in `metadata.json`; this guide covers the remaining App Store Connect questionnaires without inventing owner information.

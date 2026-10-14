@@ -21,6 +21,14 @@ await db.query("update public.ai_feature_config set enabled=false where feature=
 const fresh='10000000-0000-4000-8000-000000000002';await db.query('insert into auth.users values($1)',[fresh]);const disabled=(await db.query('select public.start_ai_session($1,$2,$3) as result',[fresh,'coach','new-disabled-user'])).rows[0].result;assert.equal(disabled.allowed,false);const untouched=(await db.query('select public.get_practice_access($1) as result',[fresh])).rows[0].result;assert.equal(untouched.status,'not_started');
 const snapshot=(await db.query('select public.get_ai_usage_snapshot($1) as result',[user])).rows[0].result;assert.equal(snapshot.access.status,'trial_expired');assert.equal(snapshot.tier,'free');assert.equal(snapshot.features.coach.proMonthlyLimit,null);console.log('PASS disabled-feature gate and time-based usage snapshot');
 await db.exec(fs.readFileSync(new URL('202610120001_seven_day_trial.sql',migrationRoot),'utf8'));assert.equal((await access()).status,'trial_expired');
-await db.exec('set role authenticated;');await assert.rejects(()=>db.query('select public.get_practice_access($1)',[user]),/permission denied/);await db.exec('reset role;');await db.close();console.log('PASS authenticated browser role cannot grant itself trial access');
+await db.exec('set role authenticated;');await assert.rejects(()=>db.query('select public.get_practice_access($1)',[user]),/permission denied/);await db.exec('reset role;');
+await db.query('insert into public.native_store_purchases(provider,reference_hash,user_id,encrypted_reference) values($1,$2,$3,$4)',['apple','a'.repeat(64),fresh,'encrypted-fixture']);
+await assert.rejects(()=>db.query('insert into public.native_store_purchases(provider,reference_hash,user_id,encrypted_reference) values($1,$2,$3,$4)',['apple','a'.repeat(64),user,'different-fixture']),/duplicate key/);
+await db.exec('set role authenticated;');await assert.rejects(()=>db.query('select * from public.native_store_purchases'),/permission denied/);await db.exec('reset role;');
+await db.query('delete from auth.users where id=$1',[fresh]);assert.equal((await db.query('select count(*)::int as count from public.native_store_purchases')).rows[0].count,0);
+console.log('PASS native purchase ownership uniqueness, browser denial and account deletion cascade');
+await db.query('insert into public.ai_feedback_reports(user_id,feature,reason,response_text,expires_at) values($1,$2,$3,$4,now()-interval \'1 day\')',[user,'coach','incorrect','Consented AI fixture']);
+assert.equal((await db.query('select public.purge_expired_ai_feedback() as count')).rows[0].count,1);
+await db.exec('set role authenticated;');await assert.rejects(()=>db.query('select * from public.ai_feedback_reports'),/permission denied/);await db.exec('reset role;');console.log('PASS consented AI feedback has expiration cleanup and browser privacy');await db.close();console.log('PASS authenticated browser role cannot grant itself trial access');
 
 });

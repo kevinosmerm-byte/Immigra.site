@@ -28,7 +28,10 @@ export function useVoiceResponse({ turnKey, onTranscript, beforeListen, requestV
   };
   useEffect(() => {
     active.current = true;
+    const pauseReport = () => cancel();
+    window.addEventListener("immigra:practice-pause", pauseReport);
     return () => {
+      window.removeEventListener("immigra:practice-pause", pauseReport);
       active.current = false;
       generation.current += 1;
       recorderRef.current?.cancel();

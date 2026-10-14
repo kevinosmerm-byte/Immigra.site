@@ -1,11 +1,12 @@
 import { Capacitor } from "@capacitor/core";
+import { APP_IDENTITY } from "../shared/appIdentity.js";
 
 // Production requests stay on the page's own domain and are relayed by the
 // Cloudflare Pages Function in functions/api. Local development can still use
 // a custom API target from .env.
-const isLocalDevelopment = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const isLocalDevelopment = typeof window !== "undefined" && ["localhost", "127.0.0.1"].includes(window.location.hostname);
 const configuredBaseUrl = Capacitor.isNativePlatform()
-  ? "https://citizenshipai.us/api"
+  ? import.meta.env.VITE_NATIVE_API_BASE_URL || `${APP_IDENTITY.origin}/api`
   : isLocalDevelopment
   ? import.meta.env.VITE_API_BASE_URL || "/api"
   : "/api";
@@ -47,11 +48,17 @@ export function apiFetch(path, options) {
 }
 
 export async function apiJson(path, options) {
+  const reportedFeature = aiRequestContext?.feature;
   const response = await apiFetch(path, options);
   const payload = await response.json().catch(() => ({}));
 
   if (!response.ok) {
     throw new Error(payload.error || `Request failed (${response.status}).`);
+  }
+
+  if (typeof window !== "undefined" && ["/coach", "/evaluate-writing", "/evaluate-reading"].includes(path)) {
+    const text = [payload.reply, payload.feedback, payload.correction, payload.encouragement].filter(item => typeof item === "string").join("\n").slice(0, 6000);
+    if (text) window.dispatchEvent(new CustomEvent("immigra:ai-feedback", { detail: { text, feature: reportedFeature } }));
   }
 
   return payload;

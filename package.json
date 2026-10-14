@@ -16,20 +16,24 @@
     "ios:open": "npx cap open ios",
     "preview": "vite preview",
     "start": "node server/server.js",
-    "typecheck": "tsc --noEmit --allowJs --checkJs false --noImplicitAny false --module nodenext --moduleResolution nodenext --resolveJsonModule --esModuleInterop --skipLibCheck src/brain.js src/appRoutes.js"
+    "typecheck": "tsc --noEmit --allowJs --checkJs false --noImplicitAny false --module nodenext --moduleResolution nodenext --resolveJsonModule --esModuleInterop --skipLibCheck src/brain.js src/appRoutes.js",
+    "verify:store-release": "node scripts/verify-store-release.mjs"
   },
   "engines": {
     "node": ">=22.13"
   },
   "dependencies": {
+    "@apple/app-store-server-library": "^3.1.0",
     "@capacitor-community/text-to-speech": "^8.0.2",
     "@capacitor/android": "^8.5.2",
     "@capacitor/core": "^8.5.2",
     "@capacitor/ios": "^8.5.2",
+    "@capgo/native-purchases": "8.9.5",
     "@supabase/supabase-js": "^2.116.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "google-auth-library": "^11.3.0",
     "multer": "^2.3.0",
     "openai": "^7.10.0",
     "pdfjs-dist": "^6.3.289",
@@ -48,5 +52,10 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
     "vite": "^8.2.2"
+  },
+  "overrides": {
+    "xcode": {
+      "uuid": "11.1.1"
+    }
   }
 }

@@ -95,10 +95,11 @@ test("Checkout accepts only allowlisted billing intervals and authenticated acco
   assert.doesNotMatch(source, /req\.body\?\.price/);
 });
 
-test("Web checkout is hidden from native store builds and account deletion cannot orphan an active charge", async () => {
+test("Web checkout is hidden from native store builds and account deletion warns about billing without blocking deletion", async () => {
   const accountUi = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
   const routes = await readFile(new URL("../server/accountRoutes.js", import.meta.url), "utf8");
   assert.match(accountUi, /!Capacitor\.isNativePlatform\(\)/);
-  assert.match(routes, /active_subscription_requires_cancellation/);
-  assert.match(routes, /getBillingIdentity\(req\.account\.userId\)/);
+  assert.doesNotMatch(routes, /active_subscription_requires_cancellation/);
+  assert.match(accountUi, /Deleting your account does not cancel billing/);
+  assert.match(routes, /await deleteAccount\(req\.account\.userId\)/);
 });

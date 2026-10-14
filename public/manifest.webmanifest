@@ -1,6 +1,6 @@
 {
-  "name": "CitizenshipAI — U.S. Citizenship Practice",
-  "short_name": "CitizenshipAI",
+  "name": "Immigra — Immigration Interview Practice",
+  "short_name": "Immigra",
   "description": "Practice civics, reading, writing, and interview skills for U.S. citizenship.",
   "id": "/",
   "lang": "en",
@@ -9,8 +9,8 @@
   "display": "standalone",
   "orientation": "portrait-primary",
   "categories": ["education"],
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "background_color": "#030305",
+  "theme_color": "#030305",
   "icons": [
     {
       "src": "/app-icon-192.png",

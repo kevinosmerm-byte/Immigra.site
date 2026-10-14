@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "us.citizenshipai.app",
-  appName: "Citizenship AI",
+  appName: "Immigra",
   webDir: "dist",
   server: {
     androidScheme: "https",
@@ -11,6 +11,7 @@ const config: CapacitorConfig = {
     allowMixedContent: false,
     backgroundColor: "#020815",
   },
+  plugins: { NativePurchases: { autoFinishTransactions: false } },
 };
 
 export default config;

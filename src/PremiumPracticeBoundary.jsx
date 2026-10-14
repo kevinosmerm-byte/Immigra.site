@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { usePromotionAccess } from "./promotionAccessContext.js";
+import { AiResponseReport } from "./AiResponseReport.jsx";
 export function PremiumPracticeBoundary({ feature, language, onBack, children }) {
   const { requestAiSession, activeAccess, loading } = usePromotionAccess();
   const requested = useRef(false);
@@ -29,7 +30,7 @@ export function PremiumPracticeBoundary({ feature, language, onBack, children })
     window.addEventListener("focus", expire);
     return () => { active = false; clearTimeout(timer); window.removeEventListener("focus", expire); };
   }, [approved, activeAccess?.access?.accessEndsAt]);
-  if (approved) return children;
+  if (approved) return <>{children}<AiResponseReport language={language} feature={feature} /></>;
   return <main className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-[#030305] p-6 text-slate-100">
     <h1 className="mb-4 text-xl text-slate-100!">{language === "es" ? "Entrevistas e IA" : "Interviews and AI"}</h1>
     <p className="mb-4 text-slate-200!">{language === "es" ? "Prueba gratis 7 días desde tu primer uso. Después necesitas suscripción. El estudio sin servicios de pago sigue gratis." : "Try free for 7 days from your first use. A subscription is required afterward. Study tools without paid services remain free."}</p>

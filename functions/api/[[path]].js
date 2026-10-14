@@ -5,7 +5,10 @@ const API_ORIGIN = "https://citizenshipai.onrender.com";
 export async function onRequest(context) {
   const incomingUrl = new URL(context.request.url);
   const upstreamPath = incomingUrl.pathname.replace(/^\/api/, "") || "/";
-  const upstreamUrl = new URL(upstreamPath + incomingUrl.search, API_ORIGIN);
+  const configuredOrigin = context.env?.API_ORIGIN || API_ORIGIN;
+  const origin = new URL(configuredOrigin);
+  if (origin.protocol !== "https:" || origin.username || origin.password) return new Response("API configuration unavailable", { status: 503 });
+  const upstreamUrl = new URL(upstreamPath + incomingUrl.search, origin.origin);
   const headers = new Headers(context.request.headers);
 
   headers.delete("host");

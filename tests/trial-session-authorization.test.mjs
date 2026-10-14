@@ -9,6 +9,7 @@ test('provider session middleware rechecks current server access, never trusting
  const upstream=createServer((req,res)=>{
   res.setHeader('Content-Type','application/json');
   if(req.url.startsWith('/auth/v1/user'))return res.end(JSON.stringify({id:user,email:'fixture@example.test'}));
+  if(req.url.startsWith('/rest/v1/entitlements'))return res.end('null');
   if(req.url.startsWith('/rest/v1/ai_sessions'))return res.end(JSON.stringify({id,feature:'coach',status:'started',source:'free_trial'}));
   if(req.url==='/rest/v1/rpc/get_practice_access'){
    if(fail){res.statusCode=503;return res.end(JSON.stringify({code:'fixture_unavailable',message:'Service unavailable'}));}

@@ -5,7 +5,6 @@ import {
   exportAccountData,
   finishAiSession,
   getAccountConfiguration,
-  getBillingIdentity,
   getPublicAccountConfiguration,
   getPublicAiFeatureAvailability,
   getUsageSnapshot,
@@ -18,6 +17,7 @@ import {
   getAccountBrainProfile,
   setAccountBrainProfile,
   deleteAccountBrainProfile,
+  recordAiFeedback,
 } from "./accountService.js";
 import { getAiFeatureConfig } from "../shared/featureAccessConfig.js";
 import { getBillingConfiguration } from "./stripeBilling.js";
@@ -52,6 +52,17 @@ router.get("/public-config", async (_req, res) => {
 });
 
 router.use(requireAccount);
+
+router.post("/ai-feedback", async (req, res) => {
+  res.set("Cache-Control", "no-store");
+  const { consent, feature, reason, responseText } = req.body || {};
+  if (consent !== true || !getAiFeatureConfig(feature) || !["incorrect", "offensive", "legal_advice", "other"].includes(reason)
+      || typeof responseText !== "string" || !responseText.trim() || responseText.length > 6000) return res.status(400).json({ code: "invalid_feedback" });
+  try {
+    await recordAiFeedback({ userId: req.account.userId, feature, reason, responseText: responseText.trim() });
+    return res.status(201).json({ received: true });
+  } catch { return res.status(503).json({ code: "feedback_unavailable" }); }
+});
 
 router.use("/brain-profile", (_req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
 router.get("/brain-profile/status", (_req, res) => res.json(getPrivateProfileConfiguration()));
@@ -134,13 +145,6 @@ router.delete("/", async (req, res) => {
     return res.status(400).json({ error: "Account deletion requires confirmation.", code: "deletion_confirmation_required" });
   }
   try {
-    const billingIdentity = await getBillingIdentity(req.account.userId);
-    if (billingIdentity?.provider === "stripe" && ["active", "grace"].includes(billingIdentity.status)) {
-      return res.status(409).json({
-        error: "Cancel the active web subscription in the billing portal before deleting this account.",
-        code: "active_subscription_requires_cancellation",
-      });
-    }
     res.set("Cache-Control", "no-store");
     await deleteAccount(req.account.userId);
     return res.json({ deleted: true });

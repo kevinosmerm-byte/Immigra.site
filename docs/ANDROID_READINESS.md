@@ -1,3 +1,5 @@
+> La preparación actual de Immigra se describe en [IMMIGRA_STORE_RELEASE.md](IMMIGRA_STORE_RELEASE.md). Las notas de promoción/pagos inactivos de este documento son históricas y no deben copiarse para el envío actual.
+
 # Citizenship AI Android readiness
 
 ## Completed foundation

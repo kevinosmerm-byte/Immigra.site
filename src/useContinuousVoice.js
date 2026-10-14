@@ -24,15 +24,18 @@ export function useContinuousVoice(options) {
     const pauseHidden = () => { if (document.hidden) pause("background"); };
     const pauseOffline = () => pause("offline");
     const pauseLeaving = () => pause("background");
+    const pauseReport = () => pause("paused");
     document.addEventListener("visibilitychange", pauseHidden);
     window.addEventListener("pagehide", pauseLeaving);
     window.addEventListener("offline", pauseOffline);
+    window.addEventListener("immigra:practice-pause", pauseReport);
     return () => {
       mounted.current = false; permission.current += 1; generation.current += 1;
       controller.current?.abort(); acquisition.current?.abort(); session.current?.stop();
       document.removeEventListener("visibilitychange", pauseHidden);
       window.removeEventListener("pagehide", pauseLeaving);
       window.removeEventListener("offline", pauseOffline);
+      window.removeEventListener("immigra:practice-pause", pauseReport);
     };
   }, [pause]);
   const start = async () => {

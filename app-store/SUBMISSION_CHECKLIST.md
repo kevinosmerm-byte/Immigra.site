@@ -1,3 +1,5 @@
+> La preparación actual de Immigra se describe en [IMMIGRA_STORE_RELEASE.md](../docs/IMMIGRA_STORE_RELEASE.md). Las notas de promoción/pagos inactivos de este documento son históricas y no deben copiarse para el envío actual.
+
 # Citizenship AI — App Store Connect submission sheet
 
 The localized metadata is stored in `app-store/metadata.json` and validated by `npm run verify:app-store`.
