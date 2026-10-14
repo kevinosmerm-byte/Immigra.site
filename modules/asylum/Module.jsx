@@ -1,3 +1,4 @@
+import {AsylumPreparation} from '../../shared/AsylumPreparation.jsx';
 import ConversationInterview from '../../shared/interview-ui/ConversationInterview.jsx';
 import {ModuleNavigation} from '../../shared/design-system/Components.jsx';
 import React,{useEffect,useRef,useState} from 'react';
@@ -11,12 +12,14 @@ export default function Asylum({lang='es'}){
  useEffect(()=>{if(/^#\/asylum\/?$/.test(window.location.hash))window.location.hash='/asylum/practice';const sync=()=>setRoute(window.location.hash.split('/')[2]||'practice');window.addEventListener('hashchange',sync);return()=>window.removeEventListener('hashchange',sync);},[]);
  const items=lang==='es'?[['practice','Inicio'],['fiction','Casos ficticios'],['case-workspace','Mi expediente'],['full-bank','Preguntas'],['practice-report','Informe'],['vault','Mis datos']]:[['practice','Home'],['fiction','Fictional cases'],['case-workspace','My case'],['full-bank','Questions'],['practice-report','Report'],['vault','My data']];
  const ref=useRef(null),runtime=useRef(null);
+ const prepared=route==='case-workspace';
  const [call,setCall]=useState(null);
  useEffect(()=>{runtime.current=mountAsylum(ref.current,setCall,lang);return ()=>runtime.current?.();},[]);
  useEffect(()=>runtime.current?.setLanguage(lang),[lang]);
  return <>
   {!call&&<ModuleNavigation items={items} current={route} label={lang==='es'?'Asilo':'Asylum'} onNavigate={id=>{window.location.hash='/asylum/'+id;}}/>}
-  <section className="asylum-surface" data-asylum-route={route} ref={ref} hidden={Boolean(call)}/>
-  {call&&<ConversationInterview moduleId="asylum" lang={call.language} avatar={call.interviewer} mode={call.mode} initialQuestion={call.question} context={call.context||''} onBack={()=>{call.stop();setCall(null);window.location.hash='/asylum/setup';}}/>}
+  <section className="asylum-surface" data-asylum-route={route} ref={ref} hidden={Boolean(call)||prepared}/>
+  {prepared&&!call&&<AsylumPreparation language={lang} onBack={()=>{window.location.hash='/asylum/practice';}} onStart={payload=>{if(payload.signal?.aborted)return false;return runtime.current?.startPrepared(payload)===true;}}/>}
+  {call&&<ConversationInterview moduleId="asylum" lang={call.language} avatar={call.interviewer} mode={call.mode} initialQuestion={call.question} context={call.context||''} entryConsent={call.entryConsent===true} onBack={()=>{call.stop();setCall(null);window.location.hash='/asylum/setup';}}/>}
  </>;
 }

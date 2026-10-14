@@ -20,7 +20,7 @@ export const evaluationSchema={type:'object',additionalProperties:false,required
 const safeText=(x,max)=>typeof x==='string'&&x.length<=max;
 export function validateSettings(body){
  if(!body||!['citizenship','asylum','residency'].includes(body.module)||!['en','es'].includes(body.locale)||body.consent!==true)throw Error('INVALID_SETTINGS');
- const settings={domain:body.module==='citizenship'&&body.domain==='civics'?'civics':'personal',module:body.module,locale:body.locale,avatar:body.avatar==='kevin'?'kevin':'sahara',mode:body.mode==='fictional'?'fictional':'personal',route:body.route||'MATRIMONIO'};
+ const settings={domain:body.module==='citizenship'&&body.domain==='civics'?'civics':'personal',module:body.module,locale:body.locale,avatar:['kevin','william'].includes(body.avatar)?body.avatar:'sahara',mode:body.mode==='fictional'?'fictional':'personal',route:body.route||'MATRIMONIO'};
  if(!['MATRIMONIO','HIJO_A_PADRES','PADRES_A_HIJOS'].includes(settings.route))throw Error('INVALID_SETTINGS');
  if(body.module==='residency'){
   const options=body.practiceOptions??{};
@@ -100,7 +100,7 @@ export function createInterviewAIEngine({env,fetchImpl=fetch,reserveSessionQuota
    s.flow=settings.domain==='civics'?null:createDomainInterview({...settings,sourceQuestions});
    let sdp;
    if(body.transport==='voice'){
-    const form=new FormData();form.set('sdp',body.sdp);form.set('session',JSON.stringify({type:'realtime',model:env.OPENAI_REALTIME_MODEL||'gpt-realtime-2.1',instructions:s.instructions,output_modalities:['audio'],max_output_tokens:400,audio:{input:{transcription:{model:'gpt-4o-mini-transcribe',language:settings.locale},noise_reduction:{type:'near_field'},turn_detection:{type:'server_vad',threshold:0.5,prefix_padding_ms:300,silence_duration_ms:1200,create_response:false,interrupt_response:true}},output:{voice:settings.avatar==='kevin'?'cedar':'marin'}}}));
+    const form=new FormData();form.set('sdp',body.sdp);form.set('session',JSON.stringify({type:'realtime',model:env.OPENAI_REALTIME_MODEL||'gpt-realtime-2.1',instructions:s.instructions,output_modalities:['audio'],max_output_tokens:400,audio:{input:{transcription:{model:'gpt-4o-mini-transcribe',language:settings.locale},noise_reduction:{type:'near_field'},turn_detection:{type:'server_vad',threshold:0.5,prefix_padding_ms:300,silence_duration_ms:1200,create_response:false,interrupt_response:true}},output:{voice:settings.avatar==='william'?'echo':settings.avatar==='kevin'?'cedar':'marin'}}}));
     const r=await fetchImpl('https://api.openai.com/v1/realtime/calls',{method:'POST',headers:{authorization:`Bearer ${env.OPENAI_API_KEY}`},body:form,signal:AbortSignal.timeout(30000)});
     if(!r.ok)throw await providerError(r);
     const location=r.headers.get('location')||'';const match=location.match(/\/calls\/(rtc_[a-zA-Z0-9_-]+)$/);if(!match)throw Error('INVALID_PROVIDER_SESSION');s.callId=match[1];sdp=await r.text();if(!sdp.startsWith('v=0'))throw Error('INVALID_PROVIDER_SESSION');logDiagnostic('OPENAI_SESSION_CREATED',{module:settings.module,transport:'voice'});

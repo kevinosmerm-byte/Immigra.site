@@ -1,3 +1,5 @@
+import InterviewerPicker from "../../../shared/interview-ui/InterviewerPicker.jsx";
+import {interviewerLabel,interviewerMediaBase} from "../../../shared/interview-ui/interviewer-media.mjs";
 import {PremiumPracticeBoundary} from "../../citizenship/src/PremiumPracticeBoundary.jsx";
 import {useAutomaticAdvance} from "../../citizenship/src/useAutomaticAdvance.js";
 import {InterviewAdvanceControls} from "../../citizenship/src/InterviewAdvanceControls.jsx";
@@ -19,7 +21,7 @@ export default function AosPractice({onHome,onLegacy,active,lang='es'}){
  const routeLabels=lang==='en'?aosRoutesEn:aosRoutes;
  const [route,setRoute]=useState('MATRIMONIO'),[status,setStatus]=useState('unknown'),[age,setAge]=useState('unknown'),[marital,setMarital]=useState('unknown'),[count,setCount]=useState(12),[consent,setConsent]=useState(false),[ai,setAi]=useState(false);
  const [session,setSession]=useState(null),[index,setIndex]=useState(0),[draft,setDraft]=useState(''),[turns,setTurns]=useState([]),[followup,setFollowup]=useState(''),[review,setReview]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[finished,setFinished]=useState(false);
- const [beta,setBeta]=useState(false);
+ const [beta,setBeta]=useState(false),[interviewer,setInterviewer]=useState("sarah");
  const request=useRef(null),generation=useRef(0);
  useEffect(()=>()=>{generation.current++;request.current?.abort();},[]);
  useEffect(()=>{if(!active){generation.current++;request.current?.abort();setBusy(false);}},[active]);
@@ -49,10 +51,11 @@ export default function AosPractice({onHome,onLegacy,active,lang='es'}){
  function finish(){generation.current++;request.current?.abort();setBusy(false);setFinished(true);}
  const labels={clear:t("Detalle expresado con claridad"),clarify:t("Puedes aclarar esta expresión"),uncertain:t("Es válido no recordar"),context:t("Conviene aclarar el contexto")};
  if(session&&!finished&&!session.ai)return <PremiumPracticeBoundary feature="realInterview" language={lang} onBack={reset}><ResidencyCall question={{id:base.id,question}} lang={lang} active={active} draft={draft} onDraft={setDraft} onSubmit={()=>respond()} onSkip={()=>respond(true)} onFinish={finish}/></PremiumPracticeBoundary>;
- if(beta)return <RealtimeInterview lang={lang} practiceOptions={{petitionerStatus:status,age,marital,count}} relationshipType={route==='MATRIMONIO'?'marriage_husband_petitioner':route==='HIJO_A_PADRES'?'child_petitions_mother':'parent_petitions_child'} mode="personal" scenarioId={null} active={active} onBack={()=>setBeta(false)}/>;
+ if(beta)return <RealtimeInterview avatar={interviewer} lang={lang} practiceOptions={{petitionerStatus:status,age,marital,count}} relationshipType={route==='MATRIMONIO'?'marriage_husband_petitioner':route==='HIJO_A_PADRES'?'child_petitions_mother':'parent_petitions_child'} mode="personal" scenarioId={null} active={active} onBack={()=>setBeta(false)}/>;
  const content=<section className="aos-practice"><button className="aos-back" onClick={onHome}>{t("← Volver al inicio")}</button><header><p className="aos-eyebrow">{t("RESIDENCIA · AJUSTE DE ESTATUS")}</p><h1>{finished?t("Tu resumen de práctica"):session?t("Conversemos, una pregunta a la vez"):t("Practica tu entrevista familiar")}</h1><p>{t("Práctica educativa. No sustituye asesoría legal ni representa una entrevista oficial de USCIS.")}</p></header>
  {!session?<form className="aos-glass aos-setup" onSubmit={start}><div className="aos-heading"><img src="/images/home/residency-icon.webp" alt=""/><div><h2>{t("Configura tu práctica")}</h2><p>{aosQuestions.length} {lang==='es'?'preguntas educativas · Español e inglés':'educational questions · Spanish and English'}</p></div></div>
- <div className="aos-sahara"><video src="/interviewer/listening.mp4" poster="/modules/citizenship/sarah.png" muted autoPlay loop playsInline preload="metadata" aria-label={t("Sahara, entrevistadora virtual")}/><div><h3>{t("Sahara · Tu entrevistadora")}</h3><p>{t("Practica hablando por micrófono o escribiendo.")}</p><button type="button" className="aos-primary" onClick={()=>setBeta(true)}>{t("Conversar con Sahara · Beta")}</button></div></div>
+ <InterviewerPicker value={interviewer} onChange={setInterviewer} lang={lang} moduleId="residency"/>
+ <div className="aos-sahara"><video key={interviewer} src={interviewerMediaBase(interviewer)+'listening.mp4'} muted autoPlay loop playsInline preload="metadata" aria-label={interviewerLabel(interviewer)}/><div><h3>{interviewerLabel(interviewer)}</h3><p>{t("Practica hablando por micrófono o escribiendo.")}</p><button type="button" className="aos-primary" onClick={()=>setBeta(true)}>{lang==='es'?'Hablar con':'Talk with'} {interviewerLabel(interviewer)}</button></div></div>
  <label>{t("¿Qué familiar presentó la petición?")}<select value={route} onChange={e=>{setRoute(e.target.value);setStatus(e.target.value==='HIJO_A_PADRES'?'citizen':'unknown');}}>{Object.entries(routeLabels).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>
  <label>{t("Situación del peticionario")}<select value={status} onChange={e=>setStatus(e.target.value)}><option value="unknown">{t("No estoy seguro / necesito revisar")}</option><option value="citizen">{t("Ciudadano estadounidense")}</option><option value="resident">{t("Residente permanente")}</option></select></label>
  <label>{route==='HIJO_A_PADRES'?t("Edad del hijo o hija peticionario"):t("Edad de la persona beneficiaria")}<select value={age} onChange={e=>setAge(e.target.value)}><option value="unknown">{t("Prefiero revisar / no indicar")}</option><option value="under21">{t("Menor de 21 años")}</option><option value="21plus">{t("21 años o más")}</option></select></label>

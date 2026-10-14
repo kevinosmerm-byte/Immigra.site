@@ -1,3 +1,5 @@
+import InterviewerPicker from "../../../shared/interview-ui/InterviewerPicker.jsx";
+import {interviewerLabel} from "../../../shared/interview-ui/interviewer-media.mjs";
 import {useAutomaticAdvance} from "./useAutomaticAdvance.js";
 import {InterviewAdvanceControls} from "./InterviewAdvanceControls.jsx";
 import {shuffleInterviewQuestions} from "./interviewQuestionMemory.js";
@@ -120,8 +122,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
   const initialQuestionRef = useRef(flow.question?.english || "");
   useEffect(()=>{if(!callStarted&&!conversation){const next=createInitialFlow(brainContext,n400PracticeBank(n400Bank,language),userKey);setFlow(next);initialQuestionRef.current=next.question?.english||'';}},[language]);
   const soundEnabledRef = useRef(brainContext.preferences?.soundEnabled !== false);
-  const isKevin = interviewer === "kevin";
-  const interviewerName = isKevin ? "Kevin" : "Sarah";
+  const interviewerName = interviewerLabel(interviewer);
   const reviewedCount = flow.state.askedConceptIDs.length;
   const totalConcepts = n400Bank.questions.length;
   const progress = isComplete ? 100 : Math.round(reviewedCount / totalConcepts * 100);
@@ -132,7 +133,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
     if (!soundEnabledRef.current || !mountedRef.current) { setIsSpeaking(false); return; }
     setIsSpeaking(true);
     try {
-      await speakAppText(text, { language, profile: selectedInterviewer === "kevin" ? "male" : "female" });
+      await speakAppText(text, { language, profile: ["kevin", "william"].includes(selectedInterviewer) ? "male" : "female" });
     } finally {
       if (mountedRef.current && requestId === speechRequestRef.current) setIsSpeaking(false);
     }
@@ -305,7 +306,7 @@ export function N400InterviewPractice({ onExit, onComplete, onRestart, brainCont
 
   const question = flow.question;
   const section = SUB_BLOCK_LABELS[flow.state.currentSubBlock]?.[language === "es" ? 1 : 0] || flow.state.currentSubBlock;
-  if(!callStarted)return <section className="call-setup"><h1>N-400</h1><p>{copy.title}</p><label>{copy.officer}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><p>{copy.privacy}</p><button className="primary-button" onClick={()=>setConversation(true)}>{language==='es'?'Conversar con IA':'Converse with AI'}</button><label><input type="checkbox" checked={localAiConsent} onChange={e=>setLocalAiConsent(e.target.checked)}/>{language==='es'?'Autorizo enviar las preguntas y mis respuestas de esta sesión a OpenAI para evaluar claridad. La práctica local también funciona sin IA.':'I authorize sending questions and my responses from this session to OpenAI to review clarity. Local practice also works without AI.'}</label><button onClick={()=>setCallStarted(true)}>{language==='es'?'Comenzar entrevista':'Start interview'}</button></section>;
+  if(!callStarted)return <section className="call-setup"><h1>N-400</h1><p>{copy.title}</p><InterviewerPicker value={interviewer} onChange={setInterviewer} lang={language} moduleId="citizenship"/><p>{copy.privacy}</p><button className="primary-button" onClick={()=>setConversation(true)}>{language==='es'?'Conversar con IA':'Converse with AI'}</button><label><input type="checkbox" checked={localAiConsent} onChange={e=>setLocalAiConsent(e.target.checked)}/>{language==='es'?'Autorizo enviar las preguntas y mis respuestas de esta sesión a OpenAI para evaluar claridad. La práctica local también funciona sin IA.':'I authorize sending questions and my responses from this session to OpenAI to review clarity. Local practice also works without AI.'}</label><button onClick={()=>setCallStarted(true)}>{language==='es'?'Comenzar entrevista':'Start interview'}</button></section>;
   const paused=()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallPaused(v=>!v);};
   return <CallView onSkip={skipQuestion} skipDisabled={Boolean(pendingResponse)} moduleId="citizenship" lang={language} state={callPaused?'paused':isTranscribing?'processing':isSpeaking?'speaking':'listening'} elapsed={elapsed} muted={!isListening} captions={[{who:'ai',text:question.english},...(answer?[{who:'user',text:answer}]:[])]} showCaptions={captionsVisible} onCaptions={()=>setCaptionsVisible(v=>!v)} onMic={()=>{if(!callPaused&&!isTranscribing&&!pendingResponse)(isListening?stopListening:startListening)();}} onRepeat={()=>speakQuestion(question.english)} onPause={paused} onSuspend={()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallPaused(true);}} onFinish={()=>{captureGeneration.current++;stopQuestionSpeech();recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setCallStarted(false);setLocalAiConsent(false);setIsComplete(true);}} interviewerName={interviewerName} interviewType="N-400" mediaBase={'/modules/citizenship/'+interviewer+'-'} mode="personal" error={answerStatus==='error'?microphoneError||copy.error:null}>
    {pendingResponse?<><p>{copy.recorded}</p><InterviewAdvanceControls language={language} paused={automaticAdvance.paused||callPaused} onPause={automaticAdvance.pause} onContinue={continueResponse}/></>:<form onSubmit={e=>{e.preventDefault();acceptResponse(draft);}}><input aria-label={copy.input} value={draft} maxLength={1600} disabled={callPaused||isListening||isTranscribing} onFocus={stopQuestionSpeech} onChange={e=>setDraft(e.target.value)}/><button disabled={callPaused||isListening||isTranscribing||!draft.trim()}>{copy.submit}</button></form>}

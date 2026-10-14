@@ -212,7 +212,7 @@ export async function exportAccountData(userId) {
     brainProfile: brainProfile?.profile || null,
     brainProfileUpdatedAt: brainProfile?.updatedAt || null,
     brainProfileExportAvailable: brainProfile !== null,
-    privacyNote: "This export includes account and technical usage records plus your explicitly saved encrypted profile, when secure profile storage is available. The usage ledger contains no conversations, recordings, transcripts or personal practice answers. On-device profiles and learning progress remain on your device.",
+    privacyNote: "This export includes account and technical usage records plus your saved cloud profile, when available. This export is readable, unencrypted JSON; protect downloaded personal information. The usage ledger contains no conversations, recordings, transcripts or personal practice answers. On-device profiles and learning progress remain on your device.",
   };
 }
 

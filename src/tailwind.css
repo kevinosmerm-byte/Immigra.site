@@ -1,0 +1,8 @@
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@source "../shared/PlatformHeader.jsx";
+@source "../shared/AsylumPreparation.jsx";
+@source "../shared/LegalOperatorNotice.jsx";
+@source "../shared/LegalSafeguards.jsx";
+@source "../shared/interview-ui/InterviewerPicker.jsx";

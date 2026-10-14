@@ -1,0 +1,7 @@
+{
+  "release": "2026-10-14-friendly-intake-three-interviewers",
+  "repository": "kevinosmerm-byte/immigration-ai",
+  "branch": "design/citizenship-visual",
+  "interviewers": ["Sahara", "Kevin", "William"],
+  "features": ["mobile-account-settings", "automatic-pdf-intake", "bilingual-educational-notices", "updated-kevin-videos", "william-speaking-listening"]
+}
