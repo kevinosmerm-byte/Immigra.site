@@ -7,6 +7,7 @@ import { advanceConversation, CONVERSATION_TOPICS, conversationCorrection, conve
 import sarahImage from "./assets/sarah.png";
 import "./ConversationPractice.css";
 import { chooseInterviewQuestions, markInterviewQuestionReviewed } from "./interviewQuestionMemory.js";
+import { ConversationPresentation, OptionalTypedAnswer } from "./InterviewPresentation.jsx";
 import { EducationNotice } from "./EducationNotice.jsx";
 import { studyGoal } from "../shared/studyPreparation.js";
 
@@ -178,17 +179,20 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
     setStarted(false); setFlow(newFlow(flow.topic, flow.language));
     setHistory([]); setLastExchange(null); setRevision(null); setFeedback(null); setDraft(""); setError("");
   };
-  return <div className="practice-screen coach-screen coach-video-call-screen conversation-practice">
+  return <ConversationPresentation mode={flow.topic} language={language}><div className="practice-screen coach-screen coach-video-call-screen conversation-practice">
     <header className="practice-header">
       <button className="back-button" onClick={onBack}>← {t("Back", "Volver")}</button>
       <div className="practice-brand">CITIZENSHIP <span>AI</span></div>
     </header>
     <main className="coach-conversation-content coach-video-call-content">
       <h1>{t("Practice a conversation", "Practica una conversación")}</h1>
+      <p className="conversation-intro">{t("Listen to one question at a time. You can speak, type, pause or skip. Educational practice only: we are not lawyers and do not give legal advice. Always seek authorized professional help for your case.", "Escucha una pregunta a la vez. Puedes hablar, escribir, pausar o saltar. Solo es práctica educativa: no somos abogados ni damos asesoría legal. Siempre busca ayuda profesional autorizada para tu caso.")}</p>
+      <details className="conversation-choice-panel"><summary>{t("How practice works and privacy", "Cómo funciona la práctica y privacidad")}</summary>
       <p className="conversation-intro">{t("Practice expressing your own information. This is speaking practice, not an assessment of your case. You may skip any topic or use fictional examples.", "Practica cómo expresar tu propia información. Es práctica de conversación, no una evaluación de tu caso. Puedes omitir cualquier tema o usar ejemplos ficticios.")}</p>
       <p>{t("Reviewed question identifiers help avoid repeats on this device. Your answer text is not saved. After all available questions, another randomized review cycle begins.", "Los identificadores de preguntas repasadas ayudan a evitar repeticiones en este dispositivo. No se guarda el texto de tus respuestas. Al terminar todas las preguntas disponibles, comienza otro repaso en orden aleatorio.")}</p>
       <EducationNotice language={language} compact />
-      <div className="conversation-options">
+      </details>
+      <details className="conversation-choice-panel"><summary>{flow.language === "es" ? "Español" : "English"} · {name} · {t("Change practice options", "Cambiar opciones de práctica")}</summary><div className="conversation-options">
         <label>{t("Topic", "Tema")}<select aria-label={t("Topic", "Tema")} value={flow.topic} disabled={started} onChange={event => setFlow(newFlow(event.target.value, defaultPracticeLanguage(event.target.value, flow.language)))}>
           {Object.entries(CONVERSATION_TOPICS).map(([key, topic]) => <option key={key} value={key}>{topic.label[es ? 1 : 0]}</option>)}
         </select></label>
@@ -199,6 +203,7 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
           <option value="sarah">Sarah</option><option value="kevin">Kevin</option>
         </select></label>
       </div>
+      </details>
       {flow.topic === "citizenship" && <p className="conversation-hint">{t("English helps you prepare for citizenship speaking practice. Choose the language you want to use today.", "El inglés ayuda a preparar la práctica oral de ciudadanía. Elige el idioma que quieras usar hoy.")}</p>}
       <div className="coach-conversation-card coach-video-call-card started">
         <div className={`coach-conversation-avatar ${speaking ? "speaking" : "listening"}`} role="img" aria-label={name}>
@@ -222,8 +227,11 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
               }} disabled={voice.isListening || voice.isTranscribing || (continuous.phase === "transcribing" && !continuous.connected)} aria-pressed={continuous.connected}>
                 {continuous.phase === "requesting" ? t("Cancel microphone request", "Cancelar solicitud de micrófono") : continuous.connected ? t("Pause continuous voice", "Pausar voz continua") : t("Enable continuous voice", "Activar voz continua")}
               </button>
+              <p>{t("The microphone stays on between answers. Press Pause to turn it off.", "El micrófono sigue activo entre respuestas. Pulsa Pausar para apagarlo.")}</p>
+              <details><summary>{t("Voice options", "Opciones de voz")}</summary>
               <label className="conversation-auto"><input type="checkbox" checked={interruptions} disabled={continuous.connected || continuousBusy} onChange={event => setInterruptions(event.target.checked)} />{t("Let me interrupt by speaking", "Permitir interrumpir con mi voz")}</label>
               <p className="conversation-hint">{t("Continuous voice keeps the microphone active and sends each answer after a pause. Pause to turn it off. If the speaker triggers interruptions, use headphones or turn off voice interruptions.", "La voz continua mantiene el micrófono activo y envía cada respuesta después de una pausa. Pausa para apagarlo. Si el altavoz provoca interrupciones, usa auriculares o desactiva las interrupciones por voz.")}</p>
+              </details>
               {continuousNotice && <p role="status">{continuousNotice}</p>}
               {continuous.connected && <button className="secondary-button" type="button" onClick={() => { continuous.pause(); stopSpeech(); }}>{t("Type instead", "Responder por escrito")}</button>}
               {continuous.phase === "listening" && <button className="secondary-button" type="button" onClick={continuous.finishTurn}>{t("I'm finished", "Ya terminé")}</button>}
@@ -241,16 +249,16 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
               {lastExchange && <button className="secondary-button" type="button" onClick={() => submit("Correct my last answer")} disabled={busy}>{t("Correct my last answer", "Corregir mi última respuesta")}</button>}
             </div>
             {(error || voiceError) && <p className="conversation-error" role="alert">{error || voiceError}</p>}
-            <form onSubmit={event => { event.preventDefault(); submit(draft); }}>
+            <OptionalTypedAnswer language={language}><form onSubmit={event => { event.preventDefault(); submit(draft); }}>
               <label htmlFor="conversation-answer">{t("Type or correct your answer", "Escribe o corrige tu respuesta")}</label>
               <textarea id="conversation-answer" value={draft} maxLength={2000} rows={3} disabled={busy} onFocus={() => { if (continuous.connected) continuous.pause(); stopSpeech(); }} onChange={event => setDraft(event.target.value)} />
               <button className="primary-button" disabled={busy || !draft.trim()}>{t("Send answer", "Enviar respuesta")}</button>
-            </form>
+            </form></OptionalTypedAnswer>
             <p>{Math.min(flow.answered.length + flow.skipped.length + 1, flow.order?.length ?? 6)} / {flow.order?.length ?? 6} · {flow.language === "es" ? "Español" : "English"} · {t("One topic at a time", "Un tema a la vez")}</p>
           </>}
         </section>
       </div>
       <p className="conversation-hint">{t("Answers stay in this session. Voice transcription and AI feedback use the existing external services. Do not share private identifiers. These prompts are language exercises, not an official interview question bank.", "Las respuestas permanecen en esta sesión. La transcripción y los comentarios de IA usan los servicios externos existentes. No compartas identificadores privados. Son ejercicios de lenguaje, no un banco oficial de preguntas de entrevista.")}</p>
     </main>
-  </div>;
+  </div></ConversationPresentation>;
 }
