@@ -27,7 +27,7 @@ jobs:
         run: npm ci
 
       - name: Run quality checks
-        run: npm run quality
+        run: node scripts/ci-quality.mjs
 
       - name: Check Brain types
         run: npm run typecheck
