@@ -35,3 +35,23 @@ Validation:
 - `public/immigra-release.json` identifies this release for public-domain verification. Production status is only confirmed after the live domain serves the new release and matching media; a GitHub push alone is not proof.
 
 Limits: OCR is not part of this new importer. PDFs must contain selectable text and be at most 40 pages, 10 MB and 30,000 extracted characters. Analysis processes the complete supported document in chunks; the existing conversation-context limit remains 6,000 characters. Videos illustrate speaking/listening and do not provide word-level lip synchronization. No database migration is required for these changes.
+
+Production verification completed after Render's automatic deployment of code commit `5b68401`:
+
+- `https://immigra.site/immigra-release.json` returned HTTP 200 and the release `2026-10-14-friendly-intake-three-interviewers`.
+- Live HTML changed from `index-C1guRYAd.js` to `index-DJHZDMUH.js`. The latter was downloaded with TLS verification and matched the tested local build byte-for-byte (SHA-256 `9e7f755120d8f40b8e749ef7412a875f248dfc730e07039e0bba96d470e9313c`).
+- Both Kevin and both William versioned videos returned successfully and matched the prepared files byte-for-byte.
+- Public interview status reported `ready: true`, `authentication_required: true`, `testing_access: false`. No paid production interview request was made.
+- Local browser playback decoded William at 720×1280 and passed repeated speaking/listening transitions. A separate browser navigation to production encountered the cloud session's certificate trust error; TLS verification was not disabled. Production delivery was verified through the correctly configured curl trust store instead. This limitation is not evidence of a certificate problem for ordinary users.
+
+Cloud setup for this checkout:
+
+```sh
+npm_config_cache=/workspace/.npm-cache npm ci
+npm test
+npm run build
+npm --prefix modules/citizenship run quality
+npm run dev -- --port 5174
+```
+
+Use the inherited proxy and CA trust. A writable npm cache avoids the default cache permission failure without disabling package integrity checks. Official extraction additionally requires Python with `pypdf`: run `python scripts/extract-official-civics.py --check` from `modules/citizenship`.
