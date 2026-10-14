@@ -209,16 +209,17 @@ export function AccountProvider({ children }) {
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 }
 
-export function AccountButton({ language = "en", onClick }) {
+export function AccountButton({ language = "en", onClick, label, className = "" }) {
   const { session } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
   return (
-    <button className={`home-account-button${session ? " signed-in" : ""}`} onClick={onClick} type="button" aria-label={copy.account}>
+    <button className={`home-account-button${session ? " signed-in" : ""} ${className}`} onClick={onClick} type="button" aria-label={copy.account} title={copy.account}>
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <circle cx="12" cy="8" r="3.25" />
         <path d="M5.75 19c.45-3.55 2.55-5.5 6.25-5.5s5.8 1.95 6.25 5.5" />
         {session && <path className="account-status-check" d="m16.5 11.2 1.45 1.45 2.8-3.1" />}
       </svg>
+      {label && <span className="min-w-0 max-w-full wrap-anywhere">{label}</span>}
     </button>
   );
 }

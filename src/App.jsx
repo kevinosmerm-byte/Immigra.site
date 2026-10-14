@@ -1,3 +1,4 @@
+import { HomeUtilityHeader } from "./HomeUtilityHeader.jsx";
 import { InterviewWorkspace } from "./InterviewWorkspace.jsx";
 import { queueSavedQuestion, syncSavedQuestions } from "./savedQuestions.js";
 import { MyCivicsProfile } from "./MyCivicsProfile.jsx";
@@ -37,7 +38,7 @@ import { usePromotionAccess } from "./promotionAccessContext.js";
 import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";
 import ImmigrationHelp from "./ImmigrationHelp";
 import { speakAppText, stopAppSpeech } from "./speech";
-import { AccountButton, AccountSheet } from "./Account.jsx";
+import { AccountSheet } from "./Account.jsx";
 import { useAccount } from "./accountContext.js";
 import { ProgressDashboard } from "./ProgressDashboard.jsx";
 import { writingSentences } from "./writingSentences.js";
@@ -369,8 +370,6 @@ function Home({
     development: "IN DEVELOPMENT",
     caseBody: "Practice checking a status response through the USCIS API Sandbox.",
     checkCase: "COMING SOON",
-    languageLabel: "Change preferred language",
-    settingsLabel: "Open Legal and Privacy Settings",
     civicsLabel: "Civics — 128 Questions. Master the questions for your interview.",
   } : {
     status: "ENTRENAMIENTO DE CIUDADANÍA CON IA",
@@ -388,40 +387,19 @@ function Home({
     development: "EN DESARROLLO",
     caseBody: "Practica la consulta de una respuesta de estado mediante la API Sandbox de USCIS.",
     checkCase: "PRÓXIMAMENTE",
-    languageLabel: "Cambiar idioma preferido",
-    settingsLabel: "Abrir ajustes legales y de privacidad",
     civicsLabel: "Educación cívica — 128 preguntas. Domina las preguntas para tu entrevista.",
   };
   const civicsProgress = Math.min(100, Math.round((practiceSummary?.civics?.viewed || 0) / 128 * 100));
   return (
-    <div className="app home-ai home-reference">
+    <div className="app home-ai home-reference overflow-visible!">
 
       {/* ================= HEADER ================= */}
 
-      <header className="home-new-header">
-
+      <HomeUtilityHeader language={language} onOpenAccount={onOpenAccount} onLanguageChange={onLanguageChange} onOpenSettings={onOpenSettings}>
         <div className="home-new-brand" aria-label="Immigra">
           <span className="home-brand-wordmark">Citizenship <strong>AI</strong></span>
         </div>
-
-        <div className="language-selector">
-          <AccountButton language={language} onClick={onOpenAccount} />
-          <button
-            className="home-language"
-            onClick={() => onLanguageChange(language === "en" ? "es" : "en")}
-            aria-label={copy.languageLabel}
-          >
-            {language === "en" ? "EN" : "ES"}
-          </button>
-          <button className="home-settings-button" onClick={onOpenSettings} aria-label={copy.settingsLabel}>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="3" />
-              <path d="M19 12a7 7 0 0 0-.1-1.15l2-1.55-2-3.45-2.45 1A7 7 0 0 0 14.5 5.7L14.15 3h-4.3L9.5 5.7a7 7 0 0 0-1.95 1.15l-2.45-1-2 3.45 2 1.55A7 7 0 0 0 5 12c0 .4.03.78.1 1.15l-2 1.55 2 3.45 2.45-1A7 7 0 0 0 9.5 18.3l.35 2.7h4.3l.35-2.7a7 7 0 0 0 1.95-1.15l2.45 1 2-3.45-2-1.55c.07-.37.1-.75.1-1.15Z" />
-            </svg>
-          </button>
-        </div>
-
-      </header>
+      </HomeUtilityHeader>
 
 
 
