@@ -18,6 +18,7 @@ import {
   setAccountBrainProfile,
   deleteAccountBrainProfile,
   recordAiFeedback,
+  isAiFeedbackSchemaReady,
 } from "./accountService.js";
 import { getAiFeatureConfig } from "../shared/featureAccessConfig.js";
 import { getBillingConfiguration } from "./stripeBilling.js";
@@ -47,6 +48,7 @@ router.get("/public-config", async (_req, res) => {
     aiFeatures,
     billing: { ...billing, enabled: billing.enabled && policyReady },
     practicePolicyReady: policyReady,
+    aiFeedbackEnabled: await isAiFeedbackSchemaReady(),
     trialPolicy: { days: 7, start: "first_premium_use", unlimited: true, requiresAccount: true },
   });
 });

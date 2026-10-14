@@ -51,6 +51,7 @@ export function AccountProvider({ children }) {
   const [promotionAccess, setPromotionAccess] = useState(true);
   const [aiFeatureAvailability, setAiFeatureAvailability] = useState({});
   const [billing, setBilling] = useState({ enabled: false });
+  const [aiFeedbackEnabled, setAiFeedbackEnabled] = useState(false);
 
   const loadUsage = async (accessToken) => {
     if (!accessToken) { setUsage(null); return null; }
@@ -74,6 +75,7 @@ export function AccountProvider({ children }) {
         setPromotionAccess(config?.promotionAccess !== false);
         setAiFeatureAvailability(config?.aiFeatures && typeof config.aiFeatures === "object" ? config.aiFeatures : {});
         setBilling(config?.billing && typeof config.billing === "object" ? config.billing : { enabled: false });
+        setAiFeedbackEnabled(config?.aiFeedbackEnabled === true);
         if (!client) setClient(createAccountClient(config?.url, config?.publishableKey));
         if (!client && !config?.configured) setLoading(false);
       })
@@ -107,7 +109,7 @@ export function AccountProvider({ children }) {
   }, [session?.access_token]);
 
   const value = useMemo(() => ({
-    configured: Boolean(client), session, loading, usage, promotionAccess, aiFeatureAvailability, billing,
+    configured: Boolean(client), session, loading, usage, promotionAccess, aiFeatureAvailability, billing, aiFeedbackEnabled,
     refreshUsage: () => loadUsage(session?.access_token),
     verifyEmailCode: (email, token) => client.auth.verifyOtp({ email, token, type: "email" }),
     sendMagicLink: (email) => client.auth.signInWithOtp({
@@ -202,7 +204,7 @@ export function AccountProvider({ children }) {
       window.location.assign(result.url);
       return true;
     },
-  }), [client, session, loading, usage, promotionAccess, aiFeatureAvailability, billing]);
+  }), [client, session, loading, usage, promotionAccess, aiFeatureAvailability, billing, aiFeedbackEnabled]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 }

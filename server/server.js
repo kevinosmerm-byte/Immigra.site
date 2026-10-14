@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { APP_IDENTITY } from "../shared/appIdentity.js";
 import dotenv from "dotenv";
 import { CONVERSATION_TOPICS, currentConversationPrompt, normalizeCoachFeedback } from "../src/conversationFlow.js";
 import { EDUCATION_NOTICE } from "../src/educationNotice.js";
@@ -28,10 +29,11 @@ const app = express();
 app.disable("x-powered-by");
 app.set("trust proxy", 1);
 
-const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
+const configuredOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
+const allowedOrigins = [...new Set([...configuredOrigins, APP_IDENTITY.origin, "capacitor://localhost", "https://localhost"])];
 
 app.use(cors({
   origin(origin, callback) {

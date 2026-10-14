@@ -412,6 +412,11 @@ export async function isNativeStoreSchemaReady() {
   const { error } = await supabase.from("native_store_purchases").select("user_id").limit(0);
   return !error;
 }
+export async function isAiFeedbackSchemaReady() {
+  if (!supabase) return false;
+  const { error } = await supabase.from("ai_feedback_reports").select("id").limit(0);
+  return !error;
+}
 export async function getNativePurchaseRecords(userId, provider) {
   const { data, error } = await supabase.from("native_store_purchases").select("provider,encrypted_reference").eq("user_id", userId).eq("provider", provider).order("updated_at", { ascending: false }).limit(10);
   throwDatabaseError(error, "Native purchase unavailable.");

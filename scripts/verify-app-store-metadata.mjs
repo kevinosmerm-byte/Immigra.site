@@ -20,9 +20,20 @@ assert.equal(metadata.review.demoAccountRequired, true);
 assert.match(metadata.review.notes, /independent educational study app/);
 assert.match(metadata.review.notes, /No advertising SDK is present/);
 
-console.log("App Store metadata checks passed.");
+
 
 assert.equal(metadata.localizations["en-US"].name, "Immigra");
 assert.equal(new URL(metadata.app.privacyPolicyUrl).hostname, "immigra.site");
 assert.equal(metadata.app.accountDeletionUrl, "https://immigra.site/#deleteAccount");
 assert.doesNotMatch(metadata.review.notes, /launch promotion/i);
+
+const play = JSON.parse(await readFile("google-play/metadata.json", "utf8"));
+assert.equal(play.app.packageName, metadata.app.bundleId);
+assert.equal(play.app.accountDeletionUrl, metadata.app.accountDeletionUrl);
+for (const [locale, copy] of Object.entries(play.localizations)) {
+  assert.ok(copy.title.length > 0 && copy.title.length <= 30, `${locale} Play title must fit`);
+  assert.ok(copy.shortDescription.length > 0 && copy.shortDescription.length <= 80, `${locale} Play short description must fit`);
+  assert.ok(copy.fullDescription.length > 0 && copy.fullDescription.length <= 4000, `${locale} Play description must fit`);
+}
+
+console.log("Apple and Google Play metadata foundation checks passed.");

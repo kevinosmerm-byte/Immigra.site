@@ -5,7 +5,7 @@ import { apiUrl } from "./api.js";
 import { stopAppSpeech } from "./speech.js";
 
 export function AiResponseReport({ language, feature }) {
-  const { session } = useAccount();
+  const { session, aiFeedbackEnabled } = useAccount();
   const [responseText, setResponseText] = useState("");
   const [open, setOpen] = useState(false);
   const [consent, setConsent] = useState(false);
@@ -18,7 +18,7 @@ export function AiResponseReport({ language, feature }) {
     window.addEventListener("immigra:ai-feedback", receive);
     return () => window.removeEventListener("immigra:ai-feedback", receive);
   }, [open, feature]);
-  if (!responseText) return null;
+  if (!aiFeedbackEnabled || !responseText) return null;
   const submit = async event => {
     event.preventDefault();
     if (!consent || !responseText.trim() || status === "sending") return;

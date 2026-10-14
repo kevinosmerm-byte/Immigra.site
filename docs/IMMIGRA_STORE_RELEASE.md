@@ -1,6 +1,6 @@
 # Immigra: preparación de tiendas
 
-Revisión: 14 de octubre de 2026. Este repositorio prepara Immigra; no acredita publicación ni aprobación de las tiendas.
+Revisión: 14 de octubre de 2026. Textos y checklist específicos de Google Play: [google-play/SUBMISSION_CHECKLIST.md](../google-play/SUBMISSION_CHECKLIST.md). Este repositorio prepara Immigra; no acredita publicación ni aprobación de las tiendas.
 
 ## Identidad y estado
 
@@ -63,3 +63,5 @@ La migración incluye `ai_feedback_reports` y `purge_expired_ai_feedback()`. En 
 ## Comandos
 
 `npm run quality`, `npm run typecheck`, extracción del PDF y pruebas nativas del backend se ejecutan aquí. `npx cap sync android` y `npx cap sync ios` registran plugins y empaquetan el bundle actual; no equivalen a compilar/firmar. `npm run verify:store-release` admite `ANDROID_RELEASE_AAB`, `IOS_RELEASE_ARCHIVE` y un archivo local JSON señalado por `STORE_REVIEW_EVIDENCE_FILE` con las confirmaciones `signingValidated`, `privacyAndSdkReviewed`, `ageRatingsCompleted`, `screenshotsCurrent`, `reviewAccountVerified`, `immigraDomainVerified` , `sandboxPurchaseLifecyclePassed` y `aiFeedbackProcessReady`. Solo registrar como true comprobaciones realizadas; no equivale a aprobación de las tiendas. Informa bloqueos de envío y sale con código 1 mientras falten los requisitos finales. No eliminar esos bloqueos para producir un resultado verde.
+
+Antes de la migración nueva, `aiFeedbackEnabled` permanece false y el botón de reporte no se muestra. Las compras nativas también permanecen deshabilitadas si falta schema/configuración. El backend acepta los orígenes propios https://immigra.site, capacitor://localhost y https://localhost, además de la lista CORS configurada; esto no concede acceso a IA sin JWT/sesión autorizada.
