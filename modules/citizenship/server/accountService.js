@@ -1,3 +1,5 @@
+import {createPersistentSessionService,WEB_SESSION_TOKEN} from "./persistentSessionService.js";
+import {createEmailTrialService,EMAIL_TRIAL_TOKEN} from "./emailTrialService.js";
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 import { isVerifiedPracticeAccess, TRIAL_POLICY_VERSION } from "../shared/trialPolicy.js";
@@ -12,6 +14,21 @@ const supabase = supabaseUrl && supabaseSecretKey
       auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false },
     })
   : null;
+const persistentSessions=supabase?createPersistentSessionService({secret:supabaseSecretKey,validate:token=>supabase.auth.getUser(token),refresh:token=>createClient(supabaseUrl,supabaseSecretKey,{auth:{autoRefreshToken:false,persistSession:false,detectSessionInUrl:false}}).auth.refreshSession({refresh_token:token}),revoke:token=>supabase.auth.admin.signOut(token,'local')}):null;
+export async function restoreWebSession(req,res){return persistentSessions?.restore(req,res)||null;}
+export async function exchangeWebSession(req,res){if(!persistentSessions)throw Object.assign(Error('Account unavailable'),{status:503});return persistentSessions.exchange(res,req.body);}
+export async function logoutWebSession(req,res){await persistentSessions?.logout(req,res);}
+const emailTrials=supabase?createEmailTrialService({admin:supabase.auth.admin,secret:supabaseSecretKey}):null;
+export async function registerEmailTrial(req,res,email){if(!emailTrials)throw Object.assign(Error('Account service unavailable'),{status:503,code:'account_unavailable'});return emailTrials.register(req,res,email);}
+export async function getEmailTrialSession(req){return emailTrials?emailTrials.session(await emailTrials.user(req)):null;}
+export function clearEmailTrialSession(res){emailTrials?.clear(res);}
+export function requireVerifiedAccount(req,res,next){if(req.account?.emailTrial)return res.status(401).json({error:'Verify your email before managing private account data or subscriptions.',code:'verification_required'});next();}
+async function authenticateRequest(req,res){
+ const token=bearerToken(req);
+ if(token===WEB_SESSION_TOKEN){const session=await restoreWebSession(req,res);return session?{data:{user:session.user},error:null}:{data:null,error:Error("Invalid session")};}
+ if(token===EMAIL_TRIAL_TOKEN){const user=await emailTrials?.user(req);return user?{data:{user},error:null,emailTrial:true}:{data:null,error:Error('Invalid trial session')};}
+ return supabase.auth.getUser(token);
+}
 const STALE_AI_SESSION_HOURS = Math.max(1, Number(process.env.AI_SESSION_STALE_HOURS) || 6);
 const FEATURE_AVAILABILITY_CACHE_MS = 30_000;
 const featureAvailabilityCache = new Map();
@@ -100,12 +117,12 @@ export async function requireAccount(req, res, next) {
     return res.status(401).json({ error: "Sign in is required.", code: "authentication_required" });
   }
 
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error, emailTrial } = await authenticateRequest(req,res);
   if (error || !data?.user?.id) {
     return res.status(401).json({ error: "Your session is invalid or expired.", code: "invalid_session" });
   }
 
-  req.account = { userId: data.user.id, email: data.user.email || "" };
+  req.account = { userId: data.user.id, email: data.user.email || "", emailTrial: emailTrial===true };
   next();
 }
 
@@ -137,7 +154,7 @@ export async function attachOptionalAiSession(req, res, next) {
     return res.status(401).json({ error: "Sign in is required for this AI session.", code: "authentication_required" });
   }
 
-  const { data: authData, error: authError } = await supabase.auth.getUser(token);
+  const { data: authData, error: authError } = await authenticateRequest(req,res);
   if (authError || !authData?.user?.id) {
     return res.status(401).json({ error: "Your session is invalid or expired.", code: "invalid_session" });
   }

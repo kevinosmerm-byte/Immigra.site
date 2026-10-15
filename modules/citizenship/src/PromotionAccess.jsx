@@ -13,7 +13,7 @@ export function PromotionAccessProvider({ children }) {
 }
 
 function SessionAccessProvider({ children, account }) {
-  const { session, loading, aiFeatureAvailability, startAiSession, finishAiSession, billing, openCheckout, recordAccountEvent } = account;
+  const { session, loading, aiFeatureAvailability, startAiSession, finishAiSession, billing, openCheckout, startEmailTrial, recordAccountEvent } = account;
   const [pending, setPending] = useState(null);
   const [activeAccess, setActiveAccess] = useState(null);
   const active = useRef(null);
@@ -91,6 +91,6 @@ function SessionAccessProvider({ children, account }) {
   };
   return <PromotionAccessContext.Provider value={{ requestAiSession, finishActiveAiSession, getAiUsageSummary, activeAccess, loading }}>
     {children}
-    {pending && <TrialAccessDialog pending={pending} billing={billing} openCheckout={openCheckout} onClose={() => setPending(null)} />}
+    {pending && <TrialAccessDialog pending={pending} startEmailTrial={startEmailTrial} emailTrial={session?.isEmailTrial===true} billing={billing} openCheckout={openCheckout} onClose={() => setPending(null)} />}
   </PromotionAccessContext.Provider>;
 }

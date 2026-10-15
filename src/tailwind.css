@@ -11,3 +11,5 @@
 @source "../shared/SharedTools.jsx";
 
 @source "../modules/residency/src/ResidencyPracticeSetup.jsx";
+
+@source "../modules/citizenship/src/EmailTrialAccount.jsx";

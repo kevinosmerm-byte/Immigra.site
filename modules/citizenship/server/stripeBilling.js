@@ -30,13 +30,13 @@ function priceIdForInterval(interval) {
 }
 
 function appBaseUrl() {
-  const configured = process.env.APP_BASE_URL?.trim() || "https://citizenshipai.us";
+  const configured = process.env.APP_BASE_URL?.trim() || "https://immigra.site";
   try {
     const url = new URL(configured);
     if (!/^https?:$/.test(url.protocol)) throw new Error("Invalid protocol");
     return url.origin;
   } catch {
-    return "https://citizenshipai.us";
+    return "https://immigra.site";
   }
 }
 
@@ -79,13 +79,13 @@ export function mapStripeSubscription(subscription) {
   };
 }
 
-export async function createCheckoutSession({ userId, email, interval }) {
+export async function createCheckoutSession({ userId, email, interval }, { identityLookup = getBillingIdentity, createSession = payload => getStripe().checkout.sessions.create(payload) } = {}) {
   const billing = getBillingConfiguration();
   if (!billing.enabled) throw new Error("Billing is not enabled.");
   const price = priceIdForInterval(interval);
   if (!price) throw new Error("Unknown billing interval.");
 
-  const identity = await getBillingIdentity(userId);
+  const identity = await identityLookup(userId);
   if (identity?.tier === "pro" && ["active", "grace"].includes(identity.status)) {
     const error = new Error("A Pro subscription is already active.");
     error.code = "subscription_already_active";
@@ -94,14 +94,14 @@ export async function createCheckoutSession({ userId, email, interval }) {
 
   const baseUrl = appBaseUrl();
   const customer = identity?.provider === "stripe" ? identity.providerCustomerId : null;
-  const session = await getStripe().checkout.sessions.create({
+  const session = await createSession({
     mode: "subscription",
     line_items: [{ price, quantity: 1 }],
     client_reference_id: userId,
     ...(customer ? { customer } : { customer_email: email || undefined }),
     metadata: { user_id: userId, product_key: PRO_PLAN.productKey, interval },
     payment_method_collection: "always",
-    subscription_data: { trial_period_days: 7, trial_settings: { end_behavior: { missing_payment_method: "cancel" } }, metadata: { user_id: userId, product_key: PRO_PLAN.productKey, interval } },
+    subscription_data: { metadata: { user_id: userId, product_key: PRO_PLAN.productKey, interval } },
     allow_promotion_codes: true,
     automatic_tax: { enabled: isTrue(process.env.STRIPE_AUTOMATIC_TAX) },
     success_url: `${baseUrl}/?billing=success&session_id={CHECKOUT_SESSION_ID}`,

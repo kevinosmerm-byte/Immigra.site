@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { requireAccount, isPracticePolicyReady } from "./accountService.js";
+import { requireAccount, requireVerifiedAccount, isPracticePolicyReady } from "./accountService.js";
 import { createCheckoutSession, createPortalSession } from "./stripeBilling.js";
 
 const router = Router();
 router.use(requireAccount);
+router.use(requireVerifiedAccount);
 
 router.post("/checkout-session", async (req, res) => {
   const interval = req.body?.interval;

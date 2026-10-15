@@ -1,3 +1,5 @@
+import {accountStorage,clearLegacyBrowserSession,lastAccountEmail,rememberAccountEmail} from "./accountStorage.js";
+import EmailTrialAccount from "./EmailTrialAccount.jsx";
 import { createPortal } from "react-dom";
 import {TEMPORARY_PUBLIC_INTERVIEWS} from '../../../shared/interview-ui/access-policy.mjs';
 import {GlassCard,GlassSection,GlassProgress,GlassIcon} from '../../../shared/design-system/Glass.jsx';
@@ -14,14 +16,14 @@ const browserSupabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim()
 function createAccountClient(url, publishableKey) {
   return url && publishableKey
     ? createClient(url, publishableKey, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+      auth: { storage: accountStorage, persistSession: true, autoRefreshToken: Capacitor.isNativePlatform(), detectSessionInUrl: true },
     })
     : null;
 }
 
 const COPY = {
   en: {
-    account: "Account", title: "Your Immigration AI account", intro: "Sign in to keep the same 7-day interview and AI trial dates across your devices. Free study does not require an account.",
+    account: "Account", title: "Your Immigra account", intro: "Sign in to keep the same 7-day interview and AI trial dates across your devices. Free study does not require an account.",
     email: "Email address", placeholder: "you@example.com", send: "SEND SECURE SIGN-IN LINK", sending: "SENDING…",
     sent: "Check your email. We sent you a secure sign-in link.", signedIn: "SIGNED IN", signOut: "SIGN OUT", close: "Close account panel",
     optional: "Free study needs no account. Sign in for your 7-day interview and AI trial, starting with your first use. No card is required.", unavailable: "Accounts are unavailable. Free study remains available; interview and AI access cannot be verified.",
@@ -29,7 +31,7 @@ const COPY = {
     usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", pricing: "PRO PRICING", launchPrice: "Launch offer", regularPrice: "Regular $5.99/month", annualPrice: "$49.99/year", pricingStatus: "Purchases are not active yet.", monthly: "MONTHLY", yearly: "ANNUAL · SAVE 30%", manageSubscription: "MANAGE SUBSCRIPTION", secureCheckout: "Secure checkout by Stripe", billingError: "We could not open secure billing. Please try again.", openingCheckout: "OPENING…", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.", deleteAccount: "DELETE ACCOUNT", deleteTitle: "Permanently delete account?", deleteBody: "This removes your cloud account, AI allowances, and usage records. Local study progress on this device is not removed.", deletePrompt: "Type DELETE to confirm", deleting: "DELETING…", cancel: "CANCEL", deleteError: "We could not delete your account. Please try again.", deleteActiveSubscription: "Cancel your active web subscription from Manage Subscription before deleting the account.",
   },
   es: {
-    account: "Cuenta", title: "Tu cuenta de Immigration AI", intro: "Inicia sesión para conservar las mismas fechas de prueba de 7 días de entrevistas e IA entre tus dispositivos. El estudio gratuito no requiere cuenta.",
+    account: "Cuenta", title: "Tu cuenta de Immigra", intro: "Inicia sesión para conservar las mismas fechas de prueba de 7 días de entrevistas e IA entre tus dispositivos. El estudio gratuito no requiere cuenta.",
     email: "Correo electrónico", placeholder: "tu@correo.com", send: "ENVIAR ENLACE SEGURO", sending: "ENVIANDO…",
     sent: "Revisa tu correo. Te enviamos un enlace seguro para iniciar sesión.", signedIn: "SESIÓN INICIADA", signOut: "CERRAR SESIÓN", close: "Cerrar panel de cuenta",
     optional: "El estudio gratuito no requiere cuenta. Inicia sesión para probar entrevistas e IA durante 7 días desde tu primer uso. No necesitas tarjeta.", unavailable: "Las cuentas no están disponibles. El estudio gratuito sigue abierto; no podemos verificar el acceso a entrevistas e IA.",
@@ -47,13 +49,18 @@ export function AccountProvider({ children }) {
   const [signInError] = useState(() => new URLSearchParams(window.location.hash.slice(1)).has('error'));
   useEffect(() => { if (signInError) window.location.hash = '/account'; }, [signInError]);
   const [client, setClient] = useState(() => createAccountClient(browserSupabaseUrl, browserSupabaseKey));
-  const [session, setSession] = useState(null);
+  const [verifiedSession, setSession] = useState(null);
+  const [guestSession,setGuestSession]=useState(null);
+  const [restoringDevice,setRestoringDevice]=useState(true);
+  const session=verifiedSession||guestSession;
   const [loading, setLoading] = useState(true);
+  const [sessionRecoveryError,setSessionRecoveryError]=useState(false);
   const [usage, setUsage] = useState(null);
   const [promotionAccess, setPromotionAccess] = useState(false);
   const [aiFeatureAvailability, setAiFeatureAvailability] = useState({});
   const [billing, setBilling] = useState({ enabled: false });
 
+  useEffect(()=>{let active=true;fetch('/api/account/email-trial/session',{cache:'no-store',signal:AbortSignal.timeout(10000)}).then(r=>r.ok?r.json():null).then(data=>{if(active)setGuestSession(data?.session||null);}).catch(()=>{}).finally(()=>{if(active)setRestoringDevice(false);});return()=>{active=false;};},[]);
   const loadUsage = async (accessToken) => {
     if (!accessToken) { setUsage(null); return null; }
     try {
@@ -69,7 +76,7 @@ export function AccountProvider({ children }) {
 
   useEffect(() => {
     let active = true;
-    fetch("/api/account/public-config", { cache: "no-store" })
+    fetch("/api/account/public-config", { cache: "no-store", signal: AbortSignal.timeout(10000) })
       .then((response) => response.ok ? response.json() : null)
       .then((config) => {
         if (!active) return;
@@ -86,16 +93,51 @@ export function AccountProvider({ children }) {
   useEffect(() => {
     if (!client) return;
     let active = true;
-    client.auth.getSession().then(({ data }) => {
-      if (active) { setSession(data.session || null); setLoading(false); }
+    const adopt=async nextSession=>{
+      if(!nextSession)return null;
+      if(Capacitor.isNativePlatform()){
+        const {data,error}=await client.auth.getUser();
+        if(error&&(Number(error.status)>=500||error.name==='AuthRetryableFetchError'))throw error;
+        if(error||!data?.user)return null;
+        return nextSession;
+      }
+      const response=await fetch('/api/account/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_token:nextSession.access_token,refresh_token:nextSession.refresh_token})});
+      if(!response.ok)throw new Error('Session verification unavailable');
+      const session=(await response.json()).session;clearLegacyBrowserSession();return session;
+    };
+    const restore=async()=>{
+      try{
+        const {data}=await client.auth.getSession();
+        let next=await adopt(data.session);
+        if(!next&&!Capacitor.isNativePlatform()){
+          const response=await fetch('/api/account/session',{cache:'no-store',signal:AbortSignal.timeout(10000)});
+          if(!response.ok)throw new Error('Session temporarily unavailable');
+          next=(await response.json()).session;
+        }
+        if(active){setSession(next||null);if(next){setGuestSession(null);rememberAccountEmail(next.user.email);if(!window.location.hash||window.location.hash==='#/')window.location.hash='/account';}}
+      }catch{if(active)setSessionRecoveryError(true);}
+      finally{if(active)setLoading(false);}
+    };
+    restore();
+    const {data}=client.auth.onAuthStateChange((event,nextSession)=>{
+      if(event==='INITIAL_SESSION')return;
+      queueMicrotask(async()=>{
+        if(!active)return;
+        if(!nextSession){setSession(null);setUsage(null);return;}
+        try{
+          const next=await adopt(nextSession);if(!active)return;
+          setSession(next);setGuestSession(null);rememberAccountEmail(next?.user?.email);
+          if(event==='SIGNED_IN')window.location.hash='/account';
+        }catch{if(active)setLoading(false);}
+      });
     });
-    const { data } = client.auth.onAuthStateChange((_event, nextSession) => {
-      setSession(nextSession || null);
-      if (!nextSession) setUsage(null);
-      setLoading(false);
-    });
-    return () => { active = false; data.subscription.unsubscribe(); };
-  }, [client]);
+    const revalidate=async()=>{
+      if(Capacitor.isNativePlatform()||document.hidden)return;
+      try{const response=await fetch('/api/account/session',{cache:'no-store',signal:AbortSignal.timeout(10000)});if(response.ok){const next=(await response.json()).session;if(active)setSession(current=>{if(current&&!next)window.location.hash='/account';return next;});}}catch{}
+    };
+    const timer=setInterval(revalidate,60000);document.addEventListener('visibilitychange',revalidate);
+    return()=>{active=false;clearInterval(timer);document.removeEventListener('visibilitychange',revalidate);data.subscription.unsubscribe();};
+  },[client]);
 
   useEffect(() => {
     const accessToken = session?.access_token;
@@ -109,12 +151,18 @@ export function AccountProvider({ children }) {
   }, [session?.access_token]);
 
   const value = useMemo(() => ({
-    configured: Boolean(client), session, loading, usage, promotionAccess, aiFeatureAvailability, billing, signInError,
-    sendMagicLink: (email) => TEMPORARY_PUBLIC_INTERVIEWS ? Promise.resolve({error: new Error("Account links temporarily disabled")}) : client.auth.signInWithOtp({
+    configured: Boolean(client), session, sessionRecoveryError, dismissSessionRecoveryError:()=>setSessionRecoveryError(false), loading: loading || restoringDevice,
+    startEmailTrial:async email=>{
+      const response=await fetch('/api/account/email-trial',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok||!data.session)throw Object.assign(Error(data.error||'Trial unavailable'),{code:data.code});
+      rememberAccountEmail(email);setGuestSession(data.session);return data.session;
+    }, usage, promotionAccess, aiFeatureAvailability, billing, signInError,
+    sendMagicLink: (email) => {rememberAccountEmail(email);return TEMPORARY_PUBLIC_INTERVIEWS ? Promise.resolve({error: new Error("Account links temporarily disabled")}) : client.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` },
-    }),
-    signOut: () => client?.auth.signOut(),
+    });},
+    signOut:async()=>{const responses=await Promise.all([fetch('/api/account/session',{method:'DELETE'}),fetch('/api/account/email-trial/session',{method:'DELETE'})]);if(responses.some(response=>!response.ok))throw new Error('Could not sign out securely');await client?.auth.signOut({scope:'local'});setGuestSession(null);setSession(null);setUsage(null);window.location.hash='/account';},
     startAiSession: async (feature) => {
       if (!session?.access_token) return null;
       const response = await fetch("/api/account/sessions", {
@@ -176,10 +224,12 @@ export function AccountProvider({ children }) {
         error.code = result.code || "deletion_unavailable";
         throw error;
       }
-      await client.auth.signOut({ scope: "local" });
+      await Promise.all([fetch('/api/account/session',{method:'DELETE'}),fetch('/api/account/email-trial/session',{method:'DELETE'})]);
+      await client.auth.signOut({ scope: "local" });setSession(null);setGuestSession(null);rememberAccountEmail('');
       return true;
     },
     openCheckout: async (interval) => {
+      if (session?.isEmailTrial) throw new Error("Verify your email before subscribing.");
       if (!session?.access_token) return false;
       const response = await fetch("/api/billing/checkout-session", {
         method: "POST",
@@ -192,6 +242,7 @@ export function AccountProvider({ children }) {
       return true;
     },
     openBillingPortal: async () => {
+      if (session?.isEmailTrial) throw new Error("Verify your email before managing billing.");
       if (!session?.access_token) return false;
       const response = await fetch("/api/billing/portal-session", {
         method: "POST",
@@ -202,7 +253,7 @@ export function AccountProvider({ children }) {
       window.location.assign(result.url);
       return true;
     },
-  }), [client, session, loading, usage, promotionAccess, aiFeatureAvailability, billing, signInError]);
+  }), [client, session, loading, restoringDevice, sessionRecoveryError, usage, promotionAccess, aiFeatureAvailability, billing, signInError]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 }
@@ -224,9 +275,10 @@ export function AccountButton({ language = "en", onClick }) {
 
 export function AccountSheet({ language = "en", onClose, embedded = false }) {
   const modalRef = useModalFocus(!embedded, onClose);
-  const { configured, session, loading, usage, billing, promotionAccess, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, openBillingPortal, signInError } = useAccount();
+  const { configured, session, loading, usage, billing, promotionAccess, startEmailTrial, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, openBillingPortal, signInError } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(lastAccountEmail);
+  const [logoutError,setLogoutError]=useState(false),[loggingOut,setLoggingOut]=useState(false);
   const [status, setStatus] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [exporting, setExporting] = useState(false);
@@ -299,13 +351,22 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
     }
   };
 
+  useEffect(()=>{
+    if(!session||session.isEmailTrial||!webBillingEnabled)return;
+    let interval;try{interval=sessionStorage.getItem('immigra.pending-billing.v1');}catch{return;}
+    if(['monthly','annual'].includes(interval)){sessionStorage.removeItem('immigra.pending-billing.v1');startBillingAction(interval);}
+  },[session?.user?.id,session?.isEmailTrial,webBillingEnabled]);
+  if(configured&&!loading&&(!session||session.isEmailTrial)){
+    const trial=<EmailTrialAccount language={language} session={session} usage={usage} billing={billing} webBillingEnabled={webBillingEnabled} startEmailTrial={startEmailTrial} sendMagicLink={sendMagicLink} signOut={signOut} onContinue={()=>{onClose?.();if(embedded)window.location.hash='/';}} modalRef={modalRef} embedded={embedded} onClose={onClose}/>;
+    return embedded?trial:createPortal(trial,document.body);
+  }
   const content = (
     <div className={embedded ? "account-page" : "account-backdrop citizenship-surface"} role="presentation" onClick={(event) => { if (!embedded && event.target === event.currentTarget) onClose(); }}>
       <section ref={modalRef} className="account-sheet" role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : "true"} aria-labelledby="account-title">
         {!embedded&&<button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>}
-        <div className="liquid-page-heading"><span>{language==='es'?'TU CUENTA':'YOUR ACCOUNT'}</span><h1 id="account-title">{language==='es'?'Tu cuenta de Immigration AI':'Your Immigration AI account'}</h1><p>{TEMPORARY_PUBLIC_INTERVIEWS&&!session?(language==='es'?'Las entrevistas están abiertas temporalmente para pruebas.':'Interviews are temporarily open for testing.'):(language==='es'?'Gestiona tu suscripción, revisa tus límites y administra tu cuenta.':'Manage your subscription, review your limits and manage your account.')}</p></div>
+        <div className="liquid-page-heading"><span className="text-slate-600!">{language==='es'?'TU CUENTA':'YOUR ACCOUNT'}</span><h1 id="account-title" className="text-slate-950!">{language==='es'?'Tu cuenta de Immigra':'Your Immigra account'}</h1><p className="text-slate-700!">{TEMPORARY_PUBLIC_INTERVIEWS&&!session?(language==='es'?'Las entrevistas están abiertas temporalmente para pruebas.':'Interviews are temporarily open for testing.'):(language==='es'?'Gestiona tu suscripción, revisa tus límites y administra tu cuenta.':'Manage your subscription, review your limits and manage your account.')}</p></div>
         {signInError&&!session&&!status&&<p role="alert">{language==='es'?'El enlace de acceso no es válido o ha caducado. Solicita uno nuevo y abre únicamente el correo más reciente.':'The sign-in link is invalid or expired. Request a new link and open only the latest email.'}</p>}
-        {TEMPORARY_PUBLIC_INTERVIEWS&&!session ? null : !configured ? <div className="account-message">{copy.unavailable}</div> : loading ? <div className="account-loading" /> : session ? (
+        {TEMPORARY_PUBLIC_INTERVIEWS&&!session ? null : !configured ? <div className="account-message">{copy.unavailable}</div> : loading ? <div className="account-loading" role="status">{language==='es'?'Recuperando tu sesión…':'Restoring your session…'}</div> : session ? (
           <>
             <GlassCard className="account-overview"><span className="glass-icon" aria-hidden="true"><GlassIcon name="◎"/></span><div className="account-identity"><span>{copy.signedIn}</span><strong>{session.user.email}</strong></div>
             <div className="account-access"><span>{copy.usage}</span><strong>{usage?.tier === "pro" ? "PRO" : copy.free}</strong><small>{usage?.access?.status==="trial_active"?(language==="es"?"Prueba activa · sin cuota personal":"Trial active · no personal quota"):usage?.access?.status==="trial_expired"?(language==="es"?"Prueba finalizada":"Trial ended"):copy.optional}</small></div>
@@ -341,10 +402,10 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
             {status && <p className={`account-status ${status}`}>{status === "sent" ? copy.sent : copy.error}</p>}
           </form>
         )}
-        {(!TEMPORARY_PUBLIC_INTERVIEWS||session)?<GlassSection className="account-pricing" icon="♔" title="Plan PRO" description={language==='es'?'Descubre las herramientas y beneficios de Immigration AI PRO.':'Explore Immigration AI PRO tools and benefits.'}>
+        {(!TEMPORARY_PUBLIC_INTERVIEWS||session)?<GlassSection className="account-pricing" icon="♔" title="Plan PRO" description={language==='es'?'Descubre las herramientas y beneficios de Immigra PRO.':'Explore Immigra PRO tools and benefits.'}>
           <h2>{language === "es" ? "Qué incluye PRO" : "What PRO includes"}</h2>
           <ul className="pro-plan-benefits">
-            <li>{language === "es" ? "Entrevistas y conversaciones con Sarah o Kevin" : "Interviews and conversations with Sarah or Kevin"}</li>
+            <li>{language === "es" ? "Entrevistas y conversaciones con Sahara, Kevin y William" : "Interviews and conversations with Sahara, Kevin and William"}</li>
             <li>{language === "es" ? "Transcripción y comentarios de IA sin cuotas de práctica" : "Transcription and AI feedback without practice quotas"}</li>
             <li>{language === "es" ? "Práctica de lectura y escritura con IA" : "AI-supported reading and writing practice"}</li>
             <li>{language === "es" ? "El estudio básico sigue gratis sin suscripción" : "Basic study remains free without a subscription"}</li>
@@ -357,7 +418,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
               <div className="account-billing-actions">
                 <button type="button" onClick={() => startBillingAction("monthly")} disabled={Boolean(billingAction)}><b>{copy.monthly}</b><small>${(Number(billing.introductoryOfferEnabled ? billing.introductoryMonthlyPriceCents : billing.monthlyPriceCents) / 100).toFixed(2)}/mo</small></button>
                 <button type="button" onClick={() => startBillingAction("annual")} disabled={Boolean(billingAction)}><b>{language==='es'?'ANUAL':'ANNUAL'}</b><small>${(Number(billing.annualPriceCents || PRO_PLAN.annualPriceCents) / 100).toFixed(2)}/yr</small></button>
-                <p>{language === "es" ? "7 días gratis. Después se cobra el precio del plan elegido con renovación automática. Se requiere un método de pago. Cancela antes de que termine la prueba para evitar el cobro; gestiona tu suscripción en Mi cuenta." : "7 days free. Then the selected plan price is charged with automatic renewal. A payment method is required. Cancel before the trial ends to avoid a charge; manage your subscription in My account."}</p><em>{copy.secureCheckout}</em>
+                <p>{language === "es" ? "La prueba gratuita de la app se activa sin tarjeta. Si contratas una suscripción, Stripe cobra el plan elegido con renovación automática; no comienza otra prueba de siete días. Revisa las condiciones antes de confirmar y administra la suscripción en Mi cuenta." : "The app trial needs no card. Purchasing a subscription charges the selected plan in Stripe with automatic renewal; it does not start another seven-day trial. Review the terms before confirming and manage the subscription in My account."}</p><em>{copy.secureCheckout}</em>
               </div>
             )
           ) : <><button className="account-billing-manage" type="button" disabled>{language==='es'?'Actualizar a PRO →':'Upgrade to PRO →'}</button><em>{webBillingEnabled ? (language === 'es' ? 'Inicia sesión con tu correo para comenzar los 7 días gratis de PRO.' : 'Sign in with your email to start your 7-day PRO trial.') : copy.pricingStatus}</em></>}
@@ -368,7 +429,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
               <span>{exporting ? copy.exporting : copy.exportData}</span><b>↓</b>
             </button>
             {exportError && <p className="account-status error">{copy.exportError}</p>}
-            <button className="account-primary secondary" onClick={signOut} type="button">{copy.signOut}<b>→</b></button>
+            {logoutError&&<p role="alert">{language==='es'?'No pudimos cerrar sesión. Revisa la conexión y reintenta.':'Could not sign out. Check your connection and retry.'}</p>}<button className="account-primary secondary" disabled={loggingOut} onClick={async()=>{setLoggingOut(true);setLogoutError(false);try{await signOut();}catch{setLogoutError(true);}finally{setLoggingOut(false);}}} type="button">{copy.signOut}<b>→</b></button>
             {!deleteArmed ? (
               <button className="account-delete-link" onClick={() => setDeleteArmed(true)} type="button">{copy.deleteAccount}</button>
             ) : (

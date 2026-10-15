@@ -1,7 +1,7 @@
 import React,{useEffect,useRef,useState} from 'react';
 import {aosRoutes,aosRoutesEn,aosQuestions} from './aosEngine.mjs';
 import aosUiEn from './aos-ui.en.json';
-import {INTERVIEWERS} from '../../../shared/interview-ui/interviewer-media.mjs';
+import {INTERVIEWERS,interviewerMediaBase} from '../../../shared/interview-ui/interviewer-media.mjs';
 
 const card='rounded-3xl! border! border-slate-200/80! bg-white/85! p-5! shadow-sm! backdrop-blur-md!';
 const focus='focus-visible:outline-2! focus-visible:outline-offset-4! focus-visible:outline-emerald-700!';
@@ -18,6 +18,17 @@ function Icon({kind,className=''}){
   {kind==='people'&&<circle cx="9" cy="7" r="4"/>}{kind==='clock'&&<circle cx="12" cy="12" r="9"/>}{kind==='settings'&&<circle cx="12" cy="12" r="3"/>}{kind==='mic'&&<rect x="9" y="2" width="6" height="12" rx="3"/>}{kind==='info'&&<circle cx="12" cy="12" r="9"/>}<path d={paths[kind]}/>
  </svg>;
 }
+function InterviewerPreview({person,paused}){
+ const video=useRef(null);
+ useEffect(()=>{
+  const element=video.current,media=matchMedia('(prefers-reduced-motion: reduce)');let visible=false;
+  const sync=()=>{element.muted=true;if(paused||media.matches||document.hidden||!visible)element.pause();else element.play().catch(()=>{});};
+  const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();});observer.observe(element);
+  media.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);sync();
+  return()=>{element.pause();observer.disconnect();media.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);};
+ },[paused]);
+ return <video ref={video} src={`${interviewerMediaBase(person.id)}listening.mp4`} poster={`/interviewer/portraits/${person.id==='sarah'?'sahara':person.id}.jpg`} muted loop playsInline preload="metadata" tabIndex={-1} aria-hidden="true" className="h-full! w-full! object-cover! object-[50%_20%]!"/>;
+}
 function SegmentGroup({label,value,options,onChange}){
  return <fieldset className="m-0! min-w-0! border-0! p-0!">
   <legend className="mb-3! text-lg! font-semibold! text-slate-900!">{label}</legend>
@@ -29,7 +40,7 @@ function SegmentGroup({label,value,options,onChange}){
 
 export default function ResidencyPracticeSetup({lang='es',interviewer,onInterviewer,route,onRoute,status,onStatus,age,onAge,marital,onMarital,count,onCount,consent,onConsent,ai,onAi,starting,onStart,onHome,onLegacy,startError=''}){
  const es=lang==='es',t=text=>es?text:(aosUiEn[text]||text),copy=(a,b)=>es?a:b;
- const [expanded,setExpanded]=useState(false),[invalidField,setInvalidField]=useState('');
+ const [expanded,setExpanded]=useState(false),[invalidField,setInvalidField]=useState(''),[previewsPaused,setPreviewsPaused]=useState(false);
  const form=useRef(null);
  useEffect(()=>{if(expanded&&invalidField)form.current?.querySelector(`#${invalidField}`)?.focus();},[expanded,invalidField]);
  const fields=[['status',status,onStatus,'Situación del peticionario'],['age',age,onAge,route==='HIJO_A_PADRES'?'Edad del hijo o hija peticionario':'Edad de la persona beneficiaria'],['marital',marital,onMarital,'Estado civil de la persona beneficiaria']];
@@ -51,19 +62,20 @@ export default function ResidencyPracticeSetup({lang='es',interviewer,onIntervie
   <form ref={form} aria-busy={starting} onSubmit={submit} onInvalidCapture={event=>{if(event.target.closest('[data-personalization]')){setExpanded(true);setInvalidField(event.target.id);}}}>
    <fieldset disabled={starting} className="m-0! min-w-0! border-0! p-0!">
     <legend className="sr-only!">{t('Configura tu práctica')}</legend>
-    <div className="grid! items-start! gap-6! lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]!">
+    <div className="grid! items-start! gap-6!">
      <div>
       <fieldset className="m-0! min-w-0! border-0! p-0!">
        <legend className="mb-4! text-2xl! font-bold! text-slate-950!">{copy('¿Con quién practicamos?','Who shall we practice with?')}</legend>
-       <div className="grid! grid-cols-3! gap-2! sm:gap-3!">
+       <div className="mx-auto! grid! max-w-3xl! grid-cols-3! gap-2! sm:gap-3!">
         {INTERVIEWERS.map(person=>{const selected=interviewer===person.id;return <label key={person.id} className={`relative! m-0! cursor-pointer! overflow-hidden! rounded-2xl! border-2! bg-white/90! p-1.5! shadow-sm! has-focus-visible:outline-2! has-focus-visible:outline-offset-4! has-focus-visible:outline-emerald-700! ${selected?'border-emerald-600!':'border-slate-200!'}`}>
          <input type="radio" className="sr-only!" name="practice-interviewer" value={person.id} checked={selected} onChange={()=>onInterviewer(person.id)}/>
-         <div className="aspect-square! overflow-hidden! rounded-xl!"><img src={`/interviewer/portraits/${person.id==='sarah'?'sahara':person.id}.jpg`} alt="" width="480" height="854" className="h-full! w-full! object-cover! object-[50%_20%]!"/></div>
+         <div className="aspect-square! overflow-hidden! rounded-xl!"><InterviewerPreview person={person} paused={previewsPaused}/></div>
          {selected&&<span className="absolute! right-2! top-2! grid! h-7! w-7! place-items-center! rounded-full! border-2! border-white! bg-emerald-600! text-white!" aria-hidden="true">✓</span>}
          <span className={`mt-1! block! rounded-b-xl! px-1! py-2! text-center! text-sm! font-bold! sm:text-lg! ${selected?'bg-emerald-700! text-white!':'text-slate-950!'}`}>{person.name}</span>
         </label>;})}
        </div>
       </fieldset>
+      <button type="button" aria-pressed={previewsPaused} onClick={()=>setPreviewsPaused(value=>!value)} className={`mt-2! min-h-11! rounded-xl! border-0! bg-transparent! px-2! text-sm! text-emerald-800! underline! ${focus}`}>{previewsPaused?copy('Animar entrevistadores','Play interviewer previews'):copy('Pausar entrevistadores','Pause interviewer previews')}</button>
       <p className="my-4! flex! items-start! gap-2! text-sm! leading-relaxed! text-slate-500!"><Icon kind="mic"/>{copy('Habla por micrófono o escribe tus respuestas','Speak into your microphone or type your answers')}</p>
       <p className="text-xs! text-slate-500!">{aosQuestions.length} {copy('preguntas educativas · Español e inglés','educational questions · Spanish and English')}</p>
      </div>

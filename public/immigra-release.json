@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-14-visual-residency-silent-background",
+  "release": "2026-10-14-email-trial-light-background",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -17,6 +17,13 @@
     "compact-white-header",
     "visual-residency-setup",
     "legal-notices-inside-documents",
-    "transparent-module-icons"
+    "transparent-module-icons",
+    "email-only-first-use-trial",
+    "verified-web-checkout",
+    "light-video-background",
+    "persistent-secure-account-session",
+    "top-row-idle-video-selectors",
+    "compact-icon-glow",
+    "asylum-country-flags"
   ]
 }
