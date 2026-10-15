@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-15-email-verification-return",
+  "release": "2026-10-15-social-preview",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -35,6 +35,7 @@
     "simplified-residency-selector",
     "storage-resilient-startup",
     "accessible-preview-motion",
-    "direct-email-verification-return"
+    "direct-email-verification-return",
+    "dedicated-social-sharing-preview"
   ]
 }
