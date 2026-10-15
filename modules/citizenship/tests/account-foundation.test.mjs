@@ -21,17 +21,29 @@ test("database migration contains atomic and privacy protections", async () => {
   assert.doesNotMatch(sql, /microphone_recording|receipt_number|conversation_text/);
 });
 
-test("public account configuration never exposes the server secret", async () => {
-  const previousSecret = process.env.SUPABASE_SECRET_KEY;
-  const previousPublic = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-  process.env.SUPABASE_SECRET_KEY = "server-secret-must-not-leak";
-  process.env.VITE_SUPABASE_PUBLISHABLE_KEY = "safe-publishable-key";
+test("public account configuration never exposes the server secret", async (t) => {
+  const fixture = {
+    SUPABASE_URL: "https://account-fixture.example.test",
+    SUPABASE_SECRET_KEY: "server-secret-must-not-leak",
+    SUPABASE_PUBLISHABLE_KEY: "safe-server-publishable-key",
+    VITE_SUPABASE_PUBLISHABLE_KEY: "safe-publishable-key",
+  };
+  const previous = Object.fromEntries(Object.keys(fixture).map((key) => [key, process.env[key]]));
+  t.after(() => {
+    for (const [key, value] of Object.entries(previous)) {
+      if (value === undefined) delete process.env[key]; else process.env[key] = value;
+    }
+  });
+  Object.assign(process.env, fixture);
   const { getPublicAccountConfiguration } = await import(`../server/accountService.js?public=${Date.now()}`);
   const config = getPublicAccountConfiguration();
-  assert.equal(config.publishableKey, "safe-publishable-key");
+  assert.equal(config.publishableKey, fixture.SUPABASE_PUBLISHABLE_KEY);
   assert.doesNotMatch(JSON.stringify(config), /server-secret-must-not-leak/);
-  if (previousSecret === undefined) delete process.env.SUPABASE_SECRET_KEY; else process.env.SUPABASE_SECRET_KEY = previousSecret;
-  if (previousPublic === undefined) delete process.env.VITE_SUPABASE_PUBLISHABLE_KEY; else process.env.VITE_SUPABASE_PUBLISHABLE_KEY = previousPublic;
+
+  delete process.env.SUPABASE_PUBLISHABLE_KEY;
+  const fallback = getPublicAccountConfiguration();
+  assert.equal(fallback.publishableKey, fixture.VITE_SUPABASE_PUBLISHABLE_KEY);
+  assert.doesNotMatch(JSON.stringify(fallback), /server-secret-must-not-leak/);
 });
 
 test("AI API requests can carry a server-verified account session", async () => {
