@@ -1,4 +1,5 @@
 import {billingErrorMessage} from "./billingMessages.mjs";
+import {authCallbackKind} from '../../../shared/authentication/callback.mjs';
 import {checkoutReturnUrl,readCheckoutIntent,clearCheckoutIntent} from "./checkoutIntent.mjs";
 import {accountStorage,clearLegacyBrowserSession,lastAccountEmail,rememberAccountEmail} from "./accountStorage.js";
 import EmailTrialAccount from "./EmailTrialAccount.jsx";
@@ -48,7 +49,8 @@ const FEATURE_LABELS = {
 };
 
 export function AccountProvider({ children }) {
-  const [signInError] = useState(() => new URLSearchParams(window.location.hash.slice(1)).has('error'));
+  const [authCallback] = useState(() => authCallbackKind(window.location));
+  const [signInError,setSignInError] = useState(authCallback==='error');
   useEffect(() => { if (signInError) window.location.hash = '/account'; }, [signInError]);
   const [client, setClient] = useState(() => createAccountClient(browserSupabaseUrl, browserSupabaseKey));
   const [verifiedSession, setSession] = useState(null);
@@ -103,7 +105,7 @@ export function AccountProvider({ children }) {
         if(error||!data?.user)return null;
         return nextSession;
       }
-      const response=await fetch('/api/account/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_token:nextSession.access_token,refresh_token:nextSession.refresh_token})});
+      const response=await fetch('/api/account/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({access_token:nextSession.access_token,refresh_token:nextSession.refresh_token}),signal:AbortSignal.timeout(10000)});
       if(!response.ok)throw new Error('Session verification unavailable');
       const session=(await response.json()).session;clearLegacyBrowserSession();return session;
     };
@@ -116,7 +118,12 @@ export function AccountProvider({ children }) {
           if(!response.ok)throw new Error('Session temporarily unavailable');
           next=(await response.json()).session;
         }
-        if(active){setSession(next||null);if(next){setGuestSession(null);rememberAccountEmail(next.user.email);if(!window.location.hash||window.location.hash==='#/')window.location.hash='/account';}}
+        if(active){
+          setSession(next||null);
+          if(next){setGuestSession(null);rememberAccountEmail(next.user.email);}
+          if(authCallback||(next&&(!window.location.hash||window.location.hash==='#/')))window.location.hash='/account';
+          if(authCallback&&!next)setSignInError(true);
+        }
       }catch{if(active)setSessionRecoveryError(true);}
       finally{if(active)setLoading(false);}
     };
@@ -139,7 +146,7 @@ export function AccountProvider({ children }) {
     };
     const timer=setInterval(revalidate,60000);document.addEventListener('visibilitychange',revalidate);
     return()=>{active=false;clearInterval(timer);document.removeEventListener('visibilitychange',revalidate);data.subscription.unsubscribe();};
-  },[client]);
+  },[client,authCallback]);
 
   useEffect(() => {
     const accessToken = session?.access_token;
@@ -153,7 +160,7 @@ export function AccountProvider({ children }) {
   }, [session?.access_token]);
 
   const value = useMemo(() => ({
-    configured: Boolean(client), session, sessionRecoveryError, dismissSessionRecoveryError:()=>setSessionRecoveryError(false), loading: loading || restoringDevice,
+    configured: Boolean(client), session, sessionRecoveryError, dismissSessionRecoveryError:()=>setSessionRecoveryError(false), loading: loading || (restoringDevice&&!verifiedSession), verifyingEmail: Boolean(authCallback&&authCallback!=='error'&&(loading||(restoringDevice&&!verifiedSession))),
     startEmailTrial:async email=>{
       const response=await fetch('/api/account/email-trial',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
       const data=await response.json().catch(()=>({}));
@@ -255,7 +262,7 @@ export function AccountProvider({ children }) {
       window.location.assign(result.url);
       return true;
     },
-  }), [client, session, loading, restoringDevice, sessionRecoveryError, usage, promotionAccess, aiFeatureAvailability, billing, signInError]);
+  }), [client, session, verifiedSession, loading, restoringDevice, sessionRecoveryError, usage, promotionAccess, aiFeatureAvailability, billing, signInError, authCallback]);
 
   return <AccountContext.Provider value={value}>{children}</AccountContext.Provider>;
 }

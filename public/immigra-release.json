@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-15-general-audit-fixes",
+  "release": "2026-10-15-email-verification-return",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -34,6 +34,7 @@
     "stripe-readiness-check",
     "simplified-residency-selector",
     "storage-resilient-startup",
-    "accessible-preview-motion"
+    "accessible-preview-motion",
+    "direct-email-verification-return"
   ]
 }
