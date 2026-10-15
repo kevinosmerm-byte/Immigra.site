@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-15-no-background-toggle",
+  "release": "2026-10-15-smooth-interviewer-video",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -27,6 +27,7 @@
     "asylum-country-flags",
     "updated-silent-background-6177df6a",
     "liquid-glass-asylum-residency",
-    "unobstructed-background"
+    "unobstructed-background",
+    "frame-ready-interviewer-transitions"
   ]
 }

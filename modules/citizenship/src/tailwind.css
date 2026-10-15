@@ -7,3 +7,5 @@
 
 @source "./TrialAccessDialog.jsx";
 @source "./PremiumPracticeBoundary.jsx";
+
+@source "../../../shared/interview-ui/InterviewerVideo.jsx";

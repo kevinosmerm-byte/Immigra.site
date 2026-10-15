@@ -15,3 +15,5 @@
 @source "../modules/citizenship/src/EmailTrialAccount.jsx";
 
 @source "../modules/asylum/Module.jsx";
+
+@source "../shared/interview-ui/InterviewerVideo.jsx";
