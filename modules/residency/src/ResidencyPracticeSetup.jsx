@@ -3,7 +3,9 @@ import {aosRoutes,aosRoutesEn,aosQuestions} from './aosEngine.mjs';
 import aosUiEn from './aos-ui.en.json';
 import {INTERVIEWERS,interviewerMediaBase} from '../../../shared/interview-ui/interviewer-media.mjs';
 
-const card='rounded-3xl! border! border-slate-200/80! bg-white/85! p-5! shadow-sm! backdrop-blur-md!';
+const card='rounded-3xl! border! border-white/80! bg-linear-to-br! from-white/75! via-white/45! to-emerald-50/30! p-5! shadow-[inset_0_1px_0_0_rgba(255,255,255,0.95),0_12px_32px_-20px_rgba(15,70,56,0.3)]! backdrop-blur-xl!';
+const waterButton='backdrop-blur-xl! shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),inset_0_-1px_0_0_rgba(255,255,255,0.2),0_6px_18px_-12px_rgba(6,78,59,0.45)]! transition-[background-color,box-shadow,transform]! duration-200! motion-reduce:transition-none! enabled:active:translate-y-px!';
+const selectedWater='border-emerald-300/70! bg-linear-to-b! from-emerald-700/90! via-emerald-700/95! to-emerald-900/95! text-white!';
 const focus='focus-visible:outline-2! focus-visible:outline-offset-4! focus-visible:outline-emerald-700!';
 const choices={
  status:[['unknown','No estoy seguro / necesito revisar'],['citizen','Ciudadano estadounidense'],['resident','Residente permanente']],
@@ -33,7 +35,7 @@ function SegmentGroup({label,value,options,onChange}){
  return <fieldset className="m-0! min-w-0! border-0! p-0!">
   <legend className="mb-3! text-lg! font-semibold! text-slate-900!">{label}</legend>
   <div className={`grid! gap-2! ${options.length===4?'grid-cols-2! sm:grid-cols-4!':'grid-cols-3!'}`}>
-   {options.map(([id,title,display])=><button type="button" key={id} aria-label={title} aria-pressed={value===id} onClick={()=>onChange(id)} className={`min-h-12! min-w-0! rounded-2xl! border! px-3! py-3! text-sm! font-semibold! leading-snug! ${focus} ${value===id?'border-emerald-600! bg-emerald-700! text-white! shadow-sm!':'border-slate-200! bg-slate-50/80! text-slate-700! hover:bg-emerald-50!'}`}>{display||title}</button>)}
+   {options.map(([id,title,display])=><button type="button" key={id} aria-label={title} aria-pressed={value===id} onClick={()=>onChange(id)} className={`min-h-12! min-w-0! rounded-2xl! border! px-3! py-3! text-sm! font-semibold! leading-snug! ${focus} ${waterButton} ${value===id?selectedWater:'border-white/90! bg-linear-to-b! from-white/80! to-white/30! text-slate-800! hover:from-white/95! hover:to-emerald-50/65!'}`}>{display||title}</button>)}
   </div>
  </fieldset>;
 }
@@ -53,7 +55,7 @@ export default function ResidencyPracticeSetup({lang='es',interviewer,onIntervie
   if(invalid){event.preventDefault();setExpanded(true);setInvalidField('practice-'+invalid[0]);return;}
   setInvalidField('');onStart(event);
  }
- return <section className="residency-setup mx-auto! max-w-6xl! bg-white! px-4! py-5! text-slate-900! backdrop-blur-md! sm:px-7! sm:py-7!">
+ return <section className="residency-setup mx-auto! max-w-6xl! bg-transparent! px-4! py-5! text-slate-900! sm:px-7! sm:py-7!">
   <button type="button" className={`mb-3! inline-flex! min-h-11! items-center! rounded-xl! border-0! bg-transparent! px-2! text-sm! text-emerald-800! ${focus}`} onClick={onHome}>{t('← Volver al inicio')}</button>
   <header className="mb-6! flex! items-center! gap-3! border-0! bg-transparent! p-0!">
    <img src="/images/home/residency-20261014.png" alt="" width="56" height="56" className="h-14! w-14! shrink-0! rounded-2xl!"/>
@@ -67,15 +69,15 @@ export default function ResidencyPracticeSetup({lang='es',interviewer,onIntervie
       <fieldset className="m-0! min-w-0! border-0! p-0!">
        <legend className="mb-4! text-2xl! font-bold! text-slate-950!">{copy('¿Con quién practicamos?','Who shall we practice with?')}</legend>
        <div className="mx-auto! grid! max-w-3xl! grid-cols-3! gap-2! sm:gap-3!">
-        {INTERVIEWERS.map(person=>{const selected=interviewer===person.id;return <label key={person.id} className={`relative! m-0! cursor-pointer! overflow-hidden! rounded-2xl! border-2! bg-white/90! p-1.5! shadow-sm! has-focus-visible:outline-2! has-focus-visible:outline-offset-4! has-focus-visible:outline-emerald-700! ${selected?'border-emerald-600!':'border-slate-200!'}`}>
+        {INTERVIEWERS.map(person=>{const selected=interviewer===person.id;return <label key={person.id} className={`relative! m-0! cursor-pointer! overflow-hidden! rounded-2xl! border-2! bg-white/35! p-1.5! shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_10px_24px_-18px_rgba(6,78,59,0.4)]! backdrop-blur-xl! has-focus-visible:outline-2! has-focus-visible:outline-offset-4! has-focus-visible:outline-emerald-700! ${selected?'border-emerald-600!':'border-white/80!'}`}>
          <input type="radio" className="sr-only!" name="practice-interviewer" value={person.id} checked={selected} onChange={()=>onInterviewer(person.id)}/>
          <div className="aspect-square! overflow-hidden! rounded-xl!"><InterviewerPreview person={person} paused={previewsPaused}/></div>
          {selected&&<span className="absolute! right-2! top-2! grid! h-7! w-7! place-items-center! rounded-full! border-2! border-white! bg-emerald-600! text-white!" aria-hidden="true">✓</span>}
-         <span className={`mt-1! block! rounded-b-xl! px-1! py-2! text-center! text-sm! font-bold! sm:text-lg! ${selected?'bg-emerald-700! text-white!':'text-slate-950!'}`}>{person.name}</span>
+         <span className={`mt-1! block! rounded-b-xl! px-1! py-2! text-center! text-sm! font-bold! sm:text-lg! ${selected?'bg-linear-to-b! from-emerald-700/90! to-emerald-900/95! text-white! shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]!':'bg-white/30! text-slate-950!'}`}>{person.name}</span>
         </label>;})}
        </div>
       </fieldset>
-      <button type="button" aria-pressed={previewsPaused} onClick={()=>setPreviewsPaused(value=>!value)} className={`mt-2! min-h-11! rounded-xl! border-0! bg-transparent! px-2! text-sm! text-emerald-800! underline! ${focus}`}>{previewsPaused?copy('Animar entrevistadores','Play interviewer previews'):copy('Pausar entrevistadores','Pause interviewer previews')}</button>
+      <button type="button" aria-pressed={previewsPaused} onClick={()=>setPreviewsPaused(value=>!value)} className={`mt-3! min-h-11! rounded-2xl! border! border-white/80! bg-white/40! px-4! text-sm! font-semibold! text-emerald-900! ${waterButton} ${focus}`}>{previewsPaused?copy('Animar entrevistadores','Play interviewer previews'):copy('Pausar entrevistadores','Pause interviewer previews')}</button>
       <p className="my-4! flex! items-start! gap-2! text-sm! leading-relaxed! text-slate-500!"><Icon kind="mic"/>{copy('Habla por micrófono o escribe tus respuestas','Speak into your microphone or type your answers')}</p>
       <p className="text-xs! text-slate-500!">{aosQuestions.length} {copy('preguntas educativas · Español e inglés','educational questions · Spanish and English')}</p>
      </div>
@@ -93,12 +95,12 @@ export default function ResidencyPracticeSetup({lang='es',interviewer,onIntervie
         <span className="text-xl! text-slate-500!" aria-hidden="true">{expanded?'⌄':'›'}</span>
        </summary>
        <div className="mt-4! space-y-4!">
-        {fields.map(([id,value,onChange,label])=><label key={id} htmlFor={'practice-'+id} className="block! text-sm! font-semibold! text-slate-700!">{t(label)}<select id={'practice-'+id} value={value} onChange={event=>{onChange(event.target.value);setInvalidField('');}} aria-invalid={invalidField==='practice-'+id||undefined} aria-describedby="practice-circumstances" className={`mt-2! block! min-h-12! w-full! rounded-xl! border! border-slate-200! bg-white! px-3! py-2! text-base! text-slate-800! ${focus}`}>{choices[id].map(([key,title])=><option key={key} value={key}>{t(title)}</option>)}</select></label>)}
+        {fields.map(([id,value,onChange,label])=><label key={id} htmlFor={'practice-'+id} className="block! text-sm! font-semibold! text-slate-700!">{t(label)}<select id={'practice-'+id} value={value} onChange={event=>{onChange(event.target.value);setInvalidField('');}} aria-invalid={invalidField==='practice-'+id||undefined} aria-describedby="practice-circumstances" className={`mt-2! block! min-h-12! w-full! rounded-xl! border! border-white/90! bg-white/60! shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]! backdrop-blur-md! px-3! py-2! text-base! text-slate-800! ${focus}`}>{choices[id].map(([key,title])=><option key={key} value={key}>{t(title)}</option>)}</select></label>)}
         {invalidField&&<p role="alert" className="text-sm! text-red-700!">{copy('Revisa la selección indicada antes de continuar.','Check the indicated selection before continuing.')}</p>}
         <p id="practice-circumstances" className="text-sm! leading-relaxed! text-slate-500!">{explain}</p>
        </div>
       </details>
-      <div className="flex! items-start! gap-2! rounded-2xl! bg-emerald-100/80! p-3! text-sm! leading-relaxed! text-emerald-900!"><Icon kind="info"/>{t('Práctica educativa. No sustituye asesoría legal ni representa una entrevista oficial de USCIS.')}</div>
+      <div className="flex! items-start! gap-2! rounded-2xl! border! border-white/70! bg-emerald-100/55! backdrop-blur-lg! p-3! text-sm! leading-relaxed! text-emerald-900!"><Icon kind="info"/>{t('Práctica educativa. No sustituye asesoría legal ni representa una entrevista oficial de USCIS.')}</div>
       <section className={card} aria-label={copy('Avisos y consentimientos','Notices and consent')}>
        <details className="mb-3!"><summary className={`inline-flex! min-h-11! cursor-pointer! items-center! text-sm! font-semibold! text-emerald-800! underline! ${focus}`}>{copy('Ver detalles','View details')}</summary><div className="space-y-3! text-sm! leading-relaxed! text-slate-600!">
         <p>{explain}</p><p>{aiNotice}</p><p>{copy('El navegador puede enviar audio a servicios externos para transcribirlo. La app no guarda grabaciones.','Your browser may send audio to external services for transcription. The app does not store recordings.')}</p><p>{copy('Autorizo el dictado al pulsar el micrófono.','I authorize dictation when I press the microphone.')}</p>
@@ -107,8 +109,8 @@ export default function ResidencyPracticeSetup({lang='es',interviewer,onIntervie
        <label className="flex! min-h-11! cursor-pointer! items-start! gap-3! py-2! text-sm! leading-relaxed! text-slate-700!"><input type="checkbox" checked={ai} onChange={event=>onAi(event.target.checked)} className={`mt-1! h-5! w-5! shrink-0! accent-emerald-700! ${focus}`}/><span>{copy('Activar conversación con IA (opcional). Autorizo enviar a OpenAI mis respuestas, las preguntas y el contexto de esta sesión.','Enable AI conversation (optional). I authorize sending my answers, questions and this session’s context to OpenAI.')}</span></label>
       </section>
       {startError&&<p role="alert" className="text-sm! text-red-700!">{startError}</p>}
-      <button type="submit" disabled={!consent||starting} className={`flex! min-h-14! w-full! items-center! justify-center! gap-3! rounded-3xl! border! border-emerald-500! bg-gradient-to-r! from-emerald-600! to-emerald-800! px-5! py-4! text-lg! font-bold! text-white! shadow-lg! shadow-emerald-900/10! disabled:cursor-not-allowed! disabled:opacity-50! ${focus}`}>{starting?copy('Preparando práctica…','Preparing practice…'):copy('Comenzar práctica','Start practice')}<Icon kind="arrow"/></button>
-      <button type="button" onClick={onLegacy} className={`block! min-h-11! w-full! rounded-xl! border-0! bg-transparent! px-2! text-center! text-sm! font-semibold! text-emerald-800! underline! ${focus}`}>{copy('Explorar escenarios y herramientas','Explore scenarios and tools')}</button>
+      <button type="submit" disabled={!consent||starting} className={`flex! min-h-14! w-full! items-center! justify-center! gap-3! rounded-3xl! border! ${selectedWater} ${waterButton} px-5! py-4! text-lg! font-bold! text-white! disabled:cursor-not-allowed! disabled:opacity-50! ${focus}`}>{starting?copy('Preparando práctica…','Preparing practice…'):copy('Comenzar práctica','Start practice')}<Icon kind="arrow"/></button>
+      <button type="button" onClick={onLegacy} className={`block! min-h-11! w-full! rounded-xl! border! border-white/80! bg-white/40! px-3! text-center! text-sm! font-semibold! text-emerald-900! backdrop-blur-md! ${focus}`}>{copy('Explorar escenarios y herramientas','Explore scenarios and tools')}</button>
      </div>
     </div>
    </fieldset>
