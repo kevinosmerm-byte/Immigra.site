@@ -1,4 +1,5 @@
 import React,{useEffect,useRef,useState} from 'react';
+import {useGlass} from '../../../shared/design-system/Glass.jsx';
 import {aosRoutes,aosRoutesEn} from './aosEngine.mjs';
 import aosUiEn from './aos-ui.en.json';
 import {INTERVIEWERS,interviewerMediaBase} from '../../../shared/interview-ui/interviewer-media.mjs';
@@ -23,14 +24,15 @@ function Icon({kind,className=''}){
  </svg>;
 }
 function InterviewerPreview({person}){
+ const {preferences}=useGlass();
  const video=useRef(null);
  useEffect(()=>{
   const element=video.current,media=matchMedia('(prefers-reduced-motion: reduce)');let visible=false;
-  const sync=()=>{element.muted=true;if(media.matches||document.hidden||!visible)element.pause();else element.play().catch(()=>{});};
+  const sync=()=>{element.muted=true;if(preferences.reduceMotion||media.matches||document.hidden||!visible)element.pause();else element.play().catch(()=>{});};
   const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();});observer.observe(element);
   media.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);sync();
   return()=>{element.pause();observer.disconnect();media.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);};
- },[]);
+ },[preferences.reduceMotion]);
  return <video ref={video} src={`${interviewerMediaBase(person.id)}listening.mp4`} poster={`/interviewer/portraits/${person.id==='sarah'?'sahara':person.id}.jpg`} muted loop playsInline preload="metadata" tabIndex={-1} aria-hidden="true" className="h-full! w-full! object-cover! object-[50%_20%]!"/>;
 }
 function SegmentGroup({label,value,options,onChange}){

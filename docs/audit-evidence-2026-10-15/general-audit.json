@@ -1,0 +1,478 @@
+{
+  "date": "2026-10-15",
+  "target": "https://immigra.site",
+  "environment": "compiled local production build with controlled account fixtures; public HTTP endpoints checked separately",
+  "automatedTests": {
+    "root": 198,
+    "citizenship": 299,
+    "failures": 0,
+    "existingLintWarnings": 34
+  },
+  "screenChecks": [
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "account",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "settings",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "help",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "preparation",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "profile",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "asylum/practice",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "asylum/fiction",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "asylum/case-workspace",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "asylum/full-bank",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "asylum/practice-report",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "asylum/vault",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "residency",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 375,
+      "route": "citizenship",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "account",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "settings",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "help",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "preparation",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "profile",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "asylum/practice",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "asylum/fiction",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "asylum/case-workspace",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "asylum/full-bank",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "asylum/practice-report",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "asylum/vault",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "residency",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "es",
+      "width": 1280,
+      "route": "citizenship",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "account",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "settings",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "help",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "preparation",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "profile",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "asylum/practice",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "asylum/fiction",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "asylum/case-workspace",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "asylum/full-bank",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "asylum/practice-report",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "asylum/vault",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "residency",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 375,
+      "route": "citizenship",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "account",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "settings",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "help",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "preparation",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "profile",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "asylum/practice",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "asylum/fiction",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "asylum/case-workspace",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "asylum/full-bank",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "asylum/practice-report",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "asylum/vault",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "residency",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    },
+    {
+      "lang": "en",
+      "width": 1280,
+      "route": "citizenship",
+      "overflow": false,
+      "brokenImages": [],
+      "errors": []
+    }
+  ],
+  "regressions": {
+    "blockedStorage": "reproduced blank startup before fix; home/account/settings/asylum/residency/citizenship load afterward",
+    "reducedMotion": "three playing previews before fix; afterward all pause, resume when disabled, and honor OS setting",
+    "recoveryLanguage": "recovery now reads saved preference before App mounts"
+  },
+  "publicApi": {
+    "usageWithoutIdentity": 401,
+    "exportWithoutIdentity": 401,
+    "sessionWithoutIdentity": "200, null session, Cache-Control: no-store",
+    "interviewStatus": "ready true; authentication_required true",
+    "billingStatus": "billing_status_unavailable"
+  },
+  "limitations": [
+    "No live AI, email or payment was created during audit.",
+    "Stripe public diagnostic cannot confirm actual checkout/payment.",
+    "Native hardware, store review and production database policies were not independently validated."
+  ]
+}

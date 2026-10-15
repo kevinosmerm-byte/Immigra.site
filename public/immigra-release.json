@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-15-lavender-asylum-cards",
+  "release": "2026-10-15-general-audit-fixes",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -32,6 +32,8 @@
     "persistent-checkout-selection",
     "visible-checkout-feedback",
     "stripe-readiness-check",
-    "simplified-residency-selector"
+    "simplified-residency-selector",
+    "storage-resilient-startup",
+    "accessible-preview-motion"
   ]
 }
