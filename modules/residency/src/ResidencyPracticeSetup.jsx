@@ -58,7 +58,7 @@ export default function ResidencyPracticeSetup({lang='es',interviewer,onIntervie
   setInvalidField('');onStart(event);
  }
  return <section className="residency-setup mx-auto! max-w-6xl! bg-transparent! px-4! py-5! text-slate-900! sm:px-7! sm:py-7!">
-  <header className="mb-6! flex! items-center! gap-3! border-0! bg-transparent! p-0!">
+  <header className="mb-6! flex! items-center! justify-center! gap-3! border-0! bg-transparent! p-0! text-center!">
    <img src="/images/home/residency-20261014.png" alt="" width="56" height="56" className="h-14! w-14! shrink-0! rounded-2xl!"/>
    <div><h1 className="m-0! text-2xl! font-bold! tracking-tight! text-slate-950! sm:text-3xl!">{copy('Práctica de entrevista','Interview practice')}</h1><p className="m-0! mt-1! text-base! text-slate-500!">{copy('Prepárate a tu ritmo','Prepare at your own pace')}</p></div>
   </header>
@@ -68,7 +68,7 @@ export default function ResidencyPracticeSetup({lang='es',interviewer,onIntervie
     <div className="grid! items-start! gap-6!">
      <div>
       <fieldset className="m-0! min-w-0! border-0! p-0!">
-       <legend className="mb-4! text-2xl! font-bold! text-slate-950!">{copy('¿Con quién practicamos?','Who shall we practice with?')}</legend>
+       <legend className="mb-4! w-full! text-center! text-2xl! font-bold! text-slate-950!">{copy('¿Con quién practicamos?','Who shall we practice with?')}</legend>
        <div className="mx-auto! grid! max-w-3xl! grid-cols-3! gap-2! sm:gap-3!">
         {practiceInterviewers.map(person=>{const selected=interviewer===person.id;return <label key={person.id} className={`relative! m-0! cursor-pointer! overflow-hidden! rounded-2xl! border-2! bg-white/35! p-1.5! shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_10px_24px_-18px_rgba(6,78,59,0.4)]! backdrop-blur-xl! has-focus-visible:outline-2! has-focus-visible:outline-offset-4! has-focus-visible:outline-emerald-700! ${selected?'border-emerald-600!':'border-white/80!'}`}>
          <input type="radio" className="sr-only!" name="practice-interviewer" value={person.id} checked={selected} onChange={()=>onInterviewer(person.id)}/>
