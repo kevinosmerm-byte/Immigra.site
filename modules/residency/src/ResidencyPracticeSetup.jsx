@@ -1,7 +1,9 @@
 import React,{useEffect,useRef,useState} from 'react';
-import {aosRoutes,aosRoutesEn,aosQuestions} from './aosEngine.mjs';
+import {aosRoutes,aosRoutesEn} from './aosEngine.mjs';
 import aosUiEn from './aos-ui.en.json';
 import {INTERVIEWERS,interviewerMediaBase} from '../../../shared/interview-ui/interviewer-media.mjs';
+
+const practiceInterviewers=['kevin','sarah','william'].map(id=>INTERVIEWERS.find(person=>person.id===id));
 
 const card='rounded-3xl! border! border-white/80! bg-linear-to-br! from-white/75! via-white/45! to-emerald-50/30! p-5! shadow-[inset_0_1px_0_0_rgba(255,255,255,0.95),0_12px_32px_-20px_rgba(15,70,56,0.3)]! backdrop-blur-xl!';
 const waterButton='backdrop-blur-xl! shadow-[inset_0_1px_0_0_rgba(255,255,255,0.75),inset_0_-1px_0_0_rgba(255,255,255,0.2),0_6px_18px_-12px_rgba(6,78,59,0.45)]! transition-[background-color,box-shadow,transform]! duration-200! motion-reduce:transition-none! enabled:active:translate-y-px!';
@@ -15,20 +17,20 @@ const choices={
 const durations=[[6,'6 preguntas · Breve'],[12,'12 preguntas · Recomendada'],[30,'30 preguntas · Extendida'],[100,'Todas las preguntas de esta categoría']];
 
 function Icon({kind,className=''}){
- const paths={people:'M16 21v-3a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v3M22 21v-3a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',clock:'M12 8v4l3 2',settings:'m9 3-1 3-3 1v3l-2 2 2 2v3l3 1 1 3h6l1-3 3-1v-3l2-2-2-2V7l-3-1-1-3Z',mic:'M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8',info:'M12 11v6m0-10v1',arrow:'M4 12h16m-6-6 6 6-6 6'};
+ const paths={people:'M16 21v-3a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v3M22 21v-3a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',clock:'M12 8v4l3 2',settings:'m9 3-1 3-3 1v3l-2 2 2 2v3l3 1 1 3h6l1-3 3-1v-3l2-2-2-2V7l-3-1-1-3Z',info:'M12 11v6m0-10v1',arrow:'M4 12h16m-6-6 6 6-6 6'};
  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className={`h-6! w-6! shrink-0! ${className}`}>
-  {kind==='people'&&<circle cx="9" cy="7" r="4"/>}{kind==='clock'&&<circle cx="12" cy="12" r="9"/>}{kind==='settings'&&<circle cx="12" cy="12" r="3"/>}{kind==='mic'&&<rect x="9" y="2" width="6" height="12" rx="3"/>}{kind==='info'&&<circle cx="12" cy="12" r="9"/>}<path d={paths[kind]}/>
+  {kind==='people'&&<circle cx="9" cy="7" r="4"/>}{kind==='clock'&&<circle cx="12" cy="12" r="9"/>}{kind==='settings'&&<circle cx="12" cy="12" r="3"/>}{kind==='info'&&<circle cx="12" cy="12" r="9"/>}<path d={paths[kind]}/>
  </svg>;
 }
-function InterviewerPreview({person,paused}){
+function InterviewerPreview({person}){
  const video=useRef(null);
  useEffect(()=>{
   const element=video.current,media=matchMedia('(prefers-reduced-motion: reduce)');let visible=false;
-  const sync=()=>{element.muted=true;if(paused||media.matches||document.hidden||!visible)element.pause();else element.play().catch(()=>{});};
+  const sync=()=>{element.muted=true;if(media.matches||document.hidden||!visible)element.pause();else element.play().catch(()=>{});};
   const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;sync();});observer.observe(element);
   media.addEventListener('change',sync);document.addEventListener('visibilitychange',sync);sync();
   return()=>{element.pause();observer.disconnect();media.removeEventListener('change',sync);document.removeEventListener('visibilitychange',sync);};
- },[paused]);
+ },[]);
  return <video ref={video} src={`${interviewerMediaBase(person.id)}listening.mp4`} poster={`/interviewer/portraits/${person.id==='sarah'?'sahara':person.id}.jpg`} muted loop playsInline preload="metadata" tabIndex={-1} aria-hidden="true" className="h-full! w-full! object-cover! object-[50%_20%]!"/>;
 }
 function SegmentGroup({label,value,options,onChange}){
@@ -40,9 +42,9 @@ function SegmentGroup({label,value,options,onChange}){
  </fieldset>;
 }
 
-export default function ResidencyPracticeSetup({lang='es',interviewer,onInterviewer,route,onRoute,status,onStatus,age,onAge,marital,onMarital,count,onCount,consent,onConsent,ai,onAi,starting,onStart,onHome,onLegacy,startError=''}){
+export default function ResidencyPracticeSetup({lang='es',interviewer,onInterviewer,route,onRoute,status,onStatus,age,onAge,marital,onMarital,count,onCount,consent,onConsent,ai,onAi,starting,onStart,onLegacy,startError=''}){
  const es=lang==='es',t=text=>es?text:(aosUiEn[text]||text),copy=(a,b)=>es?a:b;
- const [expanded,setExpanded]=useState(false),[invalidField,setInvalidField]=useState(''),[previewsPaused,setPreviewsPaused]=useState(false);
+ const [expanded,setExpanded]=useState(false),[invalidField,setInvalidField]=useState('');
  const form=useRef(null);
  useEffect(()=>{if(expanded&&invalidField)form.current?.querySelector(`#${invalidField}`)?.focus();},[expanded,invalidField]);
  const fields=[['status',status,onStatus,'Situación del peticionario'],['age',age,onAge,route==='HIJO_A_PADRES'?'Edad del hijo o hija peticionario':'Edad de la persona beneficiaria'],['marital',marital,onMarital,'Estado civil de la persona beneficiaria']];
@@ -56,7 +58,6 @@ export default function ResidencyPracticeSetup({lang='es',interviewer,onIntervie
   setInvalidField('');onStart(event);
  }
  return <section className="residency-setup mx-auto! max-w-6xl! bg-transparent! px-4! py-5! text-slate-900! sm:px-7! sm:py-7!">
-  <button type="button" className={`mb-3! inline-flex! min-h-11! items-center! rounded-xl! border-0! bg-transparent! px-2! text-sm! text-emerald-800! ${focus}`} onClick={onHome}>{t('← Volver al inicio')}</button>
   <header className="mb-6! flex! items-center! gap-3! border-0! bg-transparent! p-0!">
    <img src="/images/home/residency-20261014.png" alt="" width="56" height="56" className="h-14! w-14! shrink-0! rounded-2xl!"/>
    <div><h1 className="m-0! text-2xl! font-bold! tracking-tight! text-slate-950! sm:text-3xl!">{copy('Práctica de entrevista','Interview practice')}</h1><p className="m-0! mt-1! text-base! text-slate-500!">{copy('Prepárate a tu ritmo','Prepare at your own pace')}</p></div>
@@ -69,17 +70,14 @@ export default function ResidencyPracticeSetup({lang='es',interviewer,onIntervie
       <fieldset className="m-0! min-w-0! border-0! p-0!">
        <legend className="mb-4! text-2xl! font-bold! text-slate-950!">{copy('¿Con quién practicamos?','Who shall we practice with?')}</legend>
        <div className="mx-auto! grid! max-w-3xl! grid-cols-3! gap-2! sm:gap-3!">
-        {INTERVIEWERS.map(person=>{const selected=interviewer===person.id;return <label key={person.id} className={`relative! m-0! cursor-pointer! overflow-hidden! rounded-2xl! border-2! bg-white/35! p-1.5! shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_10px_24px_-18px_rgba(6,78,59,0.4)]! backdrop-blur-xl! has-focus-visible:outline-2! has-focus-visible:outline-offset-4! has-focus-visible:outline-emerald-700! ${selected?'border-emerald-600!':'border-white/80!'}`}>
+        {practiceInterviewers.map(person=>{const selected=interviewer===person.id;return <label key={person.id} className={`relative! m-0! cursor-pointer! overflow-hidden! rounded-2xl! border-2! bg-white/35! p-1.5! shadow-[inset_0_1px_0_rgba(255,255,255,0.95),0_10px_24px_-18px_rgba(6,78,59,0.4)]! backdrop-blur-xl! has-focus-visible:outline-2! has-focus-visible:outline-offset-4! has-focus-visible:outline-emerald-700! ${selected?'border-emerald-600!':'border-white/80!'}`}>
          <input type="radio" className="sr-only!" name="practice-interviewer" value={person.id} checked={selected} onChange={()=>onInterviewer(person.id)}/>
-         <div className="aspect-square! overflow-hidden! rounded-xl!"><InterviewerPreview person={person} paused={previewsPaused}/></div>
+         <div className="aspect-square! overflow-hidden! rounded-xl!"><InterviewerPreview person={person}/></div>
          {selected&&<span className="absolute! right-2! top-2! grid! h-7! w-7! place-items-center! rounded-full! border-2! border-white! bg-emerald-600! text-white!" aria-hidden="true">✓</span>}
          <span className={`mt-1! block! rounded-b-xl! px-1! py-2! text-center! text-sm! font-bold! sm:text-lg! ${selected?'bg-linear-to-b! from-emerald-700/90! to-emerald-900/95! text-white! shadow-[inset_0_1px_0_rgba(255,255,255,0.4)]!':'bg-white/30! text-slate-950!'}`}>{person.name}</span>
         </label>;})}
        </div>
       </fieldset>
-      <button type="button" aria-pressed={previewsPaused} onClick={()=>setPreviewsPaused(value=>!value)} className={`mt-3! min-h-11! rounded-2xl! border! border-white/80! bg-white/40! px-4! text-sm! font-semibold! text-emerald-900! ${waterButton} ${focus}`}>{previewsPaused?copy('Animar entrevistadores','Play interviewer previews'):copy('Pausar entrevistadores','Pause interviewer previews')}</button>
-      <p className="my-4! flex! items-start! gap-2! text-sm! leading-relaxed! text-slate-500!"><Icon kind="mic"/>{copy('Habla por micrófono o escribe tus respuestas','Speak into your microphone or type your answers')}</p>
-      <p className="text-xs! text-slate-500!">{aosQuestions.length} {copy('preguntas educativas · Español e inglés','educational questions · Spanish and English')}</p>
      </div>
      <div className="space-y-4!">
       <section className={card}>

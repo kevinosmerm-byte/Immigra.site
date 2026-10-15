@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-15-checkout-recovery",
+  "release": "2026-10-15-clean-residency-selector",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -31,6 +31,7 @@
     "frame-ready-interviewer-transitions",
     "persistent-checkout-selection",
     "visible-checkout-feedback",
-    "stripe-readiness-check"
+    "stripe-readiness-check",
+    "simplified-residency-selector"
   ]
 }
