@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-15-readiness-glass-trial",
+  "release": "2026-10-15-email-first-checkout",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -43,6 +43,8 @@
     "encrypted-in-app-ai-reporting",
     "unified-native-package-and-pkce-return",
     "safe-account-deletion-renewal-stop",
-    "release-quality-and-health-checks"
+    "release-quality-and-health-checks",
+    "new-account-checkout-without-email-link",
+    "report-link-in-page-footer"
   ]
 }

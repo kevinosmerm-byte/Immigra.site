@@ -50,6 +50,18 @@ const FEATURE_LABELS = {
   es: { coach: "Coach de inglés", classicInterview: "Entrevista cívica", writing: "Escritura", speaking: "Conversación", realInterview: "Entrevista real" },
 };
 
+async function registerEmailAccess(email) {
+  const response = await fetch('/api/account/email-trial', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }), signal: AbortSignal.timeout(30000),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.session) throw Object.assign(new Error(data.error || 'Access unavailable'), { code: data.code });
+  if (Capacitor.isNativePlatform()) await accountStorage.setItem(NATIVE_TRIAL_KEY, data.session.access_token);
+  rememberAccountEmail(email);
+  return data.session;
+}
+
 export function AccountProvider({ children }) {
   const [authCallback] = useState(() => authCallbackKind(window.location));
   const [signInError,setSignInError] = useState(authCallback==='error');
@@ -162,12 +174,22 @@ export function AccountProvider({ children }) {
   useEffect(() => {
     const accessToken = session?.access_token;
     if (!accessToken) return undefined;
-    let active = true;
-    fetch("/api/account/usage", { headers: { Authorization: `Bearer ${accessToken}` } })
-      .then((response) => response.ok ? response.json() : null)
-      .then((nextUsage) => { if (active) setUsage(nextUsage); })
-      .catch(() => { if (active) setUsage(null); });
-    return () => { active = false; };
+    let active = true, timer, attempts = 0;
+    const controller = new AbortController();
+    const returningFromCheckout = new URLSearchParams(window.location.search).get('billing') === 'success';
+    const refresh = async () => {
+      let nextUsage = null;
+      try {
+        const response = await fetch('/api/account/usage', { headers: { Authorization: `Bearer ${accessToken}` }, cache: 'no-store', signal: typeof AbortSignal.any === 'function' ? AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]) : controller.signal });
+        if (response.ok) nextUsage = await response.json();
+      } catch { /* A bounded retry handles a delayed payment webhook. */ }
+      if (!active) return;
+      setUsage(nextUsage);
+      attempts += 1;
+      if (returningFromCheckout && nextUsage?.tier !== 'pro' && attempts < 10) timer = setTimeout(refresh, 3000);
+    };
+    void refresh();
+    return () => { active = false; controller.abort(); clearTimeout(timer); };
   }, [session?.access_token]);
 
   useEffect(()=>{
@@ -191,10 +213,9 @@ export function AccountProvider({ children }) {
   const value = useMemo(() => ({
     configured: Boolean(client), session, sessionRecoveryError, dismissSessionRecoveryError:()=>setSessionRecoveryError(false), loading: loading || (restoringDevice&&!verifiedSession), verifyingEmail: Boolean(authCallback&&authCallback!=='error'&&(loading||(restoringDevice&&!verifiedSession))),
     startEmailTrial:async email=>{
-      const response=await fetch('/api/account/email-trial',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
-      const data=await response.json().catch(()=>({}));
-      if(!response.ok||!data.session)throw Object.assign(Error(data.error||'Trial unavailable'),{code:data.code});
-      if(Capacitor.isNativePlatform())await accountStorage.setItem(NATIVE_TRIAL_KEY,data.session.access_token);rememberAccountEmail(email);setGuestSession(data.session);return data.session;
+      const access = await registerEmailAccess(email);
+      setGuestSession(access);
+      return access;
     }, usage, promotionAccess, aiFeatureAvailability, billing, signInError,
     sendMagicLink: (email) => {rememberAccountEmail(email);return TEMPORARY_PUBLIC_INTERVIEWS ? Promise.resolve({error: new Error("Account links temporarily disabled")}) : client.auth.signInWithOtp({
       email,
@@ -266,16 +287,18 @@ export function AccountProvider({ children }) {
       await client.auth.signOut({ scope: "local" });await accountStorage.removeItem(NATIVE_TRIAL_KEY);setSession(null);setGuestSession(null);rememberAccountEmail('');
       return true;
     },
-    openCheckout: async (interval) => {
-      if (session?.isEmailTrial) throw new Error("Verify your email before subscribing.");
-      if (!session?.access_token) return false;
+    openCheckout: async (interval, checkoutEmail) => {
+      if (Capacitor.isNativePlatform()) throw Object.assign(new Error("Web checkout is unavailable in native apps."), { code: "checkout_unavailable" });
+      if (!["monthly", "annual"].includes(interval)) throw Object.assign(new Error("Choose a plan."), { code: "invalid_billing_interval" });
+      const checkoutSession = session?.access_token ? session : await registerEmailAccess(checkoutEmail);
       const response = await fetch("/api/billing/checkout-session", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${checkoutSession.access_token}` },
         body: JSON.stringify({ interval }), signal:AbortSignal.timeout(30000),
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.url) throw Object.assign(new Error(result.error || "Checkout unavailable"),{code:result.code||"checkout_unavailable",reference:result.reference});
+      clearCheckoutIntent();
       window.location.assign(result.url);
       return true;
     },
@@ -395,7 +418,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
     if(interval){clearCheckoutIntent();startBillingAction(interval);}
   },[session?.user?.id,session?.isEmailTrial,webBillingEnabled]);
   if(configured&&!loading&&(!session||session.isEmailTrial)){
-    const trial=<EmailTrialAccount signInError={signInError} language={language} session={session} usage={usage} billing={billing} webBillingEnabled={webBillingEnabled} startEmailTrial={startEmailTrial} sendMagicLink={sendMagicLink} signOut={signOut} onContinue={()=>{onClose?.();if(embedded)window.location.hash='/';}} modalRef={modalRef} embedded={embedded} onClose={onClose}/>;
+    const trial=<EmailTrialAccount signInError={signInError} language={language} session={session} usage={usage} billing={billing} webBillingEnabled={webBillingEnabled} openCheckout={openCheckout} startEmailTrial={startEmailTrial} sendMagicLink={sendMagicLink} signOut={signOut} onContinue={()=>{onClose?.();if(embedded)window.location.hash='/';}} modalRef={modalRef} embedded={embedded} onClose={onClose}/>;
     return embedded?trial:createPortal(trial,document.body);
   }
   const content = (

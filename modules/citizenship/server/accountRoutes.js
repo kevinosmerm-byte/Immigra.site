@@ -53,7 +53,7 @@ router.get("/public-config", async (_req, res) => {
     aiFeatures,
     billing: { ...billing, enabled: billing.enabled && policyReady },
     practicePolicyReady: policyReady,
-    trialPolicy: { days: 7, start: "first_premium_use", unlimited: true, requiresAccount: false, emailOnly: true, verificationRequiredAfterTrial: true },
+    trialPolicy: { days: 7, start: "first_premium_use", unlimited: true, requiresAccount: false, emailOnly: true, verificationRequiredAfterTrial: false, verificationRequiredForPrivateAccount: true },
   });
 });
 

@@ -78,7 +78,7 @@ test("Valid Stripe subscription fixtures without app account metadata are acknow
 
 test("Checkout accepts only allowlisted billing intervals and authenticated accounts", async () => {
   const source = await readFile(new URL("../server/billingRoutes.js", import.meta.url), "utf8");
-  assert.match(source, /router\.use\(requireAccount\)/);
+  assert.match(source, /authenticate = requireAccount/);
   assert.match(source, /\["monthly", "annual"\]\.includes\(interval\)/);
   assert.doesNotMatch(source, /req\.body\?\.price/);
 });

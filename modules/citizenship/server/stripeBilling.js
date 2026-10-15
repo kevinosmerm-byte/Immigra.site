@@ -104,8 +104,8 @@ export async function createCheckoutSession({ userId, email, interval }, { ident
     subscription_data: { metadata: { user_id: userId, product_key: PRO_PLAN.productKey, interval } },
     allow_promotion_codes: true,
     automatic_tax: { enabled: isTrue(process.env.STRIPE_AUTOMATIC_TAX) },
-    success_url: `${baseUrl}/?billing=success&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${baseUrl}/?billing=cancelled`,
+    success_url: `${baseUrl}/?billing=success&session_id={CHECKOUT_SESSION_ID}#/account`,
+    cancel_url: `${baseUrl}/?billing=cancelled#/account`,
   });
   return { url: session.url };
 }
