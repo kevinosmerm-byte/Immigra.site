@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-14-liquid-glass-practice",
+  "release": "2026-10-15-no-background-toggle",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -26,6 +26,7 @@
     "compact-icon-glow",
     "asylum-country-flags",
     "updated-silent-background-6177df6a",
-    "liquid-glass-asylum-residency"
+    "liquid-glass-asylum-residency",
+    "unobstructed-background"
   ]
 }
