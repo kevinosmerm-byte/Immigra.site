@@ -1,8 +1,11 @@
+import {getBillingReadiness} from "./billingReadiness.js";
+import {billingFailure} from "./billingErrors.js";
 import { Router } from "express";
 import { requireAccount, requireVerifiedAccount, isPracticePolicyReady } from "./accountService.js";
 import { createCheckoutSession, createPortalSession } from "./stripeBilling.js";
 
 const router = Router();
+router.get("/status",async(_req,res)=>{res.set("Cache-Control","no-store");try{res.json(await getBillingReadiness());}catch{res.status(503).json({enabled:false,ready:false,reason:"checkout_unavailable"});}});
 router.use(requireAccount);
 router.use(requireVerifiedAccount);
 
@@ -17,12 +20,8 @@ router.post("/checkout-session", async (req, res) => {
     res.set("Cache-Control", "no-store");
     return res.status(201).json(session);
   } catch (error) {
-    const conflict = error.code === "subscription_already_active";
-    console.error("Stripe Checkout error", { code: error.code || "", message: error.message });
-    return res.status(conflict ? 409 : 503).json({
-      error: conflict ? "A Pro subscription is already active." : "Secure checkout is temporarily unavailable.",
-      code: conflict ? error.code : "checkout_unavailable",
-    });
+    const failure=billingFailure(error);console.error('Stripe Checkout error',failure);
+    return res.status(failure.status).json({error:failure.code==='subscription_already_active'?'A Pro subscription is already active.':'Secure checkout is temporarily unavailable.',code:failure.code,reference:failure.reference});
   }
 });
 
@@ -32,12 +31,8 @@ router.post("/portal-session", async (req, res) => {
     res.set("Cache-Control", "no-store");
     return res.status(201).json(session);
   } catch (error) {
-    const missing = error.code === "stripe_customer_not_found";
-    console.error("Stripe Portal error", { code: error.code || "", message: error.message });
-    return res.status(missing ? 404 : 503).json({
-      error: missing ? "No Stripe subscription was found for this account." : "Subscription management is temporarily unavailable.",
-      code: missing ? error.code : "portal_unavailable",
-    });
+    const failure=billingFailure(error,'portal_unavailable');console.error('Stripe Portal error',failure);
+    return res.status(failure.status).json({error:'Subscription management is temporarily unavailable.',code:failure.code,reference:failure.reference});
   }
 });
 

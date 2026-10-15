@@ -1,3 +1,4 @@
+import {saveCheckoutIntent} from "./checkoutIntent.mjs";
 import { Capacitor } from "@capacitor/core";
 import { useRef, useState } from "react";
 import { useModalFocus } from "./useModalFocus.js";
@@ -11,7 +12,7 @@ export function TrialAccessDialog({ pending, billing, openCheckout, startEmailTr
   const accountRequired = pending.reason === "account_required";
   const expired = pending.reason === "trial_expired";
   const purchase = async () => {
-    if(emailTrial){try{sessionStorage.setItem('immigra.pending-billing.v1','monthly');}catch{}onClose();window.location.hash='/account';return;}
+    if(emailTrial){saveCheckoutIntent('monthly');onClose();window.location.hash='/account';return;}
     if (inFlight.current) return;
     inFlight.current = true; setOpening(true); setError(false);
     try { await openCheckout("monthly"); } catch { setError(true); }

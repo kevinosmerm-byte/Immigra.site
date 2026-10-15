@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-15-smooth-interviewer-video",
+  "release": "2026-10-15-checkout-recovery",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -28,6 +28,9 @@
     "updated-silent-background-6177df6a",
     "liquid-glass-asylum-residency",
     "unobstructed-background",
-    "frame-ready-interviewer-transitions"
+    "frame-ready-interviewer-transitions",
+    "persistent-checkout-selection",
+    "visible-checkout-feedback",
+    "stripe-readiness-check"
   ]
 }

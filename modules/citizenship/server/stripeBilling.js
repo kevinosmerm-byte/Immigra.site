@@ -13,14 +13,14 @@ function isTrue(value) {
   return String(value || "").trim().toLowerCase() === "true";
 }
 
-function getStripe() {
+export function getStripe() {
   const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
   if (!secretKey) throw new Error("Stripe is not configured.");
   if (!stripeClient) stripeClient = new Stripe(secretKey, { maxNetworkRetries: 2, timeout: 20_000 });
   return stripeClient;
 }
 
-function priceIdForInterval(interval) {
+export function priceIdForInterval(interval) {
   if (interval === "monthly") {
     const introductoryPrice = process.env.STRIPE_PRICE_MONTHLY_INTRO?.trim();
     if (introductoryPrice) return introductoryPrice;

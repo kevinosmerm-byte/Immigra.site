@@ -1,3 +1,5 @@
+import {billingErrorMessage} from "./billingMessages.mjs";
+import {checkoutReturnUrl,readCheckoutIntent,clearCheckoutIntent} from "./checkoutIntent.mjs";
 import {accountStorage,clearLegacyBrowserSession,lastAccountEmail,rememberAccountEmail} from "./accountStorage.js";
 import EmailTrialAccount from "./EmailTrialAccount.jsx";
 import { createPortal } from "react-dom";
@@ -160,7 +162,7 @@ export function AccountProvider({ children }) {
     }, usage, promotionAccess, aiFeatureAvailability, billing, signInError,
     sendMagicLink: (email) => {rememberAccountEmail(email);return TEMPORARY_PUBLIC_INTERVIEWS ? Promise.resolve({error: new Error("Account links temporarily disabled")}) : client.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}${window.location.pathname}` },
+      options: { emailRedirectTo: checkoutReturnUrl(email) },
     });},
     signOut:async()=>{const responses=await Promise.all([fetch('/api/account/session',{method:'DELETE'}),fetch('/api/account/email-trial/session',{method:'DELETE'})]);if(responses.some(response=>!response.ok))throw new Error('Could not sign out securely');await client?.auth.signOut({scope:'local'});setGuestSession(null);setSession(null);setUsage(null);window.location.hash='/account';},
     startAiSession: async (feature) => {
@@ -234,10 +236,10 @@ export function AccountProvider({ children }) {
       const response = await fetch("/api/billing/checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
-        body: JSON.stringify({ interval }),
+        body: JSON.stringify({ interval }), signal:AbortSignal.timeout(30000),
       });
       const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.url) throw new Error(result.error || "Checkout unavailable");
+      if (!response.ok || !result.url) throw Object.assign(new Error(result.error || "Checkout unavailable"),{code:result.code||"checkout_unavailable",reference:result.reference});
       window.location.assign(result.url);
       return true;
     },
@@ -249,7 +251,7 @@ export function AccountProvider({ children }) {
         headers: { Authorization: `Bearer ${session.access_token}` },
       });
       const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.url) throw new Error(result.error || "Subscription management unavailable");
+      if (!response.ok || !result.url) throw Object.assign(new Error(result.error || "Subscription management unavailable"),{code:result.code||"portal_unavailable",reference:result.reference});
       window.location.assign(result.url);
       return true;
     },
@@ -345,19 +347,19 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
     try {
       if (action === "portal") await openBillingPortal();
       else await openCheckout(action);
-    } catch {
-      setBillingError(true);
+    } catch (error) {
+      setBillingError({code:error.name==='TimeoutError'?'checkout_timeout':typeof error.code==='string'?error.code:'checkout_unavailable',reference:error.reference});
       setBillingAction("");
     }
   };
 
   useEffect(()=>{
     if(!session||session.isEmailTrial||!webBillingEnabled)return;
-    let interval;try{interval=sessionStorage.getItem('immigra.pending-billing.v1');}catch{return;}
-    if(['monthly','annual'].includes(interval)){sessionStorage.removeItem('immigra.pending-billing.v1');startBillingAction(interval);}
+    const interval=readCheckoutIntent(session.user.email);
+    if(interval){clearCheckoutIntent();startBillingAction(interval);}
   },[session?.user?.id,session?.isEmailTrial,webBillingEnabled]);
   if(configured&&!loading&&(!session||session.isEmailTrial)){
-    const trial=<EmailTrialAccount language={language} session={session} usage={usage} billing={billing} webBillingEnabled={webBillingEnabled} startEmailTrial={startEmailTrial} sendMagicLink={sendMagicLink} signOut={signOut} onContinue={()=>{onClose?.();if(embedded)window.location.hash='/';}} modalRef={modalRef} embedded={embedded} onClose={onClose}/>;
+    const trial=<EmailTrialAccount signInError={signInError} language={language} session={session} usage={usage} billing={billing} webBillingEnabled={webBillingEnabled} startEmailTrial={startEmailTrial} sendMagicLink={sendMagicLink} signOut={signOut} onContinue={()=>{onClose?.();if(embedded)window.location.hash='/';}} modalRef={modalRef} embedded={embedded} onClose={onClose}/>;
     return embedded?trial:createPortal(trial,document.body);
   }
   const content = (
@@ -416,13 +418,13 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
               <button className="account-billing-manage" type="button" onClick={() => startBillingAction("portal")} disabled={Boolean(billingAction)}>{billingAction ? copy.openingCheckout : copy.manageSubscription}</button>
             ) : (
               <div className="account-billing-actions">
-                <button type="button" onClick={() => startBillingAction("monthly")} disabled={Boolean(billingAction)}><b>{copy.monthly}</b><small>${(Number(billing.introductoryOfferEnabled ? billing.introductoryMonthlyPriceCents : billing.monthlyPriceCents) / 100).toFixed(2)}/mo</small></button>
-                <button type="button" onClick={() => startBillingAction("annual")} disabled={Boolean(billingAction)}><b>{language==='es'?'ANUAL':'ANNUAL'}</b><small>${(Number(billing.annualPriceCents || PRO_PLAN.annualPriceCents) / 100).toFixed(2)}/yr</small></button>
-                <p>{language === "es" ? "La prueba gratuita de la app se activa sin tarjeta. Si contratas una suscripción, Stripe cobra el plan elegido con renovación automática; no comienza otra prueba de siete días. Revisa las condiciones antes de confirmar y administra la suscripción en Mi cuenta." : "The app trial needs no card. Purchasing a subscription charges the selected plan in Stripe with automatic renewal; it does not start another seven-day trial. Review the terms before confirming and manage the subscription in My account."}</p><em>{copy.secureCheckout}</em>
+                <button type="button" onClick={() => startBillingAction("monthly")} disabled={Boolean(billingAction)}><b>{billingAction==='monthly'?copy.openingCheckout:copy.monthly}</b><small>${(Number(billing.introductoryOfferEnabled ? billing.introductoryMonthlyPriceCents : billing.monthlyPriceCents) / 100).toFixed(2)}/mo</small></button>
+                <button type="button" onClick={() => startBillingAction("annual")} disabled={Boolean(billingAction)}><b>{billingAction==='annual'?copy.openingCheckout:language==='es'?'ANUAL':'ANNUAL'}</b><small>${(Number(billing.annualPriceCents || PRO_PLAN.annualPriceCents) / 100).toFixed(2)}/yr</small></button>
+                {billingAction&&<p role="status" aria-live="polite">{language==='es'?'Abriendo el pago seguro de Stripe…':'Opening secure Stripe checkout…'}</p>}<p>{language === "es" ? "La prueba gratuita de la app se activa sin tarjeta. Si contratas una suscripción, Stripe cobra el plan elegido con renovación automática; no comienza otra prueba de siete días. Revisa las condiciones antes de confirmar y administra la suscripción en Mi cuenta." : "The app trial needs no card. Purchasing a subscription charges the selected plan in Stripe with automatic renewal; it does not start another seven-day trial. Review the terms before confirming and manage the subscription in My account."}</p><em>{copy.secureCheckout}</em>
               </div>
             )
           ) : <><button className="account-billing-manage" type="button" disabled>{language==='es'?'Actualizar a PRO →':'Upgrade to PRO →'}</button><em>{webBillingEnabled ? (language === 'es' ? 'Inicia sesión con tu correo para comenzar los 7 días gratis de PRO.' : 'Sign in with your email to start your 7-day PRO trial.') : copy.pricingStatus}</em></>}
-          {billingError && <p className="account-status error account-billing-error">{copy.billingError}</p>}
+          {billingError && <div role="alert" className="account-status error account-billing-error"><p>{billingErrorMessage(billingError,language)}</p><small>{language==='es'?'Referencia de soporte: ':'Support reference: '}{billingError.reference||billingError.code}</small>{billingError.code==='subscription_already_active'&&<button type="button" onClick={()=>startBillingAction('portal')}>{copy.manageSubscription}</button>}</div>}
           {Capacitor.isNativePlatform() && <><button type="button" disabled>{language === "es" ? "Restaurar compra" : "Restore Purchase"}</button><small>{language === "es" ? "Las compras y la restauración en la tienda todavía no están disponibles." : "Store purchases and restoration are not available yet."}</small></>}
         </GlassSection>:<p role="status">{language==='es'?'Acceso temporal de pruebas: no necesitas contratar PRO ni iniciar sesión para practicar entrevistas. Se mantienen límites globales del servicio.':'Temporary testing access: no PRO subscription or sign-in is needed to practice interviews. Global service limits still apply.'}</p>}
         {session&&<GlassSection className="account-management" icon="⚙" title={language==='es'?'Administración de la cuenta':'Account management'} description={language==='es'?'Gestiona y protege tu información.':'Manage and protect your information.'}><div className="account-management-grid">            <button className="account-primary account-export" onClick={downloadAccountData} disabled={exporting} type="button">
