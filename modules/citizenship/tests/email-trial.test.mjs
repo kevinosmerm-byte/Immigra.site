@@ -31,3 +31,10 @@ test('device cookie restores the same identity after server restart and seven da
  assert.equal(f.cookie(),saved);assert.equal(f.attributes.length,1);
  restored.clear(f.res);assert.match(f.cookie(),/Max-Age=0/);assert.equal(await restored.user(f.req()),null);
 });
+
+test('native trial credentials are signed and restore without third-party cookies',async()=>{
+ const f=fixture(),req={headers:{'x-immigra-client':'native'}};const session=await f.service.register(req,f.res,'native@example.com');assert.ok(session.access_token.startsWith(EMAIL_TRIAL_TOKEN+'.'));assert.equal(session.access_token.includes('native@example.com'),false);
+ const restored=await f.service.user({headers:{authorization:'Bearer '+session.access_token}});assert.equal(restored.id,session.user.id);
+ const forged=session.access_token.replace('10000000','20000000');assert.equal(await f.service.user({headers:{authorization:'Bearer '+forged}}),null);assert.equal(await f.service.user({headers:{authorization:'Bearer '+EMAIL_TRIAL_TOKEN}}),null);
+ f.users.get(restored.id).email_confirmed_at=new Date().toISOString();assert.equal(await f.service.user({headers:{authorization:'Bearer '+session.access_token}}),null);
+});

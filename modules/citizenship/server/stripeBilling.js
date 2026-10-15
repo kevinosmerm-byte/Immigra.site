@@ -161,3 +161,13 @@ export async function handleStripeWebhook(rawBody, signature) {
   const event = getStripe().webhooks.constructEvent(rawBody, signature, webhookSecret);
   return applyStripeEvent(event);
 }
+
+export async function cancelWebRenewalForDeletion(userId,{identityLookup=getBillingIdentity,client=getStripe}={}){
+ const identity=await identityLookup(userId);
+ if(identity?.provider!=='stripe'||!['active','grace'].includes(identity.status))return;
+ if(!identity.providerEntitlementId||!identity.providerCustomerId)throw Error('Subscription identity unavailable');
+ const stripe=client(),subscription=await stripe.subscriptions.retrieve(identity.providerEntitlementId);
+ const customer=typeof subscription.customer==='string'?subscription.customer:subscription.customer?.id;
+ if(subscription.metadata?.user_id!==userId||customer!==identity.providerCustomerId)throw Error('Subscription ownership mismatch');
+ if(subscription.status!=='canceled'&&!subscription.cancel_at_period_end)await stripe.subscriptions.update(subscription.id,{cancel_at_period_end:true});
+}

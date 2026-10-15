@@ -1,0 +1,19 @@
+{
+  "appName": "Immigra",
+  "applicationId": "us.citizenshipai.app",
+  "category": "EDUCATION",
+  "website": "https://immigra.site/",
+  "privacyPolicyUrl": "https://immigra.site/privacy",
+  "accountDeletionUrl": "https://immigra.site/delete-account",
+  "supportEmail": "info@citizenshipai.us",
+  "localizations": {
+    "es-US": {
+      "shortDescription": "Practica entrevistas de ciudadanía, asilo y residencia en español o inglés."
+    },
+    "en-US": {
+      "shortDescription": "Practice citizenship, asylum and residency interviews in English or Spanish."
+    }
+  },
+  "reviewStatus": "prepared_not_submitted",
+  "nativePurchases": "not_activated"
+}

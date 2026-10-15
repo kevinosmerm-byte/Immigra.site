@@ -1,4 +1,4 @@
-# Citizenship AI — App Store Connect submission sheet
+# Immigra — App Store Connect submission sheet
 
 The localized metadata is stored in `app-store/metadata.json` and validated by `npm run verify:app-store`.
 
@@ -6,17 +6,17 @@ The field-by-field privacy, review, age-rating, screenshot and release guidance 
 
 ## App record
 
-- Name: Citizenship AI
+- Name: Immigra
 - Bundle ID: `us.citizenshipai.app`
-- SKU: `citizenship-ai-ios-1`
+- SKU: choose an unused Immigra SKU when creating the app record.
 - Primary language: English (U.S.)
 - Primary category: Education
 - Secondary category: Reference
-- Privacy policy: `https://citizenshipai.us/#privacy`
-- Support URL: `https://citizenshipai.us/#privacy`
-- Marketing URL: `https://citizenshipai.us/`
+- Privacy policy: `https://immigra.site/privacy`
+- Support URL: `https://immigra.site/support`
+- Marketing URL: `https://immigra.site/`
 
-The account holder must enter and verify the legal contact name, telephone number, copyright owner, Apple Developer team, tax status and agreements. These details must not be guessed or committed as credentials.
+Kevin Medina is the confirmed operator. The account holder must verify the review telephone, copyright owner, Apple Developer team, tax status and agreements. These details must not be guessed or committed as credentials.
 
 ## Localizations prepared
 
@@ -26,9 +26,9 @@ The account holder must enter and verify the legal contact name, telephone numbe
 
 ## Suggested screenshot sequence
 
-1. Home — “Your interview. Your future.”
+1. Unified home — citizenship, asylum and residency.
 2. 128 Questions — bilingual study cards
-3. Sarah — conversational English practice
+3. Sahara, Kevin and William — interview selection.
 4. Interview — realistic guided rehearsal
 5. Writing and speaking — focused language practice
 6. Podcasts — choose English or Spanish and listen
@@ -48,11 +48,11 @@ Declare that the current build does not use data for third-party advertising or 
 
 ## Review preparation
 
-- Sign-in is optional during the launch promotion; no demo account is currently required.
+- Free study is open. Email-first premium trial lasts seven days from first premium use. Supply a reviewer account with stable access and test instructions; do not rely on a trial that may expire during review.
 - Microphone and camera paths must be tested on a real iPhone.
 - Explain the independent educational purpose and lack of USCIS affiliation.
 - Explain that podcasts are prerecorded and the Case Tracker uses USCIS Sandbox data.
-- Do not advertise paid subscriptions or rewarded ads in version 1.0; their SDKs are not active.
+- Native purchases and restore are not activated. Before selling digital access in the native app, register products and implement store billing, server verification and notifications. Keep Stripe checkout gated to web.
 
 ## Items requiring the account owner or a Mac
 
@@ -63,3 +63,7 @@ Declare that the current build does not use data for third-party advertising or 
 - Select the Apple Developer team and automatic signing in Xcode.
 - Test on a real iPhone, archive, validate, and upload to TestFlight.
 - Upload localized screenshots and submit the selected build for review.
+
+## Current release gate
+
+Use `docs/operations/LAUNCH.md` and `docs/launch-readiness.json` at repository root. Build the unified app, not the old standalone Citizenship build. Existing screenshot archives are historical assets and must be re-captured from the current app before submission. Static validation does not replace device, payment or store review.

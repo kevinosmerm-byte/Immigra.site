@@ -1,3 +1,4 @@
+import {validateAiReport} from '../../modules/citizenship/server/aiReportService.js';
 import {readingFeedback} from './reading-feedback.mjs';
 import {TEMPORARY_PUBLIC_INTERVIEWS,interviewTestingEnabled} from '../../shared/interview-ui/access-policy.mjs';
 import {createGuestAccess} from './guest-access.mjs';
@@ -6,17 +7,27 @@ import {aosFeedback} from '../../modules/residency/src/aosFeedback.mjs';
 import {mountAsylumTranscription} from './asylum-transcription.mjs';
 import {handle as analyzeAsylum} from '../../modules/asylum/services/analysis/worker.mjs';
 import express from '../../modules/citizenship/node_modules/express/index.js';
+import cors from '../../modules/citizenship/node_modules/cors/lib/index.js';
 import {createInterviewAIEngine} from './interview-engine.mjs';
 // Dependencies are injected for HTTP tests without credentials or paid calls.
-export function createPlatformRouter({citizenship,requireAccount,requirePractice=(_req,res)=>res.status(503).json({error:"ACCESS_UNAVAILABLE"}),getUsageSnapshot,reserveAsylumQuota,reserveAudioQuota,reserveInterviewQuota,reserveConversationQuota,analysisFetch=fetch,env={}}){
+export function createPlatformRouter({citizenship,requireAccount,submitAiReport,requirePractice=(_req,res)=>res.status(503).json({error:"ACCESS_UNAVAILABLE"}),getUsageSnapshot,reserveAsylumQuota,reserveAudioQuota,reserveInterviewQuota,reserveConversationQuota,analysisFetch=fetch,env={}}){
  const app=express();app.disable('x-powered-by');
- const allowedOrigins=new Set(['http://127.0.0.1:4388','http://localhost:4388',...(env.CORS_ORIGIN||'').split(',').map(origin=>origin.trim()).filter(Boolean)]);
+ const allowedOrigins=new Set(['http://127.0.0.1:4388','http://localhost:4388','capacitor://localhost','http://localhost','https://localhost',...(env.CORS_ORIGIN||'').split(',').map(origin=>origin.trim()).filter(Boolean)]);
  app.use((req,res,next)=>{res.set('Cache-Control','no-store');const origin=req.get('origin');if(origin&&!allowedOrigins.has(origin))return res.status(403).json({error:'ORIGIN_DENIED'});next();});
+ app.use(cors({origin:(origin,callback)=>callback(null,!origin||allowedOrigins.has(origin)),maxAge:600}));
  const publicAccess=env.INTERVIEW_PUBLIC_ACCESS==='false'?false:TEMPORARY_PUBLIC_INTERVIEWS;
  const guestAccess=createGuestAccess({secret:env.OPENAI_API_KEY});
  const interviewAccess=(req,res,next)=>requireAccount(req,res,()=>requirePractice(req,res,next));
  const interviews=createInterviewAIEngine({env,fetchImpl:analysisFetch,reserveSessionQuota:reserveConversationQuota,reserveTurnQuota:reserveInterviewQuota});
  const interviewError=(res,error)=>{const code=error?.message;logDiagnostic('INTERVIEW_ERROR',{code,status:error?.status});const known={LOCAL_EVALUATOR_REQUIRED:400,STALE_QUESTION:409,INTERVIEW_COMPLETE:409,GUEST_SESSION_EXPIRED:401,PROVIDER_AUTH_FAILED:502,PROVIDER_ACCESS_DENIED:502,PROVIDER_BAD_REQUEST:502,INVALID_PROVIDER_SESSION:502,QUOTA_UNAVAILABLE:503,AI_NOT_CONFIGURED:503,INVALID_SETTINGS:400,INVALID_SDP:400,INVALID_INPUT:400,DAILY_LIMIT:429,SESSION_EXPIRED:410,SESSION_LIMIT:429,TURN_IN_PROGRESS:409,PROVIDER_LIMIT:502,PROVIDER_UNAVAILABLE:502,INCOMPLETE_EVALUATION:502,INVALID_EVALUATION:502,UNGROUNDED_EVALUATION:502};return res.status(known[code]||503).json({error:known[code]?code:'INTERVIEW_UNAVAILABLE'});};
+ app.post('/api/ai-reports',requireAccount,express.json({limit:'8kb'}),async(req,res)=>{
+  try{
+   const body=validateAiReport(req.body);
+   if(!submitAiReport||!reserveInterviewQuota)return res.status(503).json({code:'report_unavailable'});
+   if(!await reserveInterviewQuota(req.account.userId,'ai-report'))return res.status(429).json({code:'report_rate_limit'});
+   res.status(201).json(await submitAiReport(req.account.userId,body));
+  }catch(error){res.status(error.status===400?400:503).json({code:error.status===400?'invalid_report':'report_unavailable'});}
+ });
  app.get('/api/interview/status',(_req,res)=>res.json({ready:interviews.available(),authentication_required:true,max_duration_seconds:600,testing_access:interviewTestingEnabled(env)}));
  app.post('/api/interview/reading',interviewAccess,express.json({limit:'12kb'}),async(req,res)=>{const result=await readingFeedback(req.body,{env,fetchImpl:analysisFetch,reserveQuota:reserveInterviewQuota,userId:req.account.userId});res.status(result.status).json(result);});
  app.post('/api/interview/sessions',interviewAccess,express.json({limit:'48kb'}),async(req,res)=>{try{res.json(await interviews.start(req.account.userId,req.body));}catch(error){interviewError(res,error);}});

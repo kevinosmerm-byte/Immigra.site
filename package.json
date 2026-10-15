@@ -5,12 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "vite build",
+    "build": "npm test && npm run build:app && npm run quality --prefix modules/citizenship && npm run verify:release",
     "test": "node --test tests/*.test.mjs modules/residency/tests/*.test.mjs",
     "preview": "vite preview --host 127.0.0.1",
     "server:realtime": "node server/server.mjs",
     "start": "node start-all.mjs",
-    "postinstall": "npm ci --prefix modules/citizenship --ignore-scripts"
+    "postinstall": "npm ci --prefix modules/citizenship --ignore-scripts",
+    "build:app": "vite build && node scripts/build-public-pages.mjs",
+    "verify:release": "node scripts/verify-release.mjs",
+    "verify:production": "node scripts/verify-release.mjs --production",
+    "native:sync:android": "npm run build && npm run native:sync:android --prefix modules/citizenship",
+    "native:sync:ios": "npm run build && npm run native:sync:ios --prefix modules/citizenship"
   },
   "dependencies": {
     "vite": "^7.0.0",

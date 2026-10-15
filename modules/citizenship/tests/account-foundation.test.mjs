@@ -222,7 +222,8 @@ test("account deletion requires an explicit confirmation and uses the admin API"
   const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
 
   assert.match(routes, /router\.delete\("\/"/);
-  assert.match(routes, /confirmation !== "DELETE"/);
+  const deletion = await readFile(new URL("../server/accountDeletion.js", import.meta.url), "utf8");
+  assert.match(deletion, /confirmation!=="DELETE"/);
   assert.match(service, /auth\.admin\.deleteUser\(userId\)/);
   assert.match(account, /deleteConfirmation !== "DELETE"/);
   assert.match(account, /Local study progress on this device is not removed/);

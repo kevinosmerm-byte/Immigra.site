@@ -1,3 +1,4 @@
+import {createAccountDeletionHandler} from './accountDeletion.js';
 import { Router } from "express";
 import { randomUUID,createHash } from "node:crypto";
 import {
@@ -6,7 +7,6 @@ import {
   exportAccountData,
   finishAiSession,
   getAccountConfiguration,
-  getBillingIdentity,
   getPublicAccountConfiguration,
   getPublicAiFeatureAvailability,
   getUsageSnapshot,
@@ -26,7 +26,7 @@ import {
   deleteAccountBrainProfile,
 } from "./accountService.js";
 import { getAiFeatureConfig } from "../shared/featureAccessConfig.js";
-import { getBillingConfiguration } from "./stripeBilling.js";
+import { cancelWebRenewalForDeletion, getBillingConfiguration } from "./stripeBilling.js";
 import { getSavedQuestions, setSavedQuestion } from "./accountService.js";
 import { getCivicsQuestion } from "../src/civicsQuestionBank.js";
 import { DEFAULT_TEST_VERSION } from "../src/civicsVersions.js";
@@ -146,7 +146,7 @@ router.get("/export", async (req, res) => {
     const payload = await exportAccountData(req.account.userId);
     res.set({
       "Cache-Control": "no-store",
-      "Content-Disposition": `attachment; filename="citizenship-ai-account-${new Date().toISOString().slice(0, 10)}.json"`,
+      "Content-Disposition": `attachment; filename="immigra-account-${new Date().toISOString().slice(0, 10)}.json"`,
       "Content-Type": "application/json; charset=utf-8",
     });
     res.send(JSON.stringify(payload, null, 2));
@@ -156,26 +156,7 @@ router.get("/export", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
-  if (req.body?.confirmation !== "DELETE") {
-    return res.status(400).json({ error: "Account deletion requires confirmation.", code: "deletion_confirmation_required" });
-  }
-  try {
-    const billingIdentity = await getBillingIdentity(req.account.userId);
-    if (billingIdentity?.provider === "stripe" && ["active", "grace"].includes(billingIdentity.status)) {
-      return res.status(409).json({
-        error: "Cancel the active web subscription in the billing portal before deleting this account.",
-        code: "active_subscription_requires_cancellation",
-      });
-    }
-    res.set("Cache-Control", "no-store");
-    await deleteAccount(req.account.userId);
-    return res.json({ deleted: true });
-  } catch (error) {
-    console.error("Account deletion error", { message: error.message, cause: error.cause?.code });
-    return res.status(503).json({ error: "Your account could not be deleted.", code: "deletion_unavailable" });
-  }
-});
+router.delete("/",createAccountDeletionHandler({cancelWebRenewal:cancelWebRenewalForDeletion,removeAccount:deleteAccount}));
 
 router.post("/sessions", async (req, res) => {
   const feature = typeof req.body?.feature === "string" ? req.body.feature.trim() : "";

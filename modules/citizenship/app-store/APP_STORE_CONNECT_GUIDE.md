@@ -1,3 +1,5 @@
+> Current Immigra release: use the root `docs/operations/LAUNCH.md`, `docs/launch-readiness.json` and the updated `SUBMISSION_CHECKLIST.md`. The historical guide below predates the unified app. Do not copy old branding, URLs, launch-promotion settings or account-access assumptions into a submission. Native billing and reviewer access remain release gates.
+
 # Citizenship AI — App Store Connect copy-and-paste guide
 
 Use this sheet when the Apple Developer membership shows the paid team and the app record can be created. Public-facing copy is already stored in `metadata.json`; this guide covers the remaining App Store Connect questionnaires without inventing owner information.

@@ -1,6 +1,7 @@
 import {billingErrorMessage} from "./billingMessages.mjs";
 import {authCallbackKind} from '../../../shared/authentication/callback.mjs';
 import {checkoutReturnUrl,readCheckoutIntent,clearCheckoutIntent} from "./checkoutIntent.mjs";
+import {App as NativeApp} from '@capacitor/app';
 import {accountStorage,clearLegacyBrowserSession,lastAccountEmail,rememberAccountEmail} from "./accountStorage.js";
 import EmailTrialAccount from "./EmailTrialAccount.jsx";
 import { createPortal } from "react-dom";
@@ -13,13 +14,14 @@ import { useEffect, useMemo, useState } from "react";
 import { PRO_PLAN } from "../shared/featureAccessConfig.js";
 import { AccountContext, useAccount } from "./accountContext.js";
 
+const NATIVE_TRIAL_KEY='immigra.native-trial.v1';
 const browserSupabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
 const browserSupabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
 
 function createAccountClient(url, publishableKey) {
   return url && publishableKey
     ? createClient(url, publishableKey, {
-      auth: { storage: accountStorage, persistSession: true, autoRefreshToken: Capacitor.isNativePlatform(), detectSessionInUrl: true },
+      auth: { storage: accountStorage, persistSession: true, autoRefreshToken: Capacitor.isNativePlatform(), detectSessionInUrl: true, flowType: Capacitor.isNativePlatform()?'pkce':'implicit' },
     })
     : null;
 }
@@ -31,7 +33,7 @@ const COPY = {
     sent: "Check your email. We sent you a secure sign-in link.", signedIn: "SIGNED IN", signOut: "SIGN OUT", close: "Close account panel",
     optional: "Free study needs no account. Sign in for your 7-day interview and AI trial, starting with your first use. No card is required.", unavailable: "Accounts are unavailable. Free study remains available; interview and AI access cannot be verified.",
     error: "We could not send the sign-in link. Please try again.", usage: "AI ACCESS", promotion: "Launch promotion active", free: "Free account",
-    usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", pricing: "PRO PRICING", launchPrice: "Launch offer", regularPrice: "Regular $5.99/month", annualPrice: "$49.99/year", pricingStatus: "Purchases are not active yet.", monthly: "MONTHLY", yearly: "ANNUAL · SAVE 30%", manageSubscription: "MANAGE SUBSCRIPTION", secureCheckout: "Secure checkout by Stripe", billingError: "We could not open secure billing. Please try again.", openingCheckout: "OPENING…", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.", deleteAccount: "DELETE ACCOUNT", deleteTitle: "Permanently delete account?", deleteBody: "This removes your cloud account, AI allowances, and usage records. Local study progress on this device is not removed.", deletePrompt: "Type DELETE to confirm", deleting: "DELETING…", cancel: "CANCEL", deleteError: "We could not delete your account. Please try again.", deleteActiveSubscription: "Cancel your active web subscription from Manage Subscription before deleting the account.",
+    usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", pricing: "PRO PRICING", launchPrice: "Launch offer", regularPrice: "Regular $5.99/month", annualPrice: "$49.99/year", pricingStatus: "Purchases are not active yet.", monthly: "MONTHLY", yearly: "ANNUAL · SAVE 30%", manageSubscription: "MANAGE SUBSCRIPTION", secureCheckout: "Secure checkout by Stripe", billingError: "We could not open secure billing. Please try again.", openingCheckout: "OPENING…", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.", deleteAccount: "DELETE ACCOUNT", deleteTitle: "Permanently delete account?", deleteBody: "This removes your cloud account and associated personal data. Local study progress on this device is not removed. We stop future renewal of a linked web Stripe subscription before deleting. Apple or Google subscriptions must also be canceled through that store.", deletePrompt: "Type DELETE to confirm", deleting: "DELETING…", cancel: "CANCEL", deleteError: "We could not delete your account. Please try again.", deleteActiveSubscription: "Cancel your active web subscription from Manage Subscription before deleting the account.",
   },
   es: {
     account: "Cuenta", title: "Tu cuenta de Immigra", intro: "Inicia sesión para conservar las mismas fechas de prueba de 7 días de entrevistas e IA entre tus dispositivos. El estudio gratuito no requiere cuenta.",
@@ -39,7 +41,7 @@ const COPY = {
     sent: "Revisa tu correo. Te enviamos un enlace seguro para iniciar sesión.", signedIn: "SESIÓN INICIADA", signOut: "CERRAR SESIÓN", close: "Cerrar panel de cuenta",
     optional: "El estudio gratuito no requiere cuenta. Inicia sesión para probar entrevistas e IA durante 7 días desde tu primer uso. No necesitas tarjeta.", unavailable: "Las cuentas no están disponibles. El estudio gratuito sigue abierto; no podemos verificar el acceso a entrevistas e IA.",
     error: "No pudimos enviar el enlace. Inténtalo nuevamente.", usage: "ACCESO A IA", promotion: "Promoción de lanzamiento activa", free: "Cuenta gratuita",
-    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles", requests: "solicitudes al proveedor", pricing: "PRECIO PRO", launchPrice: "Oferta de lanzamiento", regularPrice: "Regular $5.99/mes", annualPrice: "$49.99/año", pricingStatus: "Las compras aún no están activas.", monthly: "MENSUAL", yearly: "ANUAL · AHORRA 30%", manageSubscription: "ADMINISTRAR SUSCRIPCIÓN", secureCheckout: "Pago seguro por Stripe", billingError: "No pudimos abrir el pago seguro. Inténtalo nuevamente.", openingCheckout: "ABRIENDO…", exportData: "DESCARGAR MIS DATOS", exporting: "PREPARANDO…", exportError: "No pudimos preparar los datos de tu cuenta. Inténtalo nuevamente.", deleteAccount: "ELIMINAR CUENTA", deleteTitle: "¿Eliminar la cuenta permanentemente?", deleteBody: "Esto elimina tu cuenta en la nube, límites de IA y registros de uso. El progreso local de estudio en este dispositivo no se elimina.", deletePrompt: "Escribe DELETE para confirmar", deleting: "ELIMINANDO…", cancel: "CANCELAR", deleteError: "No pudimos eliminar tu cuenta. Inténtalo nuevamente.", deleteActiveSubscription: "Cancela tu suscripción web activa desde Administrar suscripción antes de eliminar la cuenta.",
+    usageTitle: "PRÁCTICA CON IA", used: "usadas", available: "disponibles", requests: "solicitudes al proveedor", pricing: "PRECIO PRO", launchPrice: "Oferta de lanzamiento", regularPrice: "Regular $5.99/mes", annualPrice: "$49.99/año", pricingStatus: "Las compras aún no están activas.", monthly: "MENSUAL", yearly: "ANUAL · AHORRA 30%", manageSubscription: "ADMINISTRAR SUSCRIPCIÓN", secureCheckout: "Pago seguro por Stripe", billingError: "No pudimos abrir el pago seguro. Inténtalo nuevamente.", openingCheckout: "ABRIENDO…", exportData: "DESCARGAR MIS DATOS", exporting: "PREPARANDO…", exportError: "No pudimos preparar los datos de tu cuenta. Inténtalo nuevamente.", deleteAccount: "ELIMINAR CUENTA", deleteTitle: "¿Eliminar la cuenta permanentemente?", deleteBody: "Esto elimina tu cuenta en la nube y sus datos personales asociados. El progreso local de este dispositivo no se elimina. Antes de borrar detenemos futuras renovaciones de una suscripción web vinculada de Stripe. Las compras de Apple o Google también deben cancelarse desde esa tienda.", deletePrompt: "Escribe DELETE para confirmar", deleting: "ELIMINANDO…", cancel: "CANCELAR", deleteError: "No pudimos eliminar tu cuenta. Inténtalo nuevamente.", deleteActiveSubscription: "Cancela tu suscripción web activa desde Administrar suscripción antes de eliminar la cuenta.",
   },
 };
 
@@ -64,7 +66,16 @@ export function AccountProvider({ children }) {
   const [aiFeatureAvailability, setAiFeatureAvailability] = useState({});
   const [billing, setBilling] = useState({ enabled: false });
 
-  useEffect(()=>{let active=true;fetch('/api/account/email-trial/session',{cache:'no-store',signal:AbortSignal.timeout(10000)}).then(r=>r.ok?r.json():null).then(data=>{if(active)setGuestSession(data?.session||null);}).catch(()=>{}).finally(()=>{if(active)setRestoringDevice(false);});return()=>{active=false;};},[]);
+  useEffect(()=>{
+    let active=true;
+    const restore=async()=>{try{
+      const token=Capacitor.isNativePlatform()?await accountStorage.getItem(NATIVE_TRIAL_KEY):null;
+      const response=await fetch('/api/account/email-trial/session',{cache:'no-store',headers:token?{Authorization:'Bearer '+token}:{},signal:AbortSignal.timeout(10000)});
+      const data=response.ok?await response.json():null;if(active)setGuestSession(data?.session||null);
+      if(Capacitor.isNativePlatform()&&((response.ok&&!data?.session)||response.status===401||response.status===403))await accountStorage.removeItem(NATIVE_TRIAL_KEY);
+    }catch{}finally{if(active)setRestoringDevice(false);}};
+    void restore();return()=>{active=false;};
+  },[]);
   const loadUsage = async (accessToken) => {
     if (!accessToken) { setUsage(null); return null; }
     try {
@@ -159,19 +170,37 @@ export function AccountProvider({ children }) {
     return () => { active = false; };
   }, [session?.access_token]);
 
+  useEffect(()=>{
+    if(!client||!Capacitor.isNativePlatform())return;
+    let active=true,listener;
+    const handle=async({url}={})=>{
+      if(!url||!active)return;
+      try{
+        const callback=new URL(url);if(callback.protocol!=='us.citizenshipai.app:'||callback.hostname!=='auth-callback')return;
+        const code=callback.searchParams.get('code');if(!code)throw Error('Verification code required');
+        const result=await client.auth.exchangeCodeForSession(code);
+        if(result.error)throw Error('Verification failed');
+        await accountStorage.removeItem(NATIVE_TRIAL_KEY);
+      }catch{if(active){setSignInError(true);window.location.hash='/account';}}
+    };
+    NativeApp.addListener('appUrlOpen',handle).then(value=>{if(active)listener=value;else value.remove();}).catch(()=>{});
+    NativeApp.getLaunchUrl().then(value=>handle(value)).catch(()=>{});
+    return()=>{active=false;listener?.remove();};
+  },[client]);
+
   const value = useMemo(() => ({
     configured: Boolean(client), session, sessionRecoveryError, dismissSessionRecoveryError:()=>setSessionRecoveryError(false), loading: loading || (restoringDevice&&!verifiedSession), verifyingEmail: Boolean(authCallback&&authCallback!=='error'&&(loading||(restoringDevice&&!verifiedSession))),
     startEmailTrial:async email=>{
       const response=await fetch('/api/account/email-trial',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
       const data=await response.json().catch(()=>({}));
       if(!response.ok||!data.session)throw Object.assign(Error(data.error||'Trial unavailable'),{code:data.code});
-      rememberAccountEmail(email);setGuestSession(data.session);return data.session;
+      if(Capacitor.isNativePlatform())await accountStorage.setItem(NATIVE_TRIAL_KEY,data.session.access_token);rememberAccountEmail(email);setGuestSession(data.session);return data.session;
     }, usage, promotionAccess, aiFeatureAvailability, billing, signInError,
     sendMagicLink: (email) => {rememberAccountEmail(email);return TEMPORARY_PUBLIC_INTERVIEWS ? Promise.resolve({error: new Error("Account links temporarily disabled")}) : client.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: checkoutReturnUrl(email) },
+      options: { emailRedirectTo: Capacitor.isNativePlatform()?'us.citizenshipai.app://auth-callback':checkoutReturnUrl(email) },
     });},
-    signOut:async()=>{const responses=await Promise.all([fetch('/api/account/session',{method:'DELETE'}),fetch('/api/account/email-trial/session',{method:'DELETE'})]);if(responses.some(response=>!response.ok))throw new Error('Could not sign out securely');await client?.auth.signOut({scope:'local'});setGuestSession(null);setSession(null);setUsage(null);window.location.hash='/account';},
+    signOut:async()=>{const responses=await Promise.all([fetch('/api/account/session',{method:'DELETE'}),fetch('/api/account/email-trial/session',{method:'DELETE'})]);if(responses.some(response=>!response.ok))throw new Error('Could not sign out securely');await client?.auth.signOut({scope:'local'});await accountStorage.removeItem(NATIVE_TRIAL_KEY);setGuestSession(null);setSession(null);setUsage(null);window.location.hash='/account';},
     startAiSession: async (feature) => {
       if (!session?.access_token) return null;
       const response = await fetch("/api/account/sessions", {
@@ -234,7 +263,7 @@ export function AccountProvider({ children }) {
         throw error;
       }
       await Promise.all([fetch('/api/account/session',{method:'DELETE'}),fetch('/api/account/email-trial/session',{method:'DELETE'})]);
-      await client.auth.signOut({ scope: "local" });setSession(null);setGuestSession(null);rememberAccountEmail('');
+      await client.auth.signOut({ scope: "local" });await accountStorage.removeItem(NATIVE_TRIAL_KEY);setSession(null);setGuestSession(null);rememberAccountEmail('');
       return true;
     },
     openCheckout: async (interval) => {

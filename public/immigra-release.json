@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-15-social-preview",
+  "release": "2026-10-15-readiness-glass-trial",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -36,6 +36,13 @@
     "storage-resilient-startup",
     "accessible-preview-motion",
     "direct-email-verification-return",
-    "dedicated-social-sharing-preview"
+    "dedicated-social-sharing-preview",
+    "accessible-glass-trial-dialog",
+    "public-bilingual-legal-and-support-pages",
+    "public-sitemap-and-security-headers",
+    "encrypted-in-app-ai-reporting",
+    "unified-native-package-and-pkce-return",
+    "safe-account-deletion-renewal-stop",
+    "release-quality-and-health-checks"
   ]
 }

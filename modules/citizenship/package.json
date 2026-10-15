@@ -12,11 +12,13 @@
     "verify:ios": "node scripts/verify-ios-readiness.mjs",
     "verify:app-store": "node scripts/verify-app-store-metadata.mjs",
     "quality": "npm run lint && npm run test && npm run build && npm run verify:mobile && npm run verify:ios && npm run verify:app-store",
-    "ios:sync": "npm run build && npx cap sync ios",
+    "ios:sync": "npm --prefix ../.. run build && cap sync ios",
     "ios:open": "npx cap open ios",
     "preview": "vite preview",
     "start": "node server/server.js",
-    "typecheck": "tsc --noEmit --allowJs --checkJs false --noImplicitAny false --module nodenext --moduleResolution nodenext --resolveJsonModule --esModuleInterop --skipLibCheck src/brain.js src/appRoutes.js"
+    "typecheck": "tsc --noEmit --allowJs --checkJs false --noImplicitAny false --module nodenext --moduleResolution nodenext --resolveJsonModule --esModuleInterop --skipLibCheck src/brain.js src/appRoutes.js",
+    "native:sync:android": "cap sync android",
+    "native:sync:ios": "cap sync ios"
   },
   "engines": {
     "node": ">=22.13"
@@ -25,6 +27,7 @@
     "@aparajita/capacitor-secure-storage": "^8.0.1",
     "@capacitor-community/text-to-speech": "^8.0.2",
     "@capacitor/android": "^8.5.2",
+    "@capacitor/app": "^8.1.2",
     "@capacitor/core": "^8.5.2",
     "@capacitor/ios": "^8.5.2",
     "@supabase/supabase-js": "^2.116.0",

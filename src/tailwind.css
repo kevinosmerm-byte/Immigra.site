@@ -17,3 +17,9 @@
 @source "../modules/asylum/Module.jsx";
 
 @source "../shared/interview-ui/InterviewerVideo.jsx";
+
+@source "../scripts/public-pages.mjs";
+
+@source "../shared/AIReport.jsx";
+
+@source "../modules/citizenship/src/TrialAccessDialog.jsx";

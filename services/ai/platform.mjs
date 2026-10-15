@@ -1,7 +1,7 @@
 import {createPracticeAccess} from './practice-access.mjs';
 import {createHash} from 'node:crypto';
 import {app as citizenship} from '../../modules/citizenship/server/server.js';
-import {requireAccount,getUsageSnapshot,consumeDistributedRateLimit,getPracticeAccess,startAiSession,finishAiSession} from '../../modules/citizenship/server/accountService.js';
+import {requireAccount,getUsageSnapshot,consumeDistributedRateLimit,getPracticeAccess,startAiSession,finishAiSession,submitAiReport,startAiReportRetention} from '../../modules/citizenship/server/accountService.js';
 import {createPlatformRouter} from './router.mjs';
 async function reserveAsylumQuota(userId,bucket="asylum-analysis",limit=120,windowSeconds=60){
  try{
@@ -18,4 +18,5 @@ async function reserveAsylumQuota(userId,bucket="asylum-analysis",limit=120,wind
 async function reserveInterviewAccess(id,bucket,limit,globalLimit){
  return reserveAsylumQuota(id, bucket+'-burst', 120, 60);
 }
-export const app=createPlatformRouter({citizenship,requireAccount,requirePractice:createPracticeAccess({getPracticeAccess,startAiSession,finishAiSession}),getUsageSnapshot,reserveAsylumQuota,reserveConversationQuota:id=>reserveInterviewAccess(id,'interview-conversation',3,100),reserveInterviewQuota:id=>reserveInterviewAccess(id,'interview-feedback',30,1000),reserveAudioQuota:id=>reserveInterviewAccess(id,'asylum-transcription',30,1000),env:{...process.env,OPENAI_TEXT_MODEL:process.env.OPENAI_TEXT_MODEL||'gpt-4o-mini'}});
+startAiReportRetention();
+export const app=createPlatformRouter({citizenship,requireAccount,submitAiReport,requirePractice:createPracticeAccess({getPracticeAccess,startAiSession,finishAiSession,submitAiReport,startAiReportRetention}),getUsageSnapshot,reserveAsylumQuota,reserveConversationQuota:id=>reserveInterviewAccess(id,'interview-conversation',3,100),reserveInterviewQuota:(id,purpose)=>purpose==='ai-report'?reserveAsylumQuota(id,'ai-content-report',5,3600):reserveInterviewAccess(id,'interview-feedback',30,1000),reserveAudioQuota:id=>reserveInterviewAccess(id,'asylum-transcription',30,1000),env:{...process.env,OPENAI_TEXT_MODEL:process.env.OPENAI_TEXT_MODEL||'gpt-4o-mini'}});
