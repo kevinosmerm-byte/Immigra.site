@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-14-email-trial-light-background",
+  "release": "2026-10-14-background-6177df6a",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -24,6 +24,7 @@
     "persistent-secure-account-session",
     "top-row-idle-video-selectors",
     "compact-icon-glow",
-    "asylum-country-flags"
+    "asylum-country-flags",
+    "updated-silent-background-6177df6a"
   ]
 }

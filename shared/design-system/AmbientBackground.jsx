@@ -2,7 +2,7 @@ import {useGlass} from './Glass.jsx';
 import React,{useEffect,useRef,useState} from 'react';
 import './ambient.css';
 
-const poster='/media/ambient-20261014.jpg';
+const poster='/media/ambient-6177df6a.jpg';
 export default function AmbientBackground({inCall=false}){
  const {preferences}=useGlass();
  const ref=useRef(null),[paused,setPaused]=useState(false),[unavailable,setUnavailable]=useState(false);
@@ -23,7 +23,7 @@ export default function AmbientBackground({inCall=false}){
  const es=document.documentElement.lang==='es';
  return <>
   <div className={`ambient-background pointer-events-none! inset-0! overflow-hidden! bg-[#f6f8fa]! bg-cover! bg-center! ${inCall?'absolute! z-0!':'fixed! -z-10!'}`} style={{backgroundImage:`url("${poster}")`}} aria-hidden="true">
-   {!unavailable&&<video ref={ref} className="h-full! w-full! object-cover! opacity-100!" src="/media/ambient-20261014.mp4" poster={poster} muted autoPlay loop playsInline preload="metadata" tabIndex={-1} onError={()=>setUnavailable(true)}/>}
+   {!unavailable&&<video ref={ref} className="h-full! w-full! object-cover! opacity-100!" src="/media/ambient-6177df6a.mp4" poster={poster} muted autoPlay loop playsInline preload="metadata" tabIndex={-1} onError={()=>setUnavailable(true)}/>}
   </div>
   {!unavailable&&<button type="button" className="ambient-toggle min-h-11! rounded-xl! border-white/20! bg-slate-900/90! text-white! backdrop-blur-md! focus-visible:outline-2! focus-visible:outline-offset-2! focus-visible:outline-blue-500!" onClick={()=>setPaused(v=>!v)} aria-pressed={paused}>{es?(paused?'Animar fondo':'Pausar fondo'):(paused?'Play background':'Pause background')}</button>}
  </>;
