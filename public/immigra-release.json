@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-15-stripe-operation-diagnostics",
+  "release": "2026-10-16-readable-review-questions",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -46,6 +46,7 @@
     "release-quality-and-health-checks",
     "new-account-checkout-without-email-link",
     "report-link-in-page-footer",
-    "safe-stripe-operation-diagnostics"
+    "safe-stripe-operation-diagnostics",
+    "readable-interview-review-questions"
   ]
 }

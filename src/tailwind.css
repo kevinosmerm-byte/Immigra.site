@@ -23,3 +23,5 @@
 @source "../shared/AIReport.jsx";
 
 @source "../modules/citizenship/src/TrialAccessDialog.jsx";
+
+@source "../modules/citizenship/src/App.jsx";

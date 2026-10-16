@@ -446,7 +446,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       <div className="results-score">{correctAnswers}<span> / {gradedCount}</span></div><div className="results-percentage">{scorePercentage === null ? "—" : `${scorePercentage}%`}</div>
       <div className="results-stats"><div className="result-stat correct"><strong>{correctAnswers}</strong><small>{t("Correct", "Correctas")}</small></div><div className="result-stat incorrect"><strong>{incorrectAnswers}</strong><small>{t("Missed", "Por repasar")}</small></div></div>
       <p className="results-message">{t("Keep practicing to build confidence. Unverified responses were not graded.", "Sigue practicando para ganar confianza. Las respuestas no verificadas no se calificaron.")}</p>
-      <section className="interview-review-plan" aria-label={t("Your focused review plan", "Tu plan de repaso")}><h2>{t("Your next focus", "Tu próximo paso")}</h2>
+      <section className="interview-review-plan [&_h2]:text-[var(--liquid-text,#172b3d)]! [&_p]:text-[var(--liquid-muted,#53667a)]! [&_p]:text-base! [&_li]:text-[var(--liquid-text,#172b3d)]! [&_li]:text-base! [&_li]:leading-relaxed! [&_li]:block! [&_li_span]:text-inherit!" aria-label={t("Your focused review plan", "Tu plan de repaso")}><h2>{t("Your next focus", "Tu próximo paso")}</h2>
         <p>{missedQuestions.length ? t(`${missedQuestions.length} questions to revisit`, `${missedQuestions.length} preguntas para repasar`) : t("Continue your study plan for the next useful practice.", "Continúa tu plan de estudio con la próxima práctica.")}</p>
         {missedQuestions.length > 0 && <ol>{missedQuestions.slice(0, 3).map(question => <li key={question.id} lang="en">{question.english}</li>)}</ol>}
       </section>
