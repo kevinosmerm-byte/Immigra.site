@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-15-email-first-checkout",
+  "release": "2026-10-15-stripe-operation-diagnostics",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -45,6 +45,7 @@
     "safe-account-deletion-renewal-stop",
     "release-quality-and-health-checks",
     "new-account-checkout-without-email-link",
-    "report-link-in-page-footer"
+    "report-link-in-page-footer",
+    "safe-stripe-operation-diagnostics"
   ]
 }

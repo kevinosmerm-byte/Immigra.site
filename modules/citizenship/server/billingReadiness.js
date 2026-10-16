@@ -11,8 +11,15 @@ export function createBillingReadiness({configuration=getBillingConfiguration,st
    if(!config.enabled)return {enabled:false,ready:false,reason:'billing_disabled',checkedAt};
    try{
     const client=stripe();
-    const price=interval=>client.prices.retrieve(priceId(interval)).catch(error=>{error.billingStep='price';throw error;});
-    const [account,monthly,annual]=await Promise.all([client.accounts.retrieve(),price('monthly'),price('annual')]);
+    const steps=[['account',()=>client.accounts.retrieve()],['monthly_price',()=>client.prices.retrieve(priceId('monthly'))],['annual_price',()=>client.prices.retrieve(priceId('annual'))]];
+    const results=await Promise.allSettled(steps.map(([,check])=>Promise.resolve().then(check)));
+    const failed=results.flatMap((result,index)=>result.status==='rejected'?[{step:steps[index][0],error:result.reason}]:[]);
+    if(failed.length){
+     const {step,error}=failed[0],failure=billingFailure(error);
+     const reason=error.type==='StripePermissionError'?'billing_status_unavailable':step.endsWith('_price')&&error.code==='resource_missing'?'billing_price_unavailable':failure.code;
+     return {enabled:true,ready:false,reason,blockedSteps:failed.map(item=>item.step),...(failure.reference?{reference:failure.reference}:{}),checkedAt};
+    }
+    const [account,monthly,annual]=results.map(result=>result.value);
     if(!monthly.livemode||!annual.livemode)return {enabled:true,ready:false,reason:'billing_test_mode',checkedAt};
     const expectedMonthly=config.introductoryOfferEnabled?config.introductoryMonthlyPriceCents:config.monthlyPriceCents;
     const valid=(item,interval,amount)=>item.active&&item.currency===config.currency.toLowerCase()&&item.unit_amount===amount&&item.recurring?.interval===interval&&item.recurring.interval_count===1;

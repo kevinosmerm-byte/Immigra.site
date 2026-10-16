@@ -16,3 +16,11 @@ test('test keys, inactive or wrong prices, and disabled charges are not advertis
 test('provider failures expose only a safe category and optional reference',async()=>{
  const check=createBillingReadiness({configuration:()=>({enabled:true}),stripe:()=>{throw {type:'StripeAuthenticationError',message:'secret value'};}});const result=await check();assert.equal(result.reason,'billing_configuration_invalid');assert.equal(JSON.stringify(result).includes('secret value'),false);const restricted=createBillingReadiness({configuration:()=>({enabled:true}),stripe:()=>{throw {type:'StripePermissionError'};}});assert.equal((await restricted()).reason,'billing_status_unavailable');
 });
+
+test('permission diagnostics identify every failed operation without leaking provider messages or keys',async()=>{
+ const check=createBillingReadiness({configuration:()=>({enabled:true}),priceId:interval=>interval,stripe:()=>({
+  accounts:{retrieve:async()=>{throw {type:'StripePermissionError',requestId:'req_safeAccount',message:'private account details'};}},
+  prices:{retrieve:async interval=>{if(interval==='annual')throw {type:'StripePermissionError',message:'private price value'};return {};}},
+ })});
+ const result=await check();assert.equal(result.reason,'billing_status_unavailable');assert.deepEqual(result.blockedSteps,['account','annual_price']);assert.equal(result.reference,'req_safeAccount');assert.doesNotMatch(JSON.stringify(result),/private account|private price/);
+});
