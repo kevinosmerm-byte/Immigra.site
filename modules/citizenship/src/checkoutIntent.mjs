@@ -20,6 +20,17 @@ export function clearCheckoutIntent(browser=window){
 }
 export function checkoutReturnUrl(email='',browser=window){
  const url=new URL(browser.location.pathname,browser.location.origin),interval=readCheckoutIntent(email,browser);
- if(interval)url.searchParams.set('checkout',interval);
+ const current=new URL(browser.location.href);
+ if(current.searchParams.get('guest_checkout')==='return'&&/^cs_(?:test_|live_)?[a-zA-Z0-9]{8,200}$/.test(current.searchParams.get('session_id')||'')){url.searchParams.set('guest_checkout','return');url.searchParams.set('session_id',current.searchParams.get('session_id'));}
+ else if(interval)url.searchParams.set('checkout',interval);
  return url.href;
 }
+
+export function guestCheckoutId(browser=window){const params=new URLSearchParams(browser.location.search);return params.get('guest_checkout')==='return'?params.get('session_id')||'':null;}
+
+const GUEST_KEY='immigra.pending-checkout.v1';
+// This public checkout reference is not a token: claiming it still requires the
+// HttpOnly device proof or a verified account matching Stripe's paid email.
+export function rememberGuestCheckout(id,browser=window){try{if(id)browser.localStorage.setItem(GUEST_KEY,JSON.stringify({id,expires:Date.now()+7*86400000}));else browser.localStorage.removeItem(GUEST_KEY);}catch{}}
+export function pendingGuestCheckout(browser=window){try{const saved=JSON.parse(browser.localStorage.getItem(GUEST_KEY)||'null');return saved?.expires>Date.now()&&/^cs_(?:test_|live_)?[a-zA-Z0-9]{8,200}$/.test(saved.id)?saved.id:null;}catch{return null;}}
+export function resumeGuestCheckout(browser=window){const id=pendingGuestCheckout(browser);if(!id)return;const url=new URL(browser.location.href);url.searchParams.delete('checkout');url.searchParams.set('guest_checkout','return');url.searchParams.set('session_id',id);url.hash='/account';browser.location.assign(url.href);}

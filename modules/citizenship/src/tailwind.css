@@ -11,3 +11,5 @@
 @source "../../../shared/interview-ui/InterviewerVideo.jsx";
 
 @source "../../../shared/AIReport.jsx";
+
+@source "./StripeCheckoutReturn.jsx";

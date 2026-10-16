@@ -1,12 +1,34 @@
+import {guestCheckout} from './guestCheckout.js';
 import {getBillingReadiness} from "./billingReadiness.js";
 import {billingFailure} from "./billingErrors.js";
 import { Router } from "express";
 import { requireAccount, requireVerifiedAccount, isPracticePolicyReady } from "./accountService.js";
 import { createCheckoutSession, createPortalSession } from "./stripeBilling.js";
 
-export function createBillingRouter({ authenticate = requireAccount, verifyAccount = requireVerifiedAccount, policyReady = isPracticePolicyReady, checkout = createCheckoutSession, portal = createPortalSession, readiness = getBillingReadiness } = {}) {
+export function createBillingRouter({ authenticate = requireAccount, verifyAccount = requireVerifiedAccount, policyReady = isPracticePolicyReady, checkout = createCheckoutSession, portal = createPortalSession, readiness = getBillingReadiness, guest = guestCheckout } = {}) {
 const router = Router();
 router.get("/status",async(_req,res)=>{res.set("Cache-Control","no-store");try{res.json(await readiness());}catch{res.status(503).json({enabled:false,ready:false,reason:"checkout_unavailable"});}});
+const native=req=>req.get('x-immigra-client')==='native'||['capacitor://localhost','https://localhost','http://localhost'].includes(req.get('origin'));
+router.post('/guest-checkout-session',async(req,res)=>{
+ res.set('Cache-Control','no-store');
+ if(native(req))return res.status(403).json({code:'native_checkout_unavailable'});
+ if(!['monthly','annual'].includes(req.body?.interval))return res.status(400).json({code:'invalid_billing_interval'});
+ try{
+  if(!await policyReady())return res.status(503).json({code:'access_policy_unavailable'});
+  return res.status(201).json(await guest.start(req,res,req.body.interval));
+ }catch(error){return guestFailure(error,res);}
+});
+router.post('/checkout-return',(req,res,next)=>req.get('authorization')?authenticate(req,res,next):next(),async(req,res)=>{
+ res.set('Cache-Control','no-store');
+ if(native(req))return res.status(403).json({code:'native_checkout_unavailable'});
+ try{const result=await guest.complete(req,res,req.body?.checkoutId);return res.status(result.pending?202:200).json(result);}
+ catch(error){return guestFailure(error,res);}
+});
+function guestFailure(error,res){
+ if(error.guestCheckoutError)return res.status(error.status).json({code:error.code,...(error.email?{email:error.email}:{})});
+ const failure=billingFailure(error);console.error('Stripe guest checkout error',failure);
+ return res.status(failure.status).json({code:failure.code,reference:failure.reference});
+}
 router.use(authenticate);
 
 router.post("/checkout-session", async (req, res) => {

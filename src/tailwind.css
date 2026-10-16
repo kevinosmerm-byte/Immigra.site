@@ -25,3 +25,5 @@
 @source "../modules/citizenship/src/TrialAccessDialog.jsx";
 
 @source "../modules/citizenship/src/App.jsx";
+
+@source "../modules/citizenship/src/StripeCheckoutReturn.jsx";

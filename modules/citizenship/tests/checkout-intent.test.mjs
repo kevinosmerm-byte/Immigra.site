@@ -33,3 +33,13 @@ test('consuming a plan clears browser state and keeps unrelated return parameter
 });
 
 test('an explicit new plan replaces an older plan in the verification return URL',()=>{const env=browser('https://immigra.site/?checkout=monthly#/account');saveCheckoutIntent('annual','learner@example.com',env);assert.equal(readCheckoutIntent('learner@example.com',env),'annual');});
+
+test('post-payment verification preserves the checkout ID instead of starting another subscription',()=>{
+ const env=browser('https://immigra.site/?guest_checkout=return&session_id=cs_test_GuestCheckout123#/account');saveCheckoutIntent('annual','',env);
+ const url=new URL(checkoutReturnUrl('buyer@example.test',env));assert.equal(url.searchParams.get('guest_checkout'),'return');assert.equal(url.searchParams.get('session_id'),'cs_test_GuestCheckout123');assert.equal(url.searchParams.has('checkout'),false);assert.equal(url.href.includes('buyer'),false);
+});
+
+test('a pending guest checkout stores only a public reference and can be resumed or cleared',async()=>{
+ const {rememberGuestCheckout,pendingGuestCheckout,resumeGuestCheckout}=await import('../src/checkoutIntent.mjs');
+ const env=browser();let assigned;env.location.assign=url=>{assigned=url;};rememberGuestCheckout('cs_test_GuestCheckout123',env);assert.equal(pendingGuestCheckout(env),'cs_test_GuestCheckout123');resumeGuestCheckout(env);assert.equal(new URL(assigned).searchParams.get('session_id'),'cs_test_GuestCheckout123');assert.equal(new URL(assigned).hash,'#/account');rememberGuestCheckout(null,env);assert.equal(pendingGuestCheckout(env),null);
+});

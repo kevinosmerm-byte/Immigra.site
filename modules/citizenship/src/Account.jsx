@@ -1,6 +1,7 @@
+import StripeCheckoutReturn from './StripeCheckoutReturn.jsx';
 import {billingErrorMessage} from "./billingMessages.mjs";
 import {authCallbackKind} from '../../../shared/authentication/callback.mjs';
-import {checkoutReturnUrl,readCheckoutIntent,clearCheckoutIntent} from "./checkoutIntent.mjs";
+import {checkoutReturnUrl,readCheckoutIntent,clearCheckoutIntent,guestCheckoutId,rememberGuestCheckout,pendingGuestCheckout,resumeGuestCheckout} from "./checkoutIntent.mjs";
 import {App as NativeApp} from '@capacitor/app';
 import {accountStorage,clearLegacyBrowserSession,lastAccountEmail,rememberAccountEmail} from "./accountStorage.js";
 import EmailTrialAccount from "./EmailTrialAccount.jsx";
@@ -287,20 +288,38 @@ export function AccountProvider({ children }) {
       await client.auth.signOut({ scope: "local" });await accountStorage.removeItem(NATIVE_TRIAL_KEY);setSession(null);setGuestSession(null);rememberAccountEmail('');
       return true;
     },
-    openCheckout: async (interval, checkoutEmail) => {
+    openCheckout: async (interval) => {
       if (Capacitor.isNativePlatform()) throw Object.assign(new Error("Web checkout is unavailable in native apps."), { code: "checkout_unavailable" });
       if (!["monthly", "annual"].includes(interval)) throw Object.assign(new Error("Choose a plan."), { code: "invalid_billing_interval" });
-      const checkoutSession = session?.access_token ? session : await registerEmailAccess(checkoutEmail);
-      const response = await fetch("/api/billing/checkout-session", {
+      const checkoutSession = session?.access_token ? session : null;
+      const response = await fetch(checkoutSession ? "/api/billing/checkout-session" : "/api/billing/guest-checkout-session", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${checkoutSession.access_token}` },
+        headers: { "Content-Type": "application/json", ...(checkoutSession?{Authorization: `Bearer ${checkoutSession.access_token}`}:{}) },
         body: JSON.stringify({ interval }), signal:AbortSignal.timeout(30000),
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.url) throw Object.assign(new Error(result.error || "Checkout unavailable"),{code:result.code||"checkout_unavailable",reference:result.reference});
       clearCheckoutIntent();
+      if(result.checkoutId)rememberGuestCheckout(result.checkoutId);
       window.location.assign(result.url);
       return true;
+    },
+    completeGuestCheckout: async (checkoutId,signal) => {
+      const controller=new AbortController(),abort=()=>controller.abort(),timeout=setTimeout(abort,30000);
+      if(signal?.aborted)abort();else signal?.addEventListener('abort',abort,{once:true});
+      try{
+      const response=await fetch('/api/billing/checkout-return',{method:'POST',headers:{'Content-Type':'application/json',...(session?.access_token?{Authorization:`Bearer ${session.access_token}`}:{})},body:JSON.stringify({checkoutId}),signal:controller.signal});
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok)throw Object.assign(new Error('Checkout confirmation unavailable'),{code:result.code,email:result.email,reference:result.reference});
+      if(result.claimed){
+        rememberGuestCheckout(null);
+        clearCheckoutIntent();
+        const url=new URL(window.location.href);url.searchParams.delete('guest_checkout');url.searchParams.delete('session_id');url.searchParams.set('billing','success');window.history.replaceState(window.history.state,'',url.pathname+url.search+'#/account');
+        if(result.session){rememberAccountEmail(result.session.user.email);setGuestSession(result.session);}
+        else {await loadUsage(session?.access_token);window.location.reload();}
+      }
+      return result;
+      }finally{clearTimeout(timeout);signal?.removeEventListener('abort',abort);}
     },
     openBillingPortal: async () => {
       if (session?.isEmailTrial) throw new Error("Verify your email before managing billing.");
@@ -413,10 +432,14 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
   };
 
   useEffect(()=>{
-    if(!session||session.isEmailTrial||!webBillingEnabled)return;
+    if(guestCheckoutId()!==null||!session||session.isEmailTrial||!webBillingEnabled)return;
     const interval=readCheckoutIntent(session.user.email);
     if(interval){clearCheckoutIntent();startBillingAction(interval);}
   },[session?.user?.id,session?.isEmailTrial,webBillingEnabled]);
+  if(guestCheckoutId()!==null){
+    const returning=<StripeCheckoutReturn checkoutId={guestCheckoutId()} loading={loading} language={language} embedded={embedded} modalRef={modalRef} onClose={onClose}/>;
+    return embedded?returning:createPortal(returning,document.body);
+  }
   if(configured&&!loading&&(!session||session.isEmailTrial)){
     const trial=<EmailTrialAccount signInError={signInError} language={language} session={session} usage={usage} billing={billing} webBillingEnabled={webBillingEnabled} openCheckout={openCheckout} startEmailTrial={startEmailTrial} sendMagicLink={sendMagicLink} signOut={signOut} onContinue={()=>{onClose?.();if(embedded)window.location.hash='/';}} modalRef={modalRef} embedded={embedded} onClose={onClose}/>;
     return embedded?trial:createPortal(trial,document.body);
@@ -426,6 +449,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
       <section ref={modalRef} className="account-sheet" role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : "true"} aria-labelledby="account-title">
         {!embedded&&<button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>}
         <div className="liquid-page-heading"><span className="text-slate-600!">{language==='es'?'TU CUENTA':'YOUR ACCOUNT'}</span><h1 id="account-title" className="text-slate-950!">{language==='es'?'Tu cuenta de Immigra':'Your Immigra account'}</h1><p className="text-slate-700!">{TEMPORARY_PUBLIC_INTERVIEWS&&!session?(language==='es'?'Las entrevistas están abiertas temporalmente para pruebas.':'Interviews are temporarily open for testing.'):(language==='es'?'Gestiona tu suscripción, revisa tus límites y administra tu cuenta.':'Manage your subscription, review your limits and manage your account.')}</p></div>
+        {pendingGuestCheckout()&&<button type="button" className="min-h-12! rounded-xl! bg-blue-100! px-5! py-3! text-blue-950!" onClick={()=>resumeGuestCheckout()}>{language==='es'?'Ya inicié una compra · comprobar pago':'I started a purchase · check payment'}</button>}
         {signInError&&!session&&!status&&<p role="alert">{language==='es'?'El enlace de acceso no es válido o ha caducado. Solicita uno nuevo y abre únicamente el correo más reciente.':'The sign-in link is invalid or expired. Request a new link and open only the latest email.'}</p>}
         {TEMPORARY_PUBLIC_INTERVIEWS&&!session ? null : !configured ? <div className="account-message">{copy.unavailable}</div> : loading ? <div className="account-loading" role="status">{language==='es'?'Recuperando tu sesión…':'Restoring your session…'}</div> : session ? (
           <>

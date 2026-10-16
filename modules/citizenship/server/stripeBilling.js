@@ -29,7 +29,7 @@ export function priceIdForInterval(interval) {
   return environmentKey ? process.env[environmentKey]?.trim() || "" : "";
 }
 
-function appBaseUrl() {
+export function appBaseUrl() {
   const configured = process.env.APP_BASE_URL?.trim() || "https://immigra.site";
   try {
     const url = new URL(configured);

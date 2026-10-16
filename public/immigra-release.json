@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-16-readable-review-questions",
+  "release": "2026-10-16-email-inside-stripe",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -47,6 +47,9 @@
     "new-account-checkout-without-email-link",
     "report-link-in-page-footer",
     "safe-stripe-operation-diagnostics",
-    "readable-interview-review-questions"
+    "readable-interview-review-questions",
+    "guest-checkout-email-collected-by-stripe",
+    "verified-post-payment-account-linking",
+    "resume-pending-web-purchase"
   ]
 }
