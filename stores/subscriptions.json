@@ -1,0 +1,24 @@
+{
+  "app": "Immigra",
+  "bundleId": "us.citizenshipai.app",
+  "entitlementKey": "citizenship_ai_pro",
+  "status": "prepared_not_registered",
+  "nativePurchasesEnabled": false,
+  "currency": "USD",
+  "trial": {"type": "app_managed_first_premium_use", "days": 7, "storeIntroductoryOffer": false},
+  "apple": {
+    "subscriptionGroupReferenceName": "Immigra PRO",
+    "products": [
+      {"id": "us.citizenshipai.app.pro.monthly", "period": "P1M", "referencePriceCents": 599, "localizations": {"es-US": {"name": "Immigra PRO mensual", "description": "Práctica educativa de entrevistas e IA."}, "en-US": {"name": "Immigra PRO monthly", "description": "Educational interview and AI practice."}}},
+      {"id": "us.citizenshipai.app.pro.annual", "period": "P1Y", "referencePriceCents": 4999, "localizations": {"es-US": {"name": "Immigra PRO anual", "description": "Práctica educativa de entrevistas e IA."}, "en-US": {"name": "Immigra PRO annual", "description": "Educational interview and AI practice."}}}
+    ]
+  },
+  "google": {
+    "subscriptionId": "immigra_pro",
+    "localizations": {"es-US": {"name": "Immigra PRO", "description": "Práctica educativa de entrevistas e IA."}, "en-US": {"name": "Immigra PRO", "description": "Educational interview and AI practice."}},
+    "basePlans": [
+      {"id": "monthly", "period": "P1M", "type": "auto_renewing", "referencePriceCents": 599},
+      {"id": "annual", "period": "P1Y", "type": "auto_renewing", "referencePriceCents": 4999}
+    ]
+  }
+}
