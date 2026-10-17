@@ -337,7 +337,8 @@ test("the client follows the remote launch-promotion switch without a new releas
   assert.match(account, /setPromotionAccess\(config\?\.promotionAccess !== false\)/);
   assert.match(account, /usage, promotionAccess/);
   assert.match(promotion, /!session\?\.access_token/);
-  assert.match(promotion, /deny\("account_required"\)/);
+  assert.match(promotion, /fetch\('\/api\/demo\/start'/);
+  assert.match(promotion, /result.code === 'account_required'/);
 });
 
 test("remote AI feature switches reach the client before a feature opens", async () => {

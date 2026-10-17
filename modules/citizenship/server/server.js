@@ -228,6 +228,8 @@ function safeHistory(history) {
 
 async function recordProviderUsage(req, { provider, model, usage, transcriptionSeconds }) {
   if (!req.aiSession) return;
+  // Guest usage is bounded by the platform's persistent demo counter and request limiter.
+  if (req.demoVerified && req.aiSession.source === 'guest_demo') return;
   try {
     await recordAiUsageEvent({
       aiSession: req.aiSession,

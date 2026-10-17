@@ -126,6 +126,8 @@ export async function getBillingIdentity(userId) {
 }
 
 export async function attachOptionalAiSession(req, res, next) {
+  // Only the platform's signed-cookie middleware can attach this server-side marker.
+  if (req.demoVerified && req.aiSession?.source === 'guest_demo') return next();
   const sessionId = (req.get("x-citizenship-ai-session") || "").trim();
   if (!sessionId) return next();
   if (!/^[0-9a-f-]{36}$/i.test(sessionId) || !supabase) {
@@ -249,6 +251,13 @@ export async function startAiSession({ userId, feature, idempotencyKey }) {
   });
   throwDatabaseError(error, "Unable to start AI session.");
   if (data?.allowed && !isVerifiedPracticeAccess(data.access)) throw new Error("The seven-day access policy is not installed.");
+  return data;
+}
+
+export async function reserveGuestDemo(subjectHash, requestId, feature) {
+  if (!supabase) throw new Error('Account service unavailable.');
+  const {data,error}=await supabase.rpc('reserve_guest_demo',{p_subject_hash:subjectHash,p_request_id:requestId,p_feature:feature});
+  throwDatabaseError(error,'Unable to reserve demo.');
   return data;
 }
 

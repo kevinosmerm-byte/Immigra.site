@@ -19,6 +19,7 @@ function SessionAccessProvider({ children, account }) {
   const active = useRef(null);
   const request = useRef(0);
   const alive = useRef(true);
+  const reservingDemo = useRef(false);
   const finishRef = useRef(finishAiSession);
   useEffect(() => { finishRef.current = finishAiSession; }, [finishAiSession]);
   const finishActiveAiSession = async (outcome = "auto", options = {}) => {
@@ -27,7 +28,7 @@ function SessionAccessProvider({ children, account }) {
     active.current = null;
     setActiveAccess(null);
     setAiRequestContext(null);
-    if (current?.sessionId) await finishAiSession(current.sessionId, outcome, options).catch(() => {});
+    if (current?.sessionId && !current.demo) await finishAiSession(current.sessionId, outcome, options).catch(() => {});
   };
   useEffect(() => {
     alive.current = true;
@@ -40,7 +41,7 @@ function SessionAccessProvider({ children, account }) {
         const current = active.current;
         active.current = null;
         setAiRequestContext(null);
-        if (current?.sessionId) finishRef.current(current.sessionId, "auto", { keepalive: true }).catch(() => {});
+        if (current?.sessionId && !current.demo) finishRef.current(current.sessionId, "auto", { keepalive: true }).catch(() => {});
       });
     };
   }, []);
@@ -57,7 +58,7 @@ function SessionAccessProvider({ children, account }) {
       const current = active.current;
       active.current = null;
       setAiRequestContext(null);
-      if (current?.sessionId) finishAiSession(current.sessionId, "auto", { keepalive: true }).catch(() => {});
+      if (current?.sessionId && !current.demo) finishAiSession(current.sessionId, "auto", { keepalive: true }).catch(() => {});
     };
     window.addEventListener("pagehide", leave);
     return () => window.removeEventListener("pagehide", leave);
@@ -67,7 +68,26 @@ function SessionAccessProvider({ children, account }) {
     if (!getAiFeatureConfig(feature)) return;
     const deny = reason => setPending({ feature, reason, language });
     if (loading) return deny("access_loading");
-    if (!session?.access_token) return deny("account_required");
+    if (!session?.access_token) {
+      const current = active.current;
+      if (current?.demo && current.feature === feature && Date.parse(current.access.accessEndsAt) > Date.now()) return continuation(current);
+      if (reservingDemo.current) return;
+      reservingDemo.current = true;
+      const id = ++request.current;
+      try {
+        const response = await fetch('/api/demo/start', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({feature,requestId:crypto.randomUUID()})});
+        const result = await response.json();
+        if (!alive.current || id !== request.current) return;
+        if (!response.ok) return deny(result.code === 'account_required' ? 'account_required' : 'access_unavailable');
+        if (!result.demo || !result.sessionId || !isVerifiedPracticeAccess(result.access)) return deny('access_unavailable');
+        const approved = {...result,feature};
+        active.current=approved;setActiveAccess(approved);
+        setAiRequestContext({sessionId:result.sessionId,feature});
+        setPending(null);continuation(approved);
+      } catch { if(alive.current)deny('access_unavailable'); }
+      finally { reservingDemo.current=false; }
+      return;
+    }
     if (aiFeatureAvailability?.[feature] === false) return deny("feature_unavailable");
     const current = active.current;
     if (current?.feature === feature && isVerifiedPracticeAccess(current.access)
