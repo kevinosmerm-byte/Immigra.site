@@ -17,7 +17,8 @@ export function createBillingReadiness({configuration=getBillingConfiguration,st
     if(failed.length){
      const {step,error}=failed[0],failure=billingFailure(error);
      const reason=error.type==='StripePermissionError'?'billing_status_unavailable':step.endsWith('_price')&&error.code==='resource_missing'?'billing_price_unavailable':failure.code;
-     return {enabled:true,ready:false,reason,blockedSteps:failed.map(item=>item.step),...(failure.reference?{reference:failure.reference}:{}),checkedAt};
+     const failures=failed.map(({step,error})=>{const safe=billingFailure(error);return {step,code:error.type==='StripePermissionError'?'permission_denied':safe.code,...(safe.reference?{reference:safe.reference}:{})};});
+     return {enabled:true,ready:false,reason,blockedSteps:failed.map(item=>item.step),failures,checkoutCreation:'not_checked',...(failure.reference?{reference:failure.reference}:{}),checkedAt};
     }
     const [account,monthly,annual]=results.map(result=>result.value);
     if(!monthly.livemode||!annual.livemode)return {enabled:true,ready:false,reason:'billing_test_mode',checkedAt};

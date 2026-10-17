@@ -27,3 +27,5 @@
 @source "../modules/citizenship/src/App.jsx";
 
 @source "../modules/citizenship/src/StripeCheckoutReturn.jsx";
+
+@source "../modules/citizenship/src/GoogleSignInButton.jsx";

@@ -13,3 +13,5 @@
 @source "../../../shared/AIReport.jsx";
 
 @source "./StripeCheckoutReturn.jsx";
+
+@source "./GoogleSignInButton.jsx";

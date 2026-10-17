@@ -1,3 +1,4 @@
+import {startGoogleOAuth} from './googleAuth.mjs';
 import StripeCheckoutReturn from './StripeCheckoutReturn.jsx';
 import {billingErrorMessage} from "./billingMessages.mjs";
 import {authCallbackKind} from '../../../shared/authentication/callback.mjs';
@@ -19,12 +20,15 @@ const NATIVE_TRIAL_KEY='immigra.native-trial.v1';
 const browserSupabaseUrl = import.meta.env.VITE_SUPABASE_URL?.trim();
 const browserSupabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY?.trim();
 
+const accountConfigurations=new WeakMap();
 function createAccountClient(url, publishableKey) {
-  return url && publishableKey
+  const client=url && publishableKey
     ? createClient(url, publishableKey, {
       auth: { storage: accountStorage, persistSession: true, autoRefreshToken: Capacitor.isNativePlatform(), detectSessionInUrl: true, flowType: Capacitor.isNativePlatform()?'pkce':'implicit' },
     })
     : null;
+  if(client)accountConfigurations.set(client,{url,publishableKey});
+  return client;
 }
 
 const COPY = {
@@ -218,6 +222,7 @@ export function AccountProvider({ children }) {
       setGuestSession(access);
       return access;
     }, usage, promotionAccess, aiFeatureAvailability, billing, signInError,
+    signInWithGoogle:()=>startGoogleOAuth({client,...accountConfigurations.get(client),native:Capacitor.isNativePlatform()}),
     sendMagicLink: (email) => {rememberAccountEmail(email);return TEMPORARY_PUBLIC_INTERVIEWS ? Promise.resolve({error: new Error("Account links temporarily disabled")}) : client.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: Capacitor.isNativePlatform()?'us.citizenshipai.app://auth-callback':checkoutReturnUrl(email) },

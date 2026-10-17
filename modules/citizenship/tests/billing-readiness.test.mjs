@@ -22,5 +22,5 @@ test('permission diagnostics identify every failed operation without leaking pro
   accounts:{retrieve:async()=>{throw {type:'StripePermissionError',requestId:'req_safeAccount',message:'private account details'};}},
   prices:{retrieve:async interval=>{if(interval==='annual')throw {type:'StripePermissionError',message:'private price value'};return {};}},
  })});
- const result=await check();assert.equal(result.reason,'billing_status_unavailable');assert.deepEqual(result.blockedSteps,['account','annual_price']);assert.equal(result.reference,'req_safeAccount');assert.doesNotMatch(JSON.stringify(result),/private account|private price/);
+ const result=await check();assert.equal(result.reason,'billing_status_unavailable');assert.deepEqual(result.blockedSteps,['account','annual_price']);assert.equal(result.reference,'req_safeAccount');assert.doesNotMatch(JSON.stringify(result),/private account|private price/);assert.deepEqual(result.failures,[{step:'account',code:'permission_denied',reference:'req_safeAccount'},{step:'annual_price',code:'permission_denied'}]);assert.equal(result.checkoutCreation,'not_checked');
 });

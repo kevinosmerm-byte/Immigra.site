@@ -1,5 +1,5 @@
 {
-  "release": "2026-10-16-email-inside-stripe",
+  "release": "2026-10-16-google-web-signin",
   "repository": "kevinosmerm-byte/immigration-ai",
   "branch": "design/citizenship-visual",
   "interviewers": [
@@ -50,6 +50,9 @@
     "readable-interview-review-questions",
     "guest-checkout-email-collected-by-stripe",
     "verified-post-payment-account-linking",
-    "resume-pending-web-purchase"
+    "resume-pending-web-purchase",
+    "google-web-sign-in",
+    "safe-google-provider-preflight",
+    "stripe-per-operation-permission-diagnostics"
   ]
 }

@@ -1,3 +1,4 @@
+import GoogleSignInButton from './GoogleSignInButton.jsx';
 import {saveCheckoutIntent,readCheckoutIntent,clearCheckoutIntent,pendingGuestCheckout,resumeGuestCheckout} from "./checkoutIntent.mjs";
 import {lastAccountEmail,rememberAccountEmail} from "./accountStorage.js";
 import {PRO_PLAN} from "../shared/featureAccessConfig.js";
@@ -49,6 +50,7 @@ export default function EmailTrialAccount({language='es',session,usage,billing,w
    <div className="grid! gap-3! sm:grid-cols-2!">{[['monthly',(billing.introductoryOfferEnabled?billing.introductoryMonthlyPriceCents:billing.monthlyPriceCents)??PRO_PLAN.regularMonthlyPriceCents,t('Mensual','Monthly')],['annual',billing.annualPriceCents??PRO_PLAN.annualPriceCents,t('Anual','Annual')]].map(([interval,cents,label])=><button type="button" key={interval} className={button} disabled={busy} aria-pressed={selectedPlan===interval} onClick={()=>subscribe(interval)}>{selectedPlan===interval&&<span aria-hidden="true">✓ </span>}{label} · {new Intl.NumberFormat(es?'es-US':'en-US',{style:'currency',currency:'USD'}).format(Number(cents)/100)}</button>)}</div>
    <p className="text-sm! text-slate-600!">{t('Renovación automática del plan contratado. Revisa el importe y las condiciones antes de confirmar el pago.','Your purchased plan renews automatically. Review the amount and terms before confirming payment.')}</p>
   </section>}
+  {(!session||verify)&&<GoogleSignInButton language={language} disabled={busy} onBusyChange={setBusy}/>}
   {session&&!verify?<div className="space-y-3! rounded-2xl! bg-emerald-50! p-5! text-emerald-950!">
    <strong>{session.user.email}</strong><p>{usage?.tier==='pro'?t('Tu suscripción está activa.','Your subscription is active.'):expired?t('Elige un plan para continuar con entrevistas e IA.','Choose a plan to continue interviews and AI.'):usage?.access?.status==='trial_active'?t(`Prueba activa · ${usage.access.remainingDays??7} días restantes.`,`Trial active · ${usage.access.remainingDays??7} days remaining.`):t('Tu acceso está preparado. La prueba comienza con tu primera práctica de pago.','Your access is ready. The trial starts with your first paid-feature practice.')}</p>
    {!expired&&<button type="button" className={button} disabled={busy} onClick={onContinue}>{t('Continuar practicando','Continue practicing')}</button>}
