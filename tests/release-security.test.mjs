@@ -16,6 +16,6 @@ test('native API transport preserves authorization, rewrites only own API calls 
 });
 test('legacy legal links reach settings and public pages expose truthful educational and deletion information',()=>{
  for(const hash of ['#privacy','#/privacy','#terms'])assert.equal(moduleFromHash(hash),'settings');
- for(const page of publicPages){const html=publicPageHtml(page,'/assets/test.css');assert.match(html,/https:\/\/immigra.site\//);assert.match(html,/No somos abogados|We are not lawyers/);assert.match(html,/mailto:info@citizenshipai.us/);assert.doesNotMatch(html,/<script/);}
+ for(const page of publicPages){const html=publicPageHtml(page,'/assets/test.css');assert.match(html,/https:\/\/immigra.site\//);assert.match(html,/No somos abogados|We are not lawyers/);assert.match(html,/mailto:info@immigra.site/);assert.doesNotMatch(html,/<script/);}
  const deletion=publicPageHtml(publicPages.find(p=>p[0]==='delete-account'),'/assets/test.css');assert.match(deletion,/Delete account/);assert.match(deletion,/stops future renewal/);assert.match(deletion,/Apple or Google purchases/);
 });

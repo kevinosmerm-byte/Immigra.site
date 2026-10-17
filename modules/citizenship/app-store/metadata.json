@@ -29,6 +29,6 @@
     "notes": "Immigra is an independent educational study app for citizenship, asylum and residency. Free study is available without an account. Interview and AI practice require email entry; a seven-day trial begins at first paid-feature use without a card or automatic charge. Supply a verified review account with active access before submission so reviewers can test all features. Microphone permission is requested for voice practice; typed answers are available. PDFs are read locally and only authorized text is sent to OpenAI. AI reporting is available within the app. Native purchases are disabled until store products, verification, renewal and restoration are configured and tested. This build must not be submitted as purchase-ready before those steps are complete.",
     "demoAccountRequired": true,
     "contactName": "Kevin Medina",
-    "contactEmail": "info@citizenshipai.us"
+    "contactEmail": "info@immigra.site"
   }
 }

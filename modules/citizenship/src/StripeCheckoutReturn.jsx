@@ -43,6 +43,6 @@ export default function StripeCheckoutReturn({language='es',checkoutId,loading,e
   {!checking&&<button type="button" className={action} onClick={()=>setAttempt(v=>v+1)}>{t('Comprobar de nuevo','Check again')}</button>}
   {sendError&&<p role="alert">{t('No pudimos continuar. Revisa la conexión e inténtalo de nuevo.','Could not continue. Check your connection and try again.')}</p>}
   {state.reference&&<p>{t('Referencia para soporte: ','Support reference: ')}{state.reference}</p>}
-  {!checking&&<a href="mailto:info@citizenshipai.us" className="inline-flex! min-h-12! items-center! underline!">{t('Contactar con soporte','Contact support')}</a>}
+  {!checking&&<a href="mailto:info@immigra.site" className="inline-flex! min-h-12! items-center! underline!">{t('Contactar con soporte','Contact support')}</a>}
  </section>;
 }

@@ -25,7 +25,7 @@ The legal name, review telephone number, copyright owner, tax information and ag
 
 - Sign-in required: **No** during the launch promotion.
 - Demo account: **Not required** for this build.
-- Review email: `info@citizenshipai.us`
+- Review email: `info@immigra.site`
 - Review contact name and phone: **ACCOUNT HOLDER MUST ENTER**.
 - Notes: copy `review.notes` from `metadata.json` without removing the independent-product, microphone, camera, prerecorded-podcast, USCIS Sandbox or inactive-payment disclosures.
 
