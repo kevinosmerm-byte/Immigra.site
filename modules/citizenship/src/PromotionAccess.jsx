@@ -75,7 +75,7 @@ function SessionAccessProvider({ children, account }) {
       reservingDemo.current = true;
       const id = ++request.current;
       try {
-        const response = await fetch('/api/demo/start', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({feature,requestId:crypto.randomUUID()})});
+        const response = await fetch('/api/demo/start', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({feature,requestId:crypto.randomUUID()}),signal:AbortSignal.timeout(15000)});
         const result = await response.json();
         if (!alive.current || id !== request.current) return;
         if (!response.ok) return deny(result.code === 'account_required' ? 'account_required' : 'access_unavailable');

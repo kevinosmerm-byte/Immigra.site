@@ -1,4 +1,5 @@
 import {startGoogleOAuth} from './googleAuth.mjs';
+import {withDeadline} from '../../../shared/async-deadline.mjs';
 import StripeCheckoutReturn from './StripeCheckoutReturn.jsx';
 import {billingErrorMessage} from "./billingMessages.mjs";
 import {authCallbackKind} from '../../../shared/authentication/callback.mjs';
@@ -96,7 +97,7 @@ export function AccountProvider({ children }) {
   const loadUsage = async (accessToken) => {
     if (!accessToken) { setUsage(null); return null; }
     try {
-      const response = await fetch("/api/account/usage", { headers: { Authorization: `Bearer ${accessToken}` } });
+      const response = await fetch("/api/account/usage", { headers: { Authorization: `Bearer ${accessToken}` }, signal: AbortSignal.timeout(10000) });
       const nextUsage = response.ok ? await response.json() : null;
       setUsage(nextUsage);
       return nextUsage;
@@ -128,7 +129,7 @@ export function AccountProvider({ children }) {
     const adopt=async nextSession=>{
       if(!nextSession)return null;
       if(Capacitor.isNativePlatform()){
-        const {data,error}=await client.auth.getUser();
+        const {data,error}=await withDeadline(()=>client.auth.getUser());
         if(error&&(Number(error.status)>=500||error.name==='AuthRetryableFetchError'))throw error;
         if(error||!data?.user)return null;
         return nextSession;
@@ -139,7 +140,7 @@ export function AccountProvider({ children }) {
     };
     const restore=async()=>{
       try{
-        const {data}=await client.auth.getSession();
+        const {data}=await withDeadline(()=>client.auth.getSession());
         let next=await adopt(data.session);
         if(!next&&!Capacitor.isNativePlatform()){
           const response=await fetch('/api/account/session',{cache:'no-store',signal:AbortSignal.timeout(10000)});
@@ -234,6 +235,7 @@ export function AccountProvider({ children }) {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ feature, idempotencyKey: crypto.randomUUID() }),
+        signal: AbortSignal.timeout(15000),
       });
       const decision = await response.json().catch(() => ({}));
       if (response.status === 403 && decision.allowed === false) {
@@ -252,6 +254,7 @@ export function AccountProvider({ children }) {
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${session.access_token}` },
         body: JSON.stringify({ outcome }),
         keepalive: Boolean(options.keepalive),
+        signal: AbortSignal.timeout(10000),
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(result.error || "AI session result unavailable");

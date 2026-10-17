@@ -1,0 +1,8 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {loadModule} from '../src/load-module.mjs';
+const origin='https://immigra.site';
+function fakeDoc(succeed){let removed=false;return {get removed(){return removed;},createElement:()=>({remove(){removed=true;}}),head:{appendChild(link){queueMicrotask(()=>succeed?link.onload():link.onerror());}}};}
+test('transient CSS failure retries module without reloading user state',async()=>{let calls=0;const value=await loadModule(async()=>{if(++calls===1)throw Error('Unable to preload CSS for '+origin+'/assets/Module-test.css');return {default:'module'};},{origin,doc:fakeDoc(true)});assert.equal(calls,2);assert.equal(value.default,'module');});
+test('failed stylesheet retry cleans up and surfaces error',async()=>{const doc=fakeDoc(false);await assert.rejects(loadModule(()=>{throw Error('Unable to preload CSS for '+origin+'/assets/Module-test.css');},{origin,doc}));assert.equal(doc.removed,true);});
+test('does not inject foreign CSS or retry application exceptions',async()=>{for(const message of ['Application failed','Unable to preload CSS for https://other.invalid/assets/a.css']){let calls=0;await assert.rejects(loadModule(()=>{calls++;throw Error(message);},{origin,doc:{}}));assert.equal(calls,1);}});
+test('failed dynamic import retries a same-origin hashed module with a fresh URL',async()=>{let retried;const result=await loadModule(()=>{throw Error('Failed to fetch dynamically imported module: '+origin+'/assets/Residency-abc.js');},{origin,importModule:async url=>{retried=url;return 'loaded';}});assert.equal(result,'loaded');assert.equal(retried,origin+'/assets/Residency-abc.js?immigra_retry=1');});
