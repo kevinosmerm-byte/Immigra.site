@@ -1,11 +1,12 @@
+import {createAccountDeletionHandler} from './accountDeletion.js';
 import { Router } from "express";
-import { randomUUID } from "node:crypto";
+import { randomUUID,createHash } from "node:crypto";
 import {
+  restoreWebSession, exchangeWebSession, logoutWebSession,
   deleteAccount,
   exportAccountData,
   finishAiSession,
   getAccountConfiguration,
-  getBillingIdentity,
   getPublicAccountConfiguration,
   getPublicAiFeatureAvailability,
   getUsageSnapshot,
@@ -13,6 +14,11 @@ import {
   isPracticePolicyReady,
   recordProductEvent,
   requireAccount,
+  requireVerifiedAccount,
+  registerEmailTrial,
+  getEmailTrialSession,
+  clearEmailTrialSession,
+  consumeDistributedRateLimit,
   startAiSession,
   getPrivateProfileConfiguration,
   getAccountBrainProfile,
@@ -20,7 +26,7 @@ import {
   deleteAccountBrainProfile,
 } from "./accountService.js";
 import { getAiFeatureConfig } from "../shared/featureAccessConfig.js";
-import { getBillingConfiguration } from "./stripeBilling.js";
+import { cancelWebRenewalForDeletion, getBillingConfiguration } from "./stripeBilling.js";
 import { getSavedQuestions, setSavedQuestion } from "./accountService.js";
 import { getCivicsQuestion } from "../src/civicsQuestionBank.js";
 import { DEFAULT_TEST_VERSION } from "../src/civicsVersions.js";
@@ -47,11 +53,32 @@ router.get("/public-config", async (_req, res) => {
     aiFeatures,
     billing: { ...billing, enabled: billing.enabled && policyReady },
     practicePolicyReady: policyReady,
-    trialPolicy: { days: 7, start: "first_premium_use", unlimited: true, requiresAccount: true },
+    trialPolicy: { days: 7, start: "first_premium_use", unlimited: true, requiresAccount: false, emailOnly: true, verificationRequiredAfterTrial: false, verificationRequiredForPrivateAccount: true },
   });
 });
 
+router.get('/session',async(req,res)=>{res.set('Cache-Control','no-store');try{res.json({session:await restoreWebSession(req,res)});}catch{res.status(503).json({error:'Session temporarily unavailable'});}});
+router.post('/session',async(req,res)=>{res.set('Cache-Control','no-store');try{res.json({session:await exchangeWebSession(req,res)});}catch(error){res.status(error.status||503).json({error:'Session could not be verified'});}});
+router.delete('/session',async(req,res)=>{res.set('Cache-Control','no-store');await logoutWebSession(req,res);res.status(204).end();});
+router.get('/email-trial/session',async(req,res)=>{
+ res.set('Cache-Control','no-store');
+ try{res.json({session:await getEmailTrialSession(req)});}catch{res.status(503).json({error:'Trial session unavailable',code:'trial_unavailable'});}
+});
+router.delete('/email-trial/session',(_req,res)=>{clearEmailTrialSession(res);res.status(204).end();});
+router.post('/email-trial',async(req,res)=>{
+ res.set('Cache-Control','no-store');
+ try{
+  if(!await isPracticePolicyReady())return res.status(503).json({error:'Trial access is not ready.',code:'access_policy_unavailable'});
+  const subjectHash=await consumeDistributedRateLimit({bucket:'email-trial-registration',subjectHash:createHash('sha256').update(req.ip||'unknown').digest('hex'),limit:5,windowSeconds:600});
+  if(!subjectHash?.allowed)return res.status(429).json({error:'Please wait before trying again.',code:'trial_rate_limit'});
+  const session=await registerEmailTrial(req,res,req.body?.email);res.status(201).json({session});
+ }catch(error){res.status(error.status||503).json({error:error.status?error.message:'Trial registration unavailable',code:error.code||'trial_unavailable'});}
+});
 router.use(requireAccount);
+router.use((req,res,next)=>{
+ const publicTrialPath=(req.method==='GET'&&req.path==='/usage')||(req.method==='POST'&&(req.path==='/sessions'||req.path==='/events'||/^\/sessions\/[0-9a-f-]+\/finish$/i.test(req.path)));
+ return req.account?.emailTrial&&!publicTrialPath?requireVerifiedAccount(req,res,next):next();
+});
 
 router.use("/brain-profile", (_req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
 router.get("/brain-profile/status", (_req, res) => res.json(getPrivateProfileConfiguration()));
@@ -119,7 +146,7 @@ router.get("/export", async (req, res) => {
     const payload = await exportAccountData(req.account.userId);
     res.set({
       "Cache-Control": "no-store",
-      "Content-Disposition": `attachment; filename="citizenship-ai-account-${new Date().toISOString().slice(0, 10)}.json"`,
+      "Content-Disposition": `attachment; filename="immigra-account-${new Date().toISOString().slice(0, 10)}.json"`,
       "Content-Type": "application/json; charset=utf-8",
     });
     res.send(JSON.stringify(payload, null, 2));
@@ -129,26 +156,7 @@ router.get("/export", async (req, res) => {
   }
 });
 
-router.delete("/", async (req, res) => {
-  if (req.body?.confirmation !== "DELETE") {
-    return res.status(400).json({ error: "Account deletion requires confirmation.", code: "deletion_confirmation_required" });
-  }
-  try {
-    const billingIdentity = await getBillingIdentity(req.account.userId);
-    if (billingIdentity?.provider === "stripe" && ["active", "grace"].includes(billingIdentity.status)) {
-      return res.status(409).json({
-        error: "Cancel the active web subscription in the billing portal before deleting this account.",
-        code: "active_subscription_requires_cancellation",
-      });
-    }
-    res.set("Cache-Control", "no-store");
-    await deleteAccount(req.account.userId);
-    return res.json({ deleted: true });
-  } catch (error) {
-    console.error("Account deletion error", { message: error.message, cause: error.cause?.code });
-    return res.status(503).json({ error: "Your account could not be deleted.", code: "deletion_unavailable" });
-  }
-});
+router.delete("/",createAccountDeletionHandler({cancelWebRenewal:cancelWebRenewalForDeletion,removeAccount:deleteAccount}));
 
 router.post("/sessions", async (req, res) => {
   const feature = typeof req.body?.feature === "string" ? req.body.feature.trim() : "";

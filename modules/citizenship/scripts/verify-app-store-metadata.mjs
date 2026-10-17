@@ -16,8 +16,8 @@ for (const [locale, copy] of Object.entries(metadata.localizations)) {
 for (const field of ["privacyPolicyUrl", "supportUrl", "marketingUrl"]) {
   assert.match(metadata.app[field], /^https:\/\//, `${field} must use HTTPS`);
 }
-assert.equal(metadata.review.demoAccountRequired, false);
+assert.equal(metadata.review.demoAccountRequired, true);
 assert.match(metadata.review.notes, /independent educational study app/);
-assert.match(metadata.review.notes, /No advertising or payment SDK is active/);
+assert.match(metadata.review.notes, /Native purchases are disabled/);
 
 console.log("App Store metadata checks passed.");

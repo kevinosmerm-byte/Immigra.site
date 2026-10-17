@@ -4,7 +4,7 @@ import {pgcrypto} from '@electric-sql/pglite/contrib/pgcrypto';
 import fs from 'node:fs';import assert from 'node:assert/strict';
 test('PostgreSQL enforces unlimited first-use trial, expiry, subscription and permissions', async () => {
 const migrationRoot=new URL('../supabase/migrations/',import.meta.url);
-const db=new PGlite({extensions:{pgcrypto}});await db.exec('create role anon; create role authenticated; create role service_role; create schema auth; create table auth.users(id uuid primary key, email_confirmed_at timestamptz, is_anonymous boolean default false);');
+const db=new PGlite({extensions:{pgcrypto}});await db.exec('create role anon; create role authenticated; create role service_role; create schema auth; create table auth.users(id uuid primary key, email_confirmed_at timestamptz, is_anonymous boolean default false, created_at timestamptz default now(), raw_app_meta_data jsonb default null);');
 for(const name of fs.readdirSync(migrationRoot).filter(n=>n.endsWith('.sql')).sort()) await db.exec(fs.readFileSync(new URL(name,migrationRoot),'utf8'));
 const user='10000000-0000-4000-8000-000000000001';await db.query('insert into auth.users(id) values($1)',[user]);
 const access=async()=> (await db.query('select public.get_practice_access($1) as result',[user])).rows[0].result;
@@ -22,6 +22,9 @@ const fresh='10000000-0000-4000-8000-000000000002';await db.query('insert into a
 const snapshot=(await db.query('select public.get_ai_usage_snapshot($1) as result',[user])).rows[0].result;assert.equal(snapshot.access.status,'trial_expired');assert.equal(snapshot.tier,'free');assert.equal(snapshot.features.coach.proMonthlyLimit,null);console.log('PASS disabled-feature gate and time-based usage snapshot');
 await db.exec(fs.readFileSync(new URL('202610120001_seven_day_trial.sql',migrationRoot),'utf8'));assert.equal((await access()).status,'trial_expired');
 const registered='10000000-0000-4000-8000-000000000003';
+const emailOnly='10000000-0000-4000-8000-000000000005';
+await db.query("insert into auth.users(id,raw_app_meta_data) values($1,'{\"immigra_email_trial\":true}')",[emailOnly]);
+assert.equal((await db.query('select public.get_practice_access($1) as result',[emailOnly])).rows[0].result.status,'trial_active');
 await db.query('insert into auth.users(id,email_confirmed_at) values($1,now())',[registered]);
 const registrationAccess=async()=>(await db.query('select public.get_practice_access($1) as result',[registered])).rows[0].result;
 const registeredStart=(await registrationAccess()).trialStartedAt;assert.equal((await registrationAccess()).status,'trial_active');

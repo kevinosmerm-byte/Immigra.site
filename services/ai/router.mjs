@@ -1,3 +1,4 @@
+import {validateAiReport} from '../../modules/citizenship/server/aiReportService.js';
 import {readingFeedback} from './reading-feedback.mjs';
 import {interviewTestingEnabled} from '../../shared/interview-ui/access-policy.mjs';
 import {createDemoAccess} from './demo-access.mjs';
@@ -6,13 +7,23 @@ import {aosFeedback} from '../../modules/residency/src/aosFeedback.mjs';
 import {mountAsylumTranscription} from './asylum-transcription.mjs';
 import {handle as analyzeAsylum} from '../../modules/asylum/services/analysis/worker.mjs';
 import express from '../../modules/citizenship/node_modules/express/index.js';
+import cors from '../../modules/citizenship/node_modules/cors/lib/index.js';
 import {createInterviewAIEngine} from './interview-engine.mjs';
 // Dependencies are injected for HTTP tests without credentials or paid calls.
-export function createPlatformRouter({citizenship,requireAccount,requirePractice=(_req,res)=>res.status(503).json({error:"ACCESS_UNAVAILABLE"}),getUsageSnapshot,reserveAsylumQuota,reserveAudioQuota,reserveInterviewQuota,reserveConversationQuota,reserveGuestDemo,limitDemo,analysisFetch=fetch,env={}}){
+export function createPlatformRouter({citizenship,requireAccount,submitAiReport,requirePractice=(_req,res)=>res.status(503).json({error:"ACCESS_UNAVAILABLE"}),getUsageSnapshot,reserveAsylumQuota,reserveAudioQuota,reserveInterviewQuota,reserveConversationQuota,reserveGuestDemo,limitDemo,analysisFetch=fetch,env={}}){
  const app=express();app.disable('x-powered-by');
- const allowedOrigins=new Set(['http://127.0.0.1:4388','http://localhost:4388',...(env.CORS_ORIGIN||'').split(',').map(origin=>origin.trim()).filter(Boolean)]);
+ const allowedOrigins=new Set(['http://127.0.0.1:4388','http://localhost:4388','capacitor://localhost','http://localhost','https://localhost',...(env.CORS_ORIGIN||'').split(',').map(origin=>origin.trim()).filter(Boolean)]);
  app.use((req,res,next)=>{res.set('Cache-Control','no-store');const origin=req.get('origin');if(origin&&!allowedOrigins.has(origin))return res.status(403).json({error:'ORIGIN_DENIED'});next();});
  app.set('trust proxy',1);
+ app.use(cors({origin:(origin,callback)=>callback(null,!origin||allowedOrigins.has(origin)),maxAge:600}));
+ app.post('/api/ai-reports',requireAccount,express.json({limit:'8kb'}),async(req,res)=>{
+  try{
+   const body=validateAiReport(req.body);
+   if(!submitAiReport||!reserveInterviewQuota)return res.status(503).json({code:'report_unavailable'});
+   if(!await reserveInterviewQuota(req.account.userId,'ai-report'))return res.status(429).json({code:'report_rate_limit'});
+   res.status(201).json(await submitAiReport(req.account.userId,body));
+  }catch(error){res.status(error.status===400?400:503).json({code:error.status===400?'invalid_report':'report_unavailable'});}
+ });
  const demo=createDemoAccess({secret:env.DEMO_SIGNING_SECRET||env.SUPABASE_SECRET_KEY,reserve:reserveGuestDemo,limit:limitDemo});
  const signedIn=req=>Boolean(req.get('authorization'));
  const interviewAccess=(req,res,next)=>signedIn(req)?requireAccount(req,res,()=>requirePractice(req,res,next)):demo.authorize(['realInterview','classicInterview','speaking','coach'])(req,res,next);

@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 
 const requiredFiles = [
   "ios/App/App/Info.plist",
+  "ios/App/CapApp-SPM/Package.swift",
   "ios/App/App/PrivacyInfo.xcprivacy",
   "ios/App/App/en.lproj/InfoPlist.strings",
   "ios/App/App/es.lproj/InfoPlist.strings",
@@ -39,4 +40,7 @@ assert.match(spanishPermissions, /NSMicrophoneUsageDescription/);
 assert.match(spanishPermissions, /NSCameraUsageDescription/);
 assert.match(spanishPermissions, /micrófono/);
 
+const swiftPackages=await readFile("ios/App/CapApp-SPM/Package.swift","utf8");
+assert.match(swiftPackages,/\.package\(name: "CapacitorApp", path: "\.\.\/\.\.\/\.\.\/node_modules\/@capacitor\/app"\)/,"Native auth callback plugin must be included in iOS");
+assert.match(swiftPackages,/\.product\(name: "CapacitorApp", package: "CapacitorApp"\)/);
 console.log("iOS readiness checks passed.");

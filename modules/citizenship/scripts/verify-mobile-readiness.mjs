@@ -26,7 +26,7 @@ assert.ok(manifest.icons?.some((icon) => icon.sizes === "512x512" && icon.type =
 
 const capacitor = await readFile("capacitor.config.ts", "utf8");
 assert.match(capacitor, /us\.citizenshipai\.app/, "Stable Android application id is required");
-assert.match(capacitor, /webDir:\s*["']dist["']/, "Capacitor must package the production build");
+assert.match(capacitor, /webDir:\s*["']\.\.\/\.\.\/dist["']/, "Capacitor must package the production build");
 
 const androidManifest = await readFile("android/app/src/main/AndroidManifest.xml", "utf8");
 assert.match(androidManifest, /android\.permission\.RECORD_AUDIO/, "Android must declare microphone access for voice practice");
@@ -38,7 +38,7 @@ const androidVersions = await readFile("android/variables.gradle", "utf8");
 assert.match(androidVersions, /compileSdkVersion\s*=\s*36/, "Android must compile against API 36");
 assert.match(androidVersions, /targetSdkVersion\s*=\s*36/, "Android must target API 36");
 
-const html = await readFile("dist/index.html", "utf8");
+const html = await readFile("../../dist/index.html", "utf8");
 assert.match(html, /manifest\.webmanifest/, "Production HTML must expose the web manifest");
 assert.match(html, /viewport/, "Production HTML must declare a mobile viewport");
 

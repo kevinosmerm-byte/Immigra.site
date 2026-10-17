@@ -30,7 +30,7 @@ app.set("trust proxy", 1);
 const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173")
   .split(",")
   .map((origin) => origin.trim())
-  .filter(Boolean);
+  .filter(Boolean).concat(['capacitor://localhost','https://localhost','http://localhost']);
 
 app.use(cors({
   origin(origin, callback) {

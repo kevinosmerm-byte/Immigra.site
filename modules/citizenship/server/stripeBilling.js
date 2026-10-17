@@ -13,14 +13,14 @@ function isTrue(value) {
   return String(value || "").trim().toLowerCase() === "true";
 }
 
-function getStripe() {
+export function getStripe() {
   const secretKey = process.env.STRIPE_SECRET_KEY?.trim();
   if (!secretKey) throw new Error("Stripe is not configured.");
   if (!stripeClient) stripeClient = new Stripe(secretKey, { maxNetworkRetries: 2, timeout: 20_000 });
   return stripeClient;
 }
 
-function priceIdForInterval(interval) {
+export function priceIdForInterval(interval) {
   if (interval === "monthly") {
     const introductoryPrice = process.env.STRIPE_PRICE_MONTHLY_INTRO?.trim();
     if (introductoryPrice) return introductoryPrice;
@@ -29,14 +29,14 @@ function priceIdForInterval(interval) {
   return environmentKey ? process.env[environmentKey]?.trim() || "" : "";
 }
 
-function appBaseUrl() {
-  const configured = process.env.APP_BASE_URL?.trim() || "https://citizenshipai.us";
+export function appBaseUrl() {
+  const configured = process.env.APP_BASE_URL?.trim() || "https://immigra.site";
   try {
     const url = new URL(configured);
     if (!/^https?:$/.test(url.protocol)) throw new Error("Invalid protocol");
     return url.origin;
   } catch {
-    return "https://citizenshipai.us";
+    return "https://immigra.site";
   }
 }
 
@@ -79,13 +79,13 @@ export function mapStripeSubscription(subscription) {
   };
 }
 
-export async function createCheckoutSession({ userId, email, interval }) {
+export async function createCheckoutSession({ userId, email, interval }, { identityLookup = getBillingIdentity, createSession = payload => getStripe().checkout.sessions.create(payload) } = {}) {
   const billing = getBillingConfiguration();
   if (!billing.enabled) throw new Error("Billing is not enabled.");
   const price = priceIdForInterval(interval);
   if (!price) throw new Error("Unknown billing interval.");
 
-  const identity = await getBillingIdentity(userId);
+  const identity = await identityLookup(userId);
   if (identity?.tier === "pro" && ["active", "grace"].includes(identity.status)) {
     const error = new Error("A Pro subscription is already active.");
     error.code = "subscription_already_active";
@@ -94,18 +94,18 @@ export async function createCheckoutSession({ userId, email, interval }) {
 
   const baseUrl = appBaseUrl();
   const customer = identity?.provider === "stripe" ? identity.providerCustomerId : null;
-  const session = await getStripe().checkout.sessions.create({
+  const session = await createSession({
     mode: "subscription",
     line_items: [{ price, quantity: 1 }],
     client_reference_id: userId,
     ...(customer ? { customer } : { customer_email: email || undefined }),
     metadata: { user_id: userId, product_key: PRO_PLAN.productKey, interval },
     payment_method_collection: "always",
-    subscription_data: { trial_period_days: 7, trial_settings: { end_behavior: { missing_payment_method: "cancel" } }, metadata: { user_id: userId, product_key: PRO_PLAN.productKey, interval } },
+    subscription_data: { metadata: { user_id: userId, product_key: PRO_PLAN.productKey, interval } },
     allow_promotion_codes: true,
     automatic_tax: { enabled: isTrue(process.env.STRIPE_AUTOMATIC_TAX) },
-    success_url: `${baseUrl}/?billing=success&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${baseUrl}/?billing=cancelled`,
+    success_url: `${baseUrl}/?billing=success&session_id={CHECKOUT_SESSION_ID}#/account`,
+    cancel_url: `${baseUrl}/?billing=cancelled#/account`,
   });
   return { url: session.url };
 }
@@ -160,4 +160,14 @@ export async function handleStripeWebhook(rawBody, signature) {
   if (!webhookSecret) throw new Error("Stripe webhook signing is not configured.");
   const event = getStripe().webhooks.constructEvent(rawBody, signature, webhookSecret);
   return applyStripeEvent(event);
+}
+
+export async function cancelWebRenewalForDeletion(userId,{identityLookup=getBillingIdentity,client=getStripe}={}){
+ const identity=await identityLookup(userId);
+ if(identity?.provider!=='stripe'||!['active','grace'].includes(identity.status))return;
+ if(!identity.providerEntitlementId||!identity.providerCustomerId)throw Error('Subscription identity unavailable');
+ const stripe=client(),subscription=await stripe.subscriptions.retrieve(identity.providerEntitlementId);
+ const customer=typeof subscription.customer==='string'?subscription.customer:subscription.customer?.id;
+ if(subscription.metadata?.user_id!==userId||customer!==identity.providerCustomerId)throw Error('Subscription ownership mismatch');
+ if(subscription.status!=='canceled'&&!subscription.cancel_at_period_end)await stripe.subscriptions.update(subscription.id,{cancel_at_period_end:true});
 }

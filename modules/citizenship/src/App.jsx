@@ -1,3 +1,5 @@
+import InterviewerPicker from "../../../shared/interview-ui/InterviewerPicker.jsx";
+import {interviewerLabel} from "../../../shared/interview-ui/interviewer-media.mjs";
 import {ConversationPractice} from "./ConversationPractice.jsx";
 import {PremiumPracticeBoundary} from "./PremiumPracticeBoundary.jsx";
 import {chooseInterviewQuestions,markInterviewQuestionReviewed} from "./interviewQuestionMemory.js";
@@ -294,8 +296,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     const completed = isInterviewComplete && !endedEarly ? questions.length : currentQuestion + Number(readyForNext);
     saveModuleProgress("interview", { completed, total: questions.length, questionIndex: completed, questionIds: questions.map(question => question.questionId), score: correctAnswers, incorrect: incorrectAnswers, missedIds: missedQuestions.map(question => question.id), resultStatus: answerStatus }, userKey);
   }, [currentQuestion, isInterviewComplete, questions, correctAnswers, incorrectAnswers, missedQuestions, userKey, mode, readyForNext, answerStatus,endedEarly]);
-  const isKevin = interviewer === "kevin";
-  const interviewerName = isKevin ? "Kevin" : "Sarah";
+  const interviewerName = interviewerLabel(interviewer);
   const questionText = question => question.question || question.english;
   const questionSpanish = question => question.questionSpanish || question.spanish;
   const questionKey = question => question.questionId || question.id;
@@ -315,7 +316,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     if (!soundEnabled) { setIsSpeaking(false); onFinished?.(); return; }
     setIsSpeaking(true);
     emitCompanionState("coach");
-    try { await speakAppText(text, { profile: selectedInterviewer === "kevin" ? "male" : "female" }); }
+    try { await speakAppText(text, { profile: ["kevin", "william"].includes(selectedInterviewer) ? "male" : "female" }); }
     finally { if (mountedRef.current && requestId === speechRequestRef.current) { setIsSpeaking(false); onFinished?.(); } }
   };
   const stopQuestionSpeech = () => {
@@ -445,7 +446,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       <div className="results-score">{correctAnswers}<span> / {gradedCount}</span></div><div className="results-percentage">{scorePercentage === null ? "—" : `${scorePercentage}%`}</div>
       <div className="results-stats"><div className="result-stat correct"><strong>{correctAnswers}</strong><small>{t("Correct", "Correctas")}</small></div><div className="result-stat incorrect"><strong>{incorrectAnswers}</strong><small>{t("Missed", "Por repasar")}</small></div></div>
       <p className="results-message">{t("Keep practicing to build confidence. Unverified responses were not graded.", "Sigue practicando para ganar confianza. Las respuestas no verificadas no se calificaron.")}</p>
-      <section className="interview-review-plan" aria-label={t("Your focused review plan", "Tu plan de repaso")}><h2>{t("Your next focus", "Tu próximo paso")}</h2>
+      <section className="interview-review-plan [&_h2]:text-[var(--liquid-text,#172b3d)]! [&_p]:text-[var(--liquid-muted,#53667a)]! [&_p]:text-base! [&_li]:text-[var(--liquid-text,#172b3d)]! [&_li]:text-base! [&_li]:leading-relaxed! [&_li]:block! [&_li_span]:text-inherit!" aria-label={t("Your focused review plan", "Tu plan de repaso")}><h2>{t("Your next focus", "Tu próximo paso")}</h2>
         <p>{missedQuestions.length ? t(`${missedQuestions.length} questions to revisit`, `${missedQuestions.length} preguntas para repasar`) : t("Continue your study plan for the next useful practice.", "Continúa tu plan de estudio con la próxima práctica.")}</p>
         {missedQuestions.length > 0 && <ol>{missedQuestions.slice(0, 3).map(question => <li key={question.id} lang="en">{question.english}</li>)}</ol>}
       </section>
@@ -460,7 +461,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   </div>;
   const question = questions[currentQuestion];
   const suspend=()=>{captureGeneration.current++;recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setIsTranscribing(false);stopQuestionSpeech();setPaused(true);};
-  if(!callStarted)return <section className="platform-panel platform-call-start liquid-glass"><h1>{t('Civics interview','Entrevista cívica')}</h1><p>{t('Choose your interviewer. Speak or type your responses.','Elige tu entrevistador. Puedes responder hablando o escribiendo.')}</p><label>{t('Interviewer','Entrevistador')}<select value={interviewer} onChange={e=>setInterviewer(e.target.value)}><option value="sarah">Sarah</option><option value="kevin">Kevin</option></select></label><button onClick={()=>{civicStart.current={correct:correctAnswers,incorrect:incorrectAnswers,index:currentQuestion,missed:missedQuestions};civicConversation.current=createCivicsConversation(questions,{locale:language,startIndex:currentQuestion,onReviewed:id=>markInterviewQuestionReviewed("civics",id,userKey)});setAutomaticCivics(true);}}>{t('Begin interview','Comenzar entrevista')}</button></section>;
+  if(!callStarted)return <section className="platform-panel platform-call-start liquid-glass"><h1>{t('Civics interview','Entrevista cívica')}</h1><p>{t('Choose your interviewer. Speak or type your responses.','Elige tu entrevistador. Puedes responder hablando o escribiendo.')}</p><InterviewerPicker value={interviewer} onChange={setInterviewer} lang={language} moduleId="citizenship"/><button onClick={()=>{civicStart.current={correct:correctAnswers,incorrect:incorrectAnswers,index:currentQuestion,missed:missedQuestions};civicConversation.current=createCivicsConversation(questions,{locale:language,startIndex:currentQuestion,onReviewed:id=>markInterviewQuestionReviewed("civics",id,userKey)});setAutomaticCivics(true);}}>{t('Begin interview','Comenzar entrevista')}</button></section>;
   return <CallView moduleId="citizenship" lang={language} interviewerName={interviewerName} interviewType={t('Civics interview','Entrevista cívica')} mediaBase={'/modules/citizenship/'+interviewer+'-'} state={paused?'paused':isTranscribing?'processing':isSpeaking?'speaking':'listening'} elapsed={elapsed} muted={!isListening} captions={[{who:'ai',text:questionText(question)},...(answer?[{who:'user',text:answer}]:[])]} showCaptions={captions} onCaptions={()=>setCaptions(x=>!x)} onSkip={handleSkip} skipDisabled={readyForNext} progress={{current:currentQuestion+1,total:questions.length}} onMic={()=>{if(!paused&&!isTranscribing&&!readyForNext)(isListening?stopListening:startListening)();}} onRepeat={()=>{suspend();setPaused(false);speakQuestion(questionText(question));}} onPause={()=>{if(paused)setPaused(false);else suspend();}} onSuspend={suspend} onFinish={()=>{suspend();setEndedEarly(true);setCallStarted(false);setIsInterviewComplete(true);}} error={answerStatus==='error'?microphoneError||t('No audio detected. Try again.','No se detectó audio. Inténtalo de nuevo.'):''}>
   {feedback&&<p role="status" data-evaluation-status={normalizeEvaluation({status:answerStatus},"civics").status}>{feedback}</p>}
   {readyForNext?<button disabled={paused} onClick={goToNextQuestion}>{t('Continue','Continuar')}</button>:<form onSubmit={e=>{e.preventDefault();evaluateInterviewAnswer(typedAnswer);}}><input aria-label={t('Your response','Tu respuesta')} value={typedAnswer} maxLength={1600} disabled={paused||isListening||isTranscribing} onFocus={stopQuestionSpeech} onChange={e=>setTypedAnswer(e.target.value)}/><button disabled={paused||!typedAnswer.trim()||isListening||isTranscribing}>{t('Check','Comprobar')}</button></form>}

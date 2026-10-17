@@ -1,44 +1,27 @@
-# Citizenship AI Android readiness
+# Immigra — Android readiness
 
-## Completed foundation
+The current submission instructions and unresolved gates are in [`stores/OWNER_CHECKLIST.md`](../../../stores/OWNER_CHECKLIST.md) and [`stores/PRIVACY_AND_RATING.md`](../../../stores/PRIVACY_AND_RATING.md).
 
-- Stable application id: `us.citizenshipai.app`
-- Capacitor web directory: `dist`
-- HTTPS-only Android WebView configuration
-- Installable PWA manifest and service worker
-- 192px and 512px maskable PNG icons derived from the approved app mark
-- Automated core-domain and mobile-readiness checks
-- Production build remains the single source for web and Android
+## Native foundation
 
-## Installed local toolchain
+- Application ID: `us.citizenshipai.app`.
+- Capacitor embeds the unified root `dist` via `../../dist`; do not synchronize the standalone Citizenship build.
+- Java 21 JDK (including javac), Android SDK Platform 36 and Build Tools 36.0.0 are required. Installed tools vary by machine.
+- Gradle 9.6.0 uses the official binary distribution and a verified SHA-256.
+- HTTPS WebView, microphone permissions, secure session storage and auth callback integration are configured. Device behavior still requires testing.
 
-- Android Studio Quail 4
-- Microsoft OpenJDK 21
-- Android SDK Platform 36, 36.1, and 37
-- Android Build Tools 36
-- Capacitor Core, CLI, and Android 8.5.2
-- Generated native project in `android/`
+## Build from repository root
 
-Google Play requires new apps and updates to target Android 16 / API 36 beginning August 31, 2026. This project compiles and targets API 36.
+```sh
+npm ci
+npm run native:sync:android
+npm run native:build:android
+```
 
-## Native review before release
+The debug APK is `artifacts/native/Immigra-android-debug.apk`. It is for testing, not a signed Play Store release. The native-test-builds workflow can also generate debug packages.
 
-- Declare microphone permission because voice answers are recorded for transcription.
-- Declare camera permission only if the D-ID live panel exposes camera input in the Android build.
-- Explain each sensitive permission immediately before the operating-system prompt.
-- Confirm denial paths: reading, writing, civics, podcasts, and non-live interviews must remain usable.
-- Target API 36 and test Android 12 through Android 16.
-- Convert the approved PNG mark into Android foreground/background adaptive resources and add a branded splash screen after the native project is generated.
-- Verify system Back, keyboard resizing, safe areas, audio focus, and app resume behavior.
-- Complete Google Play Data safety using the published Privacy Policy as the source of truth.
-- Produce a signed Android App Bundle only after real-device testing.
+## Release checks
 
-## Build workflow
+Test Back navigation, keyboard, safe areas, permission denial, audio focus, background/resume, account persistence and native login callbacks on real devices. Declare only permissions actually used in the final build. Complete Data safety and the content questionnaire against all three modules, including sensitive asylum scenarios.
 
-1. Run `npm run quality`.
-2. Run `npx cap sync android`.
-3. Open the native project with `npx cap open android`.
-4. Let Android Studio complete Gradle sync.
-5. Build and test a debug APK before configuring the release signing key.
-
-The Codex sandbox blocks Gradle's local daemon socket, so the final Gradle build must run inside Android Studio or a normal local terminal. TLS verification remains enabled throughout the toolchain.
+Native billing, server verification, purchase restoration and subscription notifications are not enabled. Complete them before selling native digital access. Produce a signed AAB with the owner’s upload key and Play App Signing only after device testing. Personal-account closed-testing requirements depend on the account creation date; see the owner checklist.

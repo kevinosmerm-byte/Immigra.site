@@ -1,0 +1,68 @@
+name: Immigra native test packages
+on:
+  push:
+    paths:
+      - 'modules/citizenship/ios/**'
+      - 'modules/citizenship/android/**'
+      - 'scripts/build-native.mjs'
+      - '.github/workflows/native-test-builds.yml'
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: Build test packages (not store submissions)
+        type: choice
+        required: true
+        default: both
+        options: [both, android, ios]
+permissions:
+  contents: read
+concurrency:
+  group: native-test-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  android:
+    if: github.event_name == 'push' || inputs.platform == 'both' || inputs.platform == 'android'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
+      - run: npm ci
+      - run: npm run native:sync:android
+      - run: npm run native:build:android
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Immigra-Android-debug-not-store-release
+          path: artifacts/native/Immigra-android-debug.apk*
+          if-no-files-found: error
+          retention-days: 7
+  ios:
+    if: github.event_name == 'push' || inputs.platform == 'both' || inputs.platform == 'ios'
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: xcodebuild -version
+      - run: npm ci
+      - run: npm run native:sync:ios
+      - run: npm run native:build:ios
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Immigra-iOS-simulator-not-store-release
+          path: artifacts/native/Immigra-ios-simulator.zip*
+          if-no-files-found: error
+          retention-days: 7

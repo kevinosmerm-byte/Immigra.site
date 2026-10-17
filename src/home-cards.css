@@ -3,13 +3,9 @@
   position:relative;isolation:isolate;display:grid;place-items:center;
   flex:0 0 116px;width:116px;height:116px;min-height:116px;
   align-self:center;margin:0 auto 4px;padding:0;border:0;border-radius:29px;
-  background:transparent;box-shadow:0 0 16px color-mix(in srgb,var(--accent) 45%,transparent);
+  background:transparent;box-shadow:none;
 }
-#main > .cards > .card > span.icon::before {
-  content:"";position:absolute;inset:-3px;z-index:-1;pointer-events:none;
-  border:4px solid var(--accent);border-radius:32px;filter:blur(8px);
-  opacity:.65;animation:home-icon-glow 3.2s ease-in-out infinite;
-}
+#main > .cards > .card > span.icon::before {content:none;}
 #main > .cards > .card > span.icon .reference-icon {
   position:relative;display:block;width:116px;height:116px;overflow:hidden;border-radius:29px;
 }

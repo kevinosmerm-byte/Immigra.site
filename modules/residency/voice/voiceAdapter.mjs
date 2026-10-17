@@ -3,10 +3,15 @@ export function selectSaharaVoice(voices,locale='es'){
  const names=locale==='es'?/\b(sabina|helena|elvira|dalia|paulina|monica|mónica|conchita|lucia|lucía|laura|catalina|paloma|female)\b/i:/\b(zira|samantha|jenny|aria|ava|emma|michelle|susan|salli|joanna|karen|moira|tessa|victoria|female)\b/i;
  return voices.filter(v=>v.lang?.toLowerCase().startsWith(locale+'-')||v.lang?.toLowerCase()===locale).filter(v=>names.test(v.name)).sort((a,b)=>Number(b.localService)-Number(a.localService))[0]||null;
 }
+export function selectInterviewerVoice(voices,locale='es',avatar='sahara'){
+ if(!['kevin','william'].includes(avatar))return selectSaharaVoice(voices,locale);
+ const names=locale==='es'?/\b(jorge|diego|pablo|raul|raúl|carlos|miguel|enrique|alvaro|álvaro|antonio|manuel|male)\b/i:/\b(david|mark|guy|ryan|brian|christopher|andrew|eric|daniel|alex|tom|matthew|male)\b/i;
+ return voices.filter(v=>v.lang?.toLowerCase().startsWith(locale+'-')||v.lang?.toLowerCase()===locale).filter(v=>names.test(v.name)).sort((a,b)=>Number(b.localService)-Number(a.localService))[0]||null;
+}
 // Web Speech enhancement. No API keys, recorder, storage, or remote client library.
 export function speechSupport(env=globalThis){return {recognition:!!(env.SpeechRecognition||env.webkitSpeechRecognition),synthesis:!!(env.speechSynthesis&&env.SpeechSynthesisUtterance),secure:env.isSecureContext!==false};}
 export function videoForState(state){return state==='speaking'?'speaking':'listening';}
-export function createVoiceController({env=globalThis,onState=()=>{},onTranscript=()=>{},onInterim=()=>{},onError=()=>{}}={}){
+export function createVoiceController({env=globalThis,avatar='sahara',onState=()=>{},onTranscript=()=>{},onInterim=()=>{},onError=()=>{}}={}){
  let recognition=null,utterance=null,generation=0,disposed=false,state='idle',voiceWaitCleanup=null;
  const emit=value=>{state=value;if(!disposed)onState(value);};
  function cancel(){generation++;voiceWaitCleanup?.();voiceWaitCleanup=null;if(recognition){const old=recognition;recognition=null;old.onresult=old.onerror=old.onend=old.onstart=null;try{old.abort();}catch{}}if(utterance){utterance.onend=utterance.onerror=utterance.onstart=null;utterance=null;env.speechSynthesis?.cancel();}if(!disposed){onInterim('');emit('idle');}}
@@ -48,16 +53,16 @@ export function createVoiceController({env=globalThis,onState=()=>{},onTranscrip
      emit('loading');env.speechSynthesis.speak(u);
     }catch{cancel();fail('tts-error');}
    };
-   const chosen=selectSaharaVoice(env.speechSynthesis.getVoices?.()||[],locale);
+   const chosen=selectInterviewerVoice(env.speechSynthesis.getVoices?.()||[],locale,avatar);
    if(chosen){launch(chosen);return true;}
-   // Some browsers populate voices asynchronously. Never fall back to a masculine default.
+   // Some browsers populate voices asynchronously. Never fall back to an unrelated default voice.
    emit('loading');
    let timer;
    const cleanup=()=>{clearTimeout(timer);env.speechSynthesis.removeEventListener?.('voiceschanged',ready);};
-   const ready=()=>{const voice=selectSaharaVoice(env.speechSynthesis.getVoices?.()||[],locale);if(voice){cleanup();voiceWaitCleanup=null;launch(voice);}};
+   const ready=()=>{const voice=selectInterviewerVoice(env.speechSynthesis.getVoices?.()||[],locale,avatar);if(voice){cleanup();voiceWaitCleanup=null;launch(voice);}};
    voiceWaitCleanup=cleanup;
    env.speechSynthesis.addEventListener?.('voiceschanged',ready);
-   timer=setTimeout(()=>{cleanup();voiceWaitCleanup=null;if(generation===token&&!disposed)fail('female-voice-unavailable');},1500);
+   timer=setTimeout(()=>{cleanup();voiceWaitCleanup=null;if(generation===token&&!disposed)fail(['kevin','william'].includes(avatar)?'male-voice-unavailable':'female-voice-unavailable');},1500);
    return true;
   },
   dispose(){cancel();disposed=true;}

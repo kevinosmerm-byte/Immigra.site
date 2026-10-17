@@ -1,3 +1,6 @@
+import {createAiReportStore} from './aiReportService.js';
+import {createPersistentSessionService,WEB_SESSION_TOKEN} from "./persistentSessionService.js";
+import {createEmailTrialService,EMAIL_TRIAL_TOKEN} from "./emailTrialService.js";
 import "dotenv/config";
 import { createClient } from "@supabase/supabase-js";
 import { isVerifiedPracticeAccess, TRIAL_POLICY_VERSION } from "../shared/trialPolicy.js";
@@ -12,6 +15,28 @@ const supabase = supabaseUrl && supabaseSecretKey
       auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false },
     })
   : null;
+const aiReports=createAiReportStore({db:supabase,secret:supabaseSecretKey});
+export const submitAiReport=(userId,body)=>aiReports.submit(userId,body);
+export function startAiReportRetention(){
+ if(!supabase)return;
+ const purge=()=>aiReports.purge().catch(()=>console.error('[ai-reports] RETENTION_UNAVAILABLE'));
+ void purge();const timer=setInterval(purge,6*60*60*1000);timer.unref?.();return ()=>clearInterval(timer);
+}
+const persistentSessions=supabase?createPersistentSessionService({secret:supabaseSecretKey,validate:token=>supabase.auth.getUser(token),refresh:token=>createClient(supabaseUrl,supabaseSecretKey,{auth:{autoRefreshToken:false,persistSession:false,detectSessionInUrl:false}}).auth.refreshSession({refresh_token:token}),revoke:token=>supabase.auth.admin.signOut(token,'local')}):null;
+export async function restoreWebSession(req,res){return persistentSessions?.restore(req,res)||null;}
+export async function exchangeWebSession(req,res){if(!persistentSessions)throw Object.assign(Error('Account unavailable'),{status:503});return persistentSessions.exchange(res,req.body);}
+export async function logoutWebSession(req,res){await persistentSessions?.logout(req,res);}
+const emailTrials=supabase?createEmailTrialService({admin:supabase.auth.admin,secret:supabaseSecretKey}):null;
+export async function registerEmailTrial(req,res,email){if(!emailTrials)throw Object.assign(Error('Account service unavailable'),{status:503,code:'account_unavailable'});return emailTrials.register(req,res,email);}
+export async function getEmailTrialSession(req){return emailTrials?emailTrials.session(await emailTrials.user(req),{native:req.headers['x-immigra-client']==='native'}):null;}
+export function clearEmailTrialSession(res){emailTrials?.clear(res);}
+export function requireVerifiedAccount(req,res,next){if(req.account?.emailTrial)return res.status(401).json({error:'Verify your email before managing private account data or subscriptions.',code:'verification_required'});next();}
+async function authenticateRequest(req,res){
+ const token=bearerToken(req);
+ if(token===WEB_SESSION_TOKEN){const session=await restoreWebSession(req,res);return session?{data:{user:session.user},error:null}:{data:null,error:Error("Invalid session")};}
+ if(token===EMAIL_TRIAL_TOKEN||token.startsWith(EMAIL_TRIAL_TOKEN+'.')){const user=await emailTrials?.user(req);return user?{data:{user},error:null,emailTrial:true}:{data:null,error:Error('Invalid trial session')};}
+ return supabase.auth.getUser(token);
+}
 const STALE_AI_SESSION_HOURS = Math.max(1, Number(process.env.AI_SESSION_STALE_HOURS) || 6);
 const FEATURE_AVAILABILITY_CACHE_MS = 30_000;
 const featureAvailabilityCache = new Map();
@@ -100,12 +125,12 @@ export async function requireAccount(req, res, next) {
     return res.status(401).json({ error: "Sign in is required.", code: "authentication_required" });
   }
 
-  const { data, error } = await supabase.auth.getUser(token);
+  const { data, error, emailTrial } = await authenticateRequest(req,res);
   if (error || !data?.user?.id) {
     return res.status(401).json({ error: "Your session is invalid or expired.", code: "invalid_session" });
   }
 
-  req.account = { userId: data.user.id, email: data.user.email || "" };
+  req.account = { userId: data.user.id, email: data.user.email || "", emailTrial: emailTrial===true };
   next();
 }
 
@@ -113,7 +138,7 @@ export async function getBillingIdentity(userId) {
   if (!supabase) throw new Error("Account service is not configured.");
   const { data, error } = await supabase
     .from("entitlements")
-    .select("tier, status, provider, provider_customer_id")
+    .select("tier, status, provider, provider_customer_id, provider_entitlement_id")
     .eq("user_id", userId)
     .maybeSingle();
   throwDatabaseError(error, "Unable to read subscription identity.");
@@ -122,6 +147,7 @@ export async function getBillingIdentity(userId) {
     status: data.status,
     provider: data.provider,
     providerCustomerId: data.provider_customer_id,
+    providerEntitlementId: data.provider_entitlement_id,
   } : null;
 }
 
@@ -139,7 +165,7 @@ export async function attachOptionalAiSession(req, res, next) {
     return res.status(401).json({ error: "Sign in is required for this AI session.", code: "authentication_required" });
   }
 
-  const { data: authData, error: authError } = await supabase.auth.getUser(token);
+  const { data: authData, error: authError } = await authenticateRequest(req,res);
   if (authError || !authData?.user?.id) {
     return res.status(401).json({ error: "Your session is invalid or expired.", code: "invalid_session" });
   }
@@ -199,12 +225,14 @@ export async function exportAccountData(userId) {
   throwDatabaseError(entitlementResult.error, "Unable to export account entitlement.");
   throwDatabaseError(sessionsResult.error, "Unable to export AI sessions.");
   throwDatabaseError(rewardsResult.error, "Unable to export reward credits.");
+  const aiReportData=await aiReports.exportForUser(userId);
   const savedQuestions = await getSavedQuestions(userId).catch(() => null);
   const brainProfile = await getAccountBrainProfile(userId).catch(() => null);
 
   return {
     exportedAt: new Date().toISOString(),
     accountId: userId,
+    aiReports: aiReportData,
     profile: profileResult.data || null,
     entitlement: entitlementResult.data || null,
     aiSessions: sessionsResult.data || [],
@@ -214,11 +242,12 @@ export async function exportAccountData(userId) {
     brainProfile: brainProfile?.profile || null,
     brainProfileUpdatedAt: brainProfile?.updatedAt || null,
     brainProfileExportAvailable: brainProfile !== null,
-    privacyNote: "This export includes account and technical usage records plus your explicitly saved encrypted profile, when secure profile storage is available. The usage ledger contains no conversations, recordings, transcripts or personal practice answers. On-device profiles and learning progress remain on your device.",
+    privacyNote: "This export includes account and technical usage records plus your saved cloud profile, when available. This export is readable, unencrypted JSON; protect downloaded personal information. Ordinary usage records contain no conversations, recordings or personal practice answers. Separately submitted AI reports may include only the note and response excerpt you explicitly chose to send. On-device profiles and learning progress remain on your device.",
   };
 }
 
 export async function deleteAccount(userId) {
+  await aiReports.removeForUser(userId);
   const { error } = await supabase.auth.admin.deleteUser(userId);
   throwDatabaseError(error, "Unable to delete account.");
   return { deleted: true };

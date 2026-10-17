@@ -12,7 +12,9 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/ionic-team/capacitor-swift-pm.git", exact: "8.5.2"),
-        .package(name: "CapacitorCommunityTextToSpeech", path: "../../../node_modules/@capacitor-community/text-to-speech")
+        .package(name: "AparajitaCapacitorSecureStorage", path: "../../../node_modules/@aparajita/capacitor-secure-storage"),
+        .package(name: "CapacitorCommunityTextToSpeech", path: "../../../node_modules/@capacitor-community/text-to-speech"),
+        .package(name: "CapacitorApp", path: "../../../node_modules/@capacitor/app")
     ],
     targets: [
         .target(
@@ -20,7 +22,9 @@ let package = Package(
             dependencies: [
                 .product(name: "Capacitor", package: "capacitor-swift-pm"),
                 .product(name: "Cordova", package: "capacitor-swift-pm"),
-                .product(name: "CapacitorCommunityTextToSpeech", package: "CapacitorCommunityTextToSpeech")
+                .product(name: "AparajitaCapacitorSecureStorage", package: "AparajitaCapacitorSecureStorage"),
+                .product(name: "CapacitorCommunityTextToSpeech", package: "CapacitorCommunityTextToSpeech"),
+                .product(name: "CapacitorApp", package: "CapacitorApp")
             ]
         )
     ]

@@ -38,6 +38,22 @@ test('civics cannot accidentally invoke the personal AI evaluator',async()=>{
 });
 test('avatar changes do not alter evaluator instructions',()=>{
  assert.equal(interviewInstructions({...settings,avatar:'kevin'}),interviewInstructions({...settings,avatar:'sahara'}));
+ assert.equal(interviewInstructions({...settings,avatar:'william'}),interviewInstructions({...settings,avatar:'sahara'}));
+});
+test('William uses his own voice while preserving the chosen language and existing voices',async()=>{
+ for(const module of ['citizenship','asylum','residency'])for(const locale of ['es','en']){
+  for(const [avatar,voice] of [['william','echo'],['kevin','cedar'],['sarah','marin']]){
+   let config;
+   const {engine}=fixture({fetchImpl:async(url,options)=>{
+    if(url.endsWith('/hangup'))return new Response(null,{status:200});
+    config=JSON.parse(options.body.get('session'));
+    return new Response('v=0\r\nanswer',{headers:{location:'/v1/realtime/calls/rtc_avatar'}});
+   }});
+   const session=await engine.start('avatar-test',{...settings,module,locale,avatar,transport:'voice',sdp:'v=0\r\noffer'});
+   try{assert.equal(config.audio.output.voice,voice);assert.equal(config.audio.input.transcription.language,locale);}
+   finally{await engine.close(session.id,'avatar-test');}
+  }
+ }
 });
 test('next question skips without evaluator, quota, fabricated feedback or answer history',async()=>{
  const {engine,manager,requests}=fixture();

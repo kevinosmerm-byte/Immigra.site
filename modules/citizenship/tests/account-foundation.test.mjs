@@ -21,17 +21,29 @@ test("database migration contains atomic and privacy protections", async () => {
   assert.doesNotMatch(sql, /microphone_recording|receipt_number|conversation_text/);
 });
 
-test("public account configuration never exposes the server secret", async () => {
-  const previousSecret = process.env.SUPABASE_SECRET_KEY;
-  const previousPublic = process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-  process.env.SUPABASE_SECRET_KEY = "server-secret-must-not-leak";
-  process.env.VITE_SUPABASE_PUBLISHABLE_KEY = "safe-publishable-key";
+test("public account configuration never exposes the server secret", async (t) => {
+  const fixture = {
+    SUPABASE_URL: "https://account-fixture.example.test",
+    SUPABASE_SECRET_KEY: "server-secret-must-not-leak",
+    SUPABASE_PUBLISHABLE_KEY: "safe-server-publishable-key",
+    VITE_SUPABASE_PUBLISHABLE_KEY: "safe-publishable-key",
+  };
+  const previous = Object.fromEntries(Object.keys(fixture).map((key) => [key, process.env[key]]));
+  t.after(() => {
+    for (const [key, value] of Object.entries(previous)) {
+      if (value === undefined) delete process.env[key]; else process.env[key] = value;
+    }
+  });
+  Object.assign(process.env, fixture);
   const { getPublicAccountConfiguration } = await import(`../server/accountService.js?public=${Date.now()}`);
   const config = getPublicAccountConfiguration();
-  assert.equal(config.publishableKey, "safe-publishable-key");
+  assert.equal(config.publishableKey, fixture.SUPABASE_PUBLISHABLE_KEY);
   assert.doesNotMatch(JSON.stringify(config), /server-secret-must-not-leak/);
-  if (previousSecret === undefined) delete process.env.SUPABASE_SECRET_KEY; else process.env.SUPABASE_SECRET_KEY = previousSecret;
-  if (previousPublic === undefined) delete process.env.VITE_SUPABASE_PUBLISHABLE_KEY; else process.env.VITE_SUPABASE_PUBLISHABLE_KEY = previousPublic;
+
+  delete process.env.SUPABASE_PUBLISHABLE_KEY;
+  const fallback = getPublicAccountConfiguration();
+  assert.equal(fallback.publishableKey, fixture.VITE_SUPABASE_PUBLISHABLE_KEY);
+  assert.doesNotMatch(JSON.stringify(fallback), /server-secret-must-not-leak/);
 });
 
 test("AI API requests can carry a server-verified account session", async () => {
@@ -64,7 +76,7 @@ test("privacy disclosure accurately describes content-free product telemetry", a
 
   assert.match(legal, /limited, account-linked product and cost telemetry/);
   assert.match(legal, /not to contain complete conversations, recordings, transcripts, practice answers, receipt numbers, or case details/);
-  assert.match(legal, /Account panel exports account records, the explicitly saved encrypted profile and technical usage/);
+  assert.match(legal, /Account panel exports account records, the saved cloud profile as readable, unencrypted JSON, and technical usage/);
   assert.match(legal, /asks you to agree before sending a snapshot/);
   assert.match(legal, /server encrypts personal, immigration, N-400 and journey data before saving/);
   assert.match(legal, /Browser storage is not an encrypted vault/);
@@ -222,7 +234,8 @@ test("account deletion requires an explicit confirmation and uses the admin API"
   const account = await readFile(new URL("../src/Account.jsx", import.meta.url), "utf8");
 
   assert.match(routes, /router\.delete\("\/"/);
-  assert.match(routes, /confirmation !== "DELETE"/);
+  const deletion = await readFile(new URL("../server/accountDeletion.js", import.meta.url), "utf8");
+  assert.match(deletion, /confirmation!=="DELETE"/);
   assert.match(service, /auth\.admin\.deleteUser\(userId\)/);
   assert.match(account, /deleteConfirmation !== "DELETE"/);
   assert.match(account, /Local study progress on this device is not removed/);
@@ -378,6 +391,6 @@ test("production verification is recorded without claiming ads or payments are a
   assert.match(runbook, /Verified September 20, 2026/);
   assert.match(runbook, /did not invoke OpenAI, D-ID, USCIS/);
   assert.match(runbook, /advertising and paid subscriptions remain intentionally inactive/);
-  assert.match(ios, /verified in production/);
-  assert.match(ios, /advertising and payments intentionally inactive/);
+  assert.match(ios, /Static checks verify project configuration/);
+  assert.match(ios, /StoreKit purchases, server validation, notifications and restoration remain disabled/);
 });

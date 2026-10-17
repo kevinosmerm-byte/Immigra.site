@@ -1,0 +1,17 @@
+# 🧠 Advanced AI Brain Diagnostic Ledger
+
+- **Target File / Component:** `EmailTrialAccount.jsx`, `Account.jsx`, `TrialAccessDialog.jsx`, billing routes, Stripe return URLs and shared `CallView.jsx`.
+- **Deep User Experience Impact (Pros & Cons):** Plans appear before registration. New buyers choose a plan, enter their email once and continue to Stripe without waiting for a magic link. A remembered device can open checkout directly. Free seven-day practice remains an alternative. Existing registered accounts without a valid device session still need secure sign-in. Reporting remains available in the page footer after an interview, without adding a control to the call dock.
+- **Root-Cause Architectural Failure:** A blanket verified-account middleware and frontend guard required email confirmation before every checkout. Account creation, private-data access and purchasing were treated as one permission. The safe email-only device credential already binds a new account server-side, so checkout can use that identity while private billing management remains verified-only.
+- **Production-Grade Implementation:** Reuse email-only account registration and its HttpOnly device cookie. Post checkout using the returned account credential without exposing or trusting client-supplied customer/account IDs. Keep portal, exports, profile access and deletion behind existing verified-account protections. Reject native web checkout, unsupported intervals and unready practice policy. Preserve plan/email on recoverable failures, prevent duplicate submissions, and clear pending purchase intent before redirect. Return to Account after success/cancellation; a bounded, cancelable server-status refresh handles delayed webhooks. A success query alone never activates Pro. Update English/Spanish explanations and keep the report link in the global footer.
+
+## Verification
+
+- Full build: 204 root tests and 310 Citizenship tests passed, with lint, app/module builds and static mobile/iOS/store/release checks. The full build also passed with a hosting-style public-key fixture after the earlier Render test-isolation correction.
+- HTTP regression: email-only access can buy only for the server-authenticated owner; body-supplied email, account and price do not replace trusted values. Missing authentication, invalid plans, native checkout and unavailable access policy fail closed. Private portal access still requires verification.
+- Controlled browser tests in Spanish/English at 375/1280 px: plans first, one email, annual plan preserved, no magic-link request for a new account, and remembered expired device access directly opens monthly/annual checkout.
+- Existing-email registration conflict requires verification; checkout failure preserves email/plan and supports retry. Payment-return status waits for a server-confirmed entitlement and hides purchase choices when Pro activates.
+- Existing email verification/callback, annual-plan continuation and expired-link feedback regressions passed.
+- Report action is absent from the interview and opens normally from the page footer after finishing, in both languages and viewport sizes.
+
+Provider calls in browser tests are controlled fixtures: no real accounts, emails or charges were created. Live Stripe lifecycle verification remains pending; an unavailable provider diagnostic is not proof that a real checkout succeeded. Native store purchases remain separate and disabled until their existing release gates are completed.

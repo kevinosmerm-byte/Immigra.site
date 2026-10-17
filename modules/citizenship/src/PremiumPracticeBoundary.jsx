@@ -34,7 +34,7 @@ export function PremiumPracticeBoundary({ feature, language, onBack, children })
   if (approved) return children;
   return <main className="premium-access-panel">
     <h1 className="">{language === "es" ? "Entrevistas e IA" : "Interviews and AI"}</h1>
-    <p className="">{language === "es" ? "Prueba 2 prácticas sin correo, de hasta 10 minutos cada una. Después confirma tu correo para comenzar 7 días gratis. Al terminar, PRO cuesta $5.99/mes si decides contratarlo; no hay cobro automático. El estudio básico sigue gratis." : "Try 2 practices without email, up to 10 minutes each. Then confirm your email to start 7 free days. Afterward, PRO costs $5.99/month if you subscribe; there is no automatic charge. Basic study stays free."}</p>
+    <p className="">{language === "es" ? "Prueba 2 prácticas sin correo, de hasta 10 minutos cada una. Después ingresa tu correo para comenzar 7 días gratis. Al terminar, PRO cuesta $5.99/mes si decides contratarlo; no hay cobro automático. El estudio básico sigue gratis." : "Try 2 practices without email, up to 10 minutes each. Then register your email to start 7 free days. Afterward, PRO costs $5.99/month if you subscribe; there is no automatic charge. Basic study stays free."}</p>
     <button type="button" disabled={loading} onClick={() => requestAiSession(feature, () => setExpired(false), language)} className="premium-access-primary">{session ? (language === "es" ? "Comprobar acceso" : "Check access") : (language === "es" ? "Probar sin correo" : "Try without email")}</button>
     <button type="button" onClick={onBack} className="">{language === "es" ? "Volver al estudio gratuito" : "Back to free study"}</button>
   </main>;
