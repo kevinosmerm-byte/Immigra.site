@@ -1,5 +1,6 @@
 import {useRef,useState} from 'react';
 import {useAccount} from './accountContext.js';
+import './PasswordSignIn.css';
 
 // Standard Supabase authentication, not a reviewer bypass or client entitlement.
 export default function PasswordSignIn({language='es',disabled=false,onBusyChange}){
@@ -24,7 +25,7 @@ export default function PasswordSignIn({language='es',disabled=false,onBusyChang
   <form onSubmit={submit} className="space-y-3!" aria-busy={busy}>
    <label className="block!">{t('Correo electrónico','Email address')}<input className={field} type="email" autoComplete="username" required maxLength={254} value={email} onChange={e=>setEmail(e.target.value)} disabled={busy||disabled}/></label>
    <label className="block!">{t('Contraseña','Password')}<input className={field} type="password" autoComplete="current-password" required value={password} onChange={e=>setPassword(e.target.value)} disabled={busy||disabled}/></label>
-   <button type="submit" disabled={busy||disabled} className="min-h-12! rounded-xl! bg-[var(--color-primary)]! px-5! py-3! font-semibold! text-[var(--color-white)]! disabled:opacity-50!">{busy?t('Entrando…','Signing in…'):t('Iniciar sesión','Sign in')}</button>
+   <button type="submit" disabled={busy||disabled} className="password-sign-in-submit">{busy?t('Entrando…','Signing in…'):t('Iniciar sesión','Sign in')}</button>
    {message&&<p role="status">{message}</p>}
   </form>
  </details>;
