@@ -224,6 +224,11 @@ export function AccountProvider({ children }) {
       return access;
     }, usage, promotionAccess, aiFeatureAvailability, billing, signInError,
     signInWithGoogle:()=>startGoogleOAuth({client,...accountConfigurations.get(client),native:Capacitor.isNativePlatform()}),
+    signInWithPassword:async(email,password)=>{
+      if(!client||TEMPORARY_PUBLIC_INTERVIEWS)throw new Error('Account access unavailable');
+      const {error}=await withDeadline(()=>client.auth.signInWithPassword({email:email.trim(),password}));
+      if(error)throw error;
+    },
     sendMagicLink: (email) => {rememberAccountEmail(email);return TEMPORARY_PUBLIC_INTERVIEWS ? Promise.resolve({error: new Error("Account links temporarily disabled")}) : client.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: Capacitor.isNativePlatform()?'us.citizenshipai.app://auth-callback':checkoutReturnUrl(email) },

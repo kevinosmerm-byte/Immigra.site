@@ -78,3 +78,5 @@ html,body,#root,#main,#root>header,#root>footer,.mobilebar,.mobilemenu{backgroun
 .call-controls .call-end{color:#fff;background:#ed343e}
 .citizenship-surface::before,.citizenship-surface::after,.asylum-surface::before,.asylum-surface::after{content:none!important;display:none!important}
 .citizenship-surface .back-button::before{content:none!important}
+/* Keep navigation below the iOS status bar when viewport-fit=cover is used. */
+.platform-utility-header{padding-top:env(safe-area-inset-top,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
