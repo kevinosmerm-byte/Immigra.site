@@ -25,7 +25,9 @@ async function main(){
   const apk=path.join(output,'Immigra-android-debug.apk');await copyFile(path.join(android,'app/build/outputs/apk/debug/app-debug.apk'),apk);await artifact(apk,'android-debug');
  }else{
   const derived=path.join(output,'ios-derived');
-  await run('xcodebuild',['-project',path.join(moduleRoot,'ios/App/App.xcodeproj'),'-scheme','App','-configuration','Debug','-sdk','iphonesimulator','-destination','generic/platform=iOS Simulator','-derivedDataPath',derived,'CODE_SIGNING_ALLOWED=NO','build'],root);
+  // Simulator Keychain operations require a signed executable too. Ad-hoc
+  // signing needs no distribution certificate and is only for this test build.
+  await run('xcodebuild',['-project',path.join(moduleRoot,'ios/App/App.xcodeproj'),'-scheme','App','-configuration','Debug','-sdk','iphonesimulator','-destination','generic/platform=iOS Simulator','-derivedDataPath',derived,'CODE_SIGNING_ALLOWED=YES','CODE_SIGN_IDENTITY=-','build'],root);
   const zip=path.join(output,'Immigra-ios-simulator.zip');await run('ditto',['-c','-k','--keepParent',path.join(derived,'Build/Products/Debug-iphonesimulator/App.app'),zip],root);await artifact(zip,'ios-simulator');
  }
 }
