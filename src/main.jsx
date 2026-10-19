@@ -6,7 +6,6 @@ import "./tailwind.css";
 import {PromotionAccessProvider} from "../modules/citizenship/src/PromotionAccess.jsx";
 import "../shared/practice-utilities.css";
 import ModuleBoundary from './ModuleBoundary.jsx';
-import {loadModule} from './load-module.mjs';
 import React,{useState,useEffect,useRef} from 'react';
 import {TEMPORARY_PUBLIC_INTERVIEWS} from '../shared/interview-ui/access-policy.mjs';
 import AmbientBackground from '../shared/design-system/AmbientBackground.jsx';
@@ -19,9 +18,13 @@ import {moduleFromHash} from '../shared/navigation/routes.mjs';
 import {useAccount} from '../modules/citizenship/src/accountContext.js';
 import {setSessionToken} from '../shared/authentication/fetch.mjs';
 import {AccountProvider,AccountSheet} from '../shared/authentication/index.js';
-const Citizenship=React.lazy(()=>loadModule(()=>import('../modules/citizenship/Module.jsx')));
-const Asylum=React.lazy(()=>loadModule(()=>import('../modules/asylum/Module.jsx')));
-const Residency=React.lazy(()=>loadModule(()=>import('../modules/residency/src/Residency.jsx')));
+// Keep primary routes in the initial module graph. A tab left open across a
+// deployment must not request a removed, old hashed route chunk on first click.
+// Importing does not mount the routes or start a practice/session; render remains
+// conditional below. Never auto-reload: hidden Residency may hold unsaved work.
+import Citizenship from '../modules/citizenship/Module.jsx';
+import Asylum from '../modules/asylum/Module.jsx';
+import Residency from '../modules/residency/src/Residency.jsx';
 import {featureFlags} from './features.js';
 import{createRoot}from'react-dom/client';import{modules}from'./modules.js';import './style.css';
 import '../shared/design-system/platform.css';
