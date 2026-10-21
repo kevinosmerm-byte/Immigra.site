@@ -67,8 +67,8 @@ export const IMMIGRATION_RESOURCES = [
   {
     id: "court-payment", category: "court", agency: "EOIR / DOJ", icon: "$", sensitive: true,
     title_en: "Pay Immigration Court Fees", title_es: "Pagar Tarifas de Corte de Inmigración",
-    description_en: "Pay eligible EOIR fees directly through the Department of Justice portal. Citizenship AI never processes the payment.",
-    description_es: "Paga tarifas elegibles directamente en el portal del Departamento de Justicia. Citizenship AI nunca procesa el pago.",
+    description_en: "Pay eligible EOIR fees directly through the Department of Justice portal. Immigra never processes the payment.",
+    description_es: "Paga tarifas elegibles directamente en el portal del Departamento de Justicia. Immigra nunca procesa el pago.",
     official_url: "https://epay.eoir.justice.gov/",
     keywords_en: ["pay", "court fee", "payment"], keywords_es: ["pagar", "tarifa corte", "pago"], last_verified: verified, status: "active",
   },
@@ -129,7 +129,7 @@ export const IMMIGRATION_RESOURCES = [
   {
     id: "ceac", category: "visas", agency: "Department of State", icon: "◈", sensitive: true,
     title_en: "CEAC Consular Services", title_es: "Servicios Consulares CEAC",
-    description_en: "Access official Department of State consular case services. Never enter State Department credentials in Citizenship AI.", description_es: "Accede a servicios consulares oficiales. Nunca ingreses credenciales del Departamento de Estado en Citizenship AI.",
+    description_en: "Access official Department of State consular case services. Never enter State Department credentials in Immigra.", description_es: "Accede a servicios consulares oficiales. Nunca ingreses credenciales del Departamento de Estado en Immigra.",
     official_url: "https://ceac.state.gov/", keywords_en: ["ceac", "consular", "ds-260", "ds-160"], keywords_es: ["ceac", "consular", "ds-260", "ds-160"], last_verified: verified, status: "active",
   },
   {

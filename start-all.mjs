@@ -21,7 +21,7 @@ for(const [name,port,dir] of [['ImmigrationAI',configuredPort,'dist']]){
    if(pathname==='/healthz'){res.writeHead(200,{'Content-Type':'application/json'});return res.end(JSON.stringify({ok:true,service:'immigration-ai'}));}
    if(pathname.startsWith('/api/')&&backend)return backend(req,res);
    if(pathname.startsWith('/api/')){res.writeHead(pathname==='/api/status'?200:503,{'Content-Type':'application/json','Cache-Control':'no-store'});return res.end(JSON.stringify({ready:false,configured:false,promotionAccess:false,billing:{enabled:false},error:'LOCAL_API_NOT_CONFIGURED'}));}
-   const publicPage=/^\/(privacy|privacidad|terms|terminos|support|soporte|delete-account|eliminar-cuenta|ciudadania|asilo|residencia|en\/(citizenship|asylum|residency))\/?$/.test(pathname);
+   const publicPage=/^\/(sources|fuentes|privacy|privacidad|terms|terminos|support|soporte|delete-account|eliminar-cuenta|ciudadania|asilo|residencia|en\/(citizenship|asylum|residency))\/?$/.test(pathname);
    const relative=pathname==='/'?'index.html':publicPage?pathname.replace(/^\/+|\/+$/g,'')+'/index.html':pathname.replace(/^\/+/, '');
    if(relative.split('/').some(s=>s.startsWith('.')||s.startsWith('_'))){res.writeHead(404);return res.end();}
    const target=path.resolve(root,relative);if(!target.startsWith(root+path.sep)){res.writeHead(403);return res.end();}

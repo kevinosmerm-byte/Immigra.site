@@ -70,13 +70,13 @@ const CASE_TRACKER_COPY = {
     help: "Use an official USCIS Sandbox test receipt number. This environment does not check a live USCIS case.",
     placeholder: "Sandbox receipt number", inputLabel: "USCIS Sandbox receipt number", missing: "Please enter your receipt number.",
     invalid: "Use 3 letters followed by 10 numbers, for example IOE1234567890.", check: "CHECK SANDBOX STATUS",
-    active: "Sandbox mode is active", privacy: "Immigration AI does not save your receipt number or create case monitoring in this version.",
+    active: "Sandbox mode is active", privacy: "Immigra does not save your receipt number or create case monitoring in this version.",
     loading: "Checking official Sandbox status...", unavailable: "Status unavailable", official: "OFFICIAL USCIS STATUS",
     receipt: "RECEIPT NUMBER", testReceipt: "SANDBOX TEST RECEIPT", form: "FORM", updated: "LAST UPDATED", unavailableShort: "Not available",
     daysStatus: "DAYS IN CURRENT STATUS", daysReceived: "DAYS SINCE RECEIVED", calculatedStatus: "Calculated from USCIS last updated date",
-    calculatedReceived: "Calculated from the official received date", intelligence: "IMMIGRATION AI EXPLANATION", next: "WHAT SHOULD I DO NOW",
+    calculatedReceived: "Calculated from the official received date", intelligence: "IMMIGRA EXPLANATION", next: "WHAT SHOULD I DO NOW",
     educational: "Educational information only — not legal advice or an outcome prediction.", history: "OFFICIAL HISTORY", events: "Case events",
-    noHistory: "USCIS did not provide a historical event timeline in this Sandbox response. Immigration AI will not create or infer events.",
+    noHistory: "USCIS did not provide a historical event timeline in this Sandbox response. Immigra will not create or infer events.",
     monitoringTitle: "Case monitoring is not available yet.", monitoring: "It requires secure accounts, encrypted case storage, user controls, and USCIS Production approval.", back: "← Back to Home",
   },
   es: {
@@ -86,13 +86,13 @@ const CASE_TRACKER_COPY = {
     help: "Usa un número de recibo oficial de prueba de USCIS Sandbox. Este entorno no consulta un caso real de USCIS.",
     placeholder: "Número de recibo Sandbox", inputLabel: "Número de recibo de USCIS Sandbox", missing: "Ingresa tu número de recibo.",
     invalid: "Usa 3 letras seguidas de 10 números, por ejemplo IOE1234567890.", check: "CONSULTAR ESTADO SANDBOX",
-    active: "El modo Sandbox está activo", privacy: "Immigration AI no guarda tu número de recibo ni crea monitoreo de casos en esta versión.",
+    active: "El modo Sandbox está activo", privacy: "Immigra no guarda tu número de recibo ni crea monitoreo de casos en esta versión.",
     loading: "Consultando el estado oficial de Sandbox...", unavailable: "Estado no disponible", official: "ESTADO OFICIAL DE USCIS",
     receipt: "NÚMERO DE RECIBO", testReceipt: "RECIBO DE PRUEBA SANDBOX", form: "FORMULARIO", updated: "ÚLTIMA ACTUALIZACIÓN", unavailableShort: "No disponible",
     daysStatus: "DÍAS EN EL ESTADO ACTUAL", daysReceived: "DÍAS DESDE LA RECEPCIÓN", calculatedStatus: "Calculado desde la fecha de actualización de USCIS",
-    calculatedReceived: "Calculado desde la fecha oficial de recepción", intelligence: "EXPLICACIÓN DE IMMIGRATION AI", next: "¿QUÉ DEBO HACER AHORA?",
+    calculatedReceived: "Calculado desde la fecha oficial de recepción", intelligence: "EXPLICACIÓN DE IMMIGRA", next: "¿QUÉ DEBO HACER AHORA?",
     educational: "Información educativa únicamente; no es asesoría legal ni una predicción del resultado.", history: "HISTORIAL OFICIAL", events: "Eventos del caso",
-    noHistory: "USCIS no proporcionó una línea de tiempo de eventos en esta respuesta Sandbox. Immigration AI no creará ni inferirá eventos.",
+    noHistory: "USCIS no proporcionó una línea de tiempo de eventos en esta respuesta Sandbox. Immigra no creará ni inferirá eventos.",
     monitoringTitle: "El monitoreo del caso aún no está disponible.", monitoring: "Requiere cuentas seguras, almacenamiento cifrado de casos, controles de usuario y aprobación de USCIS para Producción.", back: "← Volver al inicio",
   },
 };
@@ -456,7 +456,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
     </div></div>;
   }
   if (mode === "full" && !useStandardInterview) return <div className="interview-screen live-interview-screen live-avatar-only-screen">
-    <header className="interview-header"><button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit live interview", "Salir de la entrevista")}><span aria-hidden="true">×</span></button><div className="interview-brand"><strong>IMMIGRATION <span>AI</span></strong><small>{t("LIVE N-400 + CIVICS INTERVIEW", "ENTREVISTA N-400 + CIVISMO")}</small></div></header>
+    <header className="interview-header"><button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit live interview", "Salir de la entrevista")}><span aria-hidden="true">×</span></button><div className="interview-brand"><strong>IMMIGRA<span>.site</span></strong><small>{t("LIVE N-400 + CIVICS INTERVIEW", "ENTREVISTA N-400 + CIVISMO")}</small></div></header>
     <main className="interview-content live-avatar-only-content"><DidLiveAvatar autoStart language={language} onStandardInterview={() => setUseStandardInterview(true)} /></main>
   </div>;
   const question = questions[currentQuestion];
