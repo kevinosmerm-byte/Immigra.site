@@ -1,4 +1,5 @@
 import http from 'node:http';
+import {seoPages} from './shared/seo-pages.mjs';
 import {applySecurityHeaders} from './server/security-headers.mjs';
 import {serveFile} from './server/static-file.mjs';
 import path from 'node:path';
@@ -18,6 +19,9 @@ for(const [name,port,dir] of [['ImmigrationAI',configuredPort,'dist']]){
   applySecurityHeaders(req,res,{production:process.env.NODE_ENV==='production'||process.env.RENDER==='true'});
   try{
    const url=new URL(req.url,'http://localhost');const pathname=decodeURIComponent(url.pathname);
+   const seoRedirect=seoPages.find(p=>pathname.replace(/^\/|\/$/g,'')===p.alias);
+   if(seoRedirect){res.writeHead(301,{Location:'/'+seoRedirect.path});return res.end();}
+   if(pathname.startsWith('/api/'))res.setHeader('X-Robots-Tag','noindex, nofollow');
    if(pathname==='/healthz'){res.writeHead(200,{'Content-Type':'application/json'});return res.end(JSON.stringify({ok:true,service:'immigration-ai'}));}
    if(pathname.startsWith('/api/')&&backend)return backend(req,res);
    if(pathname.startsWith('/api/')){res.writeHead(pathname==='/api/status'?200:503,{'Content-Type':'application/json','Cache-Control':'no-store'});return res.end(JSON.stringify({ready:false,configured:false,promotionAccess:false,billing:{enabled:false},error:'LOCAL_API_NOT_CONFIGURED'}));}

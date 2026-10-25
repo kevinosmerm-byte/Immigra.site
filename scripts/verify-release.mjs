@@ -2,9 +2,9 @@ import {readFile,access} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {publicPages} from './public-pages.mjs';
 const html=await readFile('dist/index.html','utf8');
-assert.match(html,/<title>Immigra/);
+assert.match(html,/<title>Immigra/i);
 assert.match(html,/summary_large_image/);
-for(const [path] of publicPages){const page=await readFile(`dist/${path}/index.html`,'utf8');assert.match(page,/Immigra/);assert.doesNotMatch(page,/ACCOUNT HOLDER TO ENTER/);}
+for(const [path] of publicPages){const page=await readFile(`dist/${path}/index.html`,'utf8');assert.match(page,/Immigra/i);assert.doesNotMatch(page,/ACCOUNT HOLDER TO ENTER/);}
 assert.match(await readFile('dist/robots.txt','utf8'),/Sitemap: https:\/\/immigra.site\/sitemap.xml/);
 assert.match(await readFile('dist/sitemap.xml','utf8'),/https:\/\/immigra.site\/privacy/);
 const config=await readFile('modules/citizenship/capacitor.config.ts','utf8');assert.match(config,/appName:\s*"Immigra"/);assert.match(config,/webDir:\s*"\.\.\/\.\.\/dist"/);

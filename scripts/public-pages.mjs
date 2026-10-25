@@ -1,4 +1,6 @@
 import {governmentSources} from '../shared/government-sources.mjs';
+import {seoPages,alternateLinks,structuredData,escapeHtml} from '../shared/seo-pages.mjs';
+import {landingHtml} from './seo-landing.mjs';
 import {IMMIGRATION_RESOURCES} from '../modules/citizenship/src/immigrationResources.js';
 const contact='info@immigra.site';
 const notice={es:'Immigra es una herramienta educativa independiente. No somos abogados ni un bufete, no damos asesoría legal ni representación y no estamos afiliados al gobierno. Siempre recomendamos consultar a un abogado de inmigración autorizado o a un representante acreditado por el DOJ dentro de su autorización.',en:'Immigra is an independent educational tool. We are not lawyers or a law firm, do not provide legal advice or representation, and are not affiliated with the government. We always recommend consulting a licensed immigration attorney or a DOJ-accredited representative acting within their authorized scope.'};
@@ -44,7 +46,13 @@ function sections(path,lang){
   [t('Apoyo educativo','Educational support'),notice[lang]]
  ];
 }
-export function publicPageHtml([path,lang,title],css){
+export function publicPageHtml(page,css){
+ const [path,lang,title]=page,landing=seoPages.find(p=>p.path===path);
+ if(landing)return landingHtml(landing);
+ const description=sections(path,lang)[0][1];
+ return basicPublicPageHtml(page,css).replace('</head>',alternateLinks(path)+structuredData(path,title,lang)+`<meta property="og:description" content="${escapeHtml(description)}"><meta name="twitter:title" content="${escapeHtml(title)} | Immigra"><meta name="twitter:description" content="${escapeHtml(description)}"><meta name="twitter:image" content="https://immigra.site/social/immigra-preview-20261015.png"></head>`);
+}
+function basicPublicPageHtml([path,lang,title],css){
  const es=lang==='es',parts=sections(path,lang),description=parts[0][1],module=/ciudadania|citizenship/.test(path)?'citizenship':/asilo|asylum/.test(path)?'asylum':/residencia|residency/.test(path)?'residency':null;
  const sourceLinks=[...governmentSources,...IMMIGRATION_RESOURCES.map(r=>[r.title_en,r.title_es,r.official_url])].filter((item,i,all)=>all.findIndex(other=>other[2]===item[2])===i);
  const sourcesHtml=['sources','fuentes'].includes(path)?'<section><h2>'+ (es?'Fuentes por tema':'Sources by topic') +'</h2><ul>'+sourceLinks.map(([en,spanish,url])=>'<li><a class="inline-flex! min-h-11! items-center! text-blue-800! underline!" href="'+escape(url)+'" target="_blank" rel="noopener noreferrer">'+escape(es?spanish:en)+'</a></li>').join('')+'</ul></section>':'';

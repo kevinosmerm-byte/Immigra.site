@@ -66,3 +66,4 @@
 .immigra-home .ih-features h2{font-size:16px;line-height:1.3;margin:4px 0 6px}
 .immigra-home .ih-features p{font-size:14px;line-height:1.5}
 @media(max-width:600px){.immigra-home .ih-portrait>img{width:100%;object-position:center 24%}.immigra-home .ih-features{padding:22px}.immigra-home .ih-features>div{padding:0}.immigra-home .ih-features>div+div{padding-top:18px;margin-top:18px}.immigra-home .ih-card li{font-size:14px}}
+.ih-seo-links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;padding:24px;font-size:14px;background:rgba(255,255,255,.8);border-radius:20px;margin-top:20px}.ih-seo-links a{color:#244b81;text-decoration:underline;text-underline-offset:3px}.ih-seo-links a:focus-visible{outline:2px solid #155eef;outline-offset:4px}
