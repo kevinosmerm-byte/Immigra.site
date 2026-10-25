@@ -183,6 +183,11 @@ export function AccountProvider({ children }) {
     let active = true, timer, attempts = 0;
     const controller = new AbortController();
     const returningFromCheckout = new URLSearchParams(window.location.search).get('billing') === 'success';
+    const checkoutId = new URLSearchParams(window.location.search).get('session_id');
+    if(returningFromCheckout&&checkoutId&&!Capacitor.isNativePlatform()){
+      void fetch('/api/billing/measurement-confirmation',{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${accessToken}`},body:JSON.stringify({checkoutId}),signal:controller.signal})
+        .then(response=>response.ok?response.json():null).then(result=>{if(active&&result?.ready)window.location.replace('/payment-confirmation.html');}).catch(()=>{});
+    }
     const refresh = async () => {
       let nextUsage = null;
       try {
@@ -327,6 +332,10 @@ export function AccountProvider({ children }) {
       if(result.claimed){
         rememberGuestCheckout(null);
         clearCheckoutIntent();
+        if(result.measurementReady&&!Capacitor.isNativePlatform()){
+          window.location.replace('/payment-confirmation.html');
+          return result;
+        }
         const url=new URL(window.location.href);url.searchParams.delete('guest_checkout');url.searchParams.delete('session_id');url.searchParams.set('billing','success');window.history.replaceState(window.history.state,'',url.pathname+url.search+'#/account');
         if(result.session){rememberAccountEmail(result.session.user.email);setGuestSession(result.session);}
         else {await loadUsage(session?.access_token);window.location.reload();}

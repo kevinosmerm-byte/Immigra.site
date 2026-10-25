@@ -1,5 +1,6 @@
 import {createHmac, randomUUID, timingSafeEqual} from 'node:crypto';
 import {PRO_PLAN} from '../shared/featureAccessConfig.js';
+import {paymentMeasurement} from './paymentMeasurement.js';
 import {getStripe, getBillingConfiguration, priceIdForInterval, appBaseUrl, mapStripeSubscription} from './stripeBilling.js';
 import {registerEmailTrial, getBillingIdentity, applyVerifiedEntitlementEvent} from './accountService.js';
 
@@ -68,7 +69,9 @@ export function createGuestCheckoutService({client=getStripe, configuration=getB
   await apply({provider:'stripe',providerEventId:`guest-checkout:${id}:claim`,userId,eventType:'checkout.session.claimed',...mapped,providerCustomerId:customer,providerEntitlementId:subscription.id,occurredAt:new Date(subscription.created*1000-1).toISOString()});
   // Never replace the trial session cookie written by register(). Keep the separate
   // checkout proof until its short expiry so an interrupted claim can be retried.
-  return {claimed:true,...(access?{session:access}:{})};
+  let measurementReady=false;
+  try{measurementReady=paymentMeasurement.issue(res,checkout);}catch{ /* Optional measurement must never block access. */ }
+  return {claimed:true,...(measurementReady?{measurementReady:true}:{}),...(access?{session:access}:{})};
  }
  return {start,complete};
 }

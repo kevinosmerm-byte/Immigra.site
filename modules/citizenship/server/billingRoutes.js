@@ -1,4 +1,5 @@
 import {guestCheckout} from './guestCheckout.js';
+import {paymentMeasurement} from './paymentMeasurement.js';
 import {getBillingReadiness} from "./billingReadiness.js";
 import {billingFailure} from "./billingErrors.js";
 import { Router } from "express";
@@ -9,6 +10,11 @@ export function createBillingRouter({ authenticate = requireAccount, verifyAccou
 const router = Router();
 router.get("/status",async(_req,res)=>{res.set("Cache-Control","no-store");try{res.json(await readiness());}catch{res.status(503).json({enabled:false,ready:false,reason:"checkout_unavailable"});}});
 const native=req=>req.get('x-immigra-client')==='native'||['capacitor://localhost','https://localhost','http://localhost'].includes(req.get('origin'));
+router.get('/measurement-receipt',(req,res)=>{
+ res.set('Cache-Control','no-store');
+ if(native(req))return res.status(403).json({receipt:null});
+ return res.json({receipt:paymentMeasurement.read(req)});
+});
 router.post('/guest-checkout-session',async(req,res)=>{
  res.set('Cache-Control','no-store');
  if(native(req))return res.status(403).json({code:'native_checkout_unavailable'});
@@ -30,6 +36,12 @@ function guestFailure(error,res){
  return res.status(failure.status).json({code:failure.code,reference:failure.reference});
 }
 router.use(authenticate);
+
+router.post('/measurement-confirmation',async(req,res)=>{
+ res.set('Cache-Control','no-store');
+ if(native(req))return res.status(403).json({ready:false});
+ try{return res.json({ready:await paymentMeasurement.confirm(req,res)});}catch{return res.json({ready:false});}
+});
 
 router.post("/checkout-session", async (req, res) => {
   if (req.get('x-immigra-client') === 'native' || ['capacitor://localhost','https://localhost','http://localhost'].includes(req.get('origin'))) return res.status(403).json({ code: 'native_checkout_unavailable' });
