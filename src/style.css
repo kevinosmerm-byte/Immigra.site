@@ -2,3 +2,11 @@
 /* Accessible navigation refinements */
 button{min-height:48px}a:focus-visible{outline:3px solid #2574db;outline-offset:3px}.skip{position:fixed;left:12px;top:-100px;background:white;color:#111;padding:12px;z-index:10}.skip:focus{top:12px}#main:focus{outline:none}#main>.cards>.card{overflow-wrap:anywhere}.mobilemenu{max-height:60vh;overflow:auto}.notice{color:#333}.detail h1{font-size:clamp(32px,6vw,48px)}@media(max-width:400px){.bar{padding:0 12px}.brand{font-size:21px}#main{padding:0 18px}}
 
+
+/* Keep the shared companion visible independently of module layout styles. */
+citizenship-companion.platform-study-companion {
+  position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  width: 190px; margin: 0; padding: 0; z-index: 1000;
+}
+html[data-experience="native"] citizenship-companion.platform-study-companion { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+citizenship-companion.platform-study-companion[hidden] { display: none !important; }

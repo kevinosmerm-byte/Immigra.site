@@ -119,3 +119,13 @@ test("the event bridge validates state, persists visibility, and tracks a local 
     globalThis.CustomEvent = previousCustomEvent;
   }
 });
+
+ test("platform entrypoint mounts the companion with shipped platform artwork", async () => {
+  const platform = await readFile(new URL("../../../src/main.jsx", import.meta.url), "utf8");
+  assert.ok(platform.includes("import '../modules/citizenship/src/companion.js'"));
+  assert.equal((platform.match(/<citizenship-companion /g) || []).length, 1);
+  for (const name of ["citizenship-companion.png", ...["approved", "denied", "goal", "love", "sleeping", "studying"].map(n => `companion-${n}-cutout.png`)]) {
+    const asset = await readFile(new URL(`../../../public/modules/citizenship/${name}`, import.meta.url));
+    assert.equal(asset.readUInt32BE(0), 0x89504e47);
+  }
+});

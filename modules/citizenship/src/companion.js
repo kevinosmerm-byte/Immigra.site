@@ -73,6 +73,7 @@ export class CitizenshipCompanion extends HTMLElement {
     this.toggleAttribute("hidden", Boolean(focusedField || dialogOpen || ["interview", "coach", "reading", "writing"].includes(screen)));
     let es = document.documentElement.lang === "es";
     try { es ||= localStorage.getItem("citizenshipai.language") === "es"; } catch { /* storage may be unavailable */ }
+    if (this.shadowRoot.querySelector(".host")?.dataset.state === "idle") this.#setMessage(MESSAGES.idle[0][es ? "es" : "en"]);
     const restore = this.shadowRoot.querySelector(".restore");
     const figure = this.shadowRoot.querySelector(".figure");
     restore?.setAttribute("aria-label", es ? "Mostrar acompañante de estudio" : "Show study companion");
