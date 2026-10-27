@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Capacitor } from "@capacitor/core";
 import { useEffect, useMemo, useState } from "react";
 import { apiUrl } from "./api.js";
+import { reportPaidSubscriptionConversion } from "./googleAdsConversions.js";
 import { APP_IDENTITY } from "../shared/appIdentity.js";
 import { NativeSubscriptionPanel } from "./NativeSubscriptionPanel.jsx";
 import { PRO_PLAN } from "../shared/featureAccessConfig.js";
@@ -106,6 +107,18 @@ export function AccountProvider({ children }) {
       .then((nextUsage) => { if (active) setUsage(nextUsage); })
       .catch(() => { if (active) setUsage(null); });
     return () => { active = false; };
+  }, [session?.access_token]);
+
+  useEffect(() => {
+    if (!session?.access_token || Capacitor.isNativePlatform()) return;
+    let alive = true;
+    const attempt = async () => {
+      if (!alive) return;
+      try { await reportPaidSubscriptionConversion({ search: window.location.search, accessToken: session.access_token }); }
+      catch { /* Analytics must never interrupt the account. */ }
+    };
+    attempt();
+    return () => { alive = false; };
   }, [session?.access_token]);
 
   const value = useMemo(() => ({
