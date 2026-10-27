@@ -41,7 +41,7 @@ import { LegalSettings, Onboarding } from "./LegalSettings";
 import { getPracticeEvents, getPracticeSummary, recordPracticeEvent, getModuleProgress, saveModuleProgress, recordCivicsMistake, migrateLegacyCivicsProgress, getN400LearningProgress } from "./progress";
 import { PodcastLibrary } from "./PodcastPlayer";
 import { usePromotionAccess } from "./promotionAccessContext.js";
-import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";import { DidLiveAvatar } from "./DidLiveAvatar";
+import { daysSinceOfficialDate, formatOfficialDate, getCaseGuidance } from "./caseTracker";
 import ImmigrationHelp from "./ImmigrationHelp";
 import { speakAppText, stopAppSpeech } from "./speech";
 import { AccountSheet } from "./Account.jsx";
@@ -274,7 +274,6 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   useEffect(()=>{if(!callStarted||isInterviewComplete)return;const timer=setInterval(()=>setElapsed(x=>x+1),1000);return()=>clearInterval(timer);},[callStarted,isInterviewComplete]);
   const [interviewer, setInterviewer] = useState("sarah");
-  const [useStandardInterview, setUseStandardInterview] = useState(false);
   const recordingSession = useRef(null);
   if (!recordingSession.current) recordingSession.current = createRecordingSession();
   useEffect(() => { if (isInterviewComplete) recordingSession.current.close(); }, [isInterviewComplete]);
@@ -327,7 +326,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
   };
   useEffect(() => {
     mountedRef.current = true;
-    if (callStarted && (mode !== "full" || useStandardInterview)) speechTimerRef.current = setTimeout(() => {
+    if (callStarted) speechTimerRef.current = setTimeout(() => {
       if (!soundEnabledRef.current) return;
       const requestId = ++speechRequestRef.current;
       setIsSpeaking(true);
@@ -343,7 +342,7 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       recordingSession.current.close();
       stopAppSpeech();
     };
-  }, [questions, mode, checkpoint, useStandardInterview, callStarted]);
+  }, [questions, mode, checkpoint, callStarted]);
   const goToNextQuestion = () => runTransition({ module: "interview", completed: currentQuestion + 1, total: questions.length, busy: Boolean(recorderRef.current) }, () => {
     stopQuestionSpeech();
     const nextQuestion = currentQuestion + 1;
@@ -455,10 +454,6 @@ function RealInterview({ onExit, onComplete, onReview, onQuestionResult, onResta
       <button className="results-secondary-button" onClick={onExit}>{t("Back to Home", "Volver al inicio")}</button>
     </div></div>;
   }
-  if (mode === "full" && !useStandardInterview) return <div className="interview-screen live-interview-screen live-avatar-only-screen">
-    <header className="interview-header"><button className="back-button interview-exit-button" onClick={onExit} aria-label={t("Exit live interview", "Salir de la entrevista")}><span aria-hidden="true">×</span></button><div className="interview-brand"><strong>IMMIGRA<span>.site</span></strong><small>{t("LIVE N-400 + CIVICS INTERVIEW", "ENTREVISTA N-400 + CIVISMO")}</small></div></header>
-    <main className="interview-content live-avatar-only-content"><DidLiveAvatar autoStart language={language} onStandardInterview={() => setUseStandardInterview(true)} /></main>
-  </div>;
   const question = questions[currentQuestion];
   const suspend=()=>{captureGeneration.current++;recorderRef.current?.cancel?.();recorderRef.current=null;setIsListening(false);setIsTranscribing(false);stopQuestionSpeech();setPaused(true);};
   if(!callStarted)return <section className="platform-panel platform-call-start liquid-glass"><h1>{t('Civics interview','Entrevista cívica')}</h1><p>{t('Choose your interviewer. Speak or type your responses.','Elige tu entrevistador. Puedes responder hablando o escribiendo.')}</p><InterviewerPicker value={interviewer} onChange={setInterviewer} lang={language} moduleId="citizenship"/><button onClick={()=>{civicStart.current={correct:correctAnswers,incorrect:incorrectAnswers,index:currentQuestion,missed:missedQuestions};civicConversation.current=createCivicsConversation(questions,{locale:language,startIndex:currentQuestion,onReviewed:id=>markInterviewQuestionReviewed("civics",id,userKey)});setAutomaticCivics(true);}}>{t('Begin interview','Comenzar entrevista')}</button></section>;
@@ -1609,7 +1604,6 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
   return (
     <>
     <PlatformHome
-      onStartInterview={() => startInterview("full")}
       onStartN400Interview={() => startInterview("n400")}
       onStartCivicsInterview={() => startInterview("civics")}
       onOpenFeature={openPracticeModule}

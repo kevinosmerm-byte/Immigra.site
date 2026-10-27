@@ -49,6 +49,9 @@ export function chooseInterviewQuestions(kind, items, idFor, userKey = "guest", 
   const unseen = items.filter(item => !seen.has(idFor(item)));
   // Once the finite bank is exhausted, begin another randomized review cycle.
   // Never fill an unfinished cycle with already-reviewed prompts.
-  if (!unseen.length && items.length) saveIds(kind, [], userKey, storage);
+  if (!unseen.length && items.length) {
+    const exhaustedIds = new Set(items.map(idFor));
+    saveIds(kind, [...seen].filter(id => !exhaustedIds.has(id)), userKey, storage);
+  }
   return shuffleInterviewQuestions(unseen.length ? unseen : items, random);
 }

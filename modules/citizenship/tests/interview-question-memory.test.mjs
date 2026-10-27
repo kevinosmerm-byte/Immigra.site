@@ -71,3 +71,10 @@ test("N-400 random ordering preserves blocks and conditions and excludes reviewe
   assert.notEqual(selection.question.conceptId, state.askedConceptIDs[0]);
   assert.deepEqual(state.applicantProfile.answers, {});
 });
+
+test("exhausting a subset preserves reviewed IDs in other tracks of the same bank", () => {
+ const storage=memory();
+ for(const id of [0,1,2,3]) markInterviewQuestionReviewed('asylum',id,'subset',storage);
+ chooseInterviewQuestions('asylum',[0,1],id=>id,'subset',storage,()=>0);
+ assert.deepEqual(getReviewedInterviewQuestions('asylum','subset',storage),[2,3]);
+});

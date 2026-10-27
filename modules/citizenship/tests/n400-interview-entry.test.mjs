@@ -18,7 +18,7 @@ const bank = JSON.parse(await readFile(new URL("../src/data/n400InterviewBank.js
 
 test("grouped practice keeps N-400 accessible through the existing interview destination", () => {
   assert.match(practice, /interview-n400/);
-  assert.match(app, /N-400/);
+  assert.doesNotMatch(app, /DidLiveAvatar/);
   assert.match(app, /id\.startsWith\("interview-"\) \? startInterview\(id\.slice\(10\)\)/);
   assert.match(app, /<N400InterviewPractice/);
   assert.doesNotMatch(app, /n400InterviewQuestions/);

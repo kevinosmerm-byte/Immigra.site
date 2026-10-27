@@ -3,7 +3,7 @@ import '../../shared/design-system/citizenship-dashboard.css';
 import {PremiumIcon} from '../../shared/design-system/PremiumIcon.jsx';
 import React from 'react';
 import {SectionTitle,ActionCard} from '../../shared/design-system/Components.jsx';
-export default function PlatformHome({language,onStartInterview,onStartN400Interview,onStartCivicsInterview,onOpenFeature,onOpenProgress,onOpenPodcasts,onNavigate,onContinue,plan,nextAction,practiceSummary}) {
+export default function PlatformHome({language,onStartN400Interview,onStartCivicsInterview,onOpenFeature,onOpenProgress,onOpenPodcasts,onNavigate,onContinue,plan,nextAction,practiceSummary}) {
  const t=(es,en)=>language==='es'?es:en;
  const viewed=practiceSummary?.civics?.viewed||0;
  const progress=Math.min(100,Math.round(viewed/128*100));
@@ -31,7 +31,6 @@ export default function PlatformHome({language,onStartInterview,onStartN400Inter
     ['file-text',t('Práctica de preguntas','Question practice'),()=>onOpenFeature('quiz')],
     ['headphone','Podcasts',onOpenPodcasts],
     ['notebook',t('Guía oficial','Official guide'),()=>onNavigate('civicsGuide')],
-    ['chat-bubble',t('Avatar en vivo · Beta','Live avatar · Beta'),onStartInterview],
    ].map(([icon,label,action])=><GlassCard as="button" key={icon} onClick={action}><PremiumIcon name={icon}/><span>{label}</span>{icon==='headphone'&&<span className="podcast-status-light" aria-hidden="true"/>}<span aria-hidden="true">›</span></GlassCard>)}
   </div></GlassSection>
  </div>;

@@ -1,4 +1,4 @@
-import React,{useEffect,useRef,useState} from 'react';
+import React,{useEffect,useState} from 'react';
 import {useModalFocus} from '../../modules/citizenship/src/useModalFocus.js';
 import LiquidBackground from './LiquidBackground.jsx';
 import {COPY} from './copy.mjs';
@@ -7,11 +7,11 @@ const greetings=['Bienvenido','Welcome','Bienvenue','Bem-vindo','Benvenuto','Wil
 export default function WelcomeExperience({initialLanguage,onComplete}) {
   const [language,setLanguage]=useState(initialLanguage),[chosen,setChosen]=useState(false),[dialog,setDialog]=useState(false),[checked,setChecked]=useState(false),[greeting,setGreeting]=useState(0);
   const [systemReduced,setSystemReduced]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches);
-  const reduced=systemReduced, copy=COPY[language], title=useRef(null);
+  const reduced=systemReduced, copy=COPY[language];
   const close=()=>setDialog(false);
   const panel=useModalFocus(dialog,close);
   useEffect(()=>{const query=matchMedia('(prefers-reduced-motion: reduce)');const update=()=>setSystemReduced(query.matches);query.addEventListener('change',update);return()=>query.removeEventListener('change',update);},[]);
-  useEffect(()=>{title.current?.focus();},[]);
+
   useEffect(()=>{const previous=document.documentElement.lang;document.documentElement.lang=language;return()=>{document.documentElement.lang=previous;};},[language]);
   useEffect(()=>{
     if(reduced||dialog)return;
@@ -28,7 +28,7 @@ export default function WelcomeExperience({initialLanguage,onComplete}) {
       <header className="welcome-top"><span className="welcome-brand">IMMIGRA</span></header>
       <main className="welcome-main">
         <p className="welcome-eyebrow">✦ {copy.eyebrow} ✦</p>
-        <h1 ref={title} tabIndex={-1} className="welcome-title"><span className="welcome-sr">{language==='es'?'Bienvenido a IMMIGRA':'Welcome to IMMIGRA'}</span><span aria-hidden="true" key={reduced?language:greeting}>{reduced?(language==='es'?'Bienvenido':'Welcome'):greetings[greeting]}</span></h1>
+        <h1 className="welcome-title"><span className="welcome-sr">{language==='es'?'Bienvenido a IMMIGRA':'Welcome to IMMIGRA'}</span><span aria-hidden="true" key={reduced?language:greeting}>{reduced?(language==='es'?'Bienvenido':'Welcome'):greetings[greeting]}</span></h1>
         <p className="welcome-tagline">{language==='es'?'Tu próximo paso comienza aquí.':'Your next step starts here.'}</p>
         <section className="welcome-card" aria-labelledby="welcome-language">
           <div className="welcome-card-head"><h2 id="welcome-language">{copy.langTitle}</h2><span>{copy.step}</span></div>
