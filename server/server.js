@@ -7,6 +7,12 @@ import { createHmac } from "node:crypto";
 import { fetchUscisCaseStatus, getUscisConfig, maskReceiptNumber } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
 import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, isPromotionalAiAccessAllowed, recordAiUsageEvent } from "./accountService.js";
+import { getCivicsQuestion } from "../src/civicsQuestionBank.js";
+import { evaluateCivicsAnswer } from "../src/civicsAnswerEvaluator.js";
+import { getNationalDynamicAnswers } from "../src/dynamicCivicsData.js";
+import { geocodeCivicAddress, getCurrentMembers } from "./civicLocationService.js";
+import { findWritingSentence, getWritingSentence } from "../src/writingSentences.js";
+import { evaluateWritingSentence } from "../src/writingEvaluator.js";
 
 dotenv.config();
 
@@ -239,13 +245,21 @@ async function recordProviderUsage(req, { provider, model, usage, transcriptionS
 app.post("/evaluate", requireAiFeature("classicInterview"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
-    if (!requireOpenAI(res)) return;
+    const questionId = Number(req.body?.questionId);
     const question = readText(req.body?.question, 1_000);
     const answer = readText(req.body?.answer, 1_000);
-    const correctAnswer = readAnswer(req.body?.correctAnswer);
-    if (!question || !answer || !correctAnswer) {
-      return res.status(400).json({ error: "Question, answer, and accepted answers are required." });
+    if (!question || !answer) {
+      return res.status(400).json({ error: "Question and answer are required." });
     }
+
+    const questionRecord = getCivicsQuestion(questionId);
+    if (questionRecord) {
+      const localResult = evaluateCivicsAnswer(questionRecord, answer, getNationalDynamicAnswers(questionRecord.dynamicAnswerKey));
+      if (!localResult.needsSemanticReview) return res.json({ ...localResult, evaluator: "local" });
+    }
+    const correctAnswer = readAnswer(questionRecord?.acceptedAnswers || req.body?.correctAnswer);
+    if (!correctAnswer) return res.status(400).json({ error: "Current verified answers are required." });
+    if (!requireOpenAI(res)) return;
 
     providerAttempted = true;
     const response = await openai.responses.create({
@@ -258,7 +272,7 @@ Evaluate the applicant's answer to the civics question.
 
 Return ONLY valid JSON with this exact structure:
 {
-  "status": "correct" | "incorrect" | "incomplete",
+  "status": "correct" | "incorrect" | "incomplete" | "review",
   "action": "advance" | "retry" | "repeat",
   "feedback": "short explanation"
 }
@@ -270,6 +284,7 @@ Use the accepted answers as the reference for evaluating the applicant's respons
 Accept semantically equivalent answers even when the wording is different.
 If the applicant gives the key idea but the answer is missing an important part, classify it as incomplete.
 If the answer is wrong or contradicts the accepted answers, classify it as incorrect.
+If it is plausibly correct but the semantic meaning remains genuinely uncertain, use status "review", action "advance", and exactly this feedback: "Tu respuesta parece correcta, pero revisemos la respuesta oficial". Do not mark an uncertain answer incorrect.
 Choose the action according to these rules:
 
 - correct → advance
@@ -317,12 +332,16 @@ res.json(result);
 app.post("/evaluate-writing", requireAiFeature("writing"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
   let providerAttempted = false;
   try {
-    if (!requireOpenAI(res)) return;
-    const sentence = readText(req.body?.sentence, 1_000);
+    const sentenceRecord = getWritingSentence(req.body?.sentenceId) || findWritingSentence(readText(req.body?.sentence, 1_000));
+    const sentence = sentenceRecord?.english || "";
     const answer = readText(req.body?.answer, 1_000);
     if (!sentence || !answer) {
       return res.status(400).json({ error: "Sentence and answer are required." });
     }
+
+    const localResult = evaluateWritingSentence(sentenceRecord, answer);
+    if (!localResult.needsSemanticReview) return res.json({ ...localResult, evaluator: "local" });
+    if (!requireOpenAI(res)) return;
 
     providerAttempted = true;
     const response = await openai.responses.create({
@@ -358,7 +377,7 @@ Use these guidelines:
 - Good: 70-89
 - Needs Practice: 0-69
 
-Do not require exact punctuation if the meaning and words are correct.
+Do not penalize capitalization, spacing, or punctuation. Treat a response with the same meaning and only minor spelling errors as Good. A negation or changed name, number, or essential term changes meaning and must be Needs Practice.
 
 Keep feedback short, clear, and encouraging.
 `,
@@ -373,6 +392,9 @@ ${answer}
     });
 
     const result = parseModelJson(response.output_text);
+    result.resultLabel = result.accuracy === "Excellent"
+      ? "Correcta"
+      : result.accuracy === "Good" ? "Correcta con observaciones" : "Necesita práctica";
     await recordProviderUsage(req, { provider: "openai", model: OPENAI_TEXT_MODEL, usage: response.usage });
 
     res.json(result);
@@ -434,12 +456,57 @@ app.post("/transcribe", requireAiFeature("speaking", ["speaking", "coach", "clas
 });
 app.get("/", (req, res) => {
   res.json({
-    message: "Citizenship AI server is running"
+    message: "Immigra.site server is running"
   });
 });
 
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
+});
+
+app.post("/civic-location/geocode", uscisRateLimit, async (req, res) => {
+  try {
+    const address = readText(req.body?.address, 500);
+    if (!address) return res.status(400).json({ error: "A complete street address is required." });
+    const result = await geocodeCivicAddress(address);
+    if (!result) return res.status(404).json({ error: "The Census Geocoder could not match that address." });
+    return res.json(result);
+  } catch (error) {
+    console.error("Civic address lookup error", { message: error.message });
+    return res.status(502).json({ error: "The official Census address service is temporarily unavailable." });
+  }
+});
+
+app.post("/civic-location/resolve", uscisRateLimit, async (req, res) => {
+  try {
+    const address = readText(req.body?.address, 500);
+    if (!address) return res.status(400).json({ error: "A complete street address is required." });
+    const location = await geocodeCivicAddress(address);
+    if (!location?.stateCode || !location?.congressionalDistrict) {
+      return res.status(404).json({ error: "The Census Geocoder could not determine both state and congressional district." });
+    }
+    const members = await getCurrentMembers(location.stateCode, location.congressionalDistrict);
+    return res.json({ ...location, ...members });
+  } catch (error) {
+    console.error("Civic profile resolution error", { message: error.message });
+    const missingKey = error.message === "Congress.gov API access is not configured.";
+    return res.status(missingKey ? 503 : 502).json({ error: missingKey ? error.message : "Official civic data services are temporarily unavailable." });
+  }
+});
+
+app.post("/civic-location/members", uscisRateLimit, async (req, res) => {
+  try {
+    const stateCode = readText(req.body?.stateCode, 2).toUpperCase();
+    const district = readText(req.body?.district, 2).toUpperCase();
+    if (!/^[A-Z]{2}$/.test(stateCode) || !/^(?:AL|0|[1-9]|[1-4]\d|5[0-3])$/.test(district)) {
+      return res.status(400).json({ error: "A valid state and confirmed congressional district are required." });
+    }
+    return res.json(await getCurrentMembers(stateCode, district));
+  } catch (error) {
+    console.error("Civic member lookup error", { message: error.message });
+    const missingKey = error.message === "Congress.gov API access is not configured.";
+    return res.status(missingKey ? 503 : 502).json({ error: missingKey ? error.message : "Congress.gov is temporarily unavailable." });
+  }
 });
 
 // Account and AI-session accounting are introduced behind configuration. The
@@ -734,5 +801,5 @@ app.use((error, req, res, _next) => {
 
 const PORT = Number(process.env.PORT) || 3001;
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Citizenship AI server running on port ${PORT}`);
+  console.log(`Immigra.site server running on port ${PORT}`);
 });

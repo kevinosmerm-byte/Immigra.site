@@ -67,8 +67,8 @@ export const IMMIGRATION_RESOURCES = [
   {
     id: "court-payment", category: "court", agency: "EOIR / DOJ", icon: "$", sensitive: true,
     title_en: "Pay Immigration Court Fees", title_es: "Pagar Tarifas de Corte de Inmigración",
-    description_en: "Pay eligible EOIR fees directly through the Department of Justice portal. Citizenship AI never processes the payment.",
-    description_es: "Paga tarifas elegibles directamente en el portal del Departamento de Justicia. Citizenship AI nunca procesa el pago.",
+    description_en: "Pay eligible EOIR fees directly through the Department of Justice portal. Immigra.site never processes the payment.",
+    description_es: "Paga tarifas elegibles directamente en el portal del Departamento de Justicia. Immigra.site nunca procesa el pago.",
     official_url: "https://epay.eoir.justice.gov/",
     keywords_en: ["pay", "court fee", "payment"], keywords_es: ["pagar", "tarifa corte", "pago"], last_verified: verified, status: "active",
   },
@@ -129,7 +129,7 @@ export const IMMIGRATION_RESOURCES = [
   {
     id: "ceac", category: "visas", agency: "Department of State", icon: "◈", sensitive: true,
     title_en: "CEAC Consular Services", title_es: "Servicios Consulares CEAC",
-    description_en: "Access official Department of State consular case services. Never enter State Department credentials in Citizenship AI.", description_es: "Accede a servicios consulares oficiales. Nunca ingreses credenciales del Departamento de Estado en Citizenship AI.",
+    description_en: "Access official Department of State consular case services. Never enter State Department credentials in Immigra.site.", description_es: "Accede a servicios consulares oficiales. Nunca ingreses credenciales del Departamento de Estado en Immigra.site.",
     official_url: "https://ceac.state.gov/", keywords_en: ["ceac", "consular", "ds-260", "ds-160"], keywords_es: ["ceac", "consular", "ds-260", "ds-160"], last_verified: verified, status: "active",
   },
   {
@@ -137,6 +137,40 @@ export const IMMIGRATION_RESOURCES = [
     title_en: "Find Legal Help", title_es: "Buscar Ayuda Legal",
     description_en: "Find official information about pro bono legal-service providers and representation.", description_es: "Encuentra información oficial sobre servicios legales pro bono y representación.",
     official_url: "https://www.justice.gov/eoir/legal-representation-icor", keywords_en: ["lawyer", "attorney", "legal", "pro bono"], keywords_es: ["abogado", "legal", "pro bono", "representación"], last_verified: verified, status: "active",
+  },
+  {
+    id: "asylum", category: "legal", agency: "USCIS / EOIR", icon: "◇", sensitive: true,
+    title_en: "Asylum", title_es: "Asilo",
+    description_en: "Open the existing Asylum resource to review official information and neutral interview-practice questions about personal fear, changed country conditions, evidence, and internal relocation.",
+    description_es: "Abre el recurso de Asilo para consultar información oficial y preguntas neutrales de práctica sobre el temor personal, cambios en el país, evidencia y reubicación interna.",
+    warning_en: "Answer only with your own truthful facts. General news about a country does not by itself prove or disprove an individual asylum claim. Consult a licensed attorney or DOJ-accredited representative about your case.",
+    warning_es: "Responde únicamente con tus propios hechos verdaderos. Las noticias generales de un país no prueban ni descartan por sí solas una solicitud individual de asilo. Consulta a un abogado autorizado o representante acreditado por el DOJ sobre tu caso.",
+    official_url: "https://www.uscis.gov/i-589",
+    keywords_en: ["asylum", "fear", "persecution", "interview", "venezuela", "country conditions"],
+    keywords_es: ["asilo", "miedo", "temor", "persecución", "entrevista", "venezuela", "condiciones del país"],
+    practice_prompts_en: [
+      "Who do you fear, and what makes you believe that person or organization is aware of you?",
+      "What specific harm do you believe would happen to you if you returned, and why would it happen to you personally?",
+      "What facts connect the harm you fear to a protected ground such as political opinion, religion, nationality, race, or membership in a particular social group?",
+      "What has changed in your country since you left, and how do those changes affect your individual circumstances?",
+      "How do reported releases of some political detainees affect your personal fear, if at all?",
+      "If some public political figures have returned without being detained, why do you believe your own circumstances are similar or different?",
+      "Could you live safely in another part of the country? Why or why not?",
+      "Have you returned to your country or renewed a passport since the events you described? Explain truthfully how that relates to your fear.",
+      "What documents, witnesses, messages, medical records, or country reports support the facts you described?",
+    ],
+    practice_prompts_es: [
+      "¿A quién teme y qué le hace pensar que esa persona u organización sabe quién es usted?",
+      "¿Qué daño específico cree que sufriría si regresara y por qué le ocurriría a usted personalmente?",
+      "¿Qué hechos relacionan el daño que teme con un motivo protegido, como opinión política, religión, nacionalidad, raza o pertenencia a un grupo social particular?",
+      "¿Qué ha cambiado en su país desde que salió y cómo afectan esos cambios a sus circunstancias individuales?",
+      "¿Cómo afectan a su temor personal, si lo afectan, las noticias sobre la liberación de algunos detenidos políticos?",
+      "Si algunas figuras políticas públicas han regresado sin ser detenidas, ¿por qué considera que sus circunstancias son similares o diferentes?",
+      "¿Podría vivir de manera segura en otra parte del país? ¿Por qué sí o por qué no?",
+      "¿Ha regresado a su país o renovado un pasaporte después de los hechos que describió? Explique con sinceridad cómo se relaciona esto con su temor.",
+      "¿Qué documentos, testigos, mensajes, registros médicos o informes del país respaldan los hechos que describió?",
+    ],
+    last_verified: "2026-10-20", status: "active",
   },
   {
     id: "avoid-scams", category: "legal", agency: "USCIS", icon: "!",
@@ -166,5 +200,6 @@ export function localizedResource(resource, language) {
     description: resource[`description_${suffix}`],
     warning: resource[`warning_${suffix}`] || "",
     keywords: resource[`keywords_${suffix}`] || [],
+    practicePrompts: resource[`practice_prompts_${suffix}`] || [],
   };
 }

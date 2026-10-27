@@ -1,15 +1,15 @@
-# Citizenship AI iOS and App Store readiness
+# Immigra.site iOS and App Store readiness
 
 ## Completed foundation
 
 - Native Capacitor iOS project in `ios/`
 - Stable bundle identifier: `us.citizenshipai.app`
-- App name: `Citizenship AI`
+- App name: `Immigra.site`
 - Version foundation: `1.0` / build `1`
 - Production web assets embedded in the native project
 - Swift Package Manager integration for Capacitor plugins
 - Native text-to-speech plugin registered
-- Approved Citizenship AI icon installed as the 1024px App Store icon
+- Approved Immigra.site icon installed as the 1024px App Store icon
 - Branded dark launch artwork installed
 - Microphone and optional-camera privacy descriptions added
 - Export-compliance declaration added for standard/exempt encryption use

@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "us.citizenshipai.app",
-  appName: "Citizenship AI",
+  appName: "Immigra.site",
   webDir: "dist",
   server: {
     androidScheme: "https",

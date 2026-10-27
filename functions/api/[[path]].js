@@ -1,4 +1,4 @@
-// Cloudflare Pages proxy. Keeping API calls under citizenshipai.us avoids
+// Cloudflare Pages proxy. Keeping API calls under immigra.site avoids
 // browser extensions and privacy tools blocking the Render hostname.
 const API_ORIGIN = "https://citizenshipai.onrender.com";
 

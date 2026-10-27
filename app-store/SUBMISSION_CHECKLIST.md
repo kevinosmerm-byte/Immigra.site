@@ -1,4 +1,4 @@
-# Citizenship AI — App Store Connect submission sheet
+# Immigra.site — App Store Connect submission sheet
 
 The localized metadata is stored in `app-store/metadata.json` and validated by `npm run verify:app-store`.
 
@@ -6,15 +6,15 @@ The field-by-field privacy, review, age-rating, screenshot and release guidance 
 
 ## App record
 
-- Name: Citizenship AI
+- Name: Immigra.site
 - Bundle ID: `us.citizenshipai.app`
 - SKU: `citizenship-ai-ios-1`
 - Primary language: English (U.S.)
 - Primary category: Education
 - Secondary category: Reference
-- Privacy policy: `https://citizenshipai.us/#privacy`
-- Support URL: `https://citizenshipai.us/#privacy`
-- Marketing URL: `https://citizenshipai.us/`
+- Privacy policy: `https://immigra.site/#privacy`
+- Support URL: `https://immigra.site/#privacy`
+- Marketing URL: `https://immigra.site/`
 
 The account holder must enter and verify the legal contact name, telephone number, copyright owner, Apple Developer team, tax status and agreements. These details must not be guessed or committed as credentials.
 

@@ -2011,7 +2011,7 @@ button {
     opacity: 1;
   }
 }/* =========================================
-   CITIZENSHIP AI - THINKING CLOUD
+   IMMIGRA.SITE - THINKING CLOUD
    ========================================= */
 
 .ai-thinking-cloud {
@@ -3754,7 +3754,7 @@ height: auto !important;
   }
 }
 /* =========================================================
-   CITIZENSHIP AI — GLOBAL DARK TEXTURED BACKGROUND
+   IMMIGRA.SITE — GLOBAL DARK TEXTURED BACKGROUND
    ========================================================= */
 
 html,
@@ -3820,7 +3820,7 @@ body::after {
   z-index: 1;
 }
 /* =========================================================
-   CITIZENSHIP AI
+   IMMIGRA.SITE
    PREMIUM GLOBAL BACKGROUND
    ========================================================= */
 
@@ -3902,7 +3902,7 @@ body::after {
   z-index: 1;
 }
 /* =========================================================
-   CITIZENSHIP AI — HOME PREMIUM ATMOSPHERE
+   IMMIGRA.SITE — HOME PREMIUM ATMOSPHERE
    ========================================================= */
 
 .app {
@@ -4301,7 +4301,7 @@ body::after {
     padding: 17px 15px !important;
   }
 }/* =========================================================
-   CITIZENSHIP AI — GLOBAL PATRIOTIC BACKGROUND
+   IMMIGRA.SITE — GLOBAL PATRIOTIC BACKGROUND
    ========================================================= */
 
 html,
@@ -4411,7 +4411,7 @@ body::after {
       );
   }
 }/* =========================================================
-   CITIZENSHIP AI — REAL PATRIOTIC BACKGROUND
+   IMMIGRA.SITE — REAL PATRIOTIC BACKGROUND
    ========================================================= */
 
 .app {
@@ -4829,7 +4829,7 @@ body::after {
 
 }
 /* =====================================================
-   CITIZENSHIP AI — MOBILE READING EXPERIENCE
+   IMMIGRA.SITE — MOBILE READING EXPERIENCE
    ===================================================== */
 
 .reading-card {
@@ -5568,7 +5568,7 @@ body {
   white-space: pre-line;
 }
 /* =========================================
-   CITIZENSHIP AI — WRITING EXPERIENCE
+   IMMIGRA.SITE — WRITING EXPERIENCE
    ========================================= */
 
 .writing-ai-screen {
@@ -6210,7 +6210,7 @@ body {
   }
 }
 /* =========================================
-   CITIZENSHIP AI — BOTTOM NAVIGATION
+   IMMIGRA.SITE — BOTTOM NAVIGATION
    ========================================= */
 
 .bottom-nav {
@@ -6424,7 +6424,7 @@ body {
     0 0 18px rgba(120, 110, 255, 0.35);
 }
 /* =========================================
-   CITIZENSHIP AI — HOME EXPERIENCE
+   IMMIGRA.SITE — HOME EXPERIENCE
    ========================================= */
 
 .home-ai {
@@ -7490,7 +7490,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — SPATIAL THINKING CORE
+   IMMIGRA.SITE — SPATIAL THINKING CORE
    ========================================================= */
 
 .ai-wave {
@@ -7997,7 +7997,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — SPATIAL THINKING CORE
+   IMMIGRA.SITE — SPATIAL THINKING CORE
    ========================================================= */
 
 .ai-wave {
@@ -8881,7 +8881,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — PRACTICE CARDS
+   IMMIGRA.SITE — PRACTICE CARDS
    ========================================================= */
 
 .practice-grid {
@@ -9161,7 +9161,7 @@ body {
     bottom: 20px;
   }
 }/* =========================================================
-   CITIZENSHIP AI — PRACTICE / PREMIUM AI CARDS
+   IMMIGRA.SITE — PRACTICE / PREMIUM AI CARDS
    ========================================================= */
 
 .practice-grid {
@@ -9515,7 +9515,7 @@ body {
 
 }
 /* =========================================================
-   CITIZENSHIP AI — PRACTICE SCREEN
+   IMMIGRA.SITE — PRACTICE SCREEN
    PREMIUM AI OPTIONS
    ========================================================= */
 
@@ -9877,7 +9877,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — ENGLISH SCREEN
+   IMMIGRA.SITE — ENGLISH SCREEN
    PREMIUM AI CARDS
    ========================================================= */
 
@@ -11893,7 +11893,7 @@ body {
     font-size: 10px !important;
   }
 }/* =========================================================
-   CITIZENSHIP AI — STRONG AI VISUAL
+   IMMIGRA.SITE — STRONG AI VISUAL
    ========================================================= */
 
 .interview-screen .ai-thinking-panel {
@@ -13606,7 +13606,7 @@ body {
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — UNIFIED NAVY / BLUE AI THEME
+   IMMIGRA.SITE — UNIFIED NAVY / BLUE AI THEME
    ========================================================= */
 
 :root {
@@ -14718,7 +14718,7 @@ body {
   background: rgba(4, 15, 31, 0.35);
 }
 
-/* Clearly separate USCIS-supplied facts from Citizenship AI education. */
+/* Clearly separate USCIS-supplied facts from Immigra.site education. */
 .uscis-calculated-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -14883,7 +14883,7 @@ body {
     padding: 18px;
   }
 }/* =========================================================
-   CITIZENSHIP AI — MOBILE HOME REDESIGN
+   IMMIGRA.SITE — MOBILE HOME REDESIGN
    Visual update only — does not change app logic
    ========================================================= */
 
@@ -15129,7 +15129,7 @@ body {
     }
   }
 }/* =========================================================
-   CITIZENSHIP AI — HOME REDESIGN
+   IMMIGRA.SITE — HOME REDESIGN
    Mobile first / Premium AI interface
    ========================================================= */
 
@@ -16060,7 +16060,7 @@ body {
     width: calc(100% - 18px);
   }
 }/* =========================================================
-   CITIZENSHIP AI — NEW HOME
+   IMMIGRA.SITE — NEW HOME
    Premium mobile-first interface
    ========================================================= */
 
@@ -16089,12 +16089,13 @@ body {
 }
 
 .home-brand-logo {
-  width: 24px;
-  height: 24px;
-  margin-right: 3px;
-  border-radius: 7px;
-  object-fit: cover;
-  box-shadow: 0 0 14px rgba(46, 147, 255, 0.32);
+  display: block;
+  width: clamp(132px, 34vw, 220px);
+  height: auto;
+  max-width: 100%;
+  flex-shrink: 0;
+  object-fit: contain;
+  object-position: center;
 }
 
 .brand-ai {
@@ -16749,7 +16750,7 @@ body {
     width: 520px;
   }
 }/* =========================================================
-   CITIZENSHIP AI — HOME / CLEAN PREMIUM
+   IMMIGRA.SITE — HOME / CLEAN PREMIUM
    ========================================================= */
 
 .home-new-header {
@@ -17497,7 +17498,7 @@ body {
     min-height: 540px;
   }
 }/* ==========================================================================
-   CITIZENSHIP AI — MODERN FUTURISTIC DESIGN SYSTEM
+   IMMIGRA.SITE — MODERN FUTURISTIC DESIGN SYSTEM
    ========================================================================== */
 
 :root {
@@ -20420,7 +20421,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
   }
 
 }/* =========================================================
-   CITIZENSHIP AI — UNIFIED NAVY / BLUE AI THEME
+   IMMIGRA.SITE — UNIFIED NAVY / BLUE AI THEME
    ========================================================= */
 
 :root {
@@ -21255,7 +21256,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
     margin-bottom: 12px;
   }
 }/* =========================================================
-   CITIZENSHIP AI — MOBILE HOME REDESIGN
+   IMMIGRA.SITE — MOBILE HOME REDESIGN
    Visual update only — does not change app logic
    ========================================================= */
 
@@ -21501,7 +21502,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
     }
   }
 }/* =========================================================
-   CITIZENSHIP AI — HOME REDESIGN
+   IMMIGRA.SITE — HOME REDESIGN
    Mobile first / Premium AI interface
    ========================================================= */
 
@@ -22434,7 +22435,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 }
 
 /* =========================================================
-   CITIZENSHIP AI — FINAL HOME VISUAL SYSTEM
+   IMMIGRA.SITE — FINAL HOME VISUAL SYSTEM
    Home-only overrides. Other screens are intentionally untouched.
    ========================================================= */
 
@@ -22450,7 +22451,8 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .home-ai-header,
 .home-new-header {
   height: 64px;
-  padding: 0 22px;
+  min-height: 64px;
+  padding-inline: clamp(16px, 4vw, 48px);
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -22463,10 +22465,37 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 
 .home-ai-header .brand,
 .home-new-brand {
+  display: flex;
+  min-width: 0;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  line-height: 1;
   color: #fff;
   font-size: 13px;
   font-weight: 850;
   letter-spacing: 1.8px;
+}
+
+@media (max-width: 430px) {
+  .home-new-header {
+    gap: 10px;
+    padding-inline: 16px;
+  }
+
+  .home-new-brand {
+    flex: 0 1 auto;
+  }
+
+  .home-brand-logo {
+    width: clamp(128px, 38vw, 156px);
+  }
+
+  .language-selector {
+    flex: 0 0 auto;
+    gap: 5px;
+  }
 }
 
 .home-ai-header .brand span,
@@ -23976,6 +24005,7 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid 
 .immigration-category-scroll{display:flex;gap:7px;margin-bottom:13px;padding-bottom:5px;overflow-x:auto;scrollbar-width:none}.immigration-category-scroll button{flex:0 0 auto;padding:9px 12px;border:1px solid rgba(112,155,215,.22);border-radius:99px;color:#91a5c5;background:rgba(255,255,255,.03);font-size:10px;font-weight:750;cursor:pointer}.immigration-category-scroll button.active{border-color:#57c7ff;color:#fff;background:rgba(44,156,225,.17)}
 .immigration-urgent{display:grid;grid-template-columns:auto 1fr;gap:12px;margin-top:24px;padding:16px;border:1px solid rgba(255,176,79,.34);border-radius:17px;background:rgba(107,53,17,.18)}.immigration-urgent>span{display:grid;width:35px;height:35px;place-items:center;border-radius:11px;color:#ffd18a;background:rgba(255,169,68,.14);font-weight:900}.immigration-urgent strong{color:#ffe1af;font-size:11px;letter-spacing:.06em}.immigration-urgent p{margin:5px 0 0;color:#c6b596;font-size:10px;line-height:1.4}.immigration-urgent>div:last-child{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:7px}.immigration-urgent button{padding:8px 10px;border:1px solid rgba(255,191,102,.24);border-radius:9px;color:#ffe6bd;background:rgba(255,174,70,.07);font-size:9px;cursor:pointer}.immigration-empty,.immigration-footer-note{padding:22px;color:#8fa4c3;font-size:12px;line-height:1.5;text-align:center}.immigration-footer-note{margin:22px 0 0;border-top:1px solid rgba(130,170,225,.12)}
 .immigration-detail-wrap{display:grid;min-height:calc(100vh - 62px);place-items:center}.immigration-detail-card,.immigration-leaving-card{width:min(100%,600px);padding:clamp(24px,6vw,42px);box-sizing:border-box;border:1px solid rgba(103,180,255,.33);border-radius:26px;background:linear-gradient(150deg,rgba(15,38,79,.96),rgba(6,14,36,.98));box-shadow:0 30px 80px rgba(0,0,0,.4)}.immigration-detail-icon,.immigration-leaving-icon{display:grid;width:58px;height:58px;place-items:center;border-radius:17px;color:#78ddff;background:rgba(59,168,235,.13);font-size:25px}.immigration-agency,.immigration-leaving-card>span{display:block;margin-top:20px;color:#77d7ff;font-size:9px;font-weight:850;letter-spacing:.15em}.immigration-detail-card h1,.immigration-leaving-card h1{margin:9px 0 12px;color:#fff;font-size:clamp(29px,6vw,46px);line-height:1.07}.immigration-detail-card>p,.immigration-leaving-card>p{color:#b6c7e1;line-height:1.55}.immigration-detail-card aside{margin:21px 0;padding:15px;border:1px solid rgba(255,189,92,.28);border-radius:14px;background:rgba(111,65,17,.16)}.immigration-detail-card aside strong{color:#ffd18a;font-size:9px;letter-spacing:.13em}.immigration-detail-card aside p{margin:7px 0 0;color:#d7c39f;font-size:12px;line-height:1.45}.official-government-badge{display:inline-flex;margin:10px 0;padding:8px 10px;border:1px solid rgba(80,216,160,.28);border-radius:99px;color:#72e0ad;background:rgba(64,190,137,.07);font-size:9px;font-weight:850}.immigration-detail-card>small{display:block;color:#8199ba;font-size:9px}.immigration-continue,.immigration-leaving-card>a{width:100%;min-height:52px;margin-top:22px;display:flex;align-items:center;justify-content:space-between;padding:0 17px;box-sizing:border-box;border:0;border-radius:14px;color:#051425;background:linear-gradient(105deg,#22d3ee,#60a5fa);font-size:11px;font-weight:900;text-decoration:none;cursor:pointer}.immigration-legal-line{font-size:10px!important;text-align:center}.immigration-destination{margin:17px 0;padding:13px;border:1px solid rgba(110,180,255,.28);border-radius:12px;color:#8bdcff;background:rgba(27,116,194,.09);font-size:14px;font-weight:800;text-align:center}.immigration-independent{font-size:11px}.immigration-leaving-card>button{width:100%;margin-top:10px;padding:13px;border:1px solid rgba(143,177,225,.25);border-radius:13px;color:#c3d3ea;background:rgba(255,255,255,.04);font-weight:800;cursor:pointer}
+.immigration-practice-prompts{margin:22px 0;padding:18px;border:1px solid rgba(103,180,255,.25);border-radius:16px;background:rgba(29,91,151,.12)}.immigration-practice-prompts>span{color:#77d7ff;font-size:9px;font-weight:850;letter-spacing:.14em}.immigration-practice-prompts h2{margin:7px 0 12px;color:#f4f8ff;font-size:17px;line-height:1.3}.immigration-practice-prompts ol{display:grid;margin:0;padding-left:20px;gap:10px;color:#c8d6ea;font-size:12px;line-height:1.45}.immigration-practice-prompts>p{margin:15px 0 0;padding-top:13px;border-top:1px solid rgba(103,180,255,.18);color:#91a9c8;font-size:11px;line-height:1.5}
 @media(max-width:620px){.immigration-featured-grid{grid-template-columns:1fr 1fr}.immigration-resource-card.featured{min-height:164px;display:block}.immigration-resource-card.featured .immigration-resource-copy{display:block;margin-top:11px}.immigration-resource-card.featured .immigration-resource-arrow{display:none}.immigration-help-content{padding-inline:13px}.immigration-help-header{padding-inline:12px}.immigration-help-header strong{font-size:10px}.immigration-resource-card{padding:13px;grid-template-columns:38px 1fr auto}.immigration-resource-icon{width:38px;height:38px}.immigration-urgent{padding:14px}}
 @media(max-width:380px){.immigration-featured-grid{grid-template-columns:1fr}.immigration-resource-card.featured{min-height:135px}.immigration-help-header button{font-size:9px}}
 
@@ -26338,4 +26368,113 @@ select { font: inherit; }
     min-height: 540px;
     max-height: none;
   }
+}
+
+/* Phase-one learning feedback and native educational activities. */
+.readiness-level { display: inline-flex; margin-top: 8px; padding: 5px 10px; border: 1px solid rgba(55,221,255,.3); border-radius: 999px; color: #63e6ff; font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.mastery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
+.mastery-grid > div { padding: 10px; border: 1px solid rgba(126,181,255,.14); border-radius: 12px; background: rgba(4,18,42,.55); }
+.mastery-grid span, .mastery-grid strong { display: block; }
+.mastery-grid span { color: #9db0c9; font-size: .7rem; }
+.mastery-grid strong { margin-top: 3px; color: #fff; }
+.learning-activity { margin: 14px 0; padding: 18px; border: 1px solid rgba(67,218,255,.2); border-radius: 18px; background: linear-gradient(145deg, rgba(11,35,70,.95), rgba(4,18,40,.97)); }
+.learning-activity > span { color: #48dcff; font-size: .68rem; font-weight: 800; letter-spacing: .1em; }
+.learning-activity h3 { margin: 7px 0; }
+.learning-activity p { color: #b7c5d8; }
+.learning-activity details { margin: 12px 0; color: #d7e7f8; }
+.learning-activity button, .feedback-sound-toggle { border: 1px solid rgba(61,218,255,.28); border-radius: 12px; color: #eaf9ff; background: rgba(30,143,198,.14); padding: 10px 14px; }
+.study-feedback-message { min-height: 24px; margin-top: 8px; color: #9defff; text-align: center; opacity: 0; transform: translateY(4px); transition: opacity .2s ease, transform .2s ease; }
+.study-feedback-message.visible { opacity: 1; transform: translateY(0); }
+.feedback-sound-toggle { display: block; margin: 5px auto 0; font-size: .72rem; }
+@media (prefers-reduced-motion: reduce) {
+  .study-feedback-message, .civics-flashcard-inner, .progress-ai-fill { transition: none !important; animation: none !important; }
+}
+
+/* Shared visual system for all 128 civics cards. */
+.civics-visual-preference {
+  display: flex;
+  width: min(100%, 580px);
+  margin: -4px auto 10px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.civics-visual-preference button {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px;
+  border: 1px solid rgba(116, 177, 235, .28);
+  border-radius: 999px;
+  color: #d6e5f6;
+  background: rgba(7, 27, 57, .72);
+  font: inherit;
+  font-size: .68rem;
+  font-weight: 760;
+  cursor: pointer;
+}
+.civics-visual-preference button span { color: #55ddf4; font-size: .9rem; }
+.civics-visual-preference small { color: #7792b3; font-size: .62rem; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; }
+.civics-flashcard.visual-enhanced { height: 430px; }
+.civics-flashcard.visual-enhanced .civics-flashcard-face {
+  border-color: rgba(37, 99, 235, .24);
+  color: #10213f;
+  background:
+    repeating-linear-gradient(135deg, rgba(37, 99, 235, .018) 0 1px, transparent 1px 18px),
+    linear-gradient(160deg, #ffffff 0%, #f8fbff 58%, #eaf2ff 100%);
+  box-shadow: 0 22px 55px rgba(1, 16, 42, .3), 0 1px 0 rgba(255,255,255,.9) inset;
+}
+.civics-flashcard.visual-enhanced .civics-flashcard-topline,
+.civics-flashcard.visual-enhanced .civics-answer-head { color: #52627a; }
+.civics-flashcard.visual-enhanced .civics-flashcard-topline button,
+.civics-flashcard.visual-enhanced .civics-answer-head button {
+  border-color: rgba(37, 99, 235, .18);
+  color: #2563eb;
+  background: rgba(234, 242, 255, .9);
+}
+.civics-card-visual {
+  position: relative;
+  flex: 0 0 132px;
+  margin: 10px -22px 0;
+  overflow: hidden;
+  background: linear-gradient(135deg, #eaf2ff, #f8fbff);
+}
+.civics-card-visual::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 36px;
+  content: "";
+  background: linear-gradient(180deg, rgba(248,251,255,0), #f8fbff);
+  pointer-events: none;
+}
+.civics-card-visual img { display: block; width: 100%; height: 132px; object-fit: contain; object-position: center; }
+.civics-card-visual.image-unavailable { background: linear-gradient(135deg, #dceaff, #f8fbff); }
+.civics-card-visual.image-unavailable img { visibility: hidden; }
+.civics-flashcard.visual-enhanced .civics-flashcard-question { align-content: center; padding-top: 5px; }
+.civics-flashcard.visual-enhanced .civics-flashcard-question h2,
+.civics-flashcard.visual-enhanced .civics-flashcard-face.back h2 { color: #10213f; }
+.civics-flashcard.visual-enhanced .civics-flashcard-question p { color: #52627a; }
+.civics-flashcard.visual-enhanced .civics-reveal-hint { color: #52627a; }
+.civics-flashcard.visual-enhanced .civics-answer-head > span,
+.civics-flashcard.visual-enhanced .civics-answer-label { color: #1d4ed8; }
+.civics-flashcard.visual-enhanced .civics-answer-rule { background: rgba(8, 27, 58, .12); }
+.civics-flashcard.visual-enhanced .civics-flashcard-answers p {
+  border-color: rgba(37, 99, 235, .14);
+  color: #10213f;
+  background: rgba(255,255,255,.8);
+}
+@media (max-width: 620px) {
+  .civics-visual-preference { width: min(100% - 4px, 420px); margin-bottom: 6px; }
+  .civics-visual-preference small { display: none; }
+  .civics-card-deck:has(.visual-enhanced) { min-height: 425px; }
+  .civics-flashcard.visual-enhanced { height: 405px; }
+  .civics-card-visual { flex-basis: 118px; margin: 8px -17px 0; }
+  .civics-card-visual img { height: 118px; }
+  .civics-flashcard.visual-enhanced .civics-flashcard-question h2 { font-size: clamp(1.08rem, 5.2vw, 1.42rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .civics-flashcard.visual-enhanced .civics-flashcard-inner { transition: none; }
 }

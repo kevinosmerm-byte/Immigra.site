@@ -1,4 +1,4 @@
--- Citizenship AI: server-authoritative accounts, entitlements and AI sessions.
+-- Immigra.site: server-authoritative accounts, entitlements and AI sessions.
 -- Apply through the Supabase migration workflow before setting Render secrets.
 
 create extension if not exists pgcrypto;

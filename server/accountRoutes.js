@@ -71,7 +71,7 @@ router.get("/export", async (req, res) => {
     const payload = await exportAccountData(req.account.userId);
     res.set({
       "Cache-Control": "no-store",
-      "Content-Disposition": `attachment; filename="citizenship-ai-account-${new Date().toISOString().slice(0, 10)}.json"`,
+      "Content-Disposition": `attachment; filename="immigra-site-account-${new Date().toISOString().slice(0, 10)}.json"`,
       "Content-Type": "application/json; charset=utf-8",
     });
     res.send(JSON.stringify(payload, null, 2));

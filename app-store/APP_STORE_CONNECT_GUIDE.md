@@ -1,4 +1,4 @@
-# Citizenship AI — App Store Connect copy-and-paste guide
+# Immigra.site — App Store Connect copy-and-paste guide
 
 Use this sheet when the Apple Developer membership shows the paid team and the app record can be created. Public-facing copy is already stored in `metadata.json`; this guide covers the remaining App Store Connect questionnaires without inventing owner information.
 
@@ -7,15 +7,15 @@ Use this sheet when the Apple Developer membership shows the paid team and the a
 | Field | Value |
 | --- | --- |
 | Platform | iOS |
-| Name | Citizenship AI |
+| Name | Immigra.site |
 | Primary language | English (U.S.) |
 | Bundle ID | `us.citizenshipai.app` |
 | SKU | `citizenship-ai-ios-1` |
 | Primary category | Education |
 | Secondary category | Reference |
-| Privacy policy URL | `https://citizenshipai.us/#privacy` |
-| Support URL | `https://citizenshipai.us/#privacy` |
-| Marketing URL | `https://citizenshipai.us/` |
+| Privacy policy URL | `https://immigra.site/#privacy` |
+| Support URL | `https://immigra.site/#privacy` |
+| Marketing URL | `https://immigra.site/` |
 
 The legal name, review telephone number, copyright owner, tax information and agreements must be entered by the account owner.
 
@@ -23,7 +23,7 @@ The legal name, review telephone number, copyright owner, tax information and ag
 
 - Sign-in required: **No** during the launch promotion.
 - Demo account: **Not required** for this build.
-- Review email: `info@citizenshipai.us`
+- Review email: `info@immigra.site`
 - Review contact name and phone: **ACCOUNT HOLDER MUST ENTER**.
 - Notes: copy `review.notes` from `metadata.json` without removing the independent-product, microphone, camera, prerecorded-podcast, USCIS Sandbox or inactive-payment disclosures.
 

@@ -5,7 +5,7 @@ import { Capacitor } from "@capacitor/core";
 // a custom API target from .env.
 const isLocalDevelopment = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 const configuredBaseUrl = Capacitor.isNativePlatform()
-  ? "https://citizenshipai.us/api"
+  ? "https://immigra.site/api"
   : isLocalDevelopment
   ? import.meta.env.VITE_API_BASE_URL || "/api"
   : "/api";

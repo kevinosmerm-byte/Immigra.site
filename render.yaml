@@ -1,4 +1,4 @@
-# Render Blueprint for CitizenshipAI's private API service.
+# Render Blueprint for Immigra.site's private API service.
 services:
   - type: web
     name: citizenshipai-api

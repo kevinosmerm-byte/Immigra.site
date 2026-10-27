@@ -16,7 +16,7 @@ function createAccountClient(url, publishableKey) {
 
 const COPY = {
   en: {
-    account: "Account", title: "Your Citizenship AI account", intro: "Sign in to securely connect future AI allowances and subscriptions across your devices.",
+    account: "Account", title: "Your Immigra.site account", intro: "Sign in to securely connect future AI allowances and subscriptions across your devices.",
     email: "Email address", placeholder: "you@example.com", send: "SEND SECURE SIGN-IN LINK", sending: "SENDING…",
     sent: "Check your email. We sent you a secure sign-in link.", signedIn: "SIGNED IN", signOut: "SIGN OUT", close: "Close account panel",
     optional: "Optional during the launch promotion. You can continue using the app without signing in.", unavailable: "Accounts are being prepared. You can continue using the app normally.",
@@ -24,7 +24,7 @@ const COPY = {
     usageTitle: "AI PRACTICE", used: "used", available: "available", requests: "provider requests", exportData: "DOWNLOAD MY DATA", exporting: "PREPARING…", exportError: "We could not prepare your account data. Please try again.", deleteAccount: "DELETE ACCOUNT", deleteTitle: "Permanently delete account?", deleteBody: "This removes your cloud account, AI allowances, and usage records. Local study progress on this device is not removed.", deletePrompt: "Type DELETE to confirm", deleting: "DELETING…", cancel: "CANCEL", deleteError: "We could not delete your account. Please try again.",
   },
   es: {
-    account: "Cuenta", title: "Tu cuenta de Citizenship AI", intro: "Inicia sesión para conectar de forma segura los futuros límites de IA y suscripciones entre tus dispositivos.",
+    account: "Cuenta", title: "Tu cuenta de Immigra.site", intro: "Inicia sesión para conectar de forma segura los futuros límites de IA y suscripciones entre tus dispositivos.",
     email: "Correo electrónico", placeholder: "tu@correo.com", send: "ENVIAR ENLACE SEGURO", sending: "ENVIANDO…",
     sent: "Revisa tu correo. Te enviamos un enlace seguro para iniciar sesión.", signedIn: "SESIÓN INICIADA", signOut: "CERRAR SESIÓN", close: "Cerrar panel de cuenta",
     optional: "Es opcional durante la promoción de lanzamiento. Puedes continuar usando la aplicación sin iniciar sesión.", unavailable: "Las cuentas se están preparando. Puedes continuar usando la aplicación normalmente.",
@@ -213,7 +213,7 @@ export function AccountSheet({ language = "en", onClose }) {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = `citizenship-ai-account-${new Date().toISOString().slice(0, 10)}.json`;
+      link.download = `immigra-site-account-${new Date().toISOString().slice(0, 10)}.json`;
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -243,7 +243,7 @@ export function AccountSheet({ language = "en", onClose }) {
       <section className="account-sheet" role="dialog" aria-modal="true" aria-labelledby="account-title">
         <button className="account-close" onClick={onClose} type="button" aria-label={copy.close}>×</button>
         <div className="account-mark" aria-hidden="true">◎</div>
-        <p className="account-eyebrow">CITIZENSHIP AI · {copy.account.toUpperCase()}</p>
+        <p className="account-eyebrow">IMMIGRA.SITE · {copy.account.toUpperCase()}</p>
         <h2 id="account-title">{copy.title}</h2>
         <p className="account-intro">{copy.intro}</p>
         {!configured ? <div className="account-message">{copy.unavailable}</div> : loading ? <div className="account-loading" /> : session ? (

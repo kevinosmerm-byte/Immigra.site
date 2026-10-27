@@ -1,4 +1,4 @@
-# Citizenship AI monetization architecture
+# Immigra.site monetization architecture
 
 ## Decision
 

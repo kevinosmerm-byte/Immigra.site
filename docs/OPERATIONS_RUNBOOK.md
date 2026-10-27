@@ -1,4 +1,4 @@
-# Citizenship AI operations and cost-safety runbook
+# Immigra.site operations and cost-safety runbook
 
 This runbook describes production controls without containing credentials, keys, tokens or provider prices.
 
@@ -74,7 +74,7 @@ Do not enable paid subscriptions or rewarded ads until all of the following are 
 
 Verified September 20, 2026 after the monetization-safety rollout:
 
-- The public `/api/health` route returned HTTP 200 through the Citizenship AI domain.
+- The public `/api/health` route returned HTTP 200 through the Immigra.site domain.
 - The direct Render `/health` route returned HTTP 200.
 - The Cloudflare proxy returned the public account configuration successfully.
 - Supabase account support reported configured.

@@ -184,7 +184,7 @@ export async function exportAccountData(userId) {
     entitlement: entitlementResult.data || null,
     aiSessions: sessionsResult.data || [],
     rewardCredits: rewardsResult.data || [],
-    privacyNote: "This export contains account and technical usage records only. Citizenship AI does not include conversation, recording, or transcript content in its usage ledger.",
+    privacyNote: "This export contains account and technical usage records only. Immigra.site does not include conversation, recording, or transcript content in its usage ledger.",
   };
 }
 

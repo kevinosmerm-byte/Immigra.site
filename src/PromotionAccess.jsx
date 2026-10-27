@@ -10,7 +10,7 @@ const COPY = {
   en: {
     eyebrow: "LAUNCH PROMOTION",
     title: "You've completed your free AI practices",
-    body: "Keep preparing for your citizenship interview. Expanded AI practice will become part of Citizenship AI Pro in the future.",
+    body: "Keep preparing for your citizenship interview. Expanded AI practice will become part of Immigra.site Pro in the future.",
     pro: "GO PRO · COMING SOON",
     proDetail: "More AI practice · No ads · Advanced interview training",
     continue: "CONTINUE FREE DURING PROMOTION",
@@ -19,12 +19,12 @@ const COPY = {
     unavailableTitle: "This AI practice is currently unavailable",
     unavailableBody: "New sessions are paused right now. Your free study tools remain available while access is restored.",
     quotaTitle: "You've completed your included AI practices",
-    quotaBody: "More AI practice will be available through Citizenship AI Pro or an eligible rewarded session.",
+    quotaBody: "More AI practice will be available through Immigra.site Pro or an eligible rewarded session.",
   },
   es: {
     eyebrow: "PROMOCIÓN DE LANZAMIENTO",
     title: "Completaste tus prácticas gratuitas con IA",
-    body: "Continúa preparándote para tu entrevista de ciudadanía. En el futuro, la práctica ampliada con IA formará parte de Citizenship AI Pro.",
+    body: "Continúa preparándote para tu entrevista de ciudadanía. En el futuro, la práctica ampliada con IA formará parte de Immigra.site Pro.",
     pro: "OBTENER PRO · PRÓXIMAMENTE",
     proDetail: "Más práctica con IA · Sin anuncios · Entrenamiento avanzado",
     continue: "CONTINUAR GRATIS DURANTE LA PROMOCIÓN",
@@ -33,7 +33,7 @@ const COPY = {
     unavailableTitle: "Esta práctica con IA no está disponible ahora",
     unavailableBody: "Las sesiones nuevas están pausadas. Tus herramientas gratuitas de estudio siguen disponibles mientras restablecemos el acceso.",
     quotaTitle: "Completaste tus prácticas de IA incluidas",
-    quotaBody: "Habrá más práctica con IA mediante Citizenship AI Pro o una sesión con recompensa elegible.",
+    quotaBody: "Habrá más práctica con IA mediante Immigra.site Pro o una sesión con recompensa elegible.",
   },
 };
 

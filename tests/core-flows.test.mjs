@@ -1,9 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 
 import { getCaseGuidance, daysSinceOfficialDate, formatOfficialDate } from "../src/caseTracker.js";
 import { getPracticeSummary, recordPracticeEvent, getPracticeEvents, clearPracticeEvents } from "../src/progress.js";
 import { buildDailyPlan, calculateReadiness, updateQuestionState } from "../src/learning.js";
+import { IMMIGRATION_RESOURCES, localizedResource } from "../src/immigrationResources.js";
 
 function createLocalStorage() {
   const values = new Map();
@@ -97,6 +99,28 @@ test("question mastery grows with independent recall and due items come first", 
   assert.equal(plan[0].reason, "due");
 });
 
+test("civic location support is incorporated without adding a standalone study panel", async () => {
+  const app = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
+  const server = await readFile(new URL("../server/server.js", import.meta.url), "utf8");
+  assert.doesNotMatch(app, /CivicLocationProfile|civic-location-profile/);
+  assert.match(server, /\/civic-location\/resolve/);
+  assert.match(server, /\/civic-location\/members/);
+});
+
+test("asylum preparation is integrated into the existing immigration resource detail", () => {
+  const resource = IMMIGRATION_RESOURCES.find((item) => item.id === "asylum");
+  const english = localizedResource(resource, "en");
+  const spanish = localizedResource(resource, "es");
+
+  assert.equal(resource.official_url, "https://www.uscis.gov/i-589");
+  assert.equal(spanish.title, "Asilo");
+  assert.ok(english.practicePrompts.length >= 8);
+  assert.equal(english.practicePrompts.length, spanish.practicePrompts.length);
+  assert.match(spanish.warning, /propios hechos verdaderos/i);
+  assert.match(spanish.practicePrompts.join(" "), /liberación de algunos detenidos políticos/i);
+  assert.match(spanish.practicePrompts.join(" "), /circunstancias son similares o diferentes/i);
+});
+
 test("case guidance never turns an official status into a legal prediction", () => {
   const rfe = getCaseGuidance("Request for Evidence Was Sent", "en");
   const denial = getCaseGuidance("Case Was Denied", "es");
@@ -111,4 +135,25 @@ test("official dates handle invalid and future values safely", () => {
   assert.equal(daysSinceOfficialDate("2999-01-01"), null);
   assert.equal(formatOfficialDate("not-a-date"), "");
   assert.match(formatOfficialDate("2026-09-19", "en"), /2026/);
+});
+
+test("readiness stays at or below 90 without enough evidence and mock interviews", () => {
+  const attempts = Array.from({ length: 140 }, (_, index) => ({
+    questionId: `q-${index}`, category: ["civics", "reading", "writing", "interview"][index % 4],
+    correct: true, answeredAt: new Date(Date.UTC(2026, 8, 1 + (index % 14))).toISOString(),
+    responseMs: 8000, helpUsed: [], mode: "spoken",
+  }));
+  const result = calculateReadiness(attempts, ["civics", "reading", "writing", "interview"], { mockInterviews: 1, now: "2026-09-23T00:00:00Z" });
+  assert.equal(result.readiness, 90);
+  assert.equal(result.level, "ready_for_interview");
+  assert.equal(result.metrics.mockInterviews, 1);
+});
+
+test("daily plan prioritizes due failures and weak categories", () => {
+  const plan = buildDailyPlan([
+    { questionId: "strong", category: "history", mastery: .9, lapses: 0, nextReviewAt: "2026-09-30T00:00:00Z" },
+    { questionId: "missed", category: "government", mastery: .2, lapses: 3, nextReviewAt: "2026-09-20T00:00:00Z" },
+  ], "2026-09-23T00:00:00Z");
+  assert.equal(plan[0].questionId, "missed");
+  assert.equal(plan[0].reason, "due");
 });

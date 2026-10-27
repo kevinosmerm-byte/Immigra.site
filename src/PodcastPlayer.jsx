@@ -194,7 +194,7 @@ export function PodcastLibrary({ onBack }) {
         <div className="podcast-library-intro">
           <span>🎙️ PODCASTS EN VIVO</span>
           <h1>Listen. Learn.<br />Become ready.</h1>
-          <p>Choose your language and study with Citizenship AI.</p>
+          <p>Choose your language and study with Immigra.site.</p>
         </div>
         <div className="podcast-card-grid">
           {PODCASTS.map((item) => (
@@ -232,7 +232,7 @@ function PodcastFullPlayer({ onBack }) {
         <section className="podcast-track-info">
           <small>{player.track.flag} {player.track.language}</small>
           <h1>{player.track.title}</h1>
-          <span><i></i> Citizenship AI Live</span>
+          <span><i></i> Immigra.site Live</span>
         </section>
         <section className="podcast-timeline">
           <input type="range" min="0" max={player.duration || 0} step="0.1" value={Math.min(player.currentTime, player.duration || 0)} onChange={(event) => player.seekTo(event.target.value)} aria-label="Podcast progress" style={{ "--podcast-progress": `${progress}%` }} />
