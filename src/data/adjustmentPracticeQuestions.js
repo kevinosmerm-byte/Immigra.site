@@ -27,7 +27,7 @@ const source = [
     "all",
     "identity",
     "Where were you born?",
-    "¿Dónde nació?"
+    "¿En qué lugar nació usted?"
   ],
   [
     "adjustment",
