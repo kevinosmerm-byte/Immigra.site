@@ -139,6 +139,35 @@ export async function createPortalSession({ userId }) {
   return { url: session.url };
 }
 
+// Google Ads conversion reporting is separate from subscription entitlement changes.
+// A browser redirect is never evidence of payment: re-fetch Checkout from Stripe
+// under the authenticated purchaser's account before exposing public event data.
+export function paidCheckoutConversionDetails(session, userId) {
+  if (!session || !userId || session.client_reference_id !== userId
+    || session.metadata?.user_id !== userId
+    || session.metadata?.product_key !== PRO_PLAN.productKey
+    || session.mode !== "subscription"
+    || session.livemode !== true
+    || session.status !== "complete"
+    || session.payment_status !== "paid"
+    || !session.subscription
+    || !Number.isInteger(session.amount_total) || session.amount_total <= 0
+    || String(session.currency).toLowerCase() !== "usd"
+    || !/^cs_live_[A-Za-z0-9]+$/.test(session.id || "")) return null;
+  return {
+    transaction_id: session.id,
+    value: Number((session.amount_total / 100).toFixed(2)),
+    currency: "USD",
+  };
+}
+
+export async function verifyPaidCheckoutForAds({ userId, sessionId }) {
+  if (!userId || typeof sessionId !== "string"
+    || sessionId.length > 255 || !/^cs_live_[A-Za-z0-9]+$/.test(sessionId)) return null;
+  const session = await getStripe().checkout.sessions.retrieve(sessionId);
+  return paidCheckoutConversionDetails(session, userId);
+}
+
 export async function applyStripeEvent(event) {
   if (!["customer.subscription.created", "customer.subscription.updated", "customer.subscription.deleted"].includes(event.type)) {
     return { received: true, handled: false };
