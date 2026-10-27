@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { requireAccount, isPracticePolicyReady } from "./accountService.js";
-import { createCheckoutSession, createPortalSession } from "./stripeBilling.js";
+import { createCheckoutSession, createPortalSession, verifyPaidCheckoutForAds } from "./stripeBilling.js";
 
 const router = Router();
 router.use(requireAccount);
@@ -22,6 +22,20 @@ router.post("/checkout-session", async (req, res) => {
       error: conflict ? "A Pro subscription is already active." : "Secure checkout is temporarily unavailable.",
       code: conflict ? error.code : "checkout_unavailable",
     });
+  }
+});
+
+router.get("/paid-conversion", async (req, res) => {
+  res.set("Cache-Control", "no-store");
+  const sessionId = req.query?.session_id;
+  if (typeof sessionId !== "string" || !/^cs_live_[A-Za-z0-9]+$/.test(sessionId)) {
+    return res.status(400).json({ code: "invalid_checkout_session" });
+  }
+  try {
+    const conversion = await verifyPaidCheckoutForAds({ userId: req.account.userId, sessionId });
+    return conversion ? res.json({ conversion }) : res.status(404).json({ code: "paid_checkout_not_verified" });
+  } catch {
+    return res.status(503).json({ code: "checkout_verification_unavailable" });
   }
 });
 
