@@ -51,6 +51,25 @@ test("generated repeated questions cannot replace the application's agenda", () 
   assert.ok(normalizeCoachFeedback({ reply: "x".repeat(1000) }).reply.length <= 600);
 });
 
+test("guided feedback avoids generic repeated praise and gives an actionable fallback", () => {
+  const context = { question: "When did you first meet?", answer: "I met her in 2021", history: [] };
+  const result = normalizeCoachFeedback({ reply: "Good job!", correction: "", encouragement: "Keep going!", example: "" }, "en", context);
+  assert.match(result.reply, /date|approximate|remember|fact/i);
+  assert.equal(result.encouragement, "");
+  assert.equal(result.example, "");
+});
+test("guided feedback preserves specific coaching and grounded example", () => {
+  const context = { question: "Where did you meet?", answer: "I meet my spouse in Houston", history: [] };
+  const result = normalizeCoachFeedback({ reply: "You mentioned Houston as the location.", correction: "Use the past tense: met.", encouragement: "", example: "I met my spouse in Houston." }, "en", context);
+  assert.equal(result.reply, "You mentioned Houston as the location.");
+  assert.equal(result.correction, "Use the past tense: met.");
+  assert.equal(result.example, "I met my spouse in Houston.");
+});
+test("guided feedback avoids repeating previously given coaching", () => {
+  const context = { question: "Where did you live?", answer: "I lived in Houston", history: [{ role: "assistant", content: "Add a concrete detail." }] };
+  const result = normalizeCoachFeedback({ reply: "Add a concrete detail.", correction: "", encouragement: "" }, "en", context);
+  assert.notEqual(result.reply, "Add a concrete detail.");
+});
 test("incomplete and incorrect civics answers have a bounded recovery path", () => {
   for (const status of ["incorrect", "incomplete"]) {
     assert.equal(boundedPracticeOutcome(status, 1), "retry");
