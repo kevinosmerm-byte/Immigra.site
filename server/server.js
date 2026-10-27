@@ -575,7 +575,7 @@ Return ONLY valid JSON:
 {
   "reply": "what the selected coach should say in the practice language",
   "correction": "short correction or empty string",
-  "encouragement": "short encouraging message"${guided ? ',\\n  "example": "optional improved sentence with only learner-supplied facts"' : ""}
+  "encouragement": "short encouraging message"${guided ? ',\n  "example": "optional improved sentence with only learner-supplied facts"' : ""}
 }
 `,
 
