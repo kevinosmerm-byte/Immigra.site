@@ -3,7 +3,7 @@ import { apiJson } from "./api.js";
 import { speakAppText, stopAppSpeech } from "./speech.js";
 import { useVoiceResponse } from "./useVoiceResponse.js";
 import { useContinuousVoice } from "./useContinuousVoice.js";
-import { advanceConversation, CONVERSATION_TOPICS, conversationCorrection, conversationIntent, createConversationFlow, currentConversationPrompt, defaultPracticeLanguage, normalizeCoachFeedback } from "./conversationFlow.js";
+import { advanceConversation, CONVERSATION_TOPICS, conversationCorrection, conversationIntent, createConversationFlow, currentConversationPrompt, defaultPracticeLanguage, normalizeCoachFeedback, PRACTICE_SESSION_LENGTH, PRACTICE_TRACKS, questionIndicesForTrack } from "./conversationFlow.js";
 import sarahImage from "./assets/sarah.png";
 import "./ConversationPractice.css";
 import { chooseInterviewQuestions, markInterviewQuestionReviewed } from "./interviewQuestionMemory.js";
@@ -14,7 +14,8 @@ import { studyGoal } from "../shared/studyPreparation.js";
 export function ConversationPractice({ language = "en", initialTopic = "citizenship", userKey = "guest", soundEnabled = true, onBack, onPractice, onComplete }) {
   const es = language === "es";
   const t = (en, spanish) => es ? spanish : en;
-  const newFlow = (topic, selectedLanguage) => createConversationFlow(topic, selectedLanguage, chooseInterviewQuestions(topic, CONVERSATION_TOPICS[topic].prompts.map((_, index) => index), index => index, userKey));
+  const [practiceTrack, setPracticeTrack] = useState("all");
+  const newFlow = (topic, selectedLanguage, track = "all") => createConversationFlow(topic, selectedLanguage, chooseInterviewQuestions(topic, questionIndicesForTrack(topic, track), index => index, userKey).slice(0, PRACTICE_SESSION_LENGTH));
   const [flow, setFlow] = useState(() => newFlow(studyGoal(initialTopic), language));
   const [started, setStarted] = useState(false);
   const [interviewer, setInterviewer] = useState("sarah");
@@ -176,7 +177,7 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
   const restart = () => {
     completionReported.current = false;
     continuous.pause(); voice.cancel(); stopSpeech();
-    setStarted(false); setFlow(newFlow(flow.topic, flow.language));
+    setStarted(false); setFlow(newFlow(flow.topic, flow.language, practiceTrack));
     setHistory([]); setLastExchange(null); setRevision(null); setFeedback(null); setDraft(""); setError("");
   };
   return <ConversationPresentation mode={flow.topic} language={language}><div className="practice-screen coach-screen coach-video-call-screen conversation-practice">
@@ -193,10 +194,13 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
       <EducationNotice language={language} compact />
       </details>
       <details className="conversation-choice-panel"><summary>{flow.language === "es" ? "Español" : "English"} · {name} · {t("Change practice options", "Cambiar opciones de práctica")}</summary><div className="conversation-options">
-        <label>{t("Topic", "Tema")}<select aria-label={t("Topic", "Tema")} value={flow.topic} disabled={started} onChange={event => setFlow(newFlow(event.target.value, defaultPracticeLanguage(event.target.value, flow.language)))}>
+        <label>{t("Topic", "Tema")}<select aria-label={t("Topic", "Tema")} value={flow.topic} disabled={started} onChange={event => (setPracticeTrack("all"), setFlow(newFlow(event.target.value, defaultPracticeLanguage(event.target.value, flow.language))))}>
           {Object.entries(CONVERSATION_TOPICS).map(([key, topic]) => <option key={key} value={key}>{topic.label[es ? 1 : 0]}</option>)}
         </select></label>
-        <label>{t("Practice language", "Idioma de práctica")}<select aria-label={t("Practice language", "Idioma de práctica")} value={flow.language} disabled={started} onChange={event => setFlow(newFlow(flow.topic, event.target.value))}>
+        {PRACTICE_TRACKS[flow.topic] && <label>{t("Interview type", "Tipo de entrevista")}<select aria-label={t("Interview type", "Tipo de entrevista")} value={practiceTrack} disabled={started} onChange={event => { setPracticeTrack(event.target.value); setFlow(newFlow(flow.topic, flow.language, event.target.value)); }}>
+          {PRACTICE_TRACKS[flow.topic].map(track => <option key={track} value={track}>{({ all: t("General practice", "Práctica general"), affirmative: t("Affirmative asylum", "Asilo afirmativo"), court: t("Immigration court", "Corte de inmigración"), marriage: t("Marriage", "Matrimonio"), parent: t("Parent petition", "Petición de padre o madre"), child: t("Child petition", "Petición de hijo o hija"), other_family: t("Other family relationship", "Otro parentesco") })[track]}</option>)}
+        </select></label>}
+        <label>{t("Practice language", "Idioma de práctica")}<select aria-label={t("Practice language", "Idioma de práctica")} value={flow.language} disabled={started} onChange={event => setFlow(newFlow(flow.topic, event.target.value, practiceTrack))}>
           <option value="en">English</option><option value="es">Español</option>
         </select></label>
         <label>{t("Practice partner", "Con quién practicas")}<select aria-label={t("Practice partner", "Con quién practicas")} value={interviewer} disabled={busy} onChange={event => { stopSpeech(); setInterviewer(event.target.value); }}>
