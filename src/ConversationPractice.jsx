@@ -71,7 +71,7 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
     setFeedback(response);
     setError("");
     const nextPrompt = currentConversationPrompt(next);
-    speak([response?.reply, next.complete ? spoken("Thank you. This practice is complete. You can come back whenever you are ready.", "Gracias. Esta práctica ha terminado. Puedes volver cuando quieras.") : nextPrompt].filter(Boolean).join(" "));
+    speak([response?.reply, response?.correction, response?.example, next.complete ? spoken("Thank you. This practice is complete. You can come back whenever you are ready.", "Gracias. Esta práctica ha terminado. Puedes volver cuando quieras.") : nextPrompt].filter(Boolean).join(" "));
     if (!skipped) onPractice?.({ module: "coach", outcome: "reply" });
     if (next.complete && !completionReported.current) {
       completionReported.current = true;
@@ -127,7 +127,7 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
         signal: abort.signal,
       });
       if (!active.current || id !== request.current) return false;
-      const response = normalizeCoachFeedback(result, base.language);
+      const response = normalizeCoachFeedback(result, base.language, { question: currentConversationPrompt(base), answer: message, history: priorHistory });
       if (result.educationalReferral === true) {
         setFeedback(response);
         speak(response.reply);
@@ -216,7 +216,7 @@ export function ConversationPractice({ language = "en", initialTopic = "citizens
           <div className="coach-video-call-identity"><div><strong>{name}</strong><small>{t("Conversation practice", "Práctica de conversación")}</small></div></div>
         </div>
         <p className="coach-conversation-status" role="status">{thinking ? t("Thinking about your response…", "Analizando tu respuesta…") : voice.isTranscribing || continuous.phase === "transcribing" ? t("Preparing your words…", "Preparando tus palabras…") : voice.isListening || continuous.phase === "listening" ? t("Listening. Take your time.", "Te escucho. Tómate tu tiempo.") : speaking ? t(`${name} is speaking`, `${name} está hablando`) : continuous.connected ? t("Microphone active. You can speak.", "Micrófono activo. Puedes hablar.") : t("Ready when you are", "Cuando tú quieras")}</p>
-        {started && feedback && <div className="conversation-feedback" aria-live="polite"><p>{feedback.reply}</p>{feedback.correction && <p><strong>{t("Language tip: ", "Sugerencia de lenguaje: ")}</strong>{feedback.correction}</p>}</div>}
+        {started && feedback && <div className="conversation-feedback" aria-live="polite"><p>{feedback.reply}</p>{feedback.correction && <p><strong>{t("Improve next time: ", "Qué mejorar: ")}</strong>{feedback.correction}</p>}{feedback.example && <p><strong>{t("Clearer wording using your facts: ", "Ejemplo con tus datos: ")}</strong>{feedback.example}</p>}</div>}
         <div className="coach-message"><div className="coach-message-label">{name.toUpperCase()}</div>
           <p className="coach-message-text" lang={flow.language}>{!started ? t("Choose a topic and start when you are ready.", "Elige un tema y comienza cuando quieras.") : flow.complete ? t("Practice complete. You can start another conversation.", "Práctica completada. Puedes iniciar otra conversación.") : prompt}</p>
         </div>
