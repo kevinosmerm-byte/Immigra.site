@@ -543,7 +543,7 @@ app.post("/coach", requireAiFeature("coach", ["coach", "realInterview"]), requir
     providerAttempted = true;
     const response = await openai.responses.create({
       model: OPENAI_TEXT_MODEL,
-      max_output_tokens: guided ? Math.max(300, MAX_AI_OUTPUT_TOKENS) : MAX_AI_OUTPUT_TOKENS,
+      max_output_tokens: MAX_AI_OUTPUT_TOKENS,
 
       instructions: `
 You are ${interviewer}, an educational communication coach in IMMIGRA.site for citizenship, asylum and adjustment-of-status interview practice.
