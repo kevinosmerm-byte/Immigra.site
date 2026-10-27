@@ -1,3 +1,6 @@
+import { asylumPracticeQuestions } from "./data/asylumPracticeQuestions.js";
+import { adjustmentPracticeQuestions } from "./data/adjustmentPracticeQuestions.js";
+
 // The application owns the agenda. A language model supplies feedback, never
 // the next question or an immigration decision. Session answers are not stored.
 export const CONVERSATION_TOPICS = {
@@ -60,6 +63,34 @@ export const CONVERSATION_TOPICS = {
   },
 };
 
+// Keep the six legacy prompts at their original indices to preserve v1 review memory.
+// New prompts extend the bank; the default conversation length remains six turns.
+const PRACTICE_COLLECTIONS = { asylum: asylumPracticeQuestions, adjustment: adjustmentPracticeQuestions };
+for (const [topic, bank] of Object.entries(PRACTICE_COLLECTIONS)) {
+  const config = CONVERSATION_TOPICS[topic];
+  config.prompts.push(...bank.map(item => item.en));
+  config.spanishPrompts.push(...bank.map(item => item.es));
+}
+export const PRACTICE_SESSION_LENGTH = 6;
+export const PRACTICE_TRACKS = Object.freeze({
+  asylum: ["all", "affirmative", "court"],
+  adjustment: ["all", "marriage", "parent", "child", "other_family"],
+});
+export function getPracticeQuestionMeta(topic, index) {
+  if (!Number.isInteger(index) || index < 0) return null;
+  if (index < 6) return { id: `LEGACY-${topic}-${index + 1}`, track: "all", category: "communication", provenance: "original-educational" };
+  return PRACTICE_COLLECTIONS[topic]?.[index - 6] || null;
+}
+export function questionIndicesForTrack(topic, track = "all") {
+  const config = CONVERSATION_TOPICS[topic];
+  if (!config) return [];
+  const desired = PRACTICE_TRACKS[topic]?.includes(track) ? track : "all";
+  return config.prompts.map((_, index) => index).filter(index => {
+    const questionTrack = getPracticeQuestionMeta(topic, index)?.track || "all";
+    return topic === "citizenship" || questionTrack === "all" || questionTrack === desired;
+  });
+}
+
 const normalize = value => String(value || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase().replace(/[.!?]+$/g, "");
 
 export function conversationCorrection(value) {
@@ -84,7 +115,7 @@ export function defaultPracticeLanguage(topic, language) {
 
 export function createConversationFlow(topic = "citizenship", language = "en", promptOrder) {
   const safeTopic = Object.hasOwn(CONVERSATION_TOPICS, topic) ? topic : "citizenship";
-  const order = Array.isArray(promptOrder) ? [...new Set(promptOrder.filter(index => Number.isInteger(index) && index >= 0 && index < CONVERSATION_TOPICS[safeTopic].prompts.length))] : null;
+  const order = Array.isArray(promptOrder) ? [...new Set(promptOrder.filter(index => Number.isInteger(index) && index >= 0 && index < CONVERSATION_TOPICS[safeTopic].prompts.length))].slice(0, PRACTICE_SESSION_LENGTH) : null;
   return { topic: safeTopic, language: language === "es" ? "es" : "en", index: order?.[0] ?? 0, answered: [], skipped: [], complete: order?.length === 0, ...(order ? { order } : {}) };
 }
 
@@ -96,7 +127,7 @@ export function currentConversationPrompt(flow) {
 export function advanceConversation(flow, skipped = false) {
   if (flow.complete) return flow;
   const position = flow.order ? flow.order.indexOf(flow.index) + 1 : flow.index + 1;
-  const complete = position >= (flow.order?.length ?? CONVERSATION_TOPICS[flow.topic].prompts.length);
+  const complete = position >= (flow.order?.length ?? PRACTICE_SESSION_LENGTH);
   const index = flow.order ? (flow.order[position] ?? flow.index) : position;
   return {
     ...flow, index, complete,
