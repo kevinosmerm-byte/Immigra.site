@@ -19,6 +19,9 @@ for(const [name,port,dir] of [['ImmigrationAI',configuredPort,'dist']]){
   applySecurityHeaders(req,res,{production:process.env.NODE_ENV==='production'||process.env.RENDER==='true'});
   try{
    const url=new URL(req.url,'http://localhost');const pathname=decodeURIComponent(url.pathname);
+   if(pathname==='/citizenship'||pathname==='/citizenship/'){
+    res.writeHead(301,{Location:'/en/citizenship'+url.search});return res.end();
+   }
    const seoRedirect=seoPages.find(p=>pathname.replace(/^\/|\/$/g,'')===p.alias);
    if(seoRedirect){res.writeHead(301,{Location:'/'+seoRedirect.path});return res.end();}
    if(pathname.startsWith('/api/'))res.setHeader('X-Robots-Tag','noindex, nofollow');
