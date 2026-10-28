@@ -1,0 +1,6 @@
+# Snapshot integrity requires identical bytes on Windows and Linux.
+modules/citizenship/src/data/uscis2025Civics.json text eol=lf
+modules/citizenship/src/n400InterviewEngine.js text eol=lf
+modules/citizenship/src/civicsAnswerEvaluator.js text eol=lf
+modules/asylum/packages/core/index.cjs text eol=lf
+modules/asylum/apps/web/package-data.js text eol=lf

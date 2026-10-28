@@ -1,0 +1,192 @@
+{
+  "asylum": [
+    {
+      "id": "AS-SUP-001",
+      "category": "EDUCATION",
+      "subcategory": "core",
+      "question_es": "¿Cuál fue el último centro educativo al que asistió, si asistió a alguno?",
+      "question_en": "What was the last school you attended, if any?",
+      "question_type": "neutral_factual",
+      "uscis_enabled": 1,
+      "es_oficial": false,
+      "source": "https://www.uscis.gov/sites/default/files/document/forms/i-589instr.pdf",
+      "source_section": "Part A.III / completion and signature",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AS-SUP-002",
+      "category": "EMPLOYMENT",
+      "subcategory": "core",
+      "question_es": "¿A qué se ha dedicado laboralmente durante los últimos cinco años, si ha trabajado?",
+      "question_en": "What kinds of work have you done during the past five years, if any?",
+      "question_type": "neutral_factual",
+      "uscis_enabled": 1,
+      "es_oficial": false,
+      "source": "https://www.uscis.gov/sites/default/files/document/forms/i-589instr.pdf",
+      "source_section": "Part A.III / completion and signature",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AS-SUP-003",
+      "category": "EDUCATION",
+      "subcategory": "core",
+      "question_es": "¿En qué periodos cursó sus estudios, según lo que recuerda?",
+      "question_en": "During which periods did you attend school, as best you remember?",
+      "question_type": "neutral_factual",
+      "uscis_enabled": 1,
+      "es_oficial": false,
+      "source": "https://www.uscis.gov/sites/default/files/document/forms/i-589instr.pdf",
+      "source_section": "Part A.III / completion and signature",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AS-SUP-004",
+      "category": "EMPLOYMENT",
+      "subcategory": "core",
+      "question_es": "¿Qué periodos de su historial laboral recuerda solo de forma aproximada?",
+      "question_en": "Which periods in your work history do you remember only approximately?",
+      "question_type": "neutral_factual",
+      "uscis_enabled": 1,
+      "es_oficial": false,
+      "source": "https://www.uscis.gov/sites/default/files/document/forms/i-589instr.pdf",
+      "source_section": "Part A.III / completion and signature",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AS-SUP-005",
+      "category": "APPLICATION_REVIEW",
+      "subcategory": "core",
+      "question_es": "¿En qué idioma revisó las respuestas de su solicitud antes de firmarla?",
+      "question_en": "In which language did you review your application answers before signing?",
+      "question_type": "neutral_factual",
+      "uscis_enabled": 1,
+      "es_oficial": false,
+      "source": "https://www.uscis.gov/sites/default/files/document/forms/i-589instr.pdf",
+      "source_section": "Part A.III / completion and signature",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AS-SUP-006",
+      "category": "APPLICATION_REVIEW",
+      "subcategory": "core",
+      "question_es": "¿Hay alguna parte de la solicitud que no comprendió al prepararla?",
+      "question_en": "Is there any part of the application you did not understand when preparing it?",
+      "question_type": "neutral_factual",
+      "uscis_enabled": 1,
+      "es_oficial": false,
+      "source": "https://www.uscis.gov/sites/default/files/document/forms/i-589instr.pdf",
+      "source_section": "Part A.III / completion and signature",
+      "reviewed_at": "2026-10-10"
+    }
+  ],
+  "residency": [
+    {
+      "id": "AOS-SUP-MATRIMONIO-1",
+      "ruta": "MATRIMONIO",
+      "bloque": "Preparación del formulario",
+      "dificultad": "Fácil",
+      "pregunta_es": "¿En qué idioma comprendió las preguntas de su I-485 al prepararlo?",
+      "question_en": "In which language did you understand the I-485 questions when preparing it?",
+      "es_oficial": false,
+      "fuente": "https://www.uscis.gov/sites/default/files/document/forms/i-485instr.pdf",
+      "source_section": "Applicant statement / interpreter / preparer",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AOS-SUP-MATRIMONIO-2",
+      "ruta": "MATRIMONIO",
+      "bloque": "Preparación del formulario",
+      "dificultad": "Moderada",
+      "pregunta_es": "¿Cómo participó usted en la revisión del formulario antes de firmarlo?",
+      "question_en": "How did you take part in reviewing the form before signing it?",
+      "es_oficial": false,
+      "fuente": "https://www.uscis.gov/sites/default/files/document/forms/i-485instr.pdf",
+      "source_section": "Applicant statement / interpreter / preparer",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AOS-SUP-MATRIMONIO-3",
+      "ruta": "MATRIMONIO",
+      "bloque": "Preparación del formulario",
+      "dificultad": "Difícil",
+      "pregunta_es": "Si utilizó un intérprete al preparar el formulario, ¿cómo comprobó que las respuestas reflejaban lo que quiso decir?",
+      "question_en": "If an interpreter helped prepare the form, how did you check that the answers reflected what you meant?",
+      "es_oficial": false,
+      "fuente": "https://www.uscis.gov/sites/default/files/document/forms/i-485instr.pdf",
+      "source_section": "Applicant statement / interpreter / preparer",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AOS-SUP-HIJO_A_PADRES-1",
+      "ruta": "HIJO_A_PADRES",
+      "bloque": "Preparación del formulario",
+      "dificultad": "Fácil",
+      "pregunta_es": "¿En qué idioma comprendió las preguntas de su I-485 al prepararlo?",
+      "question_en": "In which language did you understand the I-485 questions when preparing it?",
+      "es_oficial": false,
+      "fuente": "https://www.uscis.gov/sites/default/files/document/forms/i-485instr.pdf",
+      "source_section": "Applicant statement / interpreter / preparer",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AOS-SUP-HIJO_A_PADRES-2",
+      "ruta": "HIJO_A_PADRES",
+      "bloque": "Preparación del formulario",
+      "dificultad": "Moderada",
+      "pregunta_es": "¿Cómo participó usted en la revisión del formulario antes de firmarlo?",
+      "question_en": "How did you take part in reviewing the form before signing it?",
+      "es_oficial": false,
+      "fuente": "https://www.uscis.gov/sites/default/files/document/forms/i-485instr.pdf",
+      "source_section": "Applicant statement / interpreter / preparer",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AOS-SUP-HIJO_A_PADRES-3",
+      "ruta": "HIJO_A_PADRES",
+      "bloque": "Preparación del formulario",
+      "dificultad": "Difícil",
+      "pregunta_es": "Si utilizó un intérprete al preparar el formulario, ¿cómo comprobó que las respuestas reflejaban lo que quiso decir?",
+      "question_en": "If an interpreter helped prepare the form, how did you check that the answers reflected what you meant?",
+      "es_oficial": false,
+      "fuente": "https://www.uscis.gov/sites/default/files/document/forms/i-485instr.pdf",
+      "source_section": "Applicant statement / interpreter / preparer",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AOS-SUP-PADRES_A_HIJOS-1",
+      "ruta": "PADRES_A_HIJOS",
+      "bloque": "Preparación del formulario",
+      "dificultad": "Fácil",
+      "pregunta_es": "¿En qué idioma comprendió las preguntas de su I-485 al prepararlo?",
+      "question_en": "In which language did you understand the I-485 questions when preparing it?",
+      "es_oficial": false,
+      "fuente": "https://www.uscis.gov/sites/default/files/document/forms/i-485instr.pdf",
+      "source_section": "Applicant statement / interpreter / preparer",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AOS-SUP-PADRES_A_HIJOS-2",
+      "ruta": "PADRES_A_HIJOS",
+      "bloque": "Preparación del formulario",
+      "dificultad": "Moderada",
+      "pregunta_es": "¿Cómo participó usted en la revisión del formulario antes de firmarlo?",
+      "question_en": "How did you take part in reviewing the form before signing it?",
+      "es_oficial": false,
+      "fuente": "https://www.uscis.gov/sites/default/files/document/forms/i-485instr.pdf",
+      "source_section": "Applicant statement / interpreter / preparer",
+      "reviewed_at": "2026-10-10"
+    },
+    {
+      "id": "AOS-SUP-PADRES_A_HIJOS-3",
+      "ruta": "PADRES_A_HIJOS",
+      "bloque": "Preparación del formulario",
+      "dificultad": "Difícil",
+      "pregunta_es": "Si utilizó un intérprete al preparar el formulario, ¿cómo comprobó que las respuestas reflejaban lo que quiso decir?",
+      "question_en": "If an interpreter helped prepare the form, how did you check that the answers reflected what you meant?",
+      "es_oficial": false,
+      "fuente": "https://www.uscis.gov/sites/default/files/document/forms/i-485instr.pdf",
+      "source_section": "Applicant statement / interpreter / preparer",
+      "reviewed_at": "2026-10-10"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "app": {
+    "bundleId": "us.citizenshipai.app",
+    "sku": "immigra-ios-1",
+    "primaryLanguage": "en-US",
+    "primaryCategory": "Education",
+    "secondaryCategory": "Reference",
+    "privacyPolicyUrl": "https://immigra.site/privacy",
+    "supportUrl": "https://immigra.site/support",
+    "marketingUrl": "https://immigra.site/",
+    "termsOfUseUrl": "https://immigra.site/terms"
+  },
+  "localizations": {
+    "en-US": {
+      "name": "Immigra",
+      "subtitle": "Immigration interview practice",
+      "promotionalText": "Practice citizenship, asylum and residency interviews with Sahara, Kevin or William. Study and rehearse at your own pace in Spanish or English.",
+      "keywords": "citizenship,asylum,residency,english,civics,interview,study,immigration",
+      "description": "Immigra is an independent educational tool for citizenship, asylum and residency interview practice.\n\n• Review civics using the available official bank with bilingual support\n• Practice English, reading, writing and educational conversations\n• Choose Sahara, Kevin or William and answer by voice or text\n• Practice asylum in your language and optionally authorize PDF or text analysis\n• Configure residency practice using the supported family relationship options\n• Find official resources and authorized professional help\n\nThe interview and AI trial lasts seven days from first paid-feature use, without a card or automatic charge. Basic study remains available afterward. Interview and AI features require an active trial or subscription.\n\nWe are not lawyers or a law firm and do not provide legal advice or representation. We do not determine eligibility or guarantee outcomes. AI responses may be mistaken. Always consult a licensed immigration attorney or a DOJ-accredited representative acting within their authorized scope. Immigra is not affiliated with USCIS or the U.S. government.\n\nPrivacy: https://immigra.site/privacy\nSupport: https://immigra.site/support\nTerms: https://immigra.site/terms"
+    },
+    "es-US": {
+      "name": "Immigra",
+      "subtitle": "Practica tu entrevista",
+      "promotionalText": "Practica ciudadanía, asilo y residencia con Sahara, Kevin o William. Estudia y ensaya a tu ritmo en español o inglés.",
+      "keywords": "ciudadanía,asilo,residencia,inglés,civismo,entrevista,estudio,inmigración",
+      "description": "Immigra es una herramienta educativa independiente para practicar entrevistas de ciudadanía, asilo y residencia.\n\n• Repasa civismo con el banco oficial disponible y apoyo bilingüe\n• Practica inglés, lectura, escritura y conversaciones educativas\n• Elige Sahara, Kevin o William y responde por voz o texto\n• Practica asilo en tu idioma y autoriza opcionalmente el análisis de PDF o texto\n• Configura la práctica de residencia con las opciones de parentesco disponibles\n• Consulta recursos oficiales y ayuda profesional autorizada\n\nLa prueba gratuita de entrevistas e IA dura siete días desde el primer uso de una función de pago, sin tarjeta ni cobro automático. El estudio básico sigue disponible después. Las entrevistas y funciones de IA requieren una prueba o suscripción activa.\n\nNo somos abogados ni un bufete y no damos asesoría legal ni representación. No determinamos elegibilidad ni garantizamos resultados. Las respuestas de IA pueden equivocarse. Siempre recomendamos consultar a un abogado de inmigración autorizado o a un representante acreditado por el DOJ dentro de su autorización. Immigra no está afiliada a USCIS ni al gobierno de Estados Unidos.\n\nPrivacidad: https://immigra.site/privacidad\nSoporte: https://immigra.site/soporte\nTérminos: https://immigra.site/terminos"
+    }
+  },
+  "review": {
+    "notes": "Immigra is an independent educational study app for citizenship, asylum and residency. Free study is available without an account. Interview and AI practice require email entry; a seven-day trial begins at first paid-feature use without a card or automatic charge. Supply a verified review account with active access before submission so reviewers can test all features. Microphone permission is requested for voice practice; typed answers are available. PDFs are read locally and only authorized text is sent to OpenAI. AI reporting is available within the app. Native purchases are disabled until store products, verification, renewal and restoration are configured and tested. This build must not be submitted as purchase-ready before those steps are complete.",
+    "demoAccountRequired": true,
+    "contactName": "Kevin Medina",
+    "contactEmail": "info@immigra.site"
+  }
+}

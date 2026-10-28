@@ -1,0 +1,31 @@
+{
+  "country": "Nicaragua",
+  "version": "0.1",
+  "synthetic_case_ids": [
+    "SYN019",
+    "SYN020",
+    "SYN021",
+    "SYN022",
+    "SYN023",
+    "SYN024"
+  ],
+  "practice_themes": [
+    "student activity",
+    "public demonstration",
+    "community organizing",
+    "journalism"
+  ],
+  "country_selection_rule": "Country selection changes fictional scenarios/context retrieval only; it does not assume a personal fact.",
+  "source_policy": {
+    "preferred_sources": [
+      "USCIS",
+      "EOIR/DOJ",
+      "DHS",
+      "U.S. Department of State",
+      "UN bodies",
+      "other verified primary/official sources"
+    ],
+    "personal_fact_rule": "Country-condition information never becomes a personal fact without user confirmation.",
+    "freshness_rule": "Current-fear retrieval stores publication and event dates."
+  }
+}

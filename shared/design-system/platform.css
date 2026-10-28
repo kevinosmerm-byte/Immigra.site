@@ -1,0 +1,82 @@
+/* Shared visual chrome; domain-specific evaluators remain unchanged. */
+:root{--platform-surface:#f7f8fa;--platform-ink:#182331;--platform-border:#dce2e9;--platform-radius:18px}
+#main:has(.citizenship-surface),#main:has(.asylum-surface){max-width:none;padding:0 0 70px}
+.citizenship-surface,.asylum-surface{min-height:75dvh;background:var(--platform-surface);color:var(--platform-ink);font-family:Inter,system-ui,sans-serif}
+.citizenship-surface .bottom-navigation,.asylum-surface .bottom-nav,.asylum-surface>header,.asylum-surface>footer{display:none!important}
+.citizenship-surface .home-screen{background:var(--platform-surface)!important}
+.citizenship-surface button,.asylum-surface button{font-family:inherit}
+.citizenship-surface .practice-brand{font-size:14px}
+.asylum-surface #content{max-width:1200px;margin:auto}
+.asylum-surface .card,.citizenship-surface .practice-option{border-radius:var(--platform-radius);box-shadow:0 4px 20px #18233108}
+body.in-call .citizenship-surface #citizenship-root{z-index:auto;background:transparent;min-height:0}
+#root>header{background:#fff;color:#182331;border-bottom:1px solid #e3e7ed}
+#root>header .brand,#root>header nav button{color:#182331}
+.citizenship-surface #citizenship-root{position:relative!important;z-index:auto!important;min-height:0!important;background:transparent!important}
+.citizenship-surface .global-bottom-navigation{position:static!important;transform:none!important;display:flex!important;justify-content:center;flex-wrap:wrap;width:100%!important;max-width:none!important;border-radius:0;background:#f4f8fc!important;box-shadow:none!important;z-index:auto!important}
+.citizenship-surface .navigation-handle{display:none!important}
+.citizenship-surface .global-navigation-shell{padding-bottom:0!important}
+.citizenship-surface .home-screen,.citizenship-surface .practice-screen{background-image:none!important}
+.asylum-surface{--purple:#6741a5;--green:#6741a5}
+html[data-theme=dark] .citizenship-surface{background:#132337;color:#e5edf6}
+html[data-theme=dark] .citizenship-surface .global-bottom-navigation{background:#132337!important}
+
+/* Immigration AI presentation contract: every domain uses these surfaces. */
+:root{--ui-bg:#f5f7fa;--ui-card:#fff;--ui-ink:#18283d;--ui-muted:#53657b;--ui-line:#dce3ec;--ui-accent:#244869;--ui-soft:#eaf0f6;--ui-radius:18px}
+body{background:var(--ui-bg);color:var(--ui-ink);font-family:Inter,ui-sans-serif,system-ui,sans-serif;font-size:16px}
+#root>header{background:var(--ui-card);color:var(--ui-ink)}#root>header .bar{max-width:1320px}#root>header nav{gap:14px;align-items:center}#root>header nav button{color:var(--ui-ink)}#root>header .brand{color:var(--ui-ink)}
+#main{max-width:1240px;padding:0 28px 90px}#main:has(.citizenship-surface),#main:has(.asylum-surface){max-width:1240px;padding:0 28px 90px}
+.citizenship-surface,.asylum-surface,.residency{--ui-accent:#244869;--ui-soft:#eaf0f6;background:var(--ui-bg)!important;color:var(--ui-ink)!important;font:inherit;min-width:0}
+.asylum-surface{--ui-accent:#704ba3;--ui-soft:#f0eafa;--purple:#704ba3;--green:#704ba3}.residency{--ui-accent:#246954;--ui-soft:#e7f2ed}
+:is(.citizenship-surface,.asylum-surface) :is(.app,main,[class$="-screen"],.app-inner,.home-new-content){background:transparent!important;background-image:none!important;color:var(--ui-ink)!important;box-shadow:none!important;max-width:100%;min-height:0;padding-bottom:24px}
+:is(.citizenship-surface,.asylum-surface) :is(header,[class$="-header"]){background:transparent!important;color:var(--ui-ink)!important;box-shadow:none!important;border-color:var(--ui-line)!important;position:static}
+:is(.citizenship-surface,.asylum-surface) :is(h1,h2,h3,h4,strong,label){color:var(--ui-ink);font-family:inherit;text-shadow:none!important}
+:is(.citizenship-surface,.asylum-surface) :is(h1,h2){font-weight:650;letter-spacing:-.035em}
+:is(.citizenship-surface,.asylum-surface) h1{font-size:clamp(30px,4vw,46px)!important;line-height:1.15}
+:is(.citizenship-surface,.asylum-surface) p{color:var(--ui-muted);line-height:1.65}
+:is(.citizenship-surface,.asylum-surface) :is(button,.button,.chip){font-family:inherit!important;font-size:14px;min-height:44px;border-radius:11px!important;box-shadow:none!important;text-shadow:none!important;letter-spacing:normal!important;background-image:none!important;max-width:100%}
+:is(.citizenship-surface,.asylum-surface) :is(.primary-button,.button-primary,.account-primary,.button:not(.secondary),.home-primary-button,.practice-start-button){background:var(--ui-accent)!important;color:#fff!important;border:1px solid var(--ui-accent)!important}
+:is(.citizenship-surface,.asylum-surface) :is(.secondary-button,.button-secondary,.secondary,.chip,.back-button,.account-primary.secondary){background:var(--ui-card)!important;color:var(--ui-accent)!important;border:1px solid var(--ui-line)!important}
+:is(.citizenship-surface,.asylum-surface) :is([class$="-card"],.card,.question,.empty,.scope,[class$="-panel"],.account-sheet,.legal-item){background:var(--ui-card)!important;background-image:none!important;border:1px solid var(--ui-line)!important;border-radius:var(--ui-radius)!important;box-shadow:0 3px 16px #17324d05!important;color:var(--ui-ink)!important;min-width:0}
+:is(.citizenship-surface,.asylum-surface) :is(input,textarea,select){font:inherit;color:var(--ui-ink)!important;background:var(--ui-card)!important;border:1px solid var(--ui-line)!important;border-radius:10px!important;max-width:100%;min-height:44px;box-shadow:none!important}
+:is(.citizenship-surface,.asylum-surface) :is(input[type=checkbox],input[type=radio]){min-height:20px;accent-color:var(--ui-accent)}
+:is(.citizenship-surface,.asylum-surface) :is(a,.eyebrow,[class$="-eyebrow"]){color:var(--ui-accent)}
+:is(.citizenship-surface,.asylum-surface) :is(.hero-glow,.ai-orb-container,.orbit,.live-stage-mask){display:none!important}
+:is(.citizenship-surface,.asylum-surface) :is(.correct,.success){color:#226347!important}.citizenship-surface .incorrect{color:#a23535!important}
+.citizenship-surface .global-bottom-navigation{background:transparent!important;gap:8px;margin:24px 0}.citizenship-surface .global-bottom-navigation button{color:var(--ui-accent)!important;background:var(--ui-card)!important;border:1px solid var(--ui-line)}
+.platform-module-home{padding:32px 0}.platform-title{margin:20px 0 28px}.platform-title h1{font-size:clamp(30px,4vw,48px);margin:12px 0}.platform-title p{max-width:660px;color:var(--ui-muted)}.platform-eyebrow{color:var(--ui-accent);font-size:12px;font-weight:700;letter-spacing:.12em}
+.platform-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:24px 0}.platform-card{background:var(--ui-card)!important;border:1px solid var(--ui-line)!important;border-radius:18px!important;display:flex;flex-direction:column;align-items:flex-start;text-align:left;padding:22px;gap:12px;min-height:170px;position:relative;color:var(--ui-ink)!important}.platform-card strong{font-size:19px}.platform-card>span:not(.platform-card-icon){color:var(--ui-muted);font-size:14px}.platform-card-icon{background:var(--ui-soft);color:var(--ui-accent);border-radius:12px;padding:10px 14px}.platform-card-arrow{position:absolute;right:20px;top:24px}.platform-card:hover{border-color:var(--ui-accent)!important;transform:translateY(-2px)}
+.platform-feature{border:1px solid var(--ui-line);border-radius:22px;background:var(--ui-card);padding:28px;display:grid;grid-template-columns:1.7fr 1fr;align-items:center;gap:30px}.platform-feature h2{font-size:30px}.platform-feature video{width:100%;max-height:260px;border-radius:16px;object-fit:contain;background:#152334}
+.platform-actions{display:flex;gap:10px;flex-wrap:wrap}.platform-actions button,.platform-panel>button,.platform-call-start button{padding:12px 18px;background:var(--ui-accent);color:#fff;border:1px solid var(--ui-accent);border-radius:10px;font-size:14px}.platform-actions button+button{background:var(--ui-card);color:var(--ui-accent);border-color:var(--ui-line)}
+.platform-panel{padding:26px;margin:24px 0;background:var(--ui-card);border:1px solid var(--ui-line);border-radius:18px}.platform-panel summary{cursor:pointer;padding:14px 0}.platform-call-start{max-width:620px;margin:60px auto}.platform-call-start label{display:grid;gap:8px;margin:24px 0}.platform-call-start select{padding:12px}
+.platform-module-nav{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}.platform-module-nav button{padding:10px 16px;border:1px solid var(--ui-line);background:var(--ui-card);color:var(--ui-accent);border-radius:10px}.platform-module-nav button[aria-current=page]{background:var(--ui-soft);border-color:var(--ui-accent)}
+.asylum-surface>.preview,.asylum-surface .preview{display:none!important}.asylum-surface .app{padding:0!important}.asylum-surface .app-inner{padding:10px 0!important;width:100%}.asylum-surface .cards{grid-template-columns:repeat(3,minmax(0,1fr));padding:0;margin:24px 0;gap:16px}.asylum-surface .card{padding:24px;min-height:0}.asylum-surface .card h2{font-size:24px}.asylum-surface .two-col{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.asylum-surface .scope{padding:18px;margin:18px 0}.asylum-surface .section{padding:25px 0}.asylum-surface .section-title{padding:0}.asylum-surface .question{padding:20px;margin:14px 0}.asylum-surface select,.asylum-surface textarea{width:100%;padding:12px}.asylum-surface label{display:block;margin:14px 0 6px}.asylum-surface details{margin:12px 0;padding:14px}.asylum-surface .hero-art,.asylum-surface .strip{display:none}.asylum-surface .hero{display:block;text-align:left;padding:30px 0}.asylum-surface .hero h1{margin-left:0}.asylum-surface .hero p{margin-left:0}
+.platform-account,.platform-shared-tools{padding:25px 0}.platform-account .account-sheet{position:relative;max-width:760px;margin:auto}.res-panel{border-color:var(--ui-line);border-radius:var(--ui-radius)}.res-primary{background:var(--ui-accent);border-color:var(--ui-accent);border-radius:11px}.res-secondary{border-radius:11px}.res-soft{background:var(--ui-soft)}
+#root>footer{background:var(--ui-card);color:var(--ui-muted)}#root>footer button{border:0;background:none;color:var(--ui-accent);font-size:13px}
+:focus-visible{outline:3px solid #578cc0!important;outline-offset:3px}button:disabled{opacity:.55;cursor:not-allowed}body.in-call .platform-module-nav{display:none}
+@media(max-width:850px){.platform-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.platform-feature{grid-template-columns:1fr}.platform-feature video{max-height:220px}.asylum-surface .cards{grid-template-columns:repeat(2,minmax(0,1fr))}#root>header nav button{display:none}#root>header nav button:last-child,#root>header nav .global-help{display:block}#root>header nav{gap:5px}#root>header nav .global-help{font-size:12px}}
+@media(max-width:600px){#main,#main:has(.citizenship-surface),#main:has(.asylum-surface){padding:0 16px 90px}.platform-grid,.asylum-surface .cards,.asylum-surface .two-col{grid-template-columns:minmax(0,1fr)}.platform-feature,.platform-panel{padding:20px}.platform-module-nav{gap:6px}.platform-module-nav button{font-size:12px;padding:8px 10px}.platform-module-home{padding-top:14px}.platform-card{min-height:130px}.platform-actions button{flex:1}.mobilebar button{min-width:55px}.mobilebar button>span:first-child{font-size:22px}.platform-title{margin-top:20px}}
+
+#main:focus{outline:none!important}.citizenship-surface #citizenship-root{font-family:inherit!important;background:transparent!important}.citizenship-surface,.asylum-surface{background:var(--ui-bg)!important}html[data-theme=dark]{--ui-bg:#172332;--ui-card:#213246;--ui-ink:#edf3fc;--ui-muted:#b9c9db;--ui-line:#3b4f66}html[data-theme=dark] :is(.citizenship-surface,.asylum-surface,.residency){--ui-accent:#8fc5ee;--ui-soft:#2b4157}html[data-theme=dark] .platform-actions button{color:#172332}html[data-theme=dark] .platform-actions button+button{color:var(--ui-accent)}
+/* Study navigation belongs to the shared visual system. */
+.citizenship-surface .civics-screen{background:var(--ui-bg)!important;box-shadow:none!important}
+.citizenship-surface .civics-modes{display:flex;flex-wrap:wrap;gap:8px;background:transparent;padding:0;border:0;box-shadow:none}
+.citizenship-surface .civics-modes button{display:block;flex:1;min-width:95px;border:1px solid var(--ui-line);border-radius:12px;color:var(--ui-ink);background:var(--ui-card);text-shadow:none}
+.citizenship-surface .civics-modes button.active{background:var(--ui-soft);border-color:var(--ui-accent);color:var(--ui-accent)}
+.citizenship-surface .civics-deck-progress{background:var(--ui-card);color:var(--ui-ink);border:1px solid var(--ui-line);box-shadow:none}
+.citizenship-surface .back-button{width:auto;white-space:nowrap;padding:10px 16px}
+/* User-selected white canvas, including previously themed module surfaces. */
+:root,html[data-theme=dark]{--ui-bg:#fff;--ui-card:#fff;--ui-ink:#182331;--ui-muted:#536273;--ui-line:#dce2e9;--platform-surface:#fff;--platform-ink:#182331}
+html,body,#root,#main,#root>header,#root>footer,.mobilebar,.mobilemenu{background:#fff!important;background-image:none!important;color:#182331}
+:is(.citizenship-surface,.asylum-surface,.residency,.platform-shared-tools,.platform-account){background:#fff!important;background-image:none!important;color:#182331;--ui-bg:#fff;--ui-card:#fff;--ui-ink:#182331;--ui-muted:#536273;--ui-accent:#254c6b;--ui-soft:#edf4f9}
+:is(.citizenship-surface,.asylum-surface,.residency) :is(main,header,footer,section,article,[class$="-screen"],[class$="-content"],[class$="-panel"],[class$="-card"],.app,.app-inner,.card,.soft,.scope){background-color:#fff!important;background-image:none!important}
+.citizenship-surface .practice-header{background:#fff!important;border:0;min-height:0;padding:12px 0}
+.citizenship-surface .back-button{display:inline-flex;align-items:center;gap:6px;height:auto;min-height:44px;overflow:visible;color:#254c6b}
+.citizenship-surface .civics-deck-progress :is(span,strong){color:#536273!important}
+.call-screen,.call-top,.call-stage,.call-controls{background:#fff!important;background-image:none!important;color:#182331}
+.call-top strong,.call-top p,.call-time{color:#182331!important}
+.call-controls button{color:#254c6b;background:#fff;border-color:#c7d4df}
+.call-controls .call-end{color:#fff;background:#ed343e}
+.citizenship-surface::before,.citizenship-surface::after,.asylum-surface::before,.asylum-surface::after{content:none!important;display:none!important}
+.citizenship-surface .back-button::before{content:none!important}
+/* Keep navigation below the iOS status bar when viewport-fit=cover is used. */
+.platform-utility-header{padding-top:env(safe-area-inset-top,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}

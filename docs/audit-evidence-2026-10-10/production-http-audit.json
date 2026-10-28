@@ -1,0 +1,26 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "ms": 269,
+    "decodedBytes": 1157,
+    "encoding": "gzip",
+    "cache": "no-cache"
+  },
+  {
+    "path": "/api/interview/status",
+    "status": 200,
+    "ms": 242,
+    "decodedBytes": 95,
+    "encoding": "br",
+    "cache": "no-store"
+  },
+  {
+    "path": "/assets/index-cYVvG3GS.js",
+    "status": 200,
+    "ms": 398,
+    "decodedBytes": 949895,
+    "encoding": "gzip",
+    "cache": "public, max-age=3600"
+  }
+]

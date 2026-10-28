@@ -1,0 +1,1950 @@
+{
+  "citizenship": {
+    "files": [
+      ".env.example",
+      ".gitignore",
+      ".node-version",
+      ".oxlintrc.json",
+      "AGENTS.md",
+      "BRAND_PALETTE.md",
+      "capacitor.config.ts",
+      "index.html",
+      "package-lock.json",
+      "package.json",
+      "README.md",
+      "render.yaml",
+      "vite.config.js",
+      "android\\.gitignore",
+      "android\\build.gradle",
+      "android\\capacitor.settings.gradle",
+      "android\\gradle.properties",
+      "android\\gradlew",
+      "android\\gradlew.bat",
+      "android\\settings.gradle",
+      "android\\variables.gradle",
+      "app-store\\APP_STORE_CONNECT_GUIDE.md",
+      "app-store\\citizenshipai-appstore-screenshots.zip",
+      "app-store\\metadata.json",
+      "app-store\\SUBMISSION_CHECKLIST.md",
+      "docs\\ANDROID_READINESS.md",
+      "docs\\CIVICS_VISUAL_LIBRARY.md",
+      "docs\\CIVIC_PROVIDERS.md",
+      "docs\\IOS_READINESS.md",
+      "docs\\MASTER_IMPLEMENTATION_AUDIT.md",
+      "docs\\MASTER_IMPLEMENTATION_STATUS.md",
+      "docs\\MASTER_UI_QA.md",
+      "docs\\MONETIZATION_ARCHITECTURE.md",
+      "docs\\OFFICIAL_CIVICS_BANK.md",
+      "docs\\OPERATIONS_RUNBOOK.md",
+      "docs\\PHASE_ONE_LEARNING_ARCHITECTURE.md",
+      "docs\\PRICING_MODEL.md",
+      "docs\\PROFILE_STORAGE.md",
+      "docs\\WEB_BILLING_SETUP.md",
+      "ios\\.gitignore",
+      "ios\\debug.xcconfig",
+      "public\\.gitkeep",
+      "public\\app-icon-192.png",
+      "public\\app-icon-512.png",
+      "public\\app-icon.svg",
+      "public\\citizenship-ai-logo.png",
+      "public\\citizenship-ai-logo.svg",
+      "public\\citizenship-companion.png",
+      "public\\citizenshipai-home-cta.mp4",
+      "public\\citizenshipai-share.png",
+      "public\\civics-128-button.png",
+      "public\\civics-capitol-card.png",
+      "public\\companion-approved-cutout.png",
+      "public\\companion-denied-cutout.png",
+      "public\\companion-goal-cutout.png",
+      "public\\companion-love-cutout.png",
+      "public\\companion-sleeping-cutout.png",
+      "public\\companion-studying-cutout.png",
+      "public\\favicon.svg",
+      "public\\icons.svg",
+      "public\\kevin-listening.mp4",
+      "public\\kevin-speaking.mp4",
+      "public\\manifest.webmanifest",
+      "public\\podcast-aprobar-entrevista-ciudadania-es.m4a",
+      "public\\podcast-english.m4a",
+      "public\\podcast-spanish.m4a",
+      "public\\podcast-surviving-2026-interview-en.m4a",
+      "public\\sarah-listening.mp4",
+      "public\\sarah-real-interview-hero.jpg",
+      "public\\sarah-speaking.mp4",
+      "public\\sw.js",
+      "scripts\\extract-official-civics.py",
+      "scripts\\import-additional-civics-images.ps1",
+      "scripts\\optimize-study-guide.py",
+      "scripts\\verify-app-store-metadata.mjs",
+      "scripts\\verify-ios-readiness.mjs",
+      "scripts\\verify-mobile-readiness.mjs",
+      "server\\.gitkeep",
+      "server\\accountRoutes.js",
+      "server\\accountService.js",
+      "server\\billingRoutes.js",
+      "server\\brainProfileService.js",
+      "server\\civicLocationService.js",
+      "server\\externalDataCache.js",
+      "server\\server.js",
+      "server\\stripeBilling.js",
+      "server\\uscisService.js",
+      "shared\\brainProfile.js",
+      "shared\\featureAccessConfig.js",
+      "shared\\learningAccess.js",
+      "src\\access.js",
+      "src\\Account.jsx",
+      "src\\accountContext.js",
+      "src\\answers.js",
+      "src\\api.js",
+      "src\\App.css",
+      "src\\App.jsx",
+      "src\\AppErrorBoundary.jsx",
+      "src\\appRoutes.js",
+      "src\\audio.js",
+      "src\\BottomNavigation.jsx",
+      "src\\brain.js",
+      "src\\brainProfileStorage.js",
+      "src\\brainProfileStore.js",
+      "src\\BrandPalette.css",
+      "src\\CaseJourney.jsx",
+      "src\\caseTracker.js",
+      "src\\civicProfile.js",
+      "src\\civicProfileStorage.js",
+      "src\\civicProfileSync.js",
+      "src\\civicsAnswerEvaluator.js",
+      "src\\civicsAnswers.js",
+      "src\\civicsQuestionBank.js",
+      "src\\civicsQuestionsSpanish.js",
+      "src\\CivicsStudyCard.jsx",
+      "src\\CivicsStudyGuide.jsx",
+      "src\\civicsVersions.js",
+      "src\\civicsVisuals.js",
+      "src\\companion.js",
+      "src\\companionEvents.js",
+      "src\\DidLiveAvatar.jsx",
+      "src\\dynamicCivicsData.js",
+      "src\\EducationalActivities.jsx",
+      "src\\featureFlags.js",
+      "src\\HomeReference.css",
+      "src\\ImmigrationHelp.jsx",
+      "src\\immigrationResources.js",
+      "src\\index.css",
+      "src\\InterviewWorkspace.css",
+      "src\\InterviewWorkspace.jsx",
+      "src\\Journey.css",
+      "src\\learning.js",
+      "src\\LegacyIntegrations.css",
+      "src\\LegalSettings.jsx",
+      "src\\main.jsx",
+      "src\\ModernDesign.css",
+      "src\\MyCivicsProfile.jsx",
+      "src\\n400InterviewEngine.js",
+      "src\\N400InterviewPractice.jsx",
+      "src\\navigationHistory.js",
+      "src\\noticeParser.js",
+      "src\\podcastContext.js",
+      "src\\PodcastPlayer.jsx",
+      "src\\Profile.css",
+      "src\\Profile.jsx",
+      "src\\progress.js",
+      "src\\ProgressDashboard.jsx",
+      "src\\ProgressGate.jsx",
+      "src\\progressGateContext.js",
+      "src\\PromotionAccess.jsx",
+      "src\\promotionAccessContext.js",
+      "src\\proNoticePolicy.js",
+      "src\\questions.js",
+      "src\\quizLearning.js",
+      "src\\QuizLearningPath.jsx",
+      "src\\savedQuestions.js",
+      "src\\SectionNavigation.jsx",
+      "src\\SharedReference.css",
+      "src\\speech.js",
+      "src\\styleRecovery.js",
+      "src\\theme.js",
+      "src\\ThemeConsistency.css",
+      "src\\useBrainProfile.js",
+      "src\\useCivicProfile.js",
+      "src\\useModalFocus.js",
+      "src\\voiceProfiles.js",
+      "src\\writingEvaluator.js",
+      "src\\writingSentences.js",
+      "tests\\account-foundation.test.mjs",
+      "tests\\ai-daily-limits.test.mjs",
+      "tests\\app-routes.test.mjs",
+      "tests\\brain-profile-persistence.test.mjs",
+      "tests\\brain.test.mjs",
+      "tests\\case-journey.test.mjs",
+      "tests\\case-status-provider.test.mjs",
+      "tests\\civic-location-sync.test.mjs",
+      "tests\\civic-providers.test.mjs",
+      "tests\\civics-evaluation.test.mjs",
+      "tests\\civics-study-guide.test.mjs",
+      "tests\\civics-version-dynamic.test.mjs",
+      "tests\\civics-visual-library.test.mjs",
+      "tests\\companion-integration.test.mjs",
+      "tests\\core-flows.test.mjs",
+      "tests\\header-logo.test.mjs",
+      "tests\\home-polish.test.mjs",
+      "tests\\layout-consistency.test.mjs",
+      "tests\\learning-foundation.test.mjs",
+      "tests\\location-profile.test.mjs",
+      "tests\\n400-brain-context.test.mjs",
+      "tests\\n400-interview-entry.test.mjs",
+      "tests\\navigation-history.test.mjs",
+      "tests\\official-civics-bank.test.mjs",
+      "tests\\pro-notice-policy.test.mjs",
+      "tests\\progress-gate.test.mjs",
+      "tests\\progress-resume.test.mjs",
+      "tests\\promotion-access.test.mjs",
+      "tests\\quiz-learning-path.test.mjs",
+      "tests\\saved-questions-sync.test.mjs",
+      "tests\\social-sharing.test.mjs",
+      "tests\\speech-voices.test.mjs",
+      "tests\\stripe-billing.test.mjs",
+      "tests\\theme.test.mjs",
+      "tests\\writing-evaluation.test.mjs",
+      "supabase\\migrations\\202609200001_ai_entitlements.sql",
+      "supabase\\migrations\\202609200002_usage_metering_snapshot.sql",
+      "supabase\\migrations\\202609200003_distributed_rate_limits.sql",
+      "supabase\\migrations\\202609200004_rate_limit_retention.sql",
+      "supabase\\migrations\\202609200005_verified_reward_credits.sql",
+      "supabase\\migrations\\202609200006_verified_entitlements.sql",
+      "supabase\\migrations\\202609200007_reward_credit_failure_refunds.sql",
+      "supabase\\migrations\\202609270001_pro_plan_limits.sql",
+      "supabase\\migrations\\202609300001_saved_questions.sql",
+      "supabase\\migrations\\202610050001_brain_profiles.sql",
+      "src\\assets\\.gitkeep",
+      "src\\assets\\ChatGPT Image 16 sept 2026, 18_55_04.png",
+      "src\\assets\\citizenship-background.png",
+      "src\\assets\\hero.png",
+      "src\\assets\\kevin-cinematic.png",
+      "src\\assets\\react.svg",
+      "src\\assets\\sarah-speaking.png",
+      "src\\assets\\sarah.png",
+      "src\\assets\\vite.svg",
+      "src\\data\\additionalCivicsImages.json",
+      "src\\data\\civicsVisuals.js",
+      "src\\data\\n400InterviewBank.json",
+      "src\\data\\uscis2025Civics.json",
+      "src\\data\\userCivicsImages.json",
+      "src\\assets\\civics-photos\\abraham-lincoln.webp",
+      "src\\assets\\civics-photos\\congress.webp",
+      "src\\assets\\civics-photos\\constitution.webp",
+      "src\\assets\\civics-photos\\declaration.webp",
+      "src\\assets\\civics-photos\\george-washington.webp",
+      "src\\assets\\civics-photos\\house.webp",
+      "src\\assets\\civics-photos\\martin-luther-king-jr.webp",
+      "src\\assets\\civics-photos\\president.webp",
+      "src\\assets\\civics-photos\\supreme-court.webp",
+      "src\\assets\\civics-photos\\united-states-map.webp",
+      "src\\assets\\civics-photos\\user-alexander-hamilton.jpg",
+      "src\\assets\\civics-photos\\user-america-before-europeans.jpg",
+      "src\\assets\\civics-photos\\user-american-indian-tribe.jpg",
+      "src\\assets\\civics-photos\\user-aviation.jpg",
+      "src\\assets\\civics-photos\\user-benjamin-franklin.jpg",
+      "src\\assets\\civics-photos\\user-british-colonial.jpg",
+      "src\\assets\\civics-photos\\user-cabinet-meeting.jpg",
+      "src\\assets\\civics-photos\\user-capitol-west.jpg",
+      "src\\assets\\civics-photos\\user-capitol.jpg",
+      "src\\assets\\civics-photos\\user-chief-justice.jpg",
+      "src\\assets\\civics-photos\\user-citizenship-oath.jpg",
+      "src\\assets\\civics-photos\\user-civil-war-battle.jpg",
+      "src\\assets\\civics-photos\\user-cold-war-rival.jpg",
+      "src\\assets\\civics-photos\\user-colonists-america.jpg",
+      "src\\assets\\civics-photos\\user-constitution-book.jpg",
+      "src\\assets\\civics-photos\\user-constitution-quill.jpg",
+      "src\\assets\\civics-photos\\user-constitution-signing.jpg",
+      "src\\assets\\civics-photos\\user-constitutional-convention.jpg",
+      "src\\assets\\civics-photos\\user-delaware.jpg",
+      "src\\assets\\civics-photos\\user-dwight-eisenhower.jpg",
+      "src\\assets\\civics-photos\\user-election-rally.jpg",
+      "src\\assets\\civics-photos\\user-emancipation-proclamation.jpg",
+      "src\\assets\\civics-photos\\user-fighter-jet.jpg",
+      "src\\assets\\civics-photos\\user-fireworks.jpg",
+      "src\\assets\\civics-photos\\user-flag-allegiance.jpg",
+      "src\\assets\\civics-photos\\user-franklin-roosevelt.jpg",
+      "src\\assets\\civics-photos\\user-gettysburg.jpg",
+      "src\\assets\\civics-photos\\user-great-depression.webp",
+      "src\\assets\\civics-photos\\user-house-chamber.jpg",
+      "src\\assets\\civics-photos\\user-house-rostrum.jpg",
+      "src\\assets\\civics-photos\\user-james-madison.jpg",
+      "src\\assets\\civics-photos\\user-korean-war.jpg",
+      "src\\assets\\civics-photos\\user-liberty-photo.jpg",
+      "src\\assets\\civics-photos\\user-liberty-rights.jpg",
+      "src\\assets\\civics-photos\\user-liberty.jpg",
+      "src\\assets\\civics-photos\\user-lincoln-exterior.jpg",
+      "src\\assets\\civics-photos\\user-lincoln-memorial.jpg",
+      "src\\assets\\civics-photos\\user-louisiana-purchase.jpg",
+      "src\\assets\\civics-photos\\user-memorial-day.jpg",
+      "src\\assets\\civics-photos\\user-mlk.jpg",
+      "src\\assets\\civics-photos\\user-national-anthem.jpg",
+      "src\\assets\\civics-photos\\user-north-america.jpg",
+      "src\\assets\\civics-photos\\user-north-south-war.jpg",
+      "src\\assets\\civics-photos\\user-peace-expression.jpg",
+      "src\\assets\\civics-photos\\user-persian-gulf-war.jpg",
+      "src\\assets\\civics-photos\\user-post-september-11-conflict.jpg",
+      "src\\assets\\civics-photos\\user-presidential-podium.jpg",
+      "src\\assets\\civics-photos\\user-rally-participation.jpg",
+      "src\\assets\\civics-photos\\user-revolution.jpg",
+      "src\\assets\\civics-photos\\user-rushmore-close.jpg",
+      "src\\assets\\civics-photos\\user-security-meeting.webp",
+      "src\\assets\\civics-photos\\user-senate-chamber.jpg",
+      "src\\assets\\civics-photos\\user-senate-illustration.jpg",
+      "src\\assets\\civics-photos\\user-september-11.jpg",
+      "src\\assets\\civics-photos\\user-slavery-end.jpg",
+      "src\\assets\\civics-photos\\user-state-police-protection.jpg",
+      "src\\assets\\civics-photos\\user-stock-exchange.jpg",
+      "src\\assets\\civics-photos\\user-supreme-court-seats.jpg",
+      "src\\assets\\civics-photos\\user-supreme-court.jpg",
+      "src\\assets\\civics-photos\\user-susan-anthony.jpg",
+      "src\\assets\\civics-photos\\user-tax-currency.jpg",
+      "src\\assets\\civics-photos\\user-tenth-amendment.jpg",
+      "src\\assets\\civics-photos\\user-thirteen-colonies.jpg",
+      "src\\assets\\civics-photos\\user-thomas-jefferson.jpg",
+      "src\\assets\\civics-photos\\user-uncle-sam.jpg",
+      "src\\assets\\civics-photos\\user-veterans.jpg",
+      "src\\assets\\civics-photos\\user-vietnam-war.jpg",
+      "src\\assets\\civics-photos\\user-voting.jpg",
+      "src\\assets\\civics-photos\\user-washington-portrait.jpg",
+      "src\\assets\\civics-photos\\user-we-the-people.jpg",
+      "src\\assets\\civics-photos\\user-white-house.jpg",
+      "src\\assets\\civics-photos\\user-world-war-one.jpg",
+      "src\\assets\\civics-photos\\user-world-war-two.jpg",
+      "src\\assets\\civics-photos\\user-wwii-entry.jpg",
+      "src\\assets\\civics-photos\\user-wwii-memorial.jpg",
+      "public\\study-guides\\uscis-2025-civics-test-study-guide.pdf",
+      "public\\assets\\civics\\civil-rights.svg",
+      "public\\assets\\civics\\congress.svg",
+      "public\\assets\\civics\\constitution.svg",
+      "public\\assets\\civics\\declaration.svg",
+      "public\\assets\\civics\\lincoln.svg",
+      "public\\assets\\civics\\presidency.svg",
+      "public\\assets\\civics\\revolution.svg",
+      "public\\assets\\civics\\supreme-court.svg",
+      "ios\\App\\App\\AppDelegate.swift",
+      "ios\\App\\App\\Info.plist",
+      "ios\\App\\App\\PrivacyInfo.xcprivacy",
+      "ios\\App\\App\\SceneDelegate.swift",
+      "ios\\App\\App.xcodeproj\\project.pbxproj",
+      "ios\\App\\CapApp-SPM\\.gitignore",
+      "ios\\App\\CapApp-SPM\\Package.swift",
+      "ios\\App\\CapApp-SPM\\README.md",
+      "ios\\App\\CapApp-SPM\\Sources\\CapApp-SPM\\CapApp-SPM.swift",
+      "ios\\App\\App.xcodeproj\\project.xcworkspace\\xcshareddata\\IDEWorkspaceChecks.plist",
+      "ios\\App\\App\\Assets.xcassets\\Contents.json",
+      "ios\\App\\App\\Base.lproj\\LaunchScreen.storyboard",
+      "ios\\App\\App\\Base.lproj\\Main.storyboard",
+      "ios\\App\\App\\en.lproj\\InfoPlist.strings",
+      "ios\\App\\App\\es.lproj\\InfoPlist.strings",
+      "ios\\App\\App\\Assets.xcassets\\AppIcon.appiconset\\AppIcon-512@2x.png",
+      "ios\\App\\App\\Assets.xcassets\\AppIcon.appiconset\\Contents.json",
+      "ios\\App\\App\\Assets.xcassets\\Splash.imageset\\Contents.json",
+      "ios\\App\\App\\Assets.xcassets\\Splash.imageset\\splash-2732x2732-1.png",
+      "ios\\App\\App\\Assets.xcassets\\Splash.imageset\\splash-2732x2732-2.png",
+      "ios\\App\\App\\Assets.xcassets\\Splash.imageset\\splash-2732x2732.png",
+      "functions\\api\\[[path]].js",
+      "docs\\history\\20260930_MASTER_IMPLEMENTATION_STATUS.md",
+      "app-store\\screenshots-ready\\CitizenshipAI-01.jpg",
+      "app-store\\screenshots-ready\\CitizenshipAI-02.jpg",
+      "app-store\\screenshots-ready\\CitizenshipAI-03.jpg",
+      "app-store\\screenshots-ready\\CitizenshipAI-04.jpg",
+      "app-store\\screenshots-ready\\CitizenshipAI-05.jpg",
+      "app-store\\screenshots-ready\\CitizenshipAI-06.jpg",
+      "app-store\\screenshots-ready\\CitizenshipAI-07.jpg",
+      "app-store\\screenshots-ready\\README.md",
+      "app-store\\screenshots\\ipad-13\\01-main-features-ipad-13.jpg",
+      "app-store\\screenshots\\ipad-13\\01-main-features-ipad-13.png",
+      "app-store\\screenshots\\iphone-6.5\\01-immigration-help.jpg",
+      "app-store\\screenshots\\iphone-6.5\\02-ai-citizenship-home.jpg",
+      "app-store\\screenshots\\iphone-6.5\\03-civics-study-cards.jpg",
+      "app-store\\screenshots\\iphone-6.5\\04-sarah-interview.jpg",
+      "app-store\\screenshots\\iphone-6.5\\05-kevin-interview.jpg",
+      "app-store\\screenshots\\iphone-6.5\\06-civics-128-questions.jpg",
+      "app-store\\screenshots\\iphone-6.5\\07-main-features.jpg",
+      "app-store\\screenshots\\iphone-6.9\\01-immigration-help.jpg",
+      "app-store\\screenshots\\iphone-6.9\\02-ai-citizenship-home.jpg",
+      "app-store\\screenshots\\iphone-6.9\\03-civics-study-cards.jpg",
+      "app-store\\screenshots\\iphone-6.9\\04-sarah-interview.jpg",
+      "app-store\\screenshots\\iphone-6.9\\05-kevin-interview.jpg",
+      "app-store\\screenshots\\iphone-6.9\\06-civics-128-questions.jpg",
+      "app-store\\screenshots\\iphone-6.9\\07-main-features.jpg",
+      "android\\app\\.gitignore",
+      "android\\app\\build.gradle",
+      "android\\app\\capacitor.build.gradle",
+      "android\\app\\proguard-rules.pro",
+      "android\\gradle\\wrapper\\gradle-wrapper.jar",
+      "android\\gradle\\wrapper\\gradle-wrapper.properties",
+      "android\\app\\src\\main\\AndroidManifest.xml",
+      "android\\app\\src\\test\\java\\com\\getcapacitor\\myapp\\ExampleUnitTest.java",
+      "android\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml",
+      "android\\app\\src\\main\\res\\drawable\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-land-hdpi\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-land-mdpi\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-land-xhdpi\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-land-xxhdpi\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-land-xxxhdpi\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-port-hdpi\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-port-mdpi\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-port-xhdpi\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-port-xxhdpi\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-port-xxxhdpi\\splash.png",
+      "android\\app\\src\\main\\res\\drawable-v24\\ic_launcher_foreground.xml",
+      "android\\app\\src\\main\\res\\layout\\activity_main.xml",
+      "android\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml",
+      "android\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml",
+      "android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png",
+      "android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_foreground.png",
+      "android\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png",
+      "android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png",
+      "android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_foreground.png",
+      "android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png",
+      "android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png",
+      "android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_foreground.png",
+      "android\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png",
+      "android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png",
+      "android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_foreground.png",
+      "android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png",
+      "android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png",
+      "android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_foreground.png",
+      "android\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png",
+      "android\\app\\src\\main\\res\\values\\ic_launcher_background.xml",
+      "android\\app\\src\\main\\res\\values\\strings.xml",
+      "android\\app\\src\\main\\res\\values\\styles.xml",
+      "android\\app\\src\\main\\res\\xml\\file_paths.xml",
+      "android\\app\\src\\main\\java\\us\\citizenshipai\\app\\MainActivity.java",
+      "android\\app\\src\\androidTest\\java\\com\\getcapacitor\\myapp\\ExampleInstrumentedTest.java",
+      ".github\\workflows\\quality.yml"
+    ],
+    "documentation": [
+      {
+        "file": "AGENTS.md",
+        "headings": [
+          "# Civics source of truth",
+          "# Visual design source of truth"
+        ],
+        "chars": 1860
+      },
+      {
+        "file": "BRAND_PALETTE.md",
+        "headings": [
+          "# Paleta oficial de CitizenshipAI",
+          "## Estilo presidencial / luxury",
+          "## Temas",
+          "### Profundidad de los botones claros",
+          "### Verificación de contraste"
+        ],
+        "chars": 3125
+      },
+      {
+        "file": "README.md",
+        "headings": [
+          "# CitizenshipAI",
+          "## Requirements",
+          "## Run locally",
+          "## Production build",
+          "### Production environment",
+          "## Recommended hosting",
+          "## PWA installation",
+          "## Privacy and safety",
+          "## Android / Google Play release",
+          "## iOS / App Store release"
+        ],
+        "chars": 5198
+      },
+      {
+        "file": "app-store\\APP_STORE_CONNECT_GUIDE.md",
+        "headings": [
+          "# Citizenship AI — App Store Connect copy-and-paste guide",
+          "## App record",
+          "## App Review information",
+          "## App Privacy questionnaire",
+          "## Age rating and content declarations",
+          "## Export compliance",
+          "## Screenshot plan",
+          "## Final release gates"
+        ],
+        "chars": 5335
+      },
+      {
+        "file": "app-store\\SUBMISSION_CHECKLIST.md",
+        "headings": [
+          "# Citizenship AI — App Store Connect submission sheet",
+          "## App record",
+          "## Localizations prepared",
+          "## Suggested screenshot sequence",
+          "## App Privacy answers to review in App Store Connect",
+          "## Review preparation",
+          "## Items requiring the account owner or a Mac"
+        ],
+        "chars": 3206
+      },
+      {
+        "file": "docs\\ANDROID_READINESS.md",
+        "headings": [
+          "# Citizenship AI Android readiness",
+          "## Completed foundation",
+          "## Installed local toolchain",
+          "## Native review before release",
+          "## Build workflow"
+        ],
+        "chars": 2115
+      },
+      {
+        "file": "docs\\CIVICS_VISUAL_LIBRARY.md",
+        "headings": [
+          "# Civics card visual library",
+          "## Source and license register"
+        ],
+        "chars": 2420
+      },
+      {
+        "file": "docs\\CIVIC_PROVIDERS.md",
+        "headings": [
+          "# Civic provider integration",
+          "## Providers and evidence",
+          "## Profile and refresh behavior",
+          "## Governor feed contract",
+          "## USCIS investigation and fallback",
+          "## Validation"
+        ],
+        "chars": 9258
+      },
+      {
+        "file": "docs\\IOS_READINESS.md",
+        "headings": [
+          "# Citizenship AI iOS and App Store readiness",
+          "## Completed foundation",
+          "## Repeatable sync workflow",
+          "## Required Mac and Xcode handoff",
+          "## App Store Connect preparation",
+          "## Release blockers outside this Windows workspace"
+        ],
+        "chars": 3364
+      },
+      {
+        "file": "docs\\MASTER_IMPLEMENTATION_AUDIT.md",
+        "headings": [
+          "# Master implementation audit and reuse map",
+          "## Architecture and inventory",
+          "## Reuse map",
+          "## Shared implementation contract",
+          "## Official provider research",
+          "## Execution and QA"
+        ],
+        "chars": 5740
+      },
+      {
+        "file": "docs\\MASTER_IMPLEMENTATION_STATUS.md",
+        "headings": [
+          "# CitizenshipAI — informe de implementación",
+          "## EXISTING SYSTEMS REUSED",
+          "## EXISTING SYSTEMS MODIFIED",
+          "## NEW SYSTEMS CREATED",
+          "## DATABASE CHANGES",
+          "## MIGRATIONS",
+          "## DATA PROVIDERS",
+          "## ENVIRONMENT VARIABLES",
+          "## CIVIC BRAIN STATUS",
+          "## CASE JOURNEY STATUS",
+          "## LEARNING ENGINE STATUS",
+          "## INTERVIEW STATUS",
+          "## HELP/CHECKLIST STATUS",
+          "## NAVIGATION CHANGES",
+          "## BUTTON/DESIGN SYSTEM CHANGES",
+          "## MOBILE RESULTS",
+          "## TABLET RESULTS",
+          "## DESKTOP RESULTS",
+          "## ENGLISH RESULTS",
+          "## SPANISH RESULTS",
+          "## SCREENS AUDITED",
+          "## ISSUES FOUND",
+          "## ISSUES FIXED",
+          "## TESTS",
+          "## BUILD STATUS",
+          "## BLOCKERS",
+          "## Publicación autorizada",
+          "## Seguimiento de las 24 fases"
+        ],
+        "chars": 18837
+      },
+      {
+        "file": "docs\\MASTER_UI_QA.md",
+        "headings": [
+          "# Citizenship AI — UI verification",
+          "## Verified results",
+          "## Browser and dimensions",
+          "## Route inventory and QA matrix",
+          "## Interactive states checked",
+          "## Problems corrected after actual review",
+          "## Artifacts and reproduction",
+          "## Practical limits"
+        ],
+        "chars": 12929
+      },
+      {
+        "file": "docs\\MONETIZATION_ARCHITECTURE.md",
+        "headings": [
+          "# Citizenship AI monetization architecture",
+          "## Decision",
+          "## Phases",
+          "## Session boundaries",
+          "## Existing users and local progress",
+          "## Endpoint security",
+          "## Database objects",
+          "## Rewarded ads",
+          "## Subscription entitlements",
+          "## Remaining paid-launch work"
+        ],
+        "chars": 6438
+      },
+      {
+        "file": "docs\\OFFICIAL_CIVICS_BANK.md",
+        "headings": [
+          "# Official civics bank review — 2026-09-30"
+        ],
+        "chars": 1880
+      },
+      {
+        "file": "docs\\OPERATIONS_RUNBOOK.md",
+        "headings": [
+          "# Citizenship AI operations and cost-safety runbook",
+          "## Current launch state",
+          "## Emergency cost shutdown",
+          "## Ending or restoring launch promotion",
+          "## Incident checks",
+          "## Expected failure behavior",
+          "## Routine release verification",
+          "## Paid-launch gates",
+          "## Production verification record"
+        ],
+        "chars": 4805
+      },
+      {
+        "file": "docs\\PHASE_ONE_LEARNING_ARCHITECTURE.md",
+        "headings": [
+          "# Phase-one learning architecture",
+          "## Current architecture",
+          "## Safe first phase",
+          "## AI cost controls",
+          "## Risks and rollout",
+          "## Civics answer evaluation and changing answers",
+          "## Writing evaluation"
+        ],
+        "chars": 4176
+      },
+      {
+        "file": "docs\\PRICING_MODEL.md",
+        "headings": [
+          "# Citizenship AI Pro pricing model",
+          "## Approved offer",
+          "## Fair-use allowance",
+          "## Minimum sustainability assumptions"
+        ],
+        "chars": 1625
+      },
+      {
+        "file": "docs\\PROFILE_STORAGE.md",
+        "headings": [
+          "# Personal profile storage",
+          "## Server configuration"
+        ],
+        "chars": 4705
+      },
+      {
+        "file": "docs\\WEB_BILLING_SETUP.md",
+        "headings": [
+          "# Web billing setup (Stripe test mode first)",
+          "## Architecture and safety",
+          "## 1. Configure Stripe in test mode",
+          "## 2. Add private Render environment variables",
+          "## 3. Register the webhook",
+          "## 4. Test the complete lifecycle",
+          "## Platform note"
+        ],
+        "chars": 3386
+      },
+      {
+        "file": "ios\\App\\CapApp-SPM\\README.md",
+        "headings": [
+          "# CapApp-SPM"
+        ],
+        "chars": 162
+      },
+      {
+        "file": "docs\\history\\20260930_MASTER_IMPLEMENTATION_STATUS.md",
+        "headings": [
+          "# Citizenship AI — implementación por fases",
+          "## Resultado y alcance",
+          "## Fases y verificaciones",
+          "## Fuentes de datos dinámicos",
+          "## Pruebas de interfaz realizadas",
+          "## Cobertura de los casos solicitados",
+          "## Archivos modificados",
+          "## Estado de publicación y límites"
+        ],
+        "chars": 11145
+      },
+      {
+        "file": "app-store\\screenshots-ready\\README.md",
+        "headings": [],
+        "chars": 150
+      }
+    ]
+  },
+  "asylum": {
+    "files": [
+      ".gitattributes",
+      ".gitignore",
+      "package-lock.json",
+      "package.json",
+      "README.md",
+      "README.txt",
+      "13_codex_execution\\coverage_report.md",
+      "docs\\ACTION-PLAN.md",
+      "docs\\AI-CONFIGURATION.md",
+      "docs\\DEPLOYMENT.md",
+      "docs\\OCR.md",
+      "docs\\VOICE-INTERVIEWS.md",
+      "scripts\\build-data.py",
+      "scripts\\build.cjs",
+      "scripts\\serve.cjs",
+      "tests\\analysis.test.mjs",
+      "tests\\character-voices.test.cjs",
+      "tests\\core.test.cjs",
+      "tests\\gateway.test.mjs",
+      "tests\\voice.test.cjs",
+      "services\\analysis\\access.mjs",
+      "services\\analysis\\gateway.mjs",
+      "services\\analysis\\quota.sql",
+      "services\\analysis\\worker.mjs",
+      "services\\analysis\\wrangler.jsonc",
+      "packages\\core\\index.cjs",
+      "packages\\design\\master.css",
+      "packages\\design\\style.css",
+      "master-package\\00_README\\CODEX_DETAILED_CASES_GUIDE.md",
+      "master-package\\00_README\\CODEX_MASTER_COMMAND.md",
+      "master-package\\00_README\\MANIFEST.json",
+      "master-package\\00_README\\README.md",
+      "master-package\\00_README\\SHA256SUMS.txt",
+      "master-package\\00_README\\SHA256SUMS_v02.txt",
+      "master-package\\01_product\\product_boundary.md",
+      "master-package\\02_database\\asiloai_schema.sql",
+      "master-package\\02_database\\asiloai_seed.sqlite",
+      "master-package\\03_question_bank\\question_bank.csv",
+      "master-package\\03_question_bank\\question_bank.jsonl",
+      "master-package\\03_question_bank\\README.md",
+      "master-package\\04_synthetic_cases\\detailed_cases_v02.jsonl",
+      "master-package\\04_synthetic_cases\\detailed_case_index.json",
+      "master-package\\04_synthetic_cases\\README.md",
+      "master-package\\04_synthetic_cases\\REALISM_AND_SOURCE_RULES.md",
+      "master-package\\04_synthetic_cases\\synthetic_cases.jsonl",
+      "master-package\\05_country_packs\\china.json",
+      "master-package\\05_country_packs\\colombia.json",
+      "master-package\\05_country_packs\\country_neutral.json",
+      "master-package\\05_country_packs\\cuba.json",
+      "master-package\\05_country_packs\\haiti.json",
+      "master-package\\05_country_packs\\nicaragua.json",
+      "master-package\\05_country_packs\\venezuela.json",
+      "master-package\\06_prompts\\safety_guardrails.md",
+      "master-package\\06_prompts\\sahara_system_prompt.md",
+      "master-package\\07_engines\\consistency_engine.md",
+      "master-package\\07_engines\\future_fear_engine.md",
+      "master-package\\07_engines\\interview_state_machine.md",
+      "master-package\\07_engines\\question_reasoning_engine.md",
+      "master-package\\07_engines\\story_graph_engine.md",
+      "master-package\\07_engines\\topic_coverage_engine.md",
+      "master-package\\08_knowledge\\current_country_context_sources.json",
+      "master-package\\08_knowledge\\README.md",
+      "master-package\\08_knowledge\\source_catalog.json",
+      "master-package\\09_evaluation\\benchmark_cases.jsonl",
+      "master-package\\09_evaluation\\evaluation_rubric.json",
+      "master-package\\10_tools\\demo_question_selector.py",
+      "master-package\\10_tools\\validate_detailed_cases.py",
+      "master-package\\10_tools\\validate_package.py",
+      "master-package\\11_api_contracts\\case_graph.schema.json",
+      "master-package\\11_api_contracts\\next_question_contract.json",
+      "master-package\\12_ui_content\\ui_copy.md",
+      "master-package\\13_codex_execution\\FIRST_CODEX_PROMPT.txt",
+      "master-package\\13_codex_execution\\IMPLEMENTATION_STATUS_TEMPLATE.md",
+      "master-package\\09_evaluation\\detailed_case_benchmarks\\detailed_benchmarks.jsonl",
+      "master-package\\05_country_packs\\context_profiles\\china_context_profile.json",
+      "master-package\\05_country_packs\\context_profiles\\colombia_context_profile.json",
+      "master-package\\05_country_packs\\context_profiles\\cuba_context_profile.json",
+      "master-package\\05_country_packs\\context_profiles\\haiti_context_profile.json",
+      "master-package\\05_country_packs\\context_profiles\\nicaragua_context_profile.json",
+      "master-package\\05_country_packs\\context_profiles\\venezuela_context_profile.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN001.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN002.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN003.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN004.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN005.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN006.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN007.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN008.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN009.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN010.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN011.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN012.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN013.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN014.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN015.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN016.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN017.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN018.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN019.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN020.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN021.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN022.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN023.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN024.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN025.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN026.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN027.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN028.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN029.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN030.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN031.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN032.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN033.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN034.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN035.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN036.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN037.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN038.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN039.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN040.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN041.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN042.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN043.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN044.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN045.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN046.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN047.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN048.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN049.json",
+      "master-package\\04_synthetic_cases\\cases\\SYN050.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CHN-D01.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CHN-D02.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CHN-D03.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CHN-D04.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CHN-D05.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CHN-D06.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CHN-D07.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CHN-D08.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CHN-D09.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CHN-D10.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\COL-D01.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\COL-D02.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\COL-D03.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\COL-D04.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\COL-D05.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\COL-D06.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\COL-D07.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\COL-D08.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\COL-D09.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\COL-D10.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CUB-D01.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CUB-D02.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CUB-D03.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CUB-D04.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CUB-D05.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CUB-D06.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CUB-D07.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CUB-D08.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CUB-D09.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\CUB-D10.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\HTI-D01.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\HTI-D02.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\HTI-D03.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\HTI-D04.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\HTI-D05.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\HTI-D06.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\HTI-D07.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\HTI-D08.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\HTI-D09.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\HTI-D10.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\NIC-D01.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\NIC-D02.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\NIC-D03.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\NIC-D04.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\NIC-D05.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\NIC-D06.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\NIC-D07.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\NIC-D08.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\NIC-D09.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\NIC-D10.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\VEN-D01.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\VEN-D02.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\VEN-D03.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\VEN-D04.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\VEN-D05.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\VEN-D06.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\VEN-D07.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\VEN-D08.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\VEN-D09.json",
+      "master-package\\04_synthetic_cases\\detailed_cases\\VEN-D10.json",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D01.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D02.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D03.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D04.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D05.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D06.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D07.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D08.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D09.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D10.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\COL-D01.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\COL-D02.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\COL-D03.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\COL-D04.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\COL-D05.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\COL-D06.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\COL-D07.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\COL-D08.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\COL-D09.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\COL-D10.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D01.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D02.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D03.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D04.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D05.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D06.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D07.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D08.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D09.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D10.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D01.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D02.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D03.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D04.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D05.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D06.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D07.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D08.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D09.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D10.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D01.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D02.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D03.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D04.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D05.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D06.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D07.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D08.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D09.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D10.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D01.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D02.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D03.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D04.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D05.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D06.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D07.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D08.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D09.md",
+      "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D10.md",
+      "apps\\desktop\\README.md",
+      "apps\\mobile\\README.md",
+      "apps\\web\\app.js",
+      "apps\\web\\character-voices.js",
+      "apps\\web\\index.html",
+      "apps\\web\\interview-voice.js",
+      "apps\\web\\master.js",
+      "apps\\web\\package-data.js",
+      "apps\\web\\pdf-import.js",
+      "apps\\web\\questions.js",
+      "apps\\web\\assets\\kevin-listening.mp4",
+      "apps\\web\\assets\\kevin-speaking.mp4",
+      "apps\\web\\assets\\kevin.png",
+      "apps\\web\\assets\\sahara-listening.mp4",
+      "apps\\web\\assets\\sahara-speaking.mp4",
+      "apps\\web\\assets\\sahara.png",
+      ".github\\workflows\\checks.yml"
+    ],
+    "documentation": [
+      {
+        "file": "README.md",
+        "headings": [
+          "# AsiloAI",
+          "## Ejecutar",
+          "## Estructura"
+        ],
+        "chars": 1916
+      },
+      {
+        "file": "13_codex_execution\\coverage_report.md",
+        "headings": [
+          "# AsiloAI — Cobertura de implementación local",
+          "## Verificación",
+          "## Cobertura por requisito",
+          "### Integridad e inventario",
+          "### Banco bilingüe",
+          "### Calidad editorial del banco",
+          "### Casos básicos",
+          "### Casos detallados y narrativas",
+          "### Country packs",
+          "### Separación personal/synthetic",
+          "### Procedencia y Case Graph",
+          "### Topic Coverage",
+          "### Question Reasoning",
+          "### Estado de entrevista",
+          "### Safety layer",
+          "### Fictional Practice y selección de país",
+          "### Conversación personal sin upload",
+          "### Use My Story local-first",
+          "### Parser y documentos",
+          "### Consistency Engine",
+          "### Future Fear Engine",
+          "### Interview Knowledge Retrieval",
+          "### Country Context Retrieval",
+          "### Contenidos jurídicos internos",
+          "### Reportes y métricas",
+          "### Benchmarks y harness",
+          "### Aislamiento Gold Case",
+          "### Autenticación",
+          "### Sahara/avatar",
+          "### TTS/STT/micrófono",
+          "### Credenciales AI de AsiloAI",
+          "### Pagos y Free/Pro",
+          "### Compras nativas y restauración",
+          "### Ayuda y Find Legal Help",
+          "### Avisos y aceptaciones",
+          "### USCIS y EOIR",
+          "### Court Orientation y court_full",
+          "### Navegación/UI y web pública",
+          "### Analytics y logs",
+          "### Borrado/exportación/retención",
+          "### Migración SQLite/Postgres",
+          "### Contratos API",
+          "### Publicación y dispositivos",
+          "### No omisión y trazabilidad",
+          "## Dependencias y límites abiertos",
+          "## Actualización de configuración AI — 2026-10-07"
+        ],
+        "chars": 18285
+      },
+      {
+        "file": "docs\\ACTION-PLAN.md",
+        "headings": [
+          "# Plan de acción — AsiloAI"
+        ],
+        "chars": 1490
+      },
+      {
+        "file": "docs\\AI-CONFIGURATION.md",
+        "headings": [
+          "# Configuración de IA — AsiloAI",
+          "## Arquitectura",
+          "## Producción",
+          "## Contrato y privacidad",
+          "## Validación y operación"
+        ],
+        "chars": 3849
+      },
+      {
+        "file": "docs\\DEPLOYMENT.md",
+        "headings": [
+          "# Publicación de AsiloAI / Sahara"
+        ],
+        "chars": 800
+      },
+      {
+        "file": "docs\\OCR.md",
+        "headings": [
+          "# OCR local — 7 octubre 2026"
+        ],
+        "chars": 887
+      },
+      {
+        "file": "docs\\VOICE-INTERVIEWS.md",
+        "headings": [
+          "# Voz y revisión de respuestas",
+          "## Actualización de personajes",
+          "## Voces por personaje"
+        ],
+        "chars": 2911
+      },
+      {
+        "file": "master-package\\00_README\\CODEX_DETAILED_CASES_GUIDE.md",
+        "headings": [
+          "# Codex Implementation Guide — Detailed Synthetic Cases v0.2",
+          "## Data available",
+          "## Runtime rule",
+          "## Recommended dual-agent test setup"
+        ],
+        "chars": 1501
+      },
+      {
+        "file": "master-package\\00_README\\CODEX_MASTER_COMMAND.md",
+        "headings": [
+          "# CODEX MASTER COMMAND — ASILOAI",
+          "## PRIMARY IMPLEMENTATION DIRECTIVE",
+          "## SOURCE-OF-TRUTH ORDER",
+          "## PRESERVATION RULE",
+          "## PRODUCT BOUNDARY",
+          "## IMPLEMENTATION STYLE",
+          "## PERSONAL vs SYNTHETIC DATA",
+          "## LOCAL-FIRST REQUIREMENT",
+          "## REQUIRED FIRST ACTIONS",
+          "## NO-OMISSION ACCEPTANCE TEST"
+        ],
+        "chars": 5508
+      },
+      {
+        "file": "master-package\\00_README\\README.md",
+        "headings": [
+          "# AsiloAI Codex Package v0.1",
+          "## Product boundary",
+          "## Three modes",
+          "## v0.2 Detailed Case Expansion",
+          "## Master Codex execution rule"
+        ],
+        "chars": 1792
+      },
+      {
+        "file": "master-package\\01_product\\product_boundary.md",
+        "headings": [
+          "# Product Boundary"
+        ],
+        "chars": 563
+      },
+      {
+        "file": "master-package\\03_question_bank\\README.md",
+        "headings": [
+          "# Question Bank"
+        ],
+        "chars": 202
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\README.md",
+        "headings": [
+          "# Synthetic Case Library"
+        ],
+        "chars": 206
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\REALISM_AND_SOURCE_RULES.md",
+        "headings": [
+          "# Realism and Source-Separation Rules — v0.2",
+          "## Never do",
+          "## Why the cases contain imperfections",
+          "## Country context"
+        ],
+        "chars": 1049
+      },
+      {
+        "file": "master-package\\06_prompts\\safety_guardrails.md",
+        "headings": [
+          "# Safety Guardrails"
+        ],
+        "chars": 739
+      },
+      {
+        "file": "master-package\\06_prompts\\sahara_system_prompt.md",
+        "headings": [
+          "# Sahara System Prompt"
+        ],
+        "chars": 1876
+      },
+      {
+        "file": "master-package\\07_engines\\consistency_engine.md",
+        "headings": [
+          "# Consistency Engine"
+        ],
+        "chars": 413
+      },
+      {
+        "file": "master-package\\07_engines\\future_fear_engine.md",
+        "headings": [
+          "# Future Fear Engine"
+        ],
+        "chars": 351
+      },
+      {
+        "file": "master-package\\07_engines\\interview_state_machine.md",
+        "headings": [
+          "# Interview State Machine"
+        ],
+        "chars": 457
+      },
+      {
+        "file": "master-package\\07_engines\\question_reasoning_engine.md",
+        "headings": [
+          "# Question Reasoning Engine"
+        ],
+        "chars": 688
+      },
+      {
+        "file": "master-package\\07_engines\\story_graph_engine.md",
+        "headings": [
+          "# Story Graph Engine"
+        ],
+        "chars": 438
+      },
+      {
+        "file": "master-package\\07_engines\\topic_coverage_engine.md",
+        "headings": [
+          "# Topic Coverage Engine"
+        ],
+        "chars": 555
+      },
+      {
+        "file": "master-package\\08_knowledge\\README.md",
+        "headings": [
+          "# Knowledge Layer"
+        ],
+        "chars": 288
+      },
+      {
+        "file": "master-package\\12_ui_content\\ui_copy.md",
+        "headings": [
+          "# UI Copy"
+        ],
+        "chars": 1240
+      },
+      {
+        "file": "master-package\\13_codex_execution\\IMPLEMENTATION_STATUS_TEMPLATE.md",
+        "headings": [
+          "# AsiloAI Implementation Coverage Report",
+          "## Deferred items"
+        ],
+        "chars": 518
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D01.md",
+        "headings": [
+          "# China — Online Expression — Li Wei",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2625
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D02.md",
+        "headings": [
+          "# China — Rights Assistant — Zhang Min",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2710
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D03.md",
+        "headings": [
+          "# China — House Church — Chen Yu",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2975
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D04.md",
+        "headings": [
+          "# China — Tibetan Culture — Wang Jie",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2848
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D05.md",
+        "headings": [
+          "# China — Hongkong Democracy — Liu Fang",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2816
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D06.md",
+        "headings": [
+          "# China — Independent Writer — Tsering Dolma",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2893
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D07.md",
+        "headings": [
+          "# China — Family Abroad — Chan Mei",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2841
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D08.md",
+        "headings": [
+          "# China — Diaspora Activity — Huang Lin",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2695
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D09.md",
+        "headings": [
+          "# China — Minority Family — Amina Rahman",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2715
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CHN-D10.md",
+        "headings": [
+          "# China — Returned Traveler — Xu Lei",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 3087
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\COL-D01.md",
+        "headings": [
+          "# Colombia — Environmental Defender — Camila Restrepo",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2668
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\COL-D02.md",
+        "headings": [
+          "# Colombia — Social Leader — Juan David Rojas",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2790
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\COL-D03.md",
+        "headings": [
+          "# Colombia — Rural Shopkeeper — Laura Martínez",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 3040
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\COL-D04.md",
+        "headings": [
+          "# Colombia — Journalist — Andrés Guerrero",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2803
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\COL-D05.md",
+        "headings": [
+          "# Colombia — Displaced Family — Paola Castillo",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2738
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\COL-D06.md",
+        "headings": [
+          "# Colombia — Victims Advocate — Felipe Mendoza",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2793
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\COL-D07.md",
+        "headings": [
+          "# Colombia — Women Leader — Diana Muñoz",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2711
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\COL-D08.md",
+        "headings": [
+          "# Colombia — Transport Worker — Santiago Gómez",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2696
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\COL-D09.md",
+        "headings": [
+          "# Colombia — Land Claim — Natalia Torres",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2862
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\COL-D10.md",
+        "headings": [
+          "# Colombia — Urban Return — Carlos Andrés Vega",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 3152
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D01.md",
+        "headings": [
+          "# Cuba — Artist — Laura Pérez",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2562
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D02.md",
+        "headings": [
+          "# Cuba — Blogger — Daniel Rodríguez",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2664
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D03.md",
+        "headings": [
+          "# Cuba — Women Activist — Marta Valdés",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2941
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D04.md",
+        "headings": [
+          "# Cuba — Religious Community — Javier Suárez",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2650
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D05.md",
+        "headings": [
+          "# Cuba — Student Expression — Ana María León",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2628
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D06.md",
+        "headings": [
+          "# Cuba — Family Dissident — Carlos Peña",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2675
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D07.md",
+        "headings": [
+          "# Cuba — Independent Journalist — Elena Cabrera",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2611
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D08.md",
+        "headings": [
+          "# Cuba — Online Critic — Miguel Santos",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2595
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D09.md",
+        "headings": [
+          "# Cuba — Cultural Group — Rosa Delgado",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2795
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\CUB-D10.md",
+        "headings": [
+          "# Cuba — Returned Exile — Iván Morales",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2933
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D01.md",
+        "headings": [
+          "# Haiti — Small Business Extortion — Marie Joseph",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2707
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D02.md",
+        "headings": [
+          "# Haiti — Police Relative — Jean Baptiste",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2731
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D03.md",
+        "headings": [
+          "# Haiti — Community Volunteer — Nadège Pierre",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 3193
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D04.md",
+        "headings": [
+          "# Haiti — Kidnapping Survivor — Samuel Louis",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2655
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D05.md",
+        "headings": [
+          "# Haiti — Transport Checkpoint — Esther Charles",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2758
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D06.md",
+        "headings": [
+          "# Haiti — Displaced Woman — David Michel",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2675
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D07.md",
+        "headings": [
+          "# Haiti — Market Vendor — Roseline François",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2722
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D08.md",
+        "headings": [
+          "# Haiti — School Worker — Patrick Augustin",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2698
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D09.md",
+        "headings": [
+          "# Haiti — Family Gang Conflict — Mireille Paul",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2891
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\HTI-D10.md",
+        "headings": [
+          "# Haiti — Return Displacement — Jonas Saint-Fleur",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 3054
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D01.md",
+        "headings": [
+          "# Nicaragua — Student 2018 — María José López",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2650
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D02.md",
+        "headings": [
+          "# Nicaragua — Parish Worker — Carlos Gutiérrez",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2627
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D03.md",
+        "headings": [
+          "# Nicaragua — Independent Media — Ana Lucía Rivas",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2807
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D04.md",
+        "headings": [
+          "# Nicaragua — Ngo Worker — Jorge Castillo",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2664
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D05.md",
+        "headings": [
+          "# Nicaragua — Family Opponent — Sofía Mena",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2596
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D06.md",
+        "headings": [
+          "# Nicaragua — Exile Critic — Luis Herrera",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2615
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D07.md",
+        "headings": [
+          "# Nicaragua — Small Business — Daniela Ruiz",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2646
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D08.md",
+        "headings": [
+          "# Nicaragua — Teacher — Miguel Téllez",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2595
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D09.md",
+        "headings": [
+          "# Nicaragua — Former Detainee — Valeria Pérez",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2566
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\NIC-D10.md",
+        "headings": [
+          "# Nicaragua — Passport Nationality — José Manuel Flores",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2961
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D01.md",
+        "headings": [
+          "# Venezuela — Student Protest — Adriana Salazar",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2720
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D02.md",
+        "headings": [
+          "# Venezuela — Polling Volunteer — Luis Cedeño",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2692
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D03.md",
+        "headings": [
+          "# Venezuela — Ngo Volunteer — María Fernanda Rojas",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 3062
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D04.md",
+        "headings": [
+          "# Venezuela — Local Journalist — Carlos Méndez",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2769
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D05.md",
+        "headings": [
+          "# Venezuela — Community Organizer — Valentina Paredes",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2816
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D06.md",
+        "headings": [
+          "# Venezuela — Labor Organizer — José Antonio Lugo",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2818
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D07.md",
+        "headings": [
+          "# Venezuela — Campaign Helper — Daniela Suárez",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2747
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D08.md",
+        "headings": [
+          "# Venezuela — Medical Volunteer — Miguel Barreto",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2657
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D09.md",
+        "headings": [
+          "# Venezuela — Family Opposition — Gabriela Torres",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 2764
+      },
+      {
+        "file": "master-package\\04_synthetic_cases\\readable_narratives\\VEN-D10.md",
+        "headings": [
+          "# Venezuela — Diaspora Expression — Andrés Villalba",
+          "## Persona",
+          "## Narrative",
+          "## Intentional training features",
+          "## Events",
+          "## Country context source refs"
+        ],
+        "chars": 3085
+      },
+      {
+        "file": "apps\\desktop\\README.md",
+        "headings": [
+          "# AsiloAI desktop"
+        ],
+        "chars": 263
+      },
+      {
+        "file": "apps\\mobile\\README.md",
+        "headings": [
+          "# AsiloAI mobile"
+        ],
+        "chars": 262
+      }
+    ]
+  }
+}

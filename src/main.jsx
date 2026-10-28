@@ -1,52 +1,46 @@
-import { StrictMode } from 'react'
-import { Capacitor } from '@capacitor/core'
-import { loadGoogleAdsTag } from './googleAdsConversions.js'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import './tailwind.css'
-import App from './App.jsx'
-import AppErrorBoundary from './AppErrorBoundary.jsx'
-import { PodcastProvider } from './PodcastPlayer.jsx'
-import { PromotionAccessProvider } from './PromotionAccess.jsx'
-import { AccountProvider } from './Account.jsx'
-import './companion.js'
+import WelcomeGate,{getSessionWelcomeLanguage} from './welcome/WelcomeGate.jsx';
+import '../modules/citizenship/src/companion.js';
+import {WebHeader} from './WebExperience.jsx';
+import ImmigraHome from './ImmigraHome.jsx';
+import './web-experience.css';
 
-// Website-only measurement: never initialize the Google Ads web tag in iOS/Android builds.
-if (import.meta.env.PROD && !Capacitor.isNativePlatform()) {
-  loadGoogleAdsTag().catch(() => {});
-}
+import {Capacitor} from '../modules/citizenship/node_modules/@capacitor/core/dist/index.js';
+import {createNativeApiFetch} from '../shared/native/api-transport.mjs';
+import AIReport from '../shared/AIReport.jsx';
+import PlatformHeader from "../shared/PlatformHeader.jsx";
+import "./tailwind.css";
+import {PromotionAccessProvider} from "../modules/citizenship/src/PromotionAccess.jsx";
+import "../shared/practice-utilities.css";
+import ModuleBoundary from './ModuleBoundary.jsx';
+import React,{useState,useEffect,useRef} from 'react';
+import {TEMPORARY_PUBLIC_INTERVIEWS} from '../shared/interview-ui/access-policy.mjs';
+import AmbientBackground from '../shared/design-system/AmbientBackground.jsx';
+import './home-cards.css';
+import {GlassProvider,GlassCard} from '../shared/design-system/Glass.jsx';
+import MobileDock from '../shared/navigation/MobileDock.jsx';
+import SharedTools from '../shared/SharedTools.jsx';
 
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch((error) => {
-      console.warn('Service worker registration failed:', error)
-    })
-  })
-}
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <AppErrorBoundary>
-      <AccountProvider>
-        <PromotionAccessProvider>
-          <PodcastProvider>
-            <App />
-            <citizenship-companion />
-          </PodcastProvider>
-        </PromotionAccessProvider>
-      </AccountProvider>
-    </AppErrorBoundary>
-  </StrictMode>,
-)
-
-if (import.meta.env.PROD) {
-  const recover = () => import('./styleRecovery.js').then(({ recoverStyles }) => recoverStyles());
-  if (document.readyState === 'complete') recover();
-  else window.addEventListener('load', recover, { once: true });
-  window.addEventListener('online', recover);
-}
-
-import './ThemeConsistency.css'
-import './WhiteStyle.css'
-import './PodcastPlayerStyle.css'
-import './InstitutionalSpacing.css'
+import {moduleFromHash} from '../shared/navigation/routes.mjs';
+import {useAccount} from '../modules/citizenship/src/accountContext.js';
+import {setSessionToken} from '../shared/authentication/fetch.mjs';
+import {AccountProvider,AccountSheet} from '../shared/authentication/index.js';
+// Keep primary routes in the initial module graph. A tab left open across a
+// deployment must not request a removed, old hashed route chunk on first click.
+// Importing does not mount the routes or start a practice/session; render remains
+// conditional below. Never auto-reload: hidden Residency may hold unsaved work.
+import Citizenship from '../modules/citizenship/Module.jsx';
+import Asylum from '../modules/asylum/Module.jsx';
+import Residency from '../modules/residency/src/Residency.jsx';
+import {featureFlags} from './features.js';
+import{createRoot}from'react-dom/client';import{modules}from'./modules.js';import './style.css';
+import '../shared/design-system/platform.css';
+import '../shared/design-system/citizenship.css';
+import '../shared/design-system/glass.css';
+function Icon({name}){const paths={landmark:<><path d="M3 10h18M5 10V20M10 10V20M15 10V20M20 10V20M2 21h20M12 2 2 8h20z"/></>,shield:<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></>,house:<><path d="m3 10 9-7 9 7v11H3z"/><path d="M9 21v-7h6v7"/></>,home:<><path d="m3 10 9-7 9 7v11H3z"/><path d="M9 21v-7h6v7"/></>,user:<><circle cx="12" cy="8" r="4"/><path d="M4 22c0-8 16-8 16 0"/></>,back:<path d="m15 18-6-6 6-6"/>};return <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>}
+function readLanguage(){const requested=new URLSearchParams(window.location.search).get('lang');if(['es','en'].includes(requested))return requested;try{const saved=localStorage.getItem('citizenshipai.language');if(['es','en'].includes(saved))return saved;}catch{}return getSessionWelcomeLanguage()||(navigator.language?.startsWith('es')?'es':'en');}
+const isNativeExperience=Capacitor.isNativePlatform();
+document.documentElement.dataset.experience=isNativeExperience?'native':'web';
+function App(){const[lang,setLang]=useState(readLanguage),[page,setPage]=useState(()=>moduleFromHash(window.location.hash,window.location.search));const mainRef=useRef(null);const [residencyVisited,setResidencyVisited]=useState(()=>page==='residency');useEffect(()=>{if(page==='residency')setResidencyVisited(true);},[page]);const navigate=next=>{window.location.hash='/'+next;};useEffect(()=>{const sync=()=>{if(document.body.classList.contains('in-call')&&moduleFromHash(window.location.hash,window.location.search)!==document.body.dataset.callModule&&!window.confirm(document.documentElement.lang==='es'?'¿Salir de la llamada? Se cerrará el micrófono y se descartará la transcripción local.':'Leave the call? Your microphone will close and local transcript will be discarded.')){window.location.hash=document.body.dataset.callReturnHash||'/';return;}setPage(moduleFromHash(window.location.hash,window.location.search));};window.addEventListener('hashchange',sync);return()=>window.removeEventListener('hashchange',sync);},[]);useEffect(()=>{document.documentElement.lang=lang;try{localStorage.setItem('citizenshipai.language',lang);}catch{}const url=new URL(window.location.href);if(url.searchParams.has('lang')){url.searchParams.delete('lang');window.history.replaceState(window.history.state,'',url.pathname+url.search+url.hash);}},[lang]);useEffect(()=>{mainRef.current?.focus();window.scrollTo(0,0);},[page]);const t=(es,en)=>lang==='es'?es:en;return <GlassProvider moduleId={page}>{isNativeExperience&&<AmbientBackground/>}<a className="skip" href="#main" onClick={e=>{e.preventDefault();mainRef.current?.focus();}}>{t('Saltar al contenido','Skip to content')}</a>{isNativeExperience?<PlatformHeader lang={lang} navigate={navigate} setLang={setLang}/>:<WebHeader lang={lang} setLang={setLang} page={page}/>}<main className="bg-transparent! text-slate-900!" id="main" ref={mainRef} tabIndex={-1}><ModuleBoundary route={page} lang={lang}>{featureFlags.residency_enabled&&(page==='residency'||residencyVisited)&&<div hidden={page!=='residency'}><React.Suspense fallback={<p>{t('Cargando…','Loading…')}</p>}><Residency lang={lang} active={page==='residency'} onHome={()=>navigate('')}/></React.Suspense></div>}{['help','profile','settings','preparation'].includes(page)?<SharedTools page={page} language={lang} onBack={()=>navigate('')} onLanguageChange={setLang} navigate={navigate}/>:page==='account'?<div className="citizenship-surface platform-account bg-transparent!"><AccountSheet embedded language={lang} onClose={()=>navigate('')}/></div>:page==='citizenship'?<React.Suspense fallback={<p>{t('Cargando…','Loading…')}</p>}><Citizenship lang={lang} onLanguageChange={setLang}/></React.Suspense>:page==='asylum'?<React.Suspense fallback={<p>{t('Cargando…','Loading…')}</p>}><Asylum lang={lang}/></React.Suspense>:page==='residency'&&featureFlags.residency_enabled?null:!page?(!isNativeExperience?<ImmigraHome lang={lang} onNavigate={navigate}/>:<><section className="hero text-slate-950!"><span className="eyebrow text-slate-600!">{t('TU PREPARACIÓN, EN UN SOLO LUGAR','ALL YOUR PREPARATION IN ONE PLACE')}</span><h1 className="text-slate-950!">{t('Tu próxima entrevista comienza aquí.','Your next interview starts here.')}</h1><p className="text-slate-700!">{t('Practica a tu ritmo, con herramientas diseñadas para cada proceso migratorio.','Practice at your own pace with tools designed for each immigration process.')}</p></section><section className="cards" aria-label={t('Selecciona una entrevista','Choose an interview')}>{modules.map(x=><GlassCard as="button" key={x.id} className="card bg-white/85! text-slate-950! [&_h2]:text-slate-950! [&_p]:text-slate-600!" style={{'--accent':x.color,'--light':x.light,'--glass-accent':x.color}} onClick={()=>navigate(x.id)}><span className="icon"><span className={`reference-icon reference-icon--${x.id}`} aria-hidden="true"><img className="h-full! w-full! object-contain! static! transform-none!" src={`/images/home/${x.id}-20261014.png`} alt="" /></span></span><h2>{lang==='es'?x.es:x.en}</h2><p>{lang==='es'?x.descEs:x.descEn}</p><span className="link">{t('Entrar','Enter')} →</span></GlassCard>)}</section></>):<section className="detail"><button className="back" onClick={()=>navigate('')}>{t('← Volver','← Back')}</button><h1>{page==='account'?t('Mi cuenta','My account'):t('Página no encontrada','Page not found')}</h1><p>{page==='account'?t('El inicio de sesión y las suscripciones se conectarán en una etapa posterior.','Sign-in and subscriptions will be connected in a later phase.'):t('Vuelve al inicio para elegir un módulo.','Return home to choose a module.')}</p></section>}</ModuleBoundary></main><footer className="bg-white/70! text-slate-700! border-white/30!"><button onClick={()=>navigate('settings')}>{t('Privacidad y términos','Privacy and terms')}</button><button onClick={()=>navigate('help')}>{t('Ayuda y fuentes oficiales','Help and official sources')}</button><AIReport language={lang} moduleId={page}/> · {t('Herramienta educativa independiente. No ofrece asesoría legal.','Independent educational tool. No legal advice provided.')}</footer>{isNativeExperience&&<MobileDock lang={lang} navigate={navigate} modules={modules} Icon={Icon}/>}<citizenship-companion class="platform-study-companion" /></GlassProvider>}
+function SessionApp(){const lang=readLanguage();const {session,loading,verifyingEmail,sessionRecoveryError,dismissSessionRecoveryError}=useAccount();setSessionToken(session?.access_token);if(loading)return <div role="status" className="grid! min-h-dvh! place-items-center! bg-slate-50! px-5! text-lg! text-slate-700!">{verifyingEmail?(lang==='en'?'Verifying your email…':'Verificando tu correo…'):(lang==='en'?'Restoring your session…':'Recuperando tu sesión…')}</div>;if(sessionRecoveryError&&!session)return <div className="grid! min-h-dvh! place-content-center! gap-4! bg-slate-50! p-6! text-slate-900!"><p role="alert">{lang==='en'?'We could not restore your session. Your saved access has not been deleted.':'No pudimos recuperar la sesión. Tu acceso guardado no se ha eliminado.'}</p><button className="min-h-12! rounded-xl! bg-blue-700! p-3! text-white!" onClick={()=>window.location.reload()}>{lang==='en'?'Try again':'Reintentar'}</button><button className="min-h-12! rounded-xl! border! border-slate-300! p-3!" onClick={()=>{window.location.hash='/';dismissSessionRecoveryError();}}>{lang==='en'?'Continue free study':'Continuar con el estudio gratuito'}</button></div>;return <PromotionAccessProvider><WelcomeGate><App key={session?.user?.id||'guest'}/></WelcomeGate></PromotionAccessProvider>;}
+if(Capacitor.isNativePlatform())window.fetch=createNativeApiFetch(window.fetch.bind(window),import.meta.env.VITE_NATIVE_API_ORIGIN||'https://immigra.site');
+createRoot(document.getElementById('root')).render(<AccountProvider><SessionApp/></AccountProvider>);

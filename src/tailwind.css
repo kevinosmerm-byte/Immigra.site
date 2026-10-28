@@ -1,18 +1,31 @@
 @layer theme, utilities;
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
-@source "./InterviewAdvanceControls.jsx";
-@source "./LegalPracticeDisclosure.jsx";
+@source "../shared/PlatformHeader.jsx";
+@source "../shared/AsylumPreparation.jsx";
+@source "../shared/LegalOperatorNotice.jsx";
+@source "../shared/LegalSafeguards.jsx";
+@source "../shared/interview-ui/InterviewerPicker.jsx";
 
-@source "./TrialAccessDialog.jsx";
-@source "./PremiumPracticeBoundary.jsx";
-@source "./NativeSubscriptionPanel.jsx";
-@source "./AccountDeletionPage.jsx";
-@source "./Account.jsx";
-@source "./AiResponseReport.jsx";
-@source "./AsylumPreparation.jsx";
-@source "./HomeUtilityHeader.jsx";
+@source "../shared/design-system/AmbientBackground.jsx";
+@source "../shared/SharedTools.jsx";
 
-@source "./InterviewPresentation.jsx";
-@source "./InterviewWorkspace.jsx";
+@source "../modules/residency/src/ResidencyPracticeSetup.jsx";
+
+@source "../modules/citizenship/src/EmailTrialAccount.jsx";
+
+@source "../modules/asylum/Module.jsx";
+
+@source "../shared/interview-ui/InterviewerVideo.jsx";
+
+@source "../scripts/public-pages.mjs";
+
+@source "../shared/AIReport.jsx";
+
+@source "../modules/citizenship/src/TrialAccessDialog.jsx";
+
+@source "../modules/citizenship/src/App.jsx";
+
+@source "../modules/citizenship/src/StripeCheckoutReturn.jsx";
+
+@source "../modules/citizenship/src/GoogleSignInButton.jsx";

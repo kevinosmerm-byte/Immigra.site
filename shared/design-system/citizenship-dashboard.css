@@ -1,0 +1,53 @@
+/* Citizenship dashboard: layout only, shared Liquid Glass material. */
+#root #main #citizenship-root .citizen-dashboard{position:relative;color:var(--liquid-text);padding-bottom:32px}
+#root #main #citizenship-root .citizen-dashboard>.platform-title{position:relative;isolation:isolate;padding:24px 0 30px;margin:0 0 10px;min-height:170px;background:transparent!important}
+#root #main #citizenship-root .citizen-dashboard>.platform-title:before{content:'';position:absolute;z-index:-1;inset:-70px -35px -60px 20%;background:url('../../modules/citizenship/src/assets/citizenship-background.png') right 35%/cover no-repeat;opacity:.3;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 32%,#000 78%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 25%,#000 66%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 32%,#000 78%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 25%,#000 66%,transparent 100%);-webkit-mask-composite:source-in;mask-composite:intersect;pointer-events:none}
+#root #main #citizenship-root .citizen-dashboard h1{font-size:clamp(34px,4.6vw,56px)!important;color:var(--liquid-text)!important;font-family:Inter,system-ui,sans-serif!important;font-weight:750;letter-spacing:-.04em}
+#root #main #citizenship-root .citizen-dashboard>.platform-title p{font-size:20px;color:var(--liquid-muted)}
+#root #main #citizenship-root .platform-module-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:14px 0 8px;padding:6px;border-radius:32px!important;overflow-x:auto}
+#root #main #citizenship-root .platform-module-nav button{border:0!important;border-radius:26px!important;min-height:54px;padding:12px 14px;background:transparent!important;color:var(--liquid-text)!important;box-shadow:none!important;font-size:15px;white-space:normal}
+#root #main #citizenship-root .platform-module-nav button[aria-current=page]{background:linear-gradient(135deg,#4da3e6,#2563a6)!important;color:#fff!important;box-shadow:0 5px 18px #2563a633,inset 0 1px 2px #ffffffb3!important}
+#root #main #citizenship-root .citizen-daily{display:grid;grid-template-columns:68px minmax(0,1fr) auto auto;gap:12px 20px;align-items:center;padding:24px;margin-bottom:24px}
+#root #main #citizenship-root .daily-plan-icon{align-self:start;width:68px;height:68px;display:grid;place-items:center;border:1px solid var(--liquid-border);border-radius:22px;background:var(--liquid-surface);box-shadow:inset 0 1px 2px white,0 6px 24px #2563a626}
+#root #main #citizenship-root .daily-plan-icon .premium-icon,#root #main #citizenship-root .daily-plan-icon img{width:48px;height:48px}
+#root #main #citizenship-root .daily-plan-summary{display:flex;gap:16px;align-items:center}.daily-plan-summary>span:last-child{display:grid;gap:4px}.daily-plan-summary small{font-size:13px;color:var(--liquid-muted)}
+#root #main #citizenship-root .daily-plan-ring{width:88px;height:88px;border:7px solid #4da3e64d;border-top-color:#2563a6;border-right-color:#2563a6;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 0 9px #ffffff55}.daily-plan-ring b{font-size:22px}
+#root #main #citizenship-root .citizen-primary{padding:16px 22px;background:linear-gradient(135deg,#4da3e6,#2563a6)!important;color:white!important;border:1px solid #ffffffb3!important;border-radius:18px!important;box-shadow:0 6px 20px #2563a626!important}
+#root #main #citizenship-root .citizen-daily details{grid-column:2/-1;color:var(--color-primary,#2563a6)}
+#root #main #citizenship-root .citizen-section-label h2{font-size:24px;color:var(--liquid-text)}
+#root #main #citizenship-root .citizen-activity-grid{gap:16px}
+#root #main #citizenship-root .citizen-activity-grid>.platform-card{display:grid;grid-template-columns:78px minmax(0,1fr);grid-template-rows:auto 1fr;align-items:start;gap:8px 18px;min-height:162px;padding:24px 22px;text-align:left}
+#root #main #citizenship-root .citizen-activity-grid .platform-card-icon{grid-row:1/3;width:78px;height:78px;border-radius:24px;background:linear-gradient(140deg,#fff9,#4da3e633);border:1px solid var(--liquid-border);box-shadow:inset 0 1px 2px white,0 6px 22px #2563a626}
+#root #main #citizenship-root .citizen-activity-grid .premium-icon,#root #main #citizenship-root .citizen-activity-grid .premium-icon img{width:58px;height:58px}
+#root #main #citizenship-root .citizen-activity-grid .platform-card strong{font-size:21px;line-height:1.25;padding-right:0;align-self:end}
+#root #main #citizenship-root .citizen-activity-grid .platform-card>span:not([class]){font-size:15px;line-height:1.45;padding-right:20px;color:var(--liquid-muted)}
+#root #main #citizenship-root .platform-card-arrow{right:12px;top:auto;bottom:18px;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--liquid-surface)}
+#root #main #citizenship-root .citizen-activity-grid>.platform-card:nth-child(2) .platform-card-icon{background:#f6c5d580}
+#root #main #citizenship-root .citizen-activity-grid>.platform-card:nth-child(3) .platform-card-icon{background:#bfefd580}
+#root #main #citizenship-root .citizen-activity-grid>.platform-card:nth-child(4) .platform-card-icon{background:#ffe7ab80}
+#root #main #citizenship-root .citizen-activity-grid>.platform-card:nth-child(5) .platform-card-icon{background:#e4c8fb80}
+#root #main #citizenship-root .citizen-progress-link{margin:20px 0;gap:20px;padding:22px;display:flex;align-items:center;text-align:left}
+#root #main #citizenship-root .citizen-progress-link>.premium-icon,#root #main #citizenship-root .citizen-progress-link img{width:64px;height:64px}
+#root #main #citizenship-root .citizen-progress-link>span:nth-child(2){min-width:200px;flex:1}#root #main #citizenship-root .citizen-progress-link strong{font-size:22px}
+#root #main #citizenship-root .citizen-progress-link progress{flex:1;min-width:80px;height:18px;border-radius:16px;overflow:hidden;accent-color:#2563a6}
+#root #main #citizenship-root .citizen-progress-link progress::-webkit-progress-bar{background:#2563a620;border-radius:16px}
+#root #main #citizenship-root .citizen-progress-link progress::-webkit-progress-value{background:linear-gradient(90deg,#4da3e6,#8c57d8);border-radius:16px}
+#root #main #citizenship-root .citizen-progress-link>b{font-size:24px}
+#root #main #citizenship-root .citizen-resources>.glass-section-heading{display:flex;gap:18px}#root #main #citizenship-root .citizen-resources .glass-icon .premium-icon,#root #main #citizenship-root .citizen-resources .glass-icon img{width:42px;height:42px}
+#root #main #citizenship-root .citizen-resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#root #main #citizenship-root .citizen-resource-grid>button{display:flex;align-items:center;gap:14px;padding:14px;min-height:68px;border-radius:22px!important;color:var(--liquid-text)}
+#root #main #citizenship-root .citizen-resource-grid .premium-icon,#root #main #citizenship-root .citizen-resource-grid img{width:38px;height:38px}#root #main #citizenship-root .citizen-resource-grid>button>span:last-child{margin-left:auto}
+@media(max-width:1000px){#root #main #citizenship-root .citizen-daily{grid-template-columns:60px 1fr auto}#root #main #citizenship-root .daily-plan-summary{grid-column:2;grid-row:2}#root #main #citizenship-root .citizen-daily>.citizen-primary{grid-column:3;grid-row:1/3}#root #main #citizenship-root .citizen-activity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#root #main #citizenship-root .platform-module-nav button{font-size:12px;padding:8px 4px}#root #main #citizenship-root .citizen-activity-grid,#root #main #citizenship-root .citizen-resource-grid{grid-template-columns:1fr}#root #main #citizenship-root .citizen-daily{grid-template-columns:48px 1fr;padding:18px;gap:14px}#root #main #citizenship-root .daily-plan-icon{width:48px;height:48px}#root #main #citizenship-root .citizen-daily>.citizen-primary{grid-column:1/-1;grid-row:auto;width:100%}#root #main #citizenship-root .daily-plan-summary{grid-column:1/-1;grid-row:auto;justify-content:center;margin:10px 0}#root #main #citizenship-root .citizen-daily details{grid-column:1/-1}#root #main #citizenship-root .citizen-progress-link{flex-wrap:wrap;gap:12px}#root #main #citizenship-root .citizen-progress-link>span:nth-child(2){min-width:160px}#root #main #citizenship-root .citizen-progress-link progress{flex-basis:60%}#root #main #citizenship-root .citizen-dashboard>.platform-title:before{inset:-20px -14px 0 10%;opacity:.18}}
+#root #main #citizenship-root .podcast-status-light{flex:0 0 8px;width:8px;height:8px;border-radius:50%;background:var(--color-red,#c92a3a);box-shadow:0 0 0 4px #c92a3a12,0 0 10px #c92a3a66;margin-left:2px}
+#root #main #citizenship-root .platform-module-nav button{display:flex;align-items:center;justify-content:center;gap:14px}
+#root #main #citizenship-root .platform-module-nav svg{width:26px;height:26px;flex-shrink:0}
+@media(max-width:600px){#root #main #citizenship-root .platform-module-nav button{gap:4px;flex-direction:column}#root #main #citizenship-root .platform-module-nav svg{width:20px;height:20px}}
+
+/* One shadow-free navigation bar across citizenship screens. */
+#root #main #citizenship-root .platform-module-nav,
+#root #main #citizenship-root .platform-module-nav button,
+#root #main #citizenship-root .platform-module-nav button[aria-current=page] { box-shadow: none !important; filter: none !important; }
+#root #main #citizenship-root :is(.quiz-path-header,.quiz-session-header) { box-shadow: none !important; filter: none !important; background: transparent !important; }
+#root #main #citizenship-root :is(.quiz-path-header,.quiz-session-header)::before,
+#root #main #citizenship-root :is(.quiz-path-header,.quiz-session-header)::after { box-shadow: none !important; background: transparent !important; }

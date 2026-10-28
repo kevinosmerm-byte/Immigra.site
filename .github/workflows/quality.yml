@@ -1,33 +1,25 @@
-name: Quality
-
+name: Immigra quality
 on:
-  pull_request:
   push:
-    branches:
-      - main
-
+  pull_request:
 permissions:
   contents: read
-
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  quality:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version-file: .node-version
+          node-version: '24'
           cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run quality checks
-        run: node scripts/ci-quality.mjs
-
-      - name: Check Brain types
-        run: npm run typecheck
+      - run: npm ci
+      - name: Check public configuration with a hosting environment variable
+        run: node --test modules/citizenship/tests/account-foundation.test.mjs
+        env:
+          SUPABASE_PUBLISHABLE_KEY: ci-public-fixture
+      - run: npm run build

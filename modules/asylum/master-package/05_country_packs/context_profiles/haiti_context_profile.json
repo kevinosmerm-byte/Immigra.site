@@ -1,0 +1,36 @@
+{
+  "country": "Haiti",
+  "source_refs": [
+    "HTI_BINUH_2026_Q1",
+    "HTI_BINUH_2026_FLASH",
+    "HTI_UN_2026"
+  ],
+  "regions": [
+    "Port-au-Prince",
+    "Cité Soleil",
+    "Croix-des-Bouquets / Plaine du Cul-de-Sac",
+    "Artibonite",
+    "Centre Department",
+    "Gressier"
+  ],
+  "contexts": [
+    "small business subject to extortion",
+    "family member perceived as cooperating with police",
+    "community volunteer in gang-controlled area",
+    "kidnapping survivor or relative",
+    "local transporter crossing illegal checkpoints",
+    "woman or family displaced by territorial violence"
+  ],
+  "actors": [
+    "gang members",
+    "armed men controlling local checkpoints",
+    "rival armed groups",
+    "unknown armed actors",
+    "security forces as a separate contextual actor"
+  ],
+  "practice_notes": [
+    "Distinguish generalized gang violence from individualized targeting.",
+    "Ask whether threats related to extortion, perceived cooperation, family ties, location, or another user-stated reason.",
+    "Do not convert living in a dangerous area into a personal targeting fact."
+  ]
+}

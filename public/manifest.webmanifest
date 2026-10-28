@@ -1,28 +1,23 @@
 {
-  "name": "Immigra — Immigration Interview Practice",
+  "name": "Immigra: Práctica de entrevistas",
   "short_name": "Immigra",
-  "description": "Practice civics, reading, writing, and interview skills for U.S. citizenship.",
-  "id": "/",
-  "lang": "en",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "categories": ["education"],
-  "background_color": "#030305",
-  "theme_color": "#030305",
+  "background_color": "#f1f6ff",
+  "theme_color": "#061126",
   "icons": [
     {
       "src": "/app-icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "/app-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }

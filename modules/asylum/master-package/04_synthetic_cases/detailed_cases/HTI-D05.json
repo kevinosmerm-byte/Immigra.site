@@ -1,0 +1,189 @@
+{
+  "case_id": "HTI-D05",
+  "version": "0.2",
+  "fictional": true,
+  "data_domain": "synthetic",
+  "country": "Haiti",
+  "title": "Haiti — Transport Checkpoint — Esther Charles",
+  "difficulty": "advanced",
+  "persona": {
+    "display_name": "Esther Charles",
+    "origin": "Centre Department",
+    "age_range": "28-32",
+    "language": "Haitian Creole/French + optional English practice",
+    "profile": "driver repeatedly crossing armed checkpoints and later singled out"
+  },
+  "country_context": {
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ],
+    "rule": "Sources provide contextual realism only. They are not persona facts and are never merged into testimony."
+  },
+  "intentional_features": [
+    "third_country",
+    "timeline_gap",
+    "omitted_event",
+    "post_departure_activity"
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "type": "background",
+      "date": "2022",
+      "date_precision": "year_only",
+      "location": "Centre Department",
+      "summary": "Esther Charles begins or becomes more visible in a fictional context: driver repeatedly crossing armed checkpoints and later singled out.",
+      "source_type": "synthetic_persona_fact",
+      "interview_targets": [
+        "role",
+        "frequency",
+        "visibility",
+        "who knew"
+      ]
+    },
+    {
+      "event_id": "E02",
+      "type": "incident",
+      "date": "2023-09",
+      "date_precision": "month_only",
+      "location": "Centre Department",
+      "summary": "Fictional incident: home/business was attacked after refusing a demand. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "security forces as a separate contextual actor",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E03",
+      "type": "incident",
+      "date": "2024-01",
+      "date_precision": "month_only",
+      "location": "Centre Department",
+      "summary": "Fictional incident: was warned not to return to a neighborhood. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "gang members",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E04",
+      "type": "incident",
+      "date": "2025-04",
+      "date_precision": "month_only",
+      "location": "Port-au-Prince",
+      "summary": "Fictional incident: family displaced after armed actors took control of the area. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "armed men controlling local checkpoints",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E05",
+      "type": "departure",
+      "date": "2026-01",
+      "date_precision": "month_only",
+      "location": "Haiti",
+      "summary": "Persona leaves the country. The exact reason/timing relationship to prior incidents should be explored, not assumed.",
+      "interview_targets": [
+        "why_left_when",
+        "time_between_last_incident_and_departure",
+        "travel_route"
+      ]
+    },
+    {
+      "event_id": "E09",
+      "type": "current_context",
+      "date": "2026",
+      "date_precision": "year_only",
+      "location": "United States / abroad",
+      "summary": "Current-fear practice node. What the persona knows today must be elicited separately from country-condition sources.",
+      "interview_targets": [
+        "current_feared_actor",
+        "most_recent_information",
+        "continuing_interest",
+        "post_departure_activity",
+        "expected_harm"
+      ]
+    }
+  ],
+  "discrepancies_for_training": [
+    {
+      "topic": "omitted_event",
+      "hidden_event_id": "E03",
+      "instruction": "A practice answer may omit this event. Use open sequence questions; do not reveal the event immediately."
+    }
+  ],
+  "documents": [
+    {
+      "type": "identity",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "personal_declaration",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "message_screenshot",
+      "status": "mentioned",
+      "synthetic": true,
+      "verification": "not independently verified"
+    }
+  ],
+  "facts_to_elicit": [
+    "identity and background",
+    "exact nature and visibility of activity",
+    "each incident chronology",
+    "actor identification and basis of knowledge",
+    "words/actions during incidents",
+    "aftermath",
+    "authority contact if any",
+    "relocation if any",
+    "departure timing",
+    "family remaining",
+    "return trips if any",
+    "current information about feared actor",
+    "post-departure events",
+    "what is personal knowledge vs public information"
+  ],
+  "question_engine_hints": {
+    "first_priority": "Stay on the current event until core factual dimensions are reasonably explored.",
+    "if_inconsistency": "Ask a neutral recollection/sequence question; do not reveal a preferred version.",
+    "if_country_context_relevant": "Ask whether the user personally experienced or knows a related fact; never insert the country fact.",
+    "if_legal_question": "Do not determine eligibility or sufficiency; offer factual practice."
+  },
+  "story_narrative_es": "CASO TOTALMENTE FICTICIO. Esther Charles es una persona adulta de Haiti, originaria de Centre Department. El escenario se diseñó para practicar una entrevista relacionada con driver repeatedly crossing armed checkpoints and later singled out. La historia comienza alrededor de 2022. En 2023-09, en Centre Department, ocurre un evento ficticio descrito internamente como: home/business was attacked after refusing a demand. En 2024-01, en Centre Department, ocurre un evento ficticio descrito internamente como: was warned not to return to a neighborhood. En 2025-04, en Port-au-Prince, ocurre un evento ficticio descrito internamente como: family displaced after armed actors took control of the area. La persona sale del país alrededor de 2026-01. Algunas fechas son aproximadas y ciertos detalles se recuerdan con distinta precisión. En 2026 la persona expresa que todavía tiene preocupación por regresar, pero el sistema debe preguntar qué sabe hoy, cuándo tuvo el contacto más reciente, qué ocurrió con familiares y qué información proviene de experiencia personal frente a fuentes públicas. Este escenario no constituye un ejemplo de un caso jurídicamente suficiente y ninguno de sus hechos puede trasladarse a la historia de un usuario real.",
+  "safety": {
+    "never_use_as_real_testimony": true,
+    "no_merge_with_personal_case": true,
+    "no_legal_sufficiency_label": true,
+    "disclaimer": "Caso completamente ficticio para práctica educativa. No es asesoría legal ni un modelo de hechos que una persona deba adoptar."
+  }
+}

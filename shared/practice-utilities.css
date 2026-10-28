@@ -1,0 +1,8 @@
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@source "../modules/citizenship/src/InterviewAdvanceControls.jsx";
+@source "../modules/citizenship/src/LegalPracticeDisclosure.jsx";
+@source "../modules/citizenship/src/TrialAccessDialog.jsx";
+@source "../modules/citizenship/src/PremiumPracticeBoundary.jsx";

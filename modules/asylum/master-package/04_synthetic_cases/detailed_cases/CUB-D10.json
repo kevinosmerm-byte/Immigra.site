@@ -1,0 +1,195 @@
+{
+  "case_id": "CUB-D10",
+  "version": "0.2",
+  "fictional": true,
+  "data_domain": "synthetic",
+  "country": "Cuba",
+  "title": "Cuba — Returned Exile — Iván Morales",
+  "difficulty": "intermediate",
+  "persona": {
+    "display_name": "Iván Morales",
+    "origin": "Camagüey",
+    "age_range": "33-37",
+    "language": "Spanish",
+    "profile": "person who left, briefly returned for family reasons, and was questioned"
+  },
+  "country_context": {
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ],
+    "rule": "Sources provide contextual realism only. They are not persona facts and are never merged into testimony."
+  },
+  "intentional_features": [
+    "challenge_case",
+    "return_trip",
+    "third_country",
+    "multiple_incidents",
+    "approximate_dates"
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "type": "background",
+      "date": "2019",
+      "date_precision": "year_only",
+      "location": "Camagüey",
+      "summary": "Iván Morales begins or becomes more visible in a fictional context: person who left, briefly returned for family reasons, and was questioned.",
+      "source_type": "synthetic_persona_fact",
+      "interview_targets": [
+        "role",
+        "frequency",
+        "visibility",
+        "who knew"
+      ]
+    },
+    {
+      "event_id": "E02",
+      "type": "incident",
+      "date": "2020-08",
+      "date_precision": "approximate",
+      "location": "Camagüey",
+      "summary": "Fictional incident: home was watched or visited by officials. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "National Revolutionary Police officers",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E03",
+      "type": "incident",
+      "date": "2021-11",
+      "date_precision": "month_only",
+      "location": "Camagüey",
+      "summary": "Fictional incident: phone/social accounts appeared subject to monitoring. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "plainclothes officials",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E04",
+      "type": "incident",
+      "date": "2022-03",
+      "date_precision": "approximate",
+      "location": "Matanzas",
+      "summary": "Fictional incident: relative was warned about the persona’s activity. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "local officials or neighborhood-linked state actors",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E05",
+      "type": "departure",
+      "date": "2023-06",
+      "date_precision": "month_only",
+      "location": "Cuba",
+      "summary": "Persona leaves the country. The exact reason/timing relationship to prior incidents should be explored, not assumed.",
+      "interview_targets": [
+        "why_left_when",
+        "time_between_last_incident_and_departure",
+        "travel_route"
+      ]
+    },
+    {
+      "event_id": "E06",
+      "type": "return_trip",
+      "date": "2024-03",
+      "date_precision": "month_only",
+      "location": "Cuba",
+      "summary": "Persona briefly returns for a fictional family/personal reason. No legal significance is predetermined.",
+      "duration_days": 9,
+      "interview_targets": [
+        "reason",
+        "duration",
+        "where_stayed",
+        "who_knew",
+        "what_happened",
+        "precautions"
+      ]
+    },
+    {
+      "event_id": "E09",
+      "type": "current_context",
+      "date": "2026",
+      "date_precision": "year_only",
+      "location": "United States / abroad",
+      "summary": "Current-fear practice node. What the persona knows today must be elicited separately from country-condition sources.",
+      "interview_targets": [
+        "current_feared_actor",
+        "most_recent_information",
+        "continuing_interest",
+        "post_departure_activity",
+        "expected_harm"
+      ]
+    }
+  ],
+  "discrepancies_for_training": [],
+  "documents": [
+    {
+      "type": "identity",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "personal_declaration",
+      "status": "available",
+      "synthetic": true
+    }
+  ],
+  "facts_to_elicit": [
+    "identity and background",
+    "exact nature and visibility of activity",
+    "each incident chronology",
+    "actor identification and basis of knowledge",
+    "words/actions during incidents",
+    "aftermath",
+    "authority contact if any",
+    "relocation if any",
+    "departure timing",
+    "family remaining",
+    "return trips if any",
+    "current information about feared actor",
+    "post-departure events",
+    "what is personal knowledge vs public information"
+  ],
+  "question_engine_hints": {
+    "first_priority": "Stay on the current event until core factual dimensions are reasonably explored.",
+    "if_inconsistency": "Ask a neutral recollection/sequence question; do not reveal a preferred version.",
+    "if_country_context_relevant": "Ask whether the user personally experienced or knows a related fact; never insert the country fact.",
+    "if_legal_question": "Do not determine eligibility or sufficiency; offer factual practice."
+  },
+  "story_narrative_es": "CASO TOTALMENTE FICTICIO. Iván Morales es una persona adulta de Cuba, originaria de Camagüey. El escenario se diseñó para practicar una entrevista relacionada con person who left, briefly returned for family reasons, and was questioned. La historia comienza alrededor de 2019. En 2020-08, en Camagüey, ocurre un evento ficticio descrito internamente como: home was watched or visited by officials. En 2021-11, en Camagüey, ocurre un evento ficticio descrito internamente como: phone/social accounts appeared subject to monitoring. En 2022-03, en Matanzas, ocurre un evento ficticio descrito internamente como: relative was warned about the persona’s activity. La persona sale del país alrededor de 2023-06. Posteriormente realiza un regreso breve por una razón personal o familiar que debe ser explorada mediante preguntas y no asumida. Algunas fechas son aproximadas y ciertos detalles se recuerdan con distinta precisión. En 2026 la persona expresa que todavía tiene preocupación por regresar, pero el sistema debe preguntar qué sabe hoy, cuándo tuvo el contacto más reciente, qué ocurrió con familiares y qué información proviene de experiencia personal frente a fuentes públicas. Este escenario no constituye un ejemplo de un caso jurídicamente suficiente y ninguno de sus hechos puede trasladarse a la historia de un usuario real.",
+  "safety": {
+    "never_use_as_real_testimony": true,
+    "no_merge_with_personal_case": true,
+    "no_legal_sufficiency_label": true,
+    "disclaimer": "Caso completamente ficticio para práctica educativa. No es asesoría legal ni un modelo de hechos que una persona deba adoptar."
+  }
+}

@@ -1,0 +1,47 @@
+name: Verify Cloudflare access
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/verify-cloudflare.yml
+permissions: {}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Verify token and domain access (read only)
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import os, json, urllib.request, urllib.error
+          token = os.environ.get('CF_TOKEN', '').strip()
+          if not token:
+              raise SystemExit('CLOUDFLARE_API_TOKEN is missing')
+          def check(label, path):
+              req = urllib.request.Request('https://api.cloudflare.com/client/v4' + path, headers={'Authorization': 'Bearer ' + token})
+              try:
+                  with urllib.request.urlopen(req, timeout=25) as r:
+                      status, data = r.status, json.load(r)
+              except urllib.error.HTTPError as e:
+                  status = e.code
+                  try: data = json.load(e)
+                  except Exception: data = {}
+              except Exception:
+                  print(label + ': network request failed')
+                  return False
+              ok = data.get('success') is True
+              codes = [x.get('code') for x in data.get('errors', [])]
+              print(f'{label}: HTTP {status}; success={ok}; error_codes={codes}')
+              if label == 'Domain' and ok:
+                  zones = data.get('result', [])
+                  ok = any(z.get('name') == 'immigra.site' for z in zones)
+                  print('immigra.site visible=' + str(ok))
+              return ok
+          valid = check('User token', '/user/tokens/verify')
+          if not valid:
+              valid = check('Account token', '/accounts/390bed950ad632675d9204c84b35eb20/tokens/verify')
+          domain = check('Domain', '/zones?name=immigra.site')
+          raise SystemExit(0 if valid and domain else 1)
+          PY

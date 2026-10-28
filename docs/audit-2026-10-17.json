@@ -1,0 +1,24 @@
+{
+  "scope": "Immigra web stability and initial store readiness",
+  "reproduced": [
+    "Asylum navigation: Unable to preload CSS for Module-Vt_31qc1.css; error boundary required refresh",
+    "Residency navigation: Failed to fetch dynamically imported module Residency-Dj9ynsSP.js",
+    "Both affected resources returned HTTP 200 on a later independent request; permanent missing assets were not established"
+  ],
+  "corrections": [
+    "One bounded same-origin asset retry without reloading practice state",
+    "Bounded SDK session restoration and practice start/finish/demo requests"
+  ],
+  "storeFindings": {
+    "googlePlay": "Existing Citizenship AI Interview, us.citizenshipai.app, closed test, 14 installed users. Owner must choose replacement versus separate Immigra identity.",
+    "apple": "App Store Connect requires owner sign-in. No Xcode signing team configured locally.",
+    "android": "Java 21 and Android SDK 36 available; release keystore.properties absent. Do not invent or replace signing credentials.",
+    "nativeDemo": "Web demo uses an HttpOnly cookie; native API transport omits cookies. Native demo persistence needs separate implementation and device verification before release.",
+    "nativeBilling": "StoreKit and Google Play Billing purchase validation/restoration remain release gates; working Stripe web checkout does not verify native purchases."
+  },
+  "notPerformed": ["Paid AI calls", "Purchases", "Store uploads", "Store declarations", "Physical device tests"],
+  "references": [
+    "https://developer.apple.com/help/app-store-connect/manage-builds/upload-builds",
+    "https://support.google.com/googleplay/android-developer/answer/9859348"
+  ]
+}

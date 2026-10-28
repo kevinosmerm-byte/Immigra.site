@@ -1,0 +1,189 @@
+{
+  "case_id": "COL-D05",
+  "version": "0.2",
+  "fictional": true,
+  "data_domain": "synthetic",
+  "country": "Colombia",
+  "title": "Colombia — Displaced Family — Paola Castillo",
+  "difficulty": "advanced",
+  "persona": {
+    "display_name": "Paola Castillo",
+    "origin": "Tumaco, Nariño",
+    "age_range": "28-32",
+    "language": "Spanish",
+    "profile": "family displaced during armed-group fighting with one individualized threat"
+  },
+  "country_context": {
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ],
+    "rule": "Sources provide contextual realism only. They are not persona facts and are never merged into testimony."
+  },
+  "intentional_features": [
+    "third_country",
+    "timeline_gap",
+    "omitted_event",
+    "post_departure_activity"
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "type": "background",
+      "date": "2020",
+      "date_precision": "year_only",
+      "location": "Tumaco, Nariño",
+      "summary": "Paola Castillo begins or becomes more visible in a fictional context: family displaced during armed-group fighting with one individualized threat.",
+      "source_type": "synthetic_persona_fact",
+      "interview_targets": [
+        "role",
+        "frequency",
+        "visibility",
+        "who knew"
+      ]
+    },
+    {
+      "event_id": "E02",
+      "type": "incident",
+      "date": "2021-09",
+      "date_precision": "month_only",
+      "location": "Tumaco, Nariño",
+      "summary": "Fictional incident: was followed after a community meeting. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "state officers in a limited factual role",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E03",
+      "type": "incident",
+      "date": "2022-01",
+      "date_precision": "month_only",
+      "location": "Tumaco, Nariño",
+      "summary": "Fictional incident: armed men came to the home or workplace. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "non-state armed group members",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E04",
+      "type": "incident",
+      "date": "2023-04",
+      "date_precision": "month_only",
+      "location": "rural Cauca",
+      "summary": "Fictional incident: relocated after violence and later received a new message. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "criminal organization members",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E05",
+      "type": "departure",
+      "date": "2024-01",
+      "date_precision": "month_only",
+      "location": "Colombia",
+      "summary": "Persona leaves the country. The exact reason/timing relationship to prior incidents should be explored, not assumed.",
+      "interview_targets": [
+        "why_left_when",
+        "time_between_last_incident_and_departure",
+        "travel_route"
+      ]
+    },
+    {
+      "event_id": "E09",
+      "type": "current_context",
+      "date": "2026",
+      "date_precision": "year_only",
+      "location": "United States / abroad",
+      "summary": "Current-fear practice node. What the persona knows today must be elicited separately from country-condition sources.",
+      "interview_targets": [
+        "current_feared_actor",
+        "most_recent_information",
+        "continuing_interest",
+        "post_departure_activity",
+        "expected_harm"
+      ]
+    }
+  ],
+  "discrepancies_for_training": [
+    {
+      "topic": "omitted_event",
+      "hidden_event_id": "E03",
+      "instruction": "A practice answer may omit this event. Use open sequence questions; do not reveal the event immediately."
+    }
+  ],
+  "documents": [
+    {
+      "type": "identity",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "personal_declaration",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "message_screenshot",
+      "status": "mentioned",
+      "synthetic": true,
+      "verification": "not independently verified"
+    }
+  ],
+  "facts_to_elicit": [
+    "identity and background",
+    "exact nature and visibility of activity",
+    "each incident chronology",
+    "actor identification and basis of knowledge",
+    "words/actions during incidents",
+    "aftermath",
+    "authority contact if any",
+    "relocation if any",
+    "departure timing",
+    "family remaining",
+    "return trips if any",
+    "current information about feared actor",
+    "post-departure events",
+    "what is personal knowledge vs public information"
+  ],
+  "question_engine_hints": {
+    "first_priority": "Stay on the current event until core factual dimensions are reasonably explored.",
+    "if_inconsistency": "Ask a neutral recollection/sequence question; do not reveal a preferred version.",
+    "if_country_context_relevant": "Ask whether the user personally experienced or knows a related fact; never insert the country fact.",
+    "if_legal_question": "Do not determine eligibility or sufficiency; offer factual practice."
+  },
+  "story_narrative_es": "CASO TOTALMENTE FICTICIO. Paola Castillo es una persona adulta de Colombia, originaria de Tumaco, Nariño. El escenario se diseñó para practicar una entrevista relacionada con family displaced during armed-group fighting with one individualized threat. La historia comienza alrededor de 2020. En 2021-09, en Tumaco, Nariño, ocurre un evento ficticio descrito internamente como: was followed after a community meeting. En 2022-01, en Tumaco, Nariño, ocurre un evento ficticio descrito internamente como: armed men came to the home or workplace. En 2023-04, en rural Cauca, ocurre un evento ficticio descrito internamente como: relocated after violence and later received a new message. La persona sale del país alrededor de 2024-01. Algunas fechas son aproximadas y ciertos detalles se recuerdan con distinta precisión. En 2026 la persona expresa que todavía tiene preocupación por regresar, pero el sistema debe preguntar qué sabe hoy, cuándo tuvo el contacto más reciente, qué ocurrió con familiares y qué información proviene de experiencia personal frente a fuentes públicas. Este escenario no constituye un ejemplo de un caso jurídicamente suficiente y ninguno de sus hechos puede trasladarse a la historia de un usuario real.",
+  "safety": {
+    "never_use_as_real_testimony": true,
+    "no_merge_with_personal_case": true,
+    "no_legal_sufficiency_label": true,
+    "disclaimer": "Caso completamente ficticio para práctica educativa. No es asesoría legal ni un modelo de hechos que una persona deba adoptar."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "asiloai",
+  "version": "0.3.0",
+  "private": true,
+  "description": "AsiloAI shared web and application foundation",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node scripts/build.cjs",
+    "start": "node scripts/serve.cjs",
+    "test": "node scripts/build.cjs && node --test --test-isolation=none tests/core.test.cjs tests/analysis.test.mjs tests/gateway.test.mjs tests/voice.test.cjs tests/character-voices.test.cjs"
+  },
+  "dependencies": {
+    "@tesseract.js-data/eng": "1.0.0",
+    "@tesseract.js-data/spa": "1.0.0",
+    "pdfjs-dist": "6.4.299",
+    "tesseract.js": "7.0.0"
+  }
+}

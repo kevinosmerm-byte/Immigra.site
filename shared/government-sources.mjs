@@ -1,0 +1,15 @@
+export const governmentSources = [
+  ['USCIS — 2025 civics questions (128)', 'USCIS — Preguntas de civismo de 2025 (128)', 'https://www.uscis.gov/sites/default/files/document/questions-and-answers/2025-Civics-Test-128-Questions-and-Answers.pdf'],
+  ['USCIS — Naturalization test and study resources', 'USCIS — Examen y recursos de naturalización', 'https://www.uscis.gov/citizenship/find-study-materials-and-resources/study-for-the-test'],
+  ['USCIS — Form N-400 and current instructions', 'USCIS — Formulario N-400 e instrucciones vigentes', 'https://www.uscis.gov/n-400'],
+  ['USCIS — Asylum', 'USCIS — Asilo', 'https://www.uscis.gov/humanitarian/refugees-and-asylum/asylum'],
+  ['USCIS — Form I-589 (asylum)', 'USCIS — Formulario I-589 (asilo)', 'https://www.uscis.gov/i-589'],
+  ['USCIS — Family-based Green Card', 'USCIS — Residencia por familia', 'https://www.uscis.gov/green-card/green-card-eligibility/green-card-for-immediate-relatives-of-us-citizen'],
+  ['USCIS — Form I-130 (family petition)', 'USCIS — Formulario I-130 (petición familiar)', 'https://www.uscis.gov/i-130'],
+  ['USCIS — Form I-485 (adjustment of status)', 'USCIS — Formulario I-485 (ajuste de estatus)', 'https://www.uscis.gov/i-485'],
+  ['USCIS — Find authorized legal services', 'USCIS — Encontrar ayuda legal autorizada', 'https://www.uscis.gov/avoid-scams/find-legal-services'],
+  ['DOJ / EOIR — Immigration courts', 'DOJ / EOIR — Tribunales de inmigración', 'https://www.justice.gov/eoir'],
+  ['U.S. Census — Address geocoder', 'Censo de EE. UU. — Geocodificador de direcciones', 'https://geocoding.geo.census.gov/geocoder/'],
+  ['Congress.gov — Members of Congress', 'Congress.gov — Miembros del Congreso', 'https://www.congress.gov/members'],
+  ['USCIS — Official case status', 'USCIS — Estado oficial del caso', 'https://egov.uscis.gov/'],
+];

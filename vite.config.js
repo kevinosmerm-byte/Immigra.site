@@ -1,41 +1,18 @@
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import { defineConfig, loadEnv } from 'vite'
-
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
-  const allowedHosts = env.VITE_ALLOWED_HOSTS
-    ? env.VITE_ALLOWED_HOSTS.split(',').map((host) => host.trim()).filter(Boolean)
-    : undefined;
-
-  return {
-    plugins: [react(), tailwindcss(), {
-      name: 'self-contained-app-styles',
-      apply: 'build',
-      generateBundle: {
-        order: 'post',
-        handler(_options, bundle) {
-          const page = bundle['index.html'];
-          if (!page || typeof page.source !== 'string') return;
-          page.source = page.source.replace(/<link\b[^>]*rel="stylesheet"[^>]*>/g, tag => {
-            const href = tag.match(/href="([^"]+)"/)?.[1];
-            const asset = href && bundle[href.replace(/^\//, '')];
-            if (!asset || asset.type !== 'asset') throw new Error('Missing production stylesheet: ' + href);
-            return '<style data-app-styles="embedded">' + String(asset.source).replace(/<\/style/gi, '<\\/style') + '</style>';
-          });
-        },
-      },
-    }],
-    server: {
-      host: true,
-      allowedHosts,
-      proxy: {
-        '/api': {
-          target: env.VITE_DEV_API_TARGET || 'http://127.0.0.1:3001',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
-        },
-      },
-    },
-  };
-});
+import tailwindcss from "@tailwindcss/vite";
+import postcss from 'postcss';
+import {defineConfig} from 'vite';
+const scopeStyles={postcssPlugin:'domain-style-boundaries',Once(root,{result}){
+ const file=(result.opts.from||'').replaceAll('\\','/');const domain=file.includes('/modules/citizenship/')?'citizenship':file.includes('/modules/asylum/')?'asylum':null;if(!domain)return;
+ const scope='.'+domain+'-surface';
+ root.walkRules(rule=>{if(rule.parent?.type==='atrule'&&rule.parent.name.includes('keyframes'))return;rule.selectors=rule.selectors.map(selector=>{
+  let s=selector.replace(/#root\b/g,domain==='citizenship'?'#citizenship-root':'#content');
+  if(s.includes(':root'))return s.replaceAll(':root',scope);
+  if(/\bbody\b/.test(s))return s.replace(/\bbody\b/g,scope);
+  if(s.startsWith('html'))return s.replace(/^(html[^\s]*)/,'$1 '+scope);
+  return scope+' '+s;
+ });});
+ root.walkDecls(decl=>{decl.important=false;});
+ const layer=postcss.atRule({name:'layer',params:'domain-layout'});
+ for(const node of [...root.nodes])layer.append(node);root.append(layer);
+}};
+export default defineConfig({base:'./',build:{rollupOptions:{external:['/modules/asylum/vendor/pdfjs/pdf.mjs']}},esbuild:{jsx:'automatic'},resolve:{dedupe:['react','react-dom']},css:{postcss:{plugins:[scopeStyles]}},plugins:[tailwindcss(),{name:'citizenship-public-assets',enforce:'pre',transform(code,id){if(!id.replaceAll('\\','/').includes('/modules/citizenship/src/')||! /\.[jt]sx?$/.test(id))return;return code.replace(/(["'`])\/(?!api\/)([^"'`\n]+\.(?:png|jpg|svg|mp4|m4a|pdf)(?:[^"'`\n]*))\1/g,(_m,q,p)=>q+'/modules/citizenship/'+p+q);}}],server:{host:'127.0.0.1',proxy:{'/api':{target:'http://127.0.0.1:8787',changeOrigin:true}}}});

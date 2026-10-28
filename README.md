@@ -1,93 +1,35 @@
-# Immigra
+# IMMIGRA.site
 
-Repository: [kevinosmerm-byte/Immigra.site](https://github.com/kevinosmerm-byte/Immigra.site). Public application: [immigra.site](https://immigra.site).
+Plataforma educativa bilingüe de preparación para ciudadanía, asilo y residencia.
 
-A practice application for the U.S. naturalization process. It includes the 128 civics questions, reading and writing exercises, an English coach, a practice interview, progress tracking, and an optional USCIS case-status connection.
+## Proyecto único
 
-## Requirements
+- Repositorio canónico: https://github.com/kevinosmerm-byte/Immigra.site
+- Rama de referencia: `main` una vez integrada la migración.
+- Sitio: https://immigra.site
+- Código de esta migración: versión publicada `c6251fb` del repositorio histórico `immigration-ai`.
 
-- Node.js 22.13 or later; Node 24 is pinned in `.node-version` and used for CI/deployment.
-- An OpenAI API key for AI evaluation, coaching, and transcription
-- USCIS API credentials only if case-status lookup is enabled
+La migración se prepara en `codex/unify-immigra-site`. No está desplegada por el hecho de existir esta rama. Render continúa conectado al repositorio histórico hasta completar el cambio documentado en [la migración](docs/CANONICAL_PROJECT.md).
 
-## Run locally
+## Desarrollo y verificación
 
-1. Install dependencies:
-
-   ```powershell
-   npm ci
-   ```
-
-2. Copy `.env.example` to `.env` and fill in the variables needed for your environment. Do not commit `.env`.
-
-3. In one terminal, start the API:
-
-   ```powershell
-   node server/server.js
-   ```
-
-4. In another terminal, start the website:
-
-   ```powershell
-   npm run dev
-   ```
-
-Open `http://localhost:5173`.
-
-## Production build
-
-```powershell
-npm run lint
+```sh
+npm ci
+npm run dev
 npm run build
+npm start
 ```
 
-The static website is created in `dist/`. Deploy it to a static host and deploy `server/server.js` as a Node.js service. Use HTTPS in production: browsers require it for microphone access and PWA installation.
+`npm run build` ejecuta pruebas, compila la web, verifica el módulo de ciudadanía y valida el paquete de distribución. `npm start` inicia el servidor unificado con `start-all.mjs`.
 
-### Production environment
+## Arquitectura
 
-Set these values on the server, not in the browser:
+- `src/`: shell web, bienvenida y navegación.
+- `modules/citizenship/`: ciudadanía, civismo y contenedores nativos.
+- `modules/asylum/`: asilo y tarjetas de estudio.
+- `modules/residency/`: residencia.
+- `shared/`, `server/`, `scripts/`: componentes compartidos, servicios y verificaciones.
 
-```text
-PORT=3001
-CORS_ORIGIN=https://immigra.site,https://www.immigra.site
-OPENAI_API_KEY=...
-USCIS_ENV=sandbox
-USCIS_SANDBOX_CLIENT_ID=...
-USCIS_SANDBOX_CLIENT_SECRET=...
-```
+Los nombres históricos en rutas internas, almacenamiento e identificadores de las tiendas no significan proyectos distintos. No cambiarlos sin una migración específica: conservan compatibilidad y progreso de usuarios.
 
-USCIS Sandbox is the default and the only environment that should be used until USCIS grants separate Production credentials and endpoints. The server never guesses Production URLs. Legacy `USCIS_CLIENT_ID` and `USCIS_CLIENT_SECRET` names remain supported for the existing Sandbox deployment, but new Sandbox setups should use the named variables above.
-
-After USCIS explicitly grants Production access, set `USCIS_ENV=production` and provide all four separate values: `USCIS_PRODUCTION_CLIENT_ID`, `USCIS_PRODUCTION_CLIENT_SECRET`, `USCIS_PRODUCTION_TOKEN_URL`, and `USCIS_PRODUCTION_API_URL`. Never reuse Sandbox credentials or endpoints for Production.
-
-## Recommended hosting
-
-Deploy the Vite frontend to **Cloudflare Pages** and the Express API to **Render**. Cloudflare Pages uses `npm run build` and publishes `dist`. The included `functions/api/[[path]].js` proxy keeps production browser requests on the Immigra origin and forwards them to Render. Set the `API_ORIGIN` Pages environment variable to the Render HTTPS origin if it differs from the default. The included `render.yaml` configures Render to run `npm ci`, start the API with `npm run start`, and verify `/health`.
-
-In Render, enter the API and USCIS credentials as secret environment variables. Set `CORS_ORIGIN` to `https://immigra.site,https://www.immigra.site`.
-
-## PWA installation
-
-Immigra includes a web app manifest and service worker. After deployment with HTTPS, users can choose **Add to Home Screen** on iPhone or Android to install it like an app. The offline cache contains the application interface only; requests involving voice, AI, or USCIS case status are never cached.
-
-## Privacy and safety
-
-- Voice recordings are sent only to the transcription service for the active request and are not stored by this application.
-- Receipt numbers are used only to make the active USCIS Sandbox status request and are not stored by this application. Server diagnostics may include a masked receipt number, environment, result, and USCIS trace ID; never the full receipt number or case response.
-- The first launch requires acknowledgement of the independent educational-use and AI disclaimers. Legal & Privacy is permanently available in Settings and at `https://immigra.site/#privacy`.
-- Before Play Store submission, add a public support contact, complete the Play Console Data safety and content-rating forms, and use the exact same disclosures as the in-app privacy policy.
-- Do not expose API keys or USCIS credentials in frontend variables, source code, screenshots, or Git commits.
-
-## Android / Google Play release
-
-The web app is installable as a PWA today. A Google Play release additionally requires an Android container and a signed Android App Bundle (`.aab`). Capacitor is the planned wrapper because it preserves this React application and its current visual system. Install it only in an environment that can validate npm registry certificates, then follow the [official Capacitor setup](https://capacitorjs.com/docs/getting-started): install `@capacitor/core`, `@capacitor/cli`, and `@capacitor/android`; initialize the app with `dist` as `webDir`; add Android; run `npm run build`, `npx cap sync android`, and build the signed `.aab` in Android Studio.
-
-## iOS / App Store release
-
-The native iOS container lives in `ios/` and uses the same stable application id, `us.citizenshipai.app`. Run `npm run ios:sync` after every web release to build the Vite app and copy the current production assets and native plugins into Xcode. The final archive, signing, device testing, TestFlight upload, and App Store submission must be completed on a Mac using the current App Store-supported Xcode and iOS SDK. See `docs/IOS_READINESS.md` for the handoff checklist.
-
-Interview and AI access now uses a [seven-day trial from first use](docs/SEVEN_DAY_ACCESS.md), followed by subscription; local study remains free. Apply the documented Supabase migration before activating this policy in production.
-
-La preparación nativa vigente de Immigra, productos propuestos y pendientes de las tiendas se registra en [docs/IMMIGRA_STORE_RELEASE.md](docs/IMMIGRA_STORE_RELEASE.md).
-
-Análisis económico con supuestos explícitos: [docs/IMMIGRA_COST_ANALYSIS.md](docs/IMMIGRA_COST_ANALYSIS.md). Simulador independiente: [reports/immigra-cost-calculator.html](reports/immigra-cost-calculator.html).
+Los documentos históricos describen etapas anteriores; el estado de la transición se documenta en `docs/CANONICAL_PROJECT.md`. No copiar credenciales ni ejecutar migraciones remotas para unificar el repositorio.

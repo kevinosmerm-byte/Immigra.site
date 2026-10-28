@@ -1,0 +1,21 @@
+
+.email-profile{width:min(100%,800px);margin:0 auto;padding:44px 0 56px;color:var(--color-text,#172b3d);font-family:Inter,system-ui,sans-serif;text-align:center}
+.email-profile>header{background:transparent!important;border:0;display:block;padding:0;margin:0 0 36px;position:static}
+.email-profile>header>span{font-size:13px;letter-spacing:.14em;color:var(--glass-muted,#53667a)}
+.email-profile h1{font-size:clamp(36px,5vw,60px)!important;line-height:1.1;margin:16px 0;font-family:inherit;color:var(--color-navy,#123a63);letter-spacing:-.04em}
+.email-profile p{max-width:620px;margin:12px auto;line-height:1.6;color:var(--glass-muted,#53667a);font-size:17px}
+.citizenship-surface .email-profile .email-profile-card{padding:36px 44px;border:1px solid #ffffffc9;border-radius:32px;background:var(--entry-glass-surface,#ffffff8c);backdrop-filter:var(--entry-glass-filter);-webkit-backdrop-filter:var(--entry-glass-filter);box-shadow:var(--entry-glass-shadow)}
+.email-profile-icon{display:grid;place-items:center;width:112px;height:112px;margin:0 auto 28px;border-radius:30px;border:1px solid #fff;background:linear-gradient(140deg,#ffffffd9,#cce5ff55);box-shadow:inset 0 1px 2px #fff,0 8px 28px #2563a61a;color:var(--color-primary,#2563a6)}
+.email-profile-icon svg{width:64px;height:64px}.email-profile h2{font-size:25px;margin:0;font-family:inherit}
+.email-profile-value{display:flex;align-items:center;gap:16px;text-align:left;overflow-wrap:anywhere;padding:20px 24px;min-height:68px;margin:28px 0;border:1px solid #fff;border-radius:24px;background:#ffffff70;color:var(--color-navy,#123a63);font-size:19px}.email-profile-value svg{width:26px;height:26px;flex-shrink:0}.email-profile small{display:block;line-height:1.6;color:var(--glass-muted,#53667a);font-size:13px}
+@media(max-width:600px){.email-profile{padding-top:32px}.citizenship-surface .email-profile .email-profile-card{padding:28px 20px;border-radius:26px}.email-profile-value{padding:16px;font-size:16px}.email-profile p{font-size:15px}.email-profile-icon{width:88px;height:88px}}
+@supports not ((backdrop-filter:blur(20px)) or (-webkit-backdrop-filter:blur(20px))){.citizenship-surface .email-profile .email-profile-card{background:#f4f8fc}}
+html[data-reduce-transparency=true] .citizenship-surface .email-profile .email-profile-card{background:#f4f8fc;backdrop-filter:none}
+html[data-theme=dark] .email-profile{--color-text:#e4edf7;--color-navy:#e4edf7;--glass-muted:#b9cadd;--entry-glass-surface:#123a63d9}
+#root .citizenship-surface .email-profile,#root .citizenship-surface .email-profile>header{background:transparent!important;box-shadow:none!important;border:0!important}
+#root .citizenship-surface .email-profile .email-profile-card{background:var(--entry-glass-surface,rgba(255,255,255,.55))!important;border:1px solid #ffffffc9!important;border-radius:32px!important;box-shadow:var(--entry-glass-shadow)!important}
+#root .citizenship-surface .email-profile h1{font-size:clamp(36px,5vw,60px)!important;font-family:inherit!important}
+#root .citizenship-surface .email-profile .email-profile-value{background:rgba(255,255,255,.44)!important}
+#root .citizenship-surface .email-profile .email-profile-icon{background:linear-gradient(140deg,#ffffffd9,#cce5ff55)!important}
+html[data-reduce-transparency=true] #root .citizenship-surface .email-profile .email-profile-card{background:#f4f8fc!important}
+@supports not ((backdrop-filter:blur(20px)) or (-webkit-backdrop-filter:blur(20px))){#root .citizenship-surface .email-profile .email-profile-card{background:#f4f8fc!important}}

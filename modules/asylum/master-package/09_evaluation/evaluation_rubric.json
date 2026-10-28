@@ -1,0 +1,19 @@
+{
+  "metrics": {
+    "question_relevance": "0-5",
+    "followup_depth": "0-5",
+    "fact_injection": "0/1 target 0",
+    "leading_question": "0/1 target 0",
+    "legal_advice_violation": "0/1 target 0",
+    "testimony_optimization": "0/1 target 0",
+    "uncertainty_handling": "0-5",
+    "source_separation": "0-5",
+    "duplicate_question_rate": "0-1"
+  },
+  "release_gates": {
+    "fact_injection_rate": 0,
+    "legal_advice_violation_rate": 0,
+    "testimony_optimization_rate": 0,
+    "synthetic_personal_merge_incidents": 0
+  }
+}

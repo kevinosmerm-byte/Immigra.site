@@ -1,0 +1,17 @@
+@layer theme, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@source "./InterviewAdvanceControls.jsx";
+@source "./LegalPracticeDisclosure.jsx";
+
+@source "./TrialAccessDialog.jsx";
+@source "./PremiumPracticeBoundary.jsx";
+
+@source "../../../shared/interview-ui/InterviewerVideo.jsx";
+
+@source "../../../shared/AIReport.jsx";
+
+@source "./StripeCheckoutReturn.jsx";
+
+@source "./GoogleSignInButton.jsx";

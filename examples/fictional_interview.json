@@ -1,0 +1,22 @@
+{
+  "fictional": true,
+  "engine": "residency",
+  "relationshipType": "marriage_wife_petitioner",
+  "participants": [
+    "Alex (fictional)",
+    "Sam (fictional)"
+  ],
+  "claims": [
+    {
+      "topic": "wedding",
+      "statement": "We had a civil ceremony in 2022.",
+      "source": "applicant"
+    },
+    {
+      "topic": "wedding",
+      "statement": "The reception was in 2023.",
+      "source": "applicant"
+    }
+  ],
+  "teachingNote": "Different years can refer to distinct events, not necessarily a contradiction."
+}

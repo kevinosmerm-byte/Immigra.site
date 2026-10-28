@@ -1,0 +1,2702 @@
+[
+  {
+    "id": "RES-marriage_husband_petitioner-001-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "identity",
+    "locale": "es",
+    "question": "¿Cuál es el nombre completo de su cónyuge?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-001-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "identity",
+    "locale": "en",
+    "question": "What is your spouse’s full name?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-002-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Cómo se conocieron?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-002-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "relationship",
+    "locale": "en",
+    "question": "How did you meet?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-003-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Dónde fue su primera cita?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-003-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "relationship",
+    "locale": "en",
+    "question": "Where was your first date?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-004-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Cuándo decidieron casarse?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-004-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "relationship",
+    "locale": "en",
+    "question": "When did you decide to get married?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-005-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "wedding",
+    "locale": "es",
+    "question": "¿Qué día se casaron?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-005-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "wedding",
+    "locale": "en",
+    "question": "What date did you get married?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-006-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "wedding",
+    "locale": "es",
+    "question": "¿Dónde se celebró la ceremonia?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-006-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "wedding",
+    "locale": "en",
+    "question": "Where was the ceremony held?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-007-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "wedding",
+    "locale": "es",
+    "question": "¿Quiénes asistieron?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-007-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "wedding",
+    "locale": "en",
+    "question": "Who attended?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-008-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "wedding",
+    "locale": "es",
+    "question": "¿Hubo una celebración después?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-008-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "wedding",
+    "locale": "en",
+    "question": "Was there a celebration afterwards?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-009-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Cuál es su dirección actual?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-009-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "household",
+    "locale": "en",
+    "question": "What is your current address?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-010-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Cuándo comenzaron a vivir juntos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-010-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "household",
+    "locale": "en",
+    "question": "When did you start living together?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-011-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Cómo se distribuyen las tareas domésticas?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-011-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "household",
+    "locale": "en",
+    "question": "How do you divide household chores?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-012-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Quién preparó la última comida que compartieron?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-012-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "household",
+    "locale": "en",
+    "question": "Who prepared the last meal you shared?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-013-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "routine",
+    "locale": "es",
+    "question": "¿Qué hicieron juntos el último fin de semana?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-013-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "routine",
+    "locale": "en",
+    "question": "What did you do together last weekend?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-014-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "routine",
+    "locale": "es",
+    "question": "¿Cómo llegaron hoy a esta entrevista?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-014-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "routine",
+    "locale": "en",
+    "question": "How did you get to this interview today?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-015-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "routine",
+    "locale": "es",
+    "question": "¿Qué vehículo utilizan habitualmente?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-015-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "routine",
+    "locale": "en",
+    "question": "What vehicle do you usually use?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-016-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "routine",
+    "locale": "es",
+    "question": "¿Qué horarios de trabajo tienen?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-016-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "routine",
+    "locale": "en",
+    "question": "What are your work schedules?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-017-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "finance",
+    "locale": "es",
+    "question": "¿Cómo pagan el alquiler o la hipoteca?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-017-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "finance",
+    "locale": "en",
+    "question": "How do you pay rent or the mortgage?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-018-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "finance",
+    "locale": "es",
+    "question": "¿Tienen cuentas bancarias conjuntas?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-018-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "finance",
+    "locale": "en",
+    "question": "Do you have joint bank accounts?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-019-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "finance",
+    "locale": "es",
+    "question": "¿Cómo presentan sus impuestos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-019-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "finance",
+    "locale": "en",
+    "question": "How do you file your taxes?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-020-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "finance",
+    "locale": "es",
+    "question": "¿Quién suele pagar los servicios de la vivienda?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-020-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "finance",
+    "locale": "en",
+    "question": "Who usually pays household utilities?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-021-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Cuándo conoció a la familia de su cónyuge?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-021-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "family",
+    "locale": "en",
+    "question": "When did you meet your spouse’s family?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-022-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Tienen hijos o personas a su cargo?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-022-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you have children or dependents?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-023-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "travel",
+    "locale": "es",
+    "question": "¿Cuál fue el último viaje que hicieron juntos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-023-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "travel",
+    "locale": "en",
+    "question": "What was your last trip together?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-024-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "travel",
+    "locale": "es",
+    "question": "¿En qué fechas viajaron?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-024-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "travel",
+    "locale": "en",
+    "question": "What dates did you travel?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-025-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "travel",
+    "locale": "es",
+    "question": "¿Dónde se hospedaron durante ese viaje?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-025-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "travel",
+    "locale": "en",
+    "question": "Where did you stay during that trip?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-026-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Alguno estuvo casado anteriormente?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-026-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "history",
+    "locale": "en",
+    "question": "Was either of you married before?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-027-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Cómo celebraron su último aniversario?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-027-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "history",
+    "locale": "en",
+    "question": "How did you celebrate your last anniversary?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-028-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Cuántas habitaciones tiene su vivienda?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-028-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "household",
+    "locale": "en",
+    "question": "How many bedrooms does your home have?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-029-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "routine",
+    "locale": "es",
+    "question": "¿Quién suele hacer las compras de alimentos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-029-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "routine",
+    "locale": "en",
+    "question": "Who usually shops for groceries?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-030-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Qué actividades disfrutan juntos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_husband_petitioner-030-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_husband_petitioner",
+    "category": "relationship",
+    "locale": "en",
+    "question": "What activities do you enjoy together?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-001-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "identity",
+    "locale": "es",
+    "question": "¿Cuál es el nombre completo de su cónyuge?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-001-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "identity",
+    "locale": "en",
+    "question": "What is your spouse’s full name?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-002-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Cómo se conocieron?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-002-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "relationship",
+    "locale": "en",
+    "question": "How did you meet?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-003-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Dónde fue su primera cita?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-003-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "relationship",
+    "locale": "en",
+    "question": "Where was your first date?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-004-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Cuándo decidieron casarse?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-004-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "relationship",
+    "locale": "en",
+    "question": "When did you decide to get married?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-005-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "wedding",
+    "locale": "es",
+    "question": "¿Qué día se casaron?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-005-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "wedding",
+    "locale": "en",
+    "question": "What date did you get married?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-006-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "wedding",
+    "locale": "es",
+    "question": "¿Dónde se celebró la ceremonia?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-006-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "wedding",
+    "locale": "en",
+    "question": "Where was the ceremony held?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-007-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "wedding",
+    "locale": "es",
+    "question": "¿Quiénes asistieron?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-007-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "wedding",
+    "locale": "en",
+    "question": "Who attended?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-008-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "wedding",
+    "locale": "es",
+    "question": "¿Hubo una celebración después?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-008-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "wedding",
+    "locale": "en",
+    "question": "Was there a celebration afterwards?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-009-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Cuál es su dirección actual?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-009-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "household",
+    "locale": "en",
+    "question": "What is your current address?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-010-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Cuándo comenzaron a vivir juntos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-010-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "household",
+    "locale": "en",
+    "question": "When did you start living together?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-011-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Cómo se distribuyen las tareas domésticas?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-011-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "household",
+    "locale": "en",
+    "question": "How do you divide household chores?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-012-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Quién preparó la última comida que compartieron?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-012-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "household",
+    "locale": "en",
+    "question": "Who prepared the last meal you shared?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-013-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "routine",
+    "locale": "es",
+    "question": "¿Qué hicieron juntos el último fin de semana?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-013-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "routine",
+    "locale": "en",
+    "question": "What did you do together last weekend?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-014-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "routine",
+    "locale": "es",
+    "question": "¿Cómo llegaron hoy a esta entrevista?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-014-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "routine",
+    "locale": "en",
+    "question": "How did you get to this interview today?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-015-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "routine",
+    "locale": "es",
+    "question": "¿Qué vehículo utilizan habitualmente?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-015-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "routine",
+    "locale": "en",
+    "question": "What vehicle do you usually use?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-016-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "routine",
+    "locale": "es",
+    "question": "¿Qué horarios de trabajo tienen?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-016-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "routine",
+    "locale": "en",
+    "question": "What are your work schedules?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-017-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "finance",
+    "locale": "es",
+    "question": "¿Cómo pagan el alquiler o la hipoteca?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-017-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "finance",
+    "locale": "en",
+    "question": "How do you pay rent or the mortgage?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-018-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "finance",
+    "locale": "es",
+    "question": "¿Tienen cuentas bancarias conjuntas?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-018-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "finance",
+    "locale": "en",
+    "question": "Do you have joint bank accounts?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-019-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "finance",
+    "locale": "es",
+    "question": "¿Cómo presentan sus impuestos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-019-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "finance",
+    "locale": "en",
+    "question": "How do you file your taxes?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-020-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "finance",
+    "locale": "es",
+    "question": "¿Quién suele pagar los servicios de la vivienda?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-020-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "finance",
+    "locale": "en",
+    "question": "Who usually pays household utilities?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-021-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Cuándo conoció a la familia de su cónyuge?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-021-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "family",
+    "locale": "en",
+    "question": "When did you meet your spouse’s family?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-022-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Tienen hijos o personas a su cargo?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-022-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you have children or dependents?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-023-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "travel",
+    "locale": "es",
+    "question": "¿Cuál fue el último viaje que hicieron juntos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-023-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "travel",
+    "locale": "en",
+    "question": "What was your last trip together?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-024-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "travel",
+    "locale": "es",
+    "question": "¿En qué fechas viajaron?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-024-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "travel",
+    "locale": "en",
+    "question": "What dates did you travel?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-025-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "travel",
+    "locale": "es",
+    "question": "¿Dónde se hospedaron durante ese viaje?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-025-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "travel",
+    "locale": "en",
+    "question": "Where did you stay during that trip?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-026-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Alguno estuvo casado anteriormente?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-026-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "history",
+    "locale": "en",
+    "question": "Was either of you married before?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-027-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Cómo celebraron su último aniversario?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-027-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "history",
+    "locale": "en",
+    "question": "How did you celebrate your last anniversary?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-028-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Cuántas habitaciones tiene su vivienda?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-028-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "household",
+    "locale": "en",
+    "question": "How many bedrooms does your home have?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-029-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "routine",
+    "locale": "es",
+    "question": "¿Quién suele hacer las compras de alimentos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-029-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "routine",
+    "locale": "en",
+    "question": "Who usually shops for groceries?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-030-es",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Qué actividades disfrutan juntos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-marriage_wife_petitioner-030-en",
+    "engine_id": "residency",
+    "relationship_type": "marriage_wife_petitioner",
+    "category": "relationship",
+    "locale": "en",
+    "question": "What activities do you enjoy together?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-001-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "identity",
+    "locale": "es",
+    "question": "¿Cuál es el nombre completo de su familiar?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-001-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "identity",
+    "locale": "en",
+    "question": "What is your relative’s full name?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-002-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "identity",
+    "locale": "es",
+    "question": "¿Cuál es su fecha de nacimiento?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-002-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "identity",
+    "locale": "en",
+    "question": "What is their date of birth?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-003-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Qué parentesco tienen?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-003-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "relationship",
+    "locale": "en",
+    "question": "How are you related?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-004-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Dónde nació su familiar?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-004-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "en",
+    "question": "Where was your relative born?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-005-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "es",
+    "question": "¿En qué lugares han vivido juntos?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-005-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "en",
+    "question": "Where have you lived together?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-006-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Cuándo fue la última vez que se vieron?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-006-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "en",
+    "question": "When did you last see each other?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-007-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Qué recuerdos familiares importantes comparten?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-007-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "en",
+    "question": "What important family memories do you share?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-008-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Tiene hermanos o hermanas?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-008-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you have brothers or sisters?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-009-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Tiene otros hijos?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-009-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you have other children?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-010-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Cuál es el estado civil actual de su familiar?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-010-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "family",
+    "locale": "en",
+    "question": "What is your relative’s current marital status?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-011-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Ha cambiado su estado civil? ¿Cuándo?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-011-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "family",
+    "locale": "en",
+    "question": "Has their marital status changed? When?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-012-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Conoce el nombre de los padres de su familiar?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-012-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you know your relative’s parents’ names?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-013-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "contact",
+    "locale": "es",
+    "question": "¿Cómo se comunican normalmente?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-013-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "contact",
+    "locale": "en",
+    "question": "How do you usually communicate?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-014-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "contact",
+    "locale": "es",
+    "question": "¿Con qué frecuencia hablan?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-014-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "contact",
+    "locale": "en",
+    "question": "How often do you speak?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-015-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "contact",
+    "locale": "es",
+    "question": "¿Cuándo fue su última conversación?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-015-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "contact",
+    "locale": "en",
+    "question": "When was your last conversation?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-016-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "documents",
+    "locale": "es",
+    "question": "¿Qué documentos aportaron para acreditar el parentesco?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-016-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "documents",
+    "locale": "en",
+    "question": "What documents did you provide to establish the relationship?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-017-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "documents",
+    "locale": "es",
+    "question": "¿Existen cambios de nombre relevantes?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-017-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "documents",
+    "locale": "en",
+    "question": "Are there any relevant name changes?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-018-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "immigration",
+    "locale": "es",
+    "question": "¿Cuándo ingresó por última vez a Estados Unidos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-018-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "immigration",
+    "locale": "en",
+    "question": "When did you last enter the United States?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-019-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "immigration",
+    "locale": "es",
+    "question": "¿Cuál fue el propósito de ese viaje?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-019-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "immigration",
+    "locale": "en",
+    "question": "What was the purpose of that trip?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-020-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "immigration",
+    "locale": "es",
+    "question": "¿Ha presentado otras solicitudes migratorias?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-020-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "immigration",
+    "locale": "en",
+    "question": "Have you filed other immigration applications?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-021-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Viven actualmente en el mismo domicilio?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-021-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "household",
+    "locale": "en",
+    "question": "Do you currently live at the same address?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-022-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Quiénes viven en ese domicilio?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-022-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "household",
+    "locale": "en",
+    "question": "Who lives at that address?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-023-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "support",
+    "locale": "es",
+    "question": "¿Cómo se ayudan mutuamente?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-023-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "support",
+    "locale": "en",
+    "question": "How do you support one another?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-024-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Han viajado juntos alguna vez?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-024-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "en",
+    "question": "Have you ever traveled together?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-025-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Qué evento familiar reciente recuerda?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_mother-025-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_mother",
+    "category": "history",
+    "locale": "en",
+    "question": "What recent family event do you remember?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-001-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "identity",
+    "locale": "es",
+    "question": "¿Cuál es el nombre completo de su familiar?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-001-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "identity",
+    "locale": "en",
+    "question": "What is your relative’s full name?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-002-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "identity",
+    "locale": "es",
+    "question": "¿Cuál es su fecha de nacimiento?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-002-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "identity",
+    "locale": "en",
+    "question": "What is their date of birth?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-003-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Qué parentesco tienen?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-003-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "relationship",
+    "locale": "en",
+    "question": "How are you related?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-004-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Dónde nació su familiar?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-004-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "en",
+    "question": "Where was your relative born?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-005-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "es",
+    "question": "¿En qué lugares han vivido juntos?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-005-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "en",
+    "question": "Where have you lived together?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-006-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Cuándo fue la última vez que se vieron?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-006-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "en",
+    "question": "When did you last see each other?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-007-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Qué recuerdos familiares importantes comparten?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-007-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "en",
+    "question": "What important family memories do you share?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-008-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Tiene hermanos o hermanas?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-008-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you have brothers or sisters?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-009-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Tiene otros hijos?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-009-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you have other children?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-010-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Cuál es el estado civil actual de su familiar?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-010-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "family",
+    "locale": "en",
+    "question": "What is your relative’s current marital status?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-011-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Ha cambiado su estado civil? ¿Cuándo?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-011-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "family",
+    "locale": "en",
+    "question": "Has their marital status changed? When?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-012-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Conoce el nombre de los padres de su familiar?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-012-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you know your relative’s parents’ names?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-013-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "contact",
+    "locale": "es",
+    "question": "¿Cómo se comunican normalmente?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-013-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "contact",
+    "locale": "en",
+    "question": "How do you usually communicate?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-014-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "contact",
+    "locale": "es",
+    "question": "¿Con qué frecuencia hablan?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-014-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "contact",
+    "locale": "en",
+    "question": "How often do you speak?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-015-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "contact",
+    "locale": "es",
+    "question": "¿Cuándo fue su última conversación?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-015-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "contact",
+    "locale": "en",
+    "question": "When was your last conversation?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-016-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "documents",
+    "locale": "es",
+    "question": "¿Qué documentos aportaron para acreditar el parentesco?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-016-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "documents",
+    "locale": "en",
+    "question": "What documents did you provide to establish the relationship?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-017-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "documents",
+    "locale": "es",
+    "question": "¿Existen cambios de nombre relevantes?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-017-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "documents",
+    "locale": "en",
+    "question": "Are there any relevant name changes?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-018-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "immigration",
+    "locale": "es",
+    "question": "¿Cuándo ingresó por última vez a Estados Unidos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-018-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "immigration",
+    "locale": "en",
+    "question": "When did you last enter the United States?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-019-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "immigration",
+    "locale": "es",
+    "question": "¿Cuál fue el propósito de ese viaje?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-019-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "immigration",
+    "locale": "en",
+    "question": "What was the purpose of that trip?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-020-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "immigration",
+    "locale": "es",
+    "question": "¿Ha presentado otras solicitudes migratorias?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-020-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "immigration",
+    "locale": "en",
+    "question": "Have you filed other immigration applications?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-021-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Viven actualmente en el mismo domicilio?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-021-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "household",
+    "locale": "en",
+    "question": "Do you currently live at the same address?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-022-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Quiénes viven en ese domicilio?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-022-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "household",
+    "locale": "en",
+    "question": "Who lives at that address?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-023-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "support",
+    "locale": "es",
+    "question": "¿Cómo se ayudan mutuamente?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-023-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "support",
+    "locale": "en",
+    "question": "How do you support one another?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-024-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Han viajado juntos alguna vez?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-024-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "en",
+    "question": "Have you ever traveled together?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-025-es",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Qué evento familiar reciente recuerda?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-child_petitions_father-025-en",
+    "engine_id": "residency",
+    "relationship_type": "child_petitions_father",
+    "category": "history",
+    "locale": "en",
+    "question": "What recent family event do you remember?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-001-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "identity",
+    "locale": "es",
+    "question": "¿Cuál es el nombre completo de su familiar?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-001-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "identity",
+    "locale": "en",
+    "question": "What is your relative’s full name?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-002-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "identity",
+    "locale": "es",
+    "question": "¿Cuál es su fecha de nacimiento?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-002-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "identity",
+    "locale": "en",
+    "question": "What is their date of birth?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-003-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "relationship",
+    "locale": "es",
+    "question": "¿Qué parentesco tienen?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-003-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "relationship",
+    "locale": "en",
+    "question": "How are you related?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-004-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Dónde nació su familiar?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-004-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "en",
+    "question": "Where was your relative born?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-005-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "es",
+    "question": "¿En qué lugares han vivido juntos?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-005-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "en",
+    "question": "Where have you lived together?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-006-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Cuándo fue la última vez que se vieron?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-006-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "en",
+    "question": "When did you last see each other?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-007-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Qué recuerdos familiares importantes comparten?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-007-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "en",
+    "question": "What important family memories do you share?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-008-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Tiene hermanos o hermanas?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-008-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you have brothers or sisters?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-009-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Tiene otros hijos?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-009-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you have other children?",
+    "difficulty": "basic",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-010-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Cuál es el estado civil actual de su familiar?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-010-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "family",
+    "locale": "en",
+    "question": "What is your relative’s current marital status?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-011-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Ha cambiado su estado civil? ¿Cuándo?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-011-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "family",
+    "locale": "en",
+    "question": "Has their marital status changed? When?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-012-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "family",
+    "locale": "es",
+    "question": "¿Conoce el nombre de los padres de su familiar?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-012-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "family",
+    "locale": "en",
+    "question": "Do you know your relative’s parents’ names?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-013-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "contact",
+    "locale": "es",
+    "question": "¿Cómo se comunican normalmente?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-013-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "contact",
+    "locale": "en",
+    "question": "How do you usually communicate?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-014-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "contact",
+    "locale": "es",
+    "question": "¿Con qué frecuencia hablan?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-014-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "contact",
+    "locale": "en",
+    "question": "How often do you speak?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-015-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "contact",
+    "locale": "es",
+    "question": "¿Cuándo fue su última conversación?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-015-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "contact",
+    "locale": "en",
+    "question": "When was your last conversation?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-016-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "documents",
+    "locale": "es",
+    "question": "¿Qué documentos aportaron para acreditar el parentesco?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-016-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "documents",
+    "locale": "en",
+    "question": "What documents did you provide to establish the relationship?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-017-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "documents",
+    "locale": "es",
+    "question": "¿Existen cambios de nombre relevantes?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-017-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "documents",
+    "locale": "en",
+    "question": "Are there any relevant name changes?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-018-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "immigration",
+    "locale": "es",
+    "question": "¿Cuándo ingresó por última vez a Estados Unidos?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-018-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "immigration",
+    "locale": "en",
+    "question": "When did you last enter the United States?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-019-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "immigration",
+    "locale": "es",
+    "question": "¿Cuál fue el propósito de ese viaje?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-019-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "immigration",
+    "locale": "en",
+    "question": "What was the purpose of that trip?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-020-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "immigration",
+    "locale": "es",
+    "question": "¿Ha presentado otras solicitudes migratorias?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-020-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "immigration",
+    "locale": "en",
+    "question": "Have you filed other immigration applications?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-021-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Viven actualmente en el mismo domicilio?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-021-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "household",
+    "locale": "en",
+    "question": "Do you currently live at the same address?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-022-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "household",
+    "locale": "es",
+    "question": "¿Quiénes viven en ese domicilio?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-022-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "household",
+    "locale": "en",
+    "question": "Who lives at that address?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-023-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "support",
+    "locale": "es",
+    "question": "¿Cómo se ayudan mutuamente?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-023-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "support",
+    "locale": "en",
+    "question": "How do you support one another?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-024-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Han viajado juntos alguna vez?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-024-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "en",
+    "question": "Have you ever traveled together?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-025-es",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "es",
+    "question": "¿Qué evento familiar reciente recuerda?",
+    "difficulty": "detailed",
+    "official": false
+  },
+  {
+    "id": "RES-parent_petitions_child-025-en",
+    "engine_id": "residency",
+    "relationship_type": "parent_petitions_child",
+    "category": "history",
+    "locale": "en",
+    "question": "What recent family event do you remember?",
+    "difficulty": "detailed",
+    "official": false
+  }
+]

@@ -1,0 +1,5 @@
+* text=auto
+master-package/** -text
+*.png binary
+*.sqlite binary
+*.db binary

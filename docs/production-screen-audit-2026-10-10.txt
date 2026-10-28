@@ -1,0 +1,85 @@
+IMMIGRATION AI — AUDITORÍA DE PRODUCCIÓN
+Fecha: 10 de octubre de 2026
+Sitio: https://immigra.site/
+Versión auditada: c13cbc9
+
+VEREDICTO: NO APROBADA TODAVÍA COMO EXPERIENCIA BILINGÜE COMPLETA.
+La disponibilidad del servidor y los resultados automatizados no demuestran que todos los recorridos de voz funcionen en teléfonos físicos.
+
+ALCANCE
+26 rutas principales, observadas en español e inglés, en escritorio y viewport móvil 390x844: 104 observaciones de interfaz. No son 104 pruebas completas de todas las acciones. Se complementaron con acciones concretas descritas abajo, revisión de código, 153 pruebas automatizadas y 12 evaluaciones reales de OpenAI por texto en producción, con datos ficticios. No se hicieron compras, cambios de credenciales ni borrados de datos personales.
+
+HALLAZGOS PRIORIZADOS
+P1 — Residencia no respeta el idioma global. AosPractice.jsx fuerza lang=es para voz e IA, y su banco original de 300 preguntas solo contiene pregunta_es. interview-domain.mjs utiliza esa pregunta incluso con locale=en. Confirmado también por API real: en inglés, la retroalimentación llega en inglés y la siguiente pregunta en español. El banco antiguo bilingüe de 270 preguntas no es el mismo banco; no debe sustituirse silenciosamente.
+P1 — Retroalimentación contextual defectuosa en Residencia. Después de responder una fecha de nacimiento y luego expresar incertidumbre sobre la edad de un hijo, la evaluación inglesa habló de la fecha anterior como si fuera la respuesta actual. El servidor avanzó, pero el contenido pedagógico no es correcto. La validación actual verifica estructura y citas, no todas las afirmaciones del texto libre. Hace falta separar explícitamente el turno actual del historial y comprobar regresiones semánticas.
+P1 — La configuración nueva de Residencia no se transfiere completa a la entrevista IA. La llamada de AosPractice pasa parentesco pero no las selecciones de ciudadanía/residencia, edad, estado civil ni cantidad. El servidor selecciona 30 preguntas con valores predeterminados. Hallazgo por código; requiere prueba posterior de cada combinación.
+P2 — Asilo no recibe el idioma global en su runtime. Navegación inglesa con contenido principal español. El selector propio del tarjetero sí traduce preguntas y controles; cambiar el idioma global no lo sincroniza.
+P2 — Mezcla de idiomas en Ciudadanía. Escritura vacía muestra “Please write your answer first.” con interfaz española. Una respuesta incorrecta del quiz muestra “That answer does not match an official answer.”. Las preguntas oficiales en inglés y sus traducciones suplementarias no se consideran un defecto.
+P2 — Inicio carga y monta Residencia aunque esté oculta. main.jsx importa Residency sin carga diferida y la renderiza bajo hidden. Esto añade contenido y lógica innecesarios a la carga inicial. Recurso principal: 949895 bytes descomprimidos, entregado con gzip. Es oportunidad de optimización comprobada, no medición de FPS ni prueba de lentitud en 4G.
+P2 — Perfil/Cuenta conserva mensajes de inicio de sesión y prueba PRO mientras el acceso temporal oculta la cuenta/desactiva compras. Produce instrucciones que no corresponden al modo actual.
+P2 — Informe de Asilo sin sesión muestra la portada, sin un estado vacío que explique que todavía no hay informe.
+P3 — Casos ficticios de Asilo mezcla etiquetas inglesas de actividades con interfaz española; Country-Neutral aparece como país.
+
+ACCIONES COMPROBADAS EN PRODUCCIÓN
+- Enlace “Explorar las 320 preguntas”: llega correctamente a /asylum/full-bank; no es un enlace roto.
+- Tarjetero: selector propio English traduce; Next avanza de Q0001 a Q0002; Shuffle cambia el orden y reinicia el contador.
+- Casos ficticios: antes de elegir país no muestra casos; elegir Venezuela muestra casos de Venezuela.
+- Quiz cívico: respuesta oficial correcta muestra Correcto; Continuar avanza; respuesta incorrecta muestra repaso y respuesta aceptable.
+- Escritura: respuesta vacía no se evalúa; aparece aviso (en idioma incorrecto).
+- Podcast español: obtiene duración 18:19, inicia reproducción, se minimiza y ofrece cerrar/detener; cerrar elimina el minirreproductor. No se certificó el sonido oído por una persona.
+- Menú móvil abre y expone navegación rápida.
+- Ninguna de las 52 observaciones móviles presentó desbordamiento horizontal detectable ni botón visible sin texto/aria-label/title. No equivale a certificación de accesibilidad.
+
+EVALUACIONES REALES POR TEXTO
+6 sesiones: Ciudadanía N-400, Asilo y Residencia, cada una ES/EN. Dos respuestas ficticias por sesión. Las 12 devolvieron provider=OpenAI, feedback no vacío y revisión incremental; las 12 avanzaron de identificador de pregunta. Respuestas de incertidumbre llegaron con estado uncertain. Esto prueba texto/backend, no captura de micrófono, WebRTC ni reproducción de voz.
+- citizenship / es: adequate, 2225 ms, avance=True; uncertain, 1984 ms, avance=True
+- citizenship / en: adequate, 1500 ms, avance=True; uncertain, 1843 ms, avance=True
+- asylum / es: adequate, 2358 ms, avance=True; uncertain, 1815 ms, avance=True
+- asylum / en: adequate, 1677 ms, avance=True; uncertain, 1912 ms, avance=True
+- residency / es: adequate, 1584 ms, avance=True; uncertain, 1695 ms, avance=True
+- residency / en: adequate, 1504 ms, avance=True; uncertain, 1603 ms, avance=True
+
+RENDIMIENTO: MUESTRA PUNTUAL DESDE ESTA COMPUTADORA
+HTML: HTTP 200, 269 ms; estado de entrevistas: HTTP 200, 242 ms; JS principal: HTTP 200, 398 ms incluyendo descarga. No son Core Web Vitals ni tiempos garantizados. No se midieron LCP, INP, CLS, red móvil limitada, arranque frío prolongado de Render, memoria ni batería.
+
+MATRIZ DE PANTALLAS (INSPECCIÓN DE RENDERIZADO ES/EN Y ESCRITORIO/MÓVIL)
+/[inicio] — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/help — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/profile — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/settings — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/account — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/citizenship/home — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/citizenship/civics — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/citizenship/quiz — 4 observaciones. Acierto/error/continuación comprobados; feedback de error sin traducir.
+/citizenship/vocabulary — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/citizenship/practice — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/citizenship/reading — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/citizenship/writing — 4 observaciones. Validación vacía comprobada; aviso no traducido.
+/citizenship/podcasts — 4 observaciones. Abrir/reproducir/minimizar/cerrar comprobados.
+/citizenship/progress — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/citizenship/civicsGuide — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/citizenship/interview?mode=n400 — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/citizenship/interview?mode=civics — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/citizenship/connect — 4 observaciones. Renderizado inspeccionado; acciones no exhaustivas.
+/asylum/practice — 4 observaciones. Renderizado inspeccionado; idioma global no aplicado al contenido principal.
+/asylum/fiction — 4 observaciones. Renderizado inspeccionado; idioma global no aplicado al contenido principal.
+/asylum/setup — 4 observaciones. Renderizado inspeccionado; idioma global no aplicado al contenido principal.
+/asylum/case-workspace — 4 observaciones. Renderizado inspeccionado; idioma global no aplicado al contenido principal.
+/asylum/full-bank — 4 observaciones. Avance/mezcla/selector local English comprobados; idioma global separado.
+/asylum/practice-report — 4 observaciones. Renderizado inspeccionado; idioma global no aplicado al contenido principal.
+/asylum/vault — 4 observaciones. Renderizado inspeccionado; idioma global no aplicado al contenido principal.
+/residency — 4 observaciones. Renderizado inspeccionado; inglés no disponible en el flujo nuevo.
+
+PRUEBAS AUTOMATIZADAS
+npm test: 153 aprobadas, 0 fallidas. Algunas pruebas bilingües cubren el adaptador antiguo de 270 preguntas y no garantizan que el flujo nuevo de 300 esté traducido. No se ejecutó una auditoría normativa jurídica ni se certificó WCAG.
+
+PENDIENTES PARA APROBACIÓN FINAL
+1. Corregir los P1 y P2 anteriores y repetir los recorridos afectados en producción.
+2. iPhone/Safari y Android/Chrome reales: permiso inicial, tres turnos de voz por módulo, transcripción, evaluación, audio contextual, pausa, reanudar, interrupciones y cierre. No hay micrófono físico verificable en este entorno; no se afirma que esos pasos pasen.
+3. Prueba de teclado/foco/lector de pantalla, contraste, zoom 200%, orientación y tableta física.
+4. Prueba controlada de red lenta/reconexión y medición Core Web Vitals.
+5. Revisar importación PDF/OCR, exportación cifrada y eliminación en un espacio desechable; no usar datos personales existentes para pruebas destructivas.
+6. Pruebas de extremo a extremo largas y de todas las combinaciones familiares; las 12 evaluaciones son una muestra, no garantía de calidad general.
+
+ESTADO DE PRODUCCIÓN
+La versión auditada permanece publicada y el acceso temporal de pruebas sigue activo. Esta auditoría no publicó modificaciones ni afirma haber reparado los hallazgos. Evidencias publicadas: audit-evidence-2026-10-10/production-evaluation-audit.json y audit-evidence-2026-10-10/production-http-audit.json. Las 104 observaciones de interfaz se conservan localmente en screen-audit-2026-10-10.json. No contienen claves ni datos personales reales.

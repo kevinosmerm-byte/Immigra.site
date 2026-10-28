@@ -1,0 +1,39 @@
+{
+  "country": "Venezuela",
+  "source_refs": [
+    "VEN_FFM_2024",
+    "VEN_UN_2025_NGO",
+    "VEN_UN_2025_DEFENDER"
+  ],
+  "regions": [
+    "Caracas",
+    "Maracaibo, Zulia",
+    "Barquisimeto, Lara",
+    "Maracay, Aragua",
+    "Valencia, Carabobo",
+    "San Cristóbal, Táchira",
+    "Maturín, Monagas"
+  ],
+  "contexts": [
+    "student and civic protest activity",
+    "local opposition campaign volunteering",
+    "polling-place civic participation",
+    "human-rights or humanitarian volunteering",
+    "independent local journalism or public expression",
+    "labor/community organizing",
+    "post-departure public criticism"
+  ],
+  "actors": [
+    "uniformed security officers",
+    "plainclothes security personnel",
+    "local political organizers aligned with authorities",
+    "armed civilian actors described by the persona as pro-government",
+    "unknown persons invoking political activity"
+  ],
+  "practice_notes": [
+    "Separate personal facts from broad reports about post-election repression.",
+    "Ask how the persona identified any alleged actor.",
+    "Explore whether the feared actor or network remains relevant today.",
+    "Do not infer government knowledge from public political activity; ask for factual basis."
+  ]
+}

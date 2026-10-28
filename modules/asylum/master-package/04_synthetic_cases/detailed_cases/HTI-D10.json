@@ -1,0 +1,195 @@
+{
+  "case_id": "HTI-D10",
+  "version": "0.2",
+  "fictional": true,
+  "data_domain": "synthetic",
+  "country": "Haiti",
+  "title": "Haiti — Return Displacement — Jonas Saint-Fleur",
+  "difficulty": "intermediate",
+  "persona": {
+    "display_name": "Jonas Saint-Fleur",
+    "origin": "Artibonite",
+    "age_range": "33-37",
+    "language": "Haitian Creole/French + optional English practice",
+    "profile": "person who fled internally, returned to retrieve property, and encountered renewed danger"
+  },
+  "country_context": {
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ],
+    "rule": "Sources provide contextual realism only. They are not persona facts and are never merged into testimony."
+  },
+  "intentional_features": [
+    "challenge_case",
+    "return_trip",
+    "third_country",
+    "multiple_incidents",
+    "approximate_dates"
+  ],
+  "events": [
+    {
+      "event_id": "E01",
+      "type": "background",
+      "date": "2021",
+      "date_precision": "year_only",
+      "location": "Artibonite",
+      "summary": "Jonas Saint-Fleur begins or becomes more visible in a fictional context: person who fled internally, returned to retrieve property, and encountered renewed danger.",
+      "source_type": "synthetic_persona_fact",
+      "interview_targets": [
+        "role",
+        "frequency",
+        "visibility",
+        "who knew"
+      ]
+    },
+    {
+      "event_id": "E02",
+      "type": "incident",
+      "date": "2022-08",
+      "date_precision": "approximate",
+      "location": "Artibonite",
+      "summary": "Fictional incident: relative was threatened for allegedly cooperating with police. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "security forces as a separate contextual actor",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E03",
+      "type": "incident",
+      "date": "2023-11",
+      "date_precision": "month_only",
+      "location": "Artibonite",
+      "summary": "Fictional incident: was kidnapped or briefly held for ransom. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "gang members",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E04",
+      "type": "incident",
+      "date": "2024-03",
+      "date_precision": "approximate",
+      "location": "Gressier",
+      "summary": "Fictional incident: home/business was attacked after refusing a demand. The case contains additional hidden factual detail that must be elicited through neutral questions.",
+      "actor_label": "armed men controlling local checkpoints",
+      "actor_certainty": "persona_reports_basis_to_be_explored",
+      "interview_targets": [
+        "when",
+        "where",
+        "who",
+        "basis_of_identification",
+        "what_happened",
+        "what_was_said",
+        "aftermath",
+        "witnesses"
+      ]
+    },
+    {
+      "event_id": "E05",
+      "type": "departure",
+      "date": "2025-06",
+      "date_precision": "month_only",
+      "location": "Haiti",
+      "summary": "Persona leaves the country. The exact reason/timing relationship to prior incidents should be explored, not assumed.",
+      "interview_targets": [
+        "why_left_when",
+        "time_between_last_incident_and_departure",
+        "travel_route"
+      ]
+    },
+    {
+      "event_id": "E06",
+      "type": "return_trip",
+      "date": "2025-03",
+      "date_precision": "month_only",
+      "location": "Haiti",
+      "summary": "Persona briefly returns for a fictional family/personal reason. No legal significance is predetermined.",
+      "duration_days": 9,
+      "interview_targets": [
+        "reason",
+        "duration",
+        "where_stayed",
+        "who_knew",
+        "what_happened",
+        "precautions"
+      ]
+    },
+    {
+      "event_id": "E09",
+      "type": "current_context",
+      "date": "2026",
+      "date_precision": "year_only",
+      "location": "United States / abroad",
+      "summary": "Current-fear practice node. What the persona knows today must be elicited separately from country-condition sources.",
+      "interview_targets": [
+        "current_feared_actor",
+        "most_recent_information",
+        "continuing_interest",
+        "post_departure_activity",
+        "expected_harm"
+      ]
+    }
+  ],
+  "discrepancies_for_training": [],
+  "documents": [
+    {
+      "type": "identity",
+      "status": "available",
+      "synthetic": true
+    },
+    {
+      "type": "personal_declaration",
+      "status": "available",
+      "synthetic": true
+    }
+  ],
+  "facts_to_elicit": [
+    "identity and background",
+    "exact nature and visibility of activity",
+    "each incident chronology",
+    "actor identification and basis of knowledge",
+    "words/actions during incidents",
+    "aftermath",
+    "authority contact if any",
+    "relocation if any",
+    "departure timing",
+    "family remaining",
+    "return trips if any",
+    "current information about feared actor",
+    "post-departure events",
+    "what is personal knowledge vs public information"
+  ],
+  "question_engine_hints": {
+    "first_priority": "Stay on the current event until core factual dimensions are reasonably explored.",
+    "if_inconsistency": "Ask a neutral recollection/sequence question; do not reveal a preferred version.",
+    "if_country_context_relevant": "Ask whether the user personally experienced or knows a related fact; never insert the country fact.",
+    "if_legal_question": "Do not determine eligibility or sufficiency; offer factual practice."
+  },
+  "story_narrative_es": "CASO TOTALMENTE FICTICIO. Jonas Saint-Fleur es una persona adulta de Haiti, originaria de Artibonite. El escenario se diseñó para practicar una entrevista relacionada con person who fled internally, returned to retrieve property, and encountered renewed danger. La historia comienza alrededor de 2021. En 2022-08, en Artibonite, ocurre un evento ficticio descrito internamente como: relative was threatened for allegedly cooperating with police. En 2023-11, en Artibonite, ocurre un evento ficticio descrito internamente como: was kidnapped or briefly held for ransom. En 2024-03, en Gressier, ocurre un evento ficticio descrito internamente como: home/business was attacked after refusing a demand. La persona sale del país alrededor de 2025-06. Posteriormente realiza un regreso breve por una razón personal o familiar que debe ser explorada mediante preguntas y no asumida. Algunas fechas son aproximadas y ciertos detalles se recuerdan con distinta precisión. En 2026 la persona expresa que todavía tiene preocupación por regresar, pero el sistema debe preguntar qué sabe hoy, cuándo tuvo el contacto más reciente, qué ocurrió con familiares y qué información proviene de experiencia personal frente a fuentes públicas. Este escenario no constituye un ejemplo de un caso jurídicamente suficiente y ninguno de sus hechos puede trasladarse a la historia de un usuario real.",
+  "safety": {
+    "never_use_as_real_testimony": true,
+    "no_merge_with_personal_case": true,
+    "no_legal_sufficiency_label": true,
+    "disclaimer": "Caso completamente ficticio para práctica educativa. No es asesoría legal ni un modelo de hechos que una persona deba adoptar."
+  }
+}

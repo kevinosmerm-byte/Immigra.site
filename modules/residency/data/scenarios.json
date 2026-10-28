@@ -1,0 +1,272 @@
+[
+  {
+    "id": "marriage_husband_petitioner-01",
+    "relationship_type": "marriage_husband_petitioner",
+    "title_es": "Matrimonio: esposo peticionario: Viven juntos",
+    "title_en": "Marriage: husband petitions: cohabiting",
+    "fictional": true,
+    "seed_tag": "cohabiting",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_husband_petitioner-02",
+    "relationship_type": "marriage_husband_petitioner",
+    "title_es": "Matrimonio: esposo peticionario: Viven separados por motivos laborales",
+    "title_en": "Marriage: husband petitions: separate work",
+    "fictional": true,
+    "seed_tag": "separate_work",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_husband_petitioner-03",
+    "relationship_type": "marriage_husband_petitioner",
+    "title_es": "Matrimonio: esposo peticionario: Existe un matrimonio anterior",
+    "title_en": "Marriage: husband petitions: prior marriage",
+    "fictional": true,
+    "seed_tag": "prior_marriage",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_husband_petitioner-04",
+    "relationship_type": "marriage_husband_petitioner",
+    "title_es": "Matrimonio: esposo peticionario: Se mudaron recientemente",
+    "title_en": "Marriage: husband petitions: recent move",
+    "fictional": true,
+    "seed_tag": "recent_move",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_husband_petitioner-05",
+    "relationship_type": "marriage_husband_petitioner",
+    "title_es": "Matrimonio: esposo peticionario: Han viajado juntos",
+    "title_en": "Marriage: husband petitions: travel",
+    "fictional": true,
+    "seed_tag": "travel",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_husband_petitioner-06",
+    "relationship_type": "marriage_husband_petitioner",
+    "title_es": "Matrimonio: esposo peticionario: No recuerdan algunas fechas con exactitud",
+    "title_en": "Marriage: husband petitions: memory gaps",
+    "fictional": true,
+    "seed_tag": "memory_gaps",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_wife_petitioner-01",
+    "relationship_type": "marriage_wife_petitioner",
+    "title_es": "Matrimonio: esposa peticionaria: Viven juntos",
+    "title_en": "Marriage: wife petitions: cohabiting",
+    "fictional": true,
+    "seed_tag": "cohabiting",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_wife_petitioner-02",
+    "relationship_type": "marriage_wife_petitioner",
+    "title_es": "Matrimonio: esposa peticionaria: Viven separados por motivos laborales",
+    "title_en": "Marriage: wife petitions: separate work",
+    "fictional": true,
+    "seed_tag": "separate_work",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_wife_petitioner-03",
+    "relationship_type": "marriage_wife_petitioner",
+    "title_es": "Matrimonio: esposa peticionaria: Existe un matrimonio anterior",
+    "title_en": "Marriage: wife petitions: prior marriage",
+    "fictional": true,
+    "seed_tag": "prior_marriage",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_wife_petitioner-04",
+    "relationship_type": "marriage_wife_petitioner",
+    "title_es": "Matrimonio: esposa peticionaria: Se mudaron recientemente",
+    "title_en": "Marriage: wife petitions: recent move",
+    "fictional": true,
+    "seed_tag": "recent_move",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_wife_petitioner-05",
+    "relationship_type": "marriage_wife_petitioner",
+    "title_es": "Matrimonio: esposa peticionaria: Han viajado juntos",
+    "title_en": "Marriage: wife petitions: travel",
+    "fictional": true,
+    "seed_tag": "travel",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "marriage_wife_petitioner-06",
+    "relationship_type": "marriage_wife_petitioner",
+    "title_es": "Matrimonio: esposa peticionaria: No recuerdan algunas fechas con exactitud",
+    "title_en": "Marriage: wife petitions: memory gaps",
+    "fictional": true,
+    "seed_tag": "memory_gaps",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_mother-01",
+    "relationship_type": "child_petitions_mother",
+    "title_es": "Hijo/a ciudadano/a solicita a su madre: Viven juntos",
+    "title_en": "Citizen child petitions mother: cohabiting",
+    "fictional": true,
+    "seed_tag": "cohabiting",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_mother-02",
+    "relationship_type": "child_petitions_mother",
+    "title_es": "Hijo/a ciudadano/a solicita a su madre: Viven separados por motivos laborales",
+    "title_en": "Citizen child petitions mother: separate work",
+    "fictional": true,
+    "seed_tag": "separate_work",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_mother-03",
+    "relationship_type": "child_petitions_mother",
+    "title_es": "Hijo/a ciudadano/a solicita a su madre: Existe un matrimonio anterior",
+    "title_en": "Citizen child petitions mother: prior marriage",
+    "fictional": true,
+    "seed_tag": "prior_marriage",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_mother-04",
+    "relationship_type": "child_petitions_mother",
+    "title_es": "Hijo/a ciudadano/a solicita a su madre: Se mudaron recientemente",
+    "title_en": "Citizen child petitions mother: recent move",
+    "fictional": true,
+    "seed_tag": "recent_move",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_mother-05",
+    "relationship_type": "child_petitions_mother",
+    "title_es": "Hijo/a ciudadano/a solicita a su madre: Han viajado juntos",
+    "title_en": "Citizen child petitions mother: travel",
+    "fictional": true,
+    "seed_tag": "travel",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_mother-06",
+    "relationship_type": "child_petitions_mother",
+    "title_es": "Hijo/a ciudadano/a solicita a su madre: No recuerdan algunas fechas con exactitud",
+    "title_en": "Citizen child petitions mother: memory gaps",
+    "fictional": true,
+    "seed_tag": "memory_gaps",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_father-01",
+    "relationship_type": "child_petitions_father",
+    "title_es": "Hijo/a ciudadano/a solicita a su padre: Viven juntos",
+    "title_en": "Citizen child petitions father: cohabiting",
+    "fictional": true,
+    "seed_tag": "cohabiting",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_father-02",
+    "relationship_type": "child_petitions_father",
+    "title_es": "Hijo/a ciudadano/a solicita a su padre: Viven separados por motivos laborales",
+    "title_en": "Citizen child petitions father: separate work",
+    "fictional": true,
+    "seed_tag": "separate_work",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_father-03",
+    "relationship_type": "child_petitions_father",
+    "title_es": "Hijo/a ciudadano/a solicita a su padre: Existe un matrimonio anterior",
+    "title_en": "Citizen child petitions father: prior marriage",
+    "fictional": true,
+    "seed_tag": "prior_marriage",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_father-04",
+    "relationship_type": "child_petitions_father",
+    "title_es": "Hijo/a ciudadano/a solicita a su padre: Se mudaron recientemente",
+    "title_en": "Citizen child petitions father: recent move",
+    "fictional": true,
+    "seed_tag": "recent_move",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_father-05",
+    "relationship_type": "child_petitions_father",
+    "title_es": "Hijo/a ciudadano/a solicita a su padre: Han viajado juntos",
+    "title_en": "Citizen child petitions father: travel",
+    "fictional": true,
+    "seed_tag": "travel",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "child_petitions_father-06",
+    "relationship_type": "child_petitions_father",
+    "title_es": "Hijo/a ciudadano/a solicita a su padre: No recuerdan algunas fechas con exactitud",
+    "title_en": "Citizen child petitions father: memory gaps",
+    "fictional": true,
+    "seed_tag": "memory_gaps",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "parent_petitions_child-01",
+    "relationship_type": "parent_petitions_child",
+    "title_es": "Padre/madre solicita a su hijo/a: Viven juntos",
+    "title_en": "Parent petitions child: cohabiting",
+    "fictional": true,
+    "seed_tag": "cohabiting",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "parent_petitions_child-02",
+    "relationship_type": "parent_petitions_child",
+    "title_es": "Padre/madre solicita a su hijo/a: Viven separados por motivos laborales",
+    "title_en": "Parent petitions child: separate work",
+    "fictional": true,
+    "seed_tag": "separate_work",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "parent_petitions_child-03",
+    "relationship_type": "parent_petitions_child",
+    "title_es": "Padre/madre solicita a su hijo/a: Existe un matrimonio anterior",
+    "title_en": "Parent petitions child: prior marriage",
+    "fictional": true,
+    "seed_tag": "prior_marriage",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "parent_petitions_child-04",
+    "relationship_type": "parent_petitions_child",
+    "title_es": "Padre/madre solicita a su hijo/a: Se mudaron recientemente",
+    "title_en": "Parent petitions child: recent move",
+    "fictional": true,
+    "seed_tag": "recent_move",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "parent_petitions_child-05",
+    "relationship_type": "parent_petitions_child",
+    "title_es": "Padre/madre solicita a su hijo/a: Han viajado juntos",
+    "title_en": "Parent petitions child: travel",
+    "fictional": true,
+    "seed_tag": "travel",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  },
+  {
+    "id": "parent_petitions_child-06",
+    "relationship_type": "parent_petitions_child",
+    "title_es": "Padre/madre solicita a su hijo/a: No recuerdan algunas fechas con exactitud",
+    "title_en": "Parent petitions child: memory gaps",
+    "fictional": true,
+    "seed_tag": "memory_gaps",
+    "note": "Solo contexto ficticio para practicar; no sustituye respuestas reales ni presume elegibilidad."
+  }
+]

@@ -1,0 +1,89 @@
+{
+  "case_id": "SYN049",
+  "data_domain": "synthetic",
+  "fictional": true,
+  "country": "Country-Neutral",
+  "persona": {
+    "display_name": "Luis Morales",
+    "primary_language": "Spanish",
+    "city_of_origin": "Central Province",
+    "background": "Fictional adult with background involving non-government actor. This is not a model for a real applicant."
+  },
+  "difficulty": "beginner",
+  "theme": "non-government actor",
+  "incidents": [
+    {
+      "incident_id": "INC1",
+      "approximate_date": "2017-02",
+      "date_precision": "month_only",
+      "location": "Central Province",
+      "summary": "Fictional non-government actor related incident 1. Additional factual details are intentionally reserved for follow-up questions.",
+      "actor_label": "fictional local actor",
+      "threat_present": true,
+      "physical_harm": false,
+      "medical_treatment": false,
+      "reported_to_authorities": false,
+      "user_stated_reason": "Persona believes the event related to non-government actor, based only on facts contained in this fictional scenario."
+    },
+    {
+      "incident_id": "INC2",
+      "approximate_date": "2018-05",
+      "date_precision": "month_only",
+      "location": "Central Province",
+      "summary": "Fictional non-government actor related incident 2. Additional factual details are intentionally reserved for follow-up questions.",
+      "actor_label": "fictional organization members",
+      "threat_present": false,
+      "physical_harm": false,
+      "medical_treatment": false,
+      "reported_to_authorities": false,
+      "user_stated_reason": "Persona believes the event related to non-government actor, based only on facts contained in this fictional scenario."
+    }
+  ],
+  "family_remaining": false,
+  "return_trip": {
+    "present": false,
+    "year": null,
+    "reason": null
+  },
+  "internal_relocation": {
+    "attempted": true,
+    "location": "North District"
+  },
+  "third_country": {
+    "present": false,
+    "country": null
+  },
+  "current_fear": {
+    "feared_actor": "same fictional actor/group described in incidents",
+    "most_recent_information": "unknown",
+    "expected_harm": "must be elicited through neutral questions"
+  },
+  "intentional_features": [
+    "internal_relocation",
+    "new_information",
+    "continuing_interest_unknown"
+  ],
+  "gold_coverage_targets": [
+    "IDENTITY",
+    "FAMILY",
+    "ASYLUM_REASON",
+    "INCIDENT_DETAIL",
+    "PERSECUTOR",
+    "MOTIVE_FACTS",
+    "GOVERNMENT_RESPONSE",
+    "INTERNAL_RELOCATION",
+    "FUTURE_FEAR",
+    "FAMILY_REMAINING",
+    "RETURN_TRIPS",
+    "THIRD_COUNTRIES",
+    "DOCUMENT_DIFFERENCES",
+    "CORROBORATION"
+  ],
+  "forbidden_behavior": [
+    "Do not present this scenario as a legally sufficient asylum claim.",
+    "Do not tell a real user to adopt any fact from this scenario.",
+    "Do not merge this case with a personal case.",
+    "Do not use the synthetic Gold Case Graph as an answer key for a real user."
+  ],
+  "disclaimer": "This is a fictional educational scenario. It is not legal advice and is not an example of facts a real applicant should use."
+}

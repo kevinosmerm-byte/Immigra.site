@@ -1,0 +1,152 @@
+[
+  {
+    "module": "citizenship",
+    "locale": "es",
+    "turns": [
+      {
+        "ms": 2225,
+        "provider": "OpenAI",
+        "status": "adequate",
+        "feedback": "La respuesta es clara y coincide con la pregunta. Has proporcionado tu nombre legal correctamente.",
+        "next": "How do you spell your last name?",
+        "advanced": true,
+        "revision": 1
+      },
+      {
+        "ms": 1984,
+        "provider": "OpenAI",
+        "status": "uncertain",
+        "feedback": "Recuerda que es importante saber cómo se escribe tu apellido para el formulario. Puedes revisarlo en tus documentos si no lo recuerdas.",
+        "next": "Have you used any other names since birth?",
+        "advanced": true,
+        "revision": 2
+      }
+    ],
+    "initialQuestion": "What name do you use legally?"
+  },
+  {
+    "module": "citizenship",
+    "locale": "en",
+    "turns": [
+      {
+        "ms": 1500,
+        "provider": "OpenAI",
+        "status": "adequate",
+        "feedback": "You provided your legal name clearly. It's good to state your full name in such contexts.",
+        "next": "How do you spell your last name?",
+        "advanced": true,
+        "revision": 1
+      },
+      {
+        "ms": 1843,
+        "provider": "OpenAI",
+        "status": "uncertain",
+        "feedback": "You mentioned you need to review your documents. Knowing how to spell your last name is important for your application.",
+        "next": "Have you used any other names since birth?",
+        "advanced": true,
+        "revision": 2
+      }
+    ],
+    "initialQuestion": "What name do you use legally?"
+  },
+  {
+    "module": "asylum",
+    "locale": "es",
+    "turns": [
+      {
+        "ms": 2358,
+        "provider": "OpenAI",
+        "status": "adequate",
+        "feedback": "Has proporcionado tu nombre completo claramente. Es un buen comienzo para compartir su historia.",
+        "next": "¿Qué otros nombres u ortografías ha usado, si alguno?",
+        "advanced": true,
+        "revision": 1
+      },
+      {
+        "ms": 1815,
+        "provider": "OpenAI",
+        "status": "uncertain",
+        "feedback": "Es natural no recordar todos los detalles. Puede revisar sus documentos para obtener más información.",
+        "next": "¿Dónde nació?",
+        "advanced": true,
+        "revision": 2
+      }
+    ],
+    "initialQuestion": "Por favor, dígame su nombre completo."
+  },
+  {
+    "module": "asylum",
+    "locale": "en",
+    "turns": [
+      {
+        "ms": 1677,
+        "provider": "OpenAI",
+        "status": "adequate",
+        "feedback": "You provided your full name clearly. It's important to state this information confidently in an interview setting.",
+        "next": "What other names or spellings have you used, if any?",
+        "advanced": true,
+        "revision": 1
+      },
+      {
+        "ms": 1912,
+        "provider": "OpenAI",
+        "status": "uncertain",
+        "feedback": "You mentioned your full name but couldn't recall any other names or spellings. Reviewing your documents might help clarify this.",
+        "next": "Where were you born?",
+        "advanced": true,
+        "revision": 2
+      }
+    ],
+    "initialQuestion": "Please tell me your full name."
+  },
+  {
+    "module": "residency",
+    "locale": "es",
+    "turns": [
+      {
+        "ms": 1584,
+        "provider": "OpenAI",
+        "status": "adequate",
+        "feedback": "La fecha de nacimiento que proporcionaste es clara. Es importante para el proceso de ajuste de estatus.",
+        "next": "¿Qué edad tiene actualmente su hijo o hija?",
+        "advanced": true,
+        "revision": 1
+      },
+      {
+        "ms": 1695,
+        "provider": "OpenAI",
+        "status": "uncertain",
+        "feedback": "No se ha proporcionado la fecha de nacimiento de su hijo o hija. La información es necesaria para calcular la edad actual.",
+        "next": "¿Con quién vivía cuando era pequeño?",
+        "advanced": true,
+        "revision": 2
+      }
+    ],
+    "initialQuestion": "¿Cuál es su fecha de nacimiento?"
+  },
+  {
+    "module": "residency",
+    "locale": "en",
+    "turns": [
+      {
+        "ms": 1504,
+        "provider": "OpenAI",
+        "status": "adequate",
+        "feedback": "The user provided a clear response regarding their birth date. It's essential to confirm details such as age for immigration purposes.",
+        "next": "¿Qué edad tiene actualmente su hijo o hija?",
+        "advanced": true,
+        "revision": 1
+      },
+      {
+        "ms": 1603,
+        "provider": "OpenAI",
+        "status": "uncertain",
+        "feedback": "Your response about your own birth date does not provide information about your child's age. Please review your documents to provide their birth date.",
+        "next": "¿Con quién vivía cuando era pequeño?",
+        "advanced": true,
+        "revision": 2
+      }
+    ],
+    "initialQuestion": "¿Cuál es su fecha de nacimiento?"
+  }
+]

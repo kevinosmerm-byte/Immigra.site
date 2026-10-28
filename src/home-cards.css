@@ -1,0 +1,20 @@
+/* Higher specificity keeps lazy module styles from shrinking the icon slot. */
+#main > .cards > .card > span.icon {
+  position:relative;isolation:isolate;display:grid;place-items:center;
+  flex:0 0 116px;width:116px;height:116px;min-height:116px;
+  align-self:center;margin:0 auto 4px;padding:0;border:0;border-radius:29px;
+  background:transparent;box-shadow:none;
+}
+#main > .cards > .card > span.icon::before {content:none;}
+#main > .cards > .card > span.icon .reference-icon {
+  position:relative;display:block;width:116px;height:116px;overflow:hidden;border-radius:29px;
+}
+#main > .cards > .card > span.icon .reference-icon img {
+  display:block;width:140px;height:140px;max-width:none;object-fit:contain;
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);margin:0;
+}
+#main > .cards > button.card h2 {margin:24px 0 10px;position:relative;}
+@keyframes home-icon-glow {0%,100%{opacity:.45;transform:scale(.98)}50%{opacity:.95;transform:scale(1.08)}}
+@media(prefers-reduced-motion:reduce){#main > .cards > .card > span.icon::before{animation:none;opacity:.65;}}
+html[data-reduce-motion=true] #main > .cards > .card > span.icon::before{animation:none;opacity:.65;}
+.brand .official-brand-icon{width:36px;height:36px;object-fit:contain;border-radius:9px;vertical-align:middle;margin-right:9px}

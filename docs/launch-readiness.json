@@ -1,0 +1,40 @@
+{
+  "app": "Immigra",
+  "externalChecks": [
+    {
+      "id": "stripe_lifecycle",
+      "verified": false,
+      "requirement": "Compra, activación por webhook, renovación, cancelación y vencimiento comprobados con una cuenta autorizada."
+    },
+    {
+      "id": "backup_restore",
+      "verified": false,
+      "requirement": "Respaldo cifrado y restauración probados fuera de producción."
+    },
+    {
+      "id": "native_store_billing",
+      "verified": false,
+      "requirement": "Productos, compras, validación y restauración de Apple/Google configurados y probados."
+    },
+    {
+      "id": "physical_devices",
+      "verified": false,
+      "requirement": "Prueba completa en iPhone y Android físicos con el paquete unificado."
+    },
+    {
+      "id": "store_records",
+      "verified": false,
+      "requirement": "Aplicaciones creadas en las consolas, contacto de revisión y declaraciones de privacidad confirmados."
+    },
+    {
+      "id": "native_auth_redirect",
+      "verified": false,
+      "requirement": "Redirect us.citizenshipai.app://auth-callback permitido en Supabase y probado en dispositivo."
+    },
+    {
+      "id": "scheduled_monitoring",
+      "verified": false,
+      "requirement": "Workflow horario presente en la rama predeterminada y notificaciones del repositorio habilitadas."
+    }
+  ]
+}

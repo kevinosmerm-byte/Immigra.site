@@ -1,0 +1,23 @@
+import { readFile } from "node:fs/promises";
+import assert from "node:assert/strict";
+
+const metadata = JSON.parse(await readFile("app-store/metadata.json", "utf8"));
+assert.equal(metadata.app.bundleId, "us.citizenshipai.app");
+
+for (const [locale, copy] of Object.entries(metadata.localizations)) {
+  assert.ok(copy.name.length >= 2 && copy.name.length <= 30, `${locale} name must be 2–30 characters`);
+  assert.ok(copy.subtitle.length <= 30, `${locale} subtitle must be at most 30 characters`);
+  assert.ok(copy.promotionalText.length <= 170, `${locale} promotional text must be at most 170 characters`);
+  assert.ok(copy.description.length <= 4000, `${locale} description must be at most 4000 characters`);
+  assert.ok(Buffer.byteLength(copy.keywords, "utf8") <= 100, `${locale} keywords must be at most 100 UTF-8 bytes`);
+  assert.doesNotMatch(copy.keywords, /(^|,)\s|\s(,|$)/, `${locale} keywords should not waste bytes around commas`);
+}
+
+for (const field of ["privacyPolicyUrl", "supportUrl", "marketingUrl"]) {
+  assert.match(metadata.app[field], /^https:\/\//, `${field} must use HTTPS`);
+}
+assert.equal(metadata.review.demoAccountRequired, true);
+assert.match(metadata.review.notes, /independent educational study app/);
+assert.match(metadata.review.notes, /Native purchases are disabled/);
+
+console.log("App Store metadata checks passed.");

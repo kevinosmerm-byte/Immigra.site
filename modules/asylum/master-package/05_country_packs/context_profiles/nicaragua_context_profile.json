@@ -1,0 +1,35 @@
+{
+  "country": "Nicaragua",
+  "source_refs": [
+    "NIC_UN_2024",
+    "NIC_UN_2026"
+  ],
+  "regions": [
+    "Managua",
+    "León",
+    "Masaya",
+    "Estelí",
+    "Matagalpa",
+    "Granada"
+  ],
+  "contexts": [
+    "student organizing after 2018",
+    "Catholic parish/community activity",
+    "independent media work",
+    "NGO/civil-society work",
+    "family relationship to a perceived opponent",
+    "public criticism from exile"
+  ],
+  "actors": [
+    "police officers",
+    "plainclothes or parapolice actors",
+    "local political structures",
+    "immigration/civil-registration authorities",
+    "unknown actors linked by persona to prior monitoring"
+  ],
+  "practice_notes": [
+    "Explore forced exile, loss of nationality or family pressure only if present in the fictional facts.",
+    "Distinguish direct personal events from what happened to relatives or organizations.",
+    "Transnational contact should be asked about factually, not assumed."
+  ]
+}

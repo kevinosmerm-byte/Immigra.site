@@ -1,0 +1,21 @@
+/* Practice uses the dashboard components and the shared glass tokens. */
+#root #main #citizenship-root .practice-dashboard{max-width:1264px;margin:0 auto;padding:12px 0 32px}
+#root #main #citizenship-root .practice-progress-link{display:inline-flex;align-items:center;min-height:44px;padding:10px 18px;margin:0 0 4px;border:1px solid var(--liquid-border)!important;border-radius:24px!important;background:var(--liquid-surface)!important;color:var(--liquid-text)!important;backdrop-filter:var(--liquid-filter);box-shadow:0 4px 16px #123a630a}
+#root #main #citizenship-root .practice-dashboard>.platform-title{padding:10px 0 22px;min-height:140px}
+#root #main #citizenship-root .practice-dashboard .citizen-daily{border-radius:24px!important;margin-bottom:16px}
+#root #main #citizenship-root .practice-activity-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+#root #main #citizenship-root .practice-activity-grid>.platform-card{min-height:132px;padding:20px;grid-template-columns:78px minmax(0,1fr);gap:6px 20px;border-radius:24px!important;position:relative;transition:transform .3s ease,box-shadow .3s ease}
+#root #main #citizenship-root .practice-activity-grid .platform-card strong{font-size:20px;padding-right:30px}
+#root #main #citizenship-root .practice-activity-grid .platform-card>span:not([class]){padding-right:26px}
+#root #main #citizenship-root .practice-activity-grid .platform-card-arrow{top:50%;bottom:auto;transform:translateY(-50%);right:12px}
+#root #main #citizenship-root .practice-activity-grid .platform-card-icon{align-self:center;display:grid;place-items:center}
+#root #main #citizenship-root .practice-activity-grid .platform-card-icon svg{width:44px;height:44px;color:var(--color-primary,#2563a6)}
+#root #main #citizenship-root .practice-activity-grid .platform-card:nth-child(1) .platform-card-icon{background:#e45a6520}
+#root #main #citizenship-root .practice-activity-grid .platform-card:nth-child(2) .platform-card-icon{background:#bfefd580}
+#root #main #citizenship-root .practice-activity-grid .platform-card:nth-child(3) .platform-card-icon{background:#ffe7ab80}
+#root #main #citizenship-root .practice-activity-grid .platform-card:nth-child(4) .platform-card-icon{background:#e4c8fb80}
+#root #main #citizenship-root .practice-activity-grid .platform-card:nth-child(5) .platform-card-icon{background:#4da3e630}
+@media(hover:hover){#root #main #citizenship-root .practice-activity-grid>.platform-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px #123a631c!important}}
+@media(max-width:1050px){#root #main #citizenship-root .practice-activity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){#root #main #citizenship-root .practice-activity-grid{grid-template-columns:1fr}#root #main #citizenship-root .practice-activity-grid>.platform-card{min-height:124px;padding:18px}}
+@media(prefers-reduced-motion:reduce){#root #main #citizenship-root .practice-activity-grid>.platform-card{transition:none;transform:none}}

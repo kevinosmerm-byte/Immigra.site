@@ -1,0 +1,35 @@
+{
+  "country": "Cuba",
+  "source_refs": [
+    "CUB_UN_2026",
+    "CUB_UN_2024",
+    "CUB_STATE_2023"
+  ],
+  "regions": [
+    "Havana",
+    "Santiago de Cuba",
+    "Santa Clara, Villa Clara",
+    "Camagüey",
+    "Holguín",
+    "Matanzas"
+  ],
+  "contexts": [
+    "independent artistic expression",
+    "small civic meetings",
+    "independent journalism/blogging",
+    "women-led peaceful activism",
+    "religious/community activity",
+    "online criticism and public expression"
+  ],
+  "actors": [
+    "State Security officers",
+    "National Revolutionary Police officers",
+    "plainclothes officials",
+    "local officials or neighborhood-linked state actors"
+  ],
+  "practice_notes": [
+    "Short detentions and repeated summons may matter factually even where no long imprisonment occurred.",
+    "Ask about surveillance, summons, travel restrictions and pressure on relatives separately.",
+    "Do not assume every critic was formally charged."
+  ]
+}

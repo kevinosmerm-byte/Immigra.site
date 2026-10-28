@@ -1,0 +1,1022 @@
+[
+  {
+    "case_id": "VEN-D01",
+    "country": "Venezuela",
+    "title": "Venezuela — Student Protest — Adriana Salazar",
+    "difficulty": "intermediate",
+    "features": [
+      "approximate_date",
+      "family_remaining",
+      "no_police_report"
+    ],
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ]
+  },
+  {
+    "case_id": "VEN-D02",
+    "country": "Venezuela",
+    "title": "Venezuela — Polling Volunteer — Luis Cedeño",
+    "difficulty": "advanced",
+    "features": [
+      "timeline_gap",
+      "uncertain_memory",
+      "family_remaining",
+      "current_actor_unknown"
+    ],
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ]
+  },
+  {
+    "case_id": "VEN-D03",
+    "country": "Venezuela",
+    "title": "Venezuela — Ngo Volunteer — María Fernanda Rojas",
+    "difficulty": "challenge",
+    "features": [
+      "return_trip",
+      "approximate_date",
+      "document_difference",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ]
+  },
+  {
+    "case_id": "VEN-D04",
+    "country": "Venezuela",
+    "title": "Venezuela — Local Journalist — Carlos Méndez",
+    "difficulty": "intermediate",
+    "features": [
+      "internal_relocation",
+      "new_information",
+      "uncertain_actor",
+      "supporting_document"
+    ],
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ]
+  },
+  {
+    "case_id": "VEN-D05",
+    "country": "Venezuela",
+    "title": "Venezuela — Community Organizer — Valentina Paredes",
+    "difficulty": "advanced",
+    "features": [
+      "third_country",
+      "timeline_gap",
+      "omitted_event",
+      "post_departure_activity"
+    ],
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ]
+  },
+  {
+    "case_id": "VEN-D06",
+    "country": "Venezuela",
+    "title": "Venezuela — Labor Organizer — José Antonio Lugo",
+    "difficulty": "challenge",
+    "features": [
+      "long_time_gap",
+      "current_interest_unknown",
+      "family_remaining",
+      "approximate_date"
+    ],
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ]
+  },
+  {
+    "case_id": "VEN-D07",
+    "country": "Venezuela",
+    "title": "Venezuela — Campaign Helper — Daniela Suárez",
+    "difficulty": "intermediate",
+    "features": [
+      "medical_event",
+      "no_document",
+      "uncertain_exact_words",
+      "later_contact"
+    ],
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ]
+  },
+  {
+    "case_id": "VEN-D08",
+    "country": "Venezuela",
+    "title": "Venezuela — Medical Volunteer — Miguel Barreto",
+    "difficulty": "advanced",
+    "features": [
+      "authority_contact",
+      "document_difference",
+      "new_information",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ]
+  },
+  {
+    "case_id": "VEN-D09",
+    "country": "Venezuela",
+    "title": "Venezuela — Family Opposition — Gabriela Torres",
+    "difficulty": "challenge",
+    "features": [
+      "post_departure_activity",
+      "family_contacted",
+      "current_interest",
+      "country_context_change"
+    ],
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ]
+  },
+  {
+    "case_id": "VEN-D10",
+    "country": "Venezuela",
+    "title": "Venezuela — Diaspora Expression — Andrés Villalba",
+    "difficulty": "intermediate",
+    "features": [
+      "challenge_case",
+      "return_trip",
+      "third_country",
+      "multiple_incidents",
+      "approximate_dates"
+    ],
+    "source_refs": [
+      "VEN_FFM_2024",
+      "VEN_UN_2025_NGO",
+      "VEN_UN_2025_DEFENDER"
+    ]
+  },
+  {
+    "case_id": "CUB-D01",
+    "country": "Cuba",
+    "title": "Cuba — Artist — Laura Pérez",
+    "difficulty": "intermediate",
+    "features": [
+      "approximate_date",
+      "family_remaining",
+      "no_police_report"
+    ],
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CUB-D02",
+    "country": "Cuba",
+    "title": "Cuba — Blogger — Daniel Rodríguez",
+    "difficulty": "advanced",
+    "features": [
+      "timeline_gap",
+      "uncertain_memory",
+      "family_remaining",
+      "current_actor_unknown"
+    ],
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CUB-D03",
+    "country": "Cuba",
+    "title": "Cuba — Women Activist — Marta Valdés",
+    "difficulty": "challenge",
+    "features": [
+      "return_trip",
+      "approximate_date",
+      "document_difference",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CUB-D04",
+    "country": "Cuba",
+    "title": "Cuba — Religious Community — Javier Suárez",
+    "difficulty": "intermediate",
+    "features": [
+      "internal_relocation",
+      "new_information",
+      "uncertain_actor",
+      "supporting_document"
+    ],
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CUB-D05",
+    "country": "Cuba",
+    "title": "Cuba — Student Expression — Ana María León",
+    "difficulty": "advanced",
+    "features": [
+      "third_country",
+      "timeline_gap",
+      "omitted_event",
+      "post_departure_activity"
+    ],
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CUB-D06",
+    "country": "Cuba",
+    "title": "Cuba — Family Dissident — Carlos Peña",
+    "difficulty": "challenge",
+    "features": [
+      "long_time_gap",
+      "current_interest_unknown",
+      "family_remaining",
+      "approximate_date"
+    ],
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CUB-D07",
+    "country": "Cuba",
+    "title": "Cuba — Independent Journalist — Elena Cabrera",
+    "difficulty": "intermediate",
+    "features": [
+      "medical_event",
+      "no_document",
+      "uncertain_exact_words",
+      "later_contact"
+    ],
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CUB-D08",
+    "country": "Cuba",
+    "title": "Cuba — Online Critic — Miguel Santos",
+    "difficulty": "advanced",
+    "features": [
+      "authority_contact",
+      "document_difference",
+      "new_information",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CUB-D09",
+    "country": "Cuba",
+    "title": "Cuba — Cultural Group — Rosa Delgado",
+    "difficulty": "challenge",
+    "features": [
+      "post_departure_activity",
+      "family_contacted",
+      "current_interest",
+      "country_context_change"
+    ],
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CUB-D10",
+    "country": "Cuba",
+    "title": "Cuba — Returned Exile — Iván Morales",
+    "difficulty": "intermediate",
+    "features": [
+      "challenge_case",
+      "return_trip",
+      "third_country",
+      "multiple_incidents",
+      "approximate_dates"
+    ],
+    "source_refs": [
+      "CUB_UN_2026",
+      "CUB_UN_2024",
+      "CUB_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "NIC-D01",
+    "country": "Nicaragua",
+    "title": "Nicaragua — Student 2018 — María José López",
+    "difficulty": "intermediate",
+    "features": [
+      "approximate_date",
+      "family_remaining",
+      "no_police_report"
+    ],
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ]
+  },
+  {
+    "case_id": "NIC-D02",
+    "country": "Nicaragua",
+    "title": "Nicaragua — Parish Worker — Carlos Gutiérrez",
+    "difficulty": "advanced",
+    "features": [
+      "timeline_gap",
+      "uncertain_memory",
+      "family_remaining",
+      "current_actor_unknown"
+    ],
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ]
+  },
+  {
+    "case_id": "NIC-D03",
+    "country": "Nicaragua",
+    "title": "Nicaragua — Independent Media — Ana Lucía Rivas",
+    "difficulty": "challenge",
+    "features": [
+      "return_trip",
+      "approximate_date",
+      "document_difference",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ]
+  },
+  {
+    "case_id": "NIC-D04",
+    "country": "Nicaragua",
+    "title": "Nicaragua — Ngo Worker — Jorge Castillo",
+    "difficulty": "intermediate",
+    "features": [
+      "internal_relocation",
+      "new_information",
+      "uncertain_actor",
+      "supporting_document"
+    ],
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ]
+  },
+  {
+    "case_id": "NIC-D05",
+    "country": "Nicaragua",
+    "title": "Nicaragua — Family Opponent — Sofía Mena",
+    "difficulty": "advanced",
+    "features": [
+      "third_country",
+      "timeline_gap",
+      "omitted_event",
+      "post_departure_activity"
+    ],
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ]
+  },
+  {
+    "case_id": "NIC-D06",
+    "country": "Nicaragua",
+    "title": "Nicaragua — Exile Critic — Luis Herrera",
+    "difficulty": "challenge",
+    "features": [
+      "long_time_gap",
+      "current_interest_unknown",
+      "family_remaining",
+      "approximate_date"
+    ],
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ]
+  },
+  {
+    "case_id": "NIC-D07",
+    "country": "Nicaragua",
+    "title": "Nicaragua — Small Business — Daniela Ruiz",
+    "difficulty": "intermediate",
+    "features": [
+      "medical_event",
+      "no_document",
+      "uncertain_exact_words",
+      "later_contact"
+    ],
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ]
+  },
+  {
+    "case_id": "NIC-D08",
+    "country": "Nicaragua",
+    "title": "Nicaragua — Teacher — Miguel Téllez",
+    "difficulty": "advanced",
+    "features": [
+      "authority_contact",
+      "document_difference",
+      "new_information",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ]
+  },
+  {
+    "case_id": "NIC-D09",
+    "country": "Nicaragua",
+    "title": "Nicaragua — Former Detainee — Valeria Pérez",
+    "difficulty": "challenge",
+    "features": [
+      "post_departure_activity",
+      "family_contacted",
+      "current_interest",
+      "country_context_change"
+    ],
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ]
+  },
+  {
+    "case_id": "NIC-D10",
+    "country": "Nicaragua",
+    "title": "Nicaragua — Passport Nationality — José Manuel Flores",
+    "difficulty": "intermediate",
+    "features": [
+      "challenge_case",
+      "return_trip",
+      "third_country",
+      "multiple_incidents",
+      "approximate_dates"
+    ],
+    "source_refs": [
+      "NIC_UN_2024",
+      "NIC_UN_2026"
+    ]
+  },
+  {
+    "case_id": "COL-D01",
+    "country": "Colombia",
+    "title": "Colombia — Environmental Defender — Camila Restrepo",
+    "difficulty": "intermediate",
+    "features": [
+      "approximate_date",
+      "family_remaining",
+      "no_police_report"
+    ],
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ]
+  },
+  {
+    "case_id": "COL-D02",
+    "country": "Colombia",
+    "title": "Colombia — Social Leader — Juan David Rojas",
+    "difficulty": "advanced",
+    "features": [
+      "timeline_gap",
+      "uncertain_memory",
+      "family_remaining",
+      "current_actor_unknown"
+    ],
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ]
+  },
+  {
+    "case_id": "COL-D03",
+    "country": "Colombia",
+    "title": "Colombia — Rural Shopkeeper — Laura Martínez",
+    "difficulty": "challenge",
+    "features": [
+      "return_trip",
+      "approximate_date",
+      "document_difference",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ]
+  },
+  {
+    "case_id": "COL-D04",
+    "country": "Colombia",
+    "title": "Colombia — Journalist — Andrés Guerrero",
+    "difficulty": "intermediate",
+    "features": [
+      "internal_relocation",
+      "new_information",
+      "uncertain_actor",
+      "supporting_document"
+    ],
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ]
+  },
+  {
+    "case_id": "COL-D05",
+    "country": "Colombia",
+    "title": "Colombia — Displaced Family — Paola Castillo",
+    "difficulty": "advanced",
+    "features": [
+      "third_country",
+      "timeline_gap",
+      "omitted_event",
+      "post_departure_activity"
+    ],
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ]
+  },
+  {
+    "case_id": "COL-D06",
+    "country": "Colombia",
+    "title": "Colombia — Victims Advocate — Felipe Mendoza",
+    "difficulty": "challenge",
+    "features": [
+      "long_time_gap",
+      "current_interest_unknown",
+      "family_remaining",
+      "approximate_date"
+    ],
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ]
+  },
+  {
+    "case_id": "COL-D07",
+    "country": "Colombia",
+    "title": "Colombia — Women Leader — Diana Muñoz",
+    "difficulty": "intermediate",
+    "features": [
+      "medical_event",
+      "no_document",
+      "uncertain_exact_words",
+      "later_contact"
+    ],
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ]
+  },
+  {
+    "case_id": "COL-D08",
+    "country": "Colombia",
+    "title": "Colombia — Transport Worker — Santiago Gómez",
+    "difficulty": "advanced",
+    "features": [
+      "authority_contact",
+      "document_difference",
+      "new_information",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ]
+  },
+  {
+    "case_id": "COL-D09",
+    "country": "Colombia",
+    "title": "Colombia — Land Claim — Natalia Torres",
+    "difficulty": "challenge",
+    "features": [
+      "post_departure_activity",
+      "family_contacted",
+      "current_interest",
+      "country_context_change"
+    ],
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ]
+  },
+  {
+    "case_id": "COL-D10",
+    "country": "Colombia",
+    "title": "Colombia — Urban Return — Carlos Andrés Vega",
+    "difficulty": "intermediate",
+    "features": [
+      "challenge_case",
+      "return_trip",
+      "third_country",
+      "multiple_incidents",
+      "approximate_dates"
+    ],
+    "source_refs": [
+      "COL_UN_2025_DISPLACEMENT",
+      "COL_UN_2025_DEFENDER",
+      "COL_CAT_2026"
+    ]
+  },
+  {
+    "case_id": "HTI-D01",
+    "country": "Haiti",
+    "title": "Haiti — Small Business Extortion — Marie Joseph",
+    "difficulty": "intermediate",
+    "features": [
+      "approximate_date",
+      "family_remaining",
+      "no_police_report"
+    ],
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ]
+  },
+  {
+    "case_id": "HTI-D02",
+    "country": "Haiti",
+    "title": "Haiti — Police Relative — Jean Baptiste",
+    "difficulty": "advanced",
+    "features": [
+      "timeline_gap",
+      "uncertain_memory",
+      "family_remaining",
+      "current_actor_unknown"
+    ],
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ]
+  },
+  {
+    "case_id": "HTI-D03",
+    "country": "Haiti",
+    "title": "Haiti — Community Volunteer — Nadège Pierre",
+    "difficulty": "challenge",
+    "features": [
+      "return_trip",
+      "approximate_date",
+      "document_difference",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ]
+  },
+  {
+    "case_id": "HTI-D04",
+    "country": "Haiti",
+    "title": "Haiti — Kidnapping Survivor — Samuel Louis",
+    "difficulty": "intermediate",
+    "features": [
+      "internal_relocation",
+      "new_information",
+      "uncertain_actor",
+      "supporting_document"
+    ],
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ]
+  },
+  {
+    "case_id": "HTI-D05",
+    "country": "Haiti",
+    "title": "Haiti — Transport Checkpoint — Esther Charles",
+    "difficulty": "advanced",
+    "features": [
+      "third_country",
+      "timeline_gap",
+      "omitted_event",
+      "post_departure_activity"
+    ],
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ]
+  },
+  {
+    "case_id": "HTI-D06",
+    "country": "Haiti",
+    "title": "Haiti — Displaced Woman — David Michel",
+    "difficulty": "challenge",
+    "features": [
+      "long_time_gap",
+      "current_interest_unknown",
+      "family_remaining",
+      "approximate_date"
+    ],
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ]
+  },
+  {
+    "case_id": "HTI-D07",
+    "country": "Haiti",
+    "title": "Haiti — Market Vendor — Roseline François",
+    "difficulty": "intermediate",
+    "features": [
+      "medical_event",
+      "no_document",
+      "uncertain_exact_words",
+      "later_contact"
+    ],
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ]
+  },
+  {
+    "case_id": "HTI-D08",
+    "country": "Haiti",
+    "title": "Haiti — School Worker — Patrick Augustin",
+    "difficulty": "advanced",
+    "features": [
+      "authority_contact",
+      "document_difference",
+      "new_information",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ]
+  },
+  {
+    "case_id": "HTI-D09",
+    "country": "Haiti",
+    "title": "Haiti — Family Gang Conflict — Mireille Paul",
+    "difficulty": "challenge",
+    "features": [
+      "post_departure_activity",
+      "family_contacted",
+      "current_interest",
+      "country_context_change"
+    ],
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ]
+  },
+  {
+    "case_id": "HTI-D10",
+    "country": "Haiti",
+    "title": "Haiti — Return Displacement — Jonas Saint-Fleur",
+    "difficulty": "intermediate",
+    "features": [
+      "challenge_case",
+      "return_trip",
+      "third_country",
+      "multiple_incidents",
+      "approximate_dates"
+    ],
+    "source_refs": [
+      "HTI_BINUH_2026_Q1",
+      "HTI_BINUH_2026_FLASH",
+      "HTI_UN_2026"
+    ]
+  },
+  {
+    "case_id": "CHN-D01",
+    "country": "China",
+    "title": "China — Online Expression — Li Wei",
+    "difficulty": "intermediate",
+    "features": [
+      "approximate_date",
+      "family_remaining",
+      "no_police_report"
+    ],
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CHN-D02",
+    "country": "China",
+    "title": "China — Rights Assistant — Zhang Min",
+    "difficulty": "advanced",
+    "features": [
+      "timeline_gap",
+      "uncertain_memory",
+      "family_remaining",
+      "current_actor_unknown"
+    ],
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CHN-D03",
+    "country": "China",
+    "title": "China — House Church — Chen Yu",
+    "difficulty": "challenge",
+    "features": [
+      "return_trip",
+      "approximate_date",
+      "document_difference",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CHN-D04",
+    "country": "China",
+    "title": "China — Tibetan Culture — Wang Jie",
+    "difficulty": "intermediate",
+    "features": [
+      "internal_relocation",
+      "new_information",
+      "uncertain_actor",
+      "supporting_document"
+    ],
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CHN-D05",
+    "country": "China",
+    "title": "China — Hongkong Democracy — Liu Fang",
+    "difficulty": "advanced",
+    "features": [
+      "third_country",
+      "timeline_gap",
+      "omitted_event",
+      "post_departure_activity"
+    ],
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CHN-D06",
+    "country": "China",
+    "title": "China — Independent Writer — Tsering Dolma",
+    "difficulty": "challenge",
+    "features": [
+      "long_time_gap",
+      "current_interest_unknown",
+      "family_remaining",
+      "approximate_date"
+    ],
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CHN-D07",
+    "country": "China",
+    "title": "China — Family Abroad — Chan Mei",
+    "difficulty": "intermediate",
+    "features": [
+      "medical_event",
+      "no_document",
+      "uncertain_exact_words",
+      "later_contact"
+    ],
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CHN-D08",
+    "country": "China",
+    "title": "China — Diaspora Activity — Huang Lin",
+    "difficulty": "advanced",
+    "features": [
+      "authority_contact",
+      "document_difference",
+      "new_information",
+      "family_remaining"
+    ],
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CHN-D09",
+    "country": "China",
+    "title": "China — Minority Family — Amina Rahman",
+    "difficulty": "challenge",
+    "features": [
+      "post_departure_activity",
+      "family_contacted",
+      "current_interest",
+      "country_context_change"
+    ],
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ]
+  },
+  {
+    "case_id": "CHN-D10",
+    "country": "China",
+    "title": "China — Returned Traveler — Xu Lei",
+    "difficulty": "intermediate",
+    "features": [
+      "challenge_case",
+      "return_trip",
+      "third_country",
+      "multiple_incidents",
+      "approximate_dates"
+    ],
+    "source_refs": [
+      "CHN_UN_2025_TRANS",
+      "CHN_UN_2025_TIBET",
+      "CHN_UN_2026_HK",
+      "CHN_STATE_2023"
+    ]
+  }
+]

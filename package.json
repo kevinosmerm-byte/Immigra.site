@@ -1,61 +1,33 @@
 {
-  "name": "citizenshipai",
+  "name": "immigra-site",
+  "version": "0.31.0",
   "private": true,
-  "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "oxlint",
-    "test": "node --test tests/*.test.mjs",
-    "verify:mobile": "node scripts/verify-mobile-readiness.mjs",
-    "verify:ios": "node scripts/verify-ios-readiness.mjs",
-    "verify:app-store": "node scripts/verify-app-store-metadata.mjs",
-    "quality": "npm run lint && npm run test && npm run build && npm run verify:mobile && npm run verify:ios && npm run verify:app-store",
-    "ios:sync": "npm run build && npx cap sync ios",
-    "ios:open": "npx cap open ios",
-    "preview": "vite preview",
-    "start": "node server/server.js",
-    "typecheck": "tsc --noEmit --allowJs --checkJs false --noImplicitAny false --module nodenext --moduleResolution nodenext --resolveJsonModule --esModuleInterop --skipLibCheck src/brain.js src/appRoutes.js",
-    "verify:store-release": "node scripts/verify-store-release.mjs"
-  },
-  "engines": {
-    "node": ">=22.13"
+    "dev": "vite --host 127.0.0.1",
+    "build": "npm test && npm run build:app && npm run quality --prefix modules/citizenship && npm run verify:release",
+    "test": "node --test tests/*.test.mjs modules/residency/tests/*.test.mjs",
+    "preview": "vite preview --host 127.0.0.1",
+    "server:realtime": "node server/server.mjs",
+    "start": "node start-all.mjs",
+    "postinstall": "npm ci --prefix modules/citizenship --ignore-scripts",
+    "build:app": "vite build && node scripts/build-public-pages.mjs",
+    "verify:release": "npm run stores:verify && node scripts/verify-release.mjs",
+    "verify:production": "node scripts/verify-release.mjs --production",
+    "native:sync:android": "npm run build && npm run native:sync:android --prefix modules/citizenship",
+    "native:sync:ios": "npm run build && npm run native:sync:ios --prefix modules/citizenship",
+    "native:build:android": "node scripts/build-native.mjs android",
+    "native:build:ios": "node scripts/build-native.mjs ios",
+    "stores:verify": "node scripts/verify-store-package.mjs",
+    "stores:package": "node scripts/package-store-submission.mjs"
   },
   "dependencies": {
-    "@apple/app-store-server-library": "^3.1.0",
-    "@capacitor-community/text-to-speech": "^8.0.2",
-    "@capacitor/android": "^8.5.2",
-    "@capacitor/core": "^8.5.2",
-    "@capacitor/ios": "^8.5.2",
-    "@capgo/native-purchases": "8.9.5",
-    "@supabase/supabase-js": "^2.116.0",
-    "cors": "^2.8.6",
-    "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "google-auth-library": "^11.3.0",
-    "multer": "^2.3.0",
-    "openai": "^7.10.0",
-    "pdfjs-dist": "^6.3.289",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "stripe": "^22.6.2"
+    "vite": "^7.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@capacitor/cli": "^8.5.2",
-    "@electric-sql/pglite": "^0.5.9",
     "@tailwindcss/vite": "^4.3.3",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.4",
-    "@vitejs/plugin-react": "^6.1.0",
-    "oxlint": "^1.79.0",
-    "tailwindcss": "^4.3.3",
-    "typescript": "^7.0.2",
-    "vite": "^8.2.2"
-  },
-  "overrides": {
-    "xcode": {
-      "uuid": "11.1.1"
-    }
+    "tailwindcss": "^4.3.3"
   }
 }
