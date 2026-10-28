@@ -1,3 +1,4 @@
+import {clarificationOptions,currentEvidence,interviewerAcknowledgment} from './interview-feedback.mjs';
 import {sourcePracticeQuestions} from './source-practice.mjs';
 import {isNextQuestionCommand} from '../../shared/interview-ui/commands.mjs';
 import {logDiagnostic} from '../../shared/interview-ui/diagnostics.mjs';
@@ -53,30 +54,39 @@ export class InterviewSessionManager{
 export function validateEvaluation(value,history){
  if(!value||Object.keys(value).length!==evaluationSchema.required.length)return false;
  for(const [key,schema]of Object.entries(evaluationSchema.properties)){const v=value[key];if(schema.enum&&!schema.enum.includes(v))return false;if(schema.type==='string'&&!safeText(v,1800))return false;}
- if(!Array.isArray(value.evidence)||value.evidence.length>2||value.evidence.some(q=>!safeText(q,1000)||!q.trim()||!history.some(t=>t.role==='user'&&t.text.includes(q))))return false;
+ if(!Array.isArray(value.evidence)||value.evidence.length>2||value.evidence.some(q=>!safeText(q,5000)||!q.trim()||!history.some(t=>t.role==='user'&&t.text.includes(q))))return false;
  if(value.consistency_status==='possible_discrepancy'&&value.evidence.length!==2)return false;
  return true;
 }
 export function evaluationSchemaFor(history){
- const quotes=[...new Set(history.filter(t=>t.role==='user').flatMap(t=>t.text.length<=1000?[t.text]:(t.text.match(/[^.!?\n]+[.!?]?/g)||[])).map(x=>x.trim()).filter(x=>x&&x.length<=1000))].slice(-80);
+ const quotes=[...new Set(history.filter(t=>t.role==='user').flatMap(t=>[...(t.text.length<=5000?[t.text]:[]),...(t.text.match(/[^.!?\n]+[.!?]?/g)||[])]).map(x=>x.trim()).filter(x=>x&&x.length<=5000))].slice(-80);
  return {...evaluationSchema,properties:{...evaluationSchema.properties,evidence:{type:'array',items:{type:'string',enum:quotes.length?quotes:['']},maxItems:quotes.length?2:0}}};
 }
-export function currentTurnSchema(history,answer,locale){
+export function currentTurnSchema(history,answer,locale,module){
  const schema=evaluationSchemaFor(history);
- if(!uncertainAnswer(answer))return schema;
+ if(!uncertainAnswer(answer)){
+  const options=clarificationOptions({module,locale},answer);
+  return {...schema,properties:{...schema.properties,suggested_follow_up:enumString(['',...options.map(q=>q.text)])}};
+ }
  const feedback=locale==='es'?['Es válido no recordar. Podemos continuar sin inventar detalles.','Has expresado incertidumbre. Puedes continuar con otra pregunta.']:['It is valid not to remember. We can continue without inventing details.','You have expressed uncertainty. You can continue to another question.'];
  return {...schema,properties:{...schema.properties,answer_status:enumString(['uncertain']),consistency_status:enumString(['insufficient_context']),educational_feedback:enumString(feedback),suggested_follow_up:enumString(['']),next_action:enumString(['continue'])}};
 }
 export async function InterviewResponseEvaluator(session,{fetchImpl=fetch,env,answer='',question=''}){
  const history=[...session.history,...(answer?[{role:'user',text:answer}]:[])];
  const currentTurn={question,answer};
- const schema=currentTurnSchema(history,answer,session.settings.locale);
- const response=await fetchImpl('https://api.openai.com/v1/responses',{method:'POST',signal:AbortSignal.timeout(30000),headers:{authorization:`Bearer ${env.OPENAI_API_KEY}`,'content-type':'application/json'},body:JSON.stringify({model:env.OPENAI_TEXT_MODEL||'gpt-4o-mini',store:false,max_output_tokens:1100,instructions:session.instructions+`
- Return the required JSON educational assessment. No honesty or eligibility scores. evidence contains up to TWO exact contiguous quotations from user turns only. possible_discrepancy requires two quotations about the SAME fact/event, otherwise insufficient_context. Uncertainty is valid, not an error. Feedback addresses clarity, relevance and comprehension, never the correctness of a personal biography. Evaluate ONLY current_turn.answer against current_turn.question. prior_turns is background, never a substitute for the current answer. Do not attribute a previous answer to the current turn. Address the learner directly, in the selected language. For example, when the prior answer is a birth date and the CURRENT answer to a child-age question is "I do not remember", acknowledge the current uncertainty; never say that the learner answered with their own birth date or require the child's birth date. Do not imply that personal details are legally required or verified. An adequate personal answer means understandable, not factually confirmed. educational_feedback uses three short labeled parts in the selected language: Understood / Clarify / Structure (Entendido / Aclarar / Estructura). Understood paraphrases ONLY the current answer. Clarify identifies one ambiguity, or says no additional clarification is needed. Structure suggests ordering the learner's own stated details, without supplying example facts, dates, threats, memories or experiences. Preserve expressed uncertainty. Keep the total under 90 words, with NO questions or new facts. Never advise hiding information or altering testimony. suggested_follow_up is empty for adequate or uncertain answers; otherwise it may be ONE neutral clarification of this same answer, never a new topic. The domain selector, not you, controls progression. If unable to understand, ask to repeat. For uncertain answers accept uncertainty and continue; do not pressure for details.`,input:JSON.stringify({current_turn:currentTurn,prior_turns:session.history}),text:{format:{type:'json_schema',name:'interview_response',strict:true,schema}}})});
+ const schema=currentTurnSchema(history,answer,session.settings.locale,session.settings.module);
+ const options=clarificationOptions(session.settings,answer);
+ // Long unpunctuated voice transcripts still need a complete admissible quote.
+ const longQuote=answer.length>1000&&!(answer.match(/[^.!?\n]+[.!?]?/g)||[]).some(q=>q.trim().length<=1000);
+ const outputBudget=longQuote?Math.min(3000,1100+Math.ceil(answer.length/3)):1100;
+ const response=await fetchImpl('https://api.openai.com/v1/responses',{method:'POST',signal:AbortSignal.timeout(30000),headers:{authorization:`Bearer ${env.OPENAI_API_KEY}`,'content-type':'application/json'},body:JSON.stringify({model:env.OPENAI_TEXT_MODEL||'gpt-4o-mini',store:false,max_output_tokens:outputBudget,instructions:session.instructions+`
+ Return the required JSON educational assessment. No honesty or eligibility scores. evidence contains up to TWO exact contiguous quotations from user turns only. possible_discrepancy requires two quotations about the SAME fact/event, otherwise insufficient_context. Uncertainty is valid, not an error. Feedback addresses clarity, relevance and comprehension, never the correctness of a personal biography. Evaluate ONLY current_turn.answer against current_turn.question. prior_turns is background, never a substitute for the current answer. Do not attribute a previous answer to the current turn. Address the learner directly, in the selected language. For example, when the prior answer is a birth date and the CURRENT answer to a child-age question is "I do not remember", acknowledge the current uncertainty; never say that the learner answered with their own birth date or require the child's birth date. Do not imply that personal details are legally required or verified. An adequate personal answer means understandable, not factually confirmed. educational_feedback is separate, optional-to-read expression coaching, NOT simulated officer speech. In 2-3 natural sentences, identify one specific understandable point from the current answer, then one actionable improvement only if useful. Refer to the learner's actual words, not generic praise or 'missing information'. Suggest an order for the details they actually stated (for example time then event only when both were stated), never supply replacement testimony, example facts, dates, threats, memories or experiences. If already clear, say specifically what made it clear; do not invent a deficiency. Preserve uncertainty and adverse facts; never strengthen tentative language. Distinguish partial uncertainty from knowing nothing. Keep the total under 75 words, with NO questions or new facts. evidence must include at least one exact quotation from current_turn.answer unless the whole answer is uncertain. Never advise hiding information or altering testimony. suggested_follow_up is empty for adequate or uncertain answers; otherwise choose only one of the allowed clarification texts when its stated condition is explicitly supported by the current answer and your exact evidence; otherwise leave empty. No inferred trips, documents, relationships or events. Do not ask for detail the learner explicitly cannot recall. Do not use a personal clarification as a quiz question. The domain selector, not you, controls progression. If unable to understand, ask to repeat. For wholly uncertain answers accept uncertainty and continue; do not pressure for details. Allowed clarification DATA: ${JSON.stringify(options)}.`,input:JSON.stringify({current_turn:currentTurn,prior_turns:session.history}),text:{format:{type:'json_schema',name:'interview_response',strict:true,schema}}})});
  if(!response.ok)throw await providerError(response);
  const payload=await response.json();if(payload.status!=='completed')throw Error('INCOMPLETE_EVALUATION');
  let value;try{value=JSON.parse((payload.output||[]).filter(x=>x.type==='message').flatMap(x=>x.content||[]).filter(x=>x.type==='output_text').map(x=>x.text).join(''));}catch{throw Error('INVALID_EVALUATION');}
  if(!validateEvaluation(value,history)||Object.entries(schema.properties).some(([key,rule])=>rule.enum&&!rule.enum.includes(value[key])))throw Error('UNGROUNDED_EVALUATION');
+ if(value.evidence.some(quote=>!schema.properties.evidence.items.enum.includes(quote)))throw Error('UNGROUNDED_EVALUATION');
+ if(!uncertainAnswer(answer)&&!currentEvidence(value,answer).length)throw Error('UNGROUNDED_EVALUATION');
  return value;
 }
 export function createInterviewAIEngine({env,fetchImpl=fetch,reserveSessionQuota,reserveTurnQuota,manager=new InterviewSessionManager()}){
@@ -138,10 +148,11 @@ export function createInterviewAIEngine({env,fetchImpl=fetch,reserveSessionQuota
    if(!manager.get(id,owner))throw Error('SESSION_EXPIRED');
    const {flow,result,reviewed}=advanceDomainTurn(recorded,evaluated);
    s.flow=flow;
-   const intervention=domainIntervention(flow,s.settings.locale,result.educational_feedback);
-   s.history.push({role:'assistant',text:question},{role:'user',text:body.answer});
+   const intervention=domainIntervention(flow,s.settings.locale);
+   const acknowledgment=uncertainAnswer(body.answer)?result.educational_feedback:interviewerAcknowledgment(result,body.answer,s.settings.locale);
+   s.history.push({role:'assistant',text:question,turnId:body.turnId},{role:'user',text:body.answer,turnId:body.turnId});
    s.evaluations.push(result);
-   const output={...result,suggested_follow_up:intervention,next_action:flow.question?'continue':'finish',next_question:flow.question?.english||'',question_id:flow.question?.id||null,revision:flow.revision,reviewed_question_id:reviewed.id,reviewed_concept_id:reviewed.conceptId,reviewed_kind:reviewed.kind,provider:'OpenAI'};
+   const output={...result,turnId:body.turnId,interviewer_response:acknowledgment,suggested_follow_up:intervention,next_action:flow.question?'continue':'finish',next_question:flow.question?.english||'',question_id:flow.question?.id||null,revision:flow.revision,reviewed_question_id:reviewed.id,reviewed_concept_id:reviewed.conceptId,reviewed_kind:reviewed.kind,provider:'OpenAI'};
    if(typeof body.turnId==='string'&&body.turnId.length<=80)s.lastTurn={id:body.turnId,result:output};
    logDiagnostic('EVALUATION_COMPLETED',{module:s.settings.module,transport:s.transport});
    return output;

@@ -103,7 +103,7 @@ for(const module of ['asylum','residency'])for(const locale of ['es','en']){
  });
  test(`${module} ${locale}: discrepancy clarification is bounded and paraphrases are rejected`,()=>{
   let flow=createDomainInterview({module,locale,route:'MATRIMONIO'});
-  const evaluation={answer_status:'ambiguous',next_action:'clarify',consistency_status:'possible_discrepancy',suggested_follow_up:locale==='es'?'¿A cuál de los dos eventos te refieres?':'Which of the two events do you mean?',educational_feedback:''};
+  const evaluation={answer_status:'ambiguous',next_action:'clarify',consistency_status:'possible_discrepancy',suggested_follow_up:locale==='es'?'¿Qué quisiste decir con la expresión que acabamos de señalar?':'What did you mean by the expression we just identified?',evidence:['Example'],educational_feedback:''};
   flow=advance(flow,'Example',evaluation);assert.equal(flow.question.kind,'followup');
   flow=advance(flow,'Example',evaluation);assert.equal(flow.question.kind,'concept');
   const id=flow.question.id;flow=advance(flow,'Example',evaluation);assert.notEqual(flow.question.id,id);assert.equal(flow.question.kind,'concept');

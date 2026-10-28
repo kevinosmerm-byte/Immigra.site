@@ -1,0 +1,449 @@
+{
+  "source": "Reviewed bilingual interview kit 2026-10-28; selective neutral personal clarifications only. No hypothetical drills.",
+  "questions": [
+    {
+      "id": "ASY-004",
+      "module": "asylum",
+      "category": "tiempo",
+      "difficulty": "intermediate",
+      "trigger_criteria": {
+        "all_of": [
+          "user_mentions_event_time_unclear"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_mentions_event_time_unclear",
+          "source": "explicit_user_input",
+          "requirement": "La persona mencionó un hecho identificable sin precisar cuándo; no usar si ya dijo que no recuerda o rechazó profundizar."
+        }
+      ],
+      "es": "¿Qué recuerdas sobre cuándo ocurrió ese hecho?",
+      "en": "What do you remember about when that event happened?",
+      "followup_goal": "Aceptar referencias aproximadas y falta de recuerdo.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "No solicitar detalles gráficos ni insistir en recuerdos dolorosos; priorizar pausa u omisión.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "ASY-005",
+      "module": "asylum",
+      "category": "conocimiento_directo",
+      "difficulty": "intermediate",
+      "trigger_criteria": {
+        "all_of": [
+          "user_mentions_claim_source_unclear"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_mentions_claim_source_unclear",
+          "source": "explicit_user_input",
+          "requirement": "La persona aportó una afirmación sobre hechos sin explicar cómo la conoció."
+        }
+      ],
+      "es": "¿Cómo supiste lo que acabas de contar?",
+      "en": "How did you learn about what you just described?",
+      "followup_goal": "Distinguir observación, relato ajeno e interpretación sin jerarquizar credibilidad.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "No solicitar detalles gráficos ni insistir en recuerdos dolorosos; priorizar pausa u omisión.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "RES-004",
+      "module": "residency",
+      "category": "domicilio",
+      "difficulty": "basic",
+      "trigger_criteria": {
+        "all_of": [
+          "user_mentions_move"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_mentions_move",
+          "source": "explicit_user_input",
+          "requirement": "La persona relató una mudanza concreta; no asumir dirección ni país."
+        }
+      ],
+      "es": "¿Cuándo ocurrió la mudanza que mencionaste, según lo que recuerdas?",
+      "en": "When did the move you mentioned happen, as far as you remember?",
+      "followup_goal": "Ordenar una mudanza con precisión disponible.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "RES-006",
+      "module": "residency",
+      "category": "actividad",
+      "difficulty": "basic",
+      "trigger_criteria": {
+        "all_of": [
+          "user_mentions_activity"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_mentions_activity",
+          "source": "explicit_user_input",
+          "requirement": "La persona mencionó una actividad concreta sin explicar en qué consiste."
+        }
+      ],
+      "es": "¿En qué consiste la actividad que mencionaste?",
+      "en": "What does the activity you mentioned involve?",
+      "followup_goal": "Aclarar una actividad sin asumir que es empleo remunerado.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "RES-008",
+      "module": "residency",
+      "category": "viaje",
+      "difficulty": "intermediate",
+      "trigger_criteria": {
+        "all_of": [
+          "user_mentions_trip"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_mentions_trip",
+          "source": "explicit_user_input",
+          "requirement": "La persona relató un viaje concreto; no asumir destino, duración ni consecuencias migratorias."
+        }
+      ],
+      "es": "¿Cuál fue el motivo del viaje que mencionaste?",
+      "en": "What was the reason for the trip you mentioned?",
+      "followup_goal": "Precisar un motivo aportado sin clasificar consecuencias legales.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "RES-009",
+      "module": "residency",
+      "category": "relacion",
+      "difficulty": "basic",
+      "trigger_criteria": {
+        "all_of": [
+          "user_mentions_person_relationship_unclear"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_mentions_person_relationship_unclear",
+          "source": "explicit_user_input",
+          "requirement": "La persona mencionó a alguien sin aclarar su relación; no asumir vínculo familiar o conyugal."
+        }
+      ],
+      "es": "¿Qué relación tienes con la persona que mencionaste?",
+      "en": "What is your relationship with the person you mentioned?",
+      "followup_goal": "Aclarar relación sin asumir matrimonio ni parentesco.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "RES-016",
+      "module": "residency",
+      "category": "correccion",
+      "difficulty": "intermediate",
+      "trigger_criteria": {
+        "all_of": [
+          "user_requests_correction"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_requests_correction",
+          "source": "explicit_user_input",
+          "requirement": "La persona pidió corregir algo de su respuesta; no sugerir qué versión sería más favorable."
+        }
+      ],
+      "es": "¿Qué parte de tu respuesta anterior quieres corregir?",
+      "en": "Which part of your previous answer would you like to correct?",
+      "followup_goal": "Permitir corrección iniciada por la persona sin inventar nueva versión.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "CIT-005",
+      "module": "citizenship_personal",
+      "category": "comprension",
+      "difficulty": "basic",
+      "trigger_criteria": {
+        "all_of": [
+          "user_says_question_unclear"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_says_question_unclear",
+          "source": "explicit_user_input",
+          "requirement": "La persona indicó que no entendió una pregunta específica; conservar su derecho a pedir aclaración."
+        }
+      ],
+      "es": "¿Qué parte de mi pregunta quieres que explique de otra manera?",
+      "en": "Which part of my question would you like me to explain differently?",
+      "followup_goal": "Facilitar comprensión sin convertirla en juicio de capacidad.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "CIT-006",
+      "module": "citizenship_personal",
+      "category": "expresion",
+      "difficulty": "intermediate",
+      "trigger_criteria": {
+        "all_of": [
+          "user_uses_ambiguous_expression"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_uses_ambiguous_expression",
+          "source": "explicit_user_input",
+          "requirement": "Existe una expresión ambigua aportada por la persona; mostrar la cita exacta antes de preguntar."
+        }
+      ],
+      "es": "¿Qué quisiste decir con la expresión que acabamos de señalar?",
+      "en": "What did you mean by the expression we just identified?",
+      "followup_goal": "Aclarar expresión citada fielmente antes de reformular.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "CIT-007",
+      "module": "citizenship_personal",
+      "category": "trabajo",
+      "difficulty": "basic",
+      "trigger_criteria": {
+        "all_of": [
+          "user_mentions_job"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_mentions_job",
+          "source": "explicit_user_input",
+          "requirement": "La persona mencionó un trabajo concreto; no inferir tareas, empleador o autorización."
+        }
+      ],
+      "es": "¿Qué tareas realizabas en el trabajo que mencionaste?",
+      "en": "What tasks did you perform in the job you mentioned?",
+      "followup_goal": "Describir tareas sin inferir empleador o condición laboral.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "CIT-010",
+      "module": "citizenship_personal",
+      "category": "viaje",
+      "difficulty": "intermediate",
+      "trigger_criteria": {
+        "all_of": [
+          "user_mentions_trip"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_mentions_trip",
+          "source": "explicit_user_input",
+          "requirement": "La persona relató un viaje concreto; no asumir destino, duración ni consecuencias migratorias."
+        }
+      ],
+      "es": "¿Qué recuerdas sobre la duración del viaje que mencionaste?",
+      "en": "What do you remember about the length of the trip you mentioned?",
+      "followup_goal": "Aceptar duración aproximada sin conclusiones de elegibilidad.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "CIT-011",
+      "module": "citizenship_personal",
+      "category": "relacion",
+      "difficulty": "basic",
+      "trigger_criteria": {
+        "all_of": [
+          "user_mentions_person_relationship_unclear"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_mentions_person_relationship_unclear",
+          "source": "explicit_user_input",
+          "requirement": "La persona mencionó a alguien sin aclarar su relación; no asumir vínculo familiar o conyugal."
+        }
+      ],
+      "es": "¿Cómo conoces a la persona que mencionaste?",
+      "en": "How do you know the person you mentioned?",
+      "followup_goal": "Aclarar vínculo sin presuponer familia o matrimonio.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    },
+    {
+      "id": "CIT-016",
+      "module": "citizenship_personal",
+      "category": "correccion",
+      "difficulty": "intermediate",
+      "trigger_criteria": {
+        "all_of": [
+          "user_requests_correction"
+        ],
+        "none_of": [
+          "session_paused",
+          "user_declined_this_topic"
+        ]
+      },
+      "required_context": [
+        {
+          "key": "user_requests_correction",
+          "source": "explicit_user_input",
+          "requirement": "La persona pidió corregir algo de su respuesta; no sugerir qué versión sería más favorable."
+        }
+      ],
+      "es": "¿Cómo quieres corregir el detalle que señalaste?",
+      "en": "How would you like to correct the detail you identified?",
+      "followup_goal": "Incorporar una corrección voluntaria conservando su incertidumbre.",
+      "coaching_guardrails": [
+        "Usar solo hechos explícitos de la persona; no introducir fechas, motivos, identidades o documentos.",
+        "Conservar incertidumbre y hechos desfavorables al reformular.",
+        "No valorar credibilidad por emoción, tono, fluidez, contacto visual o demora.",
+        "No emitir conclusiones legales ni puntuaciones de aprobación.",
+        "Permitir no saber, corregir, omitir o detener; una sola pregunta y objetivo por turno.",
+        "Usar referencias como “ese hecho” solo si hay un referente único claro; si hay varios, aclarar cuál antes de seleccionar esta pregunta."
+      ],
+      "hypothetical": false
+    }
+  ]
+}

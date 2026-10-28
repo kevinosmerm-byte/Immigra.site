@@ -173,3 +173,26 @@ test('late second VAD fragment cannot evaluate the next question or block furthe
  emit({type:'output_audio_buffer.stopped'});emit({type:'output_audio_buffer.stopped'});
  assert.equal(f.tracks[0].enabled,true);assert.equal(f.engine.sendText('answer to second'),true);await drain();assert.equal(calls.at(-1).questionId,'q2');f.engine.close();
 });
+
+test('personal voice speaks answer-specific acknowledgment, not the educational review',async()=>{
+ const f=fixture({evaluateTurn:async({answer})=>({next_question:answer?'What happened next?':'When?',question_id:answer?'q2':'q1',interviewer_response:answer?'You mentioned May.':'',educational_feedback:answer?'Structure your own dates.':''})});
+ await f.engine.start(settings);await drain();const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});
+ emit({type:'output_audio_buffer.stopped'});emit({type:'conversation.item.input_audio_transcription.completed',item_id:'spoken-turn',transcript:'In May.'});await drain();
+ const speech=f.peer().channel.sent.filter(m=>m.type==='response.create').at(-1).response.instructions;
+ assert.match(speech,/You mentioned May/);assert.match(speech,/What happened next/);assert.doesNotMatch(speech,/Structure your own dates/);
+ assert.equal(f.captions.find(c=>c.who==='user').turnId,'spoken-turn');assert.equal(f.reviews[0].turnId,'spoken-turn');assert.equal(f.reviews[0].educational_feedback,'Structure your own dates.');f.engine.close();
+});
+test('typed response preserves caption turnId across evaluation failure and retry',async()=>{
+ let failing=true;const calls=[];
+ const f=fixture({evaluateTurn:async request=>{calls.push(request);if(request.answer&&failing)throw Error('PROVIDER_UNAVAILABLE');return {next_question:request.answer?'Next?':'First?',question_id:request.answer?'q2':'q1',interviewer_response:request.answer?'You said yes.':'',educational_feedback:'Private coaching.'};}});
+ await f.engine.start({...settings,transport:'text'});f.engine.sendText('Yes');await drain();
+ const turn=f.captions.find(c=>c.who==='user');assert.equal(calls.at(-1).turnId,turn.turnId);
+ failing=false;f.engine.retryEvaluation();await drain();assert.equal(calls.at(-1).turnId,turn.turnId);assert.equal(f.reviews[0].turnId,turn.turnId);
+ assert.equal(f.captions.at(-1).text,'You said yes. Next?');assert.ok(!f.captions.some(c=>c.who==='ai'&&c.text.includes('Private coaching')));f.engine.close();
+});
+
+test('repeat never reintroduces legacy educational coaching into personal captions',async()=>{
+ const f=fixture({evaluateTurn:async()=>({suggested_follow_up:'Educational advice. Practice is complete.',educational_feedback:'Educational advice.',next_action:'finish'})});
+ await f.engine.start({...settings,transport:'text'});f.engine.repeat();
+ assert.equal(f.captions.at(-1).text,'Practice is complete.');assert.ok(!f.captions.some(c=>c.text.includes('Educational advice.')));f.engine.close();
+});

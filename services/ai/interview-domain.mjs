@@ -1,3 +1,4 @@
+import {clarificationIsGrounded} from './interview-feedback.mjs';
 import supplemental from '../../shared/interview-ui/supplemental-questions.json' with {type:'json'};
 import {n400PracticeBank} from '../../shared/interview-ui/n400-language.mjs';
 // Domain adapters retain CitizenshipAI recording. Family/asylum scheduling
@@ -60,9 +61,12 @@ export function createDomainInterview(settings,{random=Math.random}={}){
   state.practiceQuestionOrder=order;
   let selection=selectDomainQuestion({module:settings.module,bank,state});
   if(!selection.question){state.askedConceptIDs=[];state.complete=false;selection=selectDomainQuestion({module:settings.module,bank,state});}
-  return {module:settings.module,bank,...selection,followUpQueue:[],clarified:[],statements:[],revision:0};
+  return {module:settings.module,locale:settings.locale||'en',bank,...selection,followUpQueue:[],clarified:[],statements:[],revision:0};
 }
-export const uncertainAnswer=answer=>isUncertain(answer)||/\b(unsure|uncertain|maybe|quiz[aá]s|tal vez|cannot remember|can.t remember|necesito revisar|need to (check|review))\b/i.test(answer);
+// Only a wholly uncertain response takes the fixed acceptance path. A qualifier
+// inside a substantive narrative must not erase the facts the learner did state.
+export const uncertainAnswer=answer=>/^(?:(?:sorry|lo siento)[, ]+)?(?:(?:i (?:am |do )?)?(?:don['’]t|do not|cannot|can['’]t) remember(?: (?:it|that|the (?:date|day|year)))?|(?:i am |i['’]m |i )?(?:not sure|unsure|uncertain)|(?:i )?(?:don['’]t|do not) know|no recuerdo(?: (?:eso|la fecha|el d[ií]a|el a[nñ]o))?|no estoy segur[oa]|no s[eé]|(?:i )?need to (?:check|review)(?: my documents)?|necesito revisar(?: mis documentos)?|maybe|perhaps|quiz[aá]s|tal vez)[.!? ]*$/i.test(String(answer).trim());
+export const hasUncertainty=answer=>uncertainAnswer(answer)||isUncertain(answer)||/\b(unsure|uncertain|maybe|perhaps|quiz[aá]s|tal vez|don['’]t (?:remember|know|recall)|can['’]t (?:remember|recall))\b/i.test(answer);
 export function recordDomainTurn(flow,answer){
   const next=structuredClone(flow),q=next.question;
   if(!q)throw Error('INTERVIEW_COMPLETE');
@@ -70,7 +74,7 @@ export function recordDomainTurn(flow,answer){
   const unparsed=q.answerType==='yes_no'&&parseYesNo(answer)===null;
   // Uncertainty remains a quotation, never a profile fact. Do not commit an
   // unparsed yes/no as false; use the original skip contract instead.
-  const fact=uncertain||unparsed?'':answer;
+  const fact=hasUncertainty(answer)||unparsed?'':answer;
   next.state=q.kind==='followup'?recordN400FollowUpAnswer(next.state,q,fact):recordN400Answer(next.state,q,fact);
   next.statements.push({questionId:q.id,topic:q.block,text:answer,uncertain});
   return {next,question:q,answer,uncertain,unparsed};
@@ -85,15 +89,17 @@ export function advanceDomainTurn(recorded,evaluation){
   if(q.kind!=='followup'&&!uncertain&&!unparsed){
     next.followUpQueue=getContextualN400FollowUps(q,answer,next.state.applicantProfile).map((text,i)=>createN400FollowUpPrompt(q,text,i+1,next.state.applicantProfile));
   }
-  const clarification=evaluation.suggested_follow_up?.trim()&&(evaluation.suggested_follow_up.match(/\?/g)||[]).length===1?evaluation.suggested_follow_up:q.english;
+  const grounded=clarificationIsGrounded(evaluation,answer,next);
+  const clarification=grounded?evaluation.suggested_follow_up:q.english;
+  if(next.module==='citizenship')canClarify=canClarify&&(unparsed||grounded);
   if(next.module!=='citizenship'){
-    // Missing detail alone must not trap learners in repeated paraphrases.
-    // Only a concrete discrepancy can request one bounded clarification.
+    // One grounded clarification per main concept; never chase a follow-up with
+    // another follow-up or force a discrepancy just to explore an ambiguity.
     canClarify=canClarify&&q.kind!=='followup'
       &&evaluation.next_action==='clarify'
-      &&evaluation.consistency_status==='possible_discrepancy'
-      &&distinctClarification(evaluation.suggested_follow_up?.trim(),q.english)
-      &&next.revision-(next.lastClarificationRevision??-3)>=3;
+      &&grounded
+      &&distinctClarification(evaluation.suggested_follow_up?.trim(),q.english);
+    if(evaluation.consistency_status==='possible_discrepancy')canClarify=canClarify&&next.revision-(next.lastClarificationRevision??-3)>=3;
     if(canClarify)next.lastClarificationRevision=next.revision;
   }
   if(canClarify){

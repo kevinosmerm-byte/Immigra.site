@@ -1,3 +1,4 @@
+import {interventionParts,interviewerQuestion} from './interview-presentation.mjs';
 import {isNextQuestionCommand} from './commands.mjs';
 import {logDiagnostic} from './diagnostics.mjs';
 import {authenticatedFetch} from '../authentication/fetch.mjs';
@@ -42,11 +43,11 @@ export function createInterviewAIEngine({env=globalThis,fetchImpl=authenticatedF
    const request={answer,question,questionId:expectedId,turnId};
    const result=evaluateTurn?await evaluateTurn(request):await json('/api/interview/sessions/'+session.id+'/turn',request);
    if(token!==generation)return;
-   failedReview=null;failedSpeech=null;recover('evaluation');lastQuestion=result.next_question||result.suggested_follow_up;questionId=result.question_id||null;finishAfterSpeech=result.next_action==='finish';
-   speechParts=result.next_question?[...(answer&&result.educational_feedback?[{text:result.educational_feedback,phase:'SPEAKING_FEEDBACK'}]:[]),{text:result.next_question,phase:answer?'SPEAKING_NEXT_QUESTION':'SPEAKING_QUESTION'}]:[{text:result.suggested_follow_up,phase:answer?'SPEAKING_FEEDBACK':'SPEAKING_QUESTION'}];
+   failedReview=null;failedSpeech=null;recover('evaluation');lastQuestion=settings.domain==='civics'?(result.next_question||result.suggested_follow_up):interviewerQuestion(result,settings.locale);questionId=result.question_id||null;finishAfterSpeech=result.next_action==='finish';
+   speechParts=interventionParts(result,{domain:settings.domain,answer,locale:settings.locale});
    if(answer&&result.reviewed_concept_id)onReviewed(result);
-   if(answer&&result.status!=='skipped'){diagnostic('EVALUATION_COMPLETED');onEvaluation({answer,question,...result});}
-   if(settings.transport==='text'){caption({id:crypto.randomUUID(),who:'ai',text:result.suggested_follow_up});publishState(paused?'paused':'listening');}
+   if(answer&&result.status!=='skipped'){diagnostic('EVALUATION_COMPLETED');onEvaluation({answer,question,...result,turnId});}
+   if(settings.transport==='text'){caption({id:crypto.randomUUID(),who:'ai',text:speechParts.map(part=>part.text).join(' ')});publishState(paused?'paused':'listening');}
    else speakIntervention();
   }catch(error){if(token===generation){failedReview={answer,question,token,expectedId,turnId};report(error.message,'evaluation');micReady();publishState(paused?'paused':'listening');}}
   finally{if(token===generation){evaluating=false;pendingText=false;micReady();}}
@@ -83,7 +84,7 @@ export function createInterviewAIEngine({env=globalThis,fetchImpl=authenticatedF
      if(m.type==='input_audio_buffer.committed'){if(m.item_id&&!questionByItem.has(m.item_id))questionByItem.set(m.item_id,{text:lastQuestion,id:questionId});pendingText=true;micReady();diagnostic('USER_TURN_COMPLETED');diagnostic('TURN_COMPLETE');diagnostic('TRANSCRIBING');if(!paused)publishState('processing');}
      const state=AvatarConversationController(m.type);if(state&&!paused)publishState(state==='thinking'?'processing':state);
      if(m.type==='output_audio_buffer.stopped'){outputBusy=false;if(failedSpeech){micReady();return;}if(speechParts.length)speakIntervention();else{micReady();if(!paused&&!finishAfterSpeech)diagnostic('LISTENING');}}
-     if(m.type==='conversation.item.input_audio_transcription.completed'&&m.transcript){const answer=m.transcript.trim().slice(0,5000),asked=questionByItem.get(m.item_id)||{text:lastQuestion,id:questionId};if(asked.id&&questionId&&asked.id!==questionId){diagnostic('STALE_AUDIO_IGNORED');questionByItem.delete(m.item_id);if(!evaluating){pendingText=false;micReady();}return;}if(answer&&caption({who:'user',id:m.item_id,text:answer})){pendingText=true;recover('transcription');if(/^(please )?(give me (a moment|some time)|i need (a moment|more time)|necesito (un momento|m[aá]s tiempo)|dame un momento)[.!]?$/i.test(answer)){pendingText=false;paused=true;stream?.getAudioTracks().forEach(t=>{t.enabled=false;});publishState('paused');return;}stream?.getAudioTracks().forEach(t=>{t.enabled=false;});publishState('processing');queue=queue.then(()=>review(answer,asked.text,token,asked.id,m.item_id));}}
+     if(m.type==='conversation.item.input_audio_transcription.completed'&&m.transcript){const answer=m.transcript.trim().slice(0,5000),asked=questionByItem.get(m.item_id)||{text:lastQuestion,id:questionId};if(asked.id&&questionId&&asked.id!==questionId){diagnostic('STALE_AUDIO_IGNORED');questionByItem.delete(m.item_id);if(!evaluating){pendingText=false;micReady();}return;}if(answer&&caption({who:'user',id:m.item_id,turnId:m.item_id,text:answer,command:isNextQuestionCommand(answer)||/^(please )?(give me (a moment|some time)|i need (a moment|more time)|necesito (un momento|m[aá]s tiempo)|dame un momento)[.!]?$/i.test(answer)})){pendingText=true;recover('transcription');if(/^(please )?(give me (a moment|some time)|i need (a moment|more time)|necesito (un momento|m[aá]s tiempo)|dame un momento)[.!]?$/i.test(answer)){pendingText=false;paused=true;stream?.getAudioTracks().forEach(t=>{t.enabled=false;});publishState('paused');return;}stream?.getAudioTracks().forEach(t=>{t.enabled=false;});publishState('processing');queue=queue.then(()=>review(answer,asked.text,token,asked.id,m.item_id));}}
      if(m.type==='response.output_audio_transcript.done'&&m.transcript){diagnostic('AI_RESPONSE_RECEIVED');caption({who:'ai',id:m.item_id||m.response_id,text:m.transcript.slice(0,2000)});}
      if(m.type==='conversation.item.input_audio_transcription.failed'||(m.type==='conversation.item.input_audio_transcription.completed'&&!m.transcript?.trim())){pendingText=false;report('TRANSCRIPTION_FAILED','transcription');micReady();publishState(paused?'paused':'listening');}
      if(m.type==='response.done'&&m.response?.status==='completed')recover('provider');
@@ -102,9 +103,9 @@ export function createInterviewAIEngine({env=globalThis,fetchImpl=authenticatedF
    if(token!==generation)return false;deadline=setTimeout(()=>{if(token===generation)fail('SESSION_EXPIRED');},Math.max(0,session.expires_at-Date.now()));return true;
   }catch(error){if(token===generation)fail(error.name==='NotAllowedError'?'MICROPHONE_DENIED':error.name==='NotFoundError'?'MICROPHONE_DISCONNECTED':error.message||'CONNECTION_FAILED');return false;}
  },
- sendText(text){if(!session||paused||finishAfterSpeech||pendingText||evaluating||failedReview||!text.trim())return false;pendingText=true;const answer=text.trim().slice(0,5000),token=generation;
+ sendText(text){if(!session||paused||finishAfterSpeech||pendingText||evaluating||failedReview||!text.trim())return false;pendingText=true;const answer=text.trim().slice(0,5000),token=generation,turnId=crypto.randomUUID();
   if(settings.transport==='voice'){send({type:'response.cancel'});send({type:'output_audio_buffer.clear'});if(!send({type:'conversation.item.create',item:{type:'message',role:'user',content:[{type:'input_text',text:answer}]}})){pendingText=false;return false;}}
-  caption({who:'user',id:crypto.randomUUID(),text:answer});const question=lastQuestion,expectedId=questionId;publishState('processing');queue=queue.then(()=>review(answer,question,token,expectedId));return true;
+  caption({who:'user',id:turnId,turnId,text:answer,command:isNextQuestionCommand(answer)});const question=lastQuestion,expectedId=questionId;publishState('processing');queue=queue.then(()=>review(answer,question,token,expectedId,turnId));return true;
  },
  retryEvaluation(){if(!failedReview&&failedSpeech){speechParts.unshift(failedSpeech);speakIntervention();return;}if(failedReview){const {answer,question,token,expectedId,turnId}=failedReview;queue=queue.then(()=>review(answer,question,token,expectedId,turnId));}},
  toggleMic(){muted=!muted;micReady();return muted;},
