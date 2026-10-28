@@ -1,3 +1,5 @@
+> Actualización 2026-10-27: el propietario autorizó integrar y publicar. `main` avanzó a 9cba9fa sin reescribir historial. Render srv-db4ojnflot8c73ceva8g cambió a Immigra.site/main y lanzó dep-dbgk1ac9v7es738e7g5g. Se conservaron el dominio, servicio y comandos. Las secciones siguientes documentan el plan original; la conexión al repositorio histórico ya no está vigente. La finalización y salud del despliegue se confirman en Render, no por la existencia de este documento.
+
 # Unificación de IMMIGRA.site — 2026-10-27
 
 ## Decisión del propietario

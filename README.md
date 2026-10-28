@@ -5,11 +5,11 @@ Plataforma educativa bilingüe de preparación para ciudadanía, asilo y residen
 ## Proyecto único
 
 - Repositorio canónico: https://github.com/kevinosmerm-byte/Immigra.site
-- Rama de referencia: `main` una vez integrada la migración.
+- Rama de referencia: `main`.
 - Sitio: https://immigra.site
 - Código de esta migración: versión publicada `c6251fb` del repositorio histórico `immigration-ai`.
 
-La migración se prepara en `codex/unify-immigra-site`. No está desplegada por el hecho de existir esta rama. Render continúa conectado al repositorio histórico hasta completar el cambio documentado en [la migración](docs/CANONICAL_PROJECT.md).
+La migración 9cba9fa está integrada en `main`. Render está conectado a `Immigra.site/main`; el estado verificable del cambio se registra en [la migración](docs/CANONICAL_PROJECT.md).
 
 ## Desarrollo y verificación
 
