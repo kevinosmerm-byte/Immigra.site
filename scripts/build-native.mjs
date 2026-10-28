@@ -15,7 +15,7 @@ async function main(){
  if(!['android','ios'].includes(target))throw Error('Choose android or ios. These commands create test packages only.');
  if(target==='ios'&&process.platform!=='darwin')throw Error('The iOS simulator build requires macOS and Xcode. Run this command on your Mac or MacinCloud.');
  if(!await available(path.join(root,'dist/index.html')))throw Error(`Build and synchronize first: npm run native:sync:${target}`);
- const html=await readFile(path.join(root,'dist/index.html'),'utf8');if(!html.includes('<title>Immigra'))throw Error('The unified Immigra build is required.');
+ const html=await readFile(path.join(root,'dist/index.html'),'utf8');if(!/<title>immigra(?:\.site)?(?:\s|<)/i.test(html))throw Error('The unified Immigra build is required.');
  const nativeAssets=target==='android'?path.join(moduleRoot,'android/app/src/main/assets/public/index.html'):path.join(moduleRoot,'ios/App/App/public/index.html');
  if(!await available(nativeAssets)||await readFile(nativeAssets,'utf8')!==html)throw Error(`Native assets differ from the current build. Run npm run native:sync:${target} first.`);
  await mkdir(output,{recursive:true});
