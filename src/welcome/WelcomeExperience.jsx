@@ -33,7 +33,7 @@ export default function WelcomeExperience({initialLanguage,onComplete}) {
         <section className="welcome-card" aria-labelledby="welcome-language">
           <div className="welcome-card-head"><h2 id="welcome-language">{copy.langTitle}</h2><span>{copy.step}</span></div>
           <div className="welcome-choices" role="group" aria-label={copy.langTitle}>{[['es','Español','Spanish'],['en','English','Inglés']].map(([value,label,translation])=><button key={value} aria-pressed={language===value} onClick={()=>choose(value)}><b>{value.toUpperCase()}</b><span>{label}<small>{translation}</small></span></button>)}</div>
-          <button className="welcome-primary" disabled={!chosen} onClick={()=>{setChecked(false);setDialog(true);}}>{copy.continue} →</button>
+          <button className="welcome-primary" disabled={!chosen} onClick={()=>{setChecked(false);setDialog(true);}}><span>{copy.continue} →</span></button>
           <p className="welcome-note">{chosen?copy.note:(language==='es'?'Confirma tu idioma para continuar.':'Confirm your language to continue.')}</p>
         </section>
       </main>
@@ -44,7 +44,7 @@ export default function WelcomeExperience({initialLanguage,onComplete}) {
       <p className="welcome-eyebrow">{copy.dstep}</p><h2 id="welcome-notice">{copy.dtitle}</h2><p>{copy.intro}</p>
       {[1,2,3].map(n=><div className="welcome-point" key={n}><strong>{copy[`p${n}t`]}</strong><p>{copy[`p${n}d`]}</p></div>)}
       <label className="welcome-check"><input type="checkbox" checked={checked} onChange={e=>setChecked(e.target.checked)}/><span>{copy.ack}</span></label>
-      <button className="welcome-primary" disabled={!checked} onClick={()=>{if(checked)onComplete(language);}}>{copy.enter} →</button>
+      <button className="welcome-primary" disabled={!checked} onClick={()=>{if(checked)onComplete(language);}}><span>{copy.enter} →</span></button>
       <div className="welcome-links"><a href={`https://immigra.site/${language==='es'?'terminos':'terms'}`} target="_blank" rel="noopener noreferrer">{copy.terms} ↗</a><a href={`https://immigra.site/${language==='es'?'privacidad':'privacy'}`} target="_blank" rel="noopener noreferrer">{copy.privacy} ↗</a></div>
       <button className="welcome-back" onClick={close}>{copy.back}</button>
     </section></div>}

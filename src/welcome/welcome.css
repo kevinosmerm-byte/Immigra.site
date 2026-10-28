@@ -34,3 +34,25 @@
 .immigra-welcome .welcome-dialog .welcome-back{border-radius:99px;color:#425b7c}.immigra-welcome .welcome-dialog .welcome-back:hover{background:#ffffff99}.immigra-welcome .welcome-links{gap:12px;padding:12px 0 6px;font-size:12px}.immigra-welcome .welcome-links a{padding:8px;color:#365c89;text-underline-offset:3px}
 @media(max-width:480px){.immigra-welcome .welcome-dialog{padding:24px 18px 18px;border-radius:28px}.immigra-welcome .welcome-dialog h2{font-size:25px;margin-right:22px}.immigra-welcome .welcome-point{padding:12px 14px}.immigra-welcome .welcome-dialog .welcome-eyebrow{max-width:calc(100% - 30px)}}
 @media(prefers-reduced-transparency:reduce){.immigra-welcome .welcome-dialog{background:#f7faff;backdrop-filter:none}.immigra-welcome .welcome-point{background:#fff}}
+
+/* Shared liquid-glass action for both welcome steps. */
+.immigra-welcome .welcome-primary,.immigra-welcome .welcome-dialog .welcome-primary{position:relative;isolation:isolate;overflow:hidden;border-radius:24px;border:1px solid #ffffffa8;color:#fff;background:linear-gradient(135deg,#164b99 0%,#275ec0 50%,#514ac2 100%);box-shadow:inset 0 1px 1px #ffffffb3,inset 0 -2px 3px #0b23694d,0 8px 24px #2855a538;backdrop-filter:blur(18px) saturate(145%);-webkit-backdrop-filter:blur(18px) saturate(145%);transition:transform .2s ease,box-shadow .2s ease}
+.immigra-welcome .welcome-primary>span{position:relative;z-index:2}
+.immigra-welcome .welcome-primary:before{content:"";position:absolute;inset:1px 1px 46%;border-radius:23px 23px 45% 55%;background:linear-gradient(180deg,#ffffff59,#ffffff08);pointer-events:none}
+.immigra-welcome .welcome-primary:after{content:"";position:absolute;z-index:1;width:140%;height:130%;left:-20%;top:52%;border-radius:45%;border:0;background:radial-gradient(ellipse at center,#8ac5ff26 0%,#b8a7ff08 45%,transparent 70%);transform:rotate(-5deg);animation:welcome-action-water 7s ease-in-out infinite alternate;pointer-events:none}
+.immigra-welcome .welcome-primary:not(:disabled):hover,.immigra-welcome .welcome-dialog .welcome-primary:not(:disabled):hover{filter:none;transform:translateY(-1px);box-shadow:inset 0 1px 2px #ffffffcc,0 11px 27px #2855a545}
+.immigra-welcome .welcome-primary:not(:disabled):active{transform:translateY(1px)}
+.immigra-welcome .welcome-primary:disabled,.immigra-welcome .welcome-dialog .welcome-primary:disabled{opacity:1;background:linear-gradient(135deg,#e9eff8,#e4e5f4);border-color:#d0dced;color:#59677e;box-shadow:inset 0 1px 1px #fff;transform:none}
+.immigra-welcome .welcome-primary:disabled:after{animation:none;opacity:.35}
+@keyframes welcome-action-water{from{transform:translateX(-3%) rotate(-5deg)}to{transform:translateX(3%) rotate(4deg)}}
+@media(prefers-reduced-motion:reduce){.immigra-welcome .welcome-primary:after{animation:none}.immigra-welcome .welcome-primary{transition:none}}
+html[data-reduce-motion="true"] .immigra-welcome .welcome-primary:after{animation:none}
+
+/* Matching water-glass cards in the language and notice steps. */
+.immigra-welcome .welcome-card,.immigra-welcome .welcome-dialog{position:relative;isolation:isolate;border:1px solid #fffffff2;background:linear-gradient(135deg,#ffffffb8,#f3f8ff91 52%,#f1edff99);backdrop-filter:blur(28px) saturate(150%);-webkit-backdrop-filter:blur(28px) saturate(150%);box-shadow:inset 0 2px 2px #fff,inset 0 -2px 4px #bdd6f078,0 20px 55px #28477626}
+.immigra-welcome .welcome-card:before,.immigra-welcome .welcome-dialog:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;border-radius:inherit;background:radial-gradient(ellipse at 15% 95%,#9ccfff66,transparent 55%),radial-gradient(ellipse at 90% 10%,#d6c6ff55,transparent 55%),linear-gradient(155deg,#ffffff85 5%,transparent 35%,#ffffff66 48%,transparent 62%);background-size:130% 140%;animation:welcome-card-water 12s ease-in-out infinite alternate}
+@keyframes welcome-card-water{from{background-position:0% 20%}to{background-position:100% 80%}}
+@media(prefers-reduced-motion:reduce){.immigra-welcome .welcome-card:before,.immigra-welcome .welcome-dialog:before{animation:none}}
+html[data-reduce-motion="true"] .immigra-welcome .welcome-card:before,html[data-reduce-motion="true"] .immigra-welcome .welcome-dialog:before{animation:none}
+@media(prefers-reduced-transparency:reduce){.immigra-welcome .welcome-card,.immigra-welcome .welcome-dialog{background:#f7faff;backdrop-filter:none;-webkit-backdrop-filter:none}.immigra-welcome .welcome-card:before,.immigra-welcome .welcome-dialog:before{display:none}}
+html[data-reduce-transparency="true"] .immigra-welcome .welcome-card,html[data-reduce-transparency="true"] .immigra-welcome .welcome-dialog{background:#f7faff;backdrop-filter:none;-webkit-backdrop-filter:none}
