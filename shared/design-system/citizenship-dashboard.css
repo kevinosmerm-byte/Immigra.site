@@ -4,7 +4,7 @@
 #root #main #citizenship-root .citizen-dashboard>.platform-title:before{content:'';position:absolute;z-index:-1;inset:-70px -35px -60px 20%;background:url('../../modules/citizenship/src/assets/citizenship-background.png') right 35%/cover no-repeat;opacity:.3;-webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 32%,#000 78%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 25%,#000 66%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0%,#000 32%,#000 78%,transparent 100%),linear-gradient(180deg,transparent 0%,#000 25%,#000 66%,transparent 100%);-webkit-mask-composite:source-in;mask-composite:intersect;pointer-events:none}
 #root #main #citizenship-root .citizen-dashboard h1{font-size:clamp(34px,4.6vw,56px)!important;color:var(--liquid-text)!important;font-family:Inter,system-ui,sans-serif!important;font-weight:750;letter-spacing:-.04em}
 #root #main #citizenship-root .citizen-dashboard>.platform-title p{font-size:20px;color:var(--liquid-muted)}
-#root #main #citizenship-root .platform-module-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin:14px 0 8px;padding:6px;border-radius:32px!important;overflow-x:auto}
+#root #main #citizenship-root .platform-module-nav{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:14px 0 8px;padding:6px;border-radius:32px!important;overflow-x:auto}
 #root #main #citizenship-root .platform-module-nav button{border:0!important;border-radius:26px!important;min-height:54px;padding:12px 14px;background:transparent!important;color:var(--liquid-text)!important;box-shadow:none!important;font-size:15px;white-space:normal}
 #root #main #citizenship-root .platform-module-nav button[aria-current=page]{background:linear-gradient(135deg,#4da3e6,#2563a6)!important;color:#fff!important;box-shadow:0 5px 18px #2563a633,inset 0 1px 2px #ffffffb3!important}
 #root #main #citizenship-root .citizen-daily{display:grid;grid-template-columns:68px minmax(0,1fr) auto auto;gap:12px 20px;align-items:center;padding:24px;margin-bottom:24px}
@@ -51,3 +51,8 @@
 #root #main #citizenship-root :is(.quiz-path-header,.quiz-session-header) { box-shadow: none !important; filter: none !important; background: transparent !important; }
 #root #main #citizenship-root :is(.quiz-path-header,.quiz-session-header)::before,
 #root #main #citizenship-root :is(.quiz-path-header,.quiz-session-header)::after { box-shadow: none !important; background: transparent !important; }
+
+/* All five citizenship destinations share one row, including narrow screens. */
+#root #main #citizenship-root .platform-module-nav button { min-width:0; overflow-wrap:anywhere; }
+#root #main #citizenship-root .platform-module-nav button > span { min-width:0; }
+@media(max-width:900px) { #root #main #citizenship-root .platform-module-nav button { flex-direction:column; gap:4px; padding:8px 4px; } }

@@ -8,3 +8,9 @@ export function n400StudyTokens(text) {
 export function nextStudyIndex(index, direction, count) {
   return Math.max(0, Math.min(Math.max(0, count - 1), index + direction));
 }
+
+// Atomic, timer-free transitions keep rapid navigation and boundaries deterministic.
+export function nextStudyPage(page, direction, count) {
+  const index = nextStudyIndex(page.index, direction, count);
+  return index === page.index ? page : { index, direction: index > page.index ? 'next' : 'previous' };
+}

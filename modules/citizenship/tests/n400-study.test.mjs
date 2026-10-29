@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { n400StudyTokens, nextStudyIndex } from '../src/n400StudyText.js';
+import { n400StudyTokens, nextStudyIndex, nextStudyPage } from '../src/n400StudyText.js';
 import { readAppRoute, appRouteHash } from '../routes.mjs';
 
 test('N400 study highlighting never rewrites source text or inserts EVER', () => {
@@ -72,4 +72,20 @@ test('compact reading controls retain accessible actions and no automatic playba
  assert.match(source,/setAudioEnabled\(false\)/);
  assert.match(source,/<details className="n400-study-source"/);
  assert.doesNotMatch(source,/civics-deck-hero|n400-study-notice/);
+});
+
+test('page turns handle rapid alternating navigation and stop at boundaries without timers', () => {
+ let page={index:0,direction:null};
+ assert.equal(nextStudyPage(page,-1,62),page);
+ for(let i=0;i<100;i++) page=nextStudyPage(page,1,62);
+ assert.deepEqual(page,{index:61,direction:'next'});
+ assert.equal(nextStudyPage(page,1,62),page);
+ page=nextStudyPage(page,-1,62);
+ assert.deepEqual(page,{index:60,direction:'previous'});
+ for(let i=0;i<60;i++) { page=nextStudyPage(page,-1,62); page=nextStudyPage(page,1,62); }
+ assert.deepEqual(page,{index:60,direction:'next'});
+ const source=fs.readFileSync(new URL('../src/N400StudyCards.jsx',import.meta.url),'utf8');
+ assert.match(source,/stop\(\);\s*setPage\(current => nextStudyPage/);
+ assert.match(source,/key=\{index\} data-page-direction=\{page.direction\}/);
+ assert.doesNotMatch(source,/setTimeout|setInterval|onAnimationEnd/);
 });
