@@ -1,26 +1,45 @@
-#root #main #citizenship-root .n400-study-screen .civics-deck-hero { margin-top:24px; }
+/* Compact reading cards reuse the civics glass material and control rail.
+   Keep this file outside the legacy module selector transformer. */
+#root #main #citizenship-root .n400-study-screen { --n400-blue:#075cb0; --n400-green:#166343; }
+#root #main #citizenship-root .n400-study-screen .civics-deck-content { max-width:900px; padding:20px; }
+#root #main #citizenship-root .n400-study-heading { display:flex; align-items:center; gap:12px; margin:0 0 14px; padding:0; background:transparent; border:0; box-shadow:none; }
+#root #main #citizenship-root .n400-study-heading h1 { margin:0; font-size:20px; line-height:1.3; color:var(--liquid-text); }
 #root #main #citizenship-root .n400-study-card { display:block; border-radius:24px; background:var(--liquid-surface); border:1px solid var(--liquid-border); overflow:hidden; }
-#root #main #citizenship-root .n400-study-body { padding:32px; min-height:280px; display:flex; flex-direction:column; justify-content:center; gap:20px; }
-#root #main #citizenship-root .n400-study-body h2 { font-size:clamp(23px,2.6vw,34px); line-height:1.45; margin:0; color:var(--liquid-text); overflow-wrap:anywhere; }
-#root #main #citizenship-root .n400-study-body p { font-size:18px; line-height:1.6; margin:0 0 8px; color:var(--liquid-text); }
+#root #main #citizenship-root .n400-study-body { padding:24px; min-height:0; display:flex; flex-direction:column; justify-content:center; gap:12px; }
+#root #main #citizenship-root .n400-study-body h2 { font-size:clamp(22px,2.4vw,30px); line-height:1.3; margin:0; color:var(--liquid-text); overflow-wrap:anywhere; }
+#root #main #citizenship-root .n400-study-body p { font-size:17px; line-height:1.55; margin:0 0 8px; color:var(--liquid-text); }
 #root #main #citizenship-root .n400-study-body small, #root #main #citizenship-root .n400-reader-status { color:var(--liquid-muted); }
-#root #main #citizenship-root .n400-emphasis-ever { color:var(--color-primary); font-weight:800; }
-#root #main #citizenship-root .n400-emphasis-stem { color:var(--color-navy); text-decoration:underline; text-decoration-color:var(--color-ai); text-underline-offset:5px; }
-#root #main #citizenship-root .n400-study-tools { display:flex; flex-wrap:wrap; gap:12px; padding:0 32px 24px; }
-#root #main #citizenship-root .n400-study-screen button { min-height:48px; white-space:normal; }
+#root #main #citizenship-root .n400-emphasis-ever { color:var(--n400-blue); font-weight:800; }
+#root #main #citizenship-root .n400-emphasis-support { color:var(--n400-green); font-weight:800; }
+#root #main #citizenship-root .n400-emphasis-stem { color:var(--color-navy); }
+#root #main #citizenship-root .n400-study-navigation { display:grid; grid-template-columns:44px minmax(40px,1fr) auto 44px; gap:8px; padding:10px 12px; }
+#root #main #citizenship-root .n400-study-navigation > * { grid-row:1; }
+#root #main #citizenship-root .n400-study-navigation > button.n400-icon-control { grid-row:1; }
+#root #main #citizenship-root .n400-study-count { text-align:center; font-size:14px; color:var(--liquid-muted); }
+#root #main #citizenship-root .n400-study-tools { display:flex; align-items:center; gap:8px; }
+#root #main #citizenship-root .n400-study-screen button.n400-icon-control { display:inline-grid; place-items:center; width:44px; min-width:44px; height:44px; min-height:44px; padding:8px; font-size:16px; line-height:1; }
+#root #main #citizenship-root .n400-icon-control svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+#root #main #citizenship-root .n400-icon-control svg rect { fill:currentColor; stroke:none; }
+#root #main #citizenship-root .n400-icon-control[aria-expanded=true], #root #main #citizenship-root .n400-icon-control[aria-pressed=true] { box-shadow:inset 0 0 0 2px var(--color-primary); }
 #root #main #citizenship-root .n400-study-screen button:disabled { opacity:.5; cursor:default; }
 #root #main #citizenship-root .n400-study-screen :is(button,article,a):focus-visible { outline:3px solid var(--color-primary); outline-offset:4px; }
-#root #main #citizenship-root .n400-study-notice, #root #main #citizenship-root .n400-reader-status, #root #main #citizenship-root .n400-study-source { line-height:1.6; margin:16px 0; }
-html[data-theme=dark] #root #main #citizenship-root .n400-emphasis-ever { color:var(--color-ai); }
+#root #main #citizenship-root .n400-reader-status { font-size:14px; line-height:1.5; margin:10px 0 0; }
+#root #main #citizenship-root .n400-reader-status:empty { display:none; }
+#root #main #citizenship-root .n400-study-source { color:var(--liquid-muted); font-size:14px; line-height:1.55; margin:8px 0 0; }
+#root #main #citizenship-root .n400-study-source summary { cursor:pointer; min-height:44px; display:flex; align-items:center; gap:8px; }
+#root #main #citizenship-root .n400-study-source summary::before { content:'+'; }
+#root #main #citizenship-root .n400-study-source[open] summary::before { content:'−'; }
+#root #main #citizenship-root .n400-form-notes { border-left:3px solid var(--color-border); padding-left:12px; }
+#root #main #citizenship-root .n400-form-notes strong, #root #main #citizenship-root .n400-form-notes p { font-size:14px; }
+html[data-theme=dark] #root #main #citizenship-root .n400-study-screen { --n400-blue:#8bc7ff; --n400-green:#70dfac; }
 html[data-theme=dark] #root #main #citizenship-root .n400-emphasis-stem { color:var(--liquid-text); }
 html[data-reduce-transparency=true] #root #main #citizenship-root .n400-study-card { background:var(--liquid-solid); }
 @media(max-width:600px) {
- #root #main #citizenship-root .n400-study-body { padding:24px 18px; min-height:240px; }
- #root #main #citizenship-root .n400-study-tools { padding:0 18px 20px; }
- #root #main #citizenship-root .n400-study-tools button { flex:1 1 100%; }
+ #root #main #citizenship-root .n400-study-screen .civics-deck-content { padding:12px; }
+ #root #main #citizenship-root .n400-study-body { padding:20px 18px; }
+ #root #main #citizenship-root .n400-study-navigation { grid-template-columns:44px minmax(0,1fr) auto 44px; padding:8px; gap:4px; }
+ #root #main #citizenship-root .n400-study-tools { gap:4px; }
+ #root #main #citizenship-root .n400-study-count { font-size:12px; overflow-wrap:anywhere; }
 }
 @media(prefers-reduced-motion:reduce) { #root #main #citizenship-root .n400-study-screen * { animation:none!important; transition:none!important; } }
 html[data-reduce-motion=true] #root #main #citizenship-root .n400-study-screen * { animation:none!important; transition:none!important; }
-#root #main #citizenship-root .n400-form-notes { border-left:3px solid var(--color-border); padding-left:16px; }
-#root #main #citizenship-root .n400-form-notes p { font-size:16px; }
-#root #main #citizenship-root .n400-study-source summary { cursor:pointer; min-height:44px; padding:10px 0; }

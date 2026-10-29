@@ -48,3 +48,28 @@ test('version-pinned reading bank retains all 62 cards, source metadata and exac
     for (const note of q.formNotes || []) assert.ok(note.en && note.es);
   }
 });
+
+
+test('semantic blue and green phrases preserve exact source wording and qualifiers', () => {
+ for (const [text, kind, phrase] of [
+  ['Have you EVER claimed anything?', 'ever', 'Have you EVER'],
+  ['HAVE YOU EVER been there?', 'ever', 'HAVE YOU EVER'],
+  ['Do you support the Constitution?', 'support', 'Do you support'],
+  ['DO YOU SUPPORT this?', 'support', 'DO YOU SUPPORT'],
+ ]) {
+  const tokens=n400StudyTokens(text);
+  assert.equal(tokens.map(x=>x.text).join(''),text);
+  assert.deepEqual(tokens.filter(x=>x.kind===kind).map(x=>x.text),[phrase]);
+ }
+ assert.equal(n400StudyTokens('Do you supportively answer?').some(x=>x.kind==='support'),false);
+});
+test('compact reading controls retain accessible actions and no automatic playback', () => {
+ const source=fs.readFileSync(new URL('../src/N400StudyCards.jsx',import.meta.url),'utf8');
+ assert.match(source,/aria-label=\{t\('Previous card'/);
+ assert.match(source,/aria-label=\{t\('Next card'/);
+ assert.match(source,/aria-pressed=\{audioEnabled\}/);
+ assert.match(source,/onClick=\{speaking \? stop : play\}/);
+ assert.match(source,/setAudioEnabled\(false\)/);
+ assert.match(source,/<details className="n400-study-source"/);
+ assert.doesNotMatch(source,/civics-deck-hero|n400-study-notice/);
+});
