@@ -66,7 +66,7 @@ export function N400StudyCards({ language = 'es', bank, onBack }) {
           {translationVisible && <div id="n400-study-translation"><p lang="es">{question.es}</p>{question.formNotes?.map((note, i) => <p key={i} lang="es">{note.es}</p>)}<small>{t('Spanish support translation · unofficial', 'Traducción de apoyo al español · no oficial')}</small></div>}
         </div>
         <nav className="civics-deck-navigation n400-study-navigation" aria-label={t('Study card navigation', 'Navegación de tarjetas')}>
-          <button type="button" className="n400-icon-control n400-page-control" aria-label={t('Previous card', 'Tarjeta anterior')} title={t('Previous card', 'Tarjeta anterior')} disabled={index === 0} onClick={() => navigate(-1)}><span aria-hidden="true">←</span></button>
+          <button type="button" className="n400-icon-control n400-page-control" aria-label={t('Previous card', 'Tarjeta anterior')} title={t('Previous card', 'Tarjeta anterior')} disabled={index === 0} onClick={() => navigate(-1)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7" /></svg></button>
           <span className="n400-study-count">{index + 1} / {bank.questions.length}</span>
           <div className="n400-study-tools">
             <button type="button" className="n400-icon-control" aria-label={translationVisible ? t('Hide Spanish translation', 'Ocultar traducción al español') : t('Show Spanish translation', 'Mostrar traducción al español')} title={translationVisible ? t('Hide translation', 'Ocultar traducción') : t('Spanish translation', 'Traducción al español')} aria-expanded={translationVisible} aria-controls="n400-study-translation" onClick={() => { stop(); setTranslationVisible(value => !value); }}><span aria-hidden="true">ES</span></button>
@@ -74,7 +74,7 @@ export function N400StudyCards({ language = 'es', bank, onBack }) {
               {speaking ? <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /></svg> : <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v6h4l5 4V5L9 9H5Zm11.5.5a4 4 0 0 1 0 5M18.8 7a7 7 0 0 1 0 10" /></svg>}
             </button>
           </div>
-          <button type="button" className="n400-icon-control n400-page-control" aria-label={t('Next card', 'Tarjeta siguiente')} title={t('Next card', 'Tarjeta siguiente')} disabled={index === bank.questions.length - 1} onClick={() => navigate(1)}><span aria-hidden="true">→</span></button>
+          <button type="button" className="n400-icon-control n400-page-control" aria-label={t('Next card', 'Tarjeta siguiente')} title={t('Next card', 'Tarjeta siguiente')} disabled={index === bank.questions.length - 1} onClick={() => navigate(1)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-7-7 7 7-7 7" /></svg></button>
         </nav>
       </GlassStudyCard>
       <p role="status" className="n400-reader-status">{audioError ? t('Reading aloud is unavailable on this device. You can keep studying the text.', 'La lectura en voz alta no está disponible en este dispositivo. Puedes seguir estudiando el texto.') : ''}</p>

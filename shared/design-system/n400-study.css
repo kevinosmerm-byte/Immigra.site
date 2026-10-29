@@ -19,12 +19,18 @@
 #root #main #citizenship-root .n400-study-tools { display:flex; align-items:center; gap:8px; }
 #root #main #citizenship-root .n400-study-screen button.n400-icon-control { display:inline-grid; place-items:center; width:44px; min-width:44px; height:44px; min-height:44px; padding:8px; font-size:16px; line-height:1; }
 #root #main #citizenship-root .n400-study-screen button.n400-page-control { width:52px; min-width:52px; height:52px; min-height:52px; }
-#root #main #citizenship-root .n400-page-control > span { font-size:26px; }
-/* The content alone turns; controls retain focus and never wait for animation. */
-#root #main #citizenship-root .n400-study-body[data-page-direction=next] { transform-origin:left center; animation:n400-page-next 180ms ease-out; }
-#root #main #citizenship-root .n400-study-body[data-page-direction=previous] { transform-origin:right center; animation:n400-page-previous 180ms ease-out; }
-@keyframes n400-page-next { from { transform:perspective(1200px) rotateY(4deg); } to { transform:none; } }
-@keyframes n400-page-previous { from { transform:perspective(1200px) rotateY(-4deg); } to { transform:none; } }
+#root #main #citizenship-root .n400-icon-control.n400-page-control svg { width:36px; height:36px; stroke-width:2.8; }
+/* Content turns immediately; the stable control rail never waits for animation. */
+#root #main #citizenship-root .n400-study-body { position:relative; }
+#root #main #citizenship-root .n400-study-body[data-page-direction=next] { transform-origin:left center; animation:n400-page-next 400ms ease-out; }
+#root #main #citizenship-root .n400-study-body[data-page-direction=previous] { transform-origin:right center; animation:n400-page-previous 400ms ease-out; }
+#root #main #citizenship-root .n400-study-body[data-page-direction]::after { content:''; position:absolute; top:0; bottom:0; width:24%; pointer-events:none; opacity:0; background:linear-gradient(90deg,transparent,rgba(18,58,99,.20) 45%,rgba(255,255,255,.65) 52%,transparent); }
+#root #main #citizenship-root .n400-study-body[data-page-direction=next]::after { left:0; animation:n400-fold-next 400ms ease-out; }
+#root #main #citizenship-root .n400-study-body[data-page-direction=previous]::after { right:0; animation:n400-fold-previous 400ms ease-out; }
+@keyframes n400-page-next { from { transform:perspective(1600px) rotateY(14deg); box-shadow:inset 12px 0 24px rgba(18,58,99,.12); } to { transform:none; box-shadow:none; } }
+@keyframes n400-page-previous { from { transform:perspective(1600px) rotateY(-14deg); box-shadow:inset -12px 0 24px rgba(18,58,99,.12); } to { transform:none; box-shadow:none; } }
+@keyframes n400-fold-next { from { transform:translateX(0); opacity:.8; } to { transform:translateX(315%); opacity:0; } }
+@keyframes n400-fold-previous { from { transform:translateX(0); opacity:.8; } to { transform:translateX(-315%); opacity:0; } }
 /* Override the legacy civics arrow tile without changing the 128-card deck. */
 #root #main #citizenship-root .n400-study-navigation .n400-icon-control > span { color:inherit; background:transparent; border:0; box-shadow:none; }
 #root #main #citizenship-root .n400-icon-control svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
@@ -52,3 +58,6 @@ html[data-reduce-transparency=true] #root #main #citizenship-root .n400-study-ca
 }
 @media(prefers-reduced-motion:reduce) { #root #main #citizenship-root .n400-study-screen * { animation:none!important; transition:none!important; } }
 html[data-reduce-motion=true] #root #main #citizenship-root .n400-study-screen * { animation:none!important; transition:none!important; }
+
+@media(prefers-reduced-motion:reduce) { #root #main #citizenship-root .n400-study-body::after { animation:none!important; display:none; } }
+html[data-reduce-motion=true] #root #main #citizenship-root .n400-study-body::after { animation:none!important; display:none; }

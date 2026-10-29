@@ -41,8 +41,20 @@ test('five navigation tabs and larger N400 arrows retain responsive layout and r
  assert.match(css,/button.n400-page-control \{ width:52px; min-width:52px; height:52px; min-height:52px;/);
  assert.match(css,/--n400-blue:#0064e6/);
  assert.match(css,/--n400-green:#166343/);
- for(const direction of ['next','previous']) assert.match(css,new RegExp('animation:n400-page-'+direction+' 180ms ease-out'));
+ for(const direction of ['next','previous']) assert.match(css,new RegExp('animation:n400-page-'+direction+' 400ms ease-out'));
  assert.match(css,/@media\(prefers-reduced-motion:reduce\).*animation:none!important/s);
  assert.match(css,/html\[data-reduce-motion=true\].*animation:none!important/s);
- assert.doesNotMatch(css,/opacity:0[;}]|animation-delay|line-clamp|max-height:/);
+ assert.doesNotMatch(css,/animation-delay|line-clamp|max-height:/);
+});
+
+test('page arrows are large vector shapes and the visible fold respects reduced motion',()=>{
+ const css=readFileSync(new URL('../shared/design-system/n400-study.css',import.meta.url),'utf8');
+ const component=readFileSync(new URL('../modules/citizenship/src/N400StudyCards.jsx',import.meta.url),'utf8');
+ assert.match(css,/n400-icon-control.n400-page-control svg \{ width:36px; height:36px; stroke-width:2.8;/);
+ for(const path of ['M20 12H4m7-7-7 7 7 7','M4 12h16m-7-7 7 7-7 7']) assert.ok(component.includes(path));
+ assert.match(css,/rotateY\(14deg\)/);
+ assert.match(css,/rotateY\(-14deg\)/);
+ assert.match(css,/width:24%; pointer-events:none;/);
+ assert.match(css,/@media\(prefers-reduced-motion:reduce\).*n400-study-body::after \{ animation:none!important; display:none;/s);
+ assert.match(css,/html\[data-reduce-motion=true\].*n400-study-body::after \{ animation:none!important; display:none;/s);
 });
