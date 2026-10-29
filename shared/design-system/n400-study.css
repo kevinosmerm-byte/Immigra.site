@@ -18,6 +18,8 @@
 #root #main #citizenship-root .n400-study-count { text-align:center; font-size:14px; color:var(--liquid-muted); }
 #root #main #citizenship-root .n400-study-tools { display:flex; align-items:center; gap:8px; }
 #root #main #citizenship-root .n400-study-screen button.n400-icon-control { display:inline-grid; place-items:center; width:44px; min-width:44px; height:44px; min-height:44px; padding:8px; font-size:16px; line-height:1; }
+/* Override the legacy civics arrow tile without changing the 128-card deck. */
+#root #main #citizenship-root .n400-study-navigation .n400-icon-control > span { color:inherit; background:transparent; border:0; box-shadow:none; }
 #root #main #citizenship-root .n400-icon-control svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
 #root #main #citizenship-root .n400-icon-control svg rect { fill:currentColor; stroke:none; }
 #root #main #citizenship-root .n400-icon-control[aria-expanded=true], #root #main #citizenship-root .n400-icon-control[aria-pressed=true] { box-shadow:inset 0 0 0 2px var(--color-primary); }

@@ -25,5 +25,8 @@ test('N400 styles survive the actual platform PostCSS pipeline with matching DOM
  assert.ok(emphasis.nodes.some(n=>n.prop==='color'&&n.value==='var(--n400-blue)'));
  assert.match(component,/className="n400-study-body"/);
  assert.ok(selectors.includes('#root #main #citizenship-root .n400-study-navigation > button.n400-icon-control'));
+ const icon=result.root.nodes.find(n=>n.selector==='#root #main #citizenship-root .n400-study-navigation .n400-icon-control > span');
+ assert.ok(icon,'N400 icon spans override legacy cyan arrow tiles');
+ for (const [prop,value] of Object.entries({color:'inherit',background:'transparent',border:'0','box-shadow':'none'})) assert.ok(icon.nodes.some(n=>n.prop===prop&&n.value===value));
  assert.doesNotMatch(source,/line-clamp|text-overflow:\s*ellipsis|max-height:/);
 });
