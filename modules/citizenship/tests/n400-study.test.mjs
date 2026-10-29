@@ -89,3 +89,25 @@ test('page turns handle rapid alternating navigation and stop at boundaries with
  assert.match(source,/key=\{index\} data-page-direction=\{page.direction\}/);
  assert.doesNotMatch(source,/setTimeout|setInterval|onAnimationEnd/);
 });
+
+test('curated vocabulary is case-insensitive and respects Unicode whole-word boundaries',()=>{
+ for(const [language,text,expected] of [
+  ['en','COMMUNIST communism weapons weapon arms vote VOTED voting tax taxes',['COMMUNIST','communism','weapons','weapon','arms','vote','VOTED','voting','tax','taxes']],
+  ['es','comunismo COMUNISTA armas arma votar votado impuestos',['comunismo','COMUNISTA','armas','arma','votar','votado','impuestos']],
+  ['en','devoted taxpayer taxicab firearm alarms étax taxé _tax vote123',[]],
+  ['es','alarmas desarmado antivoto impuesto123 éarma armaé',[]],
+ ]) {
+  const tokens=n400StudyTokens(text,language);
+  assert.equal(tokens.map(t=>t.text).join(''),text);
+  assert.deepEqual(tokens.filter(t=>t.kind==='vocabulary').map(t=>t.text),expected);
+ }
+ const tokens=n400StudyTokens('Have you EVER voted? Do you support taxes?');
+ assert.deepEqual(tokens.filter(t=>t.kind!=='plain').map(t=>[t.text,t.kind]),[['Have you EVER','ever'],['voted','vocabulary'],['Do you support','support'],['taxes','vocabulary']]);
+});
+test('all 62 bilingual questions and notes retain exact text; support card already exists once',()=>{
+ const bank=JSON.parse(fs.readFileSync(new URL('../src/data/n400StudyBank.json',import.meta.url)));
+ for(const q of bank.questions) for(const part of [q,...(q.formNotes||[])]) for(const lang of ['en','es']) assert.equal(n400StudyTokens(part[lang],lang).map(t=>t.text).join(''),part[lang]);
+ const support=bank.questions.filter(q=>/^Do you support\b/i.test(q.en));
+ assert.equal(support.length,1);assert.equal(support[0].item,'31');assert.equal(bank.questions.indexOf(support[0])+1,56);
+ for(const [item,word] of [['2','vote'],['3','taxes'],['5.a','Communist'],['5.b','communism'],['6.a','weapon'],['35','arms']]) assert.ok(n400StudyTokens(bank.questions.find(q=>q.item===item).en).some(t=>t.kind==='vocabulary'&&t.text===word));
+});

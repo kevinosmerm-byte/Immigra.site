@@ -6,6 +6,8 @@ import { n400StudyTokens, nextStudyPage } from './n400StudyText.js';
 // Shared selectors target the platform DOM; keep outside legacy module CSS scoping.
 import '../../../shared/design-system/n400-study.css';
 
+const highlightedText = (text, language = 'en') => n400StudyTokens(text, language).map((token, i) => token.kind === 'plain' ? token.text : <span key={i} className={`n400-emphasis-${token.kind}`}>{token.text}</span>);
+
 // Read-only study: deliberately no profile, progress, response or storage props.
 export function N400StudyCards({ language = 'es', bank, onBack }) {
   const t = (en, es) => language === 'es' ? es : en;
@@ -61,9 +63,9 @@ export function N400StudyCards({ language = 'es', bank, onBack }) {
         onTouchEnd={event => { const start = touch.current; const p = event.changedTouches[0]; touch.current = null; if (start && p && Math.abs(p.clientX - start.x) > 55 && Math.abs(p.clientX - start.x) > Math.abs(p.clientY - start.y) * 1.35) navigate(p.clientX < start.x ? 1 : -1); }}>
         <div className="n400-study-body" key={index} data-page-direction={page.direction} aria-live="polite" aria-atomic="true">
           <span className="civics-study-eyebrow">{t('Item', 'Ítem')} {question.item}</span>
-          <h2 lang="en">{n400StudyTokens(question.en).map((token, i) => token.kind === 'plain' ? token.text : <span key={i} className={`n400-emphasis-${token.kind}`}>{token.text}</span>)}</h2>
+          <h2 lang="en">{highlightedText(question.en)}</h2>
           {question.formNotes?.length > 0 && <aside className="n400-form-notes"><strong>{t('Form notes', 'Notas del formulario')}</strong>{question.formNotes.map((note, i) => <p key={i} lang="en">{note.en}</p>)}</aside>}
-          {translationVisible && <div id="n400-study-translation"><p lang="es">{question.es}</p>{question.formNotes?.map((note, i) => <p key={i} lang="es">{note.es}</p>)}<small>{t('Spanish support translation · unofficial', 'Traducción de apoyo al español · no oficial')}</small></div>}
+          {translationVisible && <div id="n400-study-translation"><p lang="es">{highlightedText(question.es, 'es')}</p>{question.formNotes?.map((note, i) => <p key={i} lang="es">{note.es}</p>)}<small>{t('Spanish support translation · unofficial', 'Traducción de apoyo al español · no oficial')}</small></div>}
         </div>
         <nav className="civics-deck-navigation n400-study-navigation" aria-label={t('Study card navigation', 'Navegación de tarjetas')}>
           <button type="button" className="n400-icon-control n400-page-control" aria-label={t('Previous card', 'Tarjeta anterior')} title={t('Previous card', 'Tarjeta anterior')} disabled={index === 0} onClick={() => navigate(-1)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m7-7-7 7 7 7" /></svg></button>
@@ -79,6 +81,7 @@ export function N400StudyCards({ language = 'es', bank, onBack }) {
       </GlassStudyCard>
       <p role="status" className="n400-reader-status">{audioError ? t('Reading aloud is unavailable on this device. You can keep studying the text.', 'La lectura en voz alta no está disponible en este dispositivo. Puedes seguir estudiando el texto.') : ''}</p>
       <details className="n400-study-source"><summary>{t('About these cards', 'Sobre estas tarjetas')}</summary>
+        <p>{t('Colors are memory aids: blue for Have you EVER, green for Do you support, and red for selected vocabulary. Red does not mean wrong or indicate how to answer.', 'Los colores ayudan a recordar: azul para Have you EVER, verde para Do you support y rojo para vocabulario seleccionado. Rojo no significa incorrecto ni indica cómo responder.')}</p>
         <p>{t('Read and understand the questions. No answers, scores or personal responses are collected here. Educational only, not legal advice.', 'Lee y comprende las preguntas. Aquí no se recopilan respuestas personales ni puntuaciones. Solo educativo; no es asesoría legal.')}</p>
         <p>{t('Audio is off by default and starts only when you press Read. Uses your device’s speech service; no microphone or AI evaluation.', 'El audio está desactivado por defecto y empieza solo al pulsar Leer. Usa el servicio de voz del dispositivo; sin micrófono ni evaluación con IA.')}</p>
         <p>{t('Current item', 'Ítem actual')}: {question.item} · {t('Page', 'Página')} {question.page}</p>
