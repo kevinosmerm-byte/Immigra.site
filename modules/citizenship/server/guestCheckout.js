@@ -17,11 +17,21 @@ export function createGuestCheckoutService({client=getStripe, configuration=getB
   const [payload,signature,...extra]=cookie.split('.');
   if(extra.length||!payload||payload.length>1000||!/^[a-f0-9]{64}$/.test(signature||''))return null;
   if(!timingSafeEqual(Buffer.from(sign(payload)),Buffer.from(signature)))return null;
-  try {const data=JSON.parse(Buffer.from(payload,'base64url').toString());return data.id===id&&typeof data.nonce==='string'&&Number.isFinite(data.exp)&&data.exp>now()?data:null;}catch{return null;}
+  try {const data=JSON.parse(Buffer.from(payload,'base64url').toString());return (!id||data.id===id)&&validId(data.id)&&typeof data.nonce==='string'&&Number.isFinite(data.exp)&&data.exp>now()?data:null;}catch{return null;}
  }
  async function start(req,res,interval){
   if(!['monthly','annual'].includes(interval))throw fail('invalid_billing_interval',400);
   if(!configuration().enabled||!price(interval))throw fail('checkout_unavailable',503);
+  const existingProof=proof(req);
+  if(existingProof){
+   const existing=await client().checkout.sessions.retrieve(existingProof.id);
+   if(existing.id!==existingProof.id||existing.metadata?.flow!==FLOW||existing.metadata?.product_key!==PRO_PLAN.productKey||existing.metadata?.checkout_nonce!==existingProof.nonce)throw fail('invalid_checkout',403);
+   if(existing.status==='open'&&existing.url){
+    if(existing.metadata.interval!==interval)throw fail('checkout_in_progress');
+    return {url:existing.url,checkoutId:existing.id};
+   }
+   if(existing.status!=='expired')throw fail('subscription_already_active');
+  }
   sign('configuration-check'); // Fail before creating a checkout if device proof cannot be signed.
   const nonce=randomUUID(), metadata={flow:FLOW,checkout_nonce:nonce,product_key:PRO_PLAN.productKey,interval};
   const session=await client().checkout.sessions.create({
@@ -30,7 +40,7 @@ export function createGuestCheckoutService({client=getStripe, configuration=getB
    automatic_tax:{enabled:String(process.env.STRIPE_AUTOMATIC_TAX||'').trim().toLowerCase()==='true'},
    success_url:`${base()}/?guest_checkout=return&session_id={CHECKOUT_SESSION_ID}#/account`,
    cancel_url:`${base()}/?billing=cancelled#/account`,
-  });
+  },{idempotencyKey:`immigra-guest-checkout-v1:${nonce}`});
   if(!validId(session.id)||!session.url)throw fail('checkout_unavailable',503);
   const payload=Buffer.from(JSON.stringify({id:session.id,nonce,exp:now()+TTL*1000})).toString('base64url');
   res.setHeader('Set-Cookie',`${COOKIE}=${payload}.${sign(payload)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${TTL}`);

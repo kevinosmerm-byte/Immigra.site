@@ -23,9 +23,10 @@ const loadSupportedVoices = async () => {
   return [];
 };
 
-const findVoice = async (profile,language="en") => {
+const findVoice = async (profile,language="en",requireLanguageVoice=false) => {
   try {
     const voices=await loadSupportedVoices();
+    if (requireLanguageVoice && !voices.some(voice => voice.lang?.replace("_", "-").toLowerCase().startsWith(`${language}-`) || voice.lang?.toLowerCase() === language)) return undefined;
     if(language==="es"){const index=voices.findIndex(v=>v.lang?.startsWith("es"));return index>=0?index:undefined;}
     return selectVoiceIndex(voices, profile, language);
   } catch {
@@ -51,6 +52,7 @@ export const speakAppText = async (text, options = {}) => {
     language = "en",
     rate = voiceProfileDefaults(profile).rate,
     pitch = voiceProfileDefaults(profile).pitch,
+    requireLanguageVoice = false,
     onStart,
     onEnd,
   } = options;
@@ -60,7 +62,9 @@ export const speakAppText = async (text, options = {}) => {
     if (requestId !== speechRequest) return false;
     speechActive = true;
     onStart?.();
-    const voice = await findVoice(profile,language);
+    const voice = await findVoice(profile,language,requireLanguageVoice);
+    if (requestId !== speechRequest) return false;
+    if (requireLanguageVoice && voice === undefined) { speechActive = false; onEnd?.(); return false; }
     await TextToSpeech.speak({
       text: text.trim(),
       lang: language === "es" ? "es-US" : "en-US",

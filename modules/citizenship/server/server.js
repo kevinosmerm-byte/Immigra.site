@@ -7,6 +7,7 @@ import { asksForLegalDecision } from "../shared/educationalScope.js";
 import OpenAI from "openai";
 import { logProviderFailure } from "./providerDiagnostics.js";
 import multer from "multer";
+import { AUDIO_UPLOAD_LIMITS } from "./audioUploadLimits.js";
 import { createHmac } from "node:crypto";
 import { createCaseStatusProvider, getUscisConfig } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
@@ -55,9 +56,7 @@ app.use(express.json({ limit: "256kb" }));
 app.use(attachOptionalAiSession);
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: {
-    fileSize: 10 * 1024 * 1024
-  }
+  limits: AUDIO_UPLOAD_LIMITS
 });
 // Start the API even before AI credentials are configured. AI endpoints return
 // a clear 503 response until OPENAI_API_KEY is added in the hosting provider.
@@ -270,6 +269,7 @@ app.post("/evaluate-writing", requireAiFeature("writing"), requireAuthorizedAiAc
 
     providerAttempted = true;
     const response = await openai.responses.create({
+      store: false,
       model: OPENAI_TEXT_MODEL,
       max_output_tokens: MAX_AI_OUTPUT_TOKENS,
 
@@ -442,6 +442,7 @@ app.post("/evaluate-reading", requireAiFeature("speaking"), requireAuthorizedAiA
 
     providerAttempted = true;
     const response = await openai.responses.create({
+      store: false,
       model: OPENAI_TEXT_MODEL,
       max_output_tokens: MAX_AI_OUTPUT_TOKENS,
 
@@ -520,6 +521,7 @@ app.post("/coach", requireAiFeature("coach", ["coach", "realInterview"]), requir
 
     providerAttempted = true;
     const response = await openai.responses.create({
+      store: false,
       model: OPENAI_TEXT_MODEL,
       max_output_tokens: MAX_AI_OUTPUT_TOKENS,
 
@@ -740,6 +742,9 @@ app.use((error, req, res, _next) => {
   }
   if (error instanceof multer.MulterError && error.code === "LIMIT_FILE_SIZE") {
     return res.status(413).json({ error: "Audio must be 10 MB or smaller." });
+  }
+  if (error instanceof multer.MulterError) {
+    return res.status(400).json({ error: "Upload one audio file and one short language field.", code: "invalid_audio_upload" });
   }
   if (error.message === "Origin is not allowed by CORS.") {
     return res.status(403).json({ error: "Origin is not allowed." });

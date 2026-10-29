@@ -3,13 +3,13 @@ import {createReadStream} from 'node:fs';
 import {pipeline} from 'node:stream/promises';
 import {createGzip} from 'node:zlib';
 
-export async function serveFile(req,res,target,type){
+export async function serveFile(req,res,target,type,{immutable=false}={}){
  const info=await stat(target);
  if(!info.isFile())throw new Error('Not a file');
  const size=info.size;
  const etag=`W/"${size}-${Math.trunc(info.mtimeMs)}"`;
  const html=type.startsWith('text/html');
- const headers={'Content-Type':type,'Accept-Ranges':'bytes','Cache-Control':html?'no-cache':'public, max-age=3600','ETag':etag,'Vary':'Accept-Encoding'};
+ const headers={'Content-Type':type,'Accept-Ranges':'bytes','Cache-Control':html?'no-cache':immutable?'public, max-age=31536000, immutable':'public, max-age=3600','ETag':etag,'Vary':'Accept-Encoding'};
  if(req.headers['if-none-match']===etag){res.writeHead(304,headers);res.end();return;}
  const gzip=!req.headers.range&&req.method!=='HEAD'&&/^(text\/|application\/(json|javascript))/.test(type)&&/\bgzip\b/.test(req.headers['accept-encoding']||'');
  let start=0,end=size-1,status=200;

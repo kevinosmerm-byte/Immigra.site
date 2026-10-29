@@ -1,4 +1,4 @@
-import {clarificationOptions,currentEvidence,interviewerAcknowledgment} from './interview-feedback.mjs';
+import {clarificationOptions,currentEvidence,interviewerAcknowledgment,boundedEducationalFeedback} from './interview-feedback.mjs';
 import {sourcePracticeQuestions} from './source-practice.mjs';
 import {isNextQuestionCommand} from '../../shared/interview-ui/commands.mjs';
 import {logDiagnostic} from '../../shared/interview-ui/diagnostics.mjs';
@@ -15,7 +15,7 @@ const enumString=values=>({type:'string',enum:values});
 export const evaluationSchema={type:'object',additionalProperties:false,required:['answer_status','consistency_status','educational_feedback','suggested_follow_up','next_action','evidence','topic','difficulty'],properties:{
  answer_status:enumString(['adequate','incomplete','ambiguous','clarification_needed','not_understood','uncertain']),
  consistency_status:enumString(['consistent','possible_discrepancy','insufficient_context']),
- educational_feedback:{type:'string'},suggested_follow_up:{type:'string'},next_action:enumString(['continue','clarify','repeat','finish']),
+ educational_feedback:{type:'string',minLength:1,maxLength:900},suggested_follow_up:{type:'string'},next_action:enumString(['continue','clarify','repeat','finish']),
  evidence:{type:'array',items:{type:'string'},maxItems:2},topic:{type:'string'},difficulty:enumString(['easy','moderate','difficult'])
 }};
 const safeText=(x,max)=>typeof x==='string'&&x.length<=max;
@@ -87,6 +87,7 @@ export async function InterviewResponseEvaluator(session,{fetchImpl=fetch,env,an
  if(!validateEvaluation(value,history)||Object.entries(schema.properties).some(([key,rule])=>rule.enum&&!rule.enum.includes(value[key])))throw Error('UNGROUNDED_EVALUATION');
  if(value.evidence.some(quote=>!schema.properties.evidence.items.enum.includes(quote)))throw Error('UNGROUNDED_EVALUATION');
  if(!uncertainAnswer(answer)&&!currentEvidence(value,answer).length)throw Error('UNGROUNDED_EVALUATION');
+ if(!boundedEducationalFeedback(value.educational_feedback))throw Error('UNGROUNDED_EVALUATION');
  return value;
 }
 export function createInterviewAIEngine({env,fetchImpl=fetch,reserveSessionQuota,reserveTurnQuota,manager=new InterviewSessionManager()}){

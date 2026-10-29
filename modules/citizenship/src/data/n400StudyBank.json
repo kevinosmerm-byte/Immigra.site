@@ -1,0 +1,2176 @@
+{
+  "formEdition": "01/20/25",
+  "section": "Part 9",
+  "total": 62,
+  "questions": [
+    {
+      "id": "n400-p9-1",
+      "item": "1",
+      "page": 6,
+      "group": "Identity, voting & taxes",
+      "en": "Have you EVER claimed to be a U.S. citizen (in writing or any other way)?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha afirmado ser ciudadano estadounidense, por escrito o de cualquier otra forma?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER claimed to be a U.S. citizen (in writing or any other way)?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-2",
+      "item": "2",
+      "page": 6,
+      "group": "Identity, voting & taxes",
+      "en": "Have you EVER registered to vote or voted in any Federal, state, or local election in the United States?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez se ha inscrito para votar o ha votado en una elección federal, estatal o local en Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER registered to vote or voted in any Federal, state, or local election in the United States?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you lawfully voted only in a local election where aliens are eligible to vote, you may answer “No.”",
+          "es": "Si votó legalmente solo en una elección local en la que los extranjeros tienen derecho a votar, puede responder «No»."
+        }
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-3",
+      "item": "3",
+      "page": 6,
+      "group": "Identity, voting & taxes",
+      "en": "Do you currently owe any overdue Federal, state, or local taxes in the United States?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Actualmente adeuda impuestos federales, estatales o locales vencidos en Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 6,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Do you currently owe any overdue Federal, state, or local taxes in the United States?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-4",
+      "item": "4",
+      "page": 6,
+      "group": "Identity, voting & taxes",
+      "en": "Since you became a lawful permanent resident, have you called yourself a “nonresident alien” on a Federal, state, or local tax return or decided not to file a tax return because you considered yourself to be a nonresident?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "Desde que se convirtió en residente permanente legal, ¿se ha declarado «extranjero no residente» en una declaración de impuestos federal, estatal o local, o ha decidido no presentar una declaración porque se consideraba no residente?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 46,
+          "end": 54,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Since you became a lawful permanent resident, have you called yourself a “nonresident alien” on a Federal, state, or local tax return or decided not to file a tax return because you considered yourself to be a nonresident?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-5-a",
+      "item": "5.a",
+      "page": 6,
+      "group": "Organizations & associations",
+      "en": "Have you EVER: Been a member of, involved in, or in any way associated with any Communist or totalitarian party anywhere in the world?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha sido miembro de un partido comunista o totalitario, ha participado en él o ha estado asociado de alguna manera con él en cualquier parte del mundo?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER:",
+      "officialItemEn": "Been a member of, involved in, or in any way associated with any Communist or totalitarian party anywhere in the world?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-5-b",
+      "item": "5.b",
+      "page": 6,
+      "group": "Organizations & associations",
+      "en": "Have you EVER: Advocated (supported and promoted) any of the following, or been a member of, involved in, or in any way associated with any group anywhere in the world that advocated any of the following: Opposition to all organized government; World communism; The establishment in the United States of a totalitarian dictatorship; The overthrow by force or violence or other unconstitutional means of the Government of the United States or all forms of law; The unlawful assaulting or killing of any officer or officers of the Government of the United States or of any other organized government because of their official character; The unlawful damage, injury, or destruction of property; or Sabotage?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha defendido (apoyado y promovido) alguna de las siguientes ideas o acciones, o ha sido miembro, ha participado o ha estado asociado de alguna manera con algún grupo, en cualquier parte del mundo, que defendiera alguna de las siguientes: oposición a todo gobierno organizado; comunismo mundial; el establecimiento de una dictadura totalitaria en Estados Unidos; el derrocamiento por la fuerza, la violencia u otros medios inconstitucionales del Gobierno de Estados Unidos o de todas las formas de ley; la agresión o muerte ilegal de cualquier funcionario o funcionarios del Gobierno de Estados Unidos o de cualquier otro gobierno organizado debido a su carácter oficial; el daño, perjuicio o destrucción ilegal de bienes; o el sabotaje?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER:",
+      "officialItemEn": "Advocated (supported and promoted) any of the following, or been a member of, involved in, or in any way associated with any group anywhere in the world that advocated any of the following: Opposition to all organized government; World communism; The establishment in the United States of a totalitarian dictatorship; The overthrow by force or violence or other unconstitutional means of the Government of the United States or all forms of law; The unlawful assaulting or killing of any officer or officers of the Government of the United States or of any other organized government because of their official character; The unlawful damage, injury, or destruction of property; or Sabotage?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-6-a",
+      "item": "6.a",
+      "page": 7,
+      "group": "Organizations & associations",
+      "en": "Have you EVER been a member of, involved in, or in any way associated with, or have you EVER provided money, a thing of value, services or labor, or any other assistance or support to a group that: Used a weapon or explosive with intent to harm another person or cause damage to property?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha sido miembro de un grupo, ha participado en él o ha estado asociado de alguna manera con él, o alguna vez ha proporcionado dinero, algo de valor, servicios o trabajo, o cualquier otra ayuda o apoyo a un grupo que utilizó un arma o explosivo con la intención de dañar a otra persona o causar daños a bienes?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        },
+        {
+          "start": 79,
+          "end": 87,
+          "kind": "question-opener"
+        },
+        {
+          "start": 88,
+          "end": 92,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER been a member of, involved in, or in any way associated with, or have you EVER provided money, a thing of value, services or labor, or any other assistance or support to a group that:",
+      "officialItemEn": "Used a weapon or explosive with intent to harm another person or cause damage to property?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-6-b",
+      "item": "6.b",
+      "page": 7,
+      "group": "Organizations & associations",
+      "en": "Have you EVER been a member of, involved in, or in any way associated with, or have you EVER provided money, a thing of value, services or labor, or any other assistance or support to a group that: Engaged (participated) in kidnapping, assassination, or hijacking or sabotage of an airplane, ship, vehicle, or other mode of transportation?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha sido miembro de un grupo, ha participado en él o ha estado asociado de alguna manera con él, o alguna vez ha proporcionado dinero, algo de valor, servicios o trabajo, o cualquier otra ayuda o apoyo a un grupo que participó en secuestros de personas, asesinatos o el apoderamiento ilícito o sabotaje de un avión, barco, vehículo u otro medio de transporte?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        },
+        {
+          "start": 79,
+          "end": 87,
+          "kind": "question-opener"
+        },
+        {
+          "start": 88,
+          "end": 92,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER been a member of, involved in, or in any way associated with, or have you EVER provided money, a thing of value, services or labor, or any other assistance or support to a group that:",
+      "officialItemEn": "Engaged (participated) in kidnapping, assassination, or hijacking or sabotage of an airplane, ship, vehicle, or other mode of transportation?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-6-c",
+      "item": "6.c",
+      "page": 7,
+      "group": "Organizations & associations",
+      "en": "Have you EVER been a member of, involved in, or in any way associated with, or have you EVER provided money, a thing of value, services or labor, or any other assistance or support to a group that: Threatened, attempted (tried), conspired (planned with others), prepared, planned, advocated for, or incited (encouraged) others to commit any of the acts listed in Item Numbers 6.a. or 6.b.?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha sido miembro de un grupo, ha participado en él o ha estado asociado de alguna manera con él, o alguna vez ha proporcionado dinero, algo de valor, servicios o trabajo, o cualquier otra ayuda o apoyo a un grupo que amenazó, intentó (trató), conspiró (planeó con otros), preparó, planeó, promovió o incitó (alentó) a otros a cometer cualquiera de los actos enumerados en los ítems 6.a o 6.b?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        },
+        {
+          "start": 79,
+          "end": 87,
+          "kind": "question-opener"
+        },
+        {
+          "start": 88,
+          "end": 92,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER been a member of, involved in, or in any way associated with, or have you EVER provided money, a thing of value, services or labor, or any other assistance or support to a group that:",
+      "officialItemEn": "Threatened, attempted (tried), conspired (planned with others), prepared, planned, advocated for, or incited (encouraged) others to commit any of the acts listed in Item Numbers 6.a. or 6.b.?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official",
+      "relatedItems": [
+        "6.a",
+        "6.b"
+      ]
+    },
+    {
+      "id": "n400-p9-7-a",
+      "item": "7.a",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following: Torture?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha ordenado, incitado, pedido que se realizara, cometido, asistido, ayudado o participado de otra manera en tortura?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following:",
+      "officialItemEn": "Torture?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-7-b",
+      "item": "7.b",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following: Genocide?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha ordenado, incitado, pedido que se realizara, cometido, asistido, ayudado o participado de otra manera en genocidio?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following:",
+      "officialItemEn": "Genocide?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-7-c",
+      "item": "7.c",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following: Killing or trying to kill any person?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha ordenado, incitado, pedido que se realizara, cometido, asistido, ayudado o participado de otra manera en matar o intentar matar a alguna persona?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following:",
+      "officialItemEn": "Killing or trying to kill any person?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-7-d",
+      "item": "7.d",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following: Intentionally and severely injuring or trying to injure any person?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha ordenado, incitado, pedido que se realizara, cometido, asistido, ayudado o participado de otra manera en lesionar grave e intencionalmente o intentar lesionar a alguna persona?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following:",
+      "officialItemEn": "Intentionally and severely injuring or trying to injure any person?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-7-e",
+      "item": "7.e",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following: Any kind of sexual contact or activity with any person who did not consent (did not agree) or was unable to consent (could not agree), or was being forced or threatened by you or by someone else?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha ordenado, incitado, pedido que se realizara, cometido, asistido, ayudado o participado de otra manera en cualquier tipo de contacto o actividad sexual con alguna persona que no consintió (no estuvo de acuerdo), que no podía consentir (no podía estar de acuerdo), o que estaba siendo forzada o amenazada por usted o por otra persona?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following:",
+      "officialItemEn": "Any kind of sexual contact or activity with any person who did not consent (did not agree) or was unable to consent (could not agree), or was being forced or threatened by you or by someone else?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-7-f",
+      "item": "7.f",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following: Not letting someone practice his or her religion?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha ordenado, incitado, pedido que se realizara, cometido, asistido, ayudado o participado de otra manera en impedir que alguien practique su religión?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following:",
+      "officialItemEn": "Not letting someone practice his or her religion?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-7-g",
+      "item": "7.g",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following: Causing harm or suffering to any person because of his or her race, religion, national origin, membership in a particular social group, or political opinion?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha ordenado, incitado, pedido que se realizara, cometido, asistido, ayudado o participado de otra manera en causar daño o sufrimiento a alguna persona por su raza, religión, origen nacional, pertenencia a un grupo social particular u opinión política?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER ordered, incited, called for, committed, assisted, helped with, or otherwise participated in any of the following:",
+      "officialItemEn": "Causing harm or suffering to any person because of his or her race, religion, national origin, membership in a particular social group, or political opinion?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-8-a",
+      "item": "8.a",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER served in, been a member of, assisted (helped), or participated in any military or police unit?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha servido, sido miembro, asistido o participado en una unidad militar o policial?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER served in, been a member of, assisted (helped), or participated in any military or police unit?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-8-b",
+      "item": "8.b",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER served in, been a member of, assisted (helped), or participated in any armed group (a group that carries weapons), for example: paramilitary unit (a group of people who act like a military group but are not part of the official military), self-defense unit, vigilante unit, rebel group, or guerrilla group?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha servido en algún grupo armado (un grupo que porta armas), ha sido miembro, ha ayudado o ha participado en él, por ejemplo: una unidad paramilitar (un grupo de personas que actúan como un grupo militar pero no forman parte de las fuerzas militares oficiales), una unidad de autodefensa, un grupo de vigilantes, un grupo rebelde o un grupo guerrillero?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER served in, been a member of, assisted (helped), or participated in any armed group (a group that carries weapons), for example: paramilitary unit (a group of people who act like a military group but are not part of the official military), self-defense unit, vigilante unit, rebel group, or guerrilla group?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-9",
+      "item": "9",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER worked, volunteered, or otherwise served in a place where people were detained (forced to stay), for example, a prison, jail, prison camp (a camp where prisoners of war or political prisoners are kept), detention facility, or labor camp, or have you EVER directed or participated in any other activity that involved detaining people?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha trabajado, ha sido voluntario o ha prestado servicios de otra manera en un lugar donde se detenía a personas (se las obligaba a permanecer), por ejemplo, una prisión, una cárcel, un campo de prisioneros (donde se mantiene a prisioneros de guerra o presos políticos), un centro de detención o un campo de trabajo, o alguna vez ha dirigido o participado en cualquier otra actividad que implicara detener a personas?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        },
+        {
+          "start": 255,
+          "end": 263,
+          "kind": "question-opener"
+        },
+        {
+          "start": 264,
+          "end": 268,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER worked, volunteered, or otherwise served in a place where people were detained (forced to stay), for example, a prison, jail, prison camp (a camp where prisoners of war or political prisoners are kept), detention facility, or labor camp, or have you EVER directed or participated in any other activity that involved detaining people?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-10-a",
+      "item": "10.a",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Were you EVER a part of any group, or did you EVER help any group, unit, or organization that used a weapon against any person, or threatened to do so?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez formó parte de algún grupo, o ayudó a algún grupo, unidad u organización que utilizó un arma contra alguna persona o amenazó con hacerlo?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        },
+        {
+          "start": 38,
+          "end": 45,
+          "kind": "question-opener"
+        },
+        {
+          "start": 46,
+          "end": 50,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Were you EVER a part of any group, or did you EVER help any group, unit, or organization that used a weapon against any person, or threatened to do so?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-10-b",
+      "item": "10.b",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "If you answered “Yes” to Item Number 10.a., when you were part of this group, or when you helped this group, did you ever use a weapon against another person?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si respondió Sí a 10.a, ¿utilizó alguna vez un arma contra otra persona mientras pertenecía o ayudaba a ese grupo?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 109,
+          "end": 116,
+          "kind": "question-opener"
+        },
+        {
+          "start": 117,
+          "end": 121,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If you answered “Yes” to Item Number 10.a., when you were part of this group, or when you helped this group, did you ever use a weapon against another person?",
+      "wordingType": "official-question",
+      "dependsOn": [
+        "10.a"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-10-c",
+      "item": "10.c",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "If you answered “Yes” to Item Number 10.a., when you were part of this group, or when you helped this group, did you ever threaten another person that you would use a weapon against that person?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si respondió «Sí» al ítem 10.a, cuando formaba parte de este grupo o cuando lo ayudaba, ¿alguna vez amenazó a otra persona con utilizar un arma contra ella?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 109,
+          "end": 116,
+          "kind": "question-opener"
+        },
+        {
+          "start": 117,
+          "end": 121,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If you answered “Yes” to Item Number 10.a., when you were part of this group, or when you helped this group, did you ever threaten another person that you would use a weapon against that person?",
+      "wordingType": "official-question",
+      "dependsOn": [
+        "10.a"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-11",
+      "item": "11",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER sold, provided, or transported weapons, or assisted any person in selling, providing, or transporting weapons, which you knew or believed would be used against another person?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha vendido, suministrado o transportado armas, o ayudado a hacerlo, sabiendo o creyendo que se usarían contra alguien?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER sold, provided, or transported weapons, or assisted any person in selling, providing, or transporting weapons, which you knew or believed would be used against another person?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-12",
+      "item": "12",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER received any weapons training, paramilitary training, or other military-type training?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha recibido entrenamiento con armas, paramilitar o de tipo militar?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER received any weapons training, paramilitary training, or other military-type training?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-13",
+      "item": "13",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER recruited (asked), enlisted (signed up), conscripted (required to join), or used any person under 15 years of age to serve in or help an armed group, or attempted or worked with others to do so?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha reclutado (solicitado), alistado (inscrito), obligado a incorporarse o utilizado a alguna persona menor de 15 años para servir o ayudar a un grupo armado, o ha intentado hacerlo o trabajado con otros para hacerlo?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER recruited (asked), enlisted (signed up), conscripted (required to join), or used any person under 15 years of age to serve in or help an armed group, or attempted or worked with others to do so?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-14",
+      "item": "14",
+      "page": 7,
+      "group": "Human rights, security & military groups",
+      "en": "Have you EVER used any person under 15 years of age to take part in hostilities or attempted or worked with others to do so?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha utilizado a alguna persona menor de 15 años para participar en hostilidades, o ha intentado hacerlo o trabajado con otros para hacerlo?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER used any person under 15 years of age to take part in hostilities or attempted or worked with others to do so?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "This could include participating in combat or providing services related to combat (such as serving as a messenger or transporting supplies).",
+          "es": "Esto podría incluir participar en combate o prestar servicios relacionados con el combate (como servir de mensajero o transportar suministros)."
+        }
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-15-a",
+      "item": "15.a",
+      "page": 8,
+      "group": "Criminal history",
+      "en": "Have you EVER committed, agreed to commit, asked someone else to commit, helped commit, or tried to commit a crime or offense for which you were NOT arrested?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha cometido, acordado cometer, pedido a otra persona que cometiera, ayudado a cometer o intentado cometer un delito o infracción por el que NO fue arrestado?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER committed, agreed to commit, asked someone else to commit, helped commit, or tried to commit a crime or offense for which you were NOT arrested?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official",
+      "formNotes": [
+        {
+          "en": "The form includes crimes and offenses in the United States or anywhere in the world, including domestic violence, driving under the influence of drugs or alcohol, and crimes and offenses while under age 18. Its instructions cover sealed, expunged, or otherwise cleared records. See the full official page 8 instructions and evidence requirements.",
+          "es": "El formulario incluye delitos e infracciones en Estados Unidos o en cualquier lugar del mundo, incluidos violencia doméstica, conducir bajo los efectos de drogas o alcohol y delitos e infracciones cometidos antes de los 18 años. Sus instrucciones abarcan registros sellados, eliminados o depurados de otra manera. Consulte las instrucciones completas y los requisitos de pruebas de la página 8 oficial.",
+          "wordingType": "educational-context-summary"
+        }
+      ]
+    },
+    {
+      "id": "n400-p9-15-b",
+      "item": "15.b",
+      "page": 8,
+      "group": "Criminal history",
+      "en": "Have you EVER been arrested, cited, detained or confined by any law enforcement officer, military official (in the U.S. or elsewhere), or immigration official for any reason, or been charged with a crime or offense?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha sido arrestado, citado, detenido o confinado por algún agente del orden, funcionario militar (en Estados Unidos o en otro lugar) o funcionario de inmigración por cualquier motivo, o ha sido acusado de un delito o infracción?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER been arrested, cited, detained or confined by any law enforcement officer, military official (in the U.S. or elsewhere), or immigration official for any reason, or been charged with a crime or offense?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official",
+      "formNotes": [
+        {
+          "en": "The form includes crimes and offenses in the United States or anywhere in the world, including domestic violence, driving under the influence of drugs or alcohol, and crimes and offenses while under age 18. Its instructions cover sealed, expunged, or otherwise cleared records. See the full official page 8 instructions and evidence requirements.",
+          "es": "El formulario incluye delitos e infracciones en Estados Unidos o en cualquier lugar del mundo, incluidos violencia doméstica, conducir bajo los efectos de drogas o alcohol y delitos e infracciones cometidos antes de los 18 años. Sus instrucciones abarcan registros sellados, eliminados o depurados de otra manera. Consulte las instrucciones completas y los requisitos de pruebas de la página 8 oficial.",
+          "wordingType": "educational-context-summary"
+        }
+      ]
+    },
+    {
+      "id": "n400-p9-16",
+      "item": "16",
+      "page": 8,
+      "group": "Criminal history",
+      "en": "If you received a suspended sentence, were placed on probation, or were paroled, have you completed your suspended sentence, probation, or parole?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si recibió una sentencia suspendida, fue puesto en libertad a prueba (probation) o recibió libertad condicional (parole), ¿ha completado su sentencia suspendida, libertad a prueba o libertad condicional?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 81,
+          "end": 89,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If you received a suspended sentence, were placed on probation, or were paroled, have you completed your suspended sentence, probation, or parole?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-17-a",
+      "item": "17.a",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER: Engaged in prostitution, attempted to procure or import prostitutes or persons for the purpose of prostitution, or received any proceeds or money from prostitution?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha ejercido la prostitución, intentado conseguir o importar prostitutas o personas con fines de prostitución, o recibido ganancias o dinero de la prostitución?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER:",
+      "officialItemEn": "Engaged in prostitution, attempted to procure or import prostitutes or persons for the purpose of prostitution, or received any proceeds or money from prostitution?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-17-b",
+      "item": "17.b",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER: Manufactured, cultivated, produced, distributed, dispensed, sold, or smuggled (trafficked) any controlled substances, illegal drugs, narcotics, or drug paraphernalia in violation of any law or regulation of a U.S. state, the United States, or a foreign country?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha fabricado, cultivado, producido, distribuido, dispensado, vendido o introducido de contrabando (traficado) sustancias controladas, drogas ilegales, narcóticos o parafernalia para drogas, infringiendo alguna ley o reglamento de un estado de Estados Unidos, de Estados Unidos o de un país extranjero?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER:",
+      "officialItemEn": "Manufactured, cultivated, produced, distributed, dispensed, sold, or smuggled (trafficked) any controlled substances, illegal drugs, narcotics, or drug paraphernalia in violation of any law or regulation of a U.S. state, the United States, or a foreign country?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-17-c",
+      "item": "17.c",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER: Been married to more than one person at the same time?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha estado casado con más de una persona al mismo tiempo?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER:",
+      "officialItemEn": "Been married to more than one person at the same time?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-17-d",
+      "item": "17.d",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER: Married someone in order to obtain an immigration benefit?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez se ha casado con alguien para obtener un beneficio migratorio?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER:",
+      "officialItemEn": "Married someone in order to obtain an immigration benefit?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-17-e",
+      "item": "17.e",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER: Helped anyone to enter, or try to enter, the United States illegally?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha ayudado a alguien a entrar o intentar entrar ilegalmente a Estados Unidos?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER:",
+      "officialItemEn": "Helped anyone to enter, or try to enter, the United States illegally?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-17-f",
+      "item": "17.f",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER: Gambled illegally or received income from illegal gambling?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha participado en apuestas ilegales u obtenido ingresos de ellas?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER:",
+      "officialItemEn": "Gambled illegally or received income from illegal gambling?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-17-g",
+      "item": "17.g",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER: Failed to support your dependents (pay child support) or to pay alimony (court-ordered financial support after divorce or separation)?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha dejado de mantener a sus dependientes (pagar la manutención de hijos) o de pagar la pensión conyugal (apoyo económico ordenado por un tribunal después del divorcio o la separación)?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER:",
+      "officialItemEn": "Failed to support your dependents (pay child support) or to pay alimony (court-ordered financial support after divorce or separation)?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-17-h",
+      "item": "17.h",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER: Made any misrepresentation to obtain any public benefit in the United States?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha declarado falsamente información para obtener beneficios públicos en Estados Unidos?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": "Have you EVER:",
+      "officialItemEn": "Made any misrepresentation to obtain any public benefit in the United States?",
+      "wordingType": "official-stem-and-item-combined",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-18",
+      "item": "18",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER given any U.S. Government officials any information or documentation that was false, fraudulent, or misleading?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha entregado información o documentos falsos, fraudulentos o engañosos a funcionarios del Gobierno de Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER given any U.S. Government officials any information or documentation that was false, fraudulent, or misleading?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-19",
+      "item": "19",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER lied to any U.S. Government officials to gain entry or admission into the United States or to gain immigration benefits while in the United States?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha mentido a algún funcionario del Gobierno de Estados Unidos para obtener entrada o admisión a Estados Unidos o para obtener beneficios migratorios mientras se encontraba en Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER lied to any U.S. Government officials to gain entry or admission into the United States or to gain immigration benefits while in the United States?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-20",
+      "item": "20",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER been placed in removal, rescission, or deportation proceedings?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha estado sujeto a procedimientos de expulsión, rescisión o deportación?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER been placed in removal, rescission, or deportation proceedings?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-21",
+      "item": "21",
+      "page": 9,
+      "group": "Conduct & immigration history",
+      "en": "Have you EVER been removed or deported from the United States?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha sido expulsado o deportado de Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER been removed or deported from the United States?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-22-a",
+      "item": "22.a",
+      "page": 9,
+      "group": "Selective Service & military history",
+      "en": "Are you a male who lived in the United States at any time between your 18th and 26th birthdays?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Es usted un hombre que vivió en Estados Unidos en algún momento entre su cumpleaños número 18 y su cumpleaños número 26?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 7,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Are you a male who lived in the United States at any time between your 18th and 26th birthdays?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "Do not select “Yes” if you were a lawful nonimmigrant for all of that time period.",
+          "es": "No seleccione «Sí» si fue no inmigrante legal durante todo ese período."
+        }
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-22-b",
+      "item": "22.b",
+      "page": 9,
+      "group": "Selective Service & military history",
+      "en": "If you answered “Yes,” to Item Number 22.a., did you register for the Selective Service?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si respondió Sí a 22.a, ¿se registró en el Servicio Selectivo?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 45,
+          "end": 52,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If you answered “Yes,” to Item Number 22.a., did you register for the Selective Service?",
+      "wordingType": "official-question",
+      "dependsOn": [
+        "22.a"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-23",
+      "item": "23",
+      "page": 9,
+      "group": "Selective Service & military history",
+      "en": "Have you EVER left the United States to avoid being drafted in the U.S. armed forces?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha salido de Estados Unidos para evitar el reclutamiento militar?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER left the United States to avoid being drafted in the U.S. armed forces?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-24",
+      "item": "24",
+      "page": 9,
+      "group": "Selective Service & military history",
+      "en": "Have you EVER applied for any kind of exemption from military service in the U.S. armed forces?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha solicitado una exención de servicio en las Fuerzas Armadas estadounidenses?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER applied for any kind of exemption from military service in the U.S. armed forces?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-25",
+      "item": "25",
+      "page": 9,
+      "group": "Selective Service & military history",
+      "en": "Have you EVER served in the U.S. armed forces?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Alguna vez ha servido en las Fuerzas Armadas de Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER served in the U.S. armed forces?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-26-a",
+      "item": "26.a",
+      "page": 10,
+      "group": "Selective Service & military history",
+      "en": "Are you currently a member of the U.S. armed forces?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "¿Actualmente pertenece a las Fuerzas Armadas de Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 7,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Are you currently a member of the U.S. armed forces?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answered “No” to Item Number 25., go to Item Number 30.a.",
+          "es": "Si respondió «No» al ítem 25, pase al ítem 30.a."
+        }
+      ],
+      "dependsOn": [
+        "25"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-26-b",
+      "item": "26.b",
+      "page": 10,
+      "group": "Selective Service & military history",
+      "en": "If you answered “Yes” to Item Number 26.a., are you scheduled to deploy outside the United States, including to a vessel, within the next 3 months?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si respondió «Sí» al ítem 26.a, ¿está previsto que sea desplegado fuera de Estados Unidos, incluso a una embarcación, dentro de los próximos 3 meses?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 44,
+          "end": 51,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If you answered “Yes” to Item Number 26.a., are you scheduled to deploy outside the United States, including to a vessel, within the next 3 months?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "Call the Military Help Line at 877-247-4645 if you transfer to a new duty station after you file your Form N-400, including if you are deployed outside the United States or to a vessel.",
+          "es": "Llame a la línea de ayuda militar al 877-247-4645 si se traslada a un nuevo lugar de destino después de presentar su Formulario N-400, incluso si es desplegado fuera de Estados Unidos o a una embarcación."
+        },
+        {
+          "en": "If you answered “No” to Item Number 25., go to Item Number 30.a.",
+          "es": "Si respondió «No» al ítem 25, pase al ítem 30.a."
+        }
+      ],
+      "dependsOn": [
+        "25",
+        "26.a"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-26-c",
+      "item": "26.c",
+      "page": 10,
+      "group": "Selective Service & military history",
+      "en": "If you answered “Yes,” to Item Number 26.a., are you currently stationed outside the United States?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si respondió Sí a 26.a, ¿actualmente está destinado fuera de Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 45,
+          "end": 52,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If you answered “Yes,” to Item Number 26.a., are you currently stationed outside the United States?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answered “No” to Item Number 25., go to Item Number 30.a.",
+          "es": "Si respondió «No» al ítem 25, pase al ítem 30.a."
+        }
+      ],
+      "dependsOn": [
+        "25",
+        "26.a"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-26-d",
+      "item": "26.d",
+      "page": 10,
+      "group": "Selective Service & military history",
+      "en": "If you answered “No” to Item Number 26.a., are you a former U.S. military service member who is currently residing outside of the U.S.?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si respondió No a 26.a, ¿es exmilitar estadounidense y actualmente vive fuera de Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 43,
+          "end": 50,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If you answered “No” to Item Number 26.a., are you a former U.S. military service member who is currently residing outside of the U.S.?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answered “No” to Item Number 25., go to Item Number 30.a.",
+          "es": "Si respondió «No» al ítem 25, pase al ítem 30.a."
+        }
+      ],
+      "dependsOn": [
+        "25",
+        "26.a"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-27",
+      "item": "27",
+      "page": 10,
+      "group": "Selective Service & military history",
+      "en": "Have you EVER been court-martialed or have you received a discharge characterized as other than honorable, bad conduct, or dishonorable, while in the U.S. armed forces?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "¿Alguna vez fue juzgado por un tribunal militar o recibió una baja militar distinta de honorable, por mala conducta o deshonrosa?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        },
+        {
+          "start": 38,
+          "end": 46,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER been court-martialed or have you received a discharge characterized as other than honorable, bad conduct, or dishonorable, while in the U.S. armed forces?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answered “No” to Item Number 25., go to Item Number 30.a.",
+          "es": "Si respondió «No» al ítem 25, pase al ítem 30.a."
+        }
+      ],
+      "dependsOn": [
+        "25"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-28",
+      "item": "28",
+      "page": 10,
+      "group": "Selective Service & military history",
+      "en": "Have you EVER been discharged from training or service in the U.S. armed forces because you were an alien?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "¿Alguna vez fue dado de baja de entrenamiento o servicio militar por ser extranjero?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER been discharged from training or service in the U.S. armed forces because you were an alien?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answered “No” to Item Number 25., go to Item Number 30.a.",
+          "es": "Si respondió «No» al ítem 25, pase al ítem 30.a."
+        }
+      ],
+      "dependsOn": [
+        "25"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-29",
+      "item": "29",
+      "page": 10,
+      "group": "Selective Service & military history",
+      "en": "Have you EVER deserted from the U.S. armed forces?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "¿Alguna vez ha desertado de las Fuerzas Armadas estadounidenses?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 8,
+          "kind": "question-opener"
+        },
+        {
+          "start": 9,
+          "end": 13,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Have you EVER deserted from the U.S. armed forces?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answered “No” to Item Number 25., go to Item Number 30.a.",
+          "es": "Si respondió «No» al ítem 25, pase al ítem 30.a."
+        }
+      ],
+      "dependsOn": [
+        "25"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-30-a",
+      "item": "30.a",
+      "page": 10,
+      "group": "Oath of Allegiance",
+      "en": "Do you now have, or did you EVER have, a hereditary title or an order of nobility in any foreign country?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Tiene ahora o alguna vez tuvo un título hereditario u orden de nobleza de otro país?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 6,
+          "kind": "question-opener"
+        },
+        {
+          "start": 20,
+          "end": 27,
+          "kind": "question-opener"
+        },
+        {
+          "start": 28,
+          "end": 32,
+          "kind": "ever"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Do you now have, or did you EVER have, a hereditary title or an order of nobility in any foreign country?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-30-b",
+      "item": "30.b",
+      "page": 10,
+      "group": "Oath of Allegiance",
+      "en": "If you answered “Yes,” to Item Number 30.a., are you willing to give up any inherited titles or orders of nobility, (list titles), that you have in a foreign country at your naturalization ceremony?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si respondió «Sí» al ítem 30.a, ¿está dispuesto a renunciar a cualquier título heredado u orden de nobleza (enumere los títulos) que tenga en un país extranjero durante su ceremonia de naturalización?",
+      "isAdaptedForCard": true,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 45,
+          "end": 52,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If you answered “Yes,” to Item Number 30.a., are you willing to give up any inherited titles or orders of nobility, [blank field] (list titles), that you have in a foreign country at your naturalization ceremony?",
+      "wordingType": "form-field-placeholder-adaptation",
+      "dependsOn": [
+        "30.a"
+      ],
+      "spanishWordingType": "educational-translation-not-official",
+      "adaptationNote": "The printed form contains a blank field before “(list titles)”; the reading card omits that blank, not a question word."
+    },
+    {
+      "id": "n400-p9-31",
+      "item": "31",
+      "page": 10,
+      "group": "Oath of Allegiance",
+      "en": "Do you support the Constitution and form of Government of the United States?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Apoya la Constitución y la forma de gobierno de Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 6,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Do you support the Constitution and form of Government of the United States?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-32",
+      "item": "32",
+      "page": 10,
+      "group": "Oath of Allegiance",
+      "en": "Do you understand the full Oath of Allegiance to the United States (see Part 16. Oath of Allegiance)?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿Comprende el Juramento de Lealtad completo a Estados Unidos (vea la Parte 16, Juramento de Lealtad)?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 6,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Do you understand the full Oath of Allegiance to the United States (see Part 16. Oath of Allegiance)?",
+      "wordingType": "official-question",
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-33",
+      "item": "33",
+      "page": 10,
+      "group": "Oath of Allegiance",
+      "en": "Are you unable to take the Oath of Allegiance because of a physical or developmental disability or mental impairment?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": false,
+      "es": "¿No puede prestar el Juramento de Lealtad por una discapacidad física, del desarrollo o impedimento mental?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 7,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Are you unable to take the Oath of Allegiance because of a physical or developmental disability or mental impairment?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answer “Yes,” skip Item Numbers 34. - 37. and see the Legal Guardian, Surrogate, or Designated Representative section in the Instructions.",
+          "es": "Si responde «Sí», omita los ítems 34–37 y consulte la sección sobre tutor legal, sustituto o representante designado en las instrucciones."
+        }
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-34",
+      "item": "34",
+      "page": 10,
+      "group": "Oath of Allegiance",
+      "en": "Are you willing to take the full Oath of Allegiance to the United States?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "¿Está dispuesto a prestar el Juramento de Lealtad completo a Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 0,
+          "end": 7,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "Are you willing to take the full Oath of Allegiance to the United States?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answer “Yes” to Item Number 33., skip Item Numbers 34. - 37.",
+          "es": "Si responde «Sí» al ítem 33, omita los ítems 34–37."
+        }
+      ],
+      "dependsOn": [
+        "33"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-35",
+      "item": "35",
+      "page": 10,
+      "group": "Oath of Allegiance",
+      "en": "If the law requires it, are you willing to bear arms (carry weapons) on behalf of the United States?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si la ley lo exige, ¿está dispuesto a portar armas en nombre de Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 24,
+          "end": 31,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If the law requires it, are you willing to bear arms (carry weapons) on behalf of the United States?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answer “Yes” to Item Number 33., skip Item Numbers 34. - 37.",
+          "es": "Si responde «Sí» al ítem 33, omita los ítems 34–37."
+        }
+      ],
+      "dependsOn": [
+        "33"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-36",
+      "item": "36",
+      "page": 10,
+      "group": "Oath of Allegiance",
+      "en": "If the law requires it, are you willing to perform noncombatant services (do something that does not include fighting in a war) in the U.S. armed forces?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si la ley lo exige, ¿está dispuesto a prestar servicios no combatientes (hacer algo que no incluya luchar en una guerra) en las Fuerzas Armadas de Estados Unidos?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 24,
+          "end": 31,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If the law requires it, are you willing to perform noncombatant services (do something that does not include fighting in a war) in the U.S. armed forces?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answer “Yes” to Item Number 33., skip Item Numbers 34. - 37.",
+          "es": "Si responde «Sí» al ítem 33, omita los ítems 34–37."
+        }
+      ],
+      "dependsOn": [
+        "33"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    },
+    {
+      "id": "n400-p9-37",
+      "item": "37",
+      "page": 10,
+      "group": "Oath of Allegiance",
+      "en": "If the law requires it, are you willing to perform work of national importance under civilian direction (do non-military work that the U.S. Government says is important to the country)?",
+      "source": "USCIS N-400 01/20/25 Part 9",
+      "conditional": true,
+      "es": "Si la ley lo exige, ¿está dispuesto a realizar trabajo de importancia nacional bajo dirección civil (hacer trabajo no militar que el Gobierno de Estados Unidos considere importante para el país)?",
+      "isAdaptedForCard": false,
+      "requiresPersonalTruth": true,
+      "cardType": "reading",
+      "highlightSegments": [
+        {
+          "start": 24,
+          "end": 31,
+          "kind": "question-opener"
+        }
+      ],
+      "sourceUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+      "sourceVerifiedDate": "2026-10-29",
+      "sourceVerification": "Official USCIS PDF indexed text, pages 6–10; direct PDF download returned HTTP 403.",
+      "officialStemEn": null,
+      "officialItemEn": "If the law requires it, are you willing to perform work of national importance under civilian direction (do non-military work that the U.S. Government says is important to the country)?",
+      "wordingType": "official-question",
+      "formNotes": [
+        {
+          "en": "If you answer “Yes” to Item Number 33., skip Item Numbers 34. - 37.",
+          "es": "Si responde «Sí» al ítem 33, omita los ítems 34–37."
+        }
+      ],
+      "dependsOn": [
+        "33"
+      ],
+      "spanishWordingType": "educational-translation-not-official"
+    }
+  ],
+  "spanishTranslationNote": "Spanish is an educational translation, not official USCIS wording. English cards either reproduce the question or combine the full official shared stem and item; source instructions are separate notes. No answer or eligibility recommendation is provided.",
+  "studyMode": "read_only",
+  "acceptAnswers": false,
+  "highlightRules": [
+    {
+      "id": "ever",
+      "pattern": "\\bEVER\\b",
+      "color": "#0866F5",
+      "weight": 700
+    },
+    {
+      "id": "question-openers",
+      "pattern": "\\b(?:Have you|Do you|Did you|Are you|Were you)\\b",
+      "color": "#0D9488",
+      "weight": 700
+    }
+  ],
+  "highlightPriority": [
+    "ever",
+    "question-openers"
+  ],
+  "displayGuidance": "Highlight literal terms found in the English question only; do not insert or rewrite question wording. Use accessible semantic spans and preserve full question.",
+  "titleEn": "Have You Ever? · N-400 Part 9",
+  "titleEs": "¿Alguna vez…? · N-400 Parte 9",
+  "scopeNote": "62 read-only study cards from Part 9, items 1–37, pages 6–10. Not an official question count. Includes questions that do not begin Have you ever. Excludes nonbinary item 22.c.",
+  "sourceAudit": {
+    "checkedAt": "2026-10-29",
+    "edition": "01/20/25",
+    "method": "Text comparison against indexed official USCIS PDF pages 6–10. Direct page and PDF returned HTTP 403; no downloaded-PDF visual verification.",
+    "officialUrl": "https://www.uscis.gov/sites/default/files/document/forms/n-400.pdf",
+    "status": "text-verified-with-fetch-limitation",
+    "currentAcceptedEditionConfirmedLive": false,
+    "visualPdfVerified": false,
+    "publicationGate": "May be presented as version-pinned educational study material for edition 01/20/25 with official source link and limitations. Do not claim current accepted filing edition without live confirmation."
+  },
+  "generalFormContext": {
+    "en": "In Part 9, EVER refers to conduct anywhere in the world at any time unless the question specifies otherwise. Read the current official form and instructions for all explanations, evidence and routing requirements. This study module does not collect personal answers.",
+    "es": "En la Parte 9, EVER se refiere a conductas en cualquier lugar del mundo y en cualquier momento, salvo que la pregunta indique lo contrario. Lea el formulario oficial vigente y sus instrucciones para conocer todos los requisitos de explicaciones, pruebas y saltos entre preguntas. Este módulo de estudio no recopila respuestas personales."
+  },
+  "excludedItems": [
+    {
+      "item": "22.c",
+      "page": 9,
+      "reason": "Nonbinary date and Selective Service number fields; excluded from 62 reading cards.",
+      "dependsOn": "22.b",
+      "en": "If you answered “Yes,” to Item Number 22.b., provide information about your registration.",
+      "es": "Si respondió «Sí» al ítem 22.b, proporcione información sobre su inscripción."
+    }
+  ]
+}

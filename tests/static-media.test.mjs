@@ -27,3 +27,14 @@ test('text assets are compressed and HTML revalidates',async()=>{
  try{const response=await fetch(`http://127.0.0.1:${server.address().port}`,{headers:{'Accept-Encoding':'gzip'}});assert.equal(response.headers.get('content-encoding'),'gzip');assert.equal(response.headers.get('cache-control'),'no-cache');assert.equal(await response.text(),body);}
  finally{await new Promise(r=>server.close(r));await rm(dir,{recursive:true});}
 });
+
+test('explicit content-addressed assets are immutable; HTML never is',async()=>{
+ const dir=await mkdtemp(path.join(os.tmpdir(),'cache-test-'));const file=path.join(dir,'asset');await writeFile(file,'asset');
+ const server=http.createServer((req,res)=>serveFile(req,res,file,req.url==='/html'?'text/html':'text/javascript',{immutable:true}));await new Promise(r=>server.listen(0,'127.0.0.1',r));
+ try{
+  const url=`http://127.0.0.1:${server.address().port}`;
+  const asset=await fetch(url);assert.equal(asset.headers.get('cache-control'),'public, max-age=31536000, immutable');
+  const cached=await fetch(url,{headers:{'If-None-Match':asset.headers.get('etag')}});assert.equal(cached.status,304);assert.equal(cached.headers.get('cache-control'),'public, max-age=31536000, immutable');
+  const html=await fetch(url+'/html');assert.equal(html.headers.get('cache-control'),'no-cache');
+ }finally{await new Promise(r=>server.close(r));await rm(dir,{recursive:true});}
+});

@@ -70,3 +70,14 @@ test('guest billing routes accept only plans, retain private authentication and 
  assert.equal((await post('checkout-return',{checkoutId})).status,202);assert.equal((await post('checkout-return',{checkoutId},{Authorization:'Bearer owner'})).status,200);assert.equal((await post('checkout-return',{checkoutId},{Authorization:'Bearer wrong'})).status,401);
  assert.equal((await post('portal-session')).status,401);policy=false;assert.equal((await post('guest-checkout-session',{interval:'monthly'})).status,503);assert.deepEqual(calls,['annual']);
 });
+
+test('guest retry with the existing signed proof reuses an open checkout and rejects plan switching or a completed checkout',async()=>{
+ const f=await started();f.session.status='open';
+ const again=await f.service.start(f.request,f.res,'monthly');assert.equal(again.checkoutId,checkoutId);assert.equal(f.calls.create.length,1);
+ await rejects(f.service.start(f.request,f.res,'annual'),'checkout_in_progress');
+ f.session.status='complete';await rejects(f.service.start(f.request,f.res,'monthly'),'subscription_already_active');assert.equal(f.calls.create.length,1);
+});
+test('guest retry never reuses a provider session with a mismatched signed nonce',async()=>{
+ const f=await started();f.session.status='open';f.session.metadata.checkout_nonce='another-device';
+ await rejects(f.service.start(f.request,f.res,'monthly'),'invalid_checkout');assert.equal(f.calls.create.length,1);
+});

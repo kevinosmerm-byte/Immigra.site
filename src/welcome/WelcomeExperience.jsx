@@ -5,7 +5,7 @@ import {COPY} from './copy.mjs';
 import './welcome.css';
 const greetings=['Bienvenido','Welcome','Bienvenue','Bem-vindo','Benvenuto','Willkommen'];
 export default function WelcomeExperience({initialLanguage,onComplete}) {
-  const [language,setLanguage]=useState(initialLanguage),[chosen,setChosen]=useState(false),[dialog,setDialog]=useState(false),[checked,setChecked]=useState(false),[greeting,setGreeting]=useState(0);
+  const [language,setLanguage]=useState(initialLanguage),[dialog,setDialog]=useState(false),[checked,setChecked]=useState(false),[greeting,setGreeting]=useState(0);
   const [systemReduced,setSystemReduced]=useState(()=>matchMedia('(prefers-reduced-motion: reduce)').matches);
   const reduced=systemReduced, copy=COPY[language];
   const close=()=>setDialog(false);
@@ -21,7 +21,7 @@ export default function WelcomeExperience({initialLanguage,onComplete}) {
     return()=>{clearInterval(timer);document.removeEventListener('visibilitychange',restart);};
   },[reduced,dialog]);
   useEffect(()=>{if(!dialog)return;const before=document.body.style.overflow;document.body.style.overflow='hidden';return()=>{document.body.style.overflow=before;};},[dialog]);
-  const choose=value=>{setLanguage(value);setChosen(true);};
+  const choose=value=>setLanguage(value);
   return <div className="immigra-welcome" lang={language} data-reduced={reduced}>
     <LiquidBackground reduced={reduced}/>
     <div className="welcome-shell" inert={dialog?true:undefined}>
@@ -33,8 +33,8 @@ export default function WelcomeExperience({initialLanguage,onComplete}) {
         <section className="welcome-card" aria-labelledby="welcome-language">
           <div className="welcome-card-head"><h2 id="welcome-language">{copy.langTitle}</h2><span>{copy.step}</span></div>
           <div className="welcome-choices" role="group" aria-label={copy.langTitle}>{[['es','Español','Spanish'],['en','English','Inglés']].map(([value,label,translation])=><button key={value} aria-pressed={language===value} onClick={()=>choose(value)}><b>{value.toUpperCase()}</b><span>{label}<small>{translation}</small></span></button>)}</div>
-          <button className="welcome-primary" disabled={!chosen} onClick={()=>{setChecked(false);setDialog(true);}}><span>{copy.continue} →</span></button>
-          <p className="welcome-note">{chosen?copy.note:(language==='es'?'Confirma tu idioma para continuar.':'Confirm your language to continue.')}</p>
+          <button className="welcome-primary" onClick={()=>{setChecked(false);setDialog(true);}}><span>{copy.continue} →</span></button>
+          <p className="welcome-note">{copy.note}</p>
         </section>
       </main>
       <footer className="welcome-footer"><span>{language==='es'?'Asilo · Ciudadanía · Residencia':'Asylum · Citizenship · Permanent Residence'}</span></footer>

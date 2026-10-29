@@ -1,7 +1,7 @@
 /* Homepage only. Native rendering does not mount this component. */
 .immigra-home{--blue:#155eef;--purple:#8247e5;--green:#07966a;--ink:#080e28;position:relative;isolation:isolate;color:var(--ink);padding:38px 0 40px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}
 .immigra-home:before{content:"";position:absolute;z-index:-1;inset:0 0 -30px;pointer-events:none;background:radial-gradient(ellipse at 75% 20%,#badbff9c,transparent 55%),radial-gradient(ellipse at 5% 60%,#b7d9ff80,transparent 45%),linear-gradient(130deg,#edf6ff,#fff 44%,#e6f1ff);min-width:100%}
-.immigra-home:after{content:"";position:absolute;pointer-events:none;z-index:-1;inset:0;background:url('../modules/citizenship/src/assets/citizenship-background.png') right top/auto 600px no-repeat;opacity:.14;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
+.immigra-home:after{content:"";position:absolute;pointer-events:none;z-index:-1;inset:0;background:url('/images/home/citizenship-background.webp') right top/auto 600px no-repeat;opacity:.14;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
 .immigra-home .ih-hero{display:grid;grid-template-columns:.92fr 1.08fr;align-items:center;gap:36px;margin:0 0 34px}
 .immigra-home .ih-eyebrow{font-size:10px;font-weight:750;letter-spacing:3px;color:#536b96}
 .immigra-home h1{font-size:clamp(38px,4.6vw,65px);font-weight:850;letter-spacing:-2.8px;line-height:1.04;margin:22px 0 16px;color:var(--ink)}
@@ -33,7 +33,7 @@
 .immigra-home .ih-feedback{display:flex;gap:8px;background:#eefbf5f5;padding:8px 14px 14px;border-radius:0 0 13px 13px;color:#244c3e;line-height:1.45}.immigra-home .ih-feedback p{margin:0}.immigra-home .ih-feedback>span{color:#07966a;font-weight:800}
 .immigra-home .ih-processes{scroll-margin-top:90px}.immigra-home .ih-process-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .immigra-home .ih-card{--accent:#0864ef;position:relative;overflow:hidden;isolation:isolate;padding:21px;background:linear-gradient(120deg,#ffffffed,#edf6ffda);border:1px solid #d2e4ff;border-radius:22px;box-shadow:0 10px 26px #264e8510;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
-.immigra-home .ih-card:after{content:"";position:absolute;z-index:-1;inset:0;background:url('../modules/citizenship/src/assets/citizenship-background.png') right center/auto 100% no-repeat;opacity:.17;mask-image:linear-gradient(90deg,transparent 35%,#000)}
+.immigra-home .ih-card:after{content:"";position:absolute;z-index:-1;inset:0;background:url('/images/home/citizenship-background.webp') right center/auto 100% no-repeat;opacity:.17;mask-image:linear-gradient(90deg,transparent 35%,#000)}
 .immigra-home .ih-asylum{--accent:#792ae3;background:linear-gradient(120deg,#fff,#f2e8fc)}.immigra-home .ih-residency{--accent:#00866b;background:linear-gradient(120deg,#fff,#def4eb)}.immigra-home .ih-asylum:after,.immigra-home .ih-residency:after{background:radial-gradient(ellipse at bottom right,var(--accent),transparent 70%)}
 .immigra-home .ih-card:hover{transform:translateY(-3px);box-shadow:0 14px 32px #264e8520}
 .immigra-home .ih-card-heading{display:flex;align-items:center;gap:15px}.immigra-home .ih-card-heading>img{width:72px;height:72px;object-fit:contain;flex-shrink:0}
@@ -51,8 +51,8 @@
 @media(prefers-reduced-motion:reduce){.immigra-home *{transition:none!important;scroll-behavior:auto!important}.immigra-home .ih-card:hover{transform:none}}
 
 /* Supplied artwork remains unmodified; CSS controls framing and readability. */
-.immigra-home .ih-asylum:after{background:url('/images/home/asylum-scene.png') right center/cover no-repeat;opacity:.8;-webkit-mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%);mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%)}
-.immigra-home .ih-residency:after{background:url('/images/home/residency-scene.png') right center/cover no-repeat;opacity:.8;-webkit-mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%);mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%)}
+.immigra-home .ih-asylum:after{background:url('/images/home/asylum-scene.webp') right center/cover no-repeat;opacity:.8;-webkit-mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%);mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%)}
+.immigra-home .ih-residency:after{background:url('/images/home/residency-scene.webp') right center/cover no-repeat;opacity:.8;-webkit-mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%);mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%)}
 .immigra-home .ih-card-heading,.immigra-home .ih-card ul{position:relative;z-index:1}
 .immigra-home .ih-card li{max-width:100%;background:transparent;padding:3px 0;margin:3px 0;color:#243c62;font-weight:500;text-shadow:0 1px 3px #ffffffd9}
 .immigra-home .ih-card button{position:relative;z-index:1;margin-top:8px}

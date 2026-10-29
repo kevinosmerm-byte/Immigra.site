@@ -1,0 +1,10 @@
+# N-400 read-only study cards
+
+- Entry: Ciudadanía → **Have You Ever**, route `#/citizenship/n400Study`.
+- Source: version-pinned USCIS N-400 edition **01/20/25**, Part 9 items 1–37, pages 6–10. 62 reading cards is an application count, not an official question count. Nonbinary item 22.c is excluded. This is not the complete N-400.
+- `src/data/n400StudyBank.json` preserves the reviewed English, supplemental unofficial Spanish, source notes, conditional context, and adaptation metadata. See `SOURCE_AUDIT.md` for evidence and direct-PDF access limitations. Do not label this bank as the latest accepted filing edition without a new verification.
+- Uses existing GlassCard, GlassStudyCard, GlassButton and civics navigation styling, palette and accessibility preferences. Unlike civics answer cards, these cards deliberately do not flip into an answer, collect an answer, score, update progress, or persist personal responses.
+- Translation is an optional reveal. Styling splits literal question tokens and reassembles exactly the original source text; no question words are inserted.
+- Question reader is off on mount. Enabling it does not start playback. An explicit Read action uses the existing Capacitor TextToSpeech adapter (native device service / browser speechSynthesis), reading English and the English form notes. No microphone, model call, paid service integration, or new dependency was introduced. Device service network behavior is platform-dependent; this is not an offline guarantee.
+- Stop, disable, navigation, language change and unmount invalidate asynchronous callbacks and stop speech. Shared adapter now rechecks cancellation after voice lookup. This screen opts into an English-voice requirement rather than silently selecting another language.
+- Unit/regression coverage: literal-token preservation, edge navigation, route, read-only/source invariants, pending-voice cancellation, wrong-language rejection, and successful explicit device reading. Existing civics cards remain unchanged.

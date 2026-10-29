@@ -1,6 +1,8 @@
 import Stripe from "stripe";
 import { PRO_PLAN } from "../shared/featureAccessConfig.js";
-import { applyVerifiedEntitlementEvent, getBillingIdentity } from "./accountService.js";
+import { applyVerifiedEntitlementEvent, getBillingIdentity, reserveCheckoutAttempt, saveCheckoutAttempt } from "./accountService.js";
+
+import { reservedCheckout } from "./checkoutReservations.js";
 
 const PRICE_KEYS = Object.freeze({
   monthly: "STRIPE_PRICE_MONTHLY",
@@ -79,7 +81,7 @@ export function mapStripeSubscription(subscription) {
   };
 }
 
-export async function createCheckoutSession({ userId, email, interval }, { identityLookup = getBillingIdentity, createSession = payload => getStripe().checkout.sessions.create(payload) } = {}) {
+export async function createCheckoutSession({ userId, email, interval }, { identityLookup = getBillingIdentity, createSession = (payload, options) => getStripe().checkout.sessions.create(payload, options), retrieveSession = id => getStripe().checkout.sessions.retrieve(id), reserve = reserveCheckoutAttempt, save = saveCheckoutAttempt } = {}) {
   const billing = getBillingConfiguration();
   if (!billing.enabled) throw new Error("Billing is not enabled.");
   const price = priceIdForInterval(interval);
@@ -94,7 +96,7 @@ export async function createCheckoutSession({ userId, email, interval }, { ident
 
   const baseUrl = appBaseUrl();
   const customer = identity?.provider === "stripe" ? identity.providerCustomerId : null;
-  const session = await createSession({
+  const payload = {
     mode: "subscription",
     line_items: [{ price, quantity: 1 }],
     client_reference_id: userId,
@@ -106,7 +108,10 @@ export async function createCheckoutSession({ userId, email, interval }, { ident
     automatic_tax: { enabled: isTrue(process.env.STRIPE_AUTOMATIC_TAX) },
     success_url: `${baseUrl}/?billing=success&session_id={CHECKOUT_SESSION_ID}#/account`,
     cancel_url: `${baseUrl}/?billing=cancelled#/account`,
-  });
+  };
+  const session = isTrue(process.env.CHECKOUT_RESERVATIONS_ENABLED)
+    ? await reservedCheckout({ scope: `account:${userId}`, payload, reserve, save, create: createSession, retrieve: retrieveSession })
+    : await createSession(payload);
   return { url: session.url };
 }
 

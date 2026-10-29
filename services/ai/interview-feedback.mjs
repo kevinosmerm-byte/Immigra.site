@@ -36,3 +36,14 @@ export function clarificationIsGrounded(evaluation,answer,settings){
  return Boolean(evaluation.suggested_follow_up&&currentEvidence(evaluation,answer).length
   &&clarificationOptions(settings,answer).some(q=>q.text===evaluation.suggested_follow_up&&(q.id!=='CIT-006'||currentEvidence(evaluation,answer).some(quote=>quote.length<=240))));
 }
+
+// Defense in depth for free-form coaching, NOT a semantic truth/safety proof.
+// Keep natural, answer-specific coaching; fail closed on overlong output,
+// extra questions, and explicit high-risk directions. Quotes remain validated
+// separately against the current answer. Unseen paraphrases still need review.
+export function boundedEducationalFeedback(text){
+ if(typeof text!=='string'||!text.trim()||text.length>900||text.trim().split(/\s+/u).length>75||/[?¿]/u.test(text))return false;
+ const directives=/\b(?:you (?:should|must|need to)|(?:te recomiendo|debes|deber[ií]as|tienes que))\s+(?:hide|omit|conceal|invent|fabricate|ocultar|omitir|inventar|fabricar)\b/iu;
+ const outcomes=/\b(?:(?:guarantee[sd]?|guarantees|garantiza|garantizado|garantizada)\s+(?:your |tu |la |el )?(?:approval|asylum|aprobaci[oó]n|asilo)|you (?:will|are guaranteed to) (?:be approved|win)|(?:ser[aá]s aprobado|ganar[aá]s tu caso))\b/iu;
+ return !directives.test(text)&&!outcomes.test(text);
+}

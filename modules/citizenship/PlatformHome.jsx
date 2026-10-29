@@ -10,6 +10,7 @@ export default function PlatformHome({language,onStartN400Interview,onStartCivic
  const activities=[
   ['128',t('128 preguntas oficiales','128 official questions'),t('Estudia las preguntas y respuestas oficiales.','Study the official questions and answers.'),()=>onOpenFeature('civics')],
   ['civics',t('Entrevista cívica','Civics interview'),t('Practica una pregunta a la vez.','Practice one question at a time.'),onStartCivicsInterview],
+  ['study-n400','Have You Ever',t('Tarjetas de estudio N-400 · Parte 9. Sin respuestas personales.','N-400 Part 9 study cards. No personal responses.'),()=>onNavigate('n400Study')],
   ['N-400',t('Entrevista N-400','N-400 interview'),t('Repasa tu solicitud conversando.','Review your application through conversation.'),onStartN400Interview],
   ['Aa',t('Lectura','Reading'),t('Lee en voz alta y recibe comentarios.','Read aloud and receive feedback.'),()=>onOpenFeature('reading')],
   ['write',t('Escritura','Writing'),t('Escucha, escribe y revisa.','Listen, write and review.'),()=>onOpenFeature('writing')],
@@ -35,4 +36,4 @@ export default function PlatformHome({language,onStartN400Interview,onStartCivic
   </div></GlassSection>
  </div>;
 }
-function StudyIcon({name}) {const icons={'128':'notebook',civics:'video-camera','N-400':'file-text',Aa:'open-book',write:'pencil',words:'text',progress:'chart'};return <PremiumIcon name={icons[name]} library={['Aa','write'].includes(name)?'fluent':'3dicons'}/>;}
+function StudyIcon({name}) {const icons={'128':'notebook',civics:'video-camera','N-400':'file-text','study-n400':'notebook',Aa:'open-book',write:'pencil',words:'text',progress:'chart'};return <PremiumIcon name={icons[name]} library={['Aa','write'].includes(name)?'fluent':'3dicons'}/>;}

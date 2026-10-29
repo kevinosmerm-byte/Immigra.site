@@ -440,3 +440,21 @@ export async function applyVerifiedEntitlementEvent(event) {
   throwDatabaseError(error, "Unable to apply verified entitlement event.");
   return data;
 }
+
+// Staged rollout: enable only after the versioned reservation migration is applied.
+export async function reserveCheckoutAttempt(scopeHash, payload, expiredSessionId = null) {
+  if (!supabase) throw new Error('Account service is not configured.');
+  const { data, error } = await supabase.rpc('reserve_checkout_attempt', {
+    p_scope_hash: scopeHash, p_payload: payload, p_expired_session_id: expiredSessionId,
+  });
+  throwDatabaseError(error, 'Unable to reserve checkout.');
+  return data;
+}
+export async function saveCheckoutAttempt(scopeHash, attemptId, sessionId) {
+  if (!supabase) throw new Error('Account service is not configured.');
+  const { data, error } = await supabase.rpc('save_checkout_attempt', {
+    p_scope_hash: scopeHash, p_attempt_id: attemptId, p_session_id: sessionId,
+  });
+  throwDatabaseError(error, 'Unable to save checkout.');
+  if (data !== true) throw new Error('Checkout reservation changed.');
+}

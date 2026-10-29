@@ -1,4 +1,6 @@
 import http from 'node:http';
+import {campaignQuery} from './shared/campaign-query.mjs';
+import {isImmutableAsset} from './shared/asset-cache.mjs';
 import {seoPages} from './shared/seo-pages.mjs';
 import {applySecurityHeaders} from './server/security-headers.mjs';
 import {serveFile} from './server/static-file.mjs';
@@ -23,7 +25,7 @@ for(const [name,port,dir] of [['ImmigrationAI',configuredPort,'dist']]){
     res.writeHead(301,{Location:'/en/citizenship'+url.search});return res.end();
    }
    const seoRedirect=seoPages.find(p=>pathname.replace(/^\/|\/$/g,'')===p.alias);
-   if(seoRedirect){res.writeHead(301,{Location:'/'+seoRedirect.path});return res.end();}
+   if(seoRedirect){res.writeHead(301,{Location:'/'+seoRedirect.path+campaignQuery(url.searchParams)});return res.end();}
    if(pathname.startsWith('/api/'))res.setHeader('X-Robots-Tag','noindex, nofollow');
    if(pathname==='/healthz'){res.writeHead(200,{'Content-Type':'application/json'});return res.end(JSON.stringify({ok:true,service:'immigration-ai'}));}
    if(pathname.startsWith('/api/')&&backend)return backend(req,res);
@@ -32,7 +34,7 @@ for(const [name,port,dir] of [['ImmigrationAI',configuredPort,'dist']]){
    const relative=pathname==='/'?'index.html':publicPage?pathname.replace(/^\/+|\/+$/g,'')+'/index.html':pathname.replace(/^\/+/, '');
    if(relative.split('/').some(s=>s.startsWith('.')||s.startsWith('_'))){res.writeHead(404);return res.end();}
    const target=path.resolve(root,relative);if(!target.startsWith(root+path.sep)){res.writeHead(403);return res.end();}
-   await serveFile(req,res,target,mime[path.extname(target)]||'application/octet-stream');
+   await serveFile(req,res,target,mime[path.extname(target)]||'application/octet-stream',{immutable:isImmutableAsset(relative)});
   }catch{res.writeHead(404);res.end('Not found');}
  });
  server.on('error',error=>{console.error(name+': '+error.code);for(const s of servers)s.close();process.exitCode=1;});

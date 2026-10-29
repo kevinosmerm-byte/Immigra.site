@@ -2,7 +2,7 @@ export const APP_SCREENS = Object.freeze([
   "home", "practice", "uscisTracker", "immigrationHelp", "profile", "settings",
   "civicProfile", "pro", "podcasts", "civicsGuide", "quiz", "vocabulary",
   "choose", "connect", "civics", "english", "reading", "writing", "coach",
-  "uscisSandbox", "progress", "interview", "preparation",
+  "uscisSandbox", "progress", "interview", "preparation", "n400Study",
 ]);
 
 export function readAppRoute(hash = "") {

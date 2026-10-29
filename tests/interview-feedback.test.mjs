@@ -79,3 +79,18 @@ test('citizenship also rejects a generic clarification without a displayable sel
  assert.notEqual(next.question?.english,q);
  assert.equal(next.clarified.length,0);
 });
+
+test('bounded coaching preserves natural answer-specific help but rejects known unsafe output',async()=>{
+ const answer='It happened in May, but I do not remember the day.';
+ const session={settings:{module:'asylum',locale:'en'},instructions:'Practice only',history:[]};
+ const evaluate=feedback=>InterviewResponseEvaluator(session,{env:{OPENAI_API_KEY:'test-only'},answer,question:'What do you remember?',fetchImpl:async()=>Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({...evaluation(answer,''),educational_feedback:feedback})}]}]})});
+ const natural='You identified May and clearly separated that memory from the day you do not remember. Keep that distinction when organizing your response; there is no need to supply a day you cannot recall.';
+ assert.equal((await evaluate(natural)).educational_feedback,natural);
+ for(const feedback of ['You should hide the trip from your answer.','Debes inventar una fecha precisa.','This guarantees your approval.','You will be approved.','What was the date?','word '.repeat(76),''])await assert.rejects(evaluate(feedback),/UNGROUNDED_EVALUATION/);
+});
+test('Spanish coaching can organize stated details without suppressing uncertainty',async()=>{
+ const answer='Fue en mayo, pero no recuerdo el día.';
+ const feedback='Distinguiste el mes que recuerdas del día que no recuerdas. Puedes mantener ese orden al contar lo ocurrido, sin añadir una fecha que no sabes.';
+ const value=await InterviewResponseEvaluator({settings:{module:'asylum',locale:'es'},instructions:'Práctica',history:[]},{env:{OPENAI_API_KEY:'test-only'},answer,question:'¿Qué recuerdas?',fetchImpl:async()=>Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({...evaluation(answer,''),educational_feedback:feedback})}]}]})});
+ assert.equal(value.educational_feedback,feedback);
+});
