@@ -3,7 +3,8 @@ import { GlassButton, GlassCard, GlassStudyCard } from '../../../shared/design-s
 import '../../../shared/design-system/civics-study.css';
 import { speakAppText, stopAppSpeech } from './speech';
 import { n400StudyTokens, nextStudyIndex } from './n400StudyText.js';
-import './N400StudyCards.css';
+// Shared selectors target the platform DOM; keep outside legacy module CSS scoping.
+import '../../../shared/design-system/n400-study.css';
 
 // Read-only study: deliberately no profile, progress, response or storage props.
 export function N400StudyCards({ language = 'es', bank, onBack }) {
