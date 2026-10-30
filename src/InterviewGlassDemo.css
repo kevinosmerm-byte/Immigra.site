@@ -39,3 +39,5 @@
 html[data-reduce-motion=true] .interview-glass-demo *{animation:none!important;transition:none!important}
 html[data-reduce-transparency=true] .interview-glass-demo :is(.demo,.benefit,.question){background:#f2f7ff;backdrop-filter:none;-webkit-backdrop-filter:none}
 html[data-reduce-motion=true] .interview-glass-demo .demo:hover{transform:rotate(-4deg)}
+/* Feather only the decorative source layers at their scene boundary, never controls. */
+.interview-glass-demo .glass-atmosphere{mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent),linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-composite:intersect;-webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent),linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent);-webkit-mask-composite:source-in}
