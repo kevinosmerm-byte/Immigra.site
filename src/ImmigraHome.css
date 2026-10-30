@@ -78,3 +78,9 @@ html[data-reduce-motion=true] .immigra-home *{animation:none!important;transitio
 html[data-reduce-transparency=true] .immigra-home .ih-question-panel{background:#f2f7ff;backdrop-filter:none}
 
 @media(max-width:540px){.immigra-home .ih-question-panel{backdrop-filter:blur(4px)}}
+
+/* Bound only decorative sheets; the actual question, controls and focus rings stay unclipped. */
+.immigra-home .ih-glass-decoration{position:absolute;inset:-20px -16px;overflow:hidden;pointer-events:none;z-index:-1}
+.immigra-home .ih-glass-decoration .ih-glass-layer{z-index:auto}
+html[data-experience="web"] body:has(.immigra-home)::before{background:radial-gradient(ellipse at 80% 28%,#d7eaffaa,transparent 60%),linear-gradient(125deg,#fff 24%,#f5f8ff 60%,#e8f2ff)}
+@media(min-width:851px){.immigra-home .ih-hero-actions{flex-wrap:nowrap;gap:16px}.immigra-home .ih-start{min-width:0;width:clamp(190px,17vw,240px);flex-shrink:0;padding:18px 20px;font-size:15px}.immigra-home .ih-see-how{gap:10px;font-size:13px;flex-shrink:1}.immigra-home .ih-play-circle{width:48px;height:48px;flex-shrink:0}.immigra-home .ih-see-how small{font-size:10px}}

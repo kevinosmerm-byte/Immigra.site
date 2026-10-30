@@ -19,7 +19,7 @@ export default function InterviewDemo({lang}){
  const choose=value=>{stop();setRoute(value);setIndex(0);};
  const move=direction=>{stop();setIndex(current=>sampleIndex(current,direction));};
  return <section id="ih-demo" className="ih-glass-demo" tabIndex={-1} aria-label={t('Demostración de preguntas de práctica','Practice question demonstration')}>
-  <div className="ih-glass-layer ih-layer-one" aria-hidden="true"/><div className="ih-glass-layer ih-layer-two" aria-hidden="true"/><div className="ih-glass-layer ih-layer-three" aria-hidden="true"/>
+  <div className="ih-glass-decoration" aria-hidden="true"><div className="ih-glass-layer ih-layer-one"/><div className="ih-glass-layer ih-layer-two"/><div className="ih-glass-layer ih-layer-three"/></div>
   <div className="ih-question-panel">
    <div className="ih-panel-top"><label><span className="ih-sample-label">{t('DEMO · PREGUNTAS DE MUESTRA','DEMO · SAMPLE QUESTIONS')}</span><select value={route} aria-label={t('Categoría de la demostración','Demonstration category')} onChange={event=>choose(event.target.value)}><option value="citizenship">{t('Ciudadanía','Citizenship')}</option><option value="asylum">{t('Entrevista de asilo','Asylum interview')}</option><option value="residency">{t('Residencia','Residency')}</option></select></label><div className="ih-sample-progress"><span>{index+1} / 3</span><progress value={index+1} max="3" aria-label={t('Pregunta de muestra','Sample question')}/></div></div>
    <div className="ih-sample-question" aria-live="polite" aria-atomic="true"><h2>{question}</h2></div>

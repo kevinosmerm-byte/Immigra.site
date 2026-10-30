@@ -45,3 +45,12 @@ test('glass stays translucent with a solid accessibility fallback and lighter mo
  assert.match(css,/html\[data-reduce-transparency=true\].*background:#f2f7ff;backdrop-filter:none/);
  assert.match(css,/@media\(max-width:540px\)\{.immigra-home .ih-question-panel\{backdrop-filter:blur\(4px\)\}/);
 });
+
+test('decorative overflow is bounded without clipping interactive panel; homepage background and CTA match reference',()=>{
+ const css=read('src/ImmigraHome.css'),demo=read('src/InterviewDemo.jsx');
+ assert.match(demo,/<div className="ih-glass-decoration" aria-hidden="true">/);
+ assert.match(css,/ih-glass-decoration\{position:absolute;inset:-20px -16px;overflow:hidden;pointer-events:none;z-index:-1/);
+ assert.doesNotMatch(css,/ih-question-panel\{[^}]*overflow:hidden/);
+ assert.match(css,/body:has\(\.immigra-home\)::before\{background:radial-gradient/);
+ assert.match(css,/@media\(min-width:851px\)\{.immigra-home .ih-hero-actions\{flex-wrap:nowrap;gap:16px/);
+});
