@@ -7,3 +7,6 @@ dist/
 
 # Generated test builds and store submission archives
 artifacts/
+
+# Local private preview output
+preview/private/

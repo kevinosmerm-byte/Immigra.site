@@ -5,16 +5,18 @@ import {freeStudyRoutes} from '../src/home-study.mjs';
 import {residencyStudyRoute} from '../modules/residency/src/study-route.mjs';
 import {moduleFromHash} from '../shared/navigation/routes.mjs';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
-test('three study actions go directly to existing free views in their own module',()=>{
+test('free hero follows selected category while restored practice cards enter existing modules',()=>{
  assert.deepEqual(freeStudyRoutes,{citizenship:'citizenship/civics',asylum:'asylum/full-bank',residency:'residency/study'});
  for(const [module,path] of Object.entries(freeStudyRoutes))assert.equal(moduleFromHash('#/'+path),module);
  const home=read('src/ImmigraHome.jsx');
- assert.match(home,/onNavigate\(freeStudyRoutes\[choice.id\]\)/);
- assert.equal((home.match(/onNavigate\(freeStudyRoutes\[choice.id\]\)/g)||[]).length,1,'one direct study action per card');
- assert.doesNotMatch(home,/InterviewPreview|ih-features|ih-highlights|setTimeout|setInterval|useState|useReducer/);
- assert.match(home,/Comienza a/);assert.match(home,/studying /);
+ assert.match(home,/onNavigate\(choice.id\)/);
+ assert.match(home,/onNavigate\(freeStudyRoutes\[selectedCategory\]\)/);
+ assert.match(home,/onCategoryChange=\{setSelectedCategory\}/);
+ assert.equal((home.match(/onNavigate\(choice.id\)/g)||[]).length,1,'one direct study action per card');
+ assert.doesNotMatch(home,/InterviewPreview|ih-features|ih-highlights|setTimeout|setInterval|useReducer/);
+ assert.match(home,/Prepárate para/);assert.match(home,/your interview/);
  assert.match(home,/AI interviews have separate access requirements/);
- assert.match(home,/aria-label=\{`\$\{t\('Estudiar','Study'\)\} \$\{choice.title\}`\}/);
+ assert.match(home,/aria-label=\{`\$\{t\('Practicar','Practice'\)\} \$\{choice.title\}`\}/);
 });
 test('free study entry does not start recording, AI evaluation or bypass consent',()=>{
  const home=read('src/ImmigraHome.jsx');
