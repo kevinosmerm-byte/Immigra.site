@@ -49,8 +49,19 @@ test('glass stays translucent with a solid accessibility fallback and lighter mo
 test('decorative overflow is bounded without clipping interactive panel; homepage background and CTA match reference',()=>{
  const css=read('src/ImmigraHome.css'),demo=read('src/InterviewDemo.jsx');
  assert.match(demo,/<div className="ih-glass-decoration" aria-hidden="true">/);
- assert.match(css,/ih-glass-decoration\{position:absolute;inset:-20px -16px;overflow:hidden;pointer-events:none;z-index:-1/);
+ assert.match(css,/ih-glass-decoration\{inset:0;overflow:visible/);
+ assert.doesNotMatch(css,/body:has\(\.immigra-home\)\{overflow-x:(?:clip|hidden)/);
  assert.doesNotMatch(css,/ih-question-panel\{[^}]*overflow:hidden/);
  assert.match(css,/body:has\(\.immigra-home\)::before\{background:radial-gradient/);
  assert.match(css,/@media\(min-width:851px\)\{.immigra-home .ih-hero-actions\{flex-wrap:nowrap;gap:16px/);
+});
+
+test('desktop geometry follows measured reference without shrinking interactive targets',()=>{
+ const css=read('src/ImmigraHome.css');
+ assert.match(css,/height:30vw;align-items:start;margin-bottom:2vw/);
+ assert.match(css,/top:3.52vw;left:0;margin:0;font-size:5.32vw/);
+ assert.match(css,/top:21.2vw;left:0;margin:0/);
+ assert.match(css,/width:64%;min-height:24vw/);
+ assert.match(css,/rotateY\(-14deg\) rotateX\(5deg\) rotateZ\(-5deg\)/);
+ assert.match(css,/min-width:44px;min-height:44px/);
 });
