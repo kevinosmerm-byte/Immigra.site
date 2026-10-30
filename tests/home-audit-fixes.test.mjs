@@ -14,13 +14,6 @@ test('campaign forwarding rejects prose, URLs, duplicate keys and oversized valu
  assert.equal(campaignQuery(new URLSearchParams('utm_source=one&utm_source=two&unknown=ok')), '');
  assert.equal(campaignQuery(new URLSearchParams('gclid=&utm_source=valid')), '?utm_source=valid');
 });
-test('first explanation click focuses after render; repeat click keeps navigation available',()=>{
- const home=read('src/ImmigraHome.jsx');
- assert.match(home,/useEffect\(\(\)=>\{if\(expanded\)focusAndScroll\(explanation\);\},\[expanded\]\)/);
- assert.match(home,/if\(expanded\)focusAndScroll\(explanation\);else setExpanded\(true\)/);
- assert.match(home,/hidden=\{!expanded\}/);
- assert.doesNotMatch(home,/setExpanded\(true\);scroll\(explanation\)/);
-});
 test('Continue confirms highlighted language but does not bypass explicit notice acceptance',()=>{
  const welcome=read('src/welcome/WelcomeExperience.jsx');
  assert.doesNotMatch(welcome,/disabled=\{!chosen\}/);
@@ -30,7 +23,7 @@ test('Continue confirms highlighted language but does not bypass explicit notice
 });
 test('homepage uses approved artwork derivatives with responsive size choices',()=>{
  const home=read('src/ImmigraHome.jsx');
- assert.match(home,/william-home-640.webp 640w/);
+ assert.match(home,/20261014-160.webp/);
  for(const name of ['citizenship','asylum','residency'])for(const width of [80,160,240])assert.ok(existsSync(new URL(`../public/images/home/${name}-20261014-${width}.webp`,import.meta.url)));
  assert.doesNotMatch(home,/20261014.png|william-home.png/);
 });

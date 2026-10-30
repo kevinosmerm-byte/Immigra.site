@@ -1,104 +1,80 @@
-/* Homepage only. Native rendering does not mount this component. */
-.immigra-home{--blue:#155eef;--purple:#8247e5;--green:#07966a;--ink:#080e28;position:relative;isolation:isolate;color:var(--ink);padding:38px 0 40px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}
-.immigra-home:before{content:"";position:absolute;z-index:-1;inset:0 0 -30px;pointer-events:none;background:radial-gradient(ellipse at 75% 20%,#badbff9c,transparent 55%),radial-gradient(ellipse at 5% 60%,#b7d9ff80,transparent 45%),linear-gradient(130deg,#edf6ff,#fff 44%,#e6f1ff);min-width:100%}
-.immigra-home:after{content:"";position:absolute;pointer-events:none;z-index:-1;inset:0;background:url('/images/home/citizenship-background.webp') right top/auto 600px no-repeat;opacity:.14;mask-image:linear-gradient(to bottom,#000,transparent 75%)}
-.immigra-home .ih-hero{display:grid;grid-template-columns:.92fr 1.08fr;align-items:center;gap:36px;margin:0 0 34px}
-.immigra-home .ih-eyebrow{font-size:10px;font-weight:750;letter-spacing:3px;color:#536b96}
-.immigra-home h1{font-size:clamp(38px,4.6vw,65px);font-weight:850;letter-spacing:-2.8px;line-height:1.04;margin:22px 0 16px;color:var(--ink)}
-.immigra-home h1 span{color:#0659f3}
-.immigra-home .ih-copy>p{font-size:19px;line-height:1.5;color:#52658d;margin:0 0 25px}
-.immigra-home .ih-actions{display:flex;flex-wrap:wrap;gap:16px;margin:28px 0 20px}
-.immigra-home button{cursor:pointer;font:inherit;min-height:48px}
-.immigra-home .ih-actions button{display:flex;align-items:center;justify-content:center;gap:15px;border-radius:18px;font-weight:750;padding:15px 26px;border:1px solid #d1e2ff;font-size:16px}
-.immigra-home .ih-primary{background:linear-gradient(#1681ff,#0054ef);color:white;box-shadow:0 8px 20px #1575ff24}
-.immigra-home .ih-secondary{background:#ffffffd9;color:var(--ink)}
-.immigra-home .ih-highlights{display:flex;gap:16px;flex-wrap:wrap;padding:0;list-style:none;font-size:12px;color:#40567e}
-.immigra-home .ih-highlights li{display:flex;align-items:center;gap:6px}.immigra-home .ih-highlights span{background:#069c76;color:white;border-radius:50%;padding:1px 4px}
-.immigra-home .ih-preview{position:relative;margin:0;border:1px solid #bcd7f9;border-radius:24px;padding:5px;background:#ffffff90;box-shadow:0 16px 44px #386ca51a;min-width:0}
-.immigra-home .ih-preview figcaption{position:absolute;z-index:2;top:18px;left:18px;background:#17233bcf;color:white;padding:8px 10px;border-radius:9px;font-size:9px;letter-spacing:.5px;max-width:85%}
-.immigra-home .ih-preview-grid{position:relative;min-height:390px}
-.immigra-home .ih-preview-sidebar{display:none}
-.immigra-home .ih-preview-center{position:relative;width:100%;text-align:center}
-.immigra-home .ih-portrait{position:relative;height:400px;border-radius:19px;overflow:hidden;background:#dce9f5}
-.immigra-home .ih-portrait>img{display:block;width:74%;height:100%;object-fit:cover;object-position:center 24%}
-.immigra-home .ih-question{position:absolute;top:42px;right:12px;width:42%;background:#fffffff5;padding:15px;border-radius:16px;box-shadow:0 7px 22px #18325318;display:flex;gap:8px;text-align:left;font-size:13px;line-height:1.45}
-.immigra-home .ih-question>span{color:#1567ff}
-.immigra-home .ih-wave{position:absolute;bottom:38px;left:4%;width:53%;height:54px;display:flex;align-items:center;justify-content:center;gap:3px;color:white;filter:drop-shadow(0 0 7px #0c5aff)}
-.immigra-home .ih-wave i{width:3px;background:#e6f3ff;border-radius:4px}.immigra-home .ih-wave>span{display:grid;place-items:center;border:2px solid white;flex:0 0 54px;height:54px;border-radius:50%;background:linear-gradient(#4a9dff,#0058fa);margin:0 5px}
-.immigra-home .ih-preview-center>small{position:absolute;bottom:10px;left:12px;color:white;background:#122035bb;border-radius:5px;padding:3px 6px;font-size:10px}
-.immigra-home .ih-example{position:absolute;right:-15px;top:155px;width:44%;font-size:12px;text-align:left}
-.immigra-home .ih-example h3{font-size:10px;margin:0;background:#eff6fff5;border-radius:13px 13px 0 0;padding:10px 14px 0;color:#195bb0}
-.immigra-home .ih-example>p{margin:0 0 12px;padding:8px 14px 14px;border-radius:0 0 13px 13px;background:#eff6fff5;color:#344e74;line-height:1.5}
-.immigra-home .ih-example h3:nth-of-type(2){background:#eefbf5f5;color:#06754f}
-.immigra-home .ih-feedback{display:flex;gap:8px;background:#eefbf5f5;padding:8px 14px 14px;border-radius:0 0 13px 13px;color:#244c3e;line-height:1.45}.immigra-home .ih-feedback p{margin:0}.immigra-home .ih-feedback>span{color:#07966a;font-weight:800}
-.immigra-home .ih-processes{scroll-margin-top:90px}.immigra-home .ih-process-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.immigra-home .ih-card{--accent:#0864ef;position:relative;overflow:hidden;isolation:isolate;padding:21px;background:linear-gradient(120deg,#ffffffed,#edf6ffda);border:1px solid #d2e4ff;border-radius:22px;box-shadow:0 10px 26px #264e8510;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
-.immigra-home .ih-card:after{content:"";position:absolute;z-index:-1;inset:0;background:url('/images/home/citizenship-background.webp') right center/auto 100% no-repeat;opacity:.17;mask-image:linear-gradient(90deg,transparent 35%,#000)}
-.immigra-home .ih-asylum{--accent:#792ae3;background:linear-gradient(120deg,#fff,#f2e8fc)}.immigra-home .ih-residency{--accent:#00866b;background:linear-gradient(120deg,#fff,#def4eb)}.immigra-home .ih-asylum:after,.immigra-home .ih-residency:after{background:radial-gradient(ellipse at bottom right,var(--accent),transparent 70%)}
-.immigra-home .ih-card:hover{transform:translateY(-3px);box-shadow:0 14px 32px #264e8520}
-.immigra-home .ih-card-heading{display:flex;align-items:center;gap:15px}.immigra-home .ih-card-heading>img{width:72px;height:72px;object-fit:contain;flex-shrink:0}
-.immigra-home .ih-card h2{font-size:25px;line-height:1.15;letter-spacing:-1px;margin:0 0 6px;font-weight:800}.immigra-home .ih-card p{font-size:14px;line-height:1.4;color:#4b5f86;margin:0}
-.immigra-home .ih-card ul{list-style:none;padding:0;margin:20px 0;flex:1}.immigra-home .ih-card li{display:flex;gap:9px;font-size:13px;color:#354c72;margin:8px 0;line-height:1.4}.immigra-home .ih-card li span{color:var(--accent);font-weight:800}
-.immigra-home .ih-card button{border:0;border-radius:15px;background:var(--accent);color:white;font-size:15px;font-weight:750;padding:12px;display:flex;justify-content:center;gap:18px}
-.immigra-home .ih-features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;background:#ffffffe0;border:1px solid white;border-radius:22px;padding:22px 26px;margin-top:20px}
-.immigra-home .ih-features>div{display:flex;align-items:center;gap:18px;padding-right:16px}.immigra-home .ih-features>div+div{border-left:1px solid #d9e4f5;padding-left:20px}
-.immigra-home .ih-features h2{font-size:15px;margin:0 0 6px;letter-spacing:-.3px}.immigra-home .ih-features p{font-size:12px;color:#52658d;margin:0;line-height:1.5}.immigra-home .ih-feature-icon{color:#0768ff}.immigra-home .ih-feature-icon svg{width:36px;height:36px}.immigra-home .ih-book{color:#792ae3}.immigra-home .ih-chart{color:#00866b}
-.immigra-home .ih-how{margin-top:24px;background:white;border:1px solid #d1e2ff;border-radius:18px;padding:24px;scroll-margin-top:100px;font-size:16px;line-height:1.7}.immigra-home .ih-how[hidden]{display:none}
-.immigra-home :focus-visible{outline:3px solid #155eef;outline-offset:5px}.immigra-home .ih-processes:focus,.immigra-home .ih-how:focus{outline:2px solid #155eef;outline-offset:6px}
-@media(min-width:1252px){html[data-experience="web"] #main:has(.immigra-home){max-width:1480px}.immigra-home:before{inset-inline:calc((1480px - 100vw)/2)}.immigra-home .ih-hero{gap:45px;margin-inline:35px}.immigra-home .ih-portrait{height:425px}}
-@media(max-width:1000px){.immigra-home .ih-hero{grid-template-columns:1fr}.immigra-home .ih-preview{max-width:670px;width:100%;margin:auto}.immigra-home .ih-process-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.immigra-home .ih-features{gap:12px;padding:20px}.immigra-home .ih-features>div{gap:8px;padding:0}.immigra-home .ih-features>div+div{padding-left:12px}.immigra-home:before{inset-inline:-26px}.immigra-home h1{max-width:700px}}
-@media(max-width:600px){.immigra-home{padding-top:24px}.immigra-home h1{font-size:42px;letter-spacing:-1.8px}.immigra-home .ih-copy>p{font-size:17px}.immigra-home .ih-actions{flex-direction:column}.immigra-home .ih-process-grid,.immigra-home .ih-features{grid-template-columns:1fr}.immigra-home .ih-features>div+div{border-left:0;border-top:1px solid #d9e4f5;padding:16px 0 0}.immigra-home .ih-preview-grid{min-height:0}.immigra-home .ih-portrait{height:370px}.immigra-home .ih-question{top:auto;bottom:65px;left:10px;right:10px;width:auto;font-size:13px}.immigra-home .ih-example{position:static;width:auto;margin:12px 5px 5px}.immigra-home .ih-wave{bottom:22px;width:90%}.immigra-home .ih-preview-center>small{bottom:4px}.immigra-home .ih-wave>span{height:38px;flex-basis:38px}.immigra-home .ih-wave{height:38px}.immigra-home .ih-portrait>img{object-position:center 20%}.immigra-home .ih-highlights{gap:9px;font-size:11px}.immigra-home .ih-card-heading>img{width:80px;height:80px}}
-@media(prefers-reduced-motion:reduce){.immigra-home *{transition:none!important;scroll-behavior:auto!important}.immigra-home .ih-card:hover{transform:none}}
+/* Minimal web landing page. Native and module screens keep their own layouts. */
+.immigra-home{max-width:1060px;margin:0 auto;padding:52px 0 30px;color:#172b3d;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}
+.immigra-home .ih-intro{margin:0 auto 30px;text-align:center;background:transparent;border:0;box-shadow:none;padding:0;display:block}
+.immigra-home h1{font-size:clamp(32px,4.2vw,52px);line-height:1.12;letter-spacing:-1.5px;font-weight:800;margin:0 0 14px;color:#101b32}
+.immigra-home h1 span{color:#0759df}
+.immigra-home .ih-intro>p{font-size:18px;line-height:1.5;color:#4b6080;margin:0}
+.immigra-home .ih-study-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.immigra-home .ih-study-card{--study-accent:#175cd3;display:flex;flex-direction:column;align-items:flex-start;min-width:0;padding:26px;border:1px solid #d4e1f1;border-radius:24px;background:#ffffffed;box-shadow:0 8px 24px #214d7710}
+.immigra-home .ih-asylum{--study-accent:#7139b9}.immigra-home .ih-residency{--study-accent:#087656}
+.immigra-home .ih-study-card>img{width:72px;height:72px;object-fit:contain;margin-bottom:20px}
+.immigra-home .ih-study-card h2{font-size:25px;line-height:1.2;margin:0 0 12px;letter-spacing:-.5px;color:#172b3d}
+.immigra-home .ih-study-card p{font-size:16px;line-height:1.55;color:#4b6080;margin:0 0 26px;overflow-wrap:anywhere}
+.immigra-home .ih-study-card button{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;border:0;border-radius:14px;padding:13px 16px;background:var(--study-accent);color:#fff;font:inherit;font-size:16px;font-weight:700;line-height:1.4;cursor:pointer;text-align:left}
+.immigra-home .ih-study-card button>span:last-child{font-size:24px;line-height:1}
+.immigra-home .ih-study-card button:hover{filter:brightness(.94)}
+.immigra-home .ih-study-card button:focus-visible{outline:3px solid #0759df;outline-offset:5px}
+.immigra-home .ih-scope-note{max-width:740px;text-align:center;margin:24px auto 0;font-size:13px;line-height:1.6;color:#4b6080}
+@media(max-width:700px){.immigra-home{padding-top:30px}.immigra-home .ih-study-options{grid-template-columns:1fr;gap:14px}.immigra-home .ih-study-card{padding:22px}.immigra-home .ih-study-card>img{width:56px;height:56px;margin-bottom:14px}.immigra-home .ih-study-card p{margin-bottom:18px}.immigra-home h1{letter-spacing:-1px}.immigra-home .ih-intro>p{font-size:16px}}
+/* Keep the helper available after the footer, not over the primary study actions. */
+html[data-experience="web"] #root:has(.immigra-home) citizenship-companion.platform-study-companion{position:relative;display:block;inset:auto;z-index:auto;margin:16px 18px 16px auto}
 
-/* Supplied artwork remains unmodified; CSS controls framing and readability. */
-.immigra-home .ih-asylum:after{background:url('/images/home/asylum-scene.webp') right center/cover no-repeat;opacity:.8;-webkit-mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%);mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%)}
-.immigra-home .ih-residency:after{background:url('/images/home/residency-scene.webp') right center/cover no-repeat;opacity:.8;-webkit-mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%);mask-image:linear-gradient(90deg,transparent 15%,#0002 38%,#0009 68%,#000 100%)}
-.immigra-home .ih-card-heading,.immigra-home .ih-card ul{position:relative;z-index:1}
-.immigra-home .ih-card li{max-width:100%;background:transparent;padding:3px 0;margin:3px 0;color:#243c62;font-weight:500;text-shadow:0 1px 3px #ffffffd9}
-.immigra-home .ih-card button{position:relative;z-index:1;margin-top:8px}
-.immigra-home .ih-portrait{background:#dce9f5}
-.immigra-home .ih-portrait>img{width:100%;object-position:center 29%}
-.immigra-home .ih-features{padding:25px 30px;gap:0}
-.immigra-home .ih-features>div{padding:0 24px;align-items:flex-start;gap:16px}
-.immigra-home .ih-features>div:first-child{padding-left:0}
-.immigra-home .ih-feature-icon{flex:0 0 52px;height:52px;display:grid;place-items:center;background:#e4efff;border-radius:50%}
-.immigra-home .ih-book{background:#eee6ff}.immigra-home .ih-chart{background:#ddf7ee}
-.immigra-home .ih-features h2{font-size:16px;line-height:1.3;margin:4px 0 6px}
-.immigra-home .ih-features p{font-size:14px;line-height:1.5}
-@media(max-width:600px){.immigra-home .ih-portrait>img{width:100%;object-position:center 24%}.immigra-home .ih-features{padding:22px}.immigra-home .ih-features>div{padding:0}.immigra-home .ih-features>div+div{padding-top:18px;margin-top:18px}.immigra-home .ih-card li{font-size:14px}}
-.ih-seo-links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;padding:24px;font-size:14px;background:rgba(255,255,255,.8);border-radius:20px;margin-top:20px}.ih-seo-links a{color:#244b81;text-decoration:underline;text-underline-offset:3px}.ih-seo-links a:focus-visible{outline:2px solid #155eef;outline-offset:4px}
+/* Reference composition: oversized left typography and tilted layered glass, not a bitmap UI. */
+html[data-experience="web"] #main:has(.immigra-home){max-width:1440px;padding:0 32px}
+.immigra-home{max-width:1376px;padding-top:38px}
+.immigra-home .ih-hero{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:center;gap:24px;min-height:560px;margin-bottom:44px}
+.immigra-home .ih-intro{text-align:left;margin:0;min-width:0}
+.immigra-home .ih-intro .ih-eyebrow{font-size:11px;letter-spacing:3.2px;font-weight:700;line-height:1.5;color:#526381;margin:0 0 26px}
+.immigra-home h1{font-size:clamp(46px,5.6vw,80px);font-weight:850;line-height:1.02;letter-spacing:-3.8px;margin:0 0 24px;color:#030711}
+.immigra-home h1 span{color:#0759f7;background:linear-gradient(135deg,#0061ff 38%,#9572f8);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.immigra-home .ih-intro>p:not(.ih-eyebrow){font-size:20px;line-height:1.48;max-width:590px;color:#455a7f}
+.immigra-home .ih-hero-actions{display:flex;align-items:center;gap:22px;margin:28px 0 24px;flex-wrap:wrap}
+.immigra-home .ih-start{border:0;border-radius:21px;background:linear-gradient(#1787ff,#0050f8);color:white;padding:20px 34px;min-height:64px;min-width:240px;font:inherit;font-size:16px;font-weight:750;cursor:pointer;box-shadow:0 16px 30px #1265ed24;display:flex;align-items:center;justify-content:center;gap:18px}
+.immigra-home .ih-see-how{border:0;background:transparent;display:flex;align-items:center;gap:12px;min-height:56px;padding:0;color:#0b1426;font:inherit;font-size:14px;font-weight:750;text-align:left;cursor:pointer}
+.immigra-home .ih-see-how small{display:block;color:#607191;font-size:11px;font-weight:400;margin-top:4px}
+.immigra-home .ih-play-circle{display:grid;place-items:center;width:55px;height:55px;border:3px solid #e0e8f4;border-radius:50%;background:#ffffffa8}
+.immigra-home svg{width:24px;height:24px;flex-shrink:0}
+.immigra-home .ih-brief-benefits{display:flex;flex-wrap:wrap;gap:12px;list-style:none;margin:0;padding:0;color:#425577;font-size:12px}
+.immigra-home .ih-brief-benefits li{display:flex;align-items:center;gap:6px}
+.immigra-home .ih-brief-benefits li+li{border-left:1px solid #d6e3f7;padding-left:12px}
+.immigra-home .ih-brief-benefits svg{color:#0675ff;background:#e6f1ff;border-radius:50%;padding:5px;width:30px;height:30px}
+.immigra-home .ih-glass-demo{position:relative;isolation:isolate;height:530px;min-width:0;scroll-margin-top:110px}
+.immigra-home .ih-glass-layer{position:absolute;pointer-events:none;z-index:-1;border:1px solid #ffffffc9;border-radius:48px;box-shadow:inset 0 2px 3px #fff9,0 12px 25px #6f9dc317}
+.immigra-home .ih-layer-one{inset:28px 16% 35px 2%;transform:rotate(15deg);background:linear-gradient(150deg,#a99cf3b8,#c3defb99 38%,#e7f6ff9c)}
+.immigra-home .ih-layer-two{inset:56px -1% 38px 0;transform:rotate(-21deg);border:2px solid #7eaffba3;border-radius:65px;background:linear-gradient(145deg,#77ccff75,#eef7ffc2 47%,#8bb5ff81)}
+.immigra-home .ih-layer-three{inset:25px 22% 22px 9%;transform:rotate(-12deg);background:linear-gradient(145deg,#f9ffffb8,#bde7ffb0);border-color:#ffffffec}
+.immigra-home .ih-question-panel{position:absolute;top:72px;left:4%;width:73%;min-height:392px;padding:25px 26px 18px;border:2px solid #fffffff2;border-radius:32px;background:linear-gradient(145deg,#ffffffb8,#f6f7ffa6 48%,#d5e5fc99);box-shadow:inset 0 2px 5px #fff,0 18px 35px #5a83b329;backdrop-filter:blur(10px);transform:rotate(-6deg);transform-origin:center;}
+.immigra-home .ih-panel-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.immigra-home .ih-panel-top label{min-width:0}
+.immigra-home .ih-sample-label{display:block;color:#4a6087;font-size:8px;letter-spacing:.5px;margin-bottom:5px}
+.immigra-home .ih-panel-top select{border:0;background:transparent;color:#203555;max-width:100%;font:inherit;font-size:12px;min-height:44px;padding:3px 2px;cursor:pointer}
+.immigra-home .ih-sample-progress{text-align:right;flex:0 0 96px;font-size:11px;color:#526b96}
+.immigra-home .ih-sample-progress progress{display:block;width:96px;height:3px;margin-top:12px;accent-color:#1677ff;border:0;background:#cbdcf9}
+.immigra-home .ih-sample-question{min-height:130px;display:flex;align-items:center;justify-content:center;padding:12px 7px}
+.immigra-home .ih-sample-question h2{margin:0;color:#07112b;font-size:clamp(20px,1.9vw,28px);line-height:1.35;letter-spacing:-.6px;font-weight:750;font-style:italic;text-align:center;overflow-wrap:anywhere}
+.immigra-home .ih-sample-audio{display:flex;justify-content:center;align-items:center;gap:14px;min-height:84px;margin:8px 0 14px}
+.immigra-home .ih-audio-button{display:grid;place-items:center;flex-shrink:0;width:68px;height:68px;border:1px solid #3d8aff;border-radius:50%;color:white;background:linear-gradient(145deg,#88c5ff,#1263ff 65%);box-shadow:inset 0 2px 4px #d6eeff,0 8px 20px #2b7bff50;cursor:pointer}
+.immigra-home .ih-audio-button svg{width:32px;height:32px}
+.immigra-home .ih-audio-button[aria-pressed=true]{box-shadow:0 0 0 5px #408bff22,0 8px 20px #2b7bff50}
+.immigra-home .ih-static-wave{display:flex;align-items:center;gap:3px;opacity:.7}
+.immigra-home .ih-static-wave i{width:3px;border-radius:3px;background:#72adff}
+.immigra-home .ih-sample-navigation{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.immigra-home .ih-sample-navigation button{display:grid;place-items:center;width:48px;min-width:48px;height:48px;min-height:48px;border:0;border-radius:50%;background:#ffffffda;color:#18344f;cursor:pointer}
+.immigra-home .ih-sample-navigation button:disabled{opacity:.45;cursor:default}
+.immigra-home .ih-sample-navigation small{font-size:9px;color:#526b96;text-align:center;line-height:1.45}
+.immigra-home .ih-audio-status{font-size:11px;color:#425577;line-height:1.5;margin:10px 0 0;text-align:center}
+.immigra-home .ih-audio-status:empty{display:none}.immigra-home .ih-audio-unavailable{font-size:12px;color:#425577;text-align:center}
+.immigra-home .ih-glass-notes{position:absolute;right:0;top:142px;width:23%;display:grid;gap:14px;transform:rotate(-6deg)}
+.immigra-home .ih-glass-notes>div{display:flex;align-items:center;gap:9px;min-height:82px;border:2px solid #ffffffcf;border-radius:23px;padding:12px 10px;background:linear-gradient(145deg,#ffffffd9,#d8e7ffb8);box-shadow:inset 0 1px 4px white,0 8px 16px #476f9917;color:#34527b;font-size:12px;line-height:1.4}
+.immigra-home .ih-glass-notes svg{color:#3879c4;width:28px;height:28px;padding:3px;background:#ffffff68;border-radius:9px}
+.immigra-home .ih-study-options{scroll-margin-top:110px}
+.immigra-home :is(button,select):focus-visible,.immigra-home #ih-study:focus-visible,.immigra-home #ih-demo:focus-visible{outline:3px solid #1767e4;outline-offset:5px}
+@media(min-width:1100px) and (hover:hover) and (prefers-reduced-motion:no-preference){.immigra-home .ih-question-panel{transition:transform .2s ease}.immigra-home .ih-question-panel:hover{transform:rotate(-5deg) translateY(-3px)}}
+@media(max-width:1100px){.immigra-home .ih-hero{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:15px}.immigra-home h1{font-size:52px;letter-spacing:-2.5px}.immigra-home .ih-intro>p:not(.ih-eyebrow){font-size:17px}.immigra-home .ih-start{min-width:190px;padding:17px 22px}.immigra-home .ih-glass-demo{height:490px}.immigra-home .ih-question-panel{padding:18px;left:1%;width:76%;top:65px}.immigra-home .ih-glass-notes{width:22%;top:135px}.immigra-home .ih-glass-notes>div{flex-direction:column;gap:5px;text-align:center;padding:9px 5px;font-size:10px;min-height:80px}.immigra-home .ih-panel-top{gap:6px}.immigra-home .ih-sample-progress{flex-basis:65px}.immigra-home .ih-sample-progress progress{width:65px}}
+@media(max-width:850px){.immigra-home .ih-hero{grid-template-columns:1fr;gap:10px}.immigra-home .ih-intro{max-width:620px}.immigra-home h1{font-size:clamp(46px,8vw,66px)}.immigra-home .ih-glass-demo{width:100%;max-width:680px;margin:auto;height:500px}.immigra-home .ih-glass-notes>div{font-size:12px}.immigra-home .ih-sample-question h2{font-size:26px}}
+@media(max-width:540px){html[data-experience="web"] #main:has(.immigra-home){padding:0 20px}.immigra-home{padding-top:26px}.immigra-home .ih-intro .ih-eyebrow{font-size:9px;letter-spacing:2px;margin-bottom:20px}.immigra-home h1{font-size:48px;letter-spacing:-2px}.immigra-home .ih-hero-actions{gap:18px}.immigra-home .ih-start{min-height:58px;width:100%}.immigra-home .ih-brief-benefits{font-size:10px;gap:8px}.immigra-home .ih-brief-benefits li+li{padding-left:0;border:0}.immigra-home .ih-glass-demo{height:auto;min-height:430px;padding:42px 5px 10px}.immigra-home .ih-question-panel{position:relative;top:auto;left:auto;width:100%;min-height:370px;transform:rotate(-3deg);padding:20px 16px}.immigra-home .ih-layer-one{inset:32px 2% 10px;transform:rotate(5deg)}.immigra-home .ih-layer-two{inset:42px 0 5px;transform:rotate(-4deg);border-radius:36px}.immigra-home .ih-layer-three{inset:30px 5% 10px;transform:rotate(-5deg)}.immigra-home .ih-glass-notes{display:none}.immigra-home .ih-sample-question h2{font-size:23px}.immigra-home .ih-hero{margin-bottom:30px}}
+@media(prefers-reduced-motion:reduce){.immigra-home *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+html[data-reduce-motion=true] .immigra-home *{animation:none!important;transition:none!important}
+html[data-reduce-transparency=true] .immigra-home .ih-question-panel{background:#f2f7ff;backdrop-filter:none}
 
-/* Interactive hero: original portrait/material, real controls rather than a video mock. */
-.immigra-home .ih-route-choice{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;border:1px solid #cbdcff;background:#ffffff9c;border-radius:17px;padding:4px;max-width:540px}
-.immigra-home .ih-route-choice button{border:1px solid transparent;border-radius:13px;background:transparent;color:#344d78;padding:9px 8px;font-weight:650;min-width:0;overflow-wrap:anywhere;font-size:14px}
-.immigra-home .ih-route-choice button[aria-pressed=true]{color:#0759ca;background:#e2edff;border-color:#b9d1ff}
-.immigra-home .ih-route-choice .ih-route-asylum[aria-pressed=true]{color:#6522c8;background:#ede2ff;border-color:#d6c1ff}
-.immigra-home .ih-route-choice .ih-route-residency[aria-pressed=true]{color:#006c4e;background:#dff5ec;border-color:#b0e1ce}
-.immigra-home .ih-actions{gap:10px;margin:20px 0 12px}
-.immigra-home .ih-actions button{padding:14px 18px;font-size:15px;gap:9px}
-.immigra-home .ih-copy>.ih-free-note{font-size:12px;line-height:1.5;margin:0 0 18px;max-width:490px}
-.immigra-home .ih-preview{overflow:hidden;scroll-margin-top:100px;background:#ffffffbc}
-.immigra-home .ih-preview figcaption{font-size:10px;max-width:calc(100% - 36px);pointer-events:none}
-.immigra-home .ih-demo-scene{position:relative;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);min-height:460px;border-radius:19px 19px 0 0;overflow:hidden;background:#dae5ee}
-.immigra-home .ih-demo-portrait{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 29%}
-.immigra-home .ih-demo-content{position:relative;grid-column:2;padding:62px 12px 20px 0;display:flex;flex-direction:column;gap:14px;min-width:0}
-.immigra-home .ih-demo-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;background:#f8fbffed;border:1px solid #ffffffcf;border-radius:14px;padding:4px}
-.immigra-home .ih-demo-steps button{display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;color:#425774;border-radius:10px;padding:5px 2px;font-size:11px;min-width:0}
-.immigra-home .ih-demo-steps b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#e5efff;color:#0759ca}
-.immigra-home .ih-demo-steps button[aria-current=step]{color:#0759ca;font-weight:750;background:#e8f1ff}
-.immigra-home .ih-demo-steps button[aria-current=step] b{color:#fff;background:#0759ef}
-.immigra-home .ih-demo-cards{display:grid;gap:10px}
-.immigra-home .ih-demo-cards>div{border:1px solid #ffffffd9;border-radius:16px;padding:13px;background:#fffffff5;box-shadow:0 8px 20px #17233b12;overflow-wrap:anywhere}
-.immigra-home .ih-demo-cards small{display:block;font-size:11px;font-weight:750;color:#1555ac;margin-bottom:6px}
-.immigra-home .ih-demo-cards strong{font-size:14px;line-height:1.45;display:block;color:#101b32}
-.immigra-home .ih-demo-cards p{font-size:13px;line-height:1.5;margin:0;color:#334d72}
-.immigra-home .ih-demo-cards .ih-demo-answer{background:#eff5fff5}
-.immigra-home .ih-demo-cards .ih-demo-feedback{background:#eefbf5f5}
-.immigra-home .ih-demo-feedback small{color:#007551}
-.immigra-home .ih-demo-feedback p{color:#244c3e}
-.immigra-home .ih-demo-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:8px 10px;background:#14243eeb;color:#fff;border-radius:0 0 19px 19px;font-size:12px}
-.immigra-home .ih-demo-controls button{min-width:44px;min-height:44px;border:1px solid #d8e7ff70;color:#fff;border-radius:11px;padding:6px 10px;background:#ffffff10;font-size:13px}
-.immigra-home .ih-demo-controls small{margin-left:auto;font-size:10px}
-.immigra-home .ih-how-toggle{display:block;margin:22px auto 0;border:0;background:transparent;color:#244b81;text-decoration:underline;text-underline-offset:4px;font-size:14px}
-@media(min-width:1001px) and (max-width:1251px){.immigra-home .ih-hero{gap:22px;grid-template-columns:.9fr 1.1fr}.immigra-home .ih-demo-scene{grid-template-columns:minmax(0,.65fr) minmax(0,1fr)}}
-@media(max-width:600px){.immigra-home .ih-demo-scene{display:block;min-height:0;padding-top:200px}.immigra-home .ih-demo-portrait{height:260px;object-position:center 28%}.immigra-home .ih-demo-content{padding:12px;gap:10px;background:linear-gradient(transparent,#eaf3fc 65px)}.immigra-home .ih-demo-cards strong{font-size:16px}.immigra-home .ih-demo-cards p{font-size:14px}.immigra-home .ih-demo-controls small{width:100%;margin-left:0;text-align:center}.immigra-home .ih-route-choice button{font-size:12px;padding:8px 3px}}
+@media(max-width:540px){.immigra-home .ih-question-panel{backdrop-filter:blur(4px)}}
