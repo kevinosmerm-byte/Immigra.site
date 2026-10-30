@@ -67,3 +67,38 @@
 .immigra-home .ih-features p{font-size:14px;line-height:1.5}
 @media(max-width:600px){.immigra-home .ih-portrait>img{width:100%;object-position:center 24%}.immigra-home .ih-features{padding:22px}.immigra-home .ih-features>div{padding:0}.immigra-home .ih-features>div+div{padding-top:18px;margin-top:18px}.immigra-home .ih-card li{font-size:14px}}
 .ih-seo-links{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 24px;padding:24px;font-size:14px;background:rgba(255,255,255,.8);border-radius:20px;margin-top:20px}.ih-seo-links a{color:#244b81;text-decoration:underline;text-underline-offset:3px}.ih-seo-links a:focus-visible{outline:2px solid #155eef;outline-offset:4px}
+
+/* Interactive hero: original portrait/material, real controls rather than a video mock. */
+.immigra-home .ih-route-choice{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;border:1px solid #cbdcff;background:#ffffff9c;border-radius:17px;padding:4px;max-width:540px}
+.immigra-home .ih-route-choice button{border:1px solid transparent;border-radius:13px;background:transparent;color:#344d78;padding:9px 8px;font-weight:650;min-width:0;overflow-wrap:anywhere;font-size:14px}
+.immigra-home .ih-route-choice button[aria-pressed=true]{color:#0759ca;background:#e2edff;border-color:#b9d1ff}
+.immigra-home .ih-route-choice .ih-route-asylum[aria-pressed=true]{color:#6522c8;background:#ede2ff;border-color:#d6c1ff}
+.immigra-home .ih-route-choice .ih-route-residency[aria-pressed=true]{color:#006c4e;background:#dff5ec;border-color:#b0e1ce}
+.immigra-home .ih-actions{gap:10px;margin:20px 0 12px}
+.immigra-home .ih-actions button{padding:14px 18px;font-size:15px;gap:9px}
+.immigra-home .ih-copy>.ih-free-note{font-size:12px;line-height:1.5;margin:0 0 18px;max-width:490px}
+.immigra-home .ih-preview{overflow:hidden;scroll-margin-top:100px;background:#ffffffbc}
+.immigra-home .ih-preview figcaption{font-size:10px;max-width:calc(100% - 36px);pointer-events:none}
+.immigra-home .ih-demo-scene{position:relative;display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);min-height:460px;border-radius:19px 19px 0 0;overflow:hidden;background:#dae5ee}
+.immigra-home .ih-demo-portrait{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 29%}
+.immigra-home .ih-demo-content{position:relative;grid-column:2;padding:62px 12px 20px 0;display:flex;flex-direction:column;gap:14px;min-width:0}
+.immigra-home .ih-demo-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:3px;background:#f8fbffed;border:1px solid #ffffffcf;border-radius:14px;padding:4px}
+.immigra-home .ih-demo-steps button{display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:transparent;color:#425774;border-radius:10px;padding:5px 2px;font-size:11px;min-width:0}
+.immigra-home .ih-demo-steps b{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#e5efff;color:#0759ca}
+.immigra-home .ih-demo-steps button[aria-current=step]{color:#0759ca;font-weight:750;background:#e8f1ff}
+.immigra-home .ih-demo-steps button[aria-current=step] b{color:#fff;background:#0759ef}
+.immigra-home .ih-demo-cards{display:grid;gap:10px}
+.immigra-home .ih-demo-cards>div{border:1px solid #ffffffd9;border-radius:16px;padding:13px;background:#fffffff5;box-shadow:0 8px 20px #17233b12;overflow-wrap:anywhere}
+.immigra-home .ih-demo-cards small{display:block;font-size:11px;font-weight:750;color:#1555ac;margin-bottom:6px}
+.immigra-home .ih-demo-cards strong{font-size:14px;line-height:1.45;display:block;color:#101b32}
+.immigra-home .ih-demo-cards p{font-size:13px;line-height:1.5;margin:0;color:#334d72}
+.immigra-home .ih-demo-cards .ih-demo-answer{background:#eff5fff5}
+.immigra-home .ih-demo-cards .ih-demo-feedback{background:#eefbf5f5}
+.immigra-home .ih-demo-feedback small{color:#007551}
+.immigra-home .ih-demo-feedback p{color:#244c3e}
+.immigra-home .ih-demo-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:8px 10px;background:#14243eeb;color:#fff;border-radius:0 0 19px 19px;font-size:12px}
+.immigra-home .ih-demo-controls button{min-width:44px;min-height:44px;border:1px solid #d8e7ff70;color:#fff;border-radius:11px;padding:6px 10px;background:#ffffff10;font-size:13px}
+.immigra-home .ih-demo-controls small{margin-left:auto;font-size:10px}
+.immigra-home .ih-how-toggle{display:block;margin:22px auto 0;border:0;background:transparent;color:#244b81;text-decoration:underline;text-underline-offset:4px;font-size:14px}
+@media(min-width:1001px) and (max-width:1251px){.immigra-home .ih-hero{gap:22px;grid-template-columns:.9fr 1.1fr}.immigra-home .ih-demo-scene{grid-template-columns:minmax(0,.65fr) minmax(0,1fr)}}
+@media(max-width:600px){.immigra-home .ih-demo-scene{display:block;min-height:0;padding-top:200px}.immigra-home .ih-demo-portrait{height:260px;object-position:center 28%}.immigra-home .ih-demo-content{padding:12px;gap:10px;background:linear-gradient(transparent,#eaf3fc 65px)}.immigra-home .ih-demo-cards strong{font-size:16px}.immigra-home .ih-demo-cards p{font-size:14px}.immigra-home .ih-demo-controls small{width:100%;margin-left:0;text-align:center}.immigra-home .ih-route-choice button{font-size:12px;padding:8px 3px}}

@@ -10,7 +10,7 @@ test('web homepage uses existing navigation and preserves native homepage bounda
  for(const id of ['citizenship','asylum','residency'])assert.equal(moduleFromHash(moduleHash(id)),id);
 });
 test('preview is explicitly fictional and never captures audio or sends requests',()=>{
- assert.match(home,/DEMOSTRACIÓN VISUAL · EJEMPLO FICTICIO/);
+ assert.match(home,/DEMO · EJEMPLO FICTICIO/);
  assert.doesNotMatch(home,/getUserMedia|MediaRecorder|fetch\(/);
  assert.ok(existsSync(new URL('../public/interviewer/portraits/william.jpg',import.meta.url)));
  assert.match(home,/aria-expanded=\{expanded\}/);
