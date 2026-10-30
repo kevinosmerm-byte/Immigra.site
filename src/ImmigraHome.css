@@ -124,3 +124,18 @@ html[data-experience="web"] body:has(.immigra-home)::before{background:radial-gr
  .immigra-home .ih-layer-two{inset:10% 0 6% 2%;transform:rotate(-13deg);border-radius:30% 12% 25% 14%}
  .immigra-home .ih-layer-three{inset:4% 18% 2% 8%;transform:rotate(-6deg);border-radius:3vw}
 }
+
+/* Reference face is decorative; controls retain untransformed hit areas. */
+@media(min-width:1101px){
+ .immigra-home h1{transform:scaleX(1.04);transform-origin:left center}
+ .immigra-home .ih-question-panel,.immigra-home .ih-question-panel:hover{transform:none;background:transparent;border-color:transparent;box-shadow:none;backdrop-filter:none;isolation:isolate;padding:1.5vw 1.4vw 1vw 5.2vw}
+ .immigra-home .ih-question-panel::before{content:"";position:absolute;inset:-1.4vw 0 -1.35vw;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20396%20316%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22glass%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%23ffffff%22%20stop-opacity%3D%22.72%22%2F%3E%3Cstop%20offset%3D%22.55%22%20stop-color%3D%22%23eef2ff%22%20stop-opacity%3D%22.62%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23c8dfff%22%20stop-opacity%3D%22.60%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Cpath%20d%3D%22M83%2042%20L361%204%20Q392%200%20390%2029%20L369%20284%20Q367%20313%20341%20311%20L29%20296%20Q3%20295%208%20270%20L55%2072%20Q60%2046%2083%2042Z%22%20fill%3D%22url%28%23glass%29%22%20stroke%3D%22white%22%20stroke-opacity%3D%22.94%22%20stroke-width%3D%222.5%22%2F%3E%3Cpath%20d%3D%22M84%2045%20L361%207%20Q387%204%20387%2029%22%20fill%3D%22none%22%20stroke%3D%22white%22%20stroke-opacity%3D%22.7%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E");background-size:100% 100%;background-repeat:no-repeat;filter:drop-shadow(0 1.2vw 1.3vw #5485b72b)}
+ .immigra-home .ih-panel-top{gap:.4vw}
+ .immigra-home .ih-sample-question{border-radius:12px;background:linear-gradient(120deg,#ffffff5c,#ffffff38);box-shadow:inset 0 1px 1px #ffffff70;min-height:6.8vw;padding:.35vw .4vw}
+ .immigra-home .ih-sample-question h2{font-size:1.7vw;line-height:1.3}
+ .immigra-home .ih-sample-navigation button{min-width:52px;min-height:52px;width:4.45vw;height:4.45vw}
+ .immigra-home .ih-sample-navigation small{max-width:12vw}
+ .immigra-home .ih-layer-one{border-radius:13% 31% 18% 25%;border-width:1px;background:linear-gradient(145deg,#a498ed9c,#d8e9ff75 52%,#edf9ff6b)}
+ .immigra-home .ih-layer-two{inset:16% 1% 4% 1%;border-radius:31% 14% 37% 24%;border-width:1px;border-color:#65a8fba3;background:linear-gradient(140deg,#9bdaff7d,#eef9ff70 43%,#7eaafa70);box-shadow:inset 0 2px 3px #ffffffc7,0 8px 18px #7aa8d529}
+ .immigra-home .ih-layer-three{border-radius:21% 14% 24% 18%;border-width:1px;background:linear-gradient(140deg,#ffffff70,#c9ecff80 65%,#e4f5ff65)}
+}

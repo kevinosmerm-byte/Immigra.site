@@ -65,3 +65,13 @@ test('desktop geometry follows measured reference without shrinking interactive 
  assert.match(css,/rotateY\(-14deg\) rotateX\(5deg\) rotateZ\(-5deg\)/);
  assert.match(css,/min-width:44px;min-height:44px/);
 });
+
+
+test('reference face is decorative while question well and readable touch controls remain real',()=>{
+ const css=read('src/ImmigraHome.css');
+ assert.match(css,/h1\{transform:scaleX\(1.04\)/);
+ assert.match(css,/ih-question-panel::before\{[^}]*pointer-events:none;[^}]*data:image\/svg\+xml/);
+ assert.match(css,/ih-sample-question\{border-radius:12px;background:linear-gradient/);
+ assert.match(css,/min-width:52px;min-height:52px/);
+ assert.match(css,/transform:none;background:transparent;[^}]*isolation:isolate/);
+});
