@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 
 const source=readFileSync(new URL('../src/EmailTrialAccount.jsx',import.meta.url),'utf8');
-const css=readFileSync(new URL('../src/EmailTrialAccount.css',import.meta.url),'utf8');
+const css=readFileSync(new URL('../../../shared/design-system/email-trial-account.css',import.meta.url),'utf8');
 
 test('account access choices precede plans and use existing verification state',()=>{
  assert.ok(source.indexOf('trial-access-choices')<source.indexOf('trial-plans space'));
@@ -36,3 +36,9 @@ test('glass comparison has bounded motion, keyboard focus, responsive columns an
  assert.match(css,/html\[data-theme="dark"\]/);
  assert.match(css,/background: var\(--readable-panel/);
 });
+
+ test("clicked plan exposes its existing pending state without changing checkout logic",()=>{
+ assert.match(source,/role=\{openingCheckout&&selectedPlan===interval\?'status':undefined\}/);
+ assert.match(source,/openingCheckout&&selectedPlan===interval\?t\('Abriendo Stripe…','Opening Stripe…'\)/);
+ assert.match(source,/disabled=\{busy\} aria-pressed=\{selectedPlan===interval\} onClick=\{\(\)=>subscribe\(interval\)\}/);
+ });
