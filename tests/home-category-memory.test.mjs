@@ -40,13 +40,11 @@ test('Home owns the single selection and header/free/right controls reuse it wit
  const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
  const home=read('src/ImmigraHome.jsx'),demo=read('src/InterviewGlassDemo.jsx'),header=read('src/WebExperience.jsx');
  assert.match(home,/useState\(readHomeCategory\)/);
- assert.match(home,/setSelectedCategory\(rememberHomeCategory\(value\)\)/);
- assert.match(home,/category=\{selectedCategory\} onCategoryChange=\{chooseCategory\}/);
- assert.match(home,/onNavigate\(homeStudyEntryRoutes\[selectedCategory\]\)/);
+ assert.match(home,/category=\{selectedCategory\}/);
+ assert.match(home,/onClick=\{\(\)=>focusHomeSection\('ih-study'\)\}/);
  assert.match(demo,/category='asylum'/);
  assert.doesNotMatch(demo,/setCategory|\[category,.*useState/);
  assert.match(demo,/go\(homeStudyEntryRoutes\[category\]\)/);
  assert.match(header,/getElementById\('ih-free-start'\)\?\.click\(\)/);
- assert.match(demo,/onClick=\{\(\)=>choose\(value\)\}/,'pills select without navigating');
  assert.doesNotMatch(home+demo,/getUserMedia|MediaRecorder/);
 });

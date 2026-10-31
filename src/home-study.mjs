@@ -32,3 +32,6 @@ export function rememberHomeCategory(value,storage=tabStorage()){
  try{storage?.setItem(categoryKey,value);}catch{}
  return value;
 }
+
+// User-provided explainer; opens externally without embedding or autoplay.
+export const howItWorksVideo='https://www.youtube.com/shorts/ncWQO9whqtE';

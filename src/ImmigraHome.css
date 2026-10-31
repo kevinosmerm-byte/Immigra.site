@@ -46,3 +46,7 @@ html[data-reduce-motion=true] .immigra-home *{animation:none!important;transitio
 .immigra-home .ih-study-card button:active{translate:0 1px}.immigra-home .ih-study-card button:active::after{opacity:.7;scale:1}
 @media(prefers-reduced-motion:reduce){.immigra-home .ih-study-card,.immigra-home .ih-study-card:hover,.immigra-home .ih-study-card button:active{translate:none}.immigra-home .ih-study-card button::after{transition:none;scale:1}}
 html[data-reduce-motion=true] .immigra-home .ih-study-card,html[data-reduce-motion=true] .immigra-home .ih-study-card:hover,html[data-reduce-motion=true] .immigra-home .ih-study-card button:active{translate:none}html[data-reduce-motion=true] .immigra-home .ih-study-card button::after{transition:none;scale:1}
+
+.immigra-home .ih-see-how{text-decoration:none}
+.interview-glass-demo .benefit small{display:block;font-size:11px;line-height:1.4;margin-top:5px;font-weight:400}
+
