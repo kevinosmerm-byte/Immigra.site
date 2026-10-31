@@ -6,14 +6,15 @@ import ConversationInterview from '../../shared/interview-ui/ConversationIntervi
 import {ModuleNavigation} from '../../shared/design-system/Components.jsx';
 import React,{useEffect,useRef,useState} from 'react';
 import {mountAsylum} from './runtime.generated.js';
+import {readAsylumRoute} from './routes.mjs';
 import './packages/design/style.css';
 import './packages/design/master.css';
 import '../../shared/design-system/platform.css';
 import '../../shared/design-system/asylum-home.css';
 export default function Asylum({lang='es'}){
- const [route,setRoute]=useState(()=>window.location.hash.split('/')[2]||'practice');
- useEffect(()=>{if(/^#\/asylum\/?$/.test(window.location.hash))window.location.hash='/asylum/practice';const sync=()=>setRoute(window.location.hash.split('/')[2]||'practice');window.addEventListener('hashchange',sync);return()=>window.removeEventListener('hashchange',sync);},[]);
- const items=lang==='es'?[['practice','Inicio'],['fiction','Casos ficticios'],['case-workspace','Mi expediente'],['full-bank','Preguntas'],['practice-report','Informe'],['vault','Mis datos']]:[['practice','Home'],['fiction','Fictional cases'],['case-workspace','My case'],['full-bank','Questions'],['practice-report','Report'],['vault','My data']];
+ const [route,setRoute]=useState(()=>readAsylumRoute(window.location.hash)||'app');
+ useEffect(()=>{const sync=()=>{const next=readAsylumRoute(window.location.hash);if(next)setRoute(next);};window.addEventListener('hashchange',sync);return()=>window.removeEventListener('hashchange',sync);},[]);
+ const items=lang==='es'?[['app','Inicio'],['fiction','Casos ficticios'],['case-workspace','Mi expediente'],['full-bank','Preguntas'],['practice-report','Informe'],['vault','Mis datos']]:[['app','Home'],['fiction','Fictional cases'],['case-workspace','My case'],['full-bank','Questions'],['practice-report','Report'],['vault','My data']];
  const ref=useRef(null),runtime=useRef(null);
  const prepared=route==='case-workspace';
  const [call,setCall]=useState(null);
