@@ -316,7 +316,21 @@ export function AccountProvider({ children }) {
         body: JSON.stringify({ interval }), signal:AbortSignal.timeout(30000),
       });
       const result = await response.json().catch(() => ({}));
-      if (!response.ok || !result.url) throw Object.assign(new Error(result.error || "Checkout unavailable"),{code:result.code||"checkout_unavailable",reference:result.reference});
+      if (!response.ok || !result.url) throw Object.assign(new Error(result.error || "Checkout unavailable"),{code:result.code||"checkout_unavailable",reference:result.reference,switchOffer:result.switchOffer});
+      clearCheckoutIntent();
+      if(result.checkoutId)rememberGuestCheckout(result.checkoutId);
+      window.location.assign(result.url);
+      return true;
+    },
+    switchGuestCheckout: async (offer) => {
+      if(Capacitor.isNativePlatform()||session?.access_token)throw Object.assign(new Error('Guest switch unavailable'),{code:'checkout_switch_unavailable'});
+      const response=await fetch('/api/billing/guest-switch-checkout',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({confirmed:true,checkoutId:offer.checkoutId,fromInterval:offer.fromInterval,interval:offer.toInterval}),
+        signal:AbortSignal.timeout(30000),
+      });
+      const result=await response.json().catch(()=>({}));
+      if(!response.ok||!result.url)throw Object.assign(new Error('Checkout switch unavailable'),{code:result.code||'checkout_switch_unavailable',reference:result.reference});
       clearCheckoutIntent();
       if(result.checkoutId)rememberGuestCheckout(result.checkoutId);
       window.location.assign(result.url);
@@ -377,7 +391,7 @@ export function AccountButton({ language = "en", onClick }) {
 
 export function AccountSheet({ language = "en", onClose, embedded = false }) {
   const modalRef = useModalFocus(!embedded, onClose);
-  const { configured, session, loading, usage, billing, promotionAccess, startEmailTrial, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, openBillingPortal, signInError } = useAccount();
+  const { configured, session, loading, usage, billing, promotionAccess, startEmailTrial, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, switchGuestCheckout, openBillingPortal, signInError } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
   const [email, setEmail] = useState(lastAccountEmail);
   const [logoutError,setLogoutError]=useState(false),[loggingOut,setLoggingOut]=useState(false);
@@ -463,7 +477,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
     return embedded?returning:createPortal(returning,document.body);
   }
   if(configured&&!loading&&(!session||session.isEmailTrial)){
-    const trial=<EmailTrialAccount signInError={signInError} language={language} session={session} usage={usage} billing={billing} webBillingEnabled={webBillingEnabled} openCheckout={openCheckout} startEmailTrial={startEmailTrial} sendMagicLink={sendMagicLink} signOut={signOut} onContinue={()=>{onClose?.();if(embedded)window.location.hash='/';}} modalRef={modalRef} embedded={embedded} onClose={onClose}/>;
+    const trial=<EmailTrialAccount signInError={signInError} language={language} session={session} usage={usage} billing={billing} webBillingEnabled={webBillingEnabled} openCheckout={openCheckout} switchGuestCheckout={switchGuestCheckout} startEmailTrial={startEmailTrial} sendMagicLink={sendMagicLink} signOut={signOut} onContinue={()=>{onClose?.();if(embedded)window.location.hash='/';}} modalRef={modalRef} embedded={embedded} onClose={onClose}/>;
     return embedded?trial:createPortal(trial,document.body);
   }
   const content = (

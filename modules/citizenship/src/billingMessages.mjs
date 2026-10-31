@@ -1,4 +1,9 @@
 const messages={
+ checkout_switch_unavailable:['No podemos cambiar este intento de pago de forma segura. No abras otro pago; solicita ayuda a soporte.','We cannot safely change this checkout attempt. Do not open another checkout; contact support.'],
+ checkout_switch_expired:['Este intento necesita revisión antes de cambiar de plan. Solicita ayuda a soporte; no abriremos otro pago automáticamente.','This attempt needs review before changing plans. Contact support; we will not automatically open another checkout.'],
+ checkout_switch_timeout:['No pudimos confirmar si terminó el cambio. Puedes volver a confirmar el mismo cambio; comprobaremos el intento anterior sin crear pagos duplicados.','We could not confirm whether the change finished. You can confirm the same change again; we will check the previous attempt without creating duplicate checkouts.'],
+ checkout_verification_required:['No pudimos verificar este intento de pago en el dispositivo. Solicita ayuda a soporte antes de abrir otro pago.','We could not verify this checkout attempt on this device. Contact support before opening another checkout.'],
+
  checkout_in_progress:['Hay un intento de pago pendiente para otro plan. Si ya abriste el pago, selecciona ese mismo plan para retomarlo. Si no puedes retomarlo o necesitas cambiar de plan, solicita ayuda a soporte antes de abrir otro pago.','A payment attempt for another plan is pending. If you already opened checkout, select that same plan to resume it. If you cannot resume it or need to change plans, contact support before opening another checkout.'],
  checkout_timeout:['El pago está tardando demasiado en abrirse. Comprueba tu conexión y vuelve a intentarlo.','Checkout is taking too long to open. Check your connection and try again.'],
  verification_required:['Confirma tu correo antes de abrir el pago seguro.','Verify your email before opening secure checkout.'],

@@ -19,32 +19,102 @@ export function createGuestCheckoutService({client=getStripe, configuration=getB
   if(!timingSafeEqual(Buffer.from(sign(payload)),Buffer.from(signature)))return null;
   try {const data=JSON.parse(Buffer.from(payload,'base64url').toString());return (!id||data.id===id)&&validId(data.id)&&typeof data.nonce==='string'&&Number.isFinite(data.exp)&&data.exp>now()?data:null;}catch{return null;}
  }
- async function start(req,res,interval){
-  if(!['monthly','annual'].includes(interval))throw fail('invalid_billing_interval',400);
-  if(!configuration().enabled||!price(interval))throw fail('checkout_unavailable',503);
-  const existingProof=proof(req);
-  if(existingProof){
-   const existing=await client().checkout.sessions.retrieve(existingProof.id);
-   if(existing.id!==existingProof.id||existing.metadata?.flow!==FLOW||existing.metadata?.product_key!==PRO_PLAN.productKey||existing.metadata?.checkout_nonce!==existingProof.nonce)throw fail('invalid_checkout',403);
-   if(existing.status==='open'&&existing.url){
-    if(existing.metadata.interval!==interval)throw fail('checkout_in_progress');
-    return {url:existing.url,checkoutId:existing.id};
-   }
-   if(existing.status!=='expired')throw fail('subscription_already_active');
-  }
-  sign('configuration-check'); // Fail before creating a checkout if device proof cannot be signed.
-  const nonce=randomUUID(), metadata={flow:FLOW,checkout_nonce:nonce,product_key:PRO_PLAN.productKey,interval};
-  const session=await client().checkout.sessions.create({
+ const intervals=['monthly','annual'];
+ const switchWindow=23*60*60*1000;
+ function validateOwned(session,device){
+  if(session.id!==device.id||session.mode!=='subscription'||session.metadata?.flow!==FLOW||session.metadata?.product_key!==PRO_PLAN.productKey||session.metadata?.checkout_nonce!==device.nonce||!intervals.includes(session.metadata?.interval))throw fail('invalid_checkout',403);
+ }
+ function withinSwitchWindow(session){
+  const created=Number(session.created)*1000;
+  return Number.isInteger(session.created)&&created<=now()&&now()-created<switchWindow;
+ }
+ function requireUnpaid(session){
+  if(session.payment_status!=='unpaid'||session.subscription)throw fail('checkout_switch_unavailable');
+ }
+ function payloadFor(interval,nonce){
+  const metadata={flow:FLOW,checkout_nonce:nonce,product_key:PRO_PLAN.productKey,interval};
+  return {
    mode:'subscription',line_items:[{price:price(interval),quantity:1}],
    metadata,subscription_data:{metadata},payment_method_collection:'always',allow_promotion_codes:true,
    automatic_tax:{enabled:String(process.env.STRIPE_AUTOMATIC_TAX||'').trim().toLowerCase()==='true'},
    success_url:`${base()}/?guest_checkout=return&session_id={CHECKOUT_SESSION_ID}#/account`,
    cancel_url:`${base()}/?billing=cancelled#/account`,
-  },{idempotencyKey:`immigra-guest-checkout-v1:${nonce}`});
-  if(!validId(session.id)||!session.url)throw fail('checkout_unavailable',503);
+  };
+ }
+ function remember(res,session,nonce){
   const payload=Buffer.from(JSON.stringify({id:session.id,nonce,exp:now()+TTL*1000})).toString('base64url');
   res.setHeader('Set-Cookie',`${COOKIE}=${payload}.${sign(payload)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${TTL}`);
   return {url:session.url,checkoutId:session.id};
+ }
+ function stripeUrl(value){
+  try{const url=new URL(value);return url.protocol==='https:'&&url.hostname==='checkout.stripe.com'&&!url.username&&!url.password;}catch{return false;}
+ }
+ async function successor(res,old,device,interval){
+  // One key for this predecessor across EVERY successor path, never per target.
+  // Conflicting target/payload requests must fail Stripe's parameter check.
+  if(!withinSwitchWindow(old))throw fail('checkout_switch_expired');
+  requireUnpaid(old);
+  if(old.status!=='expired')throw fail('checkout_switch_unavailable');
+  const nonce=sign('successor-nonce:'+old.id+':'+device.nonce);
+  const payload=payloadFor(interval,nonce);
+  // The successor cannot outlive the original proof's 24-hour window if a
+  // response is lost. This immutable timestamp also makes retries identical.
+  payload.expires_at=old.created+TTL;
+  const result=await client().checkout.sessions.create(payload,{idempotencyKey:'immigra-guest-successor-v1:'+old.id});
+  if(!validId(result.id))throw fail('checkout_unavailable',503);
+  const current=await client().checkout.sessions.retrieve(result.id);
+  if(current.id!==result.id||current.mode!=='subscription'||current.metadata?.flow!==FLOW||current.metadata?.product_key!==PRO_PLAN.productKey||current.metadata?.checkout_nonce!==nonce||current.metadata?.interval!==interval||current.status!=='open'||!stripeUrl(current.url))throw fail('checkout_switch_unavailable');
+  requireUnpaid(current);
+  return remember(res,current,nonce);
+ }
+ async function start(req,res,interval){
+  if(!intervals.includes(interval))throw fail('invalid_billing_interval',400);
+  if(!configuration().enabled||!price(interval))throw fail('checkout_unavailable',503);
+  const existingProof=proof(req);
+  const hasProofCookie=(req.headers.cookie||'').split(';').some(value=>value.trim().startsWith(COOKIE+'='));
+  if(hasProofCookie&&!existingProof)throw fail('checkout_verification_required',403);
+  if(existingProof){
+   const existing=await client().checkout.sessions.retrieve(existingProof.id);
+   // Keep old checkout compatibility; switching requires the stronger checks.
+   if(existing.id!==existingProof.id||existing.metadata?.flow!==FLOW||existing.metadata?.product_key!==PRO_PLAN.productKey||existing.metadata?.checkout_nonce!==existingProof.nonce)throw fail('invalid_checkout',403);
+   if(existing.status==='open'&&existing.url){
+    if(existing.metadata.interval!==interval){
+     const error=fail('checkout_in_progress');
+     if(existing.mode==='subscription'&&existing.payment_status==='unpaid'&&!existing.subscription&&intervals.includes(existing.metadata.interval)&&withinSwitchWindow(existing)){
+      error.switchOffer={checkoutId:existing.id,fromInterval:existing.metadata.interval,toInterval:interval};
+     }
+     throw error;
+    }
+    return {url:existing.url,checkoutId:existing.id};
+   }
+   if(existing.status!=='expired')throw fail('subscription_already_active');
+   validateOwned(existing,existingProof);
+   return successor(res,existing,existingProof,interval);
+  }
+  sign('configuration-check');
+  const nonce=randomUUID();
+  const session=await client().checkout.sessions.create(payloadFor(interval,nonce),{idempotencyKey:`immigra-guest-checkout-v1:${nonce}`});
+  if(!validId(session.id)||!session.url)throw fail('checkout_unavailable',503);
+  return remember(res,session,nonce);
+ }
+ async function switchPlan(req,res,{confirmed,checkoutId,fromInterval,interval}={}){
+  if(confirmed!==true||!validId(checkoutId)||!intervals.includes(fromInterval)||!intervals.includes(interval)||fromInterval===interval)throw fail('invalid_checkout_switch',400);
+  if(!configuration().enabled||!price(interval))throw fail('checkout_unavailable',503);
+  const device=proof(req,checkoutId);
+  if(!device)throw fail('checkout_verification_required',403);
+  let old=await client().checkout.sessions.retrieve(checkoutId);
+  validateOwned(old,device);
+  if(old.metadata.interval!==fromInterval)throw fail('invalid_checkout_switch',409);
+  if(!withinSwitchWindow(old))throw fail('checkout_switch_expired');
+  requireUnpaid(old);
+  if(old.status==='open'){
+   await client().checkout.sessions.expire(old.id,{},{idempotencyKey:'immigra-guest-expire-v1:'+old.id});
+   // Never trust a timeout/expire response or a stale pre-payment read.
+   old=await client().checkout.sessions.retrieve(checkoutId);
+   validateOwned(old,device);
+   if(old.metadata.interval!==fromInterval)throw fail('invalid_checkout_switch',409);
+  }
+  return successor(res,old,device,interval);
  }
  async function complete(req,res,id){
   if(!validId(id))throw fail('invalid_checkout',400);
@@ -83,6 +153,6 @@ export function createGuestCheckoutService({client=getStripe, configuration=getB
   try{measurementReady=paymentMeasurement.issue(res,checkout);}catch{ /* Optional measurement must never block access. */ }
   return {claimed:true,...(measurementReady?{measurementReady:true}:{}),...(access?{session:access}:{})};
  }
- return {start,complete};
+ return {start,complete,switchPlan};
 }
 export const guestCheckout=createGuestCheckoutService();

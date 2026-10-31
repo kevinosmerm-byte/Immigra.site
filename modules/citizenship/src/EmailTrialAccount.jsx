@@ -9,7 +9,7 @@ import {useRef,useState} from 'react';
 
 const focus='focus-visible:outline-2! focus-visible:outline-offset-4! focus-visible:outline-blue-600!';
 const button=`trial-glass-button min-h-12! disabled:opacity-50! ${focus}`;
-export default function EmailTrialAccount({language='es',session,usage,billing,webBillingEnabled,openCheckout,startEmailTrial,sendMagicLink,signOut,onContinue,modalRef,embedded,onClose,signInError=false}){
+export default function EmailTrialAccount({language='es',session,usage,billing={},webBillingEnabled,openCheckout,switchGuestCheckout,startEmailTrial,sendMagicLink,signOut,onContinue,modalRef,embedded,onClose,signInError=false}){
  const es=language==='es',t=(a,b)=>es?a:b;
  const billingReturn=new URLSearchParams(window.location.search).get('billing');
  const expired=usage?.access?.status==='trial_expired';
@@ -19,6 +19,7 @@ export default function EmailTrialAccount({language='es',session,usage,billing,w
  const inFlight=useRef(false);
  const [openingCheckout,setOpeningCheckout]=useState(false);
  const [billingReference,setBillingReference]=useState('');
+ const [switchOffer,setSwitchOffer]=useState(null),[checkoutMessage,setCheckoutMessage]=useState('');
  const captureReference=error=>setBillingReference(/^req_[a-zA-Z0-9]{4,80}$/.test(error?.reference||'')?error.reference:'');
  async function submit(event){
   event.preventDefault();if(inFlight.current)return;inFlight.current=true;setBusy(true);setMessage('');setBillingReference('');
@@ -33,11 +34,25 @@ export default function EmailTrialAccount({language='es',session,usage,billing,w
  }
  async function subscribe(interval){
   if(inFlight.current)return;
-  saveCheckoutIntent(interval,email);setSelectedPlan(interval);setVerify(false);setMessage('');setBillingReference('');
+  saveCheckoutIntent(interval,email);setSelectedPlan(interval);setVerify(false);setMessage('');setBillingReference('');setSwitchOffer(null);setCheckoutMessage('');
   inFlight.current=true;setBusy(true);setOpeningCheckout(true);
-  try{await openCheckout(interval);}catch(error){captureReference(error);setMessage(billingErrorMessage({code:error.name==='TimeoutError'?'checkout_timeout':error.code},language));}
+  try{await openCheckout(interval);}catch(error){
+   captureReference(error);setCheckoutMessage(billingErrorMessage({code:error.name==='TimeoutError'?'checkout_timeout':error.code},language));
+   const offer=error.switchOffer;
+   if(!session&&error.code==='checkout_in_progress'&&offer&&/^cs_(?:test_|live_)?[a-zA-Z0-9]{8,200}$/.test(offer.checkoutId)&&['monthly','annual'].includes(offer.fromInterval)&&offer.toInterval===interval&&offer.fromInterval!==interval){setSwitchOffer(offer);setCheckoutMessage(t('Ya hay un intento de pago de otro plan. Puedes conservarlo o confirmar el cambio aquí abajo.','A checkout attempt for another plan already exists. You can keep it or confirm the change below.'));}
+  }
   finally{inFlight.current=false;setBusy(false);setOpeningCheckout(false);}
  }
+ async function confirmGuestSwitch(){
+  if(inFlight.current||session||!switchOffer||!switchGuestCheckout)return;
+  inFlight.current=true;setBusy(true);setOpeningCheckout(true);setCheckoutMessage('');setBillingReference('');
+  try{await switchGuestCheckout(switchOffer);}
+  catch(error){captureReference(error);setCheckoutMessage(billingErrorMessage({code:error.name==='TimeoutError'?'checkout_switch_timeout':error.code},language));}
+  finally{inFlight.current=false;setBusy(false);setOpeningCheckout(false);}
+ }
+ const switchLabel=interval=>interval==='annual'?t('Anual','Annual'):t('Mensual','Monthly');
+ const switchCents=switchOffer?.toInterval==='annual'?(billing.annualPriceCents??PRO_PLAN.annualPriceCents):((billing.introductoryOfferEnabled?billing.introductoryMonthlyPriceCents:billing.monthlyPriceCents)??PRO_PLAN.regularMonthlyPriceCents);
+ const switchPrice=new Intl.NumberFormat(es?'es-US':'en-US',{style:'currency',currency:'USD'}).format(Number(switchCents)/100);
  const content=<section ref={modalRef} role={embedded?'region':'dialog'} aria-modal={embedded?undefined:true} aria-labelledby="email-trial-title" className={`email-trial-account mx-auto! my-6! space-y-5! rounded-3xl! border! border-white/50! p-5!  shadow-sm! backdrop-blur-md! sm:p-8! ${embedded?'':'fixed! inset-x-4! top-8! z-50! max-h-[85dvh]! overflow-y-auto!'}`}>
   {!embedded&&<button type="button" className={`min-h-11! rounded-xl! bg-slate-100! px-4! text-slate-800! ${focus}`} onClick={onClose}>{t('Cerrar','Close')}</button>}
   <h1 id="email-trial-title" className="m-0! text-3xl! font-bold! ">{verify?t('Verifica tu correo para continuar','Verify your email to continue'):expired?t('Tu prueba gratuita terminó','Your free trial has ended'):t('Tu cuenta de Immigra','Your Immigra account')}</h1>
@@ -80,6 +95,14 @@ export default function EmailTrialAccount({language='es',session,usage,billing,w
    <h2 id="trial-plans-title" className="text-xl! font-bold! ">{t('¿Quieres suscribirte? Elige PRO','Ready to subscribe? Choose PRO')}</h2>
    <p className="text-sm! ">{t('Entrevistas con Sahara, Kevin y William y práctica con IA. Paga de forma segura con Stripe y vincula la suscripción a tu cuenta.','Interviews with Sahara, Kevin and William and AI practice. Pay securely with Stripe and link the subscription to your account.')}</p>
    <div className="trial-plan-options">{[['monthly',(billing.introductoryOfferEnabled?billing.introductoryMonthlyPriceCents:billing.monthlyPriceCents)??PRO_PLAN.regularMonthlyPriceCents,t('Mensual','Monthly')],['annual',billing.annualPriceCents??PRO_PLAN.annualPriceCents,t('Anual','Annual')]].map(([interval,cents,label])=><button type="button" key={interval} className={`${button} trial-plan`} disabled={busy} aria-pressed={selectedPlan===interval} onClick={()=>subscribe(interval)}><span className="trial-plan-label">{selectedPlan===interval&&<span aria-hidden="true">✓ </span>}{label}</span><span className="trial-plan-price">{new Intl.NumberFormat(es?'es-US':'en-US',{style:'currency',currency:'USD'}).format(Number(cents)/100)}<span className="trial-plan-interval">{interval==='monthly'?t(' / mes',' / month'):t(' / año',' / year')}</span></span><span className="trial-plan-period">{interval==='monthly'?t('Cobro mensual','Billed monthly'):t('Un cobro por el año completo','One payment for the full year')}</span><span className="trial-plan-action" role={openingCheckout&&selectedPlan===interval?'status':undefined}>{openingCheckout&&selectedPlan===interval?t('Abriendo Stripe…','Opening Stripe…'):t('Elegir plan','Choose plan')} <span aria-hidden="true">→</span></span></button>)}</div>
+   {checkoutMessage&&<p role="alert" className="rounded-xl! bg-blue-50! p-4! text-sm! text-blue-950!">{checkoutMessage}</p>}
+   {switchOffer&&!session&&<section className="rounded-xl! border! p-4! space-y-3!" aria-labelledby="checkout-switch-title">
+    <h3 id="checkout-switch-title">{t('Confirma el cambio de plan','Confirm the plan change')}</h3>
+    <p>{t(`Cerrar el intento ${switchLabel(switchOffer.fromInterval)} sin completar y abrir ${switchLabel(switchOffer.toInterval)} por ${switchPrice}${switchOffer.toInterval==='annual'?' al año':' al mes'}.`,`Close the unfinished ${switchLabel(switchOffer.fromInterval)} checkout and open ${switchLabel(switchOffer.toInterval)} for ${switchPrice}${switchOffer.toInterval==='annual'?' per year':' per month'}.`)}</p>
+    <p>{t('El plan se renueva automáticamente. Este cambio no cobra ni cancela una suscripción activa. Si el pago anterior ya se completó, no haremos el cambio.','The plan renews automatically. This change does not charge you or cancel an active subscription. If the previous payment is already complete, we will not make the change.')}</p>
+    <button type="button" className={button} disabled={busy} onClick={confirmGuestSwitch}>{busy?t('Comprobando y abriendo Stripe…','Checking and opening Stripe…'):t(`Confirmar cambio a ${switchLabel(switchOffer.toInterval)}`,`Confirm change to ${switchLabel(switchOffer.toInterval)}`)}</button>
+    <button type="button" className={button} disabled={busy} onClick={()=>setSwitchOffer(null)}>{t('No cambiar','Do not change')}</button>
+   </section>}
    <p className="text-sm! ">{t('Renovación automática del plan contratado. Revisa el importe y las condiciones antes de confirmar el pago.','Your purchased plan renews automatically. Review the amount and terms before confirming payment.')}</p>
   </section>}
 

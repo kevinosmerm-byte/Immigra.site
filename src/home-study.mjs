@@ -15,7 +15,7 @@ export function focusHomeSection(id){
 }
 
 // User-selected homepage entry; the modules retain their own study and access controls.
-export const homeStudyEntryRoutes=Object.freeze({citizenship:'citizenship',asylum:'asylum',residency:'residency'});
+export const homeStudyEntryRoutes=Object.freeze({citizenship:'citizenship',asylum:'asylum/practice',residency:'residency'});
 
 // Only a validated, non-sensitive module choice is remembered for this tab.
 const categoryKey='immigra.home.study-category';

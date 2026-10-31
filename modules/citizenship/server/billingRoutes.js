@@ -24,6 +24,16 @@ router.post('/guest-checkout-session',async(req,res)=>{
   return res.status(201).json(await guest.start(req,res,req.body.interval));
  }catch(error){return guestFailure(error,res);}
 });
+// Guest-only explicit confirmation; never expire a checkout on ordinary selection.
+router.post('/guest-switch-checkout',async(req,res)=>{
+ res.set('Cache-Control','no-store');
+ if(native(req))return res.status(403).json({code:'native_checkout_unavailable'});
+ if(req.get('authorization'))return res.status(403).json({code:'checkout_switch_unavailable'});
+ try{
+  if(!await policyReady())return res.status(503).json({code:'access_policy_unavailable'});
+  return res.status(201).json(await guest.switchPlan(req,res,req.body));
+ }catch(error){return guestFailure(error,res);}
+});
 router.post('/checkout-return',(req,res,next)=>req.get('authorization')?authenticate(req,res,next):next(),async(req,res)=>{
  res.set('Cache-Control','no-store');
  if(native(req))return res.status(403).json({code:'native_checkout_unavailable'});
@@ -31,7 +41,7 @@ router.post('/checkout-return',(req,res,next)=>req.get('authorization')?authenti
  catch(error){return guestFailure(error,res);}
 });
 function guestFailure(error,res){
- if(error.guestCheckoutError)return res.status(error.status).json({code:error.code,...(error.email?{email:error.email}:{})});
+ if(error.guestCheckoutError)return res.status(error.status).json({code:error.code,...(error.email?{email:error.email}:{}),...(error.switchOffer?{switchOffer:error.switchOffer}:{})});
  const failure=billingFailure(error);console.error('Stripe guest checkout error',failure);
  return res.status(failure.status).json({code:failure.code,reference:failure.reference});
 }

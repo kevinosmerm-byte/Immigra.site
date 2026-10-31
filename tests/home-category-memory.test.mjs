@@ -12,7 +12,7 @@ test('each category survives leaving study and returning home, including rapid r
   const selected=rememberHomeCategory(category,tab);
   const freeCTA=homeStudyEntryRoutes[selected],rightStudy=homeStudyEntryRoutes[selected];
   assert.equal(freeCTA,rightStudy);
-  assert.equal(freeCTA,category,'both actions enter the selected module homepage');
+  assert.equal(freeCTA,category==='asylum'?'asylum/practice':category,'both actions enter the selected module homepage');
   assert.equal(moduleFromHash('#/'+freeCTA),category);
   // A new Home mount reads the same tab selection, not the initial asylum default.
   const remounted=readHomeCategory(tab);
