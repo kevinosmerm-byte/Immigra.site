@@ -34,3 +34,10 @@ test('account companion flow is web-route scoped and cleans up automatically on 
  assert.match(global,/citizenship-companion\.platform-study-companion\[hidden\] \{ display: none !important; \}/);
  assert.match(global,/html\[data-experience="native"\] citizenship-companion\.platform-study-companion/);
 });
+
+test("account access wrapper stays unboxed without removing sign-in choices",()=>{
+ const css=readFileSync(new URL("../shared/design-system/email-trial-account.css",import.meta.url),"utf8");
+ assert.match(css,/\.account-access-panel \{ min-width: 0; border: 0 !important; background: transparent !important; box-shadow: none !important; padding: 0 !important;/);
+ const jsx=readFileSync(new URL("../modules/citizenship/src/EmailTrialAccount.jsx",import.meta.url),"utf8");
+ assert.match(jsx,/<GoogleSignInButton/); assert.match(jsx,/<PasswordSignIn/); assert.match(jsx,/id="email-trial-email"/);
+});

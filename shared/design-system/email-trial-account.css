@@ -10,7 +10,7 @@ html body #root .email-trial-account {
 .email-trial-account .trial-content-grid { display: grid; gap: 24px; align-items: start; }
 .email-trial-account .trial-access-column { min-width: 0; display: grid; gap: 16px; }
 .email-trial-account .trial-access-choices { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
-.email-trial-account .account-access-panel { min-width: 0; }
+html body #root .email-trial-account .account-access-panel { min-width: 0; border: 0 !important; background: transparent !important; box-shadow: none !important; padding: 0 !important; }
 .email-trial-account .trial-access-help summary { cursor: pointer; min-height: 44px; padding-block: 10px; color: var(--trial-ink); font-weight: 600; }
 .email-trial-account .trial-access-help p { margin-top: 8px; }
 html body #root .email-trial-account .trial-glass-button {

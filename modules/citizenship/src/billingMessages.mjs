@@ -1,4 +1,5 @@
 const messages={
+ checkout_in_progress:['Hay un intento de pago pendiente para otro plan. Si ya abriste el pago, selecciona ese mismo plan para retomarlo. Si no puedes retomarlo o necesitas cambiar de plan, solicita ayuda a soporte antes de abrir otro pago.','A payment attempt for another plan is pending. If you already opened checkout, select that same plan to resume it. If you cannot resume it or need to change plans, contact support before opening another checkout.'],
  checkout_timeout:['El pago está tardando demasiado en abrirse. Comprueba tu conexión y vuelve a intentarlo.','Checkout is taking too long to open. Check your connection and try again.'],
  verification_required:['Confirma tu correo antes de abrir el pago seguro.','Verify your email before opening secure checkout.'],
  authentication_required:['Inicia sesión para abrir el pago seguro.','Sign in to open secure checkout.'],
