@@ -23,3 +23,14 @@ test('shared account CSS survives actual domain boundary plugin unchanged',async
  assert.doesNotMatch(jsx,/max-w-3xl!|bg-white\/95!|text-slate-900!|bg-slate-50!/);
  assert.match(jsx,/import '\.\.\/\.\.\/\.\.\/shared\/design-system\/email-trial-account.css'/);
 });
+
+test('account companion flow is web-route scoped and cleans up automatically on navigation',()=>{
+ const css=readFileSync(new URL('../shared/design-system/email-trial-account.css',import.meta.url),'utf8');
+ assert.match(css,/html\[data-experience="web"\] #root:has\(#main \.platform-account\) citizenship-companion\.platform-study-companion \{ position: relative; display: block; inset: auto; z-index: auto;/);
+ const main=readFileSync(new URL('../src/main.jsx',import.meta.url),'utf8');
+ assert.match(main,/page==='account'\?<div className="citizenship-surface platform-account/);
+ const global=readFileSync(new URL('../src/style.css',import.meta.url),'utf8');
+ assert.match(global,/citizenship-companion\.platform-study-companion \{\s*position: fixed;/);
+ assert.match(global,/citizenship-companion\.platform-study-companion\[hidden\] \{ display: none !important; \}/);
+ assert.match(global,/html\[data-experience="native"\] citizenship-companion\.platform-study-companion/);
+});

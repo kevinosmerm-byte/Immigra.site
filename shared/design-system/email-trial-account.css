@@ -75,3 +75,5 @@ html body #root .email-trial-account input {
 html body #root .email-trial-account > a { color: var(--readable-link, var(--color-primary)) !important; }
 
 html body #root .email-trial-account .trial-text-action { color: var(--readable-link, var(--color-primary)) !important; }
+/* On the web account route, keep the companion after content, never over plans. */
+html[data-experience="web"] #root:has(#main .platform-account) citizenship-companion.platform-study-companion { position: relative; display: block; inset: auto; z-index: auto; margin: 16px 18px 16px auto; }
