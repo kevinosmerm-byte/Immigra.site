@@ -4,21 +4,21 @@ import civics from '../modules/citizenship/src/data/uscis2025Civics.json';
 import asylumText from '../modules/asylum/master-package/03_question_bank/question_bank.jsonl?raw';
 import residency from '../modules/residency/data/questions.json';
 import {glassQuestions,glassIndex,interviewRoutes,progressRoutes} from './interview-glass-bank.mjs';
-import {freeStudyRoutes} from './home-study.mjs';
+import {homeStudyEntryRoutes} from './home-study.mjs';
 import {DemoIcon} from './InterviewDemo.jsx';
 import './InterviewGlassDemo.css';
 const banks={civics,asylum:asylumText.trim().split(/\r?\n/).map(line=>JSON.parse(line)),residency};
 const questions=Object.fromEntries(['citizenship','asylum','residency'].map(key=>[key,glassQuestions(key,banks)]));
-export default function InterviewGlassDemo({lang='es',onNavigate,onCategoryChange}){
+export default function InterviewGlassDemo({lang='es',category='asylum',onNavigate,onCategoryChange}){
  const es=lang==='es',t=(a,b)=>es?a:b;
- const [category,setCategory]=useState('asylum'),[index,setIndex]=useState(0),[speaking,setSpeaking]=useState(false),[error,setError]=useState(false);
+ const [index,setIndex]=useState(0),[speaking,setSpeaking]=useState(false),[error,setError]=useState(false);
  const generation=useRef(0),list=questions[category],question=list[index],text=question[es?'es':'en'];
  const stop=()=>{generation.current++;setSpeaking(false);void stopAppSpeech();};
  useEffect(()=>{generation.current++;setSpeaking(false);setError(false);void stopAppSpeech();return()=>{generation.current++;void stopAppSpeech();};},[category,index,lang]);
  useEffect(()=>{const hide=()=>{if(document.hidden)stop();};document.addEventListener('visibilitychange',hide);return()=>document.removeEventListener('visibilitychange',hide);},[]);
  const read=async()=>{if(speaking){stop();return;}const token=++generation.current;setSpeaking(true);setError(false);const ok=await speakAppText(text,{language:es?'es':'en',requireLanguageVoice:true});if(token!==generation.current)return;setSpeaking(false);setError(!ok);};
  const move=delta=>{stop();setIndex(current=>glassIndex(current,delta,list.length));};
- const choose=value=>{stop();setCategory(value);setIndex(0);onCategoryChange?.(value);};
+ const choose=value=>{stop();setIndex(0);onCategoryChange?.(value);};
  const go=route=>{stop();onNavigate(route);};
  const titles={citizenship:t('Ciudadanía','Citizenship'),asylum:t('Entrevista de asilo','Asylum interview'),residency:t('Residencia','Residency')};
  return <section className="interview-glass-demo" id="ih-demo" tabIndex={-1} aria-label={t('Preguntas del banco de estudio','Study bank questions')}>
@@ -32,7 +32,7 @@ export default function InterviewGlassDemo({lang='es',onNavigate,onCategoryChang
     <div className="footer-controls"><button className="round" type="button" disabled={index===0} onClick={()=>move(-1)} aria-label={t('Pregunta anterior','Previous question')}><DemoIcon name="previous"/></button><span className="sub">{t('El micrófono abre la preparación de entrevista','Microphone opens interview setup')}</span><button className="round" type="button" disabled={index===list.length-1} onClick={()=>move(1)} aria-label={t('Pregunta siguiente','Next question')}><DemoIcon name="next"/></button></div>
     <div className="status" role="status">{error?t('La lectura no está disponible en este dispositivo. Puedes seguir leyendo.','Reading aloud is unavailable on this device. You can keep reading.'):speaking?t('Leyendo pregunta…','Reading question…'):t('Sin grabación aquí · acceso y permisos en la entrevista','No recording here · access and permissions in interview setup')}</div>
    </article>
-   <aside className="benefits" aria-label={t('Herramientas existentes','Existing tools')}><button className="benefit" type="button" onClick={()=>go(freeStudyRoutes[category])}><span className="glyph"><DemoIcon name="book"/></span><span>{t('Preguntas de estudio','Study questions')}</span></button><button className="benefit" type="button" onClick={()=>go(interviewRoutes[category])}><span className="glyph"><DemoIcon name="spark"/></span><span>{t('Práctica de entrevista','Interview practice')}</span></button><button className="benefit" type="button" onClick={()=>go(progressRoutes[category])}><span className="glyph"><DemoIcon name="chart"/></span><span>{category==='residency'?t('Práctica local','Local practice'):t('Tu avance e informes','Your progress and reports')}</span></button></aside>
+   <aside className="benefits" aria-label={t('Herramientas existentes','Existing tools')}><button className="benefit" type="button" onClick={()=>go(homeStudyEntryRoutes[category])}><span className="glyph"><DemoIcon name="book"/></span><span>{t('Preguntas de estudio','Study questions')}</span></button><button className="benefit" type="button" onClick={()=>go(interviewRoutes[category])}><span className="glyph"><DemoIcon name="spark"/></span><span>{t('Práctica de entrevista','Interview practice')}</span></button><button className="benefit" type="button" onClick={()=>go(progressRoutes[category])}><span className="glyph"><DemoIcon name="chart"/></span><span>{category==='residency'?t('Práctica local','Local practice'):t('Tu avance e informes','Your progress and reports')}</span></button></aside>
   </div>
   <div className="selector" role="group" aria-label={t('Elegir tipo de entrevista','Choose interview type')}>{['citizenship','asylum','residency'].map(value=><button key={value} type="button" aria-pressed={category===value} onClick={()=>choose(value)}>{titles[value]}</button>)}</div>
  </section>;

@@ -10,8 +10,8 @@ test('free hero follows selected category while restored practice cards enter ex
  for(const [module,path] of Object.entries(freeStudyRoutes))assert.equal(moduleFromHash('#/'+path),module);
  const home=read('src/ImmigraHome.jsx');
  assert.match(home,/onNavigate\(choice.id\)/);
- assert.match(home,/onNavigate\(freeStudyRoutes\[selectedCategory\]\)/);
- assert.match(home,/onCategoryChange=\{setSelectedCategory\}/);
+ assert.match(home,/onNavigate\(homeStudyEntryRoutes\[selectedCategory\]\)/);
+ assert.match(home,/category=\{selectedCategory\} onCategoryChange=\{chooseCategory\}/);
  assert.equal((home.match(/onNavigate\(choice.id\)/g)||[]).length,1,'one direct study action per card');
  assert.doesNotMatch(home,/InterviewPreview|ih-features|ih-highlights|setTimeout|setInterval|useReducer/);
  assert.match(home,/Prepárate para/);assert.match(home,/your interview/);

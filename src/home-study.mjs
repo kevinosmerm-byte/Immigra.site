@@ -13,3 +13,22 @@ export function focusHomeSection(id){
  element.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});
  return true;
 }
+
+// User-selected homepage entry; the modules retain their own study and access controls.
+export const homeStudyEntryRoutes=Object.freeze({citizenship:'citizenship',asylum:'asylum',residency:'residency'});
+
+// Only a validated, non-sensitive module choice is remembered for this tab.
+const categoryKey='immigra.home.study-category';
+let lastCategory='asylum';
+const validCategory=value=>Object.hasOwn(freeStudyRoutes,value);
+const tabStorage=()=>{try{return globalThis.sessionStorage;}catch{return null;}};
+export function readHomeCategory(storage=tabStorage()){
+ try{const value=storage?.getItem(categoryKey);if(validCategory(value))lastCategory=value;}catch{}
+ return lastCategory;
+}
+export function rememberHomeCategory(value,storage=tabStorage()){
+ if(!validCategory(value))return lastCategory;
+ lastCategory=value;
+ try{storage?.setItem(categoryKey,value);}catch{}
+ return value;
+}
