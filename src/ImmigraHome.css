@@ -37,3 +37,12 @@ html[data-experience="web"] #root>.website-header:has(+main .immigra-home) a[ari
 @media(max-width:420px){html[data-experience="web"] #main:has(.immigra-home){padding:0 12px}.immigra-home{padding-top:18px}.immigra-home .ih-intro{padding:8px 5px}.immigra-home h1{font-size:42px}.immigra-home .ih-eyebrow{font-size:9px;letter-spacing:2px}.immigra-home .ih-hero-actions{gap:10px}.immigra-home .ih-start,.immigra-home .ih-see-how{font-size:13px;min-height:52px;padding:12px}.immigra-home .ih-brief-benefits{font-size:11px;gap:9px}}
 @media(prefers-reduced-motion:reduce){.immigra-home *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 html[data-reduce-motion=true] .immigra-home *{animation:none!important;transition:none!important}
+/* Soft water-light feedback on the three existing module actions; no route changes. */
+.immigra-home .ih-study-card{transition:translate .22s ease,box-shadow .22s ease}
+.immigra-home .ih-study-card button{position:relative;overflow:hidden;isolation:isolate;transition:box-shadow .2s ease,filter .2s ease,translate .15s ease}
+.immigra-home .ih-study-card button::after{content:"";position:absolute;inset:-70%;z-index:-1;pointer-events:none;border-radius:50%;background:radial-gradient(circle,#ffffff80,transparent 58%);opacity:0;scale:.25;transition:scale .4s ease,opacity .35s ease}
+@media(hover:hover){.immigra-home .ih-study-card:hover{translate:0 -4px;box-shadow:0 16px 32px #5c8ab229}.immigra-home .ih-study-card button:hover{filter:brightness(1.06);box-shadow:inset 0 2px 9px #ffffff33,0 8px 18px #375e8b26}}
+.immigra-home .ih-study-card:focus-within{box-shadow:0 12px 28px #5c8ab229}
+.immigra-home .ih-study-card button:active{translate:0 1px}.immigra-home .ih-study-card button:active::after{opacity:.7;scale:1}
+@media(prefers-reduced-motion:reduce){.immigra-home .ih-study-card,.immigra-home .ih-study-card:hover,.immigra-home .ih-study-card button:active{translate:none}.immigra-home .ih-study-card button::after{transition:none;scale:1}}
+html[data-reduce-motion=true] .immigra-home .ih-study-card,html[data-reduce-motion=true] .immigra-home .ih-study-card:hover,html[data-reduce-motion=true] .immigra-home .ih-study-card button:active{translate:none}html[data-reduce-motion=true] .immigra-home .ih-study-card button::after{transition:none;scale:1}

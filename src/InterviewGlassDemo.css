@@ -41,3 +41,9 @@ html[data-reduce-transparency=true] .interview-glass-demo :is(.demo,.benefit,.qu
 html[data-reduce-motion=true] .interview-glass-demo .demo:hover{transform:rotate(-4deg)}
 /* Feather only the decorative source layers at their scene boundary, never controls. */
 .interview-glass-demo .glass-atmosphere{mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent),linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent);mask-composite:intersect;-webkit-mask-image:linear-gradient(90deg,transparent,#000 24px,#000 calc(100% - 24px),transparent),linear-gradient(transparent,#000 24px,#000 calc(100% - 24px),transparent);-webkit-mask-composite:source-in}
+/* User-selected contours: soften decorative white highlights, not focus outlines. */
+.interview-glass-demo .demo{border-color:#ffffff85;box-shadow:inset 0 2px 12px #ffffff75,inset 0 -3px 12px #7daaf51f,0 32px 62px #436fa33d,0 0 10px 3px #ffffff24}
+.interview-glass-demo .demo:hover{box-shadow:inset 0 2px 12px #ffffff85,0 38px 66px #436fa34d}
+.interview-glass-demo .pane-back{border-color:#ffffff70;box-shadow:inset 2px 2px 12px #ffffff70,0 32px 70px #719be038}
+.interview-glass-demo .benefit{border-color:#ffffff85;box-shadow:inset 1px 2px 12px #ffffff80,0 16px 34px #6194cd30}
+.interview-glass-demo .ribbon{border-color:#ffffff70;box-shadow:inset 0 0 35px #ffffff66,0 0 40px #5595ff2b}

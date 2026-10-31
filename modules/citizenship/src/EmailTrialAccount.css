@@ -1,0 +1,77 @@
+/* Account-only presentation: auth and billing remain in their existing handlers. */
+html body #root .email-trial-account {
+  max-width: 68rem !important;
+  color: var(--color-text) !important;
+  --trial-ink: var(--color-navy);
+  --trial-surface: rgba(255, 255, 255, .88);
+  --trial-edge: var(--color-border);
+  --trial-glass: linear-gradient(145deg, rgba(255,255,255,.95), rgba(231,243,252,.78) 65%, rgba(197,224,245,.72));
+}
+.email-trial-account .trial-content-grid { display: grid; gap: 24px; align-items: start; }
+.email-trial-account .trial-access-column { min-width: 0; display: grid; gap: 16px; }
+.email-trial-account .trial-access-choices { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+.email-trial-account .trial-access-panel { min-width: 0; }
+.email-trial-account .trial-access-help summary { cursor: pointer; min-height: 44px; padding-block: 10px; color: var(--trial-ink); font-weight: 600; }
+.email-trial-account .trial-access-help p { margin-top: 8px; }
+html body #root .email-trial-account .trial-glass-button {
+  position: relative;
+  min-width: 0;
+  min-height: 48px;
+  padding: 14px 18px !important;
+  border: 1px solid var(--trial-edge) !important;
+  border-radius: 18px !important;
+  background: var(--trial-glass) !important;
+  color: var(--trial-ink) !important;
+  box-shadow: inset 0 2px 1px rgba(255,255,255,.85), inset 0 -3px 8px rgba(77,163,230,.12), 0 5px 14px rgba(18,58,99,.1) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  transition: box-shadow .22s ease, border-color .22s ease, transform .22s ease;
+}
+html body #root .email-trial-account .trial-glass-button[aria-pressed="true"] { border-color: var(--color-primary) !important; box-shadow: inset 0 0 0 1px var(--color-primary), inset 0 2px 2px rgba(255,255,255,.8), 0 5px 14px rgba(18,58,99,.12) !important; }
+html body #root .email-trial-account .trial-glass-button:focus-visible,
+.email-trial-account .trial-access-help summary:focus-visible { outline: 3px solid var(--readable-link, var(--color-primary)) !important; outline-offset: 4px !important; }
+html body #root .email-trial-account .trial-glass-button:disabled { opacity: .55 !important; cursor: wait; }
+html body #root .email-trial-account .trial-plans { min-width: 0; margin: 0 !important; padding: 24px !important; background: var(--trial-surface) !important; border-color: var(--trial-edge) !important; }
+.email-trial-account .trial-plan-options { display: grid; gap: 16px; }
+html body #root .email-trial-account .trial-plan { display: grid !important; gap: 8px; text-align: left; width: 100%; padding: 20px !important; animation: trial-plan-arrive .5s ease-out backwards; }
+html body #root .email-trial-account .trial-plan:nth-child(2) { animation-delay: .1s; }
+.email-trial-account .trial-plan-label { font-size: 1rem; }
+.email-trial-account .trial-plan-price { display: block; font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.email-trial-account .trial-plan-interval { font-size: .9rem; font-weight: 600; white-space: nowrap; }
+.email-trial-account .trial-plan-period { font-size: .875rem; font-weight: 400; }
+.email-trial-account .trial-plan-action { padding-top: 10px; border-top: 1px solid var(--trial-edge); font-size: .95rem; }
+@media (min-width: 850px) { .email-trial-account .trial-content-grid--plans { grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); } }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  html body #root .email-trial-account .trial-glass-button:not(:disabled):hover { transform: translateY(-2px); border-color: var(--color-primary) !important; box-shadow: inset 0 3px 9px rgba(255,255,255,.95), inset 0 -3px 12px rgba(77,163,230,.2), 0 9px 20px rgba(18,58,99,.15) !important; }
+}
+@keyframes trial-plan-arrive { from { opacity: .6; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  html body #root .email-trial-account .trial-glass-button { animation: none !important; transition: none !important; transform: none !important; }
+}
+html[data-theme="dark"] body #root .email-trial-account {
+  --trial-ink: var(--color-white);
+  --trial-surface: rgba(18,58,99,.88);
+  --trial-edge: #7898b8;
+  --trial-glass: linear-gradient(145deg, rgba(37,99,166,.94), rgba(18,58,99,.94));
+}
+/* Explicit theme pairs; keep semantic success/error panels and Google branding intact. */
+html body #root .email-trial-account {
+  background: var(--readable-panel, var(--color-white)) !important;
+  color: var(--readable-ink, var(--color-text)) !important;
+}
+html body #root .email-trial-account :is(h1,h2,label) { color: var(--readable-heading, var(--color-navy)) !important; }
+html body #root .email-trial-account > p:not([role]),
+html body #root .email-trial-account .trial-access-column > p:not([role]),
+html body #root .email-trial-account :is(.trial-plans,.trial-access-help,form) > p:not([role]) { color: var(--readable-muted, var(--color-text)) !important; }
+html body #root .email-trial-account input {
+  background: var(--readable-soft, var(--color-background)) !important;
+  color: var(--readable-ink, var(--color-text)) !important;
+  border-color: var(--readable-edge, var(--color-border)) !important;
+}
+html body #root .email-trial-account > a { color: var(--readable-link, var(--color-primary)) !important; }
+
+html body #root .email-trial-account .trial-text-action { color: var(--readable-link, var(--color-primary)) !important; }
