@@ -38,6 +38,7 @@ import{createRoot}from'react-dom/client';import{modules}from'./modules.js';impor
 import '../shared/design-system/platform.css';
 import '../shared/design-system/citizenship.css';
 import '../shared/design-system/glass.css';
+import './native-glass.css';
 function Icon({name}){const paths={landmark:<><path d="M3 10h18M5 10V20M10 10V20M15 10V20M20 10V20M2 21h20M12 2 2 8h20z"/></>,shield:<><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></>,house:<><path d="m3 10 9-7 9 7v11H3z"/><path d="M9 21v-7h6v7"/></>,home:<><path d="m3 10 9-7 9 7v11H3z"/><path d="M9 21v-7h6v7"/></>,user:<><circle cx="12" cy="8" r="4"/><path d="M4 22c0-8 16-8 16 0"/></>,back:<path d="m15 18-6-6 6-6"/>};return <svg width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>}
 function readLanguage(){const requested=new URLSearchParams(window.location.search).get('lang');if(['es','en'].includes(requested))return requested;try{const saved=localStorage.getItem('citizenshipai.language');if(['es','en'].includes(saved))return saved;}catch{}return getSessionWelcomeLanguage()||(navigator.language?.startsWith('es')?'es':'en');}
 const isNativeExperience=Capacitor.isNativePlatform();

@@ -1,0 +1,70 @@
+/* Mobile presentation only: keep the native routes and compact navigation. */
+html[data-experience="native"]:not([data-theme="dark"]) body {
+  background: var(--color-background, #f4f8fc) url('/media/web-background.png') center/cover fixed;
+}
+html[data-experience="native"] body:not(.in-call) #root > .ambient-background { display: none; }
+html[data-experience="native"]:not([data-theme="dark"]):not([data-reduce-transparency="true"]) #root {
+  --glass-surface: rgba(255,255,255,.65);
+  --glass-border: rgba(255,255,255,.86);
+  --glass-shadow: 0 10px 30px rgba(18,58,99,.09), inset 0 1px 2px #fff;
+}
+html[data-experience="native"]:not([data-theme="dark"]):not([data-reduce-transparency="true"]) #root :is(.glass-card,.glass-study-card,.glass-tabs,.mobile-dock-panel,.platform-utility-header) {
+  background: linear-gradient(135deg,rgba(255,255,255,.8),rgba(235,245,255,.52)) !important;
+  border: 1px solid var(--glass-border) !important;
+  box-shadow: var(--glass-shadow) !important;
+  backdrop-filter: blur(18px) saturate(135%);
+  -webkit-backdrop-filter: blur(18px) saturate(135%);
+}
+html[data-experience="native"] #root :is(.glass-button,.platform-utility-header nav button,.mobile-dock button) {
+  min-height: 44px;
+  border-radius: 17px;
+  box-shadow: inset 0 2px 3px rgba(255,255,255,.8), inset 0 -3px 9px rgba(77,163,230,.16), 0 5px 14px rgba(18,58,99,.1);
+}
+html[data-experience="native"]:not([data-theme="dark"]) #root .platform-utility-header nav button {
+  background: linear-gradient(160deg,rgba(255,255,255,.9),rgba(222,237,253,.65)) !important;
+  color: var(--color-navy, #123a63) !important;
+}
+html[data-experience="native"] #root :is(.glass-primary,.citizen-primary,.primary-button,.button-primary,.quiz-primary-action,.account-primary,.res-primary) {
+  background: linear-gradient(170deg,rgba(255,255,255,.24),transparent 65%),var(--glass-accent) !important;
+  color: white !important;
+  border-radius: 18px;
+  box-shadow: inset 0 2px 3px rgba(255,255,255,.55),inset 0 -3px 8px rgba(18,58,99,.15),0 7px 18px rgba(var(--glass-rgb),.2) !important;
+}
+html[data-experience="native"] #main > .hero { padding: 28px 16px 18px; }
+html[data-experience="native"] #main > .hero h1 { font-size: clamp(28px,6vw,42px); line-height: 1.12; }
+html[data-experience="native"] #main > .cards { gap: 16px; }
+html[data-experience="native"] #main > .cards > .card { border-radius: 26px; }
+html[data-experience="native"][data-reduce-transparency="true"] #root :is(.platform-utility-header,.mobile-dock-panel,.glass-button) {
+  background: var(--color-background, #f4f8fc) !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+@media (forced-colors: active) {
+  html[data-experience="native"] #root :is(.glass-primary,.glass-button,.platform-utility-header nav button) { background: ButtonFace !important; color: ButtonText !important; box-shadow: none !important; border: 1px solid ButtonText !important; }
+}
+/* Shared static website canvas across native routes, including onboarding.
+   A fixed layer avoids iOS background-attachment scrolling artifacts. */
+html[data-experience="native"] body {
+  background: #edf5ff !important;
+  isolation: isolate;
+}
+html[data-experience="native"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: #edf5ff url('/media/web-background.png') center center / cover no-repeat;
+}
+html[data-experience="native"] :is(#root, #main, .citizenship-surface, .asylum-surface, .residency, .platform-shared-tools, .platform-account, .immigra-welcome) {
+  background: transparent !important;
+}
+html[data-experience="native"] :is(.citizenship-surface, .asylum-surface, .residency) :is(main, .app, .app-inner, [class$="-screen"], [class$="-content"]) {
+  background: transparent !important;
+}
+html[data-experience="native"] :is(.welcome-scene, .ambient-background) {
+  display: none !important;
+}
+html[data-experience="native"] .immigra-welcome :is(.welcome-card, .welcome-dialog)::before {
+  animation: none !important;
+}
