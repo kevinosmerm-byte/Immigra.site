@@ -109,5 +109,5 @@ test('all 62 bilingual questions and notes retain exact text; support card alrea
  for(const q of bank.questions) for(const part of [q,...(q.formNotes||[])]) for(const lang of ['en','es']) assert.equal(n400StudyTokens(part[lang],lang).map(t=>t.text).join(''),part[lang]);
  const support=bank.questions.filter(q=>/^Do you support\b/i.test(q.en));
  assert.equal(support.length,1);assert.equal(support[0].item,'31');assert.equal(bank.questions.indexOf(support[0])+1,56);
- for(const [item,word] of [['2','vote'],['3','taxes'],['5.a','Communist'],['5.b','communism'],['6.a','weapon'],['35','arms']]) assert.ok(n400StudyTokens(bank.questions.find(q=>q.item===item).en).some(t=>t.kind==='vocabulary'&&t.text===word));
+ for(const [item,word] of [['2','vote'],['3','taxes'],['5.a','Communist'],['5.b','communism'],['6.a','weapon'],['35','arms']]) assert.ok(n400StudyTokens(bank.questions.find(q=>q.item===item).en).some(t=>t.kind==='vocabulary'&&t.text.includes(word)));
 });

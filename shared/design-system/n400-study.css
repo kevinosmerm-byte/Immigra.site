@@ -10,6 +10,7 @@
 #root #main #citizenship-root .n400-study-body p { font-size:17px; line-height:1.55; margin:0 0 8px; color:var(--liquid-text); }
 #root #main #citizenship-root .n400-study-body small, #root #main #citizenship-root .n400-reader-status { color:var(--liquid-muted); }
 #root #main #citizenship-root .n400-emphasis-ever { color:var(--n400-blue); font-weight:800; }
+#root #main #citizenship-root .n400-emphasis-scope { color:var(--n400-blue); font-weight:800; }
 #root #main #citizenship-root .n400-emphasis-support { color:var(--n400-green); font-weight:800; }
 #root #main #citizenship-root .n400-emphasis-vocabulary { color:var(--n400-vocabulary); font-weight:750; }
 #root #main #citizenship-root .n400-emphasis-stem { color:var(--color-navy); }
