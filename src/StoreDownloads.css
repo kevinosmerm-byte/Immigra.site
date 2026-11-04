@@ -1,13 +1,19 @@
 .immigra-home .store-downloads{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:28px 0;padding:24px;border:1px solid #cdddf3;border-radius:24px;background:#f3f8ff;text-align:left}
 .immigra-home .store-downloads h2{margin:0 0 8px;font-size:24px;line-height:1.2;color:#152342}
 .immigra-home .store-downloads p{max-width:560px;margin:0;color:#52658c;font-size:15px;line-height:1.5}
-.store-downloads-options{display:flex;flex-wrap:wrap;gap:12px;flex-shrink:0}
-.store-downloads-options>a,.store-downloads-options>div{display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:68px;min-width:158px;padding:10px 20px;border-radius:14px;box-sizing:border-box}
-.store-downloads-options span{font-size:12px;line-height:1.4}
-.store-downloads-options strong{font-size:20px;line-height:1.3}
-.immigra-home .store-downloads-play{background:#152342;color:#fff;text-decoration:none;border:1px solid #152342}
-.immigra-home .store-downloads-play:hover{background:#254577}
+/* Equal slots and visible badge height; retain each store's original proportions. */
+.store-downloads-options{display:flex;flex-wrap:wrap;gap:16px;flex-shrink:0}
+.store-downloads-options>a,.store-downloads-options>div{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;width:184px;box-sizing:border-box}
+.store-badge-frame{display:flex;align-items:center;justify-content:center;width:184px;height:54px}
+.store-badge-google{display:block;width:auto;height:54px;max-width:none}
+/* The supplied 239 × 113 PNG includes white margins. Crop its 160 × 54 badge
+   in the viewport, without resampling or changing the original file. */
+.store-badge-apple-crop{display:block;position:relative;width:160px;height:54px;overflow:hidden;border-radius:11px}
+.store-badge-apple-crop img{position:absolute;display:block;width:239px;height:113px;max-width:none;left:-39px;top:-26px}
+.immigra-home .store-downloads-status{font-size:12px;line-height:1.4;text-align:center}
+.immigra-home .store-downloads-play{color:#152342;text-decoration:none;border-radius:6px}
+.immigra-home .store-downloads-play:hover .store-downloads-status{text-decoration:underline}
 .immigra-home .store-downloads-play:focus-visible{outline:3px solid #0759f7;outline-offset:4px}
-.store-downloads-soon{color:#526078;background:#e8eef7;border:1px solid #c4d1e3}
+.store-downloads-soon{color:#526078}
 @media(max-width:900px){.immigra-home .store-downloads{align-items:flex-start;flex-direction:column}.store-downloads-options{flex-shrink:1}}
-@media(max-width:420px){.store-downloads-options{width:100%;flex-direction:column}.store-downloads-options>a,.store-downloads-options>div{width:100%;min-width:0}.immigra-home .store-downloads{padding:20px}}
+@media(max-width:420px){.store-downloads-options{width:100%;justify-content:center}.immigra-home .store-downloads{padding:20px}}

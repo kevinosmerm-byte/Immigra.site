@@ -11,10 +11,12 @@ export default function StoreDownloads({lang}) {
       <p>{t('Descarga la app para Android. La versión para iPhone estará disponible próximamente.', 'Download the Android app. The iPhone version is coming soon.')}</p></div>
     <div className="store-downloads-options">
       <a className="store-downloads-play" href={googlePlayUrl}>
-        <span>{t('Descargar en', 'Get it on')}</span><strong>Google Play</strong>
+        <span className="store-badge-frame"><img className="store-badge-google" src="/images/stores/google-play.svg" alt="Google Play" width="239" height="71" /></span>
+        <span className="store-downloads-status">{t('Descargar para Android', 'Download for Android')}</span>
       </a>
       <div className="store-downloads-soon">
-        <span>{t('Próximamente', 'Coming soon')}</span><strong>App Store</strong>
+        <span className="store-badge-frame"><span className="store-badge-apple-crop"><img src="/images/stores/app-store.png" alt="App Store" width="239" height="113" /></span></span>
+        <span className="store-downloads-status">{t('Próximamente', 'Coming soon')}</span>
       </div>
     </div>
   </section>;
