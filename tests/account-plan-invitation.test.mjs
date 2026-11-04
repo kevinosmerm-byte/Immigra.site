@@ -8,15 +8,15 @@ test('Free invites guests into the existing registration without submitting or o
  assert.match(free,/data-plan="free" disabled=\{busy\}/);
  assert.match(free,/clearCheckoutIntent\(\);setSelectedPlan\(null\);setVerify\(false\)/);
  assert.match(free,/getElementById\('email-trial-email'\)\?\.focus\(\)/);
- assert.match(free,/prueba de 7 días/);
+ assert.match(free,/[Pp]rueba de 7 días/);
  assert.match(free,/Sin cobros automáticos/);
  assert.doesNotMatch(free,/subscribe\(|openCheckout\(|startEmailTrial\(/);
 });
 test('paid plan color keys are semantic and attention motion is finite and optional',()=>{
  assert.match(jsx,/data-plan=\{interval\}/);
- assert.match(css,/trial-plan-invite \.65s ease-in-out 1s 1/);
+ assert.match(css,/animation:none !important/);
  assert.match(css,/@media \(prefers-reduced-motion: reduce\)/);
  assert.doesNotMatch(css,/infinite/);
- assert.match(css,/html:not\(\[data-theme="dark"\]\).*trial-plan/);
- assert.match(css,/\.trial-plan:disabled \{\s*animation: none !important/);
+ assert.match(css,/--plan-navy: #03183e/);
+ assert.match(css,/\.trial-plan:disabled \{\s*animation:\s*none !important/);
 });

@@ -5,8 +5,8 @@ import {readFileSync} from 'node:fs';
 const source=readFileSync(new URL('../src/EmailTrialAccount.jsx',import.meta.url),'utf8');
 const css=readFileSync(new URL('../../../shared/design-system/email-trial-account.css',import.meta.url),'utf8');
 
-test('account access choices precede plans and use existing verification state',()=>{
- assert.ok(source.indexOf('trial-access-choices')<source.indexOf('trial-plans space'));
+test('plans precede unchanged account access choices and verification state',()=>{
+ assert.ok(source.indexOf('className="trial-plans"')<source.indexOf('trial-access-choices'));
  assert.match(source,/aria-pressed=\{!signingIn\} onClick=\{\(\)=>setVerify\(false\)\}/);
  assert.match(source,/aria-pressed=\{signingIn\} onClick=\{\(\)=>setVerify\(true\)\}/);
  assert.match(source,/if\(signingIn\).*sendMagicLink\(email.trim\(\)\)/);
@@ -22,7 +22,7 @@ test('pricing keeps server values, billing interval disclosures and checkout gat
  assert.match(source,/Un cobro por el año completo/);
  assert.match(source,/Renovación automática del plan contratado/);
  assert.match(source,/Las compras no están disponibles en esta versión de la app/);
- const plans=source.slice(source.indexOf('trial-plans space'));
+ const plans=source.slice(source.indexOf('className="trial-plans"'),source.indexOf('trial-access-column'));
  assert.doesNotMatch(plans,/<details/);
 });
 
@@ -32,7 +32,7 @@ test('glass comparison has bounded motion, keyboard focus, responsive columns an
  assert.doesNotMatch(css,/infinite/);
  assert.match(css,/:focus-visible/);
  assert.match(css,/min-height: 48px/);
- assert.match(css,/minmax\(0,1.1fr\) minmax\(0,1fr\)/);
+ assert.match(css,/grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
  assert.match(css,/html\[data-theme="dark"\]/);
  assert.match(css,/background: var\(--readable-panel/);
 });
