@@ -6,6 +6,7 @@ import {readHomeCategory} from './home-study.mjs';
 import './ImmigraHome.css';
 import ReviewsRibbon from './ReviewsRibbon.jsx';
 import StudyMessagesRibbon from './StudyMessagesRibbon.jsx';
+import StoreDownloads from './StoreDownloads.jsx';
 
 // Direct study entry only. Interview and account controls stay in their modules.
 export default function ImmigraHome({lang,onNavigate,previewExamples=false}) {
@@ -24,6 +25,7 @@ export default function ImmigraHome({lang,onNavigate,previewExamples=false}) {
    <button type="button" onClick={()=>onNavigate(choice.id)} aria-label={`${t('Practicar','Practice')} ${choice.title}`}><span>{t('Practicar','Practice')} {choice.title.toLocaleLowerCase(lang)}</span><span aria-hidden="true">→</span></button>
   </article>)}</div>
   <p className="ih-scope-note">{t('Estudio gratuito. Las entrevistas con IA tienen condiciones de acceso. Herramienta educativa, no asesoría legal.','Free study. AI interviews have separate access requirements. Educational tool, not legal advice.')}</p>
+  <StoreDownloads lang={lang}/>
   <StudyMessagesRibbon lang={lang}/>
   <ReviewsRibbon lang={lang} previewExamples={previewExamples}/>
  </section>;

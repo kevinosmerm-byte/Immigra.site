@@ -66,6 +66,6 @@ test('memory colors retain readable contrast and explain red without answer guid
  const css=readFileSync(new URL('../shared/design-system/n400-study.css',import.meta.url),'utf8');
  assert.match(css,/n400-emphasis-vocabulary \{ color:var\(--n400-vocabulary\)/);
  const source=readFileSync(new URL('../modules/citizenship/src/N400StudyCards.jsx',import.meta.url),'utf8');
- assert.match(source,/highlightedText\(question.es, 'es'\)/);
+ assert.match(source,/highlightedText\(question.es, 'es', question.item\)/);
  assert.match(source,/Red does not mean wrong or indicate how to answer/);
 });

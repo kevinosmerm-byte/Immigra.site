@@ -12,11 +12,13 @@ const scope = {
 };
 const phrasePattern = phrase => phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
 const normalize = value => value.toLocaleLowerCase().replace(/\s+/g, ' ');
-const catalogs = {};
-for (const lang of ['en', 'es']) {
+const catalogs = new Map();
+function catalog(lang, item) {
+  const key = `${lang}:${item ?? ''}`;
+  if (catalogs.has(key)) return catalogs.get(key);
   const entries = new Map();
   const add = (phrases, kind) => phrases.forEach(text => entries.set(normalize(text), { text, kind }));
-  add([...legacyVocabulary[lang], ...Object.values(n400CardVocabulary).flatMap(q => q[lang])], 'vocabulary');
+  add(item == null ? legacyVocabulary[lang] : (n400CardVocabulary[item]?.[lang] || []), 'vocabulary');
   add(scope[lang], 'scope');
   if (lang === 'en') {
     add(['do you', 'have you', 'are you', 'did you', 'were you', 'will you'], 'stem');
@@ -29,11 +31,15 @@ for (const lang of ['en', 'es']) {
   // A single left-to-right scan prefers the longest phrase at the same position.
   // No repeated replacements, nested markup or dynamic HTML are involved.
   const ordered = [...entries.values()].sort((a, b) => b.text.length - a.text.length || a.text.localeCompare(b.text));
-  catalogs[lang] = { entries, regex: new RegExp('(?<![\\p{L}\\p{M}\\p{N}_])(?:' + ordered.map(e => phrasePattern(e.text)).join('|') + ')(?![\\p{L}\\p{M}\\p{N}_])', 'giu') };
+  const result = { entries, regex: new RegExp('(?<![\\p{L}\\p{M}\\p{N}_])(?:' + ordered.map(e => phrasePattern(e.text)).join('|') + ')(?![\\p{L}\\p{M}\\p{N}_])', 'giu') };
+  catalogs.set(key, result);
+  return result;
 }
-export function n400StudyTokens(text, language = 'en') {
+export function n400StudyTokens(text, language = 'en', item) {
   const source = String(text);
-  const { entries, regex } = catalogs[language === 'es' ? 'es' : 'en'];
+  const { entries, regex } = catalog(language === 'es' ? 'es' : 'en', item);
+  const seen = new Set();
+  let highlightedWords = 0;
   const tokens = [];
   let end = 0;
   // matchAll clones the regex: callers never share a mutable lastIndex cursor.
@@ -41,7 +47,17 @@ export function n400StudyTokens(text, language = 'en') {
     const start = match.index;
     const next = start + match[0].length;
     if (start > end) tokens.push({ text: source.slice(end, start), kind: 'plain' });
-    tokens.push({ text: match[0], kind: entries.get(normalize(match[0])).kind });
+    let kind = entries.get(normalize(match[0])).kind;
+    if (kind === 'vocabulary') {
+      const cue = normalize(match[0]);
+      const words = cue.trim().split(/\s+/).length;
+      if (seen.has(cue) || highlightedWords + words > 3) kind = 'plain';
+      else {
+        seen.add(cue);
+        highlightedWords += words;
+      }
+    }
+    tokens.push({ text: match[0], kind });
     end = next;
   }
   if (end < source.length) tokens.push({ text: source.slice(end), kind: 'plain' });

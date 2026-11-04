@@ -92,8 +92,8 @@ test('page turns handle rapid alternating navigation and stop at boundaries with
 
 test('curated vocabulary is case-insensitive and respects Unicode whole-word boundaries',()=>{
  for(const [language,text,expected] of [
-  ['en','COMMUNIST communism weapons weapon arms vote VOTED voting tax taxes',['COMMUNIST','communism','weapons','weapon','arms','vote','VOTED','voting','tax','taxes']],
-  ['es','comunismo COMUNISTA armas arma votar votado impuestos',['comunismo','COMUNISTA','armas','arma','votar','votado','impuestos']],
+  ['en','COMMUNIST communism weapons weapon arms vote VOTED voting tax taxes',['COMMUNIST','communism','weapons']],
+  ['es','comunismo COMUNISTA armas arma votar votado impuestos',['comunismo','COMUNISTA','armas']],
   ['en','devoted taxpayer taxicab firearm alarms étax taxé _tax vote123',[]],
   ['es','alarmas desarmado antivoto impuesto123 éarma armaé',[]],
  ]) {
@@ -109,5 +109,5 @@ test('all 62 bilingual questions and notes retain exact text; support card alrea
  for(const q of bank.questions) for(const part of [q,...(q.formNotes||[])]) for(const lang of ['en','es']) assert.equal(n400StudyTokens(part[lang],lang).map(t=>t.text).join(''),part[lang]);
  const support=bank.questions.filter(q=>/^Do you support\b/i.test(q.en));
  assert.equal(support.length,1);assert.equal(support[0].item,'31');assert.equal(bank.questions.indexOf(support[0])+1,56);
- for(const [item,word] of [['2','vote'],['3','taxes'],['5.a','Communist'],['5.b','communism'],['6.a','weapon'],['35','arms']]) assert.ok(n400StudyTokens(bank.questions.find(q=>q.item===item).en).some(t=>t.kind==='vocabulary'&&t.text.includes(word)));
+ for(const [item,word] of [['2','vote'],['3','taxes'],['5.a','Communist'],['5.b','communism'],['6.a','weapon'],['35','arms']]) assert.ok(n400StudyTokens(bank.questions.find(q=>q.item===item).en,'en',item).some(t=>t.kind==='vocabulary'&&t.text.includes(word)));
 });
