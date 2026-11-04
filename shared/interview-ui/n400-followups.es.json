@@ -78,5 +78,11 @@
   "What branch did you serve in?": "¿En qué rama sirvió?",
   "Are you scheduled to deploy outside the United States within the next three months?": "¿Tiene previsto ser desplegado fuera de Estados Unidos en los próximos tres meses?",
   "Are you currently stationed outside the United States?": "¿Actualmente está destinado fuera de Estados Unidos?",
-  "Are you willing to give it up at naturalization?": "¿Está dispuesto a renunciar a ello al naturalizarse?"
+  "Are you willing to give it up at naturalization?": "¿Está dispuesto a renunciar a ello al naturalizarse?",
+  "Is the name on your application accurate, or does it need a correction?": "¿Es correcto el nombre que aparece en su solicitud o necesita una corrección?",
+  "Are all the other names you have used included accurately on your application?": "¿Están incluidos correctamente en su solicitud todos los otros nombres que ha utilizado?",
+  "Is the home address on your application still accurate?": "¿Sigue siendo correcta la dirección de domicilio que aparece en su solicitud?",
+  "Is the marital status on your application still accurate?": "¿Sigue siendo correcto el estado civil que aparece en su solicitud?",
+  "Does your application accurately describe your current employment?": "¿Describe su solicitud correctamente su empleo actual?",
+  "Are the dates for that trip recorded accurately on your application?": "¿Están registradas correctamente en su solicitud las fechas de ese viaje?"
 }

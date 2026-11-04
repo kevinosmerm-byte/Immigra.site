@@ -31,8 +31,12 @@ const button = "inline-flex! min-h-16! items-center! justify-center! gap-3! roun
 const primary = `${button} border-purple-300/70! bg-linear-to-b! from-[#7944C6]/95! via-purple-800/95! to-purple-950/95! text-white! hover:brightness-110!`;
 const secondary = `${button} border-white/90! bg-linear-to-b! from-white/80! to-white/35! text-slate-800! hover:from-white/95! hover:to-purple-50/65!`;
 
+import AsylumCountryPicker from './AsylumCountryPicker.jsx';
+
 export function AsylumPreparation({ language = "es", onAnalyze = prepareStoryWithAi, onStart, onBack, importFile = readStoryFile }) {
   const [practiceLanguage, setLanguage] = useState(language === "en" ? "en" : "es");
+  const [transport, setTransport] = useState("voice");
+  const [country, setCountry] = useState("");
   const [interviewer, setInterviewer] = useState("sarah");
   const [text, setText] = useState("");
   const [fileName, setFileName] = useState("");
@@ -86,7 +90,7 @@ export function AsylumPreparation({ language = "es", onAnalyze = prepareStoryWit
     controller.current?.abort();
     const abort = new AbortController(); controller.current = abort;
     try {
-      const approved = await onStart({ language: practiceLanguage, interviewer, analysis: withoutDocument ? null : analysis, text: withoutDocument ? "" : text, signal: abort.signal });
+      const approved = await onStart({ language: practiceLanguage, country, transport, interviewer, analysis: withoutDocument ? null : analysis, text: withoutDocument ? "" : text, signal: abort.signal });
       if (id === generation.current && approved === false) { setPhase(analysis ? "ready" : "idle"); setError(copy.errors.ACCESS_REQUIRED); }
     } catch { if (id === generation.current) { setPhase(analysis ? "ready" : "idle"); setError(copy.errors.default); } }
   };
@@ -95,6 +99,8 @@ export function AsylumPreparation({ language = "es", onAnalyze = prepareStoryWit
       <button type="button" className={secondary} onClick={onBack}><StepIcon kind="back" />{copy.leave}</button>
       <header><p className="mb-3! text-lg font-semibold text-purple-800!">IMMIGRA · {practiceLanguage === "es" ? "PRÁCTICA DE ASILO" : "ASYLUM PRACTICE"}</p><h1 className="text-3xl font-bold text-slate-900! sm:text-4xl">{copy.title}</h1><p className="mt-4! text-xl leading-relaxed text-slate-700!">{copy.intro}</p></header>
       <ol aria-label={practiceLanguage === "es" ? "Tu camino" : "Your path"} className="grid gap-3 sm:grid-cols-2">{copy.steps.map((step, index) => <li key={step} className={`flex! items-center! gap-3! rounded-2xl! border! border-white/80! bg-white/40! p-3! backdrop-blur-md! shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]!`}><span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-purple-900 text-xl font-bold text-purple-100!" aria-hidden="true">{index + 1}</span><span className="text-base font-medium text-slate-900!">{step}</span></li>)}</ol>
+      <label className="block text-lg">{practiceLanguage==='es'?'Cómo quieres responder':'How to respond'}<select className="block min-h-12 w-full rounded-xl border bg-white p-3 text-slate-900" disabled={busy} value={transport} onChange={e=>setTransport(e.target.value)}><option value="voice">{practiceLanguage==='es'?'Voz y texto':'Voice and text'}</option><option value="text">{practiceLanguage==='es'?'Solo escribir · repreguntas opcionales con confirmación':'Typing only · optional follow-ups with confirmation'}</option></select></label>
+      <AsylumCountryPicker value={country} onChange={setCountry} language={practiceLanguage} disabled={busy}/>
       <details className={`${glass} space-y-5! p-5!`}><summary className="min-h-12 cursor-pointer text-lg font-semibold text-slate-900!">{practiceLanguage === "es" ? "Español" : "English"} · {name} <span className="ml-2! text-purple-800!">{practiceLanguage === "es" ? "Cambiar" : "Change"}</span></summary>
         <fieldset className="min-w-0 border-0 p-0!" disabled={busy}><legend className="mb-3! text-xl font-semibold">{copy.language}</legend><div className="grid grid-cols-2 gap-3">{["es", "en"].map(value => <button type="button" key={value} aria-pressed={practiceLanguage === value} className={practiceLanguage === value ? primary : secondary} onClick={() => { cancel(); setLanguage(value); setAnalysis(null); setError(""); }}>{value === "es" ? "Español" : "English"}</button>)}</div></fieldset>
         <InterviewerPicker value={interviewer} onChange={setInterviewer} lang={practiceLanguage} moduleId="asylum" appearance="glass" disabled={busy}/>

@@ -1,3 +1,5 @@
+import { StudyCardSource } from './StudyCardSource.jsx';
+import { n400CardSource } from './studyCardSources.js';
 import { useEffect, useRef, useState } from 'react';
 import { GlassButton, GlassCard, GlassStudyCard } from '../../../shared/design-system/Glass.jsx';
 import '../../../shared/design-system/civics-study.css';
@@ -79,6 +81,7 @@ export function N400StudyCards({ language = 'es', bank, onBack }) {
           <button type="button" className="n400-icon-control n400-page-control" aria-label={t('Next card', 'Tarjeta siguiente')} title={t('Next card', 'Tarjeta siguiente')} disabled={index === bank.questions.length - 1} onClick={() => navigate(1)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-7-7 7 7-7 7" /></svg></button>
         </nav>
       </GlassStudyCard>
+      <StudyCardSource source={n400CardSource(question, bank, language)} language={language} />
       <p role="status" className="n400-reader-status">{audioError ? t('Reading aloud is unavailable on this device. You can keep studying the text.', 'La lectura en voz alta no está disponible en este dispositivo. Puedes seguir estudiando el texto.') : ''}</p>
       <details className="n400-study-source"><summary>{t('About these cards', 'Sobre estas tarjetas')}</summary>
         <p>{t('Colors are memory aids: blue for time and scope (including Have you EVER), green for Do you support, and red for key actions and concepts. Red does not mean wrong or indicate how to answer.', 'Los colores ayudan a recordar: azul para tiempo y alcance (incluido Have you EVER), verde para Do you support y rojo para acciones y conceptos clave. Rojo no significa incorrecto ni indica cómo responder.')}</p>

@@ -55,6 +55,12 @@ export function createLocalAdapter(){
    s.responses.push({questionKey:key(q.id),question:q.question,category:q.category,locale:q.locale,text:skip?'':text.trim(),clarification:skip?'':clarification.trim(),skipped:skip});
    s.index++;if(s.index===s.questionKeys.length)enterReview(s);
   },
+  skipTopic(id,locale){
+   const s=get(id);const current=this.question(id,locale);if(!current)return;
+   if(current.kind==='clarification'){this.respond(id,{questionId:current.id,skip:true,locale});return;}
+   const category=current.category;
+   while(!s.finished&&s.phase==='questions'){const q=this.question(id,locale);if(q.category!==category)break;this.respond(id,{questionId:q.id,skip:true,locale});}
+  },
   finish(id){const s=get(id);s.pendingReview.length=0;s.phase='done';s.finished=true;},
   summary(id){const s=get(id);return {answered:s.responses.filter(r=>!r.skipped).length,skipped:s.responses.filter(r=>r.skipped).length,remaining:s.questionKeys.length-s.responses.length,responses:copy(s.responses),followups:copy(s.followups),clarificationsAnswered:s.followups.filter(r=>!r.skipped).length,reviewTopics:[...new Set(s.responses.filter(r=>r.skipped).map(r=>r.category))],legalAdvice:false};},
   export(id){return snapshot(get(id));},

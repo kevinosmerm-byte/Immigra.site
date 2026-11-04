@@ -1,3 +1,4 @@
+import contextualPrompts from '../modules/residency/src/contextual-prompts.json' with {type:'json'};
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {aosQuestions,aosQuestion,selectAosQuestions} from '../modules/residency/src/aosEngine.mjs';
@@ -6,9 +7,9 @@ import {domainBank,uncertainAnswer} from '../services/ai/interview-domain.mjs';
 import {validateSettings,InterviewResponseEvaluator,currentTurnSchema} from '../services/ai/interview-engine.mjs';
 import {createAsylumHtml,translateAsylumStatic} from '../modules/asylum/localization.mjs';
 
-test('all 300 original AOS IDs have an English translation without modifying Spanish questions',()=>{
+test('all 300 original AOS IDs have an English translation with reviewed bilingual contextual wording',()=>{
  const originals=aosQuestions.filter(q=>/^AOS-\d+$/.test(q.id));assert.equal(originals.length,300);assert.deepEqual(Object.keys(english).sort(),originals.map(q=>q.id).sort());
- for(const q of aosQuestions){assert.equal(aosQuestion(q,'es'),q.pregunta_es);assert.ok(aosQuestion(q,'en').length>12,q.id);assert.doesNotMatch(aosQuestion(q,'en'),/[¿¡]/);}
+ for(const q of aosQuestions){assert.equal(aosQuestion(q,'es'),contextualPrompts[q.id]?.es||q.pregunta_es);assert.ok(aosQuestion(q,'en').length>12,q.id);assert.doesNotMatch(aosQuestion(q,'en'),/[¿¡]/);}
  for(const route of ['MATRIMONIO','HIJO_A_PADRES','PADRES_A_HIJOS']){const es=domainBank({module:'residency',locale:'es',route}),en=domainBank({module:'residency',locale:'en',route});assert.deepEqual(es.questions.map(q=>q.id),en.questions.map(q=>q.id));assert.notEqual(es.questions[0].canonicalPracticePrompt,en.questions[0].canonicalPracticePrompt);}
 });
 test('validated family options reach the same authoritative selector and invalid values are rejected',()=>{

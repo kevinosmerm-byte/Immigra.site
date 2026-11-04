@@ -77,3 +77,88 @@ html body #root .email-trial-account > a { color: var(--readable-link, var(--col
 html body #root .email-trial-account .trial-text-action { color: var(--readable-link, var(--color-primary)) !important; }
 /* On the web account route, keep the companion after content, never over plans. */
 html[data-experience="web"] #root:has(#main .platform-account) citizenship-companion.platform-study-companion { position: relative; display: block; inset: auto; z-index: auto; margin: 16px 18px 16px auto; }
+
+/* Plan accents stay inside the approved palette. No pricing or checkout changes. */
+html body #root .email-trial-account .trial-plan {
+  --plan-accent: var(--color-primary);
+  border-top: 4px solid var(--plan-accent) !important;
+  isolation: isolate;
+}
+html body #root .email-trial-account .trial-plan[data-plan="annual"] {
+  --plan-accent: var(--color-red);
+}
+html:not([data-theme="dark"]) body #root .email-trial-account .trial-plan {
+  background: linear-gradient(145deg, var(--color-white) 18%, color-mix(in srgb, var(--color-ai) 17%, var(--color-white))) !important;
+}
+html:not([data-theme="dark"]) body #root .email-trial-account .trial-plan[data-plan="annual"] {
+  background: linear-gradient(145deg, var(--color-white) 18%, color-mix(in srgb, var(--color-red-soft) 10%, var(--color-white))) !important;
+}
+html body #root .email-trial-account .trial-plan-label {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+html body #root .email-trial-account .trial-plan-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--color-primary) !important;
+  color: var(--color-white) !important;
+  font-weight: 700;
+}
+html body #root .email-trial-account .trial-plan-action > span {
+  color: inherit !important;
+}
+html body #root .email-trial-account .trial-plan[aria-pressed="true"] {
+  outline: 2px solid var(--plan-accent);
+  outline-offset: 2px;
+}
+html body #root .email-trial-account .trial-plan:disabled {
+  animation: none !important;
+  transform: none !important;
+}
+/* A single restrained invitation, not an endless shake or device vibration. */
+@media (prefers-reduced-motion: no-preference) {
+  html body #root .email-trial-account .trial-plan:not(:disabled) {
+    animation: trial-plan-arrive .5s ease-out backwards, trial-plan-invite .65s ease-in-out 1s 1;
+  }
+  html body #root .email-trial-account .trial-plan[data-plan="annual"]:not(:disabled) {
+    animation-delay: .1s, 1.25s;
+  }
+}
+@keyframes trial-plan-invite {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+  75% { transform: translateX(-1px); }
+}
+@media (hover: hover) {
+  html body #root .email-trial-account .trial-plan:not(:disabled):hover .trial-plan-action {
+    background: var(--color-navy) !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html body #root .email-trial-account .trial-plan {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+html body #root .email-trial-account .trial-plan[data-plan="free"] {
+  --plan-accent: var(--color-ai);
+  animation: none;
+}
+html body #root .email-trial-account .trial-plan[data-plan="free"] .trial-plan-action {
+  background: var(--color-navy) !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  html body #root .email-trial-account .trial-plan[data-plan="free"]:not(:disabled) {
+    animation: trial-plan-arrive .5s ease-out backwards;
+  }
+}

@@ -1,0 +1,12 @@
+.asylum-adaptive{max-width:100%;min-width:0;text-align:left;font-size:16px}
+.asylum-adaptive summary{cursor:pointer;min-height:44px;padding:10px}
+.asylum-adaptive label{display:block;margin:12px 0;overflow-wrap:anywhere}
+.asylum-adaptive select{display:block;width:100%;max-width:100%;min-width:0;min-height:44px;font:inherit}
+.asylum-adaptive fieldset{min-width:0;margin:12px 0}
+.asylum-adaptive blockquote{margin:12px 0;padding:12px;border-left:3px solid #8654b1;overflow-wrap:anywhere}
+.asylum-adaptive input[type=checkbox],.call-screen.voice-first[data-module] .call-response .asylum-adaptive input[type=checkbox]{display:inline-block;width:22px;min-width:22px;height:22px;min-height:22px;padding:0;margin:0 8px 0 0;vertical-align:middle;flex:none}
+.asylum-adaptive button{max-width:100%;white-space:normal;margin:4px}
+.asylum-adaptive button:disabled{opacity:.5;cursor:not-allowed}
+
+.call-screen.voice-first[data-module] .call-response .asylum-adaptive :is(button,select,label,summary,legend,blockquote){font-size:16px;line-height:1.4}
+.call-screen.voice-first[data-module] .call-response .asylum-adaptive button{min-height:44px;padding:10px 14px}

@@ -1,0 +1,15 @@
+/* Separate from legacy module selector transformation, like the study card styles. */
+#root #main #citizenship-root .citizenship-card-source {
+  margin: 12px 0 16px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--color-border, #D8E2EC);
+  color: var(--liquid-text, var(--color-text, #172B3D));
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+#root #main #citizenship-root .citizenship-card-source a { color: var(--color-primary, #2563A6); text-decoration: underline; }
+#root #main #citizenship-root .citizenship-card-source p { margin: 4px 0 0; font: inherit; color: inherit; }
+#root #main #citizenship-root .citizenship-card-source a:focus-visible { outline: 3px solid var(--color-primary, #2563A6); outline-offset: 4px; }
+
+html[data-theme=dark] #root #main #citizenship-root .citizenship-card-source a { color: var(--color-ai, #4DA3E6); }

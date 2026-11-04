@@ -15,7 +15,7 @@ const choices={
  age:[['unknown','Prefiero revisar / no indicar'],['under21','Menor de 21 años'],['21plus','21 años o más']],
  marital:[['unknown','Prefiero revisar / no indicar'],['single','Soltero/a'],['married','Casado/a'],['previous','Divorciado/a o viudo/a']],
 };
-const durations=[[6,'6 preguntas · Breve'],[12,'12 preguntas · Recomendada'],[30,'30 preguntas · Extendida'],[100,'Todas las preguntas de esta categoría']];
+const durations=[[6,'6 preguntas · Breve'],[12,'12 preguntas · Recomendada'],[30,'30 preguntas · Extendida'],[100,'100 preguntas · Práctica amplia']];
 
 function Icon({kind,className=''}){
  const paths={people:'M16 21v-3a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v3M22 21v-3a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75',clock:'M12 8v4l3 2',settings:'m9 3-1 3-3 1v3l-2 2 2 2v3l3 1 1 3h6l1-3 3-1v-3l2-2-2-2V7l-3-1-1-3Z',info:'M12 11v6m0-10v1',arrow:'M4 12h16m-6-6 6 6-6 6'};

@@ -27,6 +27,15 @@
       "url": "https://www.uscis.gov/sites/default/files/document/guides/test_components.pdf",
       "authority": "USCIS",
       "role": "english_speaking_context"
+    },
+    {
+      "id": "USCIS_SCORING_ENGLISH",
+      "title": "Scoring Guidelines for the U.S. Naturalization Test",
+      "url": "https://www.uscis.gov/sites/default/files/document/guides/Test_Scoring_Guidelines.pdf",
+      "authority": "USCIS",
+      "role": "procedural_basis_not_verbatim_question_bank",
+      "section": "Page 1 · English · Speaking and Understanding",
+      "verification": "Official USCIS indexed text reviewed 2026-11-04. Describes officer review of N-400 accuracy and repetition/rephrasing; does not supply these practice questions."
     }
   ],
   "interviewArchitecture": {
@@ -130,6 +139,7 @@
         "What name do you use legally?"
       ],
       "followUps": [
+        "Is the name on your application accurate, or does it need a correction?",
         "How do you spell your last name?",
         "Is that the name shown on your application?"
       ],
@@ -145,7 +155,17 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim",
+      "derivedFollowUp": {
+        "index": 1,
+        "en": "Is the name on your application accurate, or does it need a correction?",
+        "es": "¿Es correcto el nombre que aparece en su solicitud o necesita una corrección?",
+        "sourceRef": "USCIS_SCORING_ENGLISH",
+        "sourceSection": "Page 1 · English · Speaking and Understanding",
+        "wordingType": "educational-adaptation-not-official-question",
+        "basis": "Review of the N-400 for accuracy during the eligibility interview. This is an app-authored practice prompt, not wording supplied by USCIS."
+      }
     },
     {
       "id": "P_ID_OTHER_NAMES",
@@ -158,6 +178,7 @@
         "Are there any other names you have gone by?"
       ],
       "followUps": [
+        "Are all the other names you have used included accurately on your application?",
         "What name did you use?",
         "When did you use that name?"
       ],
@@ -173,7 +194,17 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim",
+      "derivedFollowUp": {
+        "index": 1,
+        "en": "Are all the other names you have used included accurately on your application?",
+        "es": "¿Están incluidos correctamente en su solicitud todos los otros nombres que ha utilizado?",
+        "sourceRef": "USCIS_SCORING_ENGLISH",
+        "sourceSection": "Page 1 · English · Speaking and Understanding",
+        "wordingType": "educational-adaptation-not-official-question",
+        "basis": "Review of the N-400 for accuracy during the eligibility interview. This is an app-authored practice prompt, not wording supplied by USCIS."
+      }
     },
     {
       "id": "P_ID_NAME_CHANGE",
@@ -197,7 +228,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_BIRTH_DATE",
@@ -221,7 +253,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_BIRTH_COUNTRY",
@@ -247,7 +280,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_LPR_DATE",
@@ -274,7 +308,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_ANUMBER",
@@ -297,7 +332,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_ADDRESS_CURRENT",
@@ -310,6 +346,7 @@
         "What is your current physical address?"
       ],
       "followUps": [
+        "Is the home address on your application still accurate?",
         "How long have you lived there?",
         "When did you move there?"
       ],
@@ -324,7 +361,17 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim",
+      "derivedFollowUp": {
+        "index": 1,
+        "en": "Is the home address on your application still accurate?",
+        "es": "¿Sigue siendo correcta la dirección de domicilio que aparece en su solicitud?",
+        "sourceRef": "USCIS_SCORING_ENGLISH",
+        "sourceSection": "Page 1 · English · Speaking and Understanding",
+        "wordingType": "educational-adaptation-not-official-question",
+        "basis": "Review of the N-400 for accuracy during the eligibility interview. This is an app-authored practice prompt, not wording supplied by USCIS."
+      }
     },
     {
       "id": "P_ADDRESS_CITY_STATE",
@@ -351,7 +398,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_ADDRESS_MAILING",
@@ -376,7 +424,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_ADDRESS_PREVIOUS",
@@ -402,7 +451,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_ADDRESS_HISTORY_MORE",
@@ -428,7 +478,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_MARITAL_STATUS",
@@ -440,7 +491,9 @@
         "Are you married?",
         "Are you single, married, divorced, or widowed?"
       ],
-      "followUps": [],
+      "followUps": [
+        "Is the marital status on your application still accurate?"
+      ],
       "vocabulary": [
         "marital status"
       ],
@@ -451,7 +504,17 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim",
+      "derivedFollowUp": {
+        "index": 1,
+        "en": "Is the marital status on your application still accurate?",
+        "es": "¿Sigue siendo correcto el estado civil que aparece en su solicitud?",
+        "sourceRef": "USCIS_SCORING_ENGLISH",
+        "sourceSection": "Page 1 · English · Speaking and Understanding",
+        "wordingType": "educational-adaptation-not-official-question",
+        "basis": "Review of the N-400 for accuracy during the eligibility interview. This is an app-authored practice prompt, not wording supplied by USCIS."
+      }
     },
     {
       "id": "P_SPOUSE_NAME",
@@ -477,7 +540,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_MARRIAGE_DATE",
@@ -503,7 +567,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_SPOUSE_ADDRESS",
@@ -529,7 +594,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_SPOUSE_CITIZEN",
@@ -555,7 +621,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_PRIOR_MARRIAGES",
@@ -582,7 +649,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_CHILDREN_COUNT",
@@ -606,7 +674,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_CHILD_NAME",
@@ -635,7 +704,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_PARENT_MOTHER",
@@ -660,7 +730,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_PARENT_FATHER",
@@ -685,7 +756,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_EMPLOYMENT_CURRENT",
@@ -698,6 +770,7 @@
         "Are you currently employed?"
       ],
       "followUps": [
+        "Does your application accurately describe your current employment?",
         "What do you do there?",
         "When did you start working there?"
       ],
@@ -713,7 +786,17 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim",
+      "derivedFollowUp": {
+        "index": 1,
+        "en": "Does your application accurately describe your current employment?",
+        "es": "¿Describe su solicitud correctamente su empleo actual?",
+        "sourceRef": "USCIS_SCORING_ENGLISH",
+        "sourceSection": "Page 1 · English · Speaking and Understanding",
+        "wordingType": "educational-adaptation-not-official-question",
+        "basis": "Review of the N-400 for accuracy during the eligibility interview. This is an app-authored practice prompt, not wording supplied by USCIS."
+      }
     },
     {
       "id": "P_EMPLOYMENT_OCCUPATION",
@@ -738,7 +821,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_EMPLOYMENT_PREVIOUS",
@@ -762,7 +846,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_SCHOOL_CURRENT",
@@ -789,7 +874,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_TRAVEL_ANY",
@@ -814,7 +900,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_TRAVEL_LAST",
@@ -826,6 +913,7 @@
         "When did you last leave the United States?"
       ],
       "followUps": [
+        "Are the dates for that trip recorded accurately on your application?",
         "Where did you go?",
         "When did you return?"
       ],
@@ -843,7 +931,17 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim",
+      "derivedFollowUp": {
+        "index": 1,
+        "en": "Are the dates for that trip recorded accurately on your application?",
+        "es": "¿Están registradas correctamente en su solicitud las fechas de ese viaje?",
+        "sourceRef": "USCIS_SCORING_ENGLISH",
+        "sourceSection": "Page 1 · English · Speaking and Understanding",
+        "wordingType": "educational-adaptation-not-official-question",
+        "basis": "Review of the N-400 for accuracy during the eligibility interview. This is an app-authored practice prompt, not wording supplied by USCIS."
+      }
     },
     {
       "id": "P_TRAVEL_DEST",
@@ -870,7 +968,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_TRAVEL_LENGTH",
@@ -895,7 +994,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "P_TRAVEL_MORE",
@@ -921,7 +1021,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_USC_CLAIM",
@@ -947,7 +1048,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_VOTE_REGISTER",
@@ -977,7 +1079,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_TAX_OVERDUE",
@@ -1004,7 +1107,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_TAX_NONRESIDENT",
@@ -1031,7 +1135,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_PARTY_TOTALITARIAN",
@@ -1060,7 +1165,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_ADVOCACY_OVERTHROW",
@@ -1090,7 +1196,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_TERROR_SUPPORT_WEAPON",
@@ -1120,7 +1227,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_TERROR_KIDNAP",
@@ -1148,7 +1256,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_TERROR_PLAN",
@@ -1176,7 +1285,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_TORTURE",
@@ -1204,7 +1314,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_GENOCIDE",
@@ -1231,7 +1342,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_KILLING",
@@ -1259,7 +1371,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_SEVERE_INJURY",
@@ -1284,7 +1397,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_NONCONSENSUAL_SEX",
@@ -1310,7 +1424,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_RELIGIOUS_PERSECUTION",
@@ -1336,7 +1451,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_PROTECTED_HARM",
@@ -1365,7 +1481,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_MIL_POLICE_UNIT",
@@ -1394,7 +1511,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_ARMED_GROUP",
@@ -1424,7 +1542,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_DETENTION_PLACE",
@@ -1454,7 +1573,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_GROUP_WEAPON_USE",
@@ -1481,7 +1601,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_PERSONAL_WEAPON_USE",
@@ -1508,7 +1629,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_PERSONAL_WEAPON_THREAT",
@@ -1535,7 +1657,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_WEAPON_TRANSFER",
@@ -1562,7 +1685,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_WEAPON_TRAINING",
@@ -1589,7 +1713,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_CHILD_RECRUIT",
@@ -1616,7 +1741,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_CHILD_HOSTILITIES",
@@ -1643,7 +1769,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_CRIME_UNARRESTED",
@@ -1670,7 +1797,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_ARREST_CITE_DETAIN",
@@ -1701,7 +1829,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": "Records may still need disclosure even if sealed, expunged, or otherwise cleared; do not coach a user to conceal history."
+      "notes": "Records may still need disclosure even if sealed, expunged, or otherwise cleared; do not coach a user to conceal history.",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_CRIME_DISPOSITION",
@@ -1733,7 +1862,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_PROBATION_COMPLETE",
@@ -1759,7 +1889,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_PROSTITUTION",
@@ -1786,7 +1917,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_DRUG_TRAFFICKING",
@@ -1814,7 +1946,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_POLYGAMY",
@@ -1839,7 +1972,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_MARRIAGE_FRAUD",
@@ -1865,7 +1999,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_SMUGGLE_ENTRY",
@@ -1890,7 +2025,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_ILLEGAL_GAMBLING",
@@ -1915,7 +2051,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_SUPPORT_DEPENDENTS",
@@ -1942,7 +2079,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_PUBLIC_BENEFIT_MISREP",
@@ -1967,7 +2105,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_FALSE_DOC_GOV",
@@ -1996,7 +2135,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_LIED_ENTRY_BENEFIT",
@@ -2022,7 +2162,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_REMOVAL_PROCEEDINGS",
@@ -2051,7 +2192,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_REMOVED_DEPORTED",
@@ -2077,7 +2219,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_SELECTIVE_MALE_18_25",
@@ -2104,7 +2247,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_SELECTIVE_REGISTER",
@@ -2132,7 +2276,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_DRAFT_AVOID",
@@ -2158,7 +2303,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_MIL_EXEMPTION",
@@ -2184,7 +2330,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_MIL_SERVED",
@@ -2210,7 +2357,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_MIL_CURRENT",
@@ -2239,7 +2387,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_MIL_FORMER_ABROAD",
@@ -2264,7 +2413,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_MIL_COURT_DISCHARGE",
@@ -2294,7 +2444,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_MIL_ALIEN_DISCHARGE",
@@ -2322,7 +2473,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_MIL_DESERTED",
@@ -2350,7 +2502,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_NOBILITY_TITLE",
@@ -2375,7 +2528,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_SUPPORT_CONSTITUTION",
@@ -2398,7 +2552,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_UNDERSTAND_OATH",
@@ -2420,7 +2575,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_WILLING_OATH",
@@ -2443,7 +2599,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_BEAR_ARMS",
@@ -2466,7 +2623,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_NONCOMBATANT",
@@ -2488,7 +2646,8 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     },
     {
       "id": "E_NATIONAL_IMPORTANCE",
@@ -2511,7 +2670,15 @@
       ],
       "difficulty": "core",
       "repeatPolicy": "ONE_VARIATION_PER_INTERVIEW",
-      "notes": ""
+      "notes": "",
+      "wordingType": "educational-practice-not-verbatim"
     }
-  ]
+  ],
+  "sourceReview": {
+    "reviewedAt": "2026-11-04",
+    "scope": "Six derived follow-up prompts for reviewing application accuracy. Existing 90 concepts retained.",
+    "pending": [
+      "Direct verification of USCIS Policy Manual Volume 12, Part B, Chapter 3 and Part E, Chapter 2: HTTP 403. No claim of inspection or exhaustive officer-manual coverage."
+    ]
+  }
 }

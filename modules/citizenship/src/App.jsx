@@ -1229,6 +1229,7 @@ function AppContent({ userKey,platformLanguage,onPlatformLanguageChange }) {
             <>
               <section className="civics-card-deck premium" aria-label={`${copy.cards}: ${civicsIndex + 1} / 128`}>
                 <CivicsStudyCard
+                  language={language}
                   question={currentQuestion}
                   questionSpanish={currentQuestionSpanish}
                   answers={currentAnswers}

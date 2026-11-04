@@ -1,0 +1,194 @@
+{
+  "AOS-006": {
+    "es": "Si han vivido juntos, ¿cuándo comenzaron?",
+    "en": "If you have lived together, when did you start?"
+  },
+  "AOS-007": {
+    "es": "¿Hay alguna fecha de su solicitud que necesite aclarar?",
+    "en": "Is there a date in your application that you need to clarify?"
+  },
+  "AOS-020": {
+    "es": "¿Hay diferencias entre fotos, mensajes y fechas que necesiten contexto?",
+    "en": "Are there differences between photos, messages and dates that need context?"
+  },
+  "AOS-021": {
+    "es": "¿En qué ciudad o región vive actualmente? No incluya su dirección exacta.",
+    "en": "What city or region do you currently live in? Do not include your exact address."
+  },
+  "AOS-024": {
+    "es": "Si comparten vivienda, ¿cómo se distribuyen las tareas?",
+    "en": "If you share a home, how do you divide household tasks?"
+  },
+  "AOS-026": {
+    "es": "Si pasan fines de semana juntos en casa, ¿qué suelen hacer?",
+    "en": "If you spend weekends together at home, what do you usually do?"
+  },
+  "AOS-030": {
+    "es": "¿Hay alguna dirección anterior en un documento reciente que necesite aclarar? No indique direcciones exactas.",
+    "en": "Is there a previous address on a recent document that needs clarification? Do not give exact addresses."
+  },
+  "AOS-032": {
+    "es": "Si su cónyuge trabaja fuera de casa, ¿cómo se desplaza?",
+    "en": "If your spouse works outside the home, how do they travel to work?"
+  },
+  "AOS-034": {
+    "es": "Si trabajan, ¿qué horarios tiene cada uno?",
+    "en": "If you work, what are each of your work schedules?"
+  },
+  "AOS-036": {
+    "es": "Si tienen jornada laboral, ¿cómo se comunican durante ella?",
+    "en": "If you have a workday, how do you communicate during it?"
+  },
+  "AOS-037": {
+    "es": "¿Qué hizo cada uno ayer, según lo que conoce de primera mano?",
+    "en": "What did each of you do yesterday, based on what you know firsthand?"
+  },
+  "AOS-038": {
+    "es": "¿Hay alguna rutina cotidiana que necesite aclarar?",
+    "en": "Is there a daily routine you need to clarify?"
+  },
+  "AOS-039": {
+    "es": "Si hubo una enfermedad o viaje, ¿cómo afectó su rutina?",
+    "en": "If there was an illness or trip, how did it affect your routine?"
+  },
+  "AOS-047": {
+    "es": "¿Hubo alguna persona cercana que no asistiera a la ceremonia?",
+    "en": "Was there anyone close to you who did not attend the ceremony?"
+  },
+  "AOS-048": {
+    "es": "¿Hay algún familiar que desconozca detalles de su matrimonio?",
+    "en": "Is there a relative who does not know details about your marriage?"
+  },
+  "AOS-049": {
+    "es": "¿Hay alguna diferencia entre la lista de invitados y las fotos que necesite aclarar?",
+    "en": "Is there a difference between the guest list and photos that needs clarification?"
+  },
+  "AOS-058": {
+    "es": "¿Hay algún depósito o transferencia que desee contextualizar sin compartir números de cuenta?",
+    "en": "Is there a deposit or transfer you want to put in context without sharing account numbers?"
+  },
+  "AOS-068": {
+    "es": "¿Hubo familiares que supieran del matrimonio tiempo después?",
+    "en": "Were there relatives who learned about the marriage later?"
+  },
+  "AOS-069": {
+    "es": "¿La celebración y el matrimonio legal tuvieron fechas distintas?",
+    "en": "Did the celebration and legal marriage have different dates?"
+  },
+  "AOS-091": {
+    "es": "Si han viajado juntos, ¿cuándo fue la última vez?",
+    "en": "If you have traveled together, when was the most recent time?"
+  },
+  "AOS-095": {
+    "es": "Si atravesaron una dificultad reciente, ¿cómo se apoyaron?",
+    "en": "If you experienced a recent difficulty, how did you support each other?"
+  },
+  "AOS-096": {
+    "es": "Si han convivido, ¿qué evidencia de convivencia pueden describir?",
+    "en": "If you have lived together, what evidence of living together can you describe?"
+  },
+  "AOS-102": {
+    "es": "¿Cuál es la fecha de nacimiento de su hijo o hija peticionario?",
+    "en": "What is the date of birth of your petitioning child?"
+  },
+  "AOS-107": {
+    "es": "¿Hay diferencias de apellido entre certificados que necesiten aclarar?",
+    "en": "Are there surname differences between certificates that need clarification?"
+  },
+  "AOS-120": {
+    "es": "¿Hay alguna fecha de la petición o de documentos posteriores que necesite aclarar?",
+    "en": "Is there a date in the petition or later documents that needs clarification?"
+  },
+  "AOS-124": {
+    "es": "Si trabajaba durante la infancia de su hijo o hija, ¿quién le cuidaba?",
+    "en": "If you worked during your child’s childhood, who cared for them?"
+  },
+  "AOS-138": {
+    "es": "Si viven en estados distintos, ¿cómo describiría esa organización?",
+    "en": "If you live in different states, how would you describe that arrangement?"
+  },
+  "AOS-149": {
+    "es": "¿Hay algún registro familiar que necesite contexto sobre las personas que aparecen en él?",
+    "en": "Is there a family record that needs context about the people listed in it?"
+  },
+  "AOS-159": {
+    "es": "Si participa un patrocinador conjunto, ¿cómo describiría su participación?",
+    "en": "If there is a joint sponsor, how would you describe their involvement?"
+  },
+  "AOS-168": {
+    "es": "Si el nacimiento se inscribió tardíamente, ¿qué contexto conoce?",
+    "en": "If the birth was registered late, what context do you know?"
+  },
+  "AOS-170": {
+    "es": "Si hubo una corrección legal de datos familiares, ¿qué evidencia la documenta?",
+    "en": "If family information was legally corrected, what evidence documents it?"
+  },
+  "AOS-177": {
+    "es": "¿Hay alguna respuesta de un formulario anterior que necesite corregir o aclarar?",
+    "en": "Is there an answer on a previous form that needs correction or clarification?"
+  },
+  "AOS-183": {
+    "es": "¿En qué ciudad o región vive el peticionario? No incluya su dirección exacta.",
+    "en": "What city or region does the petitioner live in? Do not include their exact address."
+  },
+  "AOS-188": {
+    "es": "¿Hay alguna declaración de impuestos que necesite contexto?",
+    "en": "Is there a tax return that needs context?"
+  },
+  "AOS-202": {
+    "es": "¿Cuál es la fecha de nacimiento del padre o madre peticionario?",
+    "en": "What is the date of birth of your petitioning parent?"
+  },
+  "AOS-216": {
+    "es": "Si vivieron juntos mientras usted estudiaba, ¿a qué escuela asistía?",
+    "en": "If you lived together while you were in school, which school did you attend?"
+  },
+  "AOS-217": {
+    "es": "Si su nacimiento se inscribió tardíamente, ¿qué contexto conoce?",
+    "en": "If your birth was registered late, what context do you know?"
+  },
+  "AOS-219": {
+    "es": "¿Hay apellidos diferentes en sus documentos que necesite aclarar?",
+    "en": "Are there different surnames in your documents that need clarification?"
+  },
+  "AOS-220": {
+    "es": "Si hubo periodos de crianza separados, ¿qué contexto puede aportar?",
+    "en": "If there were periods of upbringing apart, what context can you provide?"
+  },
+  "AOS-227": {
+    "es": "Si hubo un periodo prolongado sin contacto, ¿qué contexto puede aportar?",
+    "en": "If there was a prolonged period without contact, what context can you provide?"
+  },
+  "AOS-229": {
+    "es": "¿Hay algún recuerdo de una mudanza familiar que necesite aclarar?",
+    "en": "Is there a memory of a family move that needs clarification?"
+  },
+  "AOS-237": {
+    "es": "Si hubo un divorcio, ¿hay alguna fecha que necesite aclarar?",
+    "en": "If there was a divorce, is there a date that needs clarification?"
+  },
+  "AOS-248": {
+    "es": "¿Hay algún aviso que muestre un estatus anterior del peticionario?",
+    "en": "Is there a notice showing a previous status of the petitioner?"
+  },
+  "AOS-249": {
+    "es": "Si el peticionario cambió de nombre, ¿qué documento lo acredita?",
+    "en": "If the petitioner changed their name, what document supports it?"
+  },
+  "AOS-259": {
+    "es": "Si una declaración fiscal lo incluye como dependiente, ¿qué contexto puede aportar?",
+    "en": "If a tax return lists you as a dependent, what context can you provide?"
+  },
+  "AOS-268": {
+    "es": "Si hay diferencias entre nombres transliterados, ¿qué contexto conoce?",
+    "en": "If there are differences between transliterated names, what context do you know?"
+  },
+  "AOS-287": {
+    "es": "Si cambió el patrocinador económico, ¿qué contexto puede aportar?",
+    "en": "If the financial sponsor changed, what context can you provide?"
+  },
+  "AOS-296": {
+    "es": "Si cambió su estado civil o nombre, ¿qué evidencia documenta el cambio?",
+    "en": "If your marital status or name changed, what evidence documents the change?"
+  }
+}

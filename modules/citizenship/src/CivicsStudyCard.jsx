@@ -1,9 +1,12 @@
+import { StudyCardSource } from './StudyCardSource.jsx';
+import { civicsCardSource } from './studyCardSources.js';
 import '../../../shared/design-system/civics-study.css';
 import {GlassStudyCard} from '../../../shared/design-system/Glass.jsx';
 import { useEffect } from "react";
 
 export function CivicsStudyCard({
   question,
+  language = "es",
   questionSpanish,
   answers,
   image,
@@ -75,6 +78,7 @@ export function CivicsStudyCard({
   );
 
   return (
+    <>
     <GlassStudyCard flipped={answerVisible} mastered={mastered}
       className={`civics-study-card liquid-glass ${answerVisible ? "answer-visible" : ""} ${mastered ? "is-mastered" : ""}`}
       role="group"
@@ -145,5 +149,7 @@ export function CivicsStudyCard({
 
       {footer && <div onClick={event => event.stopPropagation()} onKeyDown={event => event.stopPropagation()} onTouchStart={event => event.stopPropagation()} onTouchEnd={event => event.stopPropagation()}>{typeof footer === "function" ? footer({favoriteControl, questionNumber, totalQuestions}) : footer}</div>}
     </GlassStudyCard>
+    <StudyCardSource source={civicsCardSource(questionNumber, language)} language={language} />
+    </>
   );
 }

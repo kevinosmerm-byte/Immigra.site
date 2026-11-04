@@ -165,7 +165,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "household",
     "locale": "es",
-    "question": "¿Cuál es su dirección actual?",
+    "question": "¿En qué ciudad o región vive actualmente? No indique su dirección exacta.",
     "difficulty": "basic",
     "official": false
   },
@@ -175,7 +175,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "household",
     "locale": "en",
-    "question": "What is your current address?",
+    "question": "What city or region do you currently live in? Do not give your exact address.",
     "difficulty": "basic",
     "official": false
   },
@@ -185,7 +185,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "household",
     "locale": "es",
-    "question": "¿Cuándo comenzaron a vivir juntos?",
+    "question": "Si han vivido juntos, ¿cuándo comenzaron?",
     "difficulty": "detailed",
     "official": false
   },
@@ -195,7 +195,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "household",
     "locale": "en",
-    "question": "When did you start living together?",
+    "question": "If you have lived together, when did you start?",
     "difficulty": "detailed",
     "official": false
   },
@@ -205,7 +205,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "household",
     "locale": "es",
-    "question": "¿Cómo se distribuyen las tareas domésticas?",
+    "question": "Si comparten vivienda, ¿cómo se distribuyen las tareas?",
     "difficulty": "detailed",
     "official": false
   },
@@ -215,7 +215,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "household",
     "locale": "en",
-    "question": "How do you divide household chores?",
+    "question": "If you share a home, how do you divide household tasks?",
     "difficulty": "detailed",
     "official": false
   },
@@ -245,7 +245,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "routine",
     "locale": "es",
-    "question": "¿Qué hicieron juntos el último fin de semana?",
+    "question": "Si estuvieron juntos el último fin de semana, ¿qué hicieron?",
     "difficulty": "detailed",
     "official": false
   },
@@ -255,7 +255,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "routine",
     "locale": "en",
-    "question": "What did you do together last weekend?",
+    "question": "If you were together last weekend, what did you do?",
     "difficulty": "detailed",
     "official": false
   },
@@ -265,7 +265,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "routine",
     "locale": "es",
-    "question": "¿Cómo llegaron hoy a esta entrevista?",
+    "question": "En una entrevista presencial, ¿cómo explicaría su traslado sin inventar detalles?",
     "difficulty": "detailed",
     "official": false
   },
@@ -275,7 +275,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "routine",
     "locale": "en",
-    "question": "How did you get to this interview today?",
+    "question": "In an in-person interview, how would you describe your journey without inventing details?",
     "difficulty": "detailed",
     "official": false
   },
@@ -285,7 +285,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "routine",
     "locale": "es",
-    "question": "¿Qué vehículo utilizan habitualmente?",
+    "question": "¿Cómo se desplazan habitualmente?",
     "difficulty": "detailed",
     "official": false
   },
@@ -295,7 +295,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "routine",
     "locale": "en",
-    "question": "What vehicle do you usually use?",
+    "question": "How do you usually travel?",
     "difficulty": "detailed",
     "official": false
   },
@@ -305,7 +305,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "routine",
     "locale": "es",
-    "question": "¿Qué horarios de trabajo tienen?",
+    "question": "Si trabajan, ¿qué horarios tiene cada uno?",
     "difficulty": "detailed",
     "official": false
   },
@@ -315,7 +315,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "routine",
     "locale": "en",
-    "question": "What are your work schedules?",
+    "question": "If you work, what are each of your work schedules?",
     "difficulty": "detailed",
     "official": false
   },
@@ -405,7 +405,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "family",
     "locale": "es",
-    "question": "¿Cuándo conoció a la familia de su cónyuge?",
+    "question": "Si ha conocido a la familia de su cónyuge, ¿cuándo ocurrió?",
     "difficulty": "detailed",
     "official": false
   },
@@ -415,7 +415,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "family",
     "locale": "en",
-    "question": "When did you meet your spouse’s family?",
+    "question": "If you have met your spouse’s family, when was that?",
     "difficulty": "detailed",
     "official": false
   },
@@ -445,7 +445,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "travel",
     "locale": "es",
-    "question": "¿Cuál fue el último viaje que hicieron juntos?",
+    "question": "Si han viajado juntos, ¿cuál fue el último viaje?",
     "difficulty": "detailed",
     "official": false
   },
@@ -455,7 +455,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "travel",
     "locale": "en",
-    "question": "What was your last trip together?",
+    "question": "If you have traveled together, what was the most recent trip?",
     "difficulty": "detailed",
     "official": false
   },
@@ -465,7 +465,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "travel",
     "locale": "es",
-    "question": "¿En qué fechas viajaron?",
+    "question": "Si hicieron un viaje juntos, ¿en qué fechas fue?",
     "difficulty": "detailed",
     "official": false
   },
@@ -475,7 +475,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "travel",
     "locale": "en",
-    "question": "What dates did you travel?",
+    "question": "If you took a trip together, when was it?",
     "difficulty": "detailed",
     "official": false
   },
@@ -485,7 +485,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "travel",
     "locale": "es",
-    "question": "¿Dónde se hospedaron durante ese viaje?",
+    "question": "Si hicieron un viaje juntos, ¿dónde se hospedaron?",
     "difficulty": "detailed",
     "official": false
   },
@@ -495,7 +495,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "travel",
     "locale": "en",
-    "question": "Where did you stay during that trip?",
+    "question": "If you took a trip together, where did you stay?",
     "difficulty": "detailed",
     "official": false
   },
@@ -525,7 +525,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "history",
     "locale": "es",
-    "question": "¿Cómo celebraron su último aniversario?",
+    "question": "Si celebraron su último aniversario, ¿cómo lo hicieron?",
     "difficulty": "detailed",
     "official": false
   },
@@ -535,7 +535,7 @@
     "relationship_type": "marriage_husband_petitioner",
     "category": "history",
     "locale": "en",
-    "question": "How did you celebrate your last anniversary?",
+    "question": "If you celebrated your most recent anniversary, how did you celebrate?",
     "difficulty": "detailed",
     "official": false
   },
@@ -765,7 +765,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "household",
     "locale": "es",
-    "question": "¿Cuál es su dirección actual?",
+    "question": "¿En qué ciudad o región vive actualmente? No indique su dirección exacta.",
     "difficulty": "basic",
     "official": false
   },
@@ -775,7 +775,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "household",
     "locale": "en",
-    "question": "What is your current address?",
+    "question": "What city or region do you currently live in? Do not give your exact address.",
     "difficulty": "basic",
     "official": false
   },
@@ -785,7 +785,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "household",
     "locale": "es",
-    "question": "¿Cuándo comenzaron a vivir juntos?",
+    "question": "Si han vivido juntos, ¿cuándo comenzaron?",
     "difficulty": "detailed",
     "official": false
   },
@@ -795,7 +795,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "household",
     "locale": "en",
-    "question": "When did you start living together?",
+    "question": "If you have lived together, when did you start?",
     "difficulty": "detailed",
     "official": false
   },
@@ -805,7 +805,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "household",
     "locale": "es",
-    "question": "¿Cómo se distribuyen las tareas domésticas?",
+    "question": "Si comparten vivienda, ¿cómo se distribuyen las tareas?",
     "difficulty": "detailed",
     "official": false
   },
@@ -815,7 +815,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "household",
     "locale": "en",
-    "question": "How do you divide household chores?",
+    "question": "If you share a home, how do you divide household tasks?",
     "difficulty": "detailed",
     "official": false
   },
@@ -845,7 +845,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "routine",
     "locale": "es",
-    "question": "¿Qué hicieron juntos el último fin de semana?",
+    "question": "Si estuvieron juntos el último fin de semana, ¿qué hicieron?",
     "difficulty": "detailed",
     "official": false
   },
@@ -855,7 +855,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "routine",
     "locale": "en",
-    "question": "What did you do together last weekend?",
+    "question": "If you were together last weekend, what did you do?",
     "difficulty": "detailed",
     "official": false
   },
@@ -865,7 +865,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "routine",
     "locale": "es",
-    "question": "¿Cómo llegaron hoy a esta entrevista?",
+    "question": "En una entrevista presencial, ¿cómo explicaría su traslado sin inventar detalles?",
     "difficulty": "detailed",
     "official": false
   },
@@ -875,7 +875,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "routine",
     "locale": "en",
-    "question": "How did you get to this interview today?",
+    "question": "In an in-person interview, how would you describe your journey without inventing details?",
     "difficulty": "detailed",
     "official": false
   },
@@ -885,7 +885,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "routine",
     "locale": "es",
-    "question": "¿Qué vehículo utilizan habitualmente?",
+    "question": "¿Cómo se desplazan habitualmente?",
     "difficulty": "detailed",
     "official": false
   },
@@ -895,7 +895,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "routine",
     "locale": "en",
-    "question": "What vehicle do you usually use?",
+    "question": "How do you usually travel?",
     "difficulty": "detailed",
     "official": false
   },
@@ -905,7 +905,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "routine",
     "locale": "es",
-    "question": "¿Qué horarios de trabajo tienen?",
+    "question": "Si trabajan, ¿qué horarios tiene cada uno?",
     "difficulty": "detailed",
     "official": false
   },
@@ -915,7 +915,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "routine",
     "locale": "en",
-    "question": "What are your work schedules?",
+    "question": "If you work, what are each of your work schedules?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1005,7 +1005,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "family",
     "locale": "es",
-    "question": "¿Cuándo conoció a la familia de su cónyuge?",
+    "question": "Si ha conocido a la familia de su cónyuge, ¿cuándo ocurrió?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1015,7 +1015,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "family",
     "locale": "en",
-    "question": "When did you meet your spouse’s family?",
+    "question": "If you have met your spouse’s family, when was that?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1045,7 +1045,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "travel",
     "locale": "es",
-    "question": "¿Cuál fue el último viaje que hicieron juntos?",
+    "question": "Si han viajado juntos, ¿cuál fue el último viaje?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1055,7 +1055,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "travel",
     "locale": "en",
-    "question": "What was your last trip together?",
+    "question": "If you have traveled together, what was the most recent trip?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1065,7 +1065,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "travel",
     "locale": "es",
-    "question": "¿En qué fechas viajaron?",
+    "question": "Si hicieron un viaje juntos, ¿en qué fechas fue?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1075,7 +1075,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "travel",
     "locale": "en",
-    "question": "What dates did you travel?",
+    "question": "If you took a trip together, when was it?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1085,7 +1085,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "travel",
     "locale": "es",
-    "question": "¿Dónde se hospedaron durante ese viaje?",
+    "question": "Si hicieron un viaje juntos, ¿dónde se hospedaron?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1095,7 +1095,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "travel",
     "locale": "en",
-    "question": "Where did you stay during that trip?",
+    "question": "If you took a trip together, where did you stay?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1125,7 +1125,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "history",
     "locale": "es",
-    "question": "¿Cómo celebraron su último aniversario?",
+    "question": "Si celebraron su último aniversario, ¿cómo lo hicieron?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1135,7 +1135,7 @@
     "relationship_type": "marriage_wife_petitioner",
     "category": "history",
     "locale": "en",
-    "question": "How did you celebrate your last anniversary?",
+    "question": "If you celebrated your most recent anniversary, how did you celebrate?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1225,7 +1225,7 @@
     "relationship_type": "child_petitions_mother",
     "category": "identity",
     "locale": "es",
-    "question": "¿Cuál es su fecha de nacimiento?",
+    "question": "¿Cuál es la fecha de nacimiento de su familiar peticionario?",
     "difficulty": "basic",
     "official": false
   },
@@ -1235,7 +1235,7 @@
     "relationship_type": "child_petitions_mother",
     "category": "identity",
     "locale": "en",
-    "question": "What is their date of birth?",
+    "question": "What is the date of birth of your petitioning relative?",
     "difficulty": "basic",
     "official": false
   },
@@ -1285,7 +1285,7 @@
     "relationship_type": "child_petitions_mother",
     "category": "history",
     "locale": "es",
-    "question": "¿En qué lugares han vivido juntos?",
+    "question": "Si han vivido juntos, ¿en qué lugares fue?",
     "difficulty": "basic",
     "official": false
   },
@@ -1295,7 +1295,7 @@
     "relationship_type": "child_petitions_mother",
     "category": "history",
     "locale": "en",
-    "question": "Where have you lived together?",
+    "question": "If you have lived together, in which places?",
     "difficulty": "basic",
     "official": false
   },
@@ -1425,7 +1425,7 @@
     "relationship_type": "child_petitions_mother",
     "category": "family",
     "locale": "es",
-    "question": "¿Conoce el nombre de los padres de su familiar?",
+    "question": "¿Quiénes son los progenitores del peticionario, según su conocimiento?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1435,7 +1435,7 @@
     "relationship_type": "child_petitions_mother",
     "category": "family",
     "locale": "en",
-    "question": "Do you know your relative’s parents’ names?",
+    "question": "Who are the petitioner’s parents, to your knowledge?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1565,7 +1565,7 @@
     "relationship_type": "child_petitions_mother",
     "category": "immigration",
     "locale": "es",
-    "question": "¿Cuál fue el propósito de ese viaje?",
+    "question": "Si realizó esa entrada a Estados Unidos, ¿cuál fue el propósito del viaje?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1575,7 +1575,7 @@
     "relationship_type": "child_petitions_mother",
     "category": "immigration",
     "locale": "en",
-    "question": "What was the purpose of that trip?",
+    "question": "If you made that entry to the United States, what was the purpose of the trip?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1625,7 +1625,7 @@
     "relationship_type": "child_petitions_mother",
     "category": "household",
     "locale": "es",
-    "question": "¿Quiénes viven en ese domicilio?",
+    "question": "¿Con quién vive actualmente?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1635,7 +1635,7 @@
     "relationship_type": "child_petitions_mother",
     "category": "household",
     "locale": "en",
-    "question": "Who lives at that address?",
+    "question": "Who do you currently live with?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1725,7 +1725,7 @@
     "relationship_type": "child_petitions_father",
     "category": "identity",
     "locale": "es",
-    "question": "¿Cuál es su fecha de nacimiento?",
+    "question": "¿Cuál es la fecha de nacimiento de su familiar peticionario?",
     "difficulty": "basic",
     "official": false
   },
@@ -1735,7 +1735,7 @@
     "relationship_type": "child_petitions_father",
     "category": "identity",
     "locale": "en",
-    "question": "What is their date of birth?",
+    "question": "What is the date of birth of your petitioning relative?",
     "difficulty": "basic",
     "official": false
   },
@@ -1785,7 +1785,7 @@
     "relationship_type": "child_petitions_father",
     "category": "history",
     "locale": "es",
-    "question": "¿En qué lugares han vivido juntos?",
+    "question": "Si han vivido juntos, ¿en qué lugares fue?",
     "difficulty": "basic",
     "official": false
   },
@@ -1795,7 +1795,7 @@
     "relationship_type": "child_petitions_father",
     "category": "history",
     "locale": "en",
-    "question": "Where have you lived together?",
+    "question": "If you have lived together, in which places?",
     "difficulty": "basic",
     "official": false
   },
@@ -1925,7 +1925,7 @@
     "relationship_type": "child_petitions_father",
     "category": "family",
     "locale": "es",
-    "question": "¿Conoce el nombre de los padres de su familiar?",
+    "question": "¿Quiénes son los progenitores del peticionario, según su conocimiento?",
     "difficulty": "detailed",
     "official": false
   },
@@ -1935,7 +1935,7 @@
     "relationship_type": "child_petitions_father",
     "category": "family",
     "locale": "en",
-    "question": "Do you know your relative’s parents’ names?",
+    "question": "Who are the petitioner’s parents, to your knowledge?",
     "difficulty": "detailed",
     "official": false
   },
@@ -2065,7 +2065,7 @@
     "relationship_type": "child_petitions_father",
     "category": "immigration",
     "locale": "es",
-    "question": "¿Cuál fue el propósito de ese viaje?",
+    "question": "Si realizó esa entrada a Estados Unidos, ¿cuál fue el propósito del viaje?",
     "difficulty": "detailed",
     "official": false
   },
@@ -2075,7 +2075,7 @@
     "relationship_type": "child_petitions_father",
     "category": "immigration",
     "locale": "en",
-    "question": "What was the purpose of that trip?",
+    "question": "If you made that entry to the United States, what was the purpose of the trip?",
     "difficulty": "detailed",
     "official": false
   },
@@ -2125,7 +2125,7 @@
     "relationship_type": "child_petitions_father",
     "category": "household",
     "locale": "es",
-    "question": "¿Quiénes viven en ese domicilio?",
+    "question": "¿Con quién vive actualmente?",
     "difficulty": "detailed",
     "official": false
   },
@@ -2135,7 +2135,7 @@
     "relationship_type": "child_petitions_father",
     "category": "household",
     "locale": "en",
-    "question": "Who lives at that address?",
+    "question": "Who do you currently live with?",
     "difficulty": "detailed",
     "official": false
   },
@@ -2225,7 +2225,7 @@
     "relationship_type": "parent_petitions_child",
     "category": "identity",
     "locale": "es",
-    "question": "¿Cuál es su fecha de nacimiento?",
+    "question": "¿Cuál es la fecha de nacimiento de su familiar peticionario?",
     "difficulty": "basic",
     "official": false
   },
@@ -2235,7 +2235,7 @@
     "relationship_type": "parent_petitions_child",
     "category": "identity",
     "locale": "en",
-    "question": "What is their date of birth?",
+    "question": "What is the date of birth of your petitioning relative?",
     "difficulty": "basic",
     "official": false
   },
@@ -2285,7 +2285,7 @@
     "relationship_type": "parent_petitions_child",
     "category": "history",
     "locale": "es",
-    "question": "¿En qué lugares han vivido juntos?",
+    "question": "Si han vivido juntos, ¿en qué lugares fue?",
     "difficulty": "basic",
     "official": false
   },
@@ -2295,7 +2295,7 @@
     "relationship_type": "parent_petitions_child",
     "category": "history",
     "locale": "en",
-    "question": "Where have you lived together?",
+    "question": "If you have lived together, in which places?",
     "difficulty": "basic",
     "official": false
   },
@@ -2425,7 +2425,7 @@
     "relationship_type": "parent_petitions_child",
     "category": "family",
     "locale": "es",
-    "question": "¿Conoce el nombre de los padres de su familiar?",
+    "question": "¿Quiénes son los progenitores del peticionario, según su conocimiento?",
     "difficulty": "detailed",
     "official": false
   },
@@ -2435,7 +2435,7 @@
     "relationship_type": "parent_petitions_child",
     "category": "family",
     "locale": "en",
-    "question": "Do you know your relative’s parents’ names?",
+    "question": "Who are the petitioner’s parents, to your knowledge?",
     "difficulty": "detailed",
     "official": false
   },
@@ -2565,7 +2565,7 @@
     "relationship_type": "parent_petitions_child",
     "category": "immigration",
     "locale": "es",
-    "question": "¿Cuál fue el propósito de ese viaje?",
+    "question": "Si realizó esa entrada a Estados Unidos, ¿cuál fue el propósito del viaje?",
     "difficulty": "detailed",
     "official": false
   },
@@ -2575,7 +2575,7 @@
     "relationship_type": "parent_petitions_child",
     "category": "immigration",
     "locale": "en",
-    "question": "What was the purpose of that trip?",
+    "question": "If you made that entry to the United States, what was the purpose of the trip?",
     "difficulty": "detailed",
     "official": false
   },
@@ -2625,7 +2625,7 @@
     "relationship_type": "parent_petitions_child",
     "category": "household",
     "locale": "es",
-    "question": "¿Quiénes viven en ese domicilio?",
+    "question": "¿Con quién vive actualmente?",
     "difficulty": "detailed",
     "official": false
   },
@@ -2635,7 +2635,7 @@
     "relationship_type": "parent_petitions_child",
     "category": "household",
     "locale": "en",
-    "question": "Who lives at that address?",
+    "question": "Who do you currently live with?",
     "difficulty": "detailed",
     "official": false
   },

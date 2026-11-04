@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {newSession,restoreSession,saveSession,advanceSession,eligibleIds,STUDY_KEY} from '../modules/asylum/study-session.mjs';
 const bank=[{id:'a'},{id:'b'},{id:'c',country:'Cuba'},{id:'d',country:'China'}];
-test('Fisher-Yates includes general and selected country once without changing bank',()=>{
+test('Topic order includes general and selected country once without changing bank',()=>{
  const before=JSON.stringify(bank);const s=newSession(bank,'Cuba',()=>0);
- assert.deepEqual(s.order,['b','c','a']);assert.deepEqual(eligibleIds(bank,'China'),['a','b','d']);assert.equal(JSON.stringify(bank),before);
+ assert.deepEqual(s.order,['a','b','c']);assert.deepEqual(eligibleIds(bank,'China'),['a','b','d']);assert.equal(JSON.stringify(bank),before);
 });
 test('previous and next preserve order and stop at boundaries',()=>{
  const s=newSession(bank,'Cuba');let next=s;for(let i=0;i<10;i++)next=advanceSession(next,1);
@@ -18,7 +18,7 @@ test('reload restores exact sequence and position; corrupt or outdated sessions 
  value='{';assert.equal(restoreSession(storage,bank,['Cuba']),null);
  saveSession(null,s);assert.equal(restoreSession(null,bank,['Cuba']),null);
 });
-test('new country and study again start fresh valid permutations',()=>{
- const first=advanceSession(newSession(bank,'Cuba',()=>0),2);const again=newSession(bank,'Cuba',()=>.99);assert.equal(again.index,0);assert.notDeepEqual(again.order,first.order);
+test('new country and study again restart the same coherent sequence',()=>{
+ const first=advanceSession(newSession(bank,'Cuba',()=>0),2);const again=newSession(bank,'Cuba',()=>.99);assert.equal(again.index,0);assert.deepEqual(again.order,first.order);
  assert.deepEqual(new Set(newSession(bank,'China').order),new Set(['a','b','d']));
 });

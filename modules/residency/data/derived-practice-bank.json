@@ -1,0 +1,191 @@
+[
+  {
+    "id": "RES-DERIVED-001",
+    "ruta": "MATRIMONIO",
+    "bloque": "Hogar",
+    "dificultad": "Fácil",
+    "pregunta_es": "Describa cómo organizan su vivienda actualmente, sea juntos o por separado.",
+    "question_en": "Describe your current living arrangements, whether together or separately.",
+    "official": false,
+    "source": {
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/i-130instr.pdf",
+      "title": "USCIS · I-130 Instructions",
+      "pageObserved": "7",
+      "editionObserved": "04/01/24",
+      "verification": "official_search_index",
+      "directFetch": 403,
+      "currentEditionVerified": false
+    },
+    "learningObjective": "Documentar la organización real de la vivienda.",
+    "derivation": "Las instrucciones enumeran documentación de vivienda compartida; la pregunta no presume convivencia.",
+    "answerPolicy": "Solo hechos propios; admitir incertidumbre u omisión; no inferir elegibilidad ni crear respuestas modelo."
+  },
+  {
+    "id": "RES-DERIVED-002",
+    "ruta": "MATRIMONIO",
+    "bloque": "Finanzas",
+    "dificultad": "Moderada",
+    "pregunta_es": "¿Qué documentos, si los tiene, reflejan cómo organizan sus gastos o recursos?",
+    "question_en": "What documents, if any, reflect how you organize your expenses or resources?",
+    "official": false,
+    "source": {
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/i-130instr.pdf",
+      "title": "USCIS · I-130 Instructions",
+      "pageObserved": "7",
+      "editionObserved": "04/01/24",
+      "verification": "official_search_index",
+      "directFetch": 403,
+      "currentEditionVerified": false
+    },
+    "learningObjective": "Relacionar evidencia financiera con hechos propios.",
+    "derivation": "Las instrucciones enumeran recursos financieros combinados; no se presume cuenta conjunta.",
+    "answerPolicy": "Solo hechos propios; admitir incertidumbre u omisión; no inferir elegibilidad ni crear respuestas modelo."
+  },
+  {
+    "id": "RES-DERIVED-003",
+    "ruta": "MATRIMONIO",
+    "bloque": "Matrimonio y eventos",
+    "dificultad": "Moderada",
+    "pregunta_es": "¿Qué documento registra su matrimonio y qué información puede confirmar con él?",
+    "question_en": "What document records your marriage, and what information can you confirm with it?",
+    "official": false,
+    "source": {
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/i-130instr.pdf",
+      "title": "USCIS · I-130 Instructions",
+      "pageObserved": "6",
+      "editionObserved": "04/01/24",
+      "verification": "official_search_index",
+      "directFetch": 403,
+      "currentEditionVerified": false
+    },
+    "learningObjective": "Identificar la prueba documental de matrimonio.",
+    "derivation": "Las instrucciones describen documentación del vínculo matrimonial; se pide describir, no cargar documentos.",
+    "answerPolicy": "Solo hechos propios; admitir incertidumbre u omisión; no inferir elegibilidad ni crear respuestas modelo."
+  },
+  {
+    "id": "RES-DERIVED-004",
+    "ruta": "HIJO_A_PADRES",
+    "bloque": "Identidad familiar",
+    "dificultad": "Fácil",
+    "pregunta_es": "¿Cómo describiría su relación con el hijo o hija que presenta la petición?",
+    "question_en": "How would you describe your relationship to the child filing the petition?",
+    "official": false,
+    "source": {
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/i-130instr.pdf",
+      "title": "USCIS · I-130 Instructions",
+      "pageObserved": "1",
+      "editionObserved": "04/01/24",
+      "verification": "official_search_index",
+      "directFetch": 403,
+      "currentEditionVerified": false
+    },
+    "learningObjective": "Identificar la relación familiar de la petición.",
+    "derivation": "El formulario tiene como propósito establecer una relación familiar incluida en sus categorías.",
+    "answerPolicy": "Solo hechos propios; admitir incertidumbre u omisión; no inferir elegibilidad ni crear respuestas modelo."
+  },
+  {
+    "id": "RES-DERIVED-005",
+    "ruta": "HIJO_A_PADRES",
+    "bloque": "Documentos",
+    "dificultad": "Moderada",
+    "pregunta_es": "¿Qué documento, si lo tiene, permite relacionar al peticionario con usted como progenitor?",
+    "question_en": "What document, if you have it, links the petitioner to you as a parent?",
+    "official": false,
+    "source": {
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/i-130instr.pdf",
+      "title": "USCIS · I-130 Instructions",
+      "pageObserved": "7",
+      "editionObserved": "04/01/24",
+      "verification": "official_search_index",
+      "directFetch": 403,
+      "currentEditionVerified": false
+    },
+    "learningObjective": "Describir documentación de filiación.",
+    "derivation": "Las instrucciones tratan actas y otras pruebas de filiación; no se presume una modalidad familiar.",
+    "answerPolicy": "Solo hechos propios; admitir incertidumbre u omisión; no inferir elegibilidad ni crear respuestas modelo."
+  },
+  {
+    "id": "RES-DERIVED-006",
+    "ruta": "HIJO_A_PADRES",
+    "bloque": "Ciudadanía del hijo",
+    "dificultad": "Moderada",
+    "pregunta_es": "¿Qué documento puede usar para verificar la ciudadanía del hijo o hija peticionario sin compartir sus números?",
+    "question_en": "What document can you use to check your petitioning child’s citizenship without sharing its numbers?",
+    "official": false,
+    "source": {
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/i-130instr.pdf",
+      "title": "USCIS · I-130 Instructions",
+      "pageObserved": "6",
+      "editionObserved": "04/01/24",
+      "verification": "official_search_index",
+      "directFetch": 403,
+      "currentEditionVerified": false
+    },
+    "learningObjective": "Identificar documentación del estatus del peticionario.",
+    "derivation": "Las instrucciones enumeran documentos de ciudadanía y estatus; no se solicitan identificadores.",
+    "answerPolicy": "Solo hechos propios; admitir incertidumbre u omisión; no inferir elegibilidad ni crear respuestas modelo."
+  },
+  {
+    "id": "RES-DERIVED-007",
+    "ruta": "PADRES_A_HIJOS",
+    "bloque": "Identidad y categoría",
+    "dificultad": "Fácil",
+    "pregunta_es": "¿Qué relación tiene con quien presenta la petición y qué dato todavía necesita verificar?",
+    "question_en": "What is your relationship to the person filing the petition, and what fact do you still need to verify?",
+    "official": false,
+    "source": {
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/i-130instr.pdf",
+      "title": "USCIS · I-130 Instructions",
+      "pageObserved": "1",
+      "editionObserved": "04/01/24",
+      "verification": "official_search_index",
+      "directFetch": 403,
+      "currentEditionVerified": false
+    },
+    "learningObjective": "Identificar relación y límites de conocimiento.",
+    "derivation": "Se deriva del propósito y categorías familiares de I-130, sin concluir elegibilidad.",
+    "answerPolicy": "Solo hechos propios; admitir incertidumbre u omisión; no inferir elegibilidad ni crear respuestas modelo."
+  },
+  {
+    "id": "RES-DERIVED-008",
+    "ruta": "PADRES_A_HIJOS",
+    "bloque": "Ciudadanía del progenitor",
+    "dificultad": "Moderada",
+    "pregunta_es": "¿Qué documento puede consultar para confirmar si su padre o madre peticionario es ciudadano o residente permanente?",
+    "question_en": "What document can you check to confirm whether your petitioning parent is a citizen or permanent resident?",
+    "official": false,
+    "source": {
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/i-130instr.pdf",
+      "title": "USCIS · I-130 Instructions",
+      "pageObserved": "6",
+      "editionObserved": "04/01/24",
+      "verification": "official_search_index",
+      "directFetch": 403,
+      "currentEditionVerified": false
+    },
+    "learningObjective": "Distinguir estatus declarado de estatus documentado.",
+    "derivation": "Las instrucciones enumeran pruebas de ciudadanía o residencia; ninguna respuesta se da por supuesta.",
+    "answerPolicy": "Solo hechos propios; admitir incertidumbre u omisión; no inferir elegibilidad ni crear respuestas modelo."
+  },
+  {
+    "id": "RES-DERIVED-009",
+    "ruta": "PADRES_A_HIJOS",
+    "bloque": "Documentos familiares",
+    "dificultad": "Moderada",
+    "pregunta_es": "¿Qué documento de su historia familiar ayuda a explicar el parentesco con el peticionario?",
+    "question_en": "What document from your family history helps explain your relationship to the petitioner?",
+    "official": false,
+    "source": {
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/i-130instr.pdf",
+      "title": "USCIS · I-130 Instructions",
+      "pageObserved": "7",
+      "editionObserved": "04/01/24",
+      "verification": "official_search_index",
+      "directFetch": 403,
+      "currentEditionVerified": false
+    },
+    "learningObjective": "Identificar evidencia del parentesco.",
+    "derivation": "Las instrucciones describen documentación de filiación; se admite no tener o no recordar el documento.",
+    "answerPolicy": "Solo hechos propios; admitir incertidumbre u omisión; no inferir elegibilidad ni crear respuestas modelo."
+  }
+]

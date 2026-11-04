@@ -1,0 +1,1469 @@
+[
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_1_S1",
+    "branch": "employment",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_1_S1_requirement_1",
+        "es": "Mi respuesta relaciona explícitamente mi empleo con mi temor.",
+        "en": "My answer explicitly links my employment to my fear."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_1_S2",
+    "branch": "employment",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_1_S2_requirement_1",
+        "es": "Mi respuesta relaciona explícitamente mi empleo con mi temor.",
+        "en": "My answer explicitly links my employment to my fear."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2_S1",
+    "branch": "employment",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2_S1_requirement_1",
+        "es": "Describí mi empleo y consideré cambiarlo o dejarlo.",
+        "en": "I described my employment and considered changing or leaving it."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2_S1_requirement_2",
+        "es": "Mi respuesta vincula explícitamente ese empleo con mi temor; no se deduce solo de mencionar trabajo.",
+        "en": "My answer explicitly links that employment to my fear; this is not inferred merely from mentioning work."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2_S2",
+    "branch": "employment",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2_S2_requirement_1",
+        "es": "Describí mi empleo y consideré cambiarlo o dejarlo.",
+        "en": "I described my employment and considered changing or leaving it."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2_S2_requirement_2",
+        "es": "Mi respuesta vincula explícitamente ese empleo con mi temor; no se deduce solo de mencionar trabajo.",
+        "en": "My answer explicitly links that employment to my fear; this is not inferred merely from mentioning work."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2_S3",
+    "branch": "employment",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2_S3_requirement_1",
+        "es": "Describí mi empleo y consideré cambiarlo o dejarlo.",
+        "en": "I described my employment and considered changing or leaving it."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2_S3_requirement_2",
+        "es": "Mi respuesta vincula explícitamente ese empleo con mi temor; no se deduce solo de mencionar trabajo.",
+        "en": "My answer explicitly links that employment to my fear; this is not inferred merely from mentioning work."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_3_S1",
+    "branch": "employment",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_3_S1_requirement_1",
+        "es": "Describí un cambio, cese o solicitud de cambio de mi empleo que efectivamente ocurrió.",
+        "en": "I described a change, departure or requested change in my employment that actually occurred."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_3_S1_requirement_2",
+        "es": "Mi respuesta vincula explícitamente ese empleo con mi temor; no se deduce solo de mencionar trabajo.",
+        "en": "My answer explicitly links that employment to my fear; this is not inferred merely from mentioning work."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_3"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_3_S2",
+    "branch": "employment",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_3_S2_requirement_1",
+        "es": "Describí un cambio, cese o solicitud de cambio de mi empleo que efectivamente ocurrió.",
+        "en": "I described a change, departure or requested change in my employment that actually occurred."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_3_S2_requirement_2",
+        "es": "Mi respuesta vincula explícitamente ese empleo con mi temor; no se deduce solo de mencionar trabajo.",
+        "en": "My answer explicitly links that employment to my fear; this is not inferred merely from mentioning work."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EMPLOYMENT_3"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_1_S1",
+    "branch": "activity",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_1_S1_requirement_1",
+        "es": "Describí una actividad propia relacionada explícitamente con mi temor y consideré cambiarla.",
+        "en": "I described my own activity explicitly linked to my fear and considered changing it."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_1_S2",
+    "branch": "activity",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_1_S2_requirement_1",
+        "es": "Describí una actividad propia relacionada explícitamente con mi temor y consideré cambiarla.",
+        "en": "I described my own activity explicitly linked to my fear and considered changing it."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_1_S3",
+    "branch": "activity",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_1_S3_requirement_1",
+        "es": "Describí una actividad propia relacionada explícitamente con mi temor y consideré cambiarla.",
+        "en": "I described my own activity explicitly linked to my fear and considered changing it."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_1_S3_additional_1",
+        "es": "Afirmé expresamente que contemplé dejar la actividad propia que vinculé con mi temor.",
+        "en": "I explicitly stated that I considered stopping the activity of my own that I linked to my fear."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_2_S1",
+    "branch": "activity",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_2_S1_requirement_1",
+        "es": "Describí mi decisión real de cambiar o continuar esa actividad, relacionada con mi temor.",
+        "en": "I described my actual decision to change or continue that activity, related to my fear."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_2_S1_additional_1",
+        "es": "Afirmé expresamente que efectivamente cambié o dejé esa actividad, no solo que decidí hacerlo.",
+        "en": "I explicitly stated that I actually changed or stopped that activity, not merely that I decided to do so."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_2_S2",
+    "branch": "activity",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_2_S2_requirement_1",
+        "es": "Describí mi decisión real de cambiar o continuar esa actividad, relacionada con mi temor.",
+        "en": "I described my actual decision to change or continue that activity, related to my fear."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_2_S2_additional_1",
+        "es": "Afirmé expresamente que mi decisión sobre esa actividad fue continuarla sin cambiarla ni dejarla.",
+        "en": "I explicitly stated that my decision about that activity was to continue it without changing or stopping it."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_ACTIVITY_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_1_S1",
+    "branch": "relocation",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_1_S1_requirement_1",
+        "es": "Describí un lugar concreto de mi país que consideré para vivir.",
+        "en": "I described a specific place in my country I considered living in."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_1_S2",
+    "branch": "relocation",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_1_S2_requirement_1",
+        "es": "Describí un lugar concreto de mi país que consideré para vivir.",
+        "en": "I described a specific place in my country I considered living in."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_2_S1",
+    "branch": "relocation",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_2_S1_requirement_1",
+        "es": "Describí un lugar concreto que consideré y la información que tenía sobre él.",
+        "en": "I described a specific place I considered and the information I had about it."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_2_S2",
+    "branch": "relocation",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_2_S2_requirement_1",
+        "es": "Describí un lugar concreto que consideré y la información que tenía sobre él.",
+        "en": "I described a specific place I considered and the information I had about it."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_2_S3",
+    "branch": "relocation",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_2_S3_requirement_1",
+        "es": "Describí un lugar concreto que consideré y la información que tenía sobre él.",
+        "en": "I described a specific place I considered and the information I had about it."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_3_S1",
+    "branch": "relocation",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_3_S1_requirement_1",
+        "es": "Describí si intenté trasladarme o por qué no lo intenté.",
+        "en": "I described whether I tried moving or why I did not."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_3_S1_additional_1",
+        "es": "Afirmé expresamente que intenté realizar la mudanza concreta de la que estoy hablando.",
+        "en": "I explicitly stated that I tried to make the specific move I am discussing."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_3"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_3_S2",
+    "branch": "relocation",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_3_S2_requirement_1",
+        "es": "Describí si intenté trasladarme o por qué no lo intenté.",
+        "en": "I described whether I tried moving or why I did not."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_3_S2_additional_1",
+        "es": "Afirmé expresamente que no intenté realizar la mudanza concreta de la que estoy hablando.",
+        "en": "I explicitly stated that I did not attempt the specific move I am discussing."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RELOCATION_3"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_1_S1",
+    "branch": "responses",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_1_S1_requirement_1",
+        "es": "Describí un hecho que viví y lo que pude considerar después.",
+        "en": "I described an event I experienced and what I could consider afterward."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_1_S2",
+    "branch": "responses",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_1_S2_requirement_1",
+        "es": "Describí un hecho que viví y lo que pude considerar después.",
+        "en": "I described an event I experienced and what I could consider afterward."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_2_S1",
+    "branch": "responses",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_2_S1_requirement_1",
+        "es": "Describí una medida que intenté realmente después de ese hecho.",
+        "en": "I described a measure I actually tried after that event."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_2_S2",
+    "branch": "responses",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_2_S2_requirement_1",
+        "es": "Describí una medida que intenté realmente después de ese hecho.",
+        "en": "I described a measure I actually tried after that event."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_2_S2_additional_1",
+        "es": "Describí una decisión propia que tomé después de intentar esa medida.",
+        "en": "I described a decision of my own that I made after trying that measure."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_2_S2_additional_2",
+        "es": "Describí el resultado que conozco de esa medida concreta, incluida la ausencia de un efecto si eso fue lo que observé.",
+        "en": "I described the result I know of that specific measure, including the absence of an effect if that is what I observed."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RESPONSES_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_DECISION_CONTEXT_1_S1",
+    "branch": "decision_context",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_DECISION_CONTEXT_1_S1_requirement_1",
+        "es": "Describí mi decisión de salir y lo que sabía entonces.",
+        "en": "I described my decision to leave and what I knew then."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_DECISION_CONTEXT_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_DECISION_CONTEXT_1_S2",
+    "branch": "decision_context",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_DECISION_CONTEXT_1_S2_requirement_1",
+        "es": "Describí mi decisión de salir y lo que sabía entonces.",
+        "en": "I described my decision to leave and what I knew then."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_DECISION_CONTEXT_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_DECISION_CONTEXT_2",
+    "branch": "decision_context",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_DECISION_CONTEXT_2_requirement_1",
+        "es": "Describí mis propias preocupaciones de seguridad y otros objetivos.",
+        "en": "I described my own safety concerns and other goals."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_DECISION_CONTEXT_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_1_V2_S1",
+    "branch": "prior_statements",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_1_V2_S1_requirement_1",
+        "es": "Identifiqué una declaración anterior propia o un registro que aporté voluntariamente.",
+        "en": "I identified my own earlier statement or a record I voluntarily provided."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_1_V2_S1_additional_1",
+        "es": "Identifiqué expresamente una declaración anterior hecha por mí.",
+        "en": "I explicitly identified an earlier statement made by me."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_1_V2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_1_V2_S2",
+    "branch": "prior_statements",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_1_V2_S2_requirement_1",
+        "es": "Identifiqué una declaración anterior propia o un registro que aporté voluntariamente.",
+        "en": "I identified my own earlier statement or a record I voluntarily provided."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_1_V2_S2_additional_1",
+        "es": "Afirmé que dispongo de un registro de una declaración anterior hecha por mí.",
+        "en": "I stated that I have a record of an earlier statement made by me."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_1_V2_S2_additional_2",
+        "es": "Aporté voluntariamente ese registro concreto para esta práctica.",
+        "en": "I voluntarily provided that specific record for this practice."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_1_V2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_2_S1",
+    "branch": "prior_statements",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_2_S1_requirement_1",
+        "es": "Las dos citas seleccionadas tratan del mismo asunto de mi declaración: una describe el registro y otra mi recuerdo. He identificado una diferencia, sin presumir falsedad.",
+        "en": "The two selected quotations concern the same matter in my statement: one describes the record and the other my recollection. I identified a difference, without presuming falsehood."
+      }
+    ],
+    "disabledReason": "",
+    "requiresPriorQuote": true,
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_2_S2",
+    "branch": "prior_statements",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_2_S2_requirement_1",
+        "es": "Las dos citas seleccionadas tratan del mismo asunto de mi declaración: una describe el registro y otra mi recuerdo. He identificado una diferencia, sin presumir falsedad.",
+        "en": "The two selected quotations concern the same matter in my statement: one describes the record and the other my recollection. I identified a difference, without presuming falsehood."
+      }
+    ],
+    "disabledReason": "",
+    "requiresPriorQuote": true,
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PRIOR_STATEMENTS_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_INTENT_CHANGE_1_S1",
+    "branch": "intent_change",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_INTENT_CHANGE_1_S1_requirement_1",
+        "es": "Afirmé expresamente que mi propio propósito cambió.",
+        "en": "I explicitly stated that my own purpose changed."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_INTENT_CHANGE_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_INTENT_CHANGE_1_S2",
+    "branch": "intent_change",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_INTENT_CHANGE_1_S2_requirement_1",
+        "es": "Afirmé expresamente que mi propio propósito cambió.",
+        "en": "I explicitly stated that my own purpose changed."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_INTENT_CHANGE_1_S2_additional_1",
+        "es": "Afirmé expresamente que tomé una decisión sobre qué hacer después del cambio de propósito que mencioné.",
+        "en": "I explicitly stated that I made a decision about what to do after the change of purpose I mentioned."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_INTENT_CHANGE_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_INTENT_CHANGE_2",
+    "branch": "intent_change",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_INTENT_CHANGE_2_requirement_1",
+        "es": "Describí un cambio real de mi propósito y un hecho o información para situarlo.",
+        "en": "I described an actual change in my purpose and an event or information to place it in time."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_INTENT_CHANGE_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_1_S1",
+    "branch": "asylum_timing",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_1_S1_requirement_1",
+        "es": "Relaté un período de mi propia cronología de solicitud.",
+        "en": "I described a period in my own application timeline."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_1_S2",
+    "branch": "asylum_timing",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_1_S2_requirement_1",
+        "es": "Relaté un período de mi propia cronología de solicitud.",
+        "en": "I described a period in my own application timeline."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_2_S1",
+    "branch": "asylum_timing",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_2_S1_requirement_1",
+        "es": "Relaté obstáculos o cambios reales durante ese período.",
+        "en": "I described actual obstacles or changes during that period."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_2_S2",
+    "branch": "asylum_timing",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_2_S2_requirement_1",
+        "es": "Relaté obstáculos o cambios reales durante ese período.",
+        "en": "I described actual obstacles or changes during that period."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_2_S3",
+    "branch": "asylum_timing",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_2_S3_requirement_1",
+        "es": "Relaté obstáculos o cambios reales durante ese período.",
+        "en": "I described actual obstacles or changes during that period."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_2_S3_additional_1",
+        "es": "Afirmé expresamente que di pasos propios durante ese período de mi cronología de solicitud.",
+        "en": "I explicitly stated that I took steps myself during that period of my application timeline."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_ASYLUM_TIMING_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_1_S1",
+    "branch": "amnesty_scope",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_1_S1_requirement_1",
+        "es": "Mencioné una medida concreta; su aplicación a mi situación no está verificada.",
+        "en": "I mentioned a specific measure; its application to my situation is not verified."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_1_S2",
+    "branch": "amnesty_scope",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_1_S2_requirement_1",
+        "es": "Mencioné una medida concreta; su aplicación a mi situación no está verificada.",
+        "en": "I mentioned a specific measure; its application to my situation is not verified."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_2_S1",
+    "branch": "amnesty_scope",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_2_S1_requirement_1",
+        "es": "Mencioné una medida concreta y distinguí anuncio de aplicación práctica.",
+        "en": "I mentioned a specific measure and distinguished an announcement from practical application."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_2_S2",
+    "branch": "amnesty_scope",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_2_S2_requirement_1",
+        "es": "Mencioné una medida concreta y distinguí anuncio de aplicación práctica.",
+        "en": "I mentioned a specific measure and distinguished an announcement from practical application."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_SCOPE_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_CURRENT_ACTOR_1",
+    "branch": "current_actor",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_CURRENT_ACTOR_1_requirement_1",
+        "es": "Identifiqué un actor concreto en mi relato, sin asumir una acción personal.",
+        "en": "I identified a specific actor in my account, without assuming a personal action."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_CURRENT_ACTOR_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_CURRENT_ACTOR_2_S1",
+    "branch": "current_actor",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_CURRENT_ACTOR_2_S1_requirement_1",
+        "es": "Identifiqué ese actor y afirmé expresamente que no ha habido contacto reciente.",
+        "en": "I identified that actor and explicitly stated there has been no recent contact."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_CURRENT_ACTOR_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_CURRENT_ACTOR_2_S2",
+    "branch": "current_actor",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_CURRENT_ACTOR_2_S2_requirement_1",
+        "es": "Identifiqué ese actor y afirmé expresamente que no ha habido contacto reciente.",
+        "en": "I identified that actor and explicitly stated there has been no recent contact."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_CURRENT_ACTOR_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_1_S1",
+    "branch": "mitigation_help",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_1_S1_requirement_1",
+        "es": "Describí una medida real que intenté y distingo observación de expectativa.",
+        "en": "I described an actual measure I tried and distinguish observation from expectation."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_1_S2",
+    "branch": "mitigation_help",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_1_S2_requirement_1",
+        "es": "Describí una medida real que intenté y distingo observación de expectativa.",
+        "en": "I described an actual measure I tried and distinguish observation from expectation."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_2_S1",
+    "branch": "mitigation_help",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_2_S1_requirement_1",
+        "es": "Afirmé que esa medida me ayudó parcial o temporalmente.",
+        "en": "I stated that the measure helped me partly or temporarily."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_2_S2",
+    "branch": "mitigation_help",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_2_S2_requirement_1",
+        "es": "Afirmé que esa medida me ayudó parcial o temporalmente.",
+        "en": "I stated that the measure helped me partly or temporarily."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_2_S3",
+    "branch": "mitigation_help",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_2_S3_requirement_1",
+        "es": "Afirmé que esa medida me ayudó parcial o temporalmente.",
+        "en": "I stated that the measure helped me partly or temporarily."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_2_S3_additional_1",
+        "es": "Describí una decisión propia tomada después de la ayuda parcial o temporal de esa medida.",
+        "en": "I described a decision of my own made after that measure provided partial or temporary help."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_MITIGATION_HELP_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_1_S1",
+    "branch": "political_role",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_1_S1_requirement_1",
+        "es": "Describí participación política propia real, no solo una afiliación atribuida.",
+        "en": "I described my actual political participation, not merely an attributed affiliation."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_1_S2",
+    "branch": "political_role",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_1_S2_requirement_1",
+        "es": "Describí participación política propia real, no solo una afiliación atribuida.",
+        "en": "I described my actual political participation, not merely an attributed affiliation."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_1_S2_additional_1",
+        "es": "Describí a otras personas que participaron en la misma actividad política propia de la que estoy hablando.",
+        "en": "I described other people who participated in the same political activity of my own that I am discussing."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_2_S1",
+    "branch": "political_role",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_2_S1_requirement_1",
+        "es": "Describí participación política propia real y qué conozco sobre su visibilidad.",
+        "en": "I described my actual political participation and what I know about its visibility."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_2_S2",
+    "branch": "political_role",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_2_S2_requirement_1",
+        "es": "Describí participación política propia real y qué conozco sobre su visibilidad.",
+        "en": "I described my actual political participation and what I know about its visibility."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_2_S2_additional_1",
+        "es": "Identifiqué expresamente una persona o grupo que, según lo que sé, conocía mi participación política.",
+        "en": "I explicitly identified a person or group that, as far as I know, was aware of my political participation."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_2_S3",
+    "branch": "political_role",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_2_S3_requirement_1",
+        "es": "Describí participación política propia real y qué conozco sobre su visibilidad.",
+        "en": "I described my actual political participation and what I know about its visibility."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_POLITICAL_ROLE_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_1_S1",
+    "branch": "event_chain",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_1_S1_requirement_1",
+        "es": "Describí un hecho propio concreto y mi decisión posterior.",
+        "en": "I described a specific event I experienced and my later decision."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_1_S2",
+    "branch": "event_chain",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_1_S2_requirement_1",
+        "es": "Describí un hecho propio concreto y mi decisión posterior.",
+        "en": "I described a specific event I experienced and my later decision."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2_S1",
+    "branch": "event_chain",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2_S1_requirement_1",
+        "es": "Describí dos hechos propios antes de salir, sin dar por probada su relación.",
+        "en": "I described two events I experienced before leaving, without assuming their relationship is proven."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2_S2",
+    "branch": "event_chain",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2_S2_requirement_1",
+        "es": "Describí dos hechos propios antes de salir, sin dar por probada su relación.",
+        "en": "I described two events I experienced before leaving, without assuming their relationship is proven."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2_S3",
+    "branch": "event_chain",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2_S3_requirement_1",
+        "es": "Describí dos hechos propios antes de salir, sin dar por probada su relación.",
+        "en": "I described two events I experienced before leaving, without assuming their relationship is proven."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2_S4",
+    "branch": "event_chain",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2_S4_requirement_1",
+        "es": "Describí dos hechos propios antes de salir, sin dar por probada su relación.",
+        "en": "I described two events I experienced before leaving, without assuming their relationship is proven."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EVENT_CHAIN_2_V2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_1_S1",
+    "branch": "exit_controls",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_1_S1_requirement_1",
+        "es": "Describí un control concreto por el que pasé personalmente.",
+        "en": "I described a specific checkpoint I personally passed through."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_1_S2",
+    "branch": "exit_controls",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_1_S2_requirement_1",
+        "es": "Describí un control concreto por el que pasé personalmente.",
+        "en": "I described a specific checkpoint I personally passed through."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_2_S1",
+    "branch": "exit_controls",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_2_S1_requirement_1",
+        "es": "Afirmé expresamente que salí sin detención; no estoy describiendo una detención.",
+        "en": "I explicitly stated I left without detention; I am not describing a detention."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_2_S2",
+    "branch": "exit_controls",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_2_S2_requirement_1",
+        "es": "Afirmé expresamente que salí sin detención; no estoy describiendo una detención.",
+        "en": "I explicitly stated I left without detention; I am not describing a detention."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_EXIT_CONTROLS_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_1_S1",
+    "branch": "amnesty_reporting_choice",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_1_S1_requirement_1",
+        "es": "Mencioné una medida concreta y una decisión propia respecto de ella, no solo la comunicación de un daño.",
+        "en": "I mentioned a specific measure and my own decision about it, not only reporting harm."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_1_S2",
+    "branch": "amnesty_reporting_choice",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_1_S2_requirement_1",
+        "es": "Mencioné una medida concreta y una decisión propia respecto de ella, no solo la comunicación de un daño.",
+        "en": "I mentioned a specific measure and my own decision about it, not only reporting harm."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_1_S3",
+    "branch": "amnesty_reporting_choice",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_1_S3_requirement_1",
+        "es": "Mencioné una medida concreta y una decisión propia respecto de ella, no solo la comunicación de un daño.",
+        "en": "I mentioned a specific measure and my own decision about it, not only reporting harm."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_2_S1",
+    "branch": "amnesty_reporting_choice",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_2_S1_requirement_1",
+        "es": "Describí que intenté acceder a esa medida concreta o pedir ayuda y recibí una respuesta.",
+        "en": "I described actually trying to access that specific measure or request help and receiving a response."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_2_S2",
+    "branch": "amnesty_reporting_choice",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_2_S2_requirement_1",
+        "es": "Describí que intenté acceder a esa medida concreta o pedir ayuda y recibí una respuesta.",
+        "en": "I described actually trying to access that specific measure or request help and receiving a response."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_AMNESTY_REPORTING_CHOICE_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_OPTIONAL_IMPACT_1",
+    "branch": "optional_impact",
+    "enabled": true,
+    "impact": true,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_OPTIONAL_IMPACT_1_requirement_1",
+        "es": "Describí una experiencia propia y quiero explorar voluntariamente su impacto cotidiano.",
+        "en": "I described my own experience and voluntarily want to explore its everyday impact."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_OPTIONAL_IMPACT_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_OPTIONAL_IMPACT_2_S1",
+    "branch": "optional_impact",
+    "enabled": true,
+    "impact": true,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_OPTIONAL_IMPACT_2_S1_requirement_1",
+        "es": "Describí apoyo que recibí realmente y quiero explorar voluntariamente su efecto general.",
+        "en": "I described support I actually received and voluntarily want to explore its general effect."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_OPTIONAL_IMPACT_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_OPTIONAL_IMPACT_2_S2",
+    "branch": "optional_impact",
+    "enabled": true,
+    "impact": true,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_OPTIONAL_IMPACT_2_S2_requirement_1",
+        "es": "Describí apoyo que recibí realmente y quiero explorar voluntariamente su efecto general.",
+        "en": "I described support I actually received and voluntarily want to explore its general effect."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_OPTIONAL_IMPACT_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PRESENT_EXPRESSION_1",
+    "branch": "present_expression",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PRESENT_EXPRESSION_1_requirement_1",
+        "es": "Describí mis propias opiniones y mi decisión sobre qué expresar públicamente.",
+        "en": "I described my own views and my decision about what to express publicly."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PRESENT_EXPRESSION_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PRESENT_EXPRESSION_2_S1",
+    "branch": "present_expression",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PRESENT_EXPRESSION_2_S1_requirement_1",
+        "es": "Describí mi propia valoración de un riesgo al expresarme o participar.",
+        "en": "I described my own assessment of a risk in expressing myself or participating."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PRESENT_EXPRESSION_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PRESENT_EXPRESSION_2_S2",
+    "branch": "present_expression",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PRESENT_EXPRESSION_2_S2_requirement_1",
+        "es": "Describí mi propia valoración de un riesgo al expresarme o participar.",
+        "en": "I described my own assessment of a risk in expressing myself or participating."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PRESENT_EXPRESSION_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_1_S1",
+    "branch": "hypothetical_return",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_1_S1_requirement_1",
+        "es": "Se presentó y acepté un escenario claramente hipotético de retorno.",
+        "en": "A clearly hypothetical return scenario was presented and I accepted it."
+      }
+    ],
+    "disabledReason": "",
+    "scenario": {
+      "version": "1",
+      "es": "Ejercicio exclusivamente hipotético: considera la posibilidad de regresar a tu país. No afirmamos que sea seguro, que debas hacerlo ni que exista una decisión, procedimiento u oferta real de ninguna autoridad. Puedes omitir el ejercicio.",
+      "en": "Hypothetical exercise only: consider the possibility of returning to your country. We do not assert it is safe, that you should do so, or that any authority has made a real decision, procedure or offer. You may skip this exercise."
+    },
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_1_S2",
+    "branch": "hypothetical_return",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_1_S2_requirement_1",
+        "es": "Se presentó y acepté un escenario claramente hipotético de retorno.",
+        "en": "A clearly hypothetical return scenario was presented and I accepted it."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_1_S2_additional_1",
+        "es": "Expresé una valoración propia de lo que podría ocurrirme en ese escenario hipotético de retorno.",
+        "en": "I expressed my own assessment of what might happen to me in that hypothetical return scenario."
+      }
+    ],
+    "disabledReason": "",
+    "scenario": {
+      "version": "1",
+      "es": "Ejercicio exclusivamente hipotético: considera la posibilidad de regresar a tu país. No afirmamos que sea seguro, que debas hacerlo ni que exista una decisión, procedimiento u oferta real de ninguna autoridad. Puedes omitir el ejercicio.",
+      "en": "Hypothetical exercise only: consider the possibility of returning to your country. We do not assert it is safe, that you should do so, or that any authority has made a real decision, procedure or offer. You may skip this exercise."
+    },
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_2_S1",
+    "branch": "hypothetical_return",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_2_S1_requirement_1",
+        "es": "Se presentó y acepté una reubicación claramente hipotética, sin oferta real.",
+        "en": "A clearly hypothetical relocation was presented and I accepted it, without any real offer."
+      }
+    ],
+    "disabledReason": "",
+    "scenario": {
+      "version": "1",
+      "es": "Ejercicio exclusivamente hipotético: considera vivir en otro lugar de tu país con algún apoyo hipotético no especificado. No hay oferta real, programa confirmado ni garantía de seguridad; no se atribuye esa ayuda a inmigración ni a otra autoridad. Puedes omitirlo.",
+      "en": "Hypothetical exercise only: consider living elsewhere in your country with some unspecified hypothetical support. There is no real offer, confirmed program or safety guarantee; no help is attributed to immigration or another authority. You may skip it."
+    },
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_2_S2",
+    "branch": "hypothetical_return",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_2_S2_requirement_1",
+        "es": "Se presentó y acepté una reubicación claramente hipotética, sin oferta real.",
+        "en": "A clearly hypothetical relocation was presented and I accepted it, without any real offer."
+      }
+    ],
+    "disabledReason": "",
+    "scenario": {
+      "version": "1",
+      "es": "Ejercicio exclusivamente hipotético: considera vivir en otro lugar de tu país con algún apoyo hipotético no especificado. No hay oferta real, programa confirmado ni garantía de seguridad; no se atribuye esa ayuda a inmigración ni a otra autoridad. Puedes omitirlo.",
+      "en": "Hypothetical exercise only: consider living elsewhere in your country with some unspecified hypothetical support. There is no real offer, confirmed program or safety guarantee; no help is attributed to immigration or another authority. You may skip it."
+    },
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_HYPOTHETICAL_RETURN_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RETURNEE_EVIDENCE_1_V2_S1",
+    "branch": "hypothetical_returnee_evidence",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RETURNEE_EVIDENCE_1_V2_S1_requirement_1",
+        "es": "Se presentó una hipótesis de comparación sin atribuir casos reales a inmigración.",
+        "en": "A comparison hypothesis was presented without attributing real cases to immigration authorities."
+      }
+    ],
+    "disabledReason": "",
+    "scenario": {
+      "version": "1",
+      "es": "Comparación ficticia: imagina que otras personas hipotéticas regresan a su país. No presentamos casos reales, fuentes ni afirmaciones de inmigración, y no afirmamos que esas personas estén seguras ni que sus circunstancias sean comparables a las tuyas. Puedes omitir este ejercicio.",
+      "en": "Fictional comparison: imagine other hypothetical people returning to their country. We present no real cases, sources or immigration claims, and do not assert that those people are safe or that their circumstances are comparable to yours. You may skip this exercise."
+    },
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RETURNEE_EVIDENCE_1_V2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_RETURNEE_EVIDENCE_1_V2_S2",
+    "branch": "hypothetical_returnee_evidence",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_RETURNEE_EVIDENCE_1_V2_S2_requirement_1",
+        "es": "Se presentó una hipótesis de comparación sin atribuir casos reales a inmigración.",
+        "en": "A comparison hypothesis was presented without attributing real cases to immigration authorities."
+      }
+    ],
+    "disabledReason": "",
+    "scenario": {
+      "version": "1",
+      "es": "Comparación ficticia: imagina que otras personas hipotéticas regresan a su país. No presentamos casos reales, fuentes ni afirmaciones de inmigración, y no afirmamos que esas personas estén seguras ni que sus circunstancias sean comparables a las tuyas. Puedes omitir este ejercicio.",
+      "en": "Fictional comparison: imagine other hypothetical people returning to their country. We present no real cases, sources or immigration claims, and do not assert that those people are safe or that their circumstances are comparable to yours. You may skip this exercise."
+    },
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_RETURNEE_EVIDENCE_1_V2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_1_S1",
+    "branch": "preparation_authorship",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_1_S1_requirement_1",
+        "es": "Identifiqué contenido ajeno o que no reconozco en un texto relacionado con mi preparación.",
+        "en": "I identified outside content or content I do not recognize in a text related to my preparation."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_1_S2",
+    "branch": "preparation_authorship",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_1_S2_requirement_1",
+        "es": "Identifiqué contenido ajeno o que no reconozco en un texto relacionado con mi preparación.",
+        "en": "I identified outside content or content I do not recognize in a text related to my preparation."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_1"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_2_S1",
+    "branch": "preparation_authorship",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_2_S1_requirement_1",
+        "es": "Afirmé que utilicé traducción o interpretación para revisar mi texto.",
+        "en": "I stated I used translation or interpretation to review my text."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_2_S2",
+    "branch": "preparation_authorship",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_2_S2_requirement_1",
+        "es": "Afirmé que utilicé traducción o interpretación para revisar mi texto.",
+        "en": "I stated I used translation or interpretation to review my text."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_2"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_3_S1",
+    "branch": "preparation_authorship",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_3_S1_requirement_1",
+        "es": "Afirmé expresamente que consideré pedir asilo antes de viajar.",
+        "en": "I explicitly stated that I considered seeking asylum before traveling."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_3_S1_additional_1",
+        "es": "Afirmé expresamente que sentía temor propio cuando consideré pedir asilo antes del viaje.",
+        "en": "I explicitly stated that I felt fear myself when I considered seeking asylum before the trip."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_3"
+  },
+  {
+    "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_3_S2",
+    "branch": "preparation_authorship",
+    "enabled": true,
+    "impact": false,
+    "requirements": [
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_3_S2_requirement_1",
+        "es": "Afirmé expresamente que consideré pedir asilo antes de viajar.",
+        "en": "I explicitly stated that I considered seeking asylum before traveling."
+      },
+      {
+        "id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_3_S2_additional_1",
+        "es": "Describí otros objetivos propios que tenía cuando consideré pedir asilo antes del viaje.",
+        "en": "I described other goals of my own that I had when I considered seeking asylum before the trip."
+      }
+    ],
+    "disabledReason": "",
+    "previous_id": "IMMIGRA_ASYLUM_ADAPT_PREPARATION_3"
+  }
+]

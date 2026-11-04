@@ -9,3 +9,10 @@
 .voice-review{margin-top:24px;overflow-wrap:anywhere}.voice-review blockquote{margin:12px 0;padding:12px;border-left:3px solid #85ad9f;background:#f5f8f6}.voice-review textarea,.voice-review select{display:block;width:100%;max-width:100%;box-sizing:border-box;padding:10px;margin:8px 0}.voice-review details{padding:12px 0}
 
 .local-tools input:not([type=checkbox]){display:block;width:100%;box-sizing:border-box;font:inherit;padding:12px;border:1px solid #bbb;border-radius:10px;margin-top:8px}.local-tools{overflow-wrap:anywhere}
+
+.res-question-source { display: block; margin: .5rem 0 1rem; line-height: 1.5; opacity: .85; }
+.res-question-source a { color: inherit; text-decoration: underline; }
+
+.call-stage > .res-question-context { position: relative; z-index: 2; width: min(92%, 660px); padding: 10px 14px; border-radius: 12px; background: var(--color-background); color: var(--color-text); font-size: 12px; }
+.res-question-context .res-question-source { margin: 0 0 6px; opacity: 1; }
+.res-question-context button { min-height: 44px; padding: 8px 14px; border-radius: 12px; border: 1px solid var(--color-border); color: var(--color-navy); background: var(--color-white); }

@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createInterviewAIEngine} from '../shared/interview-ui/InterviewAIEngine.mjs';
 const settings={module:'asylum',locale:'es',consent:true,transport:'voice'};
-function fixture({evaluateTurn,disconnectGraceMs}={}){
+function fixture({evaluateTurn,disconnectGraceMs,enableVoiceAdaptiveControls=false,serverVoiceControls=false}={}){
  const tracks=[{enabled:true,stop(){this.stopped=true;}}],stream={getTracks:()=>tracks,getAudioTracks:()=>tracks},states=[],captions=[],reviews=[],requests=[],errors=[],diagnostics=[];let peer,micCalls=0;
  class Peer{constructor(){peer=this;}addTrack(){}createDataChannel(){this.channel={readyState:'open',sent:[],send(s){this.sent.push(JSON.parse(s));},close(){}};return this.channel;}async createOffer(){return {sdp:'v=0\r\noffer'};}async setLocalDescription(){}async setRemoteDescription(){this.channel.onopen();}close(){this.closed=true;}}
  class Audio{play(){return Promise.resolve();}pause(){}}
  const env={RTCPeerConnection:Peer,Audio,navigator:{mediaDevices:{getUserMedia:async()=>{micCalls++;return stream;}}}};
- const fetchImpl=async(url,options)=>{requests.push({url,options});return options.method==='DELETE'?new Response(null,{status:204}):Response.json(url.endsWith('/turn')?{suggested_follow_up:'Which year?',educational_feedback:'Please clarify.',provider:'OpenAI'}:{id:'test',sdp:'v=0\r\nanswer',expires_at:Date.now()+600000});};
- const engine=createInterviewAIEngine({env,fetchImpl,evaluateTurn,disconnectGraceMs,onState:x=>states.push(x),onCaption:x=>captions.push(x),onEvaluation:x=>reviews.push(x),onError:x=>errors.push(x),onDiagnostic:(phase,data)=>diagnostics.push({phase,...data})});
+ const fetchImpl=async(url,options)=>{requests.push({url,options});return options.method==='DELETE'?new Response(null,{status:204}):Response.json(url.endsWith('/turn')?{suggested_follow_up:'Which year?',educational_feedback:'Please clarify.',provider:'OpenAI'}:{adaptive_voice_controls:serverVoiceControls,id:'test',sdp:'v=0\r\nanswer',expires_at:Date.now()+600000});};
+ const engine=createInterviewAIEngine({env,fetchImpl,evaluateTurn,disconnectGraceMs,enableVoiceAdaptiveControls,onState:x=>states.push(x),onCaption:x=>captions.push(x),onEvaluation:x=>reviews.push(x),onError:x=>errors.push(x),onDiagnostic:(phase,data)=>diagnostics.push({phase,...data})});
  return {engine,env,fetchImpl,tracks,stream,states,captions,reviews,requests,errors,diagnostics,peer:()=>peer,micCalls:()=>micCalls};
 }
 const drain=()=>new Promise(resolve=>setImmediate(resolve));
@@ -195,4 +195,69 @@ test('repeat never reintroduces legacy educational coaching into personal captio
  const f=fixture({evaluateTurn:async()=>({suggested_follow_up:'Educational advice. Practice is complete.',educational_feedback:'Educational advice.',next_action:'finish'})});
  await f.engine.start({...settings,transport:'text'});f.engine.repeat();
  assert.equal(f.captions.at(-1).text,'Practice is complete.');assert.ok(!f.captions.some(c=>c.text.includes('Educational advice.')));f.engine.close();
+});
+
+test('both interview transports serialize the explicitly selected asylum country',async()=>{
+ for(const transport of ['text','voice']){
+  const f=fixture();
+  try{await f.engine.start({...settings,transport,country:'Venezuela'});assert.equal(JSON.parse(f.requests[0].options.body).country,'Venezuela');}
+  finally{f.engine.close();}
+ }
+});
+
+test('structured adaptive actions are text-only and not narrated as user answers',async()=>{
+ const f=fixture();await f.engine.start({...settings,transport:'text'});
+ assert.equal(f.engine.sendAdaptive({type:'omit'}),true);await drain();
+ const body=JSON.parse(f.requests.at(-1).options.body);assert.equal(body.adaptive.type,'omit');assert.equal(body.answer,'');assert.ok(!f.captions.some(c=>c.who==='user'));f.engine.close();
+ const voice=fixture();await voice.engine.start(settings);assert.equal(voice.engine.sendAdaptive({type:'confirm'}),false);voice.engine.close();
+});
+
+test('answering a fixed adaptive question does not claim an AI evaluation in diagnostics',async()=>{
+ const f=fixture({evaluateTurn:async request=>request.adaptive?{next_question:'Synthetic adaptive question?',question_id:'adaptive',adaptive:{active:{id:'adaptive'}},status:'skipped'}:request.questionId==='adaptive'?{next_question:'Next base question?',question_id:'base',reviewed_kind:'adaptive',status:'evaluation_unavailable',adaptive:null}:{next_question:'Base question?',question_id:'base',status:'evaluation_unavailable'}});
+ await f.engine.start({...settings,transport:'text'});f.engine.sendAdaptive({type:'confirm'});await drain();
+ const before=f.diagnostics.length;f.engine.sendText('Synthetic response');await drain();
+ assert.ok(!f.diagnostics.slice(before).some(x=>['EVALUATING','EVALUATION_REQUESTED','EVALUATION_COMPLETED'].includes(x.phase)));f.engine.close();
+});
+
+test('voice prototype requires both local opt-in and server capability; default remains disabled',async()=>{
+ for(const [enableVoiceAdaptiveControls,serverVoiceControls] of [[false,true],[true,false],[false,false]]){
+  const f=fixture({enableVoiceAdaptiveControls,serverVoiceControls});await f.engine.start(settings);await drain();
+  assert.equal(f.engine.beginAdaptiveChoice(),false);assert.equal(f.engine.sendAdaptive({type:'omit'}),false);f.engine.close();
+ }
+});
+test('voice controls pause capture, bind revisions, reject late transcripts and require explicit resume',async()=>{
+ const requests=[];let revision=0;
+ const f=fixture({enableVoiceAdaptiveControls:true,serverVoiceControls:true,evaluateTurn:async request=>{
+  requests.push(request);revision++;
+  if(request.adaptive)return {next_question:'Synthetic contextual question?',question_id:'context',revision,adaptive:{active:{id:'context'}},status:'skipped'};
+  return {next_question:'Synthetic base question?',question_id:'base',revision,adaptive:{offer:{id:'offer',options:[]}},status:'adequate',reviewed_kind:request.questionId==='context'?'adaptive':'concept'};
+ }});
+ await f.engine.start(settings);await drain();const emit=m=>f.peer().channel.onmessage({data:JSON.stringify(m)});
+ emit({type:'response.created',response:{id:'old-output'}});emit({type:'output_audio_buffer.started',response_id:'old-output'});
+ assert.equal(f.engine.sendAdaptive({type:'confirm'}),false,'cannot confirm while voice is live');
+ assert.equal(f.engine.beginAdaptiveChoice(),true);assert.equal(f.tracks[0].enabled,false);assert.equal(f.states.at(-1),'paused');
+ emit({type:'conversation.item.input_audio_transcription.completed',item_id:'late-unbound',transcript:'sí confirmo'});await drain();assert.equal(requests.length,1);
+ assert.equal(f.engine.sendAdaptive({type:'confirm',cardId:'synthetic'}),true);assert.equal(f.engine.sendAdaptive({type:'confirm'}),false);await drain();
+ assert.equal(requests[1].adaptive.expectedRevision,1);assert.equal(f.states.at(-1),'paused');assert.equal(f.tracks[0].enabled,false);
+ const count=f.captions.length;emit({type:'response.output_audio_transcript.done',response_id:'old-output',transcript:'Stale question'});assert.equal(f.captions.length,count);
+ f.engine.pause(false);emit({type:'response.created',response:{id:'current-output'}});emit({type:'output_audio_buffer.started',response_id:'current-output'});emit({type:'output_audio_buffer.stopped',response_id:'current-output'});
+ assert.equal(f.tracks[0].enabled,true);
+ emit({type:'conversation.item.input_audio_transcription.completed',item_id:'unknown-after-resume',transcript:'sí'});await drain();assert.equal(requests.length,2);
+ emit({type:'input_audio_buffer.speech_started',item_id:'current'});emit({type:'input_audio_buffer.committed',item_id:'current'});emit({type:'conversation.item.input_audio_transcription.completed',item_id:'current',transcript:'Synthetic uncertainty'});await drain();
+ assert.equal(requests.length,3);assert.equal(requests[2].questionId,'context');
+ emit({type:'conversation.item.input_audio_transcription.completed',item_id:'current',transcript:'Synthetic uncertainty'});await drain();assert.equal(requests.length,3);f.engine.close();
+});
+
+test('asylum skips in both languages and transports create no personal caption, evaluation or voice user message',async()=>{
+ for(const locale of ['es','en'])for(const transport of ['text','voice'])for(const topic of [false,true]){
+  const calls=[];const f=fixture({evaluateTurn:async request=>{calls.push(request);return {status:request.answer?'skipped':'evaluation_unavailable',next_question:'Synthetic next prompt',question_id:'q-next',revision:calls.length,educational_feedback:'',next_action:'continue'};}});
+  try{
+   await f.engine.start({...settings,locale,transport});await drain();
+   const command=topic?(locale==='es'?'Omitir este tema':'Skip this topic'):(locale==='es'?'Siguiente pregunta':'Next question');
+   assert.equal(f.engine.sendText(command),true);assert.equal(f.engine.sendText(command),false);await drain();
+   assert.equal(calls.at(-1).answer,command);assert.equal(f.reviews.length,0);assert.equal(f.captions.filter(c=>c.who==='user').length,0);
+   assert.equal(f.diagnostics.filter(c=>c.phase==='EVALUATION_REQUESTED').length,0);
+   if(transport==='voice')assert.equal(f.peer().channel.sent.filter(m=>m.type==='conversation.item.create').length,0);
+  }finally{f.engine.close();}
+ }
 });

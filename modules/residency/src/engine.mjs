@@ -7,7 +7,8 @@ export function selectQuestions({relationshipType,locale='es',count=15,seed=1}){
  if(!['es','en'].includes(locale))throw new Error('Invalid locale');
  if(!Number.isInteger(count)||count<1)throw new Error('Invalid count');
  const pool=questions.filter(q=>q.engine_id===ENGINE_ID&&q.relationship_type===relationshipType&&q.locale===locale);
- const sorted=[...pool].sort((a,b)=>hash(a.id+seed)-hash(b.id+seed));
+ const blocks=[...new Set(pool.map(q=>q.category))];
+ const sorted=[...pool].sort((a,b)=>blocks.indexOf(a.category)-blocks.indexOf(b.category));
  return sorted.slice(0,count);
 }
 function hash(s){let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}

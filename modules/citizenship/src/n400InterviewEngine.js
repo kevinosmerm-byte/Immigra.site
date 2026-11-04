@@ -126,6 +126,7 @@ function asPrompt(question, state) {
     canonicalPracticePrompt: question.canonicalPracticePrompt,
     alternatePhrasings: question.alternatePhrasings || [],
     followUps: question.followUps || [],
+    derivedFollowUp: question.derivedFollowUp || null,
     vocabulary: question.vocabulary || [],
     answerType: question.answerType,
     conditions: question.conditions || {},
@@ -258,6 +259,8 @@ export function createN400FollowUpPrompt(parentQuestion, text, index, applicantP
   return {
     id,
     parentId: parentQuestion.id,
+    sourceRefs: parentQuestion.sourceRefs || [],
+    derivedSource: parentQuestion.derivedFollowUp?.index === index ? parentQuestion.derivedFollowUp : null,
     conceptId: parentQuestion.conceptId,
     intent: `${parentQuestion.intent || parentQuestion.conceptId}:FOLLOW_UP:${index}`,
     block: parentQuestion.block,

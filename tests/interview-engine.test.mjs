@@ -65,3 +65,66 @@ test('next question skips without evaluator, quota, fabricated feedback or answe
  assert.deepEqual(await engine.turn('skip-owner',session.id,{answer:'Siguiente pregunta',turnId:'command',questionId:first.question_id}),result);
  await engine.close(session.id,'skip-owner');
 });
+
+import {adaptiveCards} from '../modules/asylum/adaptive-session.mjs';
+test('text adaptive confirmation is server enforced, idempotent, and resumes without another evaluator or clarification',async()=>{
+ const f=fixture({fetchImpl:async(url,options)=>Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({...result,answer_status:'adequate',next_action:'continue',evidence:[JSON.parse(JSON.parse(options.body).input).current_turn.answer]})}]}]})});
+ const started=await f.engine.start('synthetic',settings);
+ try{
+  const opening=await f.engine.turn('synthetic',started.id,{answer:''});
+  const reviewed=await f.engine.turn('synthetic',started.id,{answer:'Synthetic: I personally passed through a checkpoint and was detained.',questionId:opening.question_id,turnId:'base'});
+  assert.ok(reviewed.adaptive.offer);
+  const c=adaptiveCards.find(c=>c.branch==='exit_controls'),offer=reviewed.adaptive.offer;
+  const body={answer:'',questionId:reviewed.question_id,turnId:'confirm',adaptive:{type:'confirm',cardId:c.id,offerId:offer.id,quote:offer.quote,sourceKind:'personal',contextConfirmed:true,confirmed:c.requirements.map(r=>r.id)}};
+  const asked=await f.engine.turn('synthetic',started.id,body);assert.equal(asked.question_id,c.id);
+  assert.deepEqual(await f.engine.turn('synthetic',started.id,body),asked);
+  const count=f.manager.get(started.id,'synthetic').evaluations.length;
+  const next=await f.engine.turn('synthetic',started.id,{answer:'Prefiero omitirlo.',questionId:asked.question_id,turnId:'decline'});
+  assert.equal(next.question_id,reviewed.question_id);assert.equal(next.reviewed_kind,'adaptive');assert.equal(next.adaptive.offer,null);
+  assert.equal(f.manager.get(started.id,'synthetic').evaluations.length,count);
+  await assert.rejects(f.engine.turn('synthetic',started.id,{...body,turnId:'repeat'}),/CONTEXT_REQUIRED/);
+ }finally{await f.engine.close(started.id,'synthetic');}
+});
+
+test('voice server rejects structured adaptive confirmation even if a client forges it',async()=>{
+ const f=fixture({fetchImpl:async url=>url.endsWith('/hangup')?new Response(null,{status:200}):new Response('v=0\r\nanswer',{headers:{location:'/v1/realtime/calls/rtc_synthetic'}})});
+ const s=await f.engine.start('synthetic-voice',{...settings,transport:'voice',sdp:'v=0\r\noffer'});
+ try{await assert.rejects(f.engine.turn('synthetic-voice',s.id,{answer:'',turnId:'forged-confirm',adaptive:{type:'confirm'}}),/ADAPTIVE_DISABLED/);assert.equal(f.manager.get(s.id,'synthetic-voice').adaptiveActive,undefined);}
+ finally{await f.engine.close(s.id,'synthetic-voice');}
+});
+
+test('voice pilot server requires revision, preserves idempotency, and handles correction without advancing the base question',async()=>{
+ const manager=new InterviewSessionManager();
+ const engine=createInterviewAIEngine({env:{PLATFORM_AI_ENABLED:'true',OPENAI_API_KEY:'synthetic'},manager,enableVoiceAdaptiveControls:true,reserveSessionQuota:async()=>true,reserveTurnQuota:async()=>true,fetchImpl:async(url,options)=>{
+  if(url.endsWith('/hangup'))return new Response(null,{status:200});
+  if(url.endsWith('/realtime/calls'))return new Response('v=0\r\nanswer',{headers:{location:'/v1/realtime/calls/rtc_pilot'}});
+  const answer=JSON.parse(JSON.parse(options.body).input).current_turn.answer;
+  return Response.json({status:'completed',output:[{type:'message',content:[{type:'output_text',text:JSON.stringify({...result,answer_status:'adequate',next_action:'continue',evidence:[answer]})}]}]});
+ }});
+ const created=await engine.start('synthetic',{...settings,transport:'voice',sdp:'v=0\r\noffer'});
+ try{
+  assert.equal(created.adaptive_voice_controls,true);
+  const initial=await engine.turn('synthetic',created.id,{answer:''});
+  const next=await engine.turn('synthetic',created.id,{answer:'Synthetic: I personally went through a checkpoint.',questionId:initial.question_id,turnId:'source'});
+  const c=adaptiveCards.find(c=>c.branch==='exit_controls');const action={type:'confirm',offerId:next.adaptive.offer.id,cardId:c.id,quote:next.adaptive.offer.quote,sourceKind:'personal',contextConfirmed:true,confirmed:c.requirements.map(r=>r.id)};
+  await assert.rejects(engine.turn('synthetic',created.id,{answer:'',adaptive:action}),/STALE_ADAPTIVE_ACTION/);
+  const body={answer:'',questionId:next.question_id,turnId:'confirm',adaptive:{...action,expectedRevision:next.revision}};
+  const active=await engine.turn('synthetic',created.id,body);assert.equal(active.question_id,c.id);assert.deepEqual(await engine.turn('synthetic',created.id,body),active);
+  const corrected=await engine.turn('synthetic',created.id,{answer:'',questionId:active.question_id,turnId:'correct',adaptive:{type:'correct',expectedRevision:active.revision}});
+  assert.equal(corrected.question_id,next.question_id);assert.equal(corrected.adaptive.active,null);assert.equal(corrected.adaptive.offer,null);
+  await assert.rejects(engine.turn('synthetic',created.id,{...body,turnId:'stale-repeat'}),/STALE_ADAPTIVE_ACTION/);
+ }finally{await engine.close(created.id,'synthetic');}
+});
+
+test('residency topic navigation avoids evaluator and preserves history, facts and retry identity',async()=>{
+ const {engine,manager,requests}=fixture();
+ const session=await engine.start('topic-owner',{...settings,module:'residency',route:'MATRIMONIO',practiceOptions:{count:30}});
+ const first=await engine.turn('topic-owner',session.id,{answer:''});
+ const block=manager.get(session.id,'topic-owner').flow.question.block;
+ const result=await engine.turn('topic-owner',session.id,{answer:'Omitir este tema',turnId:'topic-command',questionId:first.question_id});
+ assert.equal(result.status,'skipped');assert.notEqual(manager.get(session.id,'topic-owner').flow.question.block,block);
+ assert.equal(requests.length,0);assert.deepEqual(manager.get(session.id,'topic-owner').flow.statements,[]);assert.deepEqual(manager.get(session.id,'topic-owner').history,[]);
+ assert.deepEqual(await engine.turn('topic-owner',session.id,{answer:'Omitir este tema',turnId:'topic-command',questionId:first.question_id}),result);
+ await assert.rejects(engine.turn('topic-owner',session.id,{answer:'Skip this topic',turnId:'stale',questionId:first.question_id}),/STALE_QUESTION/);
+ await engine.close(session.id,'topic-owner');
+});

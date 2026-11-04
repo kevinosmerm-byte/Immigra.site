@@ -10,7 +10,8 @@ test('all N400 concepts and follow-ups use selected language with stable identit
  for(const q of es.questions){assert.match(q.canonicalPracticePrompt,/^¿/);assert.deepEqual(q.alternatePhrasings,[]);for(const f of q.followUps)assert.match(f,/^¿/);}
  const flow=createDomainInterview({module:'citizenship',locale:'es'});assert.equal(flow.question.english,'¿Cuál es su nombre legal completo?');
  const next=advanceDomainTurn(recordDomainTurn(flow,'Ana Ejemplo'),{answer_status:'adequate',educational_feedback:'Claro.',next_action:'continue'});
- assert.equal(next.flow.question.english,'¿Cómo se deletrea su apellido?');
+ assert.equal(next.flow.question.english,'¿Es correcto el nombre que aparece en su solicitud o necesita una corrección?');
+ assert.equal(next.flow.question.derivedSource?.wordingType,'educational-adaptation-not-official-question');
 });
 test('supplemental civics translations cover every static answer one-to-one',()=>{
  for(const q of civicsQuestionBank.filter(q=>!q.isDynamic))assert.equal(answersEs[q.questionId].length,q.acceptedAnswers.length,String(q.questionId));

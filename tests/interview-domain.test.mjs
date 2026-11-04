@@ -55,7 +55,7 @@ test('residency uses only its selected family route and progresses easy to diffi
   const sets=[];
   for(const route of ['MATRIMONIO','HIJO_A_PADRES','PADRES_A_HIJOS']){
     const bank=domainBank({module:'residency',route});sets.push(new Set(bank.questions.map(q=>q.id)));
-    assert.equal(bank.interviewArchitecture.blockOrder[0],'Fácil');
+    assert.equal(bank.interviewArchitecture.blockOrder[0],bank.questions[0].block);
     let flow=createDomainInterview({module:'residency',route});const seen=[];
     while(flow.question){seen.push(flow.question.id);flow=advance(flow);}
     assert.equal(seen.length,new Set(seen).size);assert.deepEqual(new Set(seen),sets.at(-1));
@@ -92,14 +92,14 @@ test('automatic civics grades official answers locally, advances, retries incomp
 });
 
 for(const module of ['asylum','residency'])for(const locale of ['es','en']){
- test(`${module} ${locale}: incomplete answers advance without repeating or exhausting one topic`,()=>{
+ test(`${module} ${locale}: incomplete answers advance without repeating; asylum preserves topic continuity`,()=>{
   let flow=createDomainInterview({module,locale,route:'MATRIMONIO'});const ids=[];const topics=[];
   for(let i=0;i<10&&flow.question;i++){
    const q=flow.question;ids.push(q.id);topics.push(module==='asylum'?q.block:q.subBlock);
    flow=advance(flow,'Example',{answer_status:'incomplete',next_action:'clarify',suggested_follow_up:q.english,educational_feedback:''});
    if(flow.question)assert.notEqual(flow.question.id,q.id);
   }
-  assert.equal(ids.length,new Set(ids).size);assert.ok(new Set(topics).size>=3);
+  assert.equal(ids.length,new Set(ids).size);assert.equal(new Set(topics).size,1);
  });
  test(`${module} ${locale}: discrepancy clarification is bounded and paraphrases are rejected`,()=>{
   let flow=createDomainInterview({module,locale,route:'MATRIMONIO'});
@@ -114,7 +114,9 @@ for(const module of ['asylum','residency'])for(const locale of ['es','en']){
 test('asylum automatic bank excludes filler variants and unbound contextual templates',()=>{
  for(const locale of ['es','en']){
   const bank=domainBank({module:'asylum',locale});
-  assert.ok(bank.questions.some(q=>q.id==='AS-SUP-001'));
+  assert.equal(bank.questions.length,241);
+  assert.ok(bank.questions.some(q=>q.id.startsWith('IMMIGRA_ASYLUM_REFLECT_125')));
+  assert.ok(!bank.questions.some(q=>q.id.startsWith('AS-SUP-')||q.id.startsWith('IMMIGRA_ASYLUM_ADAPT_')));
   assert.ok(!bank.questions.some(q=>q.id==='Q0113'||q.id==='Q0102'||q.id==='Q0084'));
   for(const q of bank.questions)assert.doesNotMatch(q.canonicalPracticePrompt,/[{}]|Could you tell me more about this/);
   let flow=createDomainInterview({module:'asylum',locale}),seen=new Set();

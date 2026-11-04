@@ -25,6 +25,6 @@ export default function Asylum({lang='es'}){
   {route==='practice'&&!call&&<><AsylumVideos lang={lang}/><AsylumPodcasts lang={lang}/></>}
   {route==='full-bank'&&!call&&<AsylumStudyBook lang={lang}/>}
   {prepared&&!call&&<AsylumPreparation language={lang} onBack={()=>{window.location.hash='/asylum/practice';}} onStart={payload=>{if(payload.signal?.aborted)return false;return runtime.current?.startPrepared(payload)===true;}}/>}
-  {call&&<ConversationInterview key={call.sessionId} moduleId="asylum" lang={call.language} avatar={call.interviewer} mode={call.mode} initialQuestion={call.question} context={call.context||''} entryConsent={call.entryConsent===true} onBack={()=>{call.stop();setCall(null);window.location.hash='/asylum/setup';}}/>}
+  {call&&<ConversationInterview key={call.sessionId} moduleId="asylum" lang={call.language} country={call.country} initialTransport={call.transport} avatar={call.interviewer} mode={call.mode} initialQuestion={call.question} context={call.context||''} entryConsent={call.entryConsent===true} onBack={()=>{call.stop();setCall(null);window.location.hash='/asylum/setup';}}/>}
  </>;
 }

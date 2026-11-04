@@ -1,44 +1,51 @@
+import {baseImpactIds,gateBaseImpact} from '../../modules/asylum/base-impact.mjs';
+import {residencyQuestionSource} from '../../modules/residency/src/question-sources.mjs';
+import {applicableAosQuestion} from '../../modules/residency/src/question-flow.mjs';
 import {clarificationIsGrounded} from './interview-feedback.mjs';
-import supplemental from '../../shared/interview-ui/supplemental-questions.json' with {type:'json'};
 import {n400PracticeBank} from '../../shared/interview-ui/n400-language.mjs';
-// Domain adapters retain CitizenshipAI recording. Family/asylum scheduling
-// rotates topics. Data lives in one session.
-import {readFileSync} from 'node:fs';
+// Domain adapters retain CitizenshipAI recording and coherent topic sequences. Data lives in one session.
+import {asylumInterviewQuestions} from '../../modules/asylum/reflection-bank.mjs';
 import n400Bank from '../../modules/citizenship/src/data/n400InterviewBank.json' with {type:'json'};
 import {createN400InterviewState,selectNextN400Question,recordN400Answer,recordN400FollowUpAnswer,getContextualN400FollowUps,createN400FollowUpPrompt,parseYesNo} from '../../modules/citizenship/src/n400InterviewEngine.js';
-import {selectAosQuestions,isUncertain,aosQuestion} from '../../modules/residency/src/aosEngine.mjs';
+import {selectPendingAosQuestions,isUncertain,aosQuestion} from '../../modules/residency/src/aosEngine.mjs';
 import {normalizeEvaluation} from '../../shared/interview-ui/evaluation-result.mjs';
 
-const asylumBank=readFileSync(new URL('../../modules/asylum/master-package/03_question_bank/question_bank.jsonl',import.meta.url),'utf8').trim().split(/\r?\n/).map(line=>JSON.parse(line));
-// Reviewed standalone prompts. Other original entries are contextual follow-ups,
-// duplicate formulations, or templates requiring facts not supplied by the user.
-// They remain in the study bank, but are not independent automatic-call turns.
-const asylumStandalone=new Set([1,2,3,4,5,7,8,9,10,13,17,18,20,39,44,49,50,56,57,59,60,62,63,67,74,79,90,91,98,99,100,101].map(n=>'Q'+String(n).padStart(4,'0')));
 const architecture=questions=>{
   const blockOrder=[...new Set(questions.map(q=>q.block))];
   return {questions,interviewArchitecture:{blockOrder,subBlockOrder:Object.fromEntries(blockOrder.map(b=>[b,[...new Set(questions.filter(q=>q.block===b).map(q=>q.subBlock))]])),transitionScripts:{}}};
 };
 export function domainBank(settings){
   if(settings.module==='citizenship')return n400PracticeBank(n400Bank,settings.locale);
-  if(settings.module==='residency')return architecture(selectAosQuestions({route:settings.route,...(settings.practiceOptions||{count:12}),random:()=>0.5}).map(q=>({id:q.id,concept:q.id,block:q.dificultad,subBlock:q.bloque,canonicalPracticePrompt:aosQuestion(q,settings.locale),answerType:'text',followUps:[],sourceRefs:[q.fuente]})));
-  const general=architecture([...asylumBank,...supplemental.asylum].filter(q=>q.uscis_enabled===1&&q.question_type==='neutral_factual'&&(asylumStandalone.has(q.id)||q.id.startsWith('AS-SUP-'))).map(q=>({id:q.id,concept:q.id,block:q.category,subBlock:q.subcategory,canonicalPracticePrompt:settings.locale==='es'?q.question_es:q.question_en,answerType:'text',followUps:[],sourceRefs:q.source?[q.source]:[]})));
+  if(settings.module==='residency')return architecture(selectPendingAosQuestions({route:settings.route,reviewedQuestionIds:settings.reviewedQuestionIds,...(settings.practiceOptions||{count:12}),random:()=>0.5}).map(q=>({id:q.id,concept:q.id,block:q.bloque,subBlock:q.bloque,canonicalPracticePrompt:aosQuestion(q,settings.locale),answerType:'text',followUps:[],sourceRefs:[residencyQuestionSource(q).url].filter(Boolean)})));
+  const general=architecture(asylumInterviewQuestions(settings.locale,settings.country).filter(q=>settings.transport!=='voice'||!baseImpactIds.has(q.id)));
   return architecture([...(settings.sourceQuestions||[]),...general.questions]);
 }
-// Rotate least-recently used topics instead of exhausting a whole block. Residency
+// Residency and asylum finish the current topic before advancing. Residency
 // retains the selected family route and easy -> moderate -> difficult progression.
 function selectDomainQuestion(flow){
   if(flow.module==='citizenship')return selectNextN400Question(flow.bank,flow.state);
+  if(flow.module==='residency'){
+    const answers=Object.fromEntries((flow.statements||[]).filter(s=>!s.uncertain).map(s=>[s.questionId,s.text]));
+    const bank={...flow.bank,questions:flow.bank.questions.filter(q=>applicableAosQuestion(q,answers))};
+    return selectNextN400Question(bank,flow.state);
+  }
   let candidates=flow.bank.questions.filter(q=>!flow.state.askedConceptIDs.includes(q.concept||q.id));
   if(flow.module==='residency'&&candidates.length){
     const level=flow.bank.interviewArchitecture.blockOrder.find(b=>candidates.some(q=>q.block===b));
     candidates=candidates.filter(q=>q.block===level);
   }
-  const topic=q=>flow.module==='asylum'?q.block:q.subBlock;
+  if(flow.module==='asylum'){
+    const chosen=candidates[0];
+    if(!chosen)return {state:{...flow.state,complete:true},question:null,transition:''};
+    return gateBaseImpact(selectNextN400Question(flow.bank,{...flow.state,complete:false,currentBlock:chosen.block,currentSubBlock:chosen.subBlock}),flow.locale);
+  }
+  const topic=q=>q.subBlock;
   const history=flow.state.askedConceptIDs.map(id=>flow.bank.questions.find(q=>(q.concept||q.id)===id)).filter(Boolean).map(topic);
   candidates.sort((a,b)=>history.lastIndexOf(topic(a))-history.lastIndexOf(topic(b)));
   const chosen=candidates[0];
   if(!chosen)return {state:{...flow.state,complete:true},question:null,transition:''};
-  return selectNextN400Question(flow.bank,{...flow.state,complete:false,currentBlock:chosen.block,currentSubBlock:chosen.subBlock});
+  const selected=selectNextN400Question(flow.bank,{...flow.state,complete:false,currentBlock:chosen.block,currentSubBlock:chosen.subBlock});
+  return flow.module==='asylum'?gateBaseImpact(selected,flow.locale):selected;
 }
 const words=text=>new Set(String(text||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().match(/[a-z0-9]+/g)||[]);
 function distinctClarification(text,question){
@@ -57,10 +64,10 @@ export function createDomainInterview(settings,{random=Math.random}={}){
   const known=new Set(bank.questions.filter(q=>!(settings.sourceQuestions||[]).some(source=>source.id===q.id)).map(q=>q.concept||q.id));
   state.askedConceptIDs=(settings.reviewedQuestionIds||[]).filter(id=>known.has(id));
   const order=bank.questions.map(q=>q.id);
-  for(let i=order.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
-  state.practiceQuestionOrder=order;
-  let selection=selectDomainQuestion({module:settings.module,bank,state});
-  if(!selection.question){state.askedConceptIDs=[];state.complete=false;selection=selectDomainQuestion({module:settings.module,bank,state});}
+  for(let i=settings.module==='asylum'?0:order.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+  state.practiceQuestionOrder=settings.module==='residency'?bank.questions.map(q=>q.id):order;
+  let selection=selectDomainQuestion({module:settings.module,locale:settings.locale,bank,state});
+  if(!selection.question){state.askedConceptIDs=[];state.complete=false;selection=selectDomainQuestion({module:settings.module,locale:settings.locale,bank,state});}
   return {module:settings.module,locale:settings.locale||'en',bank,...selection,followUpQueue:[],clarified:[],statements:[],revision:0};
 }
 // Only a wholly uncertain response takes the fixed acceptance path. A qualifier
@@ -123,4 +130,24 @@ export function skipDomainQuestion(flow){
  next.followUpQueue=[];
  Object.assign(next,selectDomainQuestion(next));next.revision++;
  return next;
+}
+
+// An explicit navigation action, not a biographical answer or applicability inference.
+export function skipAsylumTopic(flow){
+ if(flow.module!=='asylum'||!flow.question)throw Error('ASYLUM_TOPIC_REQUIRED');
+ const next=structuredClone(flow),block=next.question.block;
+ const ids=next.bank.questions.filter(q=>q.block===block).map(q=>q.concept||q.id);
+ next.state.askedConceptIDs=[...new Set([...next.state.askedConceptIDs,...ids])];
+ next.followUpQueue=[];
+ Object.assign(next,selectDomainQuestion(next));next.revision++;
+ return next;
+}
+// Explicit navigation only: omission is never an answer or a profile fact.
+export function skipResidencyTopic(flow){
+ if(flow.module!=='residency')throw Error('WRONG_MODULE');
+ const next=structuredClone(flow),q=next.question;
+ if(!q)throw Error('INTERVIEW_COMPLETE');
+ const ids=next.bank.questions.filter(item=>item.block===q.block).map(item=>item.concept||item.id);
+ next.state.askedConceptIDs=[...new Set([...next.state.askedConceptIDs,...ids])];
+ next.followUpQueue=[];Object.assign(next,selectDomainQuestion(next));next.revision++;return next;
 }
