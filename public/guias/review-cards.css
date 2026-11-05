@@ -1,0 +1,20 @@
+/* Review is a user-marked state, never a confirmation that a filing is complete. */
+.doc-evidence-grid .evidence-card{background-image:none;background-color:#f3f9ff;transition:background-color .45s ease,border-color .45s ease,box-shadow .45s ease;position:relative}
+.doc-evidence-grid .evidence-card:has(label.check input[type="checkbox"]:checked){background-color:#dcfce7;border-color:#20a864;box-shadow:0 10px 24px #08744322;animation:review-card-finish .6s ease-out}
+.doc-evidence-grid .evidence-card:has(label.check input[type="checkbox"]:checked)::after{content:'✓ Revisado';display:inline-flex;align-items:center;background:#087443;color:white;border:1px solid #056034;border-radius:999px;padding:8px 15px;margin-top:16px;font-size:14px;font-weight:800;animation:review-badge-in .4s ease-out}
+.doc-evidence-grid .evidence-card:has(label.check input[type="checkbox"]:checked) .formtag{background:#b4f0cc;color:#065f36}
+.doc-evidence-grid .evidence-card:has(label.check input[type="checkbox"]:checked) label.check{background:#f3fff7;border:1px solid #8ed6aa}
+.doc-evidence-grid .evidence-card:has(label.check input[type="checkbox"]:checked) input[type="checkbox"]{accent-color:#087443}
+@keyframes review-card-finish{0%{transform:scale(1);box-shadow:0 0 0 0 #16a35b40}45%{transform:scale(1.012);box-shadow:0 0 0 7px #16a35b13}100%{transform:scale(1);box-shadow:0 10px 24px #08744322}}
+@keyframes review-badge-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.doc-evidence-grid .evidence-card{transition:none}.doc-evidence-grid .evidence-card:has(label.check input[type="checkbox"]:checked),.doc-evidence-grid .evidence-card:has(label.check input[type="checkbox"]:checked)::after{animation:none}}
+/* Consistent feedback on every checkbox row, including cover enclosures and preparation prompts. */
+body #app label:has(input[type="checkbox"]){transition:background-color .35s ease,box-shadow .35s ease,border-color .35s ease;border-radius:12px}
+body #app label:has(input[type="checkbox"]:checked){background-color:#e1f9e9;border-color:#43b77a;box-shadow:0 5px 16px #08744325,inset 0 0 0 1px #58bd87;animation:checkbox-row-finish .45s ease-out}
+body #app label:has(input[type="checkbox"]:checked) input[type="checkbox"]{accent-color:#087443}
+body #app .cover-item:has(input[type="checkbox"]:checked){background:linear-gradient(125deg,#e7fbee,#d5f5e1);border-color:#31a86a;box-shadow:0 6px 18px #0874432b,inset 0 0 0 1px #8bd5aa}
+body #app .cover-item:has(input[type="checkbox"]:checked) small{color:#245d40}
+body #app .capture-required:has(.capture-ready input[type="checkbox"]:checked){background:linear-gradient(125deg,#e7fbee,#dbf6e5);border-color:#31a86a;box-shadow:0 7px 20px #08744324;transition:background-color .35s ease,box-shadow .35s ease,border-color .35s ease}
+body #app .capture-ready{padding:12px}
+@keyframes checkbox-row-finish{0%{transform:scale(1)}45%{transform:scale(1.006)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){body #app label:has(input[type="checkbox"]),body #app .capture-required:has(.capture-ready input[type="checkbox"]:checked){animation:none;transition:none}}
