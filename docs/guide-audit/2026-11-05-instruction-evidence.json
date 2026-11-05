@@ -1,0 +1,2716 @@
+[
+  {
+    "formKey": "asylum",
+    "page": 1,
+    "spotIndex": 0,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si todavía no tienes A-Number, las instrucciones indican que USCIS te asignará uno. No lo confundas con otro identificador.",
+    "sourceQuote": "If you do not already have an A-Number, USCIS will assign one to you."
+  },
+  {
+    "formKey": "asylum",
+    "page": 1,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si recibes correo en un apartado postal, indícalo en la pregunta 9 y conserva tu domicilio físico en la pregunta 8. Si otra persona recoge tu correo, puedes identificarla en “In Care Of”.",
+    "sourceQuote": "If your mailing address is a post office box, include that address in Question 9"
+  },
+  {
+    "formKey": "asylum",
+    "page": 1,
+    "spotIndex": 2,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Para la pregunta 13, usa el nombre actual del país, no nombres históricos, étnicos, provinciales o locales. Si desconoces un dato, las instrucciones permiten indicarlo como “unknown” en lugar de inventarlo.",
+    "sourceQuote": "In Question 13, use the current name of the country."
+  },
+  {
+    "formKey": "asylum",
+    "page": 1,
+    "spotIndex": 3,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si recibiste un I-94, revisa allí el número, la fecha y el estatus solicitados. Si no recibiste ese documento, las instrucciones indican escribir “None”; si entraste sin inspección, indican “No Inspection” en el campo de estatus de la pregunta 19c.",
+    "sourceQuote": "If you did not receive Form I-94, write \"None.\""
+  },
+  {
+    "formKey": "asylum",
+    "page": 2,
+    "spotIndex": 1,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si incluyes a tu cónyuge en la solicitud, adjunta copia del acta de matrimonio y prueba de terminación de matrimonios anteriores. Si no puedes obtener esa prueba primaria, revisa las alternativas y explica su ausencia.",
+    "sourceQuote": "submit a copy of your marriage certificate and proof of termination of any prior marriages."
+  },
+  {
+    "formKey": "asylum",
+    "page": 2,
+    "spotIndex": 2,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "La lista debe incluir también hijastros, hijos fallecidos, adoptados y adultos, aunque no estén en Estados Unidos o presenten su propia solicitud. Esa obligación de enumerarlos es distinta de incluirlos como beneficiarios.",
+    "sourceQuote": "including your stepchildren, deceased children, adopted children, and adult children"
+  },
+  {
+    "formKey": "asylum",
+    "page": 3,
+    "spotIndex": 0,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si incluyes a un hijo en la solicitud, las instrucciones piden copia de su acta de nacimiento. Revisa por separado los requisitos para incluirlo, sin deducirlos solo por aparecer en esta lista.",
+    "sourceQuote": "submit a copy of each child's birth certificate."
+  },
+  {
+    "formKey": "asylum",
+    "page": 3,
+    "spotIndex": 1,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si no puedes conseguir la prueba primaria de parentesco y aportas pruebas secundarias o declaraciones juradas, explica por qué falta el documento primario. Puedes adjuntar esa explicación en el Suplemento B o en hojas adicionales.",
+    "sourceQuote": "you must explain why primary evidence (for example, birth or marriage certificate) is unavailable."
+  },
+  {
+    "formKey": "asylum",
+    "page": 3,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si tienes más de cuatro hijos, continúa en el Suplemento A o en hojas adicionales con la misma información que pide la Parte A.II. No omitas a un hijo por falta de espacio.",
+    "sourceQuote": "If you have more than four children, complete Form I-589 Supplement A for each additional child"
+  },
+  {
+    "formKey": "asylum",
+    "page": 4,
+    "spotIndex": 0,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "En el historial de residencias, empieza por la actual y retrocede en el tiempo. Atiende además el alcance propio de cada pregunta, incluido el último domicilio antes de venir.",
+    "sourceQuote": "must be in reverse chronological order starting with your current residence, education, and employment"
+  },
+  {
+    "formKey": "asylum",
+    "page": 4,
+    "spotIndex": 1,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "En la tabla de educación, comienza por los estudios más recientes y retrocede en el tiempo. Si necesitas más espacio, identifica la pregunta en una hoja adicional.",
+    "sourceQuote": "must be in reverse chronological order starting with your current residence, education, and employment"
+  },
+  {
+    "formKey": "asylum",
+    "page": 4,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "En el historial laboral, empieza por el empleo actual o más reciente y retrocede en el tiempo. Mantén las fechas y los lugares correspondientes a cada empleo.",
+    "sourceQuote": "must be in reverse chronological order starting with your current residence, education, and employment"
+  },
+  {
+    "formKey": "asylum",
+    "page": 4,
+    "spotIndex": 3,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si un dato familiar no aplica o no lo sabes, usa la indicación que corresponda: “none”, “not applicable” o “unknown”. No sustituyas un dato desconocido por una suposición.",
+    "sourceQuote": "If any question does not apply to you or you do not know the information requested, answer \"none,\" \"not applicable,\" or \"unknown.\""
+  },
+  {
+    "formKey": "asylum",
+    "page": 5,
+    "spotIndex": 0,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Completa las respuestas en inglés. Si falta espacio, usa los suplementos o hojas adicionales e identifica el número de la pregunta; la solicitud puede decidirse sin entrevista ni solicitud de pruebas adicionales.",
+    "sourceQuote": "Your answers must be completed in English."
+  },
+  {
+    "formKey": "asylum",
+    "page": 5,
+    "spotIndex": 1,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "La pregunta 1 permite marcar la casilla o casillas de los motivos por los que presentas la solicitud. Si tienes dudas sobre su alcance jurídico, busca orientación individual antes de seleccionar una base.",
+    "sourceQuote": "For Question 1, check the box(es) next to the reason(s) that you are completing this application."
+  },
+  {
+    "formKey": "asylum",
+    "page": 5,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si te cuesta recordar o hablar de experiencias pasadas, las instrucciones sugieren buscar apoyo de un abogado, representante acreditado o profesional de salud. Ese apoyo puede ayudarte a explicar tus propias experiencias, sin sustituirlas por un relato modelo.",
+    "sourceQuote": "talk to a lawyer, an accredited representative, or a health professional"
+  },
+  {
+    "formKey": "asylum",
+    "page": 5,
+    "spotIndex": 3,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si una prueba que apoya tu temor no está razonablemente disponible o no la aportas ahora, explica por qué en el Suplemento B o en hojas adicionales. Relaciona la explicación con la prueba concreta que falta.",
+    "sourceQuote": "If evidence supporting your claim is not reasonably available or you are not providing such corroboration at this time, you must explain why"
+  },
+  {
+    "formKey": "asylum",
+    "page": 6,
+    "spotIndex": 0,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si respondes “Yes”, añade la explicación detallada que pide la pregunta. Si no cabe, continúa en el Suplemento B o en hojas adicionales identificadas.",
+    "sourceQuote": "If you answer \"Yes\" to any question, explain in detail using Form I-589, Supplement B or additional sheets of paper, as needed."
+  },
+  {
+    "formKey": "asylum",
+    "page": 6,
+    "spotIndex": 1,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si la respuesta es “Yes”, explica en detalle la participación que corresponda a la pregunta. Puedes ampliar en el Suplemento B sin reemplazar los datos propios por ejemplos genéricos.",
+    "sourceQuote": "If you answer \"Yes\" to any question, explain in detail using Form I-589, Supplement B or additional sheets of paper, as needed."
+  },
+  {
+    "formKey": "asylum",
+    "page": 6,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si indicas que la participación continúa, desarrolla la explicación y usa hojas adicionales si hace falta. Identifica la pregunta para distinguir esta respuesta de la participación pasada.",
+    "sourceQuote": "If you answer \"Yes\" to any question, explain in detail using Form I-589, Supplement B or additional sheets of paper, as needed."
+  },
+  {
+    "formKey": "asylum",
+    "page": 6,
+    "spotIndex": 3,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si solicitas protección bajo la Convención contra la Tortura, revisa también la casilla correspondiente al inicio del formulario y la explicación detallada de la Parte B, pregunta 4. Las instrucciones piden abordar el maltrato o las amenazas vinculados a un gobierno, si los hubo; no determinan por sí solas tu elegibilidad.",
+    "sourceQuote": "You must include a detailed explanation of why you fear torture in response to Part B, Question 4 of the application."
+  },
+  {
+    "formKey": "asylum",
+    "page": 7,
+    "spotIndex": 0,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Responde “Yes” o “No” a cada pregunta de la Parte C. Si la respuesta es afirmativa, desarrolla la explicación detallada y usa el Suplemento B cuando no alcance el espacio.",
+    "sourceQuote": "Check \"Yes\" or \"No\" in the box provided for each question."
+  },
+  {
+    "formKey": "asylum",
+    "page": 7,
+    "spotIndex": 1,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Revisa cada pregunta de esta sección por separado y explica en detalle cualquier respuesta afirmativa. Si continúas en otra hoja, indica la pregunta a la que pertenece la información de viajes o residencia.",
+    "sourceQuote": "Check \"Yes\" or \"No\" in the box provided for each question."
+  },
+  {
+    "formKey": "asylum",
+    "page": 7,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "La Parte C requiere una respuesta “Yes” o “No” y explicación detallada de las afirmativas. Si dudas sobre el alcance de los hechos preguntados, busca revisión individual antes de firmar.",
+    "sourceQuote": "Check \"Yes\" or \"No\" in the box provided for each question."
+  },
+  {
+    "formKey": "asylum",
+    "page": 8,
+    "spotIndex": 0,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si respondes afirmativamente sobre un regreso, agrega la explicación completa solicitada. Puedes usar el Suplemento B y señalar la pregunta para mantener juntos los detalles de cada viaje.",
+    "sourceQuote": "Check \"Yes\" or \"No\" in the box provided for each question."
+  },
+  {
+    "formKey": "asylum",
+    "page": 8,
+    "spotIndex": 1,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si respondes “Yes” a la pregunta 5, explica de manera completa y detallada por qué no solicitaste asilo durante el primer año. No asumas que mencionar una circunstancia basta para que se acepte una excepción.",
+    "sourceQuote": "If you answer \"Yes\" to Question 5, you must explain why you did not apply for asylum within the first year"
+  },
+  {
+    "formKey": "asylum",
+    "page": 8,
+    "spotIndex": 2,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si adjuntas registros en otro idioma, incluye traducción completa al inglés y la certificación del traductor exigida por las instrucciones. Esto se aplica también a documentos que uses para explicar antecedentes.",
+    "sourceQuote": "If you submit a document with information in a foreign language, you must also submit a full English translation."
+  },
+  {
+    "formKey": "asylum",
+    "page": 9,
+    "spotIndex": 0,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Tu firma acredita que conoces el contenido de la solicitud, aun si alguien te ayudó. Revisa respuestas y anexos antes de firmar; las declaraciones se hacen bajo pena de perjurio.",
+    "sourceQuote": "Your signature is evidence that you are aware of the contents of this application."
+  },
+  {
+    "formKey": "asylum",
+    "page": 9,
+    "spotIndex": 1,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Firma la Parte D después de completar y revisar la solicitud. Responde también las preguntas sobre la ayuda que recibiste y proporciona los datos pedidos.",
+    "sourceQuote": "Sign after you have completed and reviewed the application."
+  },
+  {
+    "formKey": "asylum",
+    "page": 9,
+    "spotIndex": 2,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si te ayudó una persona distinta de tu cónyuge, padre, madre o hijo, las instrucciones requieren que firme la Parte E y proporcione sus datos. La falta de esa firma puede causar la devolución por solicitud incompleta.",
+    "sourceQuote": "Any person, other than an immediate family member (your spouse, parent(s) or children), who helped prepare your application must sign"
+  },
+  {
+    "formKey": "asylum",
+    "page": 10,
+    "spotIndex": 0,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "No firmes la Parte F antes de presentar la solicitud. Si hay entrevista, te pedirán firmar allí al terminarla; la Parte D sí debe ir firmada al presentar.",
+    "sourceQuote": "Do not sign your application in Part F before filing this form."
+  },
+  {
+    "formKey": "asylum",
+    "page": 10,
+    "spotIndex": 1,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "No firmes la Parte G antes de presentar la solicitud. Si corresponde una audiencia, te pedirán firmar allí ante el juez; esto no sustituye la firma inicial de la Parte D.",
+    "sourceQuote": "Do not sign your application in Part G before filing this form."
+  },
+  {
+    "formKey": "asylum",
+    "page": 11,
+    "spotIndex": 0,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si usas el suplemento, incluye tu nombre exactamente como aparece en la Parte A.I., tu A-Number si tienes, firma y fecha. Comprueba que la hoja pueda relacionarse con tu solicitud.",
+    "sourceQuote": "signature, and date on each supplemental sheet"
+  },
+  {
+    "formKey": "asylum",
+    "page": 11,
+    "spotIndex": 1,
+    "instructionPages": [
+      12
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "El Suplemento A continúa la Parte A.II. Si necesitas usarlo para otro hijo, conserva el mismo nivel de detalle que en los bloques del formulario principal.",
+    "sourceQuote": "Form I-589, Supplement A - For use to complete Part A.II."
+  },
+  {
+    "formKey": "asylum",
+    "page": 11,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Si necesitas más espacio para otros hijos, puedes adjuntar páginas con la misma información solicitada en la Parte A.II. Identifica cada hoja con tus datos y no mezcles información de personas distintas.",
+    "sourceQuote": "attach additional pages and documentation providing the same information asked in Part A.II. of Form I-589."
+  },
+  {
+    "formKey": "asylum",
+    "page": 12,
+    "spotIndex": 0,
+    "instructionPages": [
+      9
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Cada hoja adicional debe llevar tu nombre tal como figura en la Parte A.I., A-Number si tienes, firma y fecha. Revisa estos datos también si añades varias hojas.",
+    "sourceQuote": "Any additional pages submitted should include your printed name"
+  },
+  {
+    "formKey": "asylum",
+    "page": 12,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "Indica el número de la pregunta cuya respuesta continúas. Añade la parte correspondiente para evitar que la explicación se asocie con otra pregunta.",
+    "sourceQuote": "additional sheet(s) indicating the question number(s) you are answering."
+  },
+  {
+    "formKey": "asylum",
+    "page": 12,
+    "spotIndex": 2,
+    "instructionPages": [
+      12
+    ],
+    "instructionEdition": "07/28/26",
+    "addition": "El Suplemento B sirve para ampliar las Partes B y C y también cualquier otra parte. Si aportas una declaración o pruebas adicionales, mantén claras sus referencias a las preguntas que explican.",
+    "sourceQuote": "Form I-589, Supplement B - For use to complete Parts B and C and to provide additional information for any other part of the application."
+  },
+  {
+    "formKey": "adjust",
+    "page": 1,
+    "spotIndex": 2,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Para acompañar los datos de identidad, las instrucciones piden una fotocopia de un documento oficial con fotografía; entre sus ejemplos figuran el pasaporte, incluso vencido, y la licencia de conducir.",
+    "sourceQuote": "Applicants should submit a photocopy of a government-issued identity document (for example, passport (even if \nexpired), driver’s license, or military identification document) that has their photograph."
+  },
+  {
+    "formKey": "adjust",
+    "page": 2,
+    "spotIndex": 0,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "No confundas el número A con el número de cuenta en línea de USCIS: las instrucciones aclaran que son identificadores distintos.",
+    "sourceQuote": "The OAN is\nnot the same as an A-Number."
+  },
+  {
+    "formKey": "adjust",
+    "page": 2,
+    "spotIndex": 1,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si tu categoría requiere prueba de inspección y admisión o parole, la evidencia debe corresponder a la llegada más reciente. La página 8 enumera categorías exentas de presentar esa documentación; no supone que todas las personas deban aportar lo mismo.",
+    "sourceQuote": "This evidence also must be related to the most recent arrival into the United States."
+  },
+  {
+    "formKey": "adjust",
+    "page": 3,
+    "spotIndex": 0,
+    "instructionPages": [
+      9
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si tu I-94 es electrónico, las instrucciones indican que puedes obtener una versión para imprimir en www.cbp.gov/i94. Si no se puede obtener allí, revisa la alternativa I-102 descrita en esa misma página, incluidos sus costos.",
+    "sourceQuote": "You may visit the CBP website at www.cbp.gov/i94 to obtain a paper version of an electronic Form I-94 \nif needed."
+  },
+  {
+    "formKey": "adjust",
+    "page": 3,
+    "spotIndex": 1,
+    "instructionPages": [
+      14
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si cambia tu domicilio físico o postal, las instrucciones requieren avisar a USCIS dentro de 10 días. Si también estás en procedimientos ante la corte de inmigración, revisa su aviso separado y el plazo de cinco días en esa página.",
+    "sourceQuote": "You must notify USCIS any time you change your mailing address or your physical address. You must notify us no later \nthan 10 days after making such change."
+  },
+  {
+    "formKey": "adjust",
+    "page": 3,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si la correspondencia llega a nombre de otra persona, incluye su nombre en “In Care Of Name”. Puede usarse un apartado postal si allí recibes el correo; las instrucciones también contemplan direcciones seguras o alternativas en los casos que describen.",
+    "sourceQuote": "If your mail is sent to someone other than yourself, please include an “In Care Of Name” as part of your mailing\naddress."
+  },
+  {
+    "formKey": "adjust",
+    "page": 4,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Solicitar una tarjeta de Seguro Social mediante este I-485 es opcional. Si eliges pedir una tarjeta nueva o de reemplazo, revisa conjuntamente la solicitud y el consentimiento de divulgación que las instrucciones exigen para ese trámite.",
+    "sourceQuote": "You are not required to request an SSN using this application."
+  },
+  {
+    "formKey": "adjust",
+    "page": 5,
+    "spotIndex": 0,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Cada solicitante presenta su propio I-485, sea principal o derivado. Incluir a un familiar en tus respuestas no sustituye la solicitud individual de esa persona.",
+    "sourceQuote": "Whether you are a principal or derivative \napplicant, you must file your own Form I-485."
+  },
+  {
+    "formKey": "adjust",
+    "page": 5,
+    "spotIndex": 1,
+    "instructionPages": [
+      9
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si solicitas como beneficiario de una petición de visa de inmigrante, normalmente se adjunta copia del aviso I-797 de la petición base. Las instrucciones distinguen qué aviso corresponde según la petición esté pendiente, aprobada o presentada junto al I-485.",
+    "sourceQuote": "If you are filing as a beneficiary of an immigrant visa petition, you generally must submit a photocopy of Form \nI-797, Notice of Action, for your underlying visa petition (or the principal applicant’s petition, if you are a derivative \napplicant), as appropriate."
+  },
+  {
+    "formKey": "adjust",
+    "page": 6,
+    "spotIndex": 0,
+    "instructionPages": [
+      10
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si la solicitud laboral depende de una oferta de empleo, revisa cuándo corresponde el Suplemento J. Las instrucciones distinguen un I-140 aprobado de uno pendiente o presentado conjuntamente y describen excepciones; no se exige de igual manera a todas las categorías laborales.",
+    "sourceQuote": "If you are filing Form I-485 together \nwith a Form I-140 filed on your behalf, or while Form I-140 is still pending, you do not need to file Supplement J at \nthis time."
+  },
+  {
+    "formKey": "adjust",
+    "page": 6,
+    "spotIndex": 1,
+    "instructionPages": [
+      17
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Revisa tanto las instrucciones generales como las adicionales de tu categoría específica. Los documentos y condiciones de una categoría de inmigrante especial no deben trasladarse automáticamente a otra.",
+    "sourceQuote": "You must \nread the additional instructions that apply to your specific immigrant category as well as the previous main instructions \nfor Form I-485."
+  },
+  {
+    "formKey": "adjust",
+    "page": 7,
+    "spotIndex": 0,
+    "instructionPages": [
+      29
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si la base es asilo, las instrucciones piden evidencia del estatus de asilado tanto para solicitantes principales como derivados, por ejemplo el aviso de aprobación o la orden judicial. Esta indicación es para asilo; no sustituye las instrucciones separadas para refugiados.",
+    "sourceQuote": "principal \nand derivative applicants must also submit evidence of asylum status (such as a copy of the asylum approval notice from \nUSCIS or the immigration court order granting you asylum)."
+  },
+  {
+    "formKey": "adjust",
+    "page": 7,
+    "spotIndex": 1,
+    "instructionPages": [
+      17
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Consulta las instrucciones adicionales del programa elegido junto con las generales. Si una categoría no aparece desarrollada en esa sección, el documento aclara que no tiene instrucciones adicionales allí; no significa que deje de necesitar las instrucciones generales.",
+    "sourceQuote": "If your immigrant category is not discussed here, it is because there are no additional instructions for that \ncategory."
+  },
+  {
+    "formKey": "adjust",
+    "page": 7,
+    "spotIndex": 2,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Las instrucciones advierten que cumplir 21 años no resuelve por sí solo si se conserva la clasificación de hijo para inmigración. Revisa la referencia oficial a CSPA antes de decidir qué respuesta corresponde; esta guía no calcula ni determina esa protección.",
+    "sourceQuote": "You may still be \nconsidered a child for immigration purposes even after turning 21 years of age if you qualify under the provisions \nof the Child Status Protection Act (CSPA) or other applicable provisions."
+  },
+  {
+    "formKey": "adjust",
+    "page": 8,
+    "spotIndex": 0,
+    "instructionPages": [
+      13
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "En esta edición, quienes antes solicitaban la exención mediante I-864W lo hacen completando la parte 3 del I-485. Esto no elimina el I-864 o I-864EZ cuando sí se exige patrocinio económico.",
+    "sourceQuote": "Applicants for adjustment of status who were previously required to submit Form I-864W, Request for \nExemption for Intending Immigrant’s Affidavit of Support, to request the exemption are no longer required to do so, but \ninstead request it by completing Part 3."
+  },
+  {
+    "formKey": "adjust",
+    "page": 9,
+    "spotIndex": 2,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Al reunir la documentación de nacimiento, verifica que el acta identifique al menos un progenitor. Las instrucciones remiten al registro de documentos civiles del Departamento de Estado y a posibles reglas específicas de cada categoría.",
+    "sourceQuote": "USCIS will only accept a birth certificate which lists at least one parent."
+  },
+  {
+    "formKey": "adjust",
+    "page": 10,
+    "spotIndex": 0,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "La evidencia de nacimiento debe cumplir los requisitos de las instrucciones, que exigen que el acta identifique al menos un progenitor. Esto es un requisito documental, no una indicación para omitir datos del segundo progenitor que el formulario solicite.",
+    "sourceQuote": "USCIS will only accept a birth certificate which lists at least one parent."
+  },
+  {
+    "formKey": "adjust",
+    "page": 10,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si una pregunta realmente no aplica, las instrucciones indican “N/A”, salvo que el formulario dé otra indicación. Su propio ejemplo es el nombre del cónyuge actual de una persona que nunca se casó; sigue primero cualquier salto específico impreso.",
+    "sourceQuote": "If a question does not apply to you (for example, if you have never been\nmarried and the question asks, “Provide the name of your current spouse”), type or print “N/A,” unless otherwise\ndirected."
+  },
+  {
+    "formKey": "adjust",
+    "page": 11,
+    "spotIndex": 0,
+    "instructionPages": [
+      9
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si presentas el I-485 como cónyuge derivado, normalmente se pide copia del certificado de matrimonio emitido por la autoridad civil del lugar de celebración. Las instrucciones contemplan excepciones y requisitos por categoría, por lo que no debe aplicarse esa regla sin revisar la base de solicitud.",
+    "sourceQuote": "If you are filing Form I-485 as the derivative applicant spouse of the principal applicant, you generally must submit \na photocopy of your marriage certificate issued by the appropriate civil authority where the marriage took place."
+  },
+  {
+    "formKey": "adjust",
+    "page": 11,
+    "spotIndex": 1,
+    "instructionPages": [
+      9
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Cuando corresponda acreditar el matrimonio y cualquiera de los cónyuges se haya casado antes, reúne también prueba de la terminación legal de los matrimonios anteriores, como la sentencia de divorcio o certificado de defunción.",
+    "sourceQuote": "If either party to the marriage was previously married, you must also submit evidence to prove the legal termination of \nany prior marriages, typically a divorce decree/certificate or death certificate."
+  },
+  {
+    "formKey": "adjust",
+    "page": 12,
+    "spotIndex": 0,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si la respuesta numérica es cero o ninguno, las instrucciones generales de esta edición indican escribir “None”, salvo una indicación específica diferente. No apliques esa regla si el campo o sus instrucciones establecen otro formato.",
+    "sourceQuote": "If your answer to a question which requires a numeric response is zero or none (for example, “How many\nchildren do you have” or “How many times have you departed the United States”), type or print “None,” unless\notherwise directed."
+  },
+  {
+    "formKey": "adjust",
+    "page": 12,
+    "spotIndex": 1,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Enumerar a un hijo en esta parte no presenta una solicitud por él. Si ese hijo solicita ajuste de estatus, las instrucciones requieren su propio I-485, incluso cuando sea solicitante derivado.",
+    "sourceQuote": "Whether you are a principal or derivative \napplicant, you must file your own Form I-485."
+  },
+  {
+    "formKey": "adjust",
+    "page": 13,
+    "spotIndex": 1,
+    "instructionPages": [
+      12
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si alguna respuesta plantea una posible causal de inadmisibilidad, las instrucciones señalan que una exención u otra solución depende de la causal y de la categoría migratoria. No supongas que una respuesta afirmativa se corrige con el mismo trámite en todos los casos.",
+    "sourceQuote": "Whether \nor not a waiver or other form of relief is available depends on the grounds of inadmissibility that apply to you and the \nspecific immigrant category you are applying under."
+  },
+  {
+    "formKey": "adjust",
+    "page": 14,
+    "spotIndex": 1,
+    "instructionPages": [
+      12
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si tuviste estatus J-1 o J-2, revisa el apartado documental específico: pide los IAP-66/DS-2019 pertinentes disponibles y otros registros de visas y entradas. Si te aplicaba el requisito de residencia de dos años, también explica qué prueba de cumplimiento o exención corresponde.",
+    "sourceQuote": "you must submit copies of all relevant Forms IAP-66 and/or Forms DS-2019, Certificate of Eligibility for Exchange \nVisitor (J-1) Status, ever issued to you (if available)."
+  },
+  {
+    "formKey": "adjust",
+    "page": 14,
+    "spotIndex": 2,
+    "instructionPages": [
+      11
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Además de contestar las preguntas, revisa los documentos policiales y judiciales exigidos para cada situación. Las instrucciones distinguen arrestos sin cargos, cargos, condenas y registros anulados o sellados; no basta con reunir solo la sentencia final en todos los casos.",
+    "sourceQuote": "You must submit certified police and court records for any criminal charges, arrests, or convictions you may have."
+  },
+  {
+    "formKey": "adjust",
+    "page": 15,
+    "spotIndex": 0,
+    "instructionPages": [
+      12
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si no consigues copias certificadas de una resolución judicial, revisa las tres clases de evidencia alternativa exigidas en la página 12: explicación de indisponibilidad, declaración del solicitante y evidencia secundaria o declaraciones admisibles. No omitas el hecho solo porque falta el registro.",
+    "sourceQuote": "If you are not able to obtain certified copies of any court disposition relating to Items 10.A. - 10.D., please submit all \nthree items below:"
+  },
+  {
+    "formKey": "adjust",
+    "page": 18,
+    "spotIndex": 0,
+    "instructionPages": [
+      13
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Las instrucciones distinguen contestar estas preguntas de adjuntar evidencia inicial de carga pública: por regla general no exigen esa evidencia, con la excepción que describen sobre institucionalización contraria a ley federal. Si USCIS necesita más pruebas, puede emitir un requerimiento; revisa la página 13 antes de enviar documentación adicional.",
+    "sourceQuote": "If USCIS requires additional evidence to determine if you are inadmissible under the public charge ground \nof inadmissibility, it will issue a Request for Evidence and consider all evidence that you provide in response."
+  },
+  {
+    "formKey": "adjust",
+    "page": 18,
+    "spotIndex": 1,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si efectivamente corresponde una de las exenciones enumeradas en la pregunta 56, las instrucciones indican seleccionar esa categoría y omitir 57–64. Primero verifica la categoría aplicable; esta guía no determina una exención personal.",
+    "sourceQuote": "If you are applying to adjust status under one of the exempt categories listed in Item\nNumber 56., you should select your category and skip Item Numbers 57. - 64."
+  },
+  {
+    "formKey": "adjust",
+    "page": 19,
+    "spotIndex": 0,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si no solicitas bajo una de las categorías exentas de la pregunta 56, las instrucciones requieren la opción que lo indica y completar 57–64. No omitas estas preguntas basándote solo en no haber recibido beneficios públicos.",
+    "sourceQuote": "and you are required to complete Item Numbers 57. - 64."
+  },
+  {
+    "formKey": "adjust",
+    "page": 19,
+    "spotIndex": 1,
+    "instructionPages": [
+      6,
+      7
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Mantén coherencia entre el tamaño del hogar y las personas cuyos ingresos, activos y deudas incluyes. Las instrucciones limitan las deudas a las de miembros del hogar y, para ingresos, excluyen beneficios públicos sujetos a recursos e ingresos de actividades ilegales.",
+    "sourceQuote": "If you include your household\nsize, that size should include any individuals whose income, assets, and liabilities you include in Item Numbers 58. – 60.\n\nOnly include liabilities owed by members of your household."
+  },
+  {
+    "formKey": "adjust",
+    "page": 19,
+    "spotIndex": 2,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "La lista de habilidades no se limita a títulos universitarios: puede incluir capacitación, licencias profesionales, idiomas y certificados de oficios o aprendizaje. Para beneficios públicos, revisa por separado el alcance de 63–64, que abarca beneficios sujetos a evaluación de recursos, pasados o actuales.",
+    "sourceQuote": "Skills that you should list include, but are not limited to, your \nworkforce skills, training, licenses for specific occupations or professions, foreign language skills, and certificates \ndocumenting mastery or apprenticeships in skilled trades or professions."
+  },
+  {
+    "formKey": "adjust",
+    "page": 20,
+    "spotIndex": 0,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si corresponde completar esta tabla, las instrucciones piden beneficio, fechas, valor o monto cuando aplique y una explicación detallada del motivo de recepción. No se limita a beneficios que continúes recibiendo al presentar la solicitud.",
+    "sourceQuote": "showing the \nbenefit received, the dates of receipt, and value of receipt including the dollar amount (if applicable), as well as a \ndetailed explanation of why you received the benefit(s)"
+  },
+  {
+    "formKey": "adjust",
+    "page": 20,
+    "spotIndex": 2,
+    "instructionPages": [
+      12
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si existen antecedentes de remoción o una posible causal de inadmisibilidad, las instrucciones remiten a I-601 e I-212 para conocer las posibles vías y sus requisitos. Esa remisión no significa que debas presentar ambos ni que una exención esté disponible en tu caso.",
+    "sourceQuote": "You can learn more about waivers and other forms of relief by reading the Instructions for Form I-601, Application \nfor Waiver of Grounds of Inadmissibility, at www.uscis.gov/I-601, and Form I-212, Application for Permission \nto Reapply for Admission into the United States After Deportation or Removal, at www.uscis.gov/I-212."
+  },
+  {
+    "formKey": "adjust",
+    "page": 22,
+    "spotIndex": 0,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "La firma no puede sustituirse por un nombre mecanografiado o un sello. Las instrucciones permiten, en los casos que describen, la firma de un progenitor o tutor y aceptan copia de una firma manuscrita original para presentación.",
+    "sourceQuote": "USCIS will not accept a stamped \nor typewritten name in place of any signature on this application."
+  },
+  {
+    "formKey": "adjust",
+    "page": 22,
+    "spotIndex": 1,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si alguien te interpretó las instrucciones y preguntas, esa persona debe completar su sección, firmar y fechar. Ayudar con la interpretación no elimina la certificación y firma que correspondan al solicitante.",
+    "sourceQuote": "If you used anyone as an interpreter to \nread the Instructions and questions on this application to you in a language in which you are fluent, the interpreter \nmust fill out this section and sign and date the application."
+  },
+  {
+    "formKey": "adjust",
+    "page": 23,
+    "spotIndex": 0,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si una misma persona interpretó y preparó la solicitud, debe completar ambas partes, 11 y 12. Un nombre mecanografiado o estampado no sustituye su firma.",
+    "sourceQuote": "If the same individual acted as your interpreter and your preparer, then that person should complete both Part 11. and \nPart 12."
+  },
+  {
+    "formKey": "adjust",
+    "page": 24,
+    "spotIndex": 0,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "Si el espacio no alcanza, puedes usar la parte 14 o una hoja adicional. Identifica cada hoja con nombre y número A si lo tienes, y fírmala y féchala.",
+    "sourceQuote": "If you need extra space to complete any item within this application, use the space provided in Part 14. Additional\nInformation or attach a separate sheet of paper."
+  },
+  {
+    "formKey": "adjust",
+    "page": 24,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "09/18/26",
+    "addition": "En cada continuación identifica la página, parte y pregunta originales, no solo el tema de la explicación. Las hojas adicionales deben llevar firma y fecha.",
+    "sourceQuote": "indicate the Page Number, Part Number, and Item Number to which your answer\nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 1,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Seleccionar varias bases o no seleccionar ninguna puede causar demora o rechazo. Revisa las instrucciones de la base concreta antes de marcarla; el tiempo de residencia por sí solo no resume todos los requisitos.",
+    "sourceQuote": "If you select more than one box or if you do not select any boxes, your Form N-400 may be delayed or \nrejected."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 1,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si tu nombre legal cambió, reúne la documentación del cambio, por ejemplo certificado de matrimonio, sentencia de divorcio u orden judicial. Entre otros nombres usados, las instrucciones incluyen variantes ortográficas y nombres utilizados en trámites migratorios o penales.",
+    "sourceQuote": "Provide documentation if your name changed - for example, marriage certificate, divorce decree, or court order."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 2,
+    "spotIndex": 0,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "No necesitas pedir aquí un cambio que ya ocurrió legalmente por matrimonio, divorcio u orden judicial. Un cambio solicitado en el N-400 no se hace definitivo hasta la naturalización por el tribunal, según estas instrucciones.",
+    "sourceQuote": "You do not need to request a name change if your legal name has already changed through marriage, divorce, or \nother court order."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 2,
+    "spotIndex": 1,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si solicitas la excepción médica al examen, las instrucciones exigen presentar el N-648 completado junto con el N-400. Presentarlo no garantiza que USCIS conceda la excepción; tampoco debe confundirse con pedir una adaptación de accesibilidad.",
+    "sourceQuote": "Submitting Form \nN-648 does not guarantee we will exempt you from the testing requirements."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 2,
+    "spotIndex": 2,
+    "instructionPages": [
+      9
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Pedir una tarjeta mediante el N-400 es opcional. Si la solicitas, las instrucciones vinculan 12.a con el consentimiento en 12.c; para reemplazo, piden el número de la tarjeta en 12.b, y la actualización se efectúa después de aprobación y juramento.",
+    "sourceQuote": "You are not required to request a Social Security card using this application."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 3,
+    "spotIndex": 0,
+    "instructionPages": [
+      10
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "La estatura se expresa en pies y pulgadas, y el peso en libras, no en unidades métricas. Para peso desconocido, inferior a 30 libras o superior a 699, esta edición indica “000”.",
+    "sourceQuote": "Do not enter your height in meters or centimeters."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 3,
+    "spotIndex": 1,
+    "instructionPages": [
+      10
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "El período depende de la base: cinco años para la disposición general, tres para cónyuge de ciudadano o VAWA y solo domicilio actual para las bases 1.D y 1.E que describen las instrucciones. Revisa la base exacta antes de preparar el historial; no uses automáticamente cinco años para todos.",
+    "sourceQuote": "you do not have to list every location where you have \nlived, only the current location."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 3,
+    "spotIndex": 2,
+    "instructionPages": [
+      11
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si el domicilio postal es distinto, o el domicilio físico no se proporcionó completo, debes indicar una dirección postal vigente y completa. USCIS la utilizará para los avisos; una dirección inválida puede causar rechazo.",
+    "sourceQuote": "If your mailing address is not the same as your current physical address or if you did not provide a complete physical \naddress, you must provide a current mailing address."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 4,
+    "spotIndex": 0,
+    "instructionPages": [
+      11
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si no es seguro recibir correspondencia en tu dirección actual, las instrucciones permiten una dirección segura, como apartado postal o dirección de una persona u organización de confianza donde recibas avisos a tiempo. No es necesario revelar la dirección confidencial de un refugio de violencia doméstica en las condiciones que describe la página 11.",
+    "sourceQuote": "You may provide a post office box (P.O. Box) or the address of a friend, your attorney, a community-\nbased organization that is helping you, or any other address where you can safely and timely receive mail."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 4,
+    "spotIndex": 1,
+    "instructionPages": [
+      11
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Cuenta por separado cada matrimonio, incluso si fue más de una vez con la misma persona. Las instrucciones incluyen matrimonios en otros países, anulados, civiles, consuetudinarios o religiosos, estén o no registrados ante un gobierno.",
+    "sourceQuote": "If you have been \nmarried more than once to the same person, count each marriage separately."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 4,
+    "spotIndex": 2,
+    "instructionPages": [
+      12
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si solicitas naturalización por matrimonio con ciudadano estadounidense, revisa el paquete de pruebas de esa base: ciudadanía del cónyuge, matrimonio y terminación de matrimonios anteriores cuando corresponda. Las instrucciones también describen evidencia de vida en unión matrimonial; no basta con el nombre del cónyuge.",
+    "sourceQuote": "Current marriage certificate and any divorce decree, annulment decree, or death certificate showing that your and \nyour spouse’s prior marriages were terminated (if applicable);"
+  },
+  {
+    "formKey": "citizenship",
+    "page": 5,
+    "spotIndex": 0,
+    "instructionPages": [
+      14
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si corresponde la base de cónyuge con empleo cualificado fuera de EE. UU., reúne pruebas de ese empleo, no solo el nombre de la empresa. Las instrucciones detallan naturaleza del negocio, trabajo desempeñado, tipo de entidad y otros documentos del empleo.",
+    "sourceQuote": "Evidence demonstrating your U.S. citizen spouse’s qualified employment outside the United States."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 5,
+    "spotIndex": 1,
+    "instructionPages": [
+      15
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si tienes hijos dependientes que viven aparte, las instrucciones piden pruebas del apoyo y del cumplimiento de obligaciones de manutención. Si existe orden judicial, reúne la orden y evidencia de cumplimiento; se dan ejemplos como recibos y constancias de pagos.",
+    "sourceQuote": "If you have dependent \nchildren living apart from you, provide evidence that you support each dependent son or daughter and that you have \ncomplied with any child support obligations."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 5,
+    "spotIndex": 2,
+    "instructionPages": [
+      15,
+      16
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Prepara el historial según la base de la parte 1: tres años para 1.B, 1.C y 1.D; un año para 1.E; cinco años para 1.A, 1.F y 1.G. Se incluyen trabajo o estudios tanto a tiempo completo como parcial.",
+    "sourceQuote": "list where you have worked or attended school full time or part time during the last 3 years.\n\nInformation About Your Eligibility list where you have worked or attended school full time or part time during the \nlast year.\n\nlist where you have worked or attended school full time or part time during \nthe last 5 years."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 6,
+    "spotIndex": 0,
+    "instructionPages": [
+      16
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "La tabla de viajes no tiene el mismo período para todos: cinco años para 1.A, 1.F y 1.G; tres para 1.B y 1.C. Las instrucciones eximen de listar viajes bajo 1.D y 1.E; verifica tu base antes de completar u omitir la tabla.",
+    "sourceQuote": "you do not have to list any trips that you have taken \noutside the United States."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 6,
+    "spotIndex": 2,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Las transcripciones fiscales no se exigen en todos los casos. Si tienes impuestos vencidos, revisa las pruebas específicas de la página 20: transcripciones del período aplicable, acuerdo de pago firmado y constancia del estado actual del plan.",
+    "sourceQuote": "Tax transcripts are not required for every case."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 8,
+    "spotIndex": 0,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Las instrucciones incluyen hechos ocurridos antes de los 18 años y antecedentes borrados o indultados. No omitas un hecho solo por esas razones; distingue entre la obligación de declararlo y los documentos que deben acompañarlo.",
+    "sourceQuote": "Report all offenses that \nyou have committed, including any offenses involving solicitation, domestic violence, or driving under the influence, any \noffenses that have been expunged (removed from your record) or for which you received a pardon, and any offenses that \nhappened before you reached 18 years of age."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 8,
+    "spotIndex": 1,
+    "instructionPages": [
+      21
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Para los antecedentes descritos, pueden enviarse fotocopias con la solicitud, pero a la entrevista deben llevarse originales o copias certificadas por el tribunal. La tabla de las páginas 21–22 distingue los documentos necesarios según el resultado de cada incidente.",
+    "sourceQuote": "You may provide photocopies with your application.  You must bring originals or court-certified copies to your \ninterview."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 8,
+    "spotIndex": 2,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si hubo libertad condicional o sentencia suspendida, reúne evidencia judicial de que terminó. Las instrucciones indican que USCIS no aprobará la naturalización mientras continúe esa situación.",
+    "sourceQuote": "You should provide court evidence showing that your probation, parole, or suspended sentence has ended."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 9,
+    "spotIndex": 0,
+    "instructionPages": [
+      15
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "En la pregunta sobre manutención, revisa también la evidencia de cumplimiento de obligaciones para hijos o cónyuge. Las instrucciones citan órdenes judiciales y comprobantes de pagos, entre otros ejemplos; responder la pregunta no sustituye esas pruebas cuando corresponden.",
+    "sourceQuote": "Provide evidence that you have complied with any child and spousal support obligations."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 9,
+    "spotIndex": 1,
+    "instructionPages": [
+      22
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si estuviste en esos procedimientos o fuiste removido o deportado, revisa los detalles que exigen las instrucciones: nombre, puerto de entrada de remoción, si saliste en avión o por frontera terrestre y motivo de la remoción. La explicación debe identificar lo ocurrido, no limitarse a marcar la casilla.",
+    "sourceQuote": "If you were placed in removal, recission, or deportation proceedings or were removed or \ndeported from the United States, you must provide:  Name, Port of Entry (POE) of removal, if you departed by plane or \nland border, and reason for removal."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 9,
+    "spotIndex": 2,
+    "instructionPages": [
+      22
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si no te registraste en el Servicio Selectivo, revisa la tabla de la página 22 antes de reunir documentos: el paso siguiente depende de tu edad y de la base de naturalización. En ciertos casos exige una explicación y carta de situación; no se solicita la misma documentación a todos.",
+    "sourceQuote": "You may visit www.sss.gov/register/immigrants/ \nfor information on your registration."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 10,
+    "spotIndex": 0,
+    "instructionPages": [
+      24
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si solicitas por servicio militar y ya te separaste de las fuerzas armadas, las instrucciones piden copias del DD-214, NGB-22 u otro documento oficial de baja de todos los períodos. Para miembros actuales, revisa el N-426 y las órdenes militares que correspondan; no envíes originales cuando se piden copias.",
+    "sourceQuote": "If you are currently separated from the U.S. armed forces and you are applying for naturalization based on your \nmilitary service, provide copies of your DD Form 214, NGB Form 22, or other official discharge document for all \nperiods of service."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 10,
+    "spotIndex": 1,
+    "instructionPages": [
+      25
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si tienes un título hereditario u orden de nobleza, las instrucciones explican la renuncia durante la ceremonia y la disposición que se declara en 30.b. La mayoría de las personas no tiene estos títulos; revisa el significado antes de contestar.",
+    "sourceQuote": "If you do have a hereditary title or order of nobility, the law requires you to renounce this title \nas part of your naturalization ceremony to become a U.S. citizen."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 10,
+    "spotIndex": 2,
+    "instructionPages": [
+      25
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Las instrucciones permiten solicitar una afirmación solemne en lugar de “on oath” y omitir “so help me God”, sin documentación. Distinguen esa afirmación de las modificaciones por objeción religiosa o de conciencia y de una exención por discapacidad; son situaciones diferentes.",
+    "sourceQuote": "You may request to substitute the words “solemnly affirm” for the words “on oath” and omit “so help me God.”"
+  },
+  {
+    "formKey": "citizenship",
+    "page": 11,
+    "spotIndex": 0,
+    "instructionPages": [
+      26
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si solicitas reducción de tarifa, reúne la prueba de ingresos del hogar. Si una declaración fiscal falta o ya no refleja los ingresos actuales, las instrucciones permiten los comprobantes alternativos que enumeran, como recibos consecutivos de pago de al menos el último mes.",
+    "sourceQuote": "If the household member did not file a Federal tax return, or if the tax return does not properly reflect his or her \ncurrent income, submit copies of consecutive pay statements (stubs) for a minimum of the past month, a recent          \nForm W-2, Form SSA-1099, or employer statements on business stationery showing salary or wages paid;"
+  },
+  {
+    "formKey": "citizenship",
+    "page": 11,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Antes de presentar, incluye todas las páginas del N-400 aunque algunas queden en blanco. Las firmas deben ser manuscritas; las instrucciones no aceptan un nombre mecanografiado o sello como sustituto.",
+    "sourceQuote": "You must include all pages when you file Form \nN-400, even if the pages are blank."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 12,
+    "spotIndex": 0,
+    "instructionPages": [
+      26
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si hubo interpretación de las preguntas e instrucciones, el intérprete debe completar, firmar y fechar su parte. Esta certificación de interpretación del formulario es distinta de la certificación de traducción de documentos en otro idioma.",
+    "sourceQuote": "the interpreter must fill out this section and sign and date the application."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 12,
+    "spotIndex": 1,
+    "instructionPages": [
+      26
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si la misma persona interpretó y preparó, debe completar tanto la parte 12 como la 13. Un nombre mecanografiado o estampado no sustituye su firma.",
+    "sourceQuote": "If \nthe same individual acted as your interpreter and your preparer, then that person should complete both Part 12. and Part \n13."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 13,
+    "spotIndex": 0,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Identifica cada hoja adicional con nombre, número A si lo tienes y la página, parte y pregunta a la que responde. Firma y fecha cada hoja para que la continuación quede vinculada a la solicitud.",
+    "sourceQuote": "Type or print your name and A-Number (if any), at the top of each sheet; indicate the Page Number, \nPart Number, and Item Number to which your answer refers; and sign and date each sheet."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 13,
+    "spotIndex": 1,
+    "instructionPages": [
+      26
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Las instrucciones reservan la firma de las partes 15 y 16 para cuando el oficial lo indique en la entrevista. Esto no sustituye la firma de la solicitud en la parte 11 que corresponda al presentar.",
+    "sourceQuote": "Do not complete this part.  The USCIS officer will ask you to complete this part at your interview."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 14,
+    "spotIndex": 0,
+    "instructionPages": [
+      26
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "No firmes esta parte por anticipado. Se completa cuando lo solicite el oficial en la entrevista; los campos del oficial son distintos de los del solicitante.",
+    "sourceQuote": "Part 15.  Signature at Interview\nDo not complete this part.  The USCIS officer will ask you to complete this part at your interview."
+  },
+  {
+    "formKey": "citizenship",
+    "page": 14,
+    "spotIndex": 1,
+    "instructionPages": [
+      26
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "La firma de esta parte solo indica que no objetas prestar el juramento: no significa que ya lo prestaste ni que ya eres ciudadano. Si se aprueba la solicitud, las instrucciones señalan que aún debes asistir a la ceremonia y prestar el juramento.",
+    "sourceQuote": "Your signature in this part only indicates that you have no objections to taking the Oath of \nAllegiance.  It does not mean that you have taken the Oath or that you are naturalized."
+  },
+  {
+    "formKey": "family",
+    "page": 1,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si el abogado o representante acreditado actúa más allá de preparar el formulario, las instrucciones indican que puede corresponder presentar también el G-28.",
+    "sourceQuote": "If the person who helped you prepare your petition is an attorney or accredited representative whose \nrepresentation extends beyond preparation of this petition, he or she may be obliged to also submit a completed Form \nG-28, Notice of Entry of Appearance as Attorney or Accredited Representative, along with your petition."
+  },
+  {
+    "formKey": "family",
+    "page": 1,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Las instrucciones requieren documentos que demuestren el parentesco. La evidencia varía según se trate de cónyuge, hijo, padre, madre o hermano; revisa la categoría correspondiente antes de reunirla.",
+    "sourceQuote": "You have to prove that there is a family relationship between you and the beneficiary.  If you are filing for a relative \nlisted below, submit the following documentation to prove the family relationship."
+  },
+  {
+    "formKey": "family",
+    "page": 1,
+    "spotIndex": 3,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "El número de cuenta USCIS no es el mismo que el número A; no intercambies ambos identificadores.",
+    "sourceQuote": "The OAN is not the same \nas an A-Number."
+  },
+  {
+    "formKey": "family",
+    "page": 2,
+    "spotIndex": 0,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Las fechas se expresan como mes/día/año. Si no puedes proporcionar una fecha exacta, las instrucciones permiten una aproximada en el mismo formato con explicación en la Parte 9.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format.  If you cannot provide an exact date, provide an approximate date in the same \nformat and include an explanation in Part 9. Additional Information."
+  },
+  {
+    "formKey": "family",
+    "page": 3,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Las fechas se expresan como mes/día/año. Si no puedes proporcionar una fecha exacta, las instrucciones permiten una aproximada en el mismo formato con explicación en la Parte 9.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format.  If you cannot provide an exact date, provide an approximate date in the same \nformat and include an explanation in Part 9. Additional Information."
+  },
+  {
+    "formKey": "family",
+    "page": 3,
+    "spotIndex": 2,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Las fechas se expresan como mes/día/año. Si no puedes proporcionar una fecha exacta, las instrucciones permiten una aproximada en el mismo formato con explicación en la Parte 9.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format.  If you cannot provide an exact date, provide an approximate date in the same \nformat and include an explanation in Part 9. Additional Information."
+  },
+  {
+    "formKey": "family",
+    "page": 2,
+    "spotIndex": 3,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "En una petición de cónyuge, si cualquiera estuvo casado antes, se requieren copias de documentos que acrediten la terminación legal de cada matrimonio anterior.",
+    "sourceQuote": "If either you were or your spouse was previously married, submit copies of documents showing that each of \nthe prior marriages was legally terminated;"
+  },
+  {
+    "formKey": "family",
+    "page": 3,
+    "spotIndex": 0,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "En una petición de cónyuge, si cualquiera estuvo casado antes, se requieren copias de documentos que acrediten la terminación legal de cada matrimonio anterior.",
+    "sourceQuote": "If either you were or your spouse was previously married, submit copies of documents showing that each of \nthe prior marriages was legally terminated;"
+  },
+  {
+    "formKey": "family",
+    "page": 6,
+    "spotIndex": 1,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "En una petición de cónyuge, si cualquiera estuvo casado antes, se requieren copias de documentos que acrediten la terminación legal de cada matrimonio anterior.",
+    "sourceQuote": "If either you were or your spouse was previously married, submit copies of documents showing that each of \nthe prior marriages was legally terminated;"
+  },
+  {
+    "formKey": "family",
+    "page": 6,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "En una petición de cónyuge, si cualquiera estuvo casado antes, se requieren copias de documentos que acrediten la terminación legal de cada matrimonio anterior.",
+    "sourceQuote": "If either you were or your spouse was previously married, submit copies of documents showing that each of \nthe prior marriages was legally terminated;"
+  },
+  {
+    "formKey": "family",
+    "page": 3,
+    "spotIndex": 3,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si el peticionario es ciudadano estadounidense, revisa la lista de documentos para acreditar ciudadanía; incluye, según corresponda, acta de nacimiento estadounidense, certificado de naturalización o ciudadanía, informe consular de nacimiento o pasaporte vigente.",
+    "sourceQuote": "What documents do you need to show that you are a U.S. citizen?\nA.\t A copy of your birth certificate, issued by a civil registrar, vital statistics office, or other civil authority showing \nthat you were born in the United States;\nB.\t A copy of your naturalization certificate or certificate of citizenship issued by USCIS or the former Immigration \nand Naturalization Service (INS);\nC.\t A copy of Form FS-240, Consular Report of Birth Abroad (CRBA), issued by a U.S. Embassy or U.S. Consulate;\nD.\t A copy of your unexpired U.S. passport;"
+  },
+  {
+    "formKey": "family",
+    "page": 4,
+    "spotIndex": 0,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si el peticionario es residente permanente, las instrucciones piden copia del frente y reverso de su tarjeta. Si aún no la recibió, describen evidencia alternativa de ese estatus.",
+    "sourceQuote": "If you are a lawful permanent resident, you must file your petition with a copy of the front and back of your \nPermanent Resident Card (Form I-551).  If you have not yet received your card, submit copies of your passport \nbiographic page and the page showing admission as a lawful permanent resident, or other evidence of permanent \nresident status issued by USCIS or the former INS."
+  },
+  {
+    "formKey": "family",
+    "page": 4,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Usa mes/día/año para las fechas de empleo. Si una fecha exacta no está disponible, las instrucciones permiten una aproximada acompañada de explicación en la Parte 9.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format.  If you cannot provide an exact date, provide an approximate date in the same \nformat and include an explanation in Part 9. Additional Information."
+  },
+  {
+    "formKey": "family",
+    "page": 4,
+    "spotIndex": 2,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Usa mes/día/año para las fechas de empleo. Si una fecha exacta no está disponible, las instrucciones permiten una aproximada acompañada de explicación en la Parte 9.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format.  If you cannot provide an exact date, provide an approximate date in the same \nformat and include an explanation in Part 9. Additional Information."
+  },
+  {
+    "formKey": "family",
+    "page": 7,
+    "spotIndex": 2,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Usa mes/día/año para las fechas de empleo. Si una fecha exacta no está disponible, las instrucciones permiten una aproximada acompañada de explicación en la Parte 9.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format.  If you cannot provide an exact date, provide an approximate date in the same \nformat and include an explanation in Part 9. Additional Information."
+  },
+  {
+    "formKey": "family",
+    "page": 4,
+    "spotIndex": 3,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La estatura se expresa en pies y pulgadas, no en metros o centímetros.",
+    "sourceQuote": "Height.  Select the values that best match your height in feet and inches.  For example, if you are five feet and \nnine inches, select “5” for feet and “09” for inches.  Do not enter your height in meters or centimeters."
+  },
+  {
+    "formKey": "family",
+    "page": 5,
+    "spotIndex": 0,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La instrucción pide seleccionar la casilla que mejor describa el color de cabello; esta parte todavía corresponde al peticionario.",
+    "sourceQuote": "Hair Color.  Select the box that best describes the color of your hair."
+  },
+  {
+    "formKey": "family",
+    "page": 5,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "El número de cuenta USCIS y el número A son diferentes. Evita copiar un identificador en el espacio del otro.",
+    "sourceQuote": "The OAN is not the same \nas an A-Number."
+  },
+  {
+    "formKey": "family",
+    "page": 6,
+    "spotIndex": 3,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Para ciertas categorías, el cónyuge y los hijos solteros menores de 21 años del beneficiario pueden ser beneficiarios derivados. Esa regla depende de la categoría: anotarlos aquí no demuestra por sí solo que estén incluidos ni evita una petición separada cuando se exige.",
+    "sourceQuote": "If the beneficiary qualifies under Items 1.C., 1.D., or 1.E. above, you are not required to file separate petitions for the \nbeneficiary’s spouse or unmarried children under 21 years of age.  They are considered derivative beneficiaries and \nyou should list them in Part 4. of this petition."
+  },
+  {
+    "formKey": "family",
+    "page": 7,
+    "spotIndex": 0,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Para ciertas categorías, el cónyuge y los hijos solteros menores de 21 años del beneficiario pueden ser beneficiarios derivados. Esa regla depende de la categoría: anotarlos aquí no demuestra por sí solo que estén incluidos ni evita una petición separada cuando se exige.",
+    "sourceQuote": "If the beneficiary qualifies under Items 1.C., 1.D., or 1.E. above, you are not required to file separate petitions for the \nbeneficiary’s spouse or unmarried children under 21 years of age.  They are considered derivative beneficiaries and \nyou should list them in Part 4. of this petition."
+  },
+  {
+    "formKey": "family",
+    "page": 7,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si se emitió un I-94, las instrucciones piden su número y la fecha de vencimiento de la estadía autorizada que figura en ese registro. No confundas esa fecha con la del pasaporte.",
+    "sourceQuote": "If U.S. Customs and Border Protection (CBP) or USCIS issued the beneficiary a Form I-94, Arrival/Departure Record, \nprovide the beneficiary’s Form I-94 number and date that his or her authorized period of stay expires or expired (as \nshown on Form I-94).  The Form I-94 number also is known as the Departure Number on some versions of Form I-94."
+  },
+  {
+    "formKey": "family",
+    "page": 7,
+    "spotIndex": 3,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si el matrimonio se celebró mientras el cónyuge estaba en determinados procedimientos migratorios, las instrucciones describen un requisito especial de prueba de buena fe. Esa situación requiere revisar la regla aplicable antes de presentar.",
+    "sourceQuote": "NOTE:  You must submit clear and convincing evidence that you and your spouse entered into the \nmarriage in good faith and not for immigration purposes if you married your spouse while your spouse \nwas the subject of an exclusion, deportation, removal, or rescission proceeding (including during the \njudicial review of any one of these proceedings); or you are a lawful permanent resident that obtained \nyour permanent residence through a prior marriage that was not determined by the death of your \nspouse and you are filing your petition for your spouse that you were married within five years of \nobtaining your permanent residence."
+  },
+  {
+    "formKey": "family",
+    "page": 8,
+    "spotIndex": 1,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Para una petición de cónyuge, las instrucciones mencionan un contrato de alquiler que muestre residencia compartida como un ejemplo de evidencia matrimonial. No es el único tipo de prueba posible.",
+    "sourceQuote": "A lease showing joint tenancy of a common residence, meaning you both live at the same address together;"
+  },
+  {
+    "formKey": "family",
+    "page": 8,
+    "spotIndex": 2,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La aprobación del I-130 no concede automáticamente residencia permanente ni permiso para inmigrar inmediatamente. La etapa consular o de ajuste y la disponibilidad de visa se evalúan por separado.",
+    "sourceQuote": "No.  An approved petition does not give the beneficiary automatic lawful permanent resident status or permission to \nimmediately immigrate to the United States."
+  },
+  {
+    "formKey": "family",
+    "page": 8,
+    "spotIndex": 3,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La regla general para peticionarios ciudadanos es una petición por familiar elegible. Las instrucciones también contienen excepciones para ciertos beneficiarios derivados; no debe asumirse que una sola petición cubre a toda la familia.",
+    "sourceQuote": "If you are a U.S. citizen, you must file a separate Form I-130 for each eligible relative."
+  },
+  {
+    "formKey": "family",
+    "page": 9,
+    "spotIndex": 0,
+    "instructionPages": [
+      10
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La información y los documentos deben ser veraces. Las instrucciones advierten consecuencias por falsificar u ocultar hechos materiales.",
+    "sourceQuote": "If you knowingly and willfully falsify or conceal a material fact or submit a false document with your Form I-130, we will \ndeny your Form I-130 and may deny any other immigration benefit.  In addition, you will face severe penalties provided \nby law and may be subject to criminal prosecution."
+  },
+  {
+    "formKey": "family",
+    "page": 9,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Indica la ayuda que realmente recibiste: interpretación y preparación son funciones distintas. Si una persona cumplió ambas, las instrucciones contemplan completar ambas secciones.",
+    "sourceQuote": "Select the appropriate box to \nindicate whether you read this petition yourself or whether you had an interpreter assist you.  If someone assisted you \nin completing the petition, select the box indicating that you used a preparer."
+  },
+  {
+    "formKey": "family",
+    "page": 9,
+    "spotIndex": 2,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Las instrucciones piden teléfono diurno y, si existen, teléfono móvil y correo del peticionario.",
+    "sourceQuote": "Further, you must sign and date your \npetition and provide your daytime telephone number, mobile telephone number (if any), and email address (if any)."
+  },
+  {
+    "formKey": "family",
+    "page": 9,
+    "spotIndex": 3,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Las instrucciones aceptan una fotocopia, fax o escaneo de una solicitud original que contenga firma manuscrita. Escribir un nombre a máquina no sustituye esa firma.",
+    "sourceQuote": "Validity of Signatures.  USCIS will consider a photocopied, faxed, or scanned copy of an original benefit request with a \nhandwritten signature as valid for filing purposes. The photocopy, fax, or scan must be of the original request or document \ncontaining the handwritten ink signature."
+  },
+  {
+    "formKey": "family",
+    "page": 10,
+    "spotIndex": 0,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si se utilizó intérprete, esa persona debe proporcionar sus datos, firmar y fechar la petición. Su certificación corresponde a la interpretación, no reemplaza la del peticionario.",
+    "sourceQuote": "If you used anyone as an interpreter to \nread the Instructions and questions on this petition to you in a language in which you are fluent, the interpreter must \nfill out this section, provide his or her name, the name and address of his or her business or organization (if any), his \nor her daytime telephone number, his or her mobile telephone number (if any), and his or her email address (if any).  \nThe interpreter must sign and date the petition."
+  },
+  {
+    "formKey": "family",
+    "page": 10,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si se utilizó intérprete, esa persona debe proporcionar sus datos, firmar y fechar la petición. Su certificación corresponde a la interpretación, no reemplaza la del peticionario.",
+    "sourceQuote": "If you used anyone as an interpreter to \nread the Instructions and questions on this petition to you in a language in which you are fluent, the interpreter must \nfill out this section, provide his or her name, the name and address of his or her business or organization (if any), his \nor her daytime telephone number, his or her mobile telephone number (if any), and his or her email address (if any).  \nThe interpreter must sign and date the petition."
+  },
+  {
+    "formKey": "family",
+    "page": 10,
+    "spotIndex": 2,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si la misma persona fue intérprete y preparador, las instrucciones indican completar tanto la Parte 7 como la Parte 8.",
+    "sourceQuote": "If the same individual acted as your interpreter and your preparer, that person should complete \nboth Part 7. and Part 8."
+  },
+  {
+    "formKey": "family",
+    "page": 11,
+    "spotIndex": 0,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si la misma persona fue intérprete y preparador, las instrucciones indican completar tanto la Parte 7 como la Parte 8.",
+    "sourceQuote": "If the same individual acted as your interpreter and your preparer, that person should complete \nboth Part 7. and Part 8."
+  },
+  {
+    "formKey": "family",
+    "page": 11,
+    "spotIndex": 2,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si la misma persona fue intérprete y preparador, las instrucciones indican completar tanto la Parte 7 como la Parte 8.",
+    "sourceQuote": "If the same individual acted as your interpreter and your preparer, that person should complete \nboth Part 7. and Part 8."
+  },
+  {
+    "formKey": "family",
+    "page": 11,
+    "spotIndex": 3,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si la misma persona fue intérprete y preparador, las instrucciones indican completar tanto la Parte 7 como la Parte 8.",
+    "sourceQuote": "If the same individual acted as your interpreter and your preparer, that person should complete \nboth Part 7. and Part 8."
+  },
+  {
+    "formKey": "family",
+    "page": 11,
+    "spotIndex": 1,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Para representación legal que vaya más allá de preparar el formulario, revisa si también corresponde presentar un G-28.",
+    "sourceQuote": "If the person who helped you prepare your petition is an attorney or accredited representative whose \nrepresentation extends beyond preparation of this petition, he or she may be obliged to also submit a completed Form \nG-28, Notice of Entry of Appearance as Attorney or Accredited Representative, along with your petition."
+  },
+  {
+    "formKey": "family",
+    "page": 12,
+    "spotIndex": 0,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "En hojas de continuación, incluye nombre y número A si existe, identifica página, parte y pregunta, y firma y fecha cada hoja.",
+    "sourceQuote": "If you need extra space to complete any item within this petition, use the space provided in Part 9. Additional \nInformation or attach a separate sheet of paper.  Type or print your name and Alien Registration Number (A-Number) \n(if any) at the top of each sheet; indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "family",
+    "page": 12,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "En hojas de continuación, incluye nombre y número A si existe, identifica página, parte y pregunta, y firma y fecha cada hoja.",
+    "sourceQuote": "If you need extra space to complete any item within this petition, use the space provided in Part 9. Additional \nInformation or attach a separate sheet of paper.  Type or print your name and Alien Registration Number (A-Number) \n(if any) at the top of each sheet; indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "family",
+    "page": 12,
+    "spotIndex": 2,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "En hojas de continuación, incluye nombre y número A si existe, identifica página, parte y pregunta, y firma y fecha cada hoja.",
+    "sourceQuote": "If you need extra space to complete any item within this petition, use the space provided in Part 9. Additional \nInformation or attach a separate sheet of paper.  Type or print your name and Alien Registration Number (A-Number) \n(if any) at the top of each sheet; indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "family",
+    "page": 12,
+    "spotIndex": 3,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "En hojas de continuación, incluye nombre y número A si existe, identifica página, parte y pregunta, y firma y fecha cada hoja.",
+    "sourceQuote": "If you need extra space to complete any item within this petition, use the space provided in Part 9. Additional \nInformation or attach a separate sheet of paper.  Type or print your name and Alien Registration Number (A-Number) \n(if any) at the top of each sheet; indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "familySupplement",
+    "page": 1,
+    "spotIndex": 1,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "El I-130A se presenta junto con el I-130 del cónyuge. Si el beneficiario reside en el extranjero, debe completarlo, pero las instrucciones expresamente dispensan su firma.",
+    "sourceQuote": "If you are filing for your spouse, he or she must complete and sign Form I-130A, Supplemental Information for \nSpouse Beneficiary.  If your spouse is overseas, Form I-130A must still be completed, but your spouse does not have \nto sign Form I-130A.  Form I-130A must be submitted with Form I-130."
+  },
+  {
+    "formKey": "familySupplement",
+    "page": 3,
+    "spotIndex": 3,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "El I-130A se presenta junto con el I-130 del cónyuge. Si el beneficiario reside en el extranjero, debe completarlo, pero las instrucciones expresamente dispensan su firma.",
+    "sourceQuote": "If you are filing for your spouse, he or she must complete and sign Form I-130A, Supplemental Information for \nSpouse Beneficiary.  If your spouse is overseas, Form I-130A must still be completed, but your spouse does not have \nto sign Form I-130A.  Form I-130A must be submitted with Form I-130."
+  },
+  {
+    "formKey": "familySupplement",
+    "page": 1,
+    "spotIndex": 3,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La guía conjunta I-130/I-130A utiliza el formato mes/día/año para las fechas; revisa ese orden al trasladar tus registros.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format."
+  },
+  {
+    "formKey": "familySupplement",
+    "page": 2,
+    "spotIndex": 0,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La guía conjunta I-130/I-130A utiliza el formato mes/día/año para las fechas; revisa ese orden al trasladar tus registros.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format."
+  },
+  {
+    "formKey": "familySupplement",
+    "page": 2,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La guía conjunta I-130/I-130A utiliza el formato mes/día/año para las fechas; revisa ese orden al trasladar tus registros.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format."
+  },
+  {
+    "formKey": "familySupplement",
+    "page": 2,
+    "spotIndex": 2,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La guía conjunta I-130/I-130A utiliza el formato mes/día/año para las fechas; revisa ese orden al trasladar tus registros.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format."
+  },
+  {
+    "formKey": "familySupplement",
+    "page": 2,
+    "spotIndex": 3,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La guía conjunta I-130/I-130A utiliza el formato mes/día/año para las fechas; revisa ese orden al trasladar tus registros.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format."
+  },
+  {
+    "formKey": "familySupplement",
+    "page": 3,
+    "spotIndex": 0,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La guía conjunta I-130/I-130A utiliza el formato mes/día/año para las fechas; revisa ese orden al trasladar tus registros.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format."
+  },
+  {
+    "formKey": "familySupplement",
+    "page": 3,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La guía conjunta I-130/I-130A utiliza el formato mes/día/año para las fechas; revisa ese orden al trasladar tus registros.",
+    "sourceQuote": "Enter dates in mm/dd/yyyy format."
+  },
+  {
+    "formKey": "conditions",
+    "page": 1,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Las instrucciones indican que, si quien ayudó a preparar la petición es abogado o representante acreditado, también debe presentar el G-28.",
+    "sourceQuote": "If the person who helped you prepare your petition is \nan attorney or accredited representative, he or she must also submit a completed Form G-28, Notice of Entry of \nAppearance as Attorney or Accredited Representative, along with your petition."
+  },
+  {
+    "formKey": "conditions",
+    "page": 1,
+    "spotIndex": 2,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Este formulario corresponde a residencia condicional obtenida por matrimonio. No es el formulario general para renovar cualquier tarjeta de residente.",
+    "sourceQuote": "This petition is used by a conditional resident who obtained status through marriage, to request that U.S. Citizenship and \nImmigration Services (USCIS) remove the conditions on his or her residence."
+  },
+  {
+    "formKey": "conditions",
+    "page": 1,
+    "spotIndex": 3,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si la presentación es conjunta con el cónyuge, las instrucciones fijan los 90 días inmediatamente anteriores al vencimiento de la residencia condicional. Las modalidades individuales o con exención tienen reglas distintas.",
+    "sourceQuote": "Filing jointly.  If you are filing this petition jointly with your spouse, you must file it during the 90-day period \nimmediately before your conditional residence expires."
+  },
+  {
+    "formKey": "conditions",
+    "page": 2,
+    "spotIndex": 0,
+    "instructionPages": [
+      7
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Las instrucciones indican que se necesita una dirección en Estados Unidos para presentar esta petición. Revisa por separado las disposiciones especiales para residentes en el extranjero por órdenes militares o gubernamentales.",
+    "sourceQuote": "You must have a United States address to file this petition."
+  },
+  {
+    "formKey": "conditions",
+    "page": 2,
+    "spotIndex": 1,
+    "instructionPages": [
+      6,
+      7
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si hubo arresto o detención, incluso sin cargos, las instrucciones describen documentos oficiales que pueden ser necesarios. Las páginas 6–7 distinguen incidentes sin cargos, con cargos y condenas; revisa la categoría real.",
+    "sourceQuote": "If you have ever been arrested or detained by any law enforcement officer for any reason, either in the United States or \nabroad, and no charges were filed, submit an original official statement by the arresting agency or applicable court order \nconfirming that no charges were filed."
+  },
+  {
+    "formKey": "conditions",
+    "page": 2,
+    "spotIndex": 2,
+    "instructionPages": [
+      5
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si resides en el extranjero por órdenes militares o gubernamentales, las instrucciones establecen requisitos especiales de fotografías, huellas y copia de las órdenes. No se aplican automáticamente a cualquier persona que esté fuera del país.",
+    "sourceQuote": "Those who reside overseas pursuant to military or government orders, including conditional resident dependents residing \noverseas and listed under Part 5. Information About Your Children of the petition, must submit the following items \nwith Form I-751:"
+  },
+  {
+    "formKey": "conditions",
+    "page": 2,
+    "spotIndex": 3,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La estatura se indica en pies y pulgadas. No conviertas el campo en metros o centímetros.",
+    "sourceQuote": "Item Number 3.  Height.  Select the values that best match your height in feet and inches.  For example, if you are \nfive feet and nine inches, select “5” for feet and “09” for inches.  Do not enter your height in meters or centimeters."
+  },
+  {
+    "formKey": "conditions",
+    "page": 3,
+    "spotIndex": 0,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si presentas individualmente porque terminó el matrimonio, las instrucciones piden la sentencia final de divorcio o documento de terminación o anulación, además de evidencia de la relación. Otras bases tienen requisitos distintos.",
+    "sourceQuote": "If you are filing as an individual because your marriage has been terminated, submit a copy of the final divorce \ndecree or other document terminating or annulling the marriage with your petition, along with evidence of the qualifying \nrelationship."
+  },
+  {
+    "formKey": "conditions",
+    "page": 3,
+    "spotIndex": 1,
+    "instructionPages": [
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si el hijo presenta por separado, las instrucciones piden explicar el motivo y adjuntar documentación de respaldo.",
+    "sourceQuote": "If you are a child filing separately from your parent, submit a full explanation as to why you are filing separately, along \nwith copies of any supporting documentation."
+  },
+  {
+    "formKey": "conditions",
+    "page": 3,
+    "spotIndex": 2,
+    "instructionPages": [
+      5,
+      6
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Además de identificar al cónyuge o excónyuge, las instrucciones exigen evidencia de que el matrimonio se celebró de buena fe. Los ejemplos de prueba de la relación aparecen en las páginas 5–6.",
+    "sourceQuote": "Submit copies of documents indicating that the marriage upon which you were granted conditional status was entered \nin “good faith” and was not for the purpose of circumventing immigration laws."
+  },
+  {
+    "formKey": "conditions",
+    "page": 3,
+    "spotIndex": 3,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La inclusión de un hijo depende de cuándo obtuvo la residencia condicional: las instrucciones distinguen el mismo día o dentro de los 90 días siguientes frente a otros casos. Anotar al hijo y pedir que se eliminen sus condiciones no son automáticamente equivalentes.",
+    "sourceQuote": "If you have dependent \nchildren who acquired conditional resident status on the same day as you or within 90 days thereafter, then include the \nnames and Alien Registration Numbers (A-Numbers) of these children in Part 5. of Form I-751 in order to request that \nthe conditions on their status be removed as well.  If you have dependent children who did not acquire conditional resident \nstatus on the same day as you or within 90 days thereafter, or if the conditional resident parent is deceased, then those \ndependent children must each file Form I-751 separately to have the conditions on their status removed."
+  },
+  {
+    "formKey": "conditions",
+    "page": 4,
+    "spotIndex": 1,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La inclusión de un hijo depende de cuándo obtuvo la residencia condicional: las instrucciones distinguen el mismo día o dentro de los 90 días siguientes frente a otros casos. Anotar al hijo y pedir que se eliminen sus condiciones no son automáticamente equivalentes.",
+    "sourceQuote": "If you have dependent \nchildren who acquired conditional resident status on the same day as you or within 90 days thereafter, then include the \nnames and Alien Registration Numbers (A-Numbers) of these children in Part 5. of Form I-751 in order to request that \nthe conditions on their status be removed as well.  If you have dependent children who did not acquire conditional resident \nstatus on the same day as you or within 90 days thereafter, or if the conditional resident parent is deceased, then those \ndependent children must each file Form I-751 separately to have the conditions on their status removed."
+  },
+  {
+    "formKey": "conditions",
+    "page": 4,
+    "spotIndex": 2,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La inclusión de un hijo depende de cuándo obtuvo la residencia condicional: las instrucciones distinguen el mismo día o dentro de los 90 días siguientes frente a otros casos. Anotar al hijo y pedir que se eliminen sus condiciones no son automáticamente equivalentes.",
+    "sourceQuote": "If you have dependent \nchildren who acquired conditional resident status on the same day as you or within 90 days thereafter, then include the \nnames and Alien Registration Numbers (A-Numbers) of these children in Part 5. of Form I-751 in order to request that \nthe conditions on their status be removed as well.  If you have dependent children who did not acquire conditional resident \nstatus on the same day as you or within 90 days thereafter, or if the conditional resident parent is deceased, then those \ndependent children must each file Form I-751 separately to have the conditions on their status removed."
+  },
+  {
+    "formKey": "conditions",
+    "page": 4,
+    "spotIndex": 3,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La inclusión de un hijo depende de cuándo obtuvo la residencia condicional: las instrucciones distinguen el mismo día o dentro de los 90 días siguientes frente a otros casos. Anotar al hijo y pedir que se eliminen sus condiciones no son automáticamente equivalentes.",
+    "sourceQuote": "If you have dependent \nchildren who acquired conditional resident status on the same day as you or within 90 days thereafter, then include the \nnames and Alien Registration Numbers (A-Numbers) of these children in Part 5. of Form I-751 in order to request that \nthe conditions on their status be removed as well.  If you have dependent children who did not acquire conditional resident \nstatus on the same day as you or within 90 days thereafter, or if the conditional resident parent is deceased, then those \ndependent children must each file Form I-751 separately to have the conditions on their status removed."
+  },
+  {
+    "formKey": "conditions",
+    "page": 5,
+    "spotIndex": 1,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "La inclusión de un hijo depende de cuándo obtuvo la residencia condicional: las instrucciones distinguen el mismo día o dentro de los 90 días siguientes frente a otros casos. Anotar al hijo y pedir que se eliminen sus condiciones no son automáticamente equivalentes.",
+    "sourceQuote": "If you have dependent \nchildren who acquired conditional resident status on the same day as you or within 90 days thereafter, then include the \nnames and Alien Registration Numbers (A-Numbers) of these children in Part 5. of Form I-751 in order to request that \nthe conditions on their status be removed as well.  If you have dependent children who did not acquire conditional resident \nstatus on the same day as you or within 90 days thereafter, or if the conditional resident parent is deceased, then those \ndependent children must each file Form I-751 separately to have the conditions on their status removed."
+  },
+  {
+    "formKey": "conditions",
+    "page": 4,
+    "spotIndex": 0,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si falta espacio para los datos del hijo, usa la Parte 11 o una hoja adicional identificada con página, parte y pregunta, y firma y fecha cada hoja.",
+    "sourceQuote": "If you need extra space to complete any item within this petition, use the space provided in Part 11. Additional \nInformation or attach a separate sheet of paper.  Type or print your name and Alien Registration Number (A-Number) \n(if any) at the top of each sheet; indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "conditions",
+    "page": 5,
+    "spotIndex": 0,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si falta espacio para los datos del hijo, usa la Parte 11 o una hoja adicional identificada con página, parte y pregunta, y firma y fecha cada hoja.",
+    "sourceQuote": "If you need extra space to complete any item within this petition, use the space provided in Part 11. Additional \nInformation or attach a separate sheet of paper.  Type or print your name and Alien Registration Number (A-Number) \n(if any) at the top of each sheet; indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "conditions",
+    "page": 5,
+    "spotIndex": 2,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Para solicitar una adaptación, las instrucciones remiten también al aviso de cita y a uscis.gov/accommodationsinfo. Revisa esas indicaciones para la cita concreta.",
+    "sourceQuote": "Disability Accommodations/Modifications.  To request a disability accommodation/modification, follow the instructions \non your appointment notice or at www.uscis.gov/accommodationsinfo."
+  },
+  {
+    "formKey": "conditions",
+    "page": 5,
+    "spotIndex": 3,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Para solicitar una adaptación, las instrucciones remiten también al aviso de cita y a uscis.gov/accommodationsinfo. Revisa esas indicaciones para la cita concreta.",
+    "sourceQuote": "Disability Accommodations/Modifications.  To request a disability accommodation/modification, follow the instructions \non your appointment notice or at www.uscis.gov/accommodationsinfo."
+  },
+  {
+    "formKey": "conditions",
+    "page": 6,
+    "spotIndex": 0,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Marca según hayas leído el formulario o recibido interpretación del inglés, e indica si otra persona lo preparó. Son funciones distintas.",
+    "sourceQuote": "Select the appropriate box to indicate that you either read this \npetition yourself or someone interpreted this petition for you from English to a language in which you are fluent.  If \napplicable, select the box to indicate if someone prepared this petition for you."
+  },
+  {
+    "formKey": "conditions",
+    "page": 6,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Las instrucciones piden teléfono diurno y, si existen, móvil y correo del peticionario.",
+    "sourceQuote": "Further, you must sign and date your petition and \nprovide your daytime telephone number, mobile telephone number (if any), and email address (if any)."
+  },
+  {
+    "formKey": "conditions",
+    "page": 6,
+    "spotIndex": 2,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si USCIS determina que se requiere una cita biométrica, enviará un aviso con fecha, hora y lugar. Este reconocimiento no reemplaza ese aviso.",
+    "sourceQuote": "If we determine that a biometric services appointment \nis necessary, we will send you an appointment notice with the date, time, and location of your appointment."
+  },
+  {
+    "formKey": "conditions",
+    "page": 7,
+    "spotIndex": 0,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "En general se presentan copias legibles, salvo que las instrucciones soliciten un original. Algunos documentos de antecedentes penales tienen requisitos específicos.",
+    "sourceQuote": "Copies.  You should submit legible photocopies of requested documents unless the Instructions specifically instruct you to \nsubmit an original document."
+  },
+  {
+    "formKey": "conditions",
+    "page": 7,
+    "spotIndex": 1,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Se admite copia, fax o escaneo de un documento original con firma manuscrita. Un nombre mecanografiado no reemplaza la firma requerida.",
+    "sourceQuote": "Validity of Signatures.  USCIS will consider a photocopied, faxed, or scanned copy of an original benefit request with \na handwritten signature as valid for filing purposes.  The photocopy, fax, or scan must be of the original request or \ndocument containing the handwritten ink signature."
+  },
+  {
+    "formKey": "conditions",
+    "page": 7,
+    "spotIndex": 2,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Cuando corresponde la Parte 8, esa persona debe confirmar que leyó y comprendió el reconocimiento ASC, o que se lo leyeron y lo comprendió.",
+    "sourceQuote": "You must also affirm that you have read and understand (or that an interpreter or preparer read to \nyou, and you understand) the Acknowledgement of Appointment at USCIS Application Support Center in Part 8."
+  },
+  {
+    "formKey": "conditions",
+    "page": 7,
+    "spotIndex": 3,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Cuando corresponde la Parte 8, esa persona debe confirmar que leyó y comprendió el reconocimiento ASC, o que se lo leyeron y lo comprendió.",
+    "sourceQuote": "You must also affirm that you have read and understand (or that an interpreter or preparer read to \nyou, and you understand) the Acknowledgement of Appointment at USCIS Application Support Center in Part 8."
+  },
+  {
+    "formKey": "conditions",
+    "page": 8,
+    "spotIndex": 0,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Cuando corresponde la Parte 8, esa persona debe confirmar que leyó y comprendió el reconocimiento ASC, o que se lo leyeron y lo comprendió.",
+    "sourceQuote": "You must also affirm that you have read and understand (or that an interpreter or preparer read to \nyou, and you understand) the Acknowledgement of Appointment at USCIS Application Support Center in Part 8."
+  },
+  {
+    "formKey": "conditions",
+    "page": 8,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Cuando corresponde la Parte 8, esa persona debe confirmar que leyó y comprendió el reconocimiento ASC, o que se lo leyeron y lo comprendió.",
+    "sourceQuote": "You must also affirm that you have read and understand (or that an interpreter or preparer read to \nyou, and you understand) the Acknowledgement of Appointment at USCIS Application Support Center in Part 8."
+  },
+  {
+    "formKey": "conditions",
+    "page": 8,
+    "spotIndex": 2,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Cuando corresponde esta parte, la persona de la Parte 4 firma, fecha y proporciona sus propios datos de contacto.",
+    "sourceQuote": "Further, you must sign and date your petition and provide your daytime telephone number, mobile telephone number \n(if any), and email address (if any)."
+  },
+  {
+    "formKey": "conditions",
+    "page": 8,
+    "spotIndex": 3,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "El intérprete también certifica haber leído el reconocimiento ASC en el idioma que comprende el peticionario, y debe firmar y fechar.",
+    "sourceQuote": "The interpreter must also certify that he or \nshe has read the Acknowledgement of Appointment at USCIS Application Support Center in Part 7. to you in the \nsame language in which you are fluent.  The interpreter must sign and date the petition."
+  },
+  {
+    "formKey": "conditions",
+    "page": 9,
+    "spotIndex": 0,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "El intérprete también certifica haber leído el reconocimiento ASC en el idioma que comprende el peticionario, y debe firmar y fechar.",
+    "sourceQuote": "The interpreter must also certify that he or \nshe has read the Acknowledgement of Appointment at USCIS Application Support Center in Part 7. to you in the \nsame language in which you are fluent.  The interpreter must sign and date the petition."
+  },
+  {
+    "formKey": "conditions",
+    "page": 9,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si una misma persona actuó como intérprete y preparador, las instrucciones indican que debe completar las Partes 9 y 10.",
+    "sourceQuote": "If the same individual acted as your interpreter and your preparer, that person \nshould complete both Part 9. and Part 10."
+  },
+  {
+    "formKey": "conditions",
+    "page": 10,
+    "spotIndex": 1,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si una misma persona actuó como intérprete y preparador, las instrucciones indican que debe completar las Partes 9 y 10.",
+    "sourceQuote": "If the same individual acted as your interpreter and your preparer, that person \nshould complete both Part 9. and Part 10."
+  },
+  {
+    "formKey": "conditions",
+    "page": 9,
+    "spotIndex": 2,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si el preparador está vinculado a una empresa u organización, las instrucciones piden también el nombre y dirección de esa entidad.",
+    "sourceQuote": "If the person who completed this petition is associated with a business \nor organization, that person should complete the business or organization name and address information."
+  },
+  {
+    "formKey": "conditions",
+    "page": 9,
+    "spotIndex": 3,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Si quien ayudó a preparar la petición es abogado o representante acreditado, las instrucciones indican presentar además el G-28.",
+    "sourceQuote": "If the person who helped you prepare your petition is \nan attorney or accredited representative, he or she must also submit a completed Form G-28, Notice of Entry of \nAppearance as Attorney or Accredited Representative, along with your petition."
+  },
+  {
+    "formKey": "conditions",
+    "page": 10,
+    "spotIndex": 0,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "El preparador certifica además que leyó al peticionario el reconocimiento ASC y que este manifestó comprenderlo.",
+    "sourceQuote": "Anyone who helped you prepare your petition must also certify that he or she has read the \nAcknowledgment of Appointment at USCIS Application Support Center in Part 7. to you, and that you informed \nhim or her that you understood the ASC Acknowledgment."
+  },
+  {
+    "formKey": "conditions",
+    "page": 11,
+    "spotIndex": 0,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Identifica cada hoja adicional con nombre y número A si existe, página, parte y pregunta. Las instrucciones piden firmar y fechar cada hoja.",
+    "sourceQuote": "If you need extra space to complete any item within this petition, use the space provided in Part 11. Additional \nInformation or attach a separate sheet of paper.  Type or print your name and Alien Registration Number (A-Number) \n(if any) at the top of each sheet; indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "conditions",
+    "page": 11,
+    "spotIndex": 1,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Identifica cada hoja adicional con nombre y número A si existe, página, parte y pregunta. Las instrucciones piden firmar y fechar cada hoja.",
+    "sourceQuote": "If you need extra space to complete any item within this petition, use the space provided in Part 11. Additional \nInformation or attach a separate sheet of paper.  Type or print your name and Alien Registration Number (A-Number) \n(if any) at the top of each sheet; indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "conditions",
+    "page": 11,
+    "spotIndex": 2,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Identifica cada hoja adicional con nombre y número A si existe, página, parte y pregunta. Las instrucciones piden firmar y fechar cada hoja.",
+    "sourceQuote": "If you need extra space to complete any item within this petition, use the space provided in Part 11. Additional \nInformation or attach a separate sheet of paper.  Type or print your name and Alien Registration Number (A-Number) \n(if any) at the top of each sheet; indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "conditions",
+    "page": 11,
+    "spotIndex": 3,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "04/01/24",
+    "addition": "Identifica cada hoja adicional con nombre y número A si existe, página, parte y pregunta. Las instrucciones piden firmar y fechar cada hoja.",
+    "sourceQuote": "If you need extra space to complete any item within this petition, use the space provided in Part 11. Additional \nInformation or attach a separate sheet of paper.  Type or print your name and Alien Registration Number (A-Number) \n(if any) at the top of each sheet; indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "ead",
+    "page": 1,
+    "spotIndex": 0,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si participa un abogado o representante acreditado, revise también si debe acompañar un G-28. Esa representación no elimina las firmas que correspondan al solicitante, intérprete y preparador.",
+    "sourceQuote": "he or she may also need to submit a completed Form G-28"
+  },
+  {
+    "formKey": "ead",
+    "page": 1,
+    "spotIndex": 1,
+    "instructionPages": [
+      18
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si solicita renovación en la casilla 1.c, adjunte una copia de su EAD anterior. Seleccione solo el motivo que describa esta solicitud.",
+    "sourceQuote": "If you select Item Number 1.c., attach a copy \nof your previous EAD."
+  },
+  {
+    "formKey": "ead",
+    "page": 1,
+    "spotIndex": 2,
+    "instructionPages": [
+      18
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Use el nombre legal completo que aparece en su acta de nacimiento o en el documento de cambio legal de nombre.",
+    "sourceQuote": "Provide your full legal name as shown on your birth certificate or \nlegal change of name document"
+  },
+  {
+    "formKey": "ead",
+    "page": 1,
+    "spotIndex": 3,
+    "instructionPages": [
+      18
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Las instrucciones piden evidencia de los otros nombres usados, por ejemplo acta de nacimiento o matrimonio, documentos de divorcio, identificación oficial o página de identidad del pasaporte.",
+    "sourceQuote": "Submit evidence of any other names you have ever used"
+  },
+  {
+    "formKey": "ead",
+    "page": 2,
+    "spotIndex": 0,
+    "instructionPages": [
+      18
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "El EAD se enviará a esta dirección. Si la correspondencia llega a nombre de otra persona, incluya su nombre en “In Care Of Name”; revise las indicaciones especiales sobre dirección segura si corresponden a su caso.",
+    "sourceQuote": "If your mail is sent to someone other than yourself, please include an “In Care Of \nName” as part of your mailing address."
+  },
+  {
+    "formKey": "ead",
+    "page": 2,
+    "spotIndex": 1,
+    "instructionPages": [
+      18
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "El estado civil debe corresponder a la fecha en que presenta el I-765. Si ya solicitó autorización de empleo, marque sí en la pregunta 12 y aporte copias de EAD anteriores si están disponibles.",
+    "sourceQuote": "Provide copies of your previous EADs, if \navailable."
+  },
+  {
+    "formKey": "ead",
+    "page": 2,
+    "spotIndex": 2,
+    "instructionPages": [
+      19
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "La ciudadanía no necesariamente coincide con el país de nacimiento. Si no tiene ciudadanía de ningún país, las instrucciones indican escribir “stateless” y explicarlo en la Parte 6.",
+    "sourceQuote": "If you do not have \ncitizenship in any country, type or print “stateless” and provide an explanation in Part 6. Additional Information."
+  },
+  {
+    "formKey": "ead",
+    "page": 3,
+    "spotIndex": 0,
+    "instructionPages": [
+      19
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Para el país de nacimiento, use el nombre que tenía cuando nació, aunque después haya cambiado o el país ya no exista.",
+    "sourceQuote": "Type or print the name of the country as it was named when you were born"
+  },
+  {
+    "formKey": "ead",
+    "page": 3,
+    "spotIndex": 1,
+    "instructionPages": [
+      19
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si utilizó pasaporte o documento de viaje para entrar, indique sus datos en el espacio correspondiente aunque ahora esté vencido. No confunda la última entrada con la fecha de emisión del documento.",
+    "sourceQuote": "even if the passport or travel \ndocument is currently expired."
+  },
+  {
+    "formKey": "ead",
+    "page": 3,
+    "spotIndex": 2,
+    "instructionPages": [
+      1,
+      19
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "No deduzca la categoría solamente del nombre de un trámite pendiente: las instrucciones distinguen entre beneficios solicitados y ya concedidos. Verifique la sección “Who May File Form I-765” antes de escribir una sola categoría.",
+    "sourceQuote": "a person with a pending application for an immigration benefit or request might have a different \ncategory number than a person who was already granted the benefit or request."
+  },
+  {
+    "formKey": "ead",
+    "page": 3,
+    "spotIndex": 3,
+    "instructionPages": [
+      19,
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si corresponde STEM OPT (c)(3)(C), se pide el nivel y especialidad del título y los datos del empleador en E-Verify. Para (c)(8), una respuesta afirmativa sobre arrestos o condenas remite a las instrucciones especiales de documentos judiciales.",
+    "sourceQuote": "provide your degree level and major"
+  },
+  {
+    "formKey": "ead",
+    "page": 4,
+    "spotIndex": 0,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si otra persona le ayudó a completar la solicitud, indique que utilizó preparador. Si la misma persona también interpretó, deberá completar ambas partes correspondientes.",
+    "sourceQuote": "If someone assisted you in completing the application, select the box indicating that you \nused a preparer."
+  },
+  {
+    "formKey": "ead",
+    "page": 4,
+    "spotIndex": 1,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "La casilla ABC exige además haber indicado la categoría (c)(8) en la pregunta 27 y cumplir los requisitos del acuerdo; ser salvadoreño o guatemalteco por sí solo no basta.",
+    "sourceQuote": "If you entered the (c)(8) eligibility category in Item Number 27. and are \neligible for benefits under ABC settlement agreement as a Salvadoran or Guatemalan national, you should select the box."
+  },
+  {
+    "formKey": "ead",
+    "page": 4,
+    "spotIndex": 2,
+    "instructionPages": [
+      16
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Las instrucciones aceptan una copia escaneada, fotocopiada o enviada por fax de una solicitud original con firma manuscrita; no una firma sustituida por un nombre mecanografiado.",
+    "sourceQuote": "USCIS will consider a photocopied, faxed, or scanned copy of an original benefit request with \na handwritten signature as valid for filing purposes."
+  },
+  {
+    "formKey": "ead",
+    "page": 4,
+    "spotIndex": 3,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si alguien interpretó las preguntas e instrucciones en un idioma que usted domina, esa persona debe completar la Parte 4 con sus propios datos y firmarla.",
+    "sourceQuote": "the interpreter must fill out this section"
+  },
+  {
+    "formKey": "ead",
+    "page": 5,
+    "spotIndex": 0,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si alguien interpretó las preguntas e instrucciones en un idioma que usted domina, esa persona debe completar la Parte 4 con sus propios datos y firmarla.",
+    "sourceQuote": "the interpreter must fill out this section"
+  },
+  {
+    "formKey": "ead",
+    "page": 5,
+    "spotIndex": 1,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "El intérprete debe firmar y fechar la solicitud. Su firma no reemplaza la del solicitante.",
+    "sourceQuote": "The interpreter must sign and date the application."
+  },
+  {
+    "formKey": "ead",
+    "page": 5,
+    "spotIndex": 2,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si una misma persona fue intérprete y preparador, debe completar tanto la Parte 4 como la Parte 5. Si trabaja para una organización, incluya los datos de esa organización según las instrucciones.",
+    "sourceQuote": "If the same individual acted as your interpreter and your preparer, that person should complete \nboth Part 4. and Part 5."
+  },
+  {
+    "formKey": "ead",
+    "page": 6,
+    "spotIndex": 0,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si el preparador es abogado o representante acreditado, revise si también debe presentar un G-28 junto con la solicitud.",
+    "sourceQuote": "he or she may also need to submit a completed Form G-28"
+  },
+  {
+    "formKey": "ead",
+    "page": 6,
+    "spotIndex": 1,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Antes de presentar, imprima o guarde una copia del formulario completo para revisarlo en el futuro y conservarlo en sus archivos.",
+    "sourceQuote": "We recommend that you print or save a copy of your completed application to review in the future and  \nfor your records."
+  },
+  {
+    "formKey": "ead",
+    "page": 6,
+    "spotIndex": 2,
+    "instructionPages": [
+      20
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Cualquier persona que haya ayudado a completar la solicitud debe firmar y fechar su sección; un nombre estampado o mecanografiado no sustituye la firma.",
+    "sourceQuote": "Anyone who helped you \ncomplete this application MUST sign and date the application."
+  },
+  {
+    "formKey": "ead",
+    "page": 7,
+    "spotIndex": 0,
+    "instructionPages": [
+      17
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si agrega hojas, escriba nombre y A-Number, si lo tiene, en cada una; identifique página, parte y pregunta, y firme y feche cada hoja.",
+    "sourceQuote": "indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "ead",
+    "page": 7,
+    "spotIndex": 1,
+    "instructionPages": [
+      17
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si agrega hojas, escriba nombre y A-Number, si lo tiene, en cada una; identifique página, parte y pregunta, y firme y feche cada hoja.",
+    "sourceQuote": "indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "ead",
+    "page": 7,
+    "spotIndex": 2,
+    "instructionPages": [
+      17
+    ],
+    "instructionEdition": "08/21/25",
+    "addition": "Si agrega hojas, escriba nombre y A-Number, si lo tiene, en cada una; identifique página, parte y pregunta, y firme y feche cada hoja.",
+    "sourceQuote": "indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "card",
+    "page": 1,
+    "spotIndex": 1,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "El número de cuenta USCIS no es el A-Number. Si presentó por internet, el número de cuenta está en su perfil; si presentó por correo, revise el aviso de acceso a la cuenta.",
+    "sourceQuote": "The OAN is not the \nsame as an A-Number."
+  },
+  {
+    "formKey": "card",
+    "page": 1,
+    "spotIndex": 2,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "La evidencia de cambio legal de nombre debe estar registrada ante la autoridad civil correspondiente. Las instrucciones dan como ejemplos acta de matrimonio, sentencia de divorcio, decreto de adopción u otro documento judicial.",
+    "sourceQuote": "Legal name change documents submitted as \nevidence of a name change must have been registered with the proper civil authority."
+  },
+  {
+    "formKey": "card",
+    "page": 1,
+    "spotIndex": 3,
+    "instructionPages": [
+      3
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "USCIS no envía la tarjeta a una dirección postal extranjera. Si tiene estatus commuter, revise las instrucciones específicas sobre domicilio extranjero y recogida de la tarjeta en el puerto de entrada.",
+    "sourceQuote": "USCIS will not mail a Permanent Resident Card to a foreign mailing address, only to a valid U.S. mailing \naddress."
+  },
+  {
+    "formKey": "card",
+    "page": 2,
+    "spotIndex": 0,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "La clase de admisión es el código de tres caracteres de la categoría de inmigrante, que aparece en la tarjeta. La fecha de admisión es cuando se le concedió residencia permanente o condicional, no necesariamente la última fecha de viaje.",
+    "sourceQuote": "List the three character code for the immigrant category under which you were \ngranted lawful permanent resident or conditional permanent resident status."
+  },
+  {
+    "formKey": "card",
+    "page": 2,
+    "spotIndex": 1,
+    "instructionPages": [
+      1,
+      4
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Las instrucciones distinguen el reemplazo de una tarjeta condicional de la eliminación de condiciones. Para condiciones basadas en matrimonio remiten al I-751; para inversión empresarial, al I-829, según corresponda.",
+    "sourceQuote": "file Form I-751, Petition to \nRemove Conditions on Residence"
+  },
+  {
+    "formKey": "card",
+    "page": 2,
+    "spotIndex": 2,
+    "instructionPages": [
+      4
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Para tarjeta emitida pero no recibida, compruebe si USCIS la recibió de vuelta como no entregable. Las instrucciones distinguen ese supuesto de una tarjeta enviada a la dirección proporcionada y no devuelta; revise la nota antes de elegir 2.a o 2.b.",
+    "sourceQuote": "If the card was not returned as undeliverable \nto USCIS, then you must file Form I-90 using reason “2.a.”"
+  },
+  {
+    "formKey": "card",
+    "page": 3,
+    "spotIndex": 0,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Para residentes condicionales, las instrucciones excluyen el I-90 si la tarjeta ya venció o vencerá dentro de 90 días, cualquiera que sea el motivo del reemplazo. Revise el trámite de eliminación de condiciones aplicable antes de continuar.",
+    "sourceQuote": "Conditional permanent residents may not \nuse this application to replace, for any reason, an existing Permanent Resident Card that is expired or will expire within \n90 days."
+  },
+  {
+    "formKey": "card",
+    "page": 3,
+    "spotIndex": 1,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si responde sí sobre procedimientos de exclusión, deportación o remoción, debe dar una explicación detallada en la Parte 8. La pregunta sobre abandono de residencia también requiere explicación cuando la respuesta es sí.",
+    "sourceQuote": "If the answer is “Yes,” you must provide a detailed explanation in the \nspace provided in Part 8. Additional Information."
+  },
+  {
+    "formKey": "card",
+    "page": 3,
+    "spotIndex": 2,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "No escriba estatura en metros o centímetros ni peso en kilogramos. Si no conoce su peso, o es inferior a 30 o superior a 699 libras, las instrucciones indican escribir “000”.",
+    "sourceQuote": "If you do not know your weight or need to enter a weight under \n30 pounds or over 699 pounds, enter “000.”"
+  },
+  {
+    "formKey": "card",
+    "page": 3,
+    "spotIndex": 3,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Para solicitar una adaptación, revise también las instrucciones de su aviso de cita o la página de adaptaciones de USCIS.",
+    "sourceQuote": "To request a disability accommodation/modification, follow the instructions \non your appointment notice or at www.uscis.gov/accommodationsinfo."
+  },
+  {
+    "formKey": "card",
+    "page": 4,
+    "spotIndex": 0,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Para solicitar una adaptación, revise también las instrucciones de su aviso de cita o la página de adaptaciones de USCIS.",
+    "sourceQuote": "To request a disability accommodation/modification, follow the instructions \non your appointment notice or at www.uscis.gov/accommodationsinfo."
+  },
+  {
+    "formKey": "card",
+    "page": 4,
+    "spotIndex": 1,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si alguien le ayudó a completar la solicitud, marque la opción que indica que utilizó preparador. Esto es independiente de haber necesitado intérprete.",
+    "sourceQuote": "If someone assisted you in completing the application, select the box indicating that you \nused a preparer."
+  },
+  {
+    "formKey": "card",
+    "page": 4,
+    "spotIndex": 2,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Debe proporcionar un teléfono diurno. El teléfono móvil y el correo electrónico se indican si los tiene.",
+    "sourceQuote": "provide your daytime telephone number, mobile \ntelephone number (if any), and email address (if any)."
+  },
+  {
+    "formKey": "card",
+    "page": 4,
+    "spotIndex": 3,
+    "instructionPages": [
+      1
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si el solicitante es menor de 14 años, puede firmar su padre, madre o tutor legal según las instrucciones. Para otros casos de firma por tutor, revise el supuesto específico previsto; no presuponga que cualquier familiar puede firmar.",
+    "sourceQuote": "If you are under 14 years of age, your parent or legal \nguardian may sign the application on your behalf."
+  },
+  {
+    "formKey": "card",
+    "page": 5,
+    "spotIndex": 0,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "El intérprete debe proporcionar su nombre, datos de la organización si corresponde y datos de contacto. Su teléfono móvil y correo se incluyen si los tiene.",
+    "sourceQuote": "the interpreter must fill out this section"
+  },
+  {
+    "formKey": "card",
+    "page": 5,
+    "spotIndex": 1,
+    "instructionPages": [
+      8,
+      9
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Esta parte corresponde a quien leyó las instrucciones y preguntas en un idioma que usted domina. Si esa persona también preparó el formulario, debe completar además la Parte 7.",
+    "sourceQuote": "If you used anyone as an interpreter to read the instructions and questions on this application to \nyou in a language in which you are fluent"
+  },
+  {
+    "formKey": "card",
+    "page": 5,
+    "spotIndex": 2,
+    "instructionPages": [
+      8
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "El intérprete debe firmar y fechar la solicitud, además de completar sus datos.",
+    "sourceQuote": "The interpreter must sign and date the application."
+  },
+  {
+    "formKey": "card",
+    "page": 5,
+    "spotIndex": 3,
+    "instructionPages": [
+      9
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si la misma persona interpretó y preparó, debe completar ambas partes. Si está vinculada con una organización, las instrucciones piden su nombre y dirección.",
+    "sourceQuote": "If the same individual acted as your interpreter and your preparer, that person should complete \nboth Part 6. and Part 7."
+  },
+  {
+    "formKey": "card",
+    "page": 6,
+    "spotIndex": 0,
+    "instructionPages": [
+      9
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Cuando el abogado o representante acreditado actúa más allá de preparar el formulario, las instrucciones advierten que puede ser necesario un G-28.",
+    "sourceQuote": "whose representation \nextends beyond preparation of this application, he or she may be obliged to also submit a completed Form G-28"
+  },
+  {
+    "formKey": "card",
+    "page": 6,
+    "spotIndex": 1,
+    "instructionPages": [
+      9
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Revise su copia completa antes de una cita biométrica. Allí deberá poder confirmar de buena fe que la información es completa, verdadera y correcta.",
+    "sourceQuote": "We recommend that you review your copy of your completed application before you go to your biometric \nservices appointment"
+  },
+  {
+    "formKey": "card",
+    "page": 6,
+    "spotIndex": 2,
+    "instructionPages": [
+      9
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Quien ayudó a preparar la solicitud debe firmar y fechar; una firma estampada o un nombre mecanografiado no son aceptables como sustituto.",
+    "sourceQuote": "Anyone who helped you prepare this \napplication MUST sign and date the application."
+  },
+  {
+    "formKey": "card",
+    "page": 7,
+    "spotIndex": 0,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si utiliza hojas separadas, identifique cada una con nombre y A-Number, si lo tiene; indique página, parte y pregunta, y firme y feche cada hoja.",
+    "sourceQuote": "indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "card",
+    "page": 7,
+    "spotIndex": 1,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si utiliza hojas separadas, identifique cada una con nombre y A-Number, si lo tiene; indique página, parte y pregunta, y firme y feche cada hoja.",
+    "sourceQuote": "indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  },
+  {
+    "formKey": "card",
+    "page": 7,
+    "spotIndex": 2,
+    "instructionPages": [
+      2
+    ],
+    "instructionEdition": "01/20/25",
+    "addition": "Si utiliza hojas separadas, identifique cada una con nombre y A-Number, si lo tiene; indique página, parte y pregunta, y firme y feche cada hoja.",
+    "sourceQuote": "indicate the Page Number, Part Number, and Item Number to which your answer \nrefers; and sign and date each sheet."
+  }
+]

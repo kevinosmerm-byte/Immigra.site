@@ -1,0 +1,85 @@
+{
+  "reviewedAt": "2026-11-05",
+  "form": "AR-11",
+  "edition": "11/02/22",
+  "blankSuitable": true,
+  "currentEditionVerified": false,
+  "sha256": "f02879c3dcb820468e24d0dc6987c232ae6bb5ae0814881f80f3d606251cd0ff",
+  "sources": [
+    {
+      "title": "USCIS: How to Change Your Address",
+      "url": "https://www.uscis.gov/addresschange",
+      "access": "Página directa 403; contenido oficial de USCIS indexado, última revisión indicada 08/04/2026",
+      "supports": [
+        "Recomendación E-COA/myUSCIS",
+        "Casos presentados por correo también pueden usar cuenta",
+        "Incluir cada recibo pendiente",
+        "AR-11 postal cumple el aviso pero no automatiza cambios",
+        "VAWA/T/U, I-765V, I-751 por maltrato y otras poblaciones con procedimientos propios",
+        "USPS no actualiza USCIS"
+      ],
+      "limitations": "No se afirma que el flujo autenticado actual haya sido probado."
+    },
+    {
+      "title": "USCIS: Form AR-11 PDF",
+      "url": "https://www.uscis.gov/sites/default/files/document/forms/ar-11.pdf",
+      "access": "PDF directo 403; texto oficial indexado muestra edición 11/02/22 y página 2 de 2",
+      "supports": [
+        "Concordancia de edición de referencia y texto del adjunto"
+      ],
+      "limitations": "No confirma que esta sea la única edición aceptada hoy."
+    },
+    {
+      "title": "USCIS: Change of Address Procedures for VAWA/T/U Cases and Form I-751 Abuse Waivers",
+      "url": "https://www.uscis.gov/forms/filing-guidance/how-to-change-your-address/change-of-address-procedures-for-vawatu-cases-and-form-i-751-abuse-waivers",
+      "access": "Destino enlazado por la página oficial indexada",
+      "supports": [
+        "Enlace de consulta para procedimientos especiales"
+      ],
+      "limitations": "No se extrajo ni se afirma el procedimiento detallado actual de esta página."
+    },
+    {
+      "title": "USCIS: Launch of E-COA",
+      "url": "https://content.govdelivery.com/accounts/USDHSCIS/bulletins/3757882",
+      "access": "Boletín oficial de USCIS del 12/10/2023, texto leído",
+      "supports": [
+        "E-COA no depende de que el caso se haya presentado en línea",
+        "También útil sin solicitudes pendientes",
+        "El cambio E-COA no actualiza solicitudes FOIA/Privacy Act"
+      ],
+      "limitations": "Fuente histórica; no usar sus exclusiones de la fase inicial como lista vigente en 2026."
+    },
+    {
+      "title": "EOIR: Update Respondent or Alien Information",
+      "url": "https://www.justice.gov/eoir/update-respondent-or-alien-information",
+      "access": "Página oficial abierta y leída; actualizada 18/05/2026",
+      "supports": [
+        "Cinco días laborables",
+        "EOIR-33/IC para corte y EOIR-33/BIA para BIA",
+        "Un formulario por persona afectada; modalidades en línea, presencial o correo"
+      ]
+    }
+  ],
+  "integration": {
+    "primaryGuideKey": "address",
+    "secondaryGuideKey": "addressPaper",
+    "preservePrimaryMyUSCIS": true,
+    "entryLabel": "Ver alternativa en papel: AR-11",
+    "placement": "Acceso opcional dentro del recorrido de cambio de dirección USCIS. No sustituir address ni usar el papel como ruta inicial.",
+    "intro": "Para la mayoría de las personas, USCIS recomienda cambiar la dirección desde su cuenta myUSCIS con E-COA. Esto también puede hacerse cuando el caso se presentó por correo. El AR-11 en papel es una alternativa, no un trámite reservado a expedientes antiguos o a quienes no tienen cuenta.",
+    "primaryInstructions": [
+      "Consulta primero las instrucciones oficiales y los procedimientos para tu tipo de caso.",
+      "Si usas E-COA, incluye el número de recibo de cada solicitud pendiente que deba actualizarse.",
+      "La presentación en papel cumple el aviso de cambio, pero no automatiza la actualización de los sistemas de USCIS.",
+      "Guarda la confirmación y revisa los casos pendientes. El cambio ante USPS no cambia la dirección con USCIS."
+    ],
+    "specialProcedures": "VAWA, visas T/U, I-765V e I-751 con exención por maltrato requieren revisar las instrucciones especiales. Adopciones, cambios de dirección del beneficiario, patrocinadores y trámites consulares también pueden tener pasos adicionales. No dirijas automáticamente estos casos al envío postal general.",
+    "separateAgencies": "USCIS y EOIR son trámites distintos. EOIR pide actualizar dentro de cinco días laborables mediante EOIR-33/IC para corte o EOIR-33/BIA para apelaciones, con un formulario por persona afectada. Revisa por separado cualquier obligación ante ICE.",
+    "referenceWarning": "Referencia visual del AR-11, edición 11/02/22. Antes de presentar, verifica la edición aceptada, el destino de envío y las instrucciones actuales en USCIS. Esta guía no presenta formularios ni sustituye asesoría legal individual.",
+    "auditChangesSuggested": [
+      "Añadir addressPaper:2 a referenceTotals.",
+      "Al existir esta guía, no declarar que address carece de imágenes específicas: indicar referencia en papel disponible y recorrido myUSCIS separado.",
+      "No atribuir estas imágenes a E-COA ni contarlas como capturas del portal."
+    ]
+  }
+}

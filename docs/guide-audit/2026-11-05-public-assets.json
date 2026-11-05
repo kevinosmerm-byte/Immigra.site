@@ -1,0 +1,188 @@
+[
+  {
+    "file": "ead-online13.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 105347
+  },
+  {
+    "file": "ead-online20.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 82088
+  },
+  {
+    "file": "ead-online21.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 87982
+  },
+  {
+    "file": "ead-online25.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 120161
+  },
+  {
+    "file": "ead-online28.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 101643
+  },
+  {
+    "file": "ead-online29.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 103595
+  },
+  {
+    "file": "ead-online3.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 73658
+  },
+  {
+    "file": "ead-online30.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 100467
+  },
+  {
+    "file": "ead-online40.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 98658
+  },
+  {
+    "file": "ead-online50.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 118422
+  },
+  {
+    "file": "ead-online8.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 84275
+  },
+  {
+    "file": "first-home.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 133883
+  },
+  {
+    "file": "first-status.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 98267
+  },
+  {
+    "file": "i130-screen1.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 158619
+  },
+  {
+    "file": "i130-screen5.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 156392
+  },
+  {
+    "file": "i130-screen8.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 157813
+  },
+  {
+    "file": "i485-reference1.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 148417
+  },
+  {
+    "file": "i485-reference3.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 130183
+  },
+  {
+    "file": "i485-reference5.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 156550
+  },
+  {
+    "file": "i589-screen1.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 159855
+  },
+  {
+    "file": "i589-screen5.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 128662
+  },
+  {
+    "file": "i589-screen9.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 189946
+  },
+  {
+    "file": "i765-screen1.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 142667
+  },
+  {
+    "file": "i765-screen2.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 104899
+  },
+  {
+    "file": "i765-screen3.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 178161
+  },
+  {
+    "file": "i765-screen4.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 168857
+  },
+  {
+    "file": "myuscis-home.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 135618
+  },
+  {
+    "file": "myuscis-register.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 74525
+  },
+  {
+    "file": "n400-screen1.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 169412
+  },
+  {
+    "file": "n400-screen2.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 155142
+  },
+  {
+    "file": "n400-screen6.jpg",
+    "status": 200,
+    "contentType": "image/jpeg",
+    "bytes": 164575
+  }
+]

@@ -79,11 +79,15 @@
       const visible = q[0] < v[0]+v[2] && q[0]+q[2] > v[0] && q[1] < v[1]+v[3] && q[1]+q[3] > v[1];
       region.hidden = !visible;
       region.style.cssText = `left:${(q[0]-v[0])/v[2]*100}%;top:${(q[1]-v[1])/v[3]*100}%;width:${q[2]/v[2]*100}%;height:${q[3]/v[3]*100}%`;
-      annotate(region, q[4], q[5]);
+      const instruction = q[6];
+      const zoneText = instruction
+        ? `${q[5]} ${instruction.addition} Fuente: instrucciones USCIS ${g.form}, edición ${instruction.instructionEdition}, páginas ${instruction.instructionPages.join(', ')}.`
+        : q[5];
+      annotate(region, q[4], zoneText);
       box.append(region);
       const number = box.querySelectorAll('.native-spot')[i];
       if (number) {
-        annotate(number, q[4], q[5]);
+        annotate(number, q[4], zoneText);
         const numberVisible = q[0]+15 >= v[0] && q[0]+15 <= v[0]+v[2] && q[1]+15 >= v[1] && q[1]+15 <= v[1]+v[3];
         number.tabIndex = numberVisible ? 0 : -1;
       }

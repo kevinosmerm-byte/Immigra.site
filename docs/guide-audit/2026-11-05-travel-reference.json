@@ -1,0 +1,14 @@
+{
+  "form": "I-131",
+  "edition": "01/20/25",
+  "pageCount": 14,
+  "currentEditionVerified": false,
+  "widgetCount": 339,
+  "blankCheck": "No personal values found; only 14 barcode edition/page values and one whitespace-only State value on page 9.",
+  "warnings": [
+    "Referencia de la edición adjunta, no confirmación de edición actualmente aceptada.",
+    "El archivo incluye el formulario y avisos breves, no el documento separado de instrucciones.",
+    "La presencia de un programa en esta edición no acredita que esté actualmente disponible.",
+    "Esta guía no determina elegibilidad ni autoriza salir, trabajar o entrar a Estados Unidos. Revise las instrucciones y advertencias vigentes antes de actuar."
+  ]
+}

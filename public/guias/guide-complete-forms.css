@@ -1,0 +1,10 @@
+.form-page-picker{margin:16px 0 22px;padding:16px;border:1px solid #bad7fb;border-radius:18px;background:#fff}
+.form-page-picker label{display:block;font-weight:750;margin-bottom:8px}
+.form-page-picker select{width:100%;min-width:0;max-width:100%;font-size:16px;background:white}
+.form-page-picker p{font-size:14px;line-height:1.5;margin:10px 0;color:#355471}
+.form-page-picker button{margin-top:8px;white-space:normal}
+.form-ready-reopen{font-size:14px!important;padding:10px!important;margin:0 0 12px!important}
+.capture-required[hidden],.form-ready-reopen[hidden]{display:none!important}
+@media(max-width:600px){.form-page-picker{padding:12px}.form-page-picker button{width:100%}.visual-explanation h2{font-size:23px}}
+
+.form-instruction-guidance{margin:16px 0;padding:16px;background:#f4f9ff;border:1px solid #a9ccef;border-left:4px solid #0879ee;border-radius:12px;line-height:1.55}.form-instruction-guidance strong{display:block;color:#093465}.form-instruction-guidance p{margin:8px 0}.form-instruction-guidance a{display:block;font-size:13px;overflow-wrap:anywhere}.form-instruction-guidance small{display:block;margin-top:8px;font-size:12px;color:#416081}

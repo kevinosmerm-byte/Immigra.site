@@ -1,0 +1,713 @@
+{
+  "baseCommit": "ba00b46fd45cec68f52603701fce37be1b91a442",
+  "verifiedAt": "2026-11-05",
+  "scope": "Static source and stored reference-image coverage; no live functional testing and no claim of current filing edition",
+  "forms": [
+    {
+      "process": "ead",
+      "form": "I-765",
+      "referenceEdition": "08/21/25",
+      "currentEditionVerified": false,
+      "referencePageCount": 7,
+      "draft": false,
+      "includedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "missingReferencePages": [],
+      "imageFiles": [
+        {
+          "file": "forms/i765-01.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i765-02.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i765-03.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i765-04.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i765-05.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i765-06.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i765-07.webp",
+          "exists": true
+        }
+      ],
+      "official": "https://www.uscis.gov/i-765"
+    },
+    {
+      "process": "asylum",
+      "form": "I-589",
+      "referenceEdition": "07/28/26",
+      "currentEditionVerified": false,
+      "referencePageCount": 12,
+      "draft": false,
+      "includedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "missingReferencePages": [],
+      "imageFiles": [
+        {
+          "file": "forms/i589-01.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-02.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-03.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-04.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-05.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-06.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-07.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-08.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-09.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-10.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-11.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i589-12.webp",
+          "exists": true
+        }
+      ],
+      "official": "https://www.uscis.gov/i-589"
+    },
+    {
+      "process": "adjust",
+      "form": "I-485",
+      "referenceEdition": "09/18/26",
+      "currentEditionVerified": false,
+      "referencePageCount": 24,
+      "draft": false,
+      "includedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "missingReferencePages": [],
+      "imageFiles": [
+        {
+          "file": "forms/i485-01.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-02.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-03.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-04.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-05.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-06.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-07.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-08.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-09.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-10.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-11.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-12.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-13.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-14.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-15.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-16.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-17.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-18.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-19.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-20.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-21.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-22.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-23.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i485-24.webp",
+          "exists": true
+        }
+      ],
+      "official": "https://www.uscis.gov/i-485"
+    },
+    {
+      "process": "family",
+      "form": "I-130",
+      "referenceEdition": "04/01/24",
+      "currentEditionVerified": false,
+      "referencePageCount": 12,
+      "draft": false,
+      "includedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "missingReferencePages": [],
+      "imageFiles": [
+        {
+          "file": "forms/i130-01.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-02.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-03.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-04.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-05.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-06.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-07.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-08.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-09.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-10.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-11.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130-12.webp",
+          "exists": true
+        }
+      ],
+      "official": "https://www.uscis.gov/i-130"
+    },
+    {
+      "process": "citizenship",
+      "form": "N-400",
+      "referenceEdition": "01/20/25",
+      "currentEditionVerified": false,
+      "referencePageCount": 14,
+      "draft": false,
+      "includedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "missingReferencePages": [],
+      "imageFiles": [
+        {
+          "file": "forms/n400-01.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-02.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-03.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-04.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-05.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-06.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-07.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-08.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-09.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-10.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-11.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-12.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-13.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/n400-14.webp",
+          "exists": true
+        }
+      ],
+      "official": "https://www.uscis.gov/n-400"
+    },
+    {
+      "process": "familySupplement",
+      "form": "I-130A",
+      "referenceEdition": "04/01/24",
+      "currentEditionVerified": false,
+      "referencePageCount": 6,
+      "draft": false,
+      "includedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "missingReferencePages": [],
+      "imageFiles": [
+        {
+          "file": "forms/i130a-01.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130a-02.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130a-03.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130a-04.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130a-05.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i130a-06.webp",
+          "exists": true
+        }
+      ],
+      "official": "https://www.uscis.gov/i-130"
+    },
+    {
+      "process": "conditions",
+      "form": "I-751",
+      "referenceEdition": "04/01/24",
+      "currentEditionVerified": false,
+      "referencePageCount": 11,
+      "draft": false,
+      "includedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "missingReferencePages": [],
+      "imageFiles": [
+        {
+          "file": "forms/i751-01.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i751-02.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i751-03.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i751-04.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i751-05.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i751-06.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i751-07.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i751-08.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i751-09.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i751-10.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i751-11.webp",
+          "exists": true
+        }
+      ],
+      "official": "https://www.uscis.gov/i-751"
+    },
+    {
+      "process": "card",
+      "form": "I-90",
+      "referenceEdition": "01/20/25",
+      "currentEditionVerified": false,
+      "referencePageCount": 7,
+      "draft": false,
+      "includedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "missingReferencePages": [],
+      "imageFiles": [
+        {
+          "file": "forms/i90-01.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i90-02.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i90-03.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i90-04.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i90-05.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i90-06.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i90-07.webp",
+          "exists": true
+        }
+      ],
+      "official": "https://www.uscis.gov/i-90"
+    },
+    {
+      "process": "addressPaper",
+      "form": "AR-11",
+      "referenceEdition": "11/02/22",
+      "currentEditionVerified": false,
+      "referencePageCount": 2,
+      "draft": false,
+      "includedPages": [
+        1,
+        2
+      ],
+      "missingReferencePages": [],
+      "imageFiles": [
+        {
+          "file": "forms/ar11-01.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/ar11-02.webp",
+          "exists": true
+        }
+      ],
+      "official": "https://www.uscis.gov/ar-11"
+    },
+    {
+      "process": "travel",
+      "form": "I-131",
+      "referenceEdition": "01/20/25",
+      "currentEditionVerified": false,
+      "referencePageCount": 14,
+      "draft": false,
+      "includedPages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "missingReferencePages": [],
+      "imageFiles": [
+        {
+          "file": "forms/i131-01.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-02.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-03.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-04.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-05.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-06.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-07.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-08.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-09.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-10.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-11.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-12.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-13.webp",
+          "exists": true
+        },
+        {
+          "file": "forms/i131-14.webp",
+          "exists": true
+        }
+      ],
+      "official": "https://www.uscis.gov/i-131"
+    }
+  ],
+  "processesWithoutSpecificImages": [
+    "court",
+    "tps"
+  ],
+  "portalCaptureCounts": {
+    "account": 2,
+    "foia": 2
+  },
+  "eadOnlineSelectedScreens": [
+    3,
+    8,
+    13,
+    20,
+    21,
+    25,
+    28,
+    29,
+    30,
+    40,
+    50
+  ]
+}

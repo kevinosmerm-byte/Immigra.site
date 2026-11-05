@@ -1,0 +1,74 @@
+[
+  {
+    "form": "I-589",
+    "edition": "07/28/26",
+    "pages": 12,
+    "sourceSha256": "0972de7bf892d7bd15d6f790b85b51c8c26da36ff02a8b15c050563060491eff",
+    "instructionsSha256": "9186cb4087055515fb3aa4064293d6532b6a7946cd4ec4f640450c898945237a",
+    "personalFieldsFound": false,
+    "currentAcceptanceCertified": false
+  },
+  {
+    "form": "I-485",
+    "edition": "09/18/26",
+    "pages": 24,
+    "sourceSha256": "b028a43ca191a963d2193d896394feba4b20c4958a0ca5631322c6760cf96100",
+    "instructionsSha256": "ed6a97aa2924bacebf443be6382bd506c24bd79e7c431f17d4eea7d9553e0daf",
+    "personalFieldsFound": false,
+    "currentAcceptanceCertified": false
+  },
+  {
+    "form": "N-400",
+    "edition": "01/20/25",
+    "pages": 14,
+    "sourceSha256": "8b33868ba071e261bf5e8d87d9667860d1f6d2c4de76101eb1e674404a82d909",
+    "instructionsSha256": "26fd4c556eb7c75b13cbc3e864f18773ab390c9827b0a1a34d23090cd00089d2",
+    "personalFieldsFound": false,
+    "currentAcceptanceCertified": false
+  },
+  {
+    "form": "I-130",
+    "edition": "04/01/24",
+    "pages": 12,
+    "sourceSha256": "7fc733d4639995d6ad4798f1031464d044bd0da4233caa4ada886e79e762a88f",
+    "instructionsSha256": "8d1f0eeeab76c2f94964971170e5e9a79895b570c28feb164c28f448666cf29b",
+    "personalFieldsFound": false,
+    "currentAcceptanceCertified": false
+  },
+  {
+    "form": "I-130A",
+    "edition": "04/01/24",
+    "pages": 6,
+    "sourceSha256": "1d2b2ca97b28abcd2c7e0d336396218b50d582c66450baddfbfda4ee7e779d18",
+    "instructionsSha256": "8d1f0eeeab76c2f94964971170e5e9a79895b570c28feb164c28f448666cf29b",
+    "personalFieldsFound": false,
+    "currentAcceptanceCertified": false
+  },
+  {
+    "form": "I-751",
+    "edition": "04/01/24",
+    "pages": 11,
+    "sourceSha256": "064f773369f0bda068e3a4fbe1a1c6447a8830cfd6777a8d5a81148be5a36510",
+    "instructionsSha256": "106d7eb1d2a5c7cf804848b6afdc696dbef70d0ef5ec462126221e98ae9c23c1",
+    "personalFieldsFound": false,
+    "currentAcceptanceCertified": false
+  },
+  {
+    "form": "I-90",
+    "edition": "01/20/25",
+    "pages": 7,
+    "sourceSha256": "fd436062284fd572224509e0e17a795f915734f7e7c0fca8a161d0a9976f83a0",
+    "instructionsSha256": "86904a56f7c971d736d9298b98fa42b2a4ae752725b19cb5973796bea1f5669c",
+    "personalFieldsFound": false,
+    "currentAcceptanceCertified": false
+  },
+  {
+    "form": "I-765",
+    "edition": "08/21/25",
+    "pages": 7,
+    "sourceSha256": "9ac0eae287749d4c2dfa0a591f464cc2124c18647c10e999b59484f090e0dc7d",
+    "instructionsSha256": "2bf87fd107831352d2ceec4c32ebadf11f9f4b5ada6e8a9acc793d3dfe5be10f",
+    "personalFieldsFound": false,
+    "currentAcceptanceCertified": false
+  }
+]
