@@ -21,7 +21,7 @@ test('pricing keeps server values, billing interval disclosures and checkout gat
  assert.match(source,/onClick=\{\(\)=>subscribe\(interval\)\}/);
  assert.match(source,/Un cobro por el año completo/);
  assert.match(source,/Renovación automática del plan contratado/);
- assert.match(source,/Las compras no están disponibles en esta versión de la app/);
+ assert.doesNotMatch(source,/Las compras no están disponibles en esta versión de la app/);
  const plans=source.slice(source.indexOf('className="trial-plans"'),source.indexOf('trial-access-column'));
  assert.doesNotMatch(plans,/<details/);
 });
