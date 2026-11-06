@@ -12,6 +12,7 @@ import { createHmac } from "node:crypto";
 import { createCaseStatusProvider, getUscisConfig } from "./uscisService.js";
 import accountRoutes from "./accountRoutes.js";
 import billingRoutes from "./billingRoutes.js";
+import appleBillingRoutes from "./appleBillingRoutes.js";
 import { handleStripeWebhook } from "./stripeBilling.js";
 import { attachOptionalAiSession, consumeDistributedRateLimit, isAiFeatureEnabled, recordAiUsageEvent } from "./accountService.js";
 import { getCivicsQuestion } from "../src/civicsQuestionBank.js";
@@ -428,6 +429,7 @@ app.post("/civic-location/profile", uscisRateLimit, async (req, res) => {
 app.use("/account", accountRateLimit, accountRoutes);
 app.use("/api/account", accountRateLimit, accountRoutes);
 app.use("/api/billing", billingRateLimit, billingRoutes);
+app.use("/api/apple-billing", billingRateLimit, appleBillingRoutes);
 app.use("/billing", billingRateLimit, billingRoutes);
 
 app.post("/evaluate-reading", requireAiFeature("speaking"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {

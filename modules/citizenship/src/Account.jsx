@@ -1,4 +1,5 @@
 import {startGoogleOAuth} from './googleAuth.mjs';
+import AppleSubscriptionPlans from './AppleSubscriptionPlans.jsx';
 import {withDeadline} from '../../../shared/async-deadline.mjs';
 import StripeCheckoutReturn from './StripeCheckoutReturn.jsx';
 import {billingErrorMessage} from "./billingMessages.mjs";
@@ -222,6 +223,7 @@ export function AccountProvider({ children }) {
   },[client]);
 
   const value = useMemo(() => ({
+    refreshUsage: () => loadUsage(session?.access_token),
     configured: Boolean(client), session, sessionRecoveryError, dismissSessionRecoveryError:()=>setSessionRecoveryError(false), loading: loading || (restoringDevice&&!verifiedSession), verifyingEmail: Boolean(authCallback&&authCallback!=='error'&&(loading||(restoringDevice&&!verifiedSession))),
     startEmailTrial:async email=>{
       const access = await registerEmailAccess(email);
@@ -391,7 +393,7 @@ export function AccountButton({ language = "en", onClick }) {
 
 export function AccountSheet({ language = "en", onClose, embedded = false }) {
   const modalRef = useModalFocus(!embedded, onClose);
-  const { configured, session, loading, usage, billing, promotionAccess, startEmailTrial, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, switchGuestCheckout, openBillingPortal, signInError } = useAccount();
+  const { configured, session, loading, usage, billing, promotionAccess, startEmailTrial, sendMagicLink, signOut, exportAccountData, deleteAccount, openCheckout, switchGuestCheckout, openBillingPortal, signInError, refreshUsage } = useAccount();
   const copy = COPY[language === "es" ? "es" : "en"];
   const [email, setEmail] = useState(lastAccountEmail);
   const [logoutError,setLogoutError]=useState(false),[loggingOut,setLoggingOut]=useState(false);
@@ -532,7 +534,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
             <li>{language === "es" ? "El estudio básico sigue gratis sin suscripción" : "Basic study remains free without a subscription"}</li>
           </ul>
           <p>{language === "es" ? "Consulta tus límites disponibles en esta cuenta. Se aplican límites diarios de uso." : "Check your available allowances in this account. Daily usage limits apply."}</p>
-          {webBillingEnabled && session ? (
+          {Capacitor.getPlatform() === 'ios' && session && !session.isEmailTrial ? <AppleSubscriptionPlans session={session} language={language} onVerified={refreshUsage}/> : webBillingEnabled && session ? (
             usage?.tier === "pro" ? (
               <button className="account-billing-manage" type="button" onClick={() => startBillingAction("portal")} disabled={Boolean(billingAction)}>{billingAction ? copy.openingCheckout : copy.manageSubscription}</button>
             ) : (
@@ -544,7 +546,7 @@ export function AccountSheet({ language = "en", onClose, embedded = false }) {
             )
           ) : <><button className="account-billing-manage" type="button" disabled>{language==='es'?'Actualizar a PRO →':'Upgrade to PRO →'}</button><em>{webBillingEnabled ? (language === 'es' ? 'Inicia sesión con tu correo para comenzar los 7 días gratis de PRO.' : 'Sign in with your email to start your 7-day PRO trial.') : copy.pricingStatus}</em></>}
           {billingError && <div role="alert" className="account-status error account-billing-error"><p>{billingErrorMessage(billingError,language)}</p><small>{language==='es'?'Referencia de soporte: ':'Support reference: '}{billingError.reference||billingError.code}</small>{billingError.code==='subscription_already_active'&&<button type="button" onClick={()=>startBillingAction('portal')}>{copy.manageSubscription}</button>}</div>}
-          {Capacitor.isNativePlatform() && <><button type="button" disabled>{language === "es" ? "Restaurar compra" : "Restore Purchase"}</button><small>{language === "es" ? "Las compras y la restauración en la tienda todavía no están disponibles." : "Store purchases and restoration are not available yet."}</small></>}
+          {Capacitor.isNativePlatform() && Capacitor.getPlatform() !== 'ios' && <small>{language === "es" ? "Las compras y la restauración en esta tienda todavía no están disponibles." : "Purchases and restoration in this store are not available yet."}</small>}
         </GlassSection>:<p role="status">{language==='es'?'Acceso temporal de pruebas: no necesitas contratar PRO ni iniciar sesión para practicar entrevistas. Se mantienen límites globales del servicio.':'Temporary testing access: no PRO subscription or sign-in is needed to practice interviews. Global service limits still apply.'}</p>}
         {session&&<GlassSection className="account-management" icon="⚙" title={language==='es'?'Administración de la cuenta':'Account management'} description={language==='es'?'Gestiona y protege tu información.':'Manage and protect your information.'}><div className="account-management-grid">            <button className="account-primary account-export" onClick={downloadAccountData} disabled={exporting} type="button">
               <span>{exporting ? copy.exporting : copy.exportData}</span><b>↓</b>
