@@ -430,6 +430,7 @@ app.use("/account", accountRateLimit, accountRoutes);
 app.use("/api/account", accountRateLimit, accountRoutes);
 app.use("/api/billing", billingRateLimit, billingRoutes);
 app.use("/api/apple-billing", billingRateLimit, appleBillingRoutes);
+app.use("/apple-billing", billingRateLimit, appleBillingRoutes);
 app.use("/billing", billingRateLimit, billingRoutes);
 
 app.post("/evaluate-reading", requireAiFeature("speaking"), requireAuthorizedAiAccess, aiRateLimit, async (req, res) => {
