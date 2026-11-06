@@ -55,7 +55,7 @@ class ImmigraBridgeViewController: CAPBridgeViewController {
 class ImmigraSubscriptions: CAPPlugin, CAPBridgedPlugin {
     let identifier = "ImmigraSubscriptions"
     let jsName = "ImmigraSubscriptions"
-    let pluginMethods = ["products", "purchase", "restore", "pending", "finish"].map {
+    let pluginMethods: [CAPPluginMethod] = ["products", "purchase", "restore", "pending", "finish"].compactMap {
         CAPPluginMethod(name: $0, returnType: CAPPluginReturnPromise)
     }
     private let allowedProducts: Set<String> = ["us.citizenshipai.app.pro.monthly", "us.citizenshipai.app.pro.annual"]
