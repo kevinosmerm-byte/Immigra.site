@@ -1,5 +1,6 @@
 import {useEffect,useState,useRef} from 'react';
 import {registerPlugin} from '@capacitor/core';
+import './AppleSubscriptionPlans.css';
 const store=registerPlugin('ImmigraSubscriptions');
 async function withStoreTimeout(operation) {
   let timer;
@@ -68,7 +69,7 @@ export default function AppleSubscriptionPlans({session,language,onVerified}) {
       setMessage(enabled?(es?'Compras restauradas. PRO está activo.':'Purchases restored. PRO is active.'):(es?'No hay suscripciones activas de Apple para esta cuenta.':'No active Apple subscriptions were found for this account.'));
     }catch{failure();}finally{setBusy('');}
   };
-  return <div className="account-billing-actions">
+  return <div className="account-billing-actions apple-subscription-plans">
     {plans.map(plan=><button key={plan.id} type="button" disabled={Boolean(busy)||!ready} onClick={()=>purchase(plan.id)}><b>{plan.id.endsWith('.monthly')?(es?'Mensual':'Monthly'):(es?'Anual':'Annual')}</b><small>{plan.price}</small></button>)}
     {!ready&&<button type="button" disabled={Boolean(busy)} onClick={load}>{es?'Cargar planes de App Store':'Load App Store plans'}</button>}
     <button type="button" disabled={Boolean(busy)} onClick={restore}>{es?'Restaurar compras':'Restore purchases'}</button>

@@ -1,0 +1,32 @@
+/* Keep purchase controls and renewal information in separate full-width rows. */
+.account-billing-actions.apple-subscription-plans {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  min-width: 0;
+  padding-bottom: 24px;
+}
+.apple-subscription-plans > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.apple-subscription-plans > button {
+  width: 100%;
+  min-height: 48px;
+  align-self: start;
+}
+.apple-subscription-plans > button b,
+.apple-subscription-plans > button small {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.apple-subscription-plans > p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+.apple-subscription-plans > a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  line-height: 1.5;
+}
