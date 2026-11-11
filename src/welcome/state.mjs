@@ -1,7 +1,10 @@
 export const NOTICE_VERSION = '2026-10';
 export const WELCOME_KEY = 'immigra:welcome:v1';
 export const LANGUAGE_KEY = 'citizenshipai.language';
-export function initialLanguage(storage, browserLanguage = 'es') {
+export function initialLanguage(storage, browserLanguage = 'es', search = '') {
+  // An explicit guide entry takes precedence over a previous visit or browser locale.
+  const requested = new URLSearchParams(search).get('lang');
+  if (['es', 'en'].includes(requested)) return requested;
   try { const value = storage.getItem(LANGUAGE_KEY); if (['es', 'en'].includes(value)) return value; } catch {}
   return browserLanguage.toLowerCase().startsWith('es') ? 'es' : 'en';
 }
