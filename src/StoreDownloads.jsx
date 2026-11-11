@@ -4,20 +4,22 @@ import './StoreDownloads.css';
 // Matches capacitor.config.ts and android/app/build.gradle; public listing verified 2026-11-03.
 export const googlePlayUrl = 'https://play.google.com/store/apps/details?id=us.citizenshipai.app';
 
+export const appStoreUrl = 'https://apps.apple.com/us/app/immigra-interview-practice/id6814679992';
+
 export default function StoreDownloads({lang}) {
   const t = (es, en) => lang === 'es' ? es : en;
   return <section className="store-downloads" aria-labelledby="store-downloads-title">
     <div><h2 id="store-downloads-title">{t('Lleva IMMIGRA contigo', 'Take IMMIGRA with you')}</h2>
-      <p>{t('Descarga la app para Android. La versión para iPhone estará disponible próximamente.', 'Download the Android app. The iPhone version is coming soon.')}</p></div>
+      <p>{t('Descarga la app para Android o iPhone.', 'Download the app for Android or iPhone.')}</p></div>
     <div className="store-downloads-options">
-      <a className="store-downloads-play" href={googlePlayUrl}>
+      <a className="store-downloads-link" href={googlePlayUrl}>
         <span className="store-badge-frame"><img className="store-badge-google" src="/images/stores/google-play.svg" alt="Google Play" width="239" height="71" /></span>
         <span className="store-downloads-status">{t('Descargar para Android', 'Download for Android')}</span>
       </a>
-      <div className="store-downloads-soon">
+      <a className="store-downloads-link" href={appStoreUrl}>
         <span className="store-badge-frame"><span className="store-badge-apple-crop"><img src="/images/stores/app-store.png" alt="App Store" width="239" height="113" /></span></span>
-        <span className="store-downloads-status">{t('Próximamente', 'Coming soon')}</span>
-      </div>
+        <span className="store-downloads-status">{t('Descargar para iPhone', 'Download for iPhone')}</span>
+      </a>
     </div>
   </section>;
 }
