@@ -1,0 +1,31 @@
+.starter-card {
+  --starter-ink: var(--color-navy, #123a63);
+  --starter-action: var(--color-primary, #2563a6);
+  box-sizing: border-box; width: 100%; padding: clamp(1.25rem, 3vw, 2.25rem);
+  border: 1px solid #c8d9ed; border-radius: 1.5rem;
+  background: linear-gradient(150deg, #edf5ff, #fff 68%); color: var(--starter-ink);
+  box-shadow: 0 12px 32px rgba(36, 74, 120, .09); scroll-margin: 16px;
+}
+.starter-card [hidden] { display: none; }
+.starter-host { display: flex; align-items: center; gap: .75rem; font-weight: 700; }
+.starter-host img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; }
+.starter-host small, .starter-next small { display: block; color: #405772; font-weight: 400; margin-top: .25rem; }
+.starter-card h2, .starter-card h1 { font-family: Georgia, serif; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.18; color: inherit; margin: 1.15rem 0; }
+.starter-choices { display: grid; gap: .55rem; }
+.starter-card button, .starter-card input, .starter-card .cta { font: inherit; min-height: 46px; border-radius: .8rem; }
+.starter-choices button { color: var(--starter-ink); padding: .65rem 1rem; text-align: start; background: white; border: 1px solid #b7c9dd; font-weight: 600; cursor: pointer; }
+.starter-choices button:not(:disabled):hover { border-color: var(--starter-action); background: #f4f9ff; }
+.starter-choices button[data-result="correct"] { border: 2px solid #277458; background: #eef8f3; color: #16543d; }
+.starter-choices button[data-result="review"] { border: 2px solid #8a6435; background: #fff6e8; color: #644015; }
+.starter-choices button:disabled { opacity: 1; }
+.starter-card :focus-visible { outline: 3px solid #2563a6; outline-offset: 3px; }
+.starter-feedback:empty { margin: 0; }
+.starter-card .cta { display: inline-flex; justify-content: center; align-items: center; border: 0; padding: .75rem 1.1rem; background: var(--starter-action); color: white; font-weight: 700; text-decoration: none; cursor: pointer; }
+.starter-card .cta:disabled { opacity: .65; }
+.starter-panel { max-width: 38rem; margin: 2rem auto; }
+.starter-panel form { display: grid; gap: .65rem; }
+.starter-panel input { width: 100%; background: white; color: #172b3d; border: 1px solid #a9bdd1; padding: .65rem; }
+.starter-panel .starter-link { display: inline-block; margin-top: 1rem; text-decoration: underline; color: var(--starter-action); }
+@media(max-width:700px){body[data-seo-module="citizenship"] .hero { gap: .8rem; } body[data-seo-module="citizenship"] .hero > div:first-child > p:last-child {font-size:.85rem;} }
+html[data-theme="dark"] .starter-card {background:#152e47;color:#f5f8fc;--starter-ink:#173552;--starter-action:#235e9b;}
+html[data-theme="dark"] .starter-card .starter-link {color:#b2d7ff;}

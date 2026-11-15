@@ -1,3 +1,4 @@
+import {starterCallback, starterAuthReturn, starterRoute} from '../../../shared/civics-starter.mjs';
 import {startGoogleOAuth} from './googleAuth.mjs';
 import AppleSubscriptionPlans from './AppleSubscriptionPlans.jsx';
 import {withDeadline} from '../../../shared/async-deadline.mjs';
@@ -68,6 +69,25 @@ async function registerEmailAccess(email) {
   rememberAccountEmail(email);
   return data.session;
 }
+
+function signedInRoute(authCallback) {
+    if (Capacitor.isNativePlatform()) return '/account';
+    const url = new URL(window.location.href);
+    if (['billing','checkout','guest_checkout'].some(key => url.searchParams.has(key))) return '/account';
+    let pending;
+    try { pending=JSON.parse(localStorage.getItem('immigra.civics.email-return.v1')); } catch {}
+    const fromEmail = authCallback && authCallback !== 'error' && pending?.expires > Date.now();
+    if (!starterAuthReturn(url) && !fromEmail && url.hash !== '#' + starterRoute) return '/account';
+    if (starterAuthReturn(url)) {
+      url.searchParams.delete('practice');
+      window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash);
+    }
+    try {
+      if(!url.searchParams.has('lang') && fromEmail && ['es','en'].includes(pending.language)) localStorage.setItem('citizenshipai.language',pending.language);
+      localStorage.removeItem('immigra.civics.email-return.v1');
+    } catch {}
+    return starterRoute;
+  }
 
 export function AccountProvider({ children }) {
   const [authCallback] = useState(() => authCallbackKind(window.location));
@@ -151,7 +171,7 @@ export function AccountProvider({ children }) {
         if(active){
           setSession(next||null);
           if(next){setGuestSession(null);rememberAccountEmail(next.user.email);}
-          if(authCallback||(next&&(!window.location.hash||window.location.hash==='#/')))window.location.hash='/account';
+          if(authCallback||(next&&(!window.location.hash||window.location.hash==='#/')))window.location.hash=next?signedInRoute(authCallback):'/account';
           if(authCallback&&!next)setSignInError(true);
         }
       }catch{if(active)setSessionRecoveryError(true);}
@@ -166,7 +186,7 @@ export function AccountProvider({ children }) {
         try{
           const next=await adopt(nextSession);if(!active)return;
           setSession(next);setGuestSession(null);rememberAccountEmail(next?.user?.email);
-          if(event==='SIGNED_IN')window.location.hash='/account';
+          if(event==='SIGNED_IN')window.location.hash=signedInRoute(authCallback);
         }catch{if(active)setLoading(false);}
       });
     });
@@ -236,9 +256,14 @@ export function AccountProvider({ children }) {
       const {error}=await withDeadline(()=>client.auth.signInWithPassword({email:email.trim(),password}));
       if(error)throw error;
     },
-    sendMagicLink: (email) => {rememberAccountEmail(email);return TEMPORARY_PUBLIC_INTERVIEWS ? Promise.resolve({error: new Error("Account links temporarily disabled")}) : client.auth.signInWithOtp({
+    sendMagicLink: (email, {civicsLanguage} = {}) => {rememberAccountEmail(email);
+      if (!Capacitor.isNativePlatform()) try {
+        if(civicsLanguage) localStorage.setItem('immigra.civics.email-return.v1',JSON.stringify({language:civicsLanguage,expires:Date.now()+3600000}));
+        else localStorage.removeItem('immigra.civics.email-return.v1');
+      } catch {}
+      return TEMPORARY_PUBLIC_INTERVIEWS ? Promise.resolve({error: new Error("Account links temporarily disabled")}) : client.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: Capacitor.isNativePlatform()?'us.citizenshipai.app://auth-callback':checkoutReturnUrl(email) },
+      options: { emailRedirectTo: Capacitor.isNativePlatform()?'us.citizenshipai.app://auth-callback':civicsLanguage?starterCallback(window.location.origin,civicsLanguage):checkoutReturnUrl(email) },
     });},
     signOut:async()=>{const responses=await Promise.all([fetch('/api/account/session',{method:'DELETE'}),fetch('/api/account/email-trial/session',{method:'DELETE'})]);if(responses.some(response=>!response.ok))throw new Error('Could not sign out securely');await client?.auth.signOut({scope:'local'});await accountStorage.removeItem(NATIVE_TRIAL_KEY);setGuestSession(null);setSession(null);setUsage(null);window.location.hash='/account';},
     startAiSession: async (feature) => {

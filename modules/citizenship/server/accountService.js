@@ -383,7 +383,7 @@ export async function recordProductEvent({ userId, eventName, feature }) {
   if (!supabase || !userId || !PRODUCT_EVENT_NAMES.has(eventName)) {
     throw new Error("Unsupported product event.");
   }
-  const normalizedFeature = getAiFeatureConfig(feature) || ["civics", "quiz", "vocabulary", "choose", "connect", "reading", "interview"].includes(feature) ? feature : null;
+  const normalizedFeature = getAiFeatureConfig(feature) || ["civics", "civics_intro", "quiz", "vocabulary", "choose", "connect", "reading", "interview"].includes(feature) ? feature : null;
   const { error } = await supabase.from("usage_events").insert({
     user_id: userId,
     event_name: eventName,
@@ -391,6 +391,13 @@ export async function recordProductEvent({ userId, eventName, feature }) {
     metadata: {},
   });
   throwDatabaseError(error, "Unable to record product event.");
+}
+
+export async function recordPublicPracticeCount(stage, language, source) {
+  const {error} = await supabase.from('usage_events').insert({
+    event_name: 'civics_sample_' + stage, feature: 'civics_intro', metadata: {language, source},
+  });
+  throwDatabaseError(error, 'Practice measurement unavailable.');
 }
 
 export async function getSavedQuestions(userId) {

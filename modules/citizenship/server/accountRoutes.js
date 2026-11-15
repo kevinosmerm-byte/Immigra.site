@@ -13,6 +13,7 @@ import {
   isPromotionalAiAccessAllowed,
   isPracticePolicyReady,
   recordProductEvent,
+  recordPublicPracticeCount,
   requireAccount,
   requireVerifiedAccount,
   registerEmailTrial,
@@ -73,6 +74,19 @@ router.post('/email-trial',async(req,res)=>{
   if(!subjectHash?.allowed)return res.status(429).json({error:'Please wait before trying again.',code:'trial_rate_limit'});
   const session=await registerEmailTrial(req,res,req.body?.email);res.status(201).json({session});
  }catch(error){res.status(error.status||503).json({error:error.status?error.message:'Trial registration unavailable',code:error.code||'trial_unavailable'});}
+});
+// Count only consented public interactions. Do not attach cookies, advertising
+// identifiers, email, IP addresses or answers to the measurement record.
+router.post('/public-practice-count', async (req,res) => {
+  const {stage,language,source}=req.body||{};
+  if(req.get('origin')!=='https://immigra.site' || !['visit','answered'].includes(stage) ||
+    !['es','en'].includes(language) || !['ads','other'].includes(source)) return res.sendStatus(400);
+  try {
+    const quota=await consumeDistributedRateLimit({bucket:'public-civics-count',subjectHash:createHash('sha256').update(req.ip||'unknown').digest('hex'),limit:60,windowSeconds:60});
+    if(!quota?.allowed)return res.sendStatus(429);
+    await recordPublicPracticeCount(stage,language,source);
+    return res.sendStatus(204);
+  } catch { return res.sendStatus(503); }
 });
 router.use(requireAccount);
 router.use((req,res,next)=>{

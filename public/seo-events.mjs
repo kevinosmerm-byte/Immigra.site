@@ -10,6 +10,7 @@ export function emitSeoEvent(name,context={}){
  return true;
 }
 if(typeof document!=='undefined'&&document.body?.dataset.seoPage){
+ if(document.querySelector('[data-starter-card]'))void import('./civics-starter.mjs');
  const context={language:document.body.dataset.seoLanguage,module:document.body.dataset.seoModule};
  emitSeoEvent('seo_page_view',context);
  document.querySelectorAll('[data-seo-start]').forEach(link=>link.addEventListener('click',()=>emitSeoEvent('start_practice_click',context)));
