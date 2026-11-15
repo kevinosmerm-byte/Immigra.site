@@ -3,7 +3,7 @@ import {paymentMeasurement} from './paymentMeasurement.js';
 import {getBillingReadiness} from "./billingReadiness.js";
 import {billingFailure} from "./billingErrors.js";
 import { Router } from "express";
-import { requireAccount, requireVerifiedAccount, isPracticePolicyReady } from "./accountService.js";
+import { requireAccount, requireVerifiedAccount, isPracticePolicyReady, recordProductEvent } from "./accountService.js";
 import { createCheckoutSession, createPortalSession } from "./stripeBilling.js";
 
 export function createBillingRouter({ authenticate = requireAccount, verifyAccount = requireVerifiedAccount, policyReady = isPracticePolicyReady, checkout = createCheckoutSession, portal = createPortalSession, readiness = getBillingReadiness, guest = guestCheckout } = {}) {
@@ -62,6 +62,10 @@ router.post("/checkout-session", async (req, res) => {
   try {
     if (!await policyReady()) return res.status(503).json({ error: "Subscription access is not ready yet.", code: "access_policy_unavailable" });
     const session = await checkout({ userId: req.account.userId, email: req.account.email, interval });
+    // The report counts distinct accounts that actually received a Checkout URL.
+    // A measurement outage must never prevent the user from opening Checkout.
+    if (session?.url) void recordProductEvent({userId:req.account.userId,eventName:'upgrade_started'}).catch(() => {});
+
     res.set("Cache-Control", "no-store");
     return res.status(201).json(session);
   } catch (error) {

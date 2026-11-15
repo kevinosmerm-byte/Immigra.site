@@ -55,6 +55,7 @@ export default function CivicsStarter({lang}) {
     if (selection === null) return;
     if (reviewing) {
       update({...progress, review: selection === question.correct ? progress.review.filter(i => i !== index) : progress.review});
+      record('practice_completed');
       setReviewIndex(null);
     } else {
       const position = index + 1;
