@@ -32,13 +32,27 @@ export function starterAuthReturn(location) {
   return params.get('practice') === 'civics' && !['checkout','billing','guest_checkout'].some(key => params.has(key));
 }
 
-export function loadStarter(user, storage) {
+export function readSavedStarter(user, storage) {
+  if (!user) return null;
   try {
     const saved = JSON.parse(storage.getItem('immigra.civics.starter.v1:' + user));
     if (Number.isInteger(saved?.position) && saved.position >= 1 && saved.position <= items.length &&
         Array.isArray(saved.review) && saved.review.every(i => Number.isInteger(i) && i >= 0 && i < items.length)) return saved;
   } catch {}
-  return {position: 1, review: [], completedDay: ''};
+  return null;
+}
+
+export function loadStarter(user, storage) {
+  return readSavedStarter(user, storage) ?? {position: 1, review: [], completedDay: ''};
+}
+
+export const dailyCivicsPlan = '#/citizenship/practice';
+export const starterReviewRoute = '#' + starterRoute + '/review';
+
+export function starterNextStep(progress) {
+  if (!progress) return 'module';
+  if (progress.position < items.length) return 'resume';
+  return progress.review.length ? 'review' : 'plan';
 }
 
 export function saveStarter(user, state, storage) {

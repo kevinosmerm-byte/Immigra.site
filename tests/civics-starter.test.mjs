@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {starterQuestions,loadStarter,saveStarter,starterCallback,starterAuthReturn} from '../shared/civics-starter.mjs';
+import {starterQuestions,loadStarter,readSavedStarter,saveStarter,starterCallback,starterAuthReturn,starterNextStep} from '../shared/civics-starter.mjs';
 import {starterCard} from '../scripts/civics-starter-card.mjs';
 import {getCivicsQuestion} from '../modules/citizenship/src/civicsQuestionBank.js';
 
@@ -35,4 +35,11 @@ test('practice resumes per account and ignores damaged or inaccessible records',
   assert.equal(loadStarter('b',storage).position,1);
   saveStarter('a',{position:9,review:[]},storage);assert.equal(loadStarter('a',storage).position,1);
   assert.equal(loadStarter('a',null).position,1);
+});
+
+test('a returning learner gets one next step based on actual progress', () => {
+  assert.equal(starterNextStep(readSavedStarter('user', null)), 'module');
+  assert.equal(starterNextStep({position: 2, review: [0]}), 'resume');
+  assert.equal(starterNextStep({position: 3, review: [1]}), 'review');
+  assert.equal(starterNextStep({position: 3, review: []}), 'plan');
 });

@@ -1,4 +1,4 @@
-import {starterCallback, starterAuthReturn, starterRoute} from '../../../shared/civics-starter.mjs';
+import {readSavedStarter, starterCallback, starterAuthReturn, starterRoute} from '../../../shared/civics-starter.mjs';
 import {startGoogleOAuth} from './googleAuth.mjs';
 import AppleSubscriptionPlans from './AppleSubscriptionPlans.jsx';
 import {withDeadline} from '../../../shared/async-deadline.mjs';
@@ -70,14 +70,19 @@ async function registerEmailAccess(email) {
   return data.session;
 }
 
-function signedInRoute(authCallback) {
+function signedInRoute(authCallback, restoredUserId) {
     if (Capacitor.isNativePlatform()) return '/account';
     const url = new URL(window.location.href);
     if (['billing','checkout','guest_checkout'].some(key => url.searchParams.has(key))) return '/account';
     let pending;
     try { pending=JSON.parse(localStorage.getItem('immigra.civics.email-return.v1')); } catch {}
     const fromEmail = authCallback && authCallback !== 'error' && pending?.expires > Date.now();
-    if (!starterAuthReturn(url) && !fromEmail && url.hash !== '#' + starterRoute) return '/account';
+    if (!starterAuthReturn(url) && !fromEmail && url.hash !== '#' + starterRoute) {
+      if (!authCallback && restoredUserId && (!url.hash || url.hash === '#/')) {
+        try { if (readSavedStarter(restoredUserId, window.localStorage)) return '/'; } catch {}
+      }
+      return '/account';
+    }
     if (starterAuthReturn(url)) {
       url.searchParams.delete('practice');
       window.history.replaceState(window.history.state, '', url.pathname + url.search + url.hash);
@@ -171,7 +176,7 @@ export function AccountProvider({ children }) {
         if(active){
           setSession(next||null);
           if(next){setGuestSession(null);rememberAccountEmail(next.user.email);}
-          if(authCallback||(next&&(!window.location.hash||window.location.hash==='#/')))window.location.hash=next?signedInRoute(authCallback):'/account';
+          if(authCallback||(next&&(!window.location.hash||window.location.hash==='#/')))window.location.hash=next?signedInRoute(authCallback, next.user.id):'/account';
           if(authCallback&&!next)setSignInError(true);
         }
       }catch{if(active)setSessionRecoveryError(true);}
