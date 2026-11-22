@@ -1,6 +1,7 @@
 /* New user PNG composition; interview materials come from the supplied HTML component. */
 html[data-experience="web"] #main:has(.immigra-home){max-width:1500px;padding:0 32px}
-html[data-experience="web"] body:has(.immigra-home)::before{background:radial-gradient(ellipse at 80% 28%,#d7eaffaa,transparent 60%),linear-gradient(125deg,#fff 24%,#f5f8ff 60%,#e8f2ff)}
+/* Keep the shared blue artwork visible on the homepage too. */
+html[data-experience="web"] body:has(.immigra-home)::before{background:#edf5ff url('/media/web-background.png') center center/cover no-repeat}
 .immigra-home{max-width:1450px;margin:0 auto;padding:30px 0;color:#152342;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}
 .immigra-home .ih-hero{display:grid;grid-template-columns:minmax(0,.76fr) minmax(0,1.24fr);align-items:center;gap:10px;margin-bottom:28px}
 .immigra-home .ih-intro{display:block;min-width:0;margin:0;padding:0 0 0 28px;background:transparent;border:0;box-shadow:none;text-align:left}
@@ -49,3 +50,58 @@ html[data-reduce-motion=true] .immigra-home .ih-study-card,html[data-reduce-moti
 
 .immigra-home .ih-see-how{text-decoration:none}
 .interview-glass-demo .benefit small{display:block;font-size:11px;line-height:1.4;margin-top:5px;font-weight:400}
+
+/* Homepage glass: translucent tint and soft edge reflections, without extra motion. */
+html[data-experience="web"] :is(.immigra-home,#root>.website-header:has(+main .immigra-home)){
+  --home-glass-clear:linear-gradient(135deg,#ffffffa3,#f3f8ff70);
+  --home-glass-blue:linear-gradient(135deg,#164b99e6,#275ec0d9 55%,#514ac2e0);
+  --home-glass-sheen:linear-gradient(180deg,#ffffff26,transparent 65%);
+  --home-glass-header:#ffffff66;
+  --home-glass-blur:blur(16px) saturate(140%);
+}
+html[data-experience="web"] #root>.website-header:has(+main .immigra-home){
+  background:var(--home-glass-header)!important;color:#18263b;
+  border-bottom:1px solid #ffffffa3;
+  backdrop-filter:var(--home-glass-blur);-webkit-backdrop-filter:var(--home-glass-blur);
+}
+html[data-experience="web"] #root>.website-header:has(+main .immigra-home) :is(.website-actions a,.website-actions button,a[aria-current=page]),
+html[data-experience="web"] .immigra-home :is(.ih-start,.ih-see-how,:where(.ih-study-card) button,.guide-card-button){
+  border:1px solid #ffffffad;
+  background:var(--home-glass-clear);
+  box-shadow:inset 0 1px 1px #ffffffcc,inset 0 -1px 2px #8caed340,0 8px 22px #315b8d20;
+  backdrop-filter:var(--home-glass-blur);-webkit-backdrop-filter:var(--home-glass-blur);
+}
+html[data-experience="web"] #root>.website-header:has(+main .immigra-home) .website-actions :is(a,button):not(.website-start){color:#18263b!important}
+html[data-experience="web"] #root>.website-header:has(+main .immigra-home) .website-actions .website-start,
+html[data-experience="web"] .immigra-home :is(.ih-start,.guide-card-button){
+  background:var(--home-glass-sheen),var(--home-glass-blue);color:#fff;
+  box-shadow:inset 0 1px 1px #ffffffb3,inset 0 -2px 3px #0b23694d,0 8px 24px #2855a538;
+}
+html[data-experience="web"] .immigra-home .ih-study-card{--home-study-tint:#1452b9e0}
+html[data-experience="web"] .immigra-home .ih-asylum{--home-study-tint:#6220c5e0}
+html[data-experience="web"] .immigra-home .ih-residency{--home-study-tint:#006c53e6}
+html[data-experience="web"] .immigra-home .ih-study-card button{background:var(--home-glass-sheen),linear-gradient(var(--home-study-tint),var(--home-study-tint))}
+html[data-experience="web"] .immigra-home .ih-see-how:focus-visible{outline:3px solid #1767e4;outline-offset:5px}
+@media(max-width:700px){html[data-experience="web"] body:has(.immigra-home)::before{background-position:24% center}}
+
+/* Preserve the user's accessibility preference instead of forcing transparency. */
+html[data-experience="web"][data-reduce-transparency=true] :is(.immigra-home,#root>.website-header:has(+main .immigra-home)){
+  --home-glass-clear:linear-gradient(#f4f8fc,#f4f8fc);
+  --home-glass-blue:linear-gradient(#164b99,#164b99);
+  --home-glass-sheen:linear-gradient(transparent,transparent);
+  --home-glass-header:#f4f8fc;--home-glass-blur:none;
+}
+html[data-experience="web"][data-reduce-transparency=true] .immigra-home .ih-study-card button{background:var(--study-accent)}
+@media(prefers-reduced-transparency:reduce){
+  html[data-experience="web"] :is(.immigra-home,#root>.website-header:has(+main .immigra-home)){
+    --home-glass-clear:linear-gradient(#f4f8fc,#f4f8fc);
+    --home-glass-blue:linear-gradient(#164b99,#164b99);
+    --home-glass-sheen:linear-gradient(transparent,transparent);
+    --home-glass-header:#f4f8fc;--home-glass-blur:none;
+  }
+  html[data-experience="web"] .immigra-home .ih-study-card button{background:var(--study-accent)}
+}
+@media(forced-colors:active){
+  html[data-experience="web"] #root>.website-header:has(+main .immigra-home),
+  html[data-experience="web"] .immigra-home :is(.ih-start,.ih-see-how,.ih-study-card button,.guide-card-button){background:Canvas!important;color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
+}
