@@ -11,7 +11,7 @@ export function starterCard(lang) {
       ${q.choices.map((label,i) => `<button type="button" data-choice="${i}">${e(label)}</button>`).join('')}
     </div>
     <p class="starter-feedback" role="status"></p>
-    <div class="starter-next" hidden><a class="cta" href="/?lang=${lang}#${starterRoute}">${t('Guardar mi avance y seguir practicando','Save my progress and keep practicing')} →</a><small>${t('Siete días de entrevistas con IA al registrarte. Sin tarjeta.','Seven days of AI interview practice when you register. No card needed.')}</small></div>
+    <div class="starter-next" hidden><a class="cta" href="/?lang=${lang}#${starterRoute}">${t('Continuar la práctica','Continue practicing')} →</a><small>${t('Completa tres preguntas gratis, sin registrarte. Después puedes guardar tu avance con tu correo.','Complete three free questions without registering. Then save your progress with your email.')}</small></div>
     <noscript><details><summary>${t('Ver respuesta en inglés','Show the answer')}</summary><p lang="en">${e(q.answer)}</p></details><a href="/?lang=${lang}#${starterRoute}">${t('Continuar la práctica','Continue practicing')}</a></noscript>
   </div>`;
 }

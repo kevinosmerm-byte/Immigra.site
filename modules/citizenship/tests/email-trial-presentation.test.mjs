@@ -5,8 +5,8 @@ import {readFileSync} from 'node:fs';
 const source=readFileSync(new URL('../src/EmailTrialAccount.jsx',import.meta.url),'utf8');
 const css=readFileSync(new URL('../../../shared/design-system/email-trial-account.css',import.meta.url),'utf8');
 
-test('plans precede unchanged account access choices and verification state',()=>{
- assert.ok(source.indexOf('className="trial-plans"')<source.indexOf('trial-access-choices'));
+test('account access precedes plans while preserving verification',()=>{
+ assert.ok(source.indexOf('trial-access-choices')<source.indexOf('className="trial-plans"'));
  assert.match(source,/aria-pressed=\{!signingIn\} onClick=\{\(\)=>setVerify\(false\)\}/);
  assert.match(source,/aria-pressed=\{signingIn\} onClick=\{\(\)=>setVerify\(true\)\}/);
  assert.match(source,/if\(signingIn\).*sendMagicLink\(email.trim\(\)\)/);
@@ -22,7 +22,7 @@ test('pricing keeps server values, billing interval disclosures and checkout gat
  assert.match(source,/Un cobro por el año completo/);
  assert.match(source,/Renovación automática del plan contratado/);
  assert.doesNotMatch(source,/Las compras no están disponibles en esta versión de la app/);
- const plans=source.slice(source.indexOf('className="trial-plans"'),source.indexOf('trial-access-column'));
+ const plans=source.slice(source.indexOf('className="trial-plans"'));
  assert.doesNotMatch(plans,/<details/);
 });
 

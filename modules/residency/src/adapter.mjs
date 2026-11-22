@@ -62,6 +62,7 @@ export function createLocalAdapter(){
    while(!s.finished&&s.phase==='questions'){const q=this.question(id,locale);if(q.category!==category)break;this.respond(id,{questionId:q.id,skip:true,locale});}
   },
   finish(id){const s=get(id);s.pendingReview.length=0;s.phase='done';s.finished=true;},
+  resume(id){const s=get(id);if(!s.finished||s.index>=s.questionKeys.length)return false;s.phase='questions';s.finished=false;return true;},
   summary(id){const s=get(id);return {answered:s.responses.filter(r=>!r.skipped).length,skipped:s.responses.filter(r=>r.skipped).length,remaining:s.questionKeys.length-s.responses.length,responses:copy(s.responses),followups:copy(s.followups),clarificationsAnswered:s.followups.filter(r=>!r.skipped).length,reviewTopics:[...new Set(s.responses.filter(r=>r.skipped).map(r=>r.category))],legalAdvice:false};},
   export(id){return snapshot(get(id));},
   delete(id){const s=get(id);for(const field of ['turns','responses','observations','questionKeys','followups','pendingReview'])s[field].length=0;sessions.delete(id);},

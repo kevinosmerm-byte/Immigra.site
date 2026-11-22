@@ -32,18 +32,57 @@ export function starterAuthReturn(location) {
   return params.get('practice') === 'civics' && !['checkout','billing','guest_checkout'].some(key => params.has(key));
 }
 
-export function readSavedStarter(user, storage) {
-  if (!user) return null;
+const guestKey = 'immigra.civics.starter.guest.v1';
+function readProgress(key, storage) {
   try {
-    const saved = JSON.parse(storage.getItem('immigra.civics.starter.v1:' + user));
-    if (Number.isInteger(saved?.position) && saved.position >= 1 && saved.position <= items.length &&
-        Array.isArray(saved.review) && saved.review.every(i => Number.isInteger(i) && i >= 0 && i < items.length)) return saved;
+    const saved = JSON.parse(storage.getItem(key));
+    if (Number.isInteger(saved?.position) && saved.position >= 0 && saved.position <= items.length &&
+        Array.isArray(saved.review) && saved.review.every(i => Number.isInteger(i) && i >= 0 && i < saved.position)) {
+      return {position: saved.position, review: [...new Set(saved.review)], completedDay: saved.position === items.length && /^\d{4}-\d{2}-\d{2}$/.test(saved.completedDay) ? saved.completedDay : ''};
+    }
   } catch {}
   return null;
 }
 
-export function loadStarter(user, storage) {
-  return readSavedStarter(user, storage) ?? {position: 1, review: [], completedDay: ''};
+export function readSavedStarter(user, storage) {
+  return user ? readProgress('immigra.civics.starter.v1:' + user, storage) : null;
+}
+
+export function readGuestStarter(storage) { return readProgress(guestKey, storage); }
+
+export function loadStarter(user, storage, now = Date.now()) {
+  const saved = user ? readSavedStarter(user, storage) : readGuestStarter(storage);
+  if (saved) return saved;
+  // A completed public sample is question one, not a new registration requirement.
+  try {
+    const sample = JSON.parse(storage.getItem('immigra.civics.sample.v1'));
+    if (typeof sample?.review === 'boolean' && Number.isFinite(sample.time) && now >= sample.time && now - sample.time < 3600000) {
+      return {position: 1, review: sample.review ? [0] : [], completedDay: ''};
+    }
+  } catch {}
+  return {position: 0, review: [], completedDay: ''};
+}
+
+export function allowStarterTransfer(storage, now = Date.now()) {
+  try { storage.setItem(guestKey + ':transfer', String(now)); } catch {}
+}
+
+export function claimStarter(user, storage, now = Date.now()) {
+  if (!user) return null;
+  const existing = readSavedStarter(user, storage);
+  try {
+    const requestedAt = Number(storage.getItem(guestKey + ':transfer'));
+    const guest = readGuestStarter(storage);
+    if (requestedAt > 0 && now >= requestedAt && now - requestedAt < 3600000) {
+      storage.removeItem(guestKey + ':transfer');
+      if (!existing && guest) {
+        saveStarter(user, guest, storage);
+        storage.removeItem(guestKey);
+        return guest;
+      }
+    }
+  } catch {}
+  return existing;
 }
 
 export const dailyCivicsPlan = '#/citizenship/practice';
@@ -56,5 +95,5 @@ export function starterNextStep(progress) {
 }
 
 export function saveStarter(user, state, storage) {
-  try { storage.setItem('immigra.civics.starter.v1:' + user, JSON.stringify(state)); } catch {}
+  try { storage.setItem(user ? 'immigra.civics.starter.v1:' + user : guestKey, JSON.stringify(state)); } catch {}
 }
