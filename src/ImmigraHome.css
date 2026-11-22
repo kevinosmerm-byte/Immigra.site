@@ -52,12 +52,13 @@ html[data-reduce-motion=true] .immigra-home .ih-study-card,html[data-reduce-moti
 .interview-glass-demo .benefit small{display:block;font-size:11px;line-height:1.4;margin-top:5px;font-weight:400}
 
 /* Homepage glass: translucent tint and soft edge reflections, without extra motion. */
-html[data-experience="web"] :is(.immigra-home,#root>.website-header:has(+main .immigra-home)){
-  --home-glass-clear:linear-gradient(135deg,#ffffffa3,#f3f8ff70);
-  --home-glass-blue:linear-gradient(135deg,#164b99e6,#275ec0d9 55%,#514ac2e0);
-  --home-glass-sheen:linear-gradient(180deg,#ffffff26,transparent 65%);
+html[data-experience="web"] #root:has(>main .immigra-home){
+  --home-glass-clear:linear-gradient(135deg,#ffffff47,#f3f8ff26);
+  --home-glass-blue:linear-gradient(135deg,#6ba7ff52,#8a9fff47 55%,#c2afff38);
+  --home-glass-ink:#123a63;
+  --home-glass-sheen:linear-gradient(180deg,#ffffff33,transparent 65%);
   --home-glass-header:#ffffff66;
-  --home-glass-blur:blur(16px) saturate(140%);
+  --home-glass-blur:blur(8px) saturate(125%);
 }
 html[data-experience="web"] #root>.website-header:has(+main .immigra-home){
   background:var(--home-glass-header)!important;color:#18263b;
@@ -65,43 +66,49 @@ html[data-experience="web"] #root>.website-header:has(+main .immigra-home){
   backdrop-filter:var(--home-glass-blur);-webkit-backdrop-filter:var(--home-glass-blur);
 }
 html[data-experience="web"] #root>.website-header:has(+main .immigra-home) :is(.website-actions a,.website-actions button,a[aria-current=page]),
-html[data-experience="web"] .immigra-home :is(.ih-start,.ih-see-how,:where(.ih-study-card) button,.guide-card-button){
+html[data-experience="web"] #root:has(>main .immigra-home)>footer :is(button,details>summary),
+html[data-experience="web"] .immigra-home :is(.ih-start,.ih-see-how,:where(.ih-study-card) button,.guide-card-button,:where(.interview-glass-demo) .round,:where(.interview-glass-demo) .mic,:where(.interview-glass-demo) .benefit,:where(.study-messages-heading,.reviews-ribbon) button){
   border:1px solid #ffffffad;
   background:var(--home-glass-clear);
   box-shadow:inset 0 1px 1px #ffffffcc,inset 0 -1px 2px #8caed340,0 8px 22px #315b8d20;
   backdrop-filter:var(--home-glass-blur);-webkit-backdrop-filter:var(--home-glass-blur);
 }
 html[data-experience="web"] #root>.website-header:has(+main .immigra-home) .website-actions :is(a,button):not(.website-start){color:#18263b!important}
+html[data-experience="web"] #root:has(>main .immigra-home)>footer :is(button,details>summary){color:#18263b!important}
+html[data-experience="web"] .immigra-home :is(.study-messages-heading,.reviews-ribbon) button{color:#123a63}
 html[data-experience="web"] #root>.website-header:has(+main .immigra-home) .website-actions .website-start,
-html[data-experience="web"] .immigra-home :is(.ih-start,.guide-card-button){
-  background:var(--home-glass-sheen),var(--home-glass-blue);color:#fff;
-  box-shadow:inset 0 1px 1px #ffffffb3,inset 0 -2px 3px #0b23694d,0 8px 24px #2855a538;
+html[data-experience="web"] .immigra-home :is(.ih-start,.guide-card-button,.interview-glass-demo .mic){
+  background:var(--home-glass-sheen),var(--home-glass-blue);color:var(--home-glass-ink)!important;
+  box-shadow:inset 0 1px 1px #ffffffb3,inset 0 -1px 3px #3665a333,0 8px 24px #2855a526;
 }
-html[data-experience="web"] .immigra-home .ih-study-card{--home-study-tint:#1452b9e0}
-html[data-experience="web"] .immigra-home .ih-asylum{--home-study-tint:#6220c5e0}
-html[data-experience="web"] .immigra-home .ih-residency{--home-study-tint:#006c53e6}
-html[data-experience="web"] .immigra-home .ih-study-card button{background:var(--home-glass-sheen),linear-gradient(var(--home-study-tint),var(--home-study-tint))}
+html[data-experience="web"] .immigra-home .ih-study-card{--home-study-tint:#6ba7ff45;--home-study-ink:#123a63}
+html[data-experience="web"] .immigra-home .ih-asylum{--home-study-tint:#b392f24d;--home-study-ink:#452073}
+html[data-experience="web"] .immigra-home .ih-residency{--home-study-tint:#68c8b845;--home-study-ink:#074d40}
+html[data-experience="web"] .immigra-home .ih-study-card button{background:var(--home-glass-sheen),linear-gradient(var(--home-study-tint),var(--home-study-tint));color:var(--home-study-ink)}
 html[data-experience="web"] .immigra-home .ih-see-how:focus-visible{outline:3px solid #1767e4;outline-offset:5px}
 @media(max-width:700px){html[data-experience="web"] body:has(.immigra-home)::before{background-position:24% center}}
 
 /* Preserve the user's accessibility preference instead of forcing transparency. */
-html[data-experience="web"][data-reduce-transparency=true] :is(.immigra-home,#root>.website-header:has(+main .immigra-home)){
+html[data-experience="web"][data-reduce-transparency=true] #root:has(>main .immigra-home){
   --home-glass-clear:linear-gradient(#f4f8fc,#f4f8fc);
   --home-glass-blue:linear-gradient(#164b99,#164b99);
+  --home-glass-ink:#fff;
   --home-glass-sheen:linear-gradient(transparent,transparent);
   --home-glass-header:#f4f8fc;--home-glass-blur:none;
 }
-html[data-experience="web"][data-reduce-transparency=true] .immigra-home .ih-study-card button{background:var(--study-accent)}
+html[data-experience="web"][data-reduce-transparency=true] .immigra-home .ih-study-card button{background:var(--study-accent);color:#fff}
 @media(prefers-reduced-transparency:reduce){
-  html[data-experience="web"] :is(.immigra-home,#root>.website-header:has(+main .immigra-home)){
+  html[data-experience="web"] #root:has(>main .immigra-home){
     --home-glass-clear:linear-gradient(#f4f8fc,#f4f8fc);
     --home-glass-blue:linear-gradient(#164b99,#164b99);
+    --home-glass-ink:#fff;
     --home-glass-sheen:linear-gradient(transparent,transparent);
     --home-glass-header:#f4f8fc;--home-glass-blur:none;
   }
-  html[data-experience="web"] .immigra-home .ih-study-card button{background:var(--study-accent)}
+  html[data-experience="web"] .immigra-home .ih-study-card button{background:var(--study-accent);color:#fff}
 }
 @media(forced-colors:active){
   html[data-experience="web"] #root>.website-header:has(+main .immigra-home),
-  html[data-experience="web"] .immigra-home :is(.ih-start,.ih-see-how,.ih-study-card button,.guide-card-button){background:Canvas!important;color:CanvasText;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
+  html[data-experience="web"] #root:has(>main .immigra-home)>footer :is(button,details>summary),
+  html[data-experience="web"] .immigra-home :is(button,.ih-see-how,.guide-card-button){background:Canvas!important;color:CanvasText!important;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
 }
