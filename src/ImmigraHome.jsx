@@ -43,6 +43,6 @@ export default function ImmigraHome({lang,onNavigate,previewExamples=false}) {
   <GuideCard lang={lang}/>
   <StoreDownloads lang={lang}/>
   <StudyMessagesRibbon lang={lang}/>
-  <ReviewsRibbon lang={lang} previewExamples={previewExamples}/>
+  {previewExamples && <ReviewsRibbon lang={lang} previewExamples={previewExamples}/>}
  </section>;
 }
