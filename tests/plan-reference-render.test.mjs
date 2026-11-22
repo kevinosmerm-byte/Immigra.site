@@ -21,7 +21,7 @@ test('reference cards render truthful ES/EN prices, decorative art and existing 
   assert.match(html,/id="email-trial-email"/);assert.match(html,/aria-labelledby="trial-plans-title"/);
   assert.equal((html.match(/class="trial-plan-art"/g)||[]).length,3);
   assert.doesNotMatch(html,/50,000|50\.000|Miles de usuarios|Más popular|MÁS POPULAR|unlimited|ilimitadas|priority support/i);
-  assert(html.indexOf('id="trial-plans-title"')<html.indexOf('id="email-trial-email"'));
+  assert(html.indexOf('id="email-trial-email"')<html.indexOf('id="trial-plans-title"'), 'registration is reachable before the plan comparison');
  }
 });
 test('billing-disabled and existing subscribers retain their gates',()=>{

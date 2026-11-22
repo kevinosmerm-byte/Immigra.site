@@ -1,6 +1,6 @@
 import React,{useState} from 'react';
 import {useAccount} from '../modules/citizenship/src/accountContext.js';
-import {dailyCivicsPlan, readSavedStarter, starterNextStep, starterReviewRoute, starterRoute} from '../shared/civics-starter.mjs';
+import {dailyCivicsPlan, readGuestStarter, readSavedStarter, starterNextStep, starterReviewRoute, starterRoute} from '../shared/civics-starter.mjs';
 import InterviewGlassDemo from './InterviewGlassDemo.jsx';
 import {DemoIcon} from './InterviewDemo.jsx';
 import {howItWorksVideo,focusHomeSection} from './home-study.mjs';
@@ -16,7 +16,7 @@ export default function ImmigraHome({lang,onNavigate,previewExamples=false}) {
  const t=(es,en)=>lang==='es'?es:en;
  const {session} = useAccount();
  let progress = null;
- try { progress = readSavedStarter(session?.isEmailTrial ? null : session?.user?.id, window.localStorage); } catch {}
+ try { progress = session && !session.isEmailTrial ? readSavedStarter(session.user.id, window.localStorage) : readGuestStarter(window.localStorage); } catch {}
  const nextStep = starterNextStep(progress);
  const studyAction = {
    resume: t('Continuar mis tres preguntas','Resume my three questions'),

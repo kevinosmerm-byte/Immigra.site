@@ -29,3 +29,7 @@
 @media(max-width:700px){body[data-seo-module="citizenship"] .hero { gap: .8rem; } body[data-seo-module="citizenship"] .hero > div:first-child > p:last-child {font-size:.85rem;} }
 html[data-theme="dark"] .starter-card {background:#152e47;color:#f5f8fc;--starter-ink:#173552;--starter-action:#235e9b;}
 html[data-theme="dark"] .starter-card .starter-link {color:#b2d7ff;}
+
+.starter-save{margin-block:24px;padding-block:20px;border-block:1px solid var(--color-border,#d8e2ec)}
+.starter-save h2{font-size:1.3rem;margin-top:0}
+.starter-save small{display:block;line-height:1.5}

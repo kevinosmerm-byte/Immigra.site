@@ -10,3 +10,20 @@ test('Other adapter instances cannot read, write, export or delete a local sessi
 test('Foreign and out-of-sequence questions cannot enter a session',()=>{const a=createLocalAdapter(),id=a.start(options);const foreign=questions.find(q=>q.relationship_type==='child_petitions_mother');assert.throws(()=>a.respond(id,{questionId:foreign.id,text:'test'}));const later=a.read(id).questionKeys[1]+'-es';assert.throws(()=>a.respond(id,{questionId:later,text:'test'}));assert.equal(a.read(id).turns.length,0);});
 test('Summary counts responses, not optional clarification turns; deletion invalidates access',()=>{const a=createLocalAdapter(),id=a.start(options);a.respond(id,{questionId:a.question(id,'es').id,text:'Example',clarification:'Clarification'});a.respond(id,{questionId:a.question(id,'en').id,skip:true});a.finish(id);const s=a.summary(id);assert.equal(s.answered,1);assert.equal(s.skipped,1);assert.equal(s.remaining,4);assert.equal(s.legalAdvice,false);assert.throws(()=>a.respond(id,{questionId:'x',text:'test'}));a.delete(id);assert.throws(()=>a.export(id));assert.throws(()=>a.summary(id));});
 test('Read and export snapshots do not expose mutable internal sessions',()=>{const a=createLocalAdapter(),id=a.start(options);const snapshot=a.export(id);snapshot.engine_id='asylum';snapshot.responses.push({text:'injected'});assert.equal(a.read(id).engine_id,'residency');assert.equal(a.read(id).responses.length,0);a.clear();assert.throws(()=>a.read(id));});
+
+test('an early summary can resume the unanswered questions without losing or duplicating answers',()=>{
+ const a=createLocalAdapter(),id=a.start(options);
+ const first=a.question(id,'es');
+ a.respond(id,{questionId:first.id,text:'Synthetic practice answer'});
+ const next=a.question(id,'en');a.finish(id);
+ assert.equal(a.question(id,'en'),null);
+ assert.equal(a.summary(id).remaining,5);
+ assert.equal(a.resume(id),true);
+ assert.equal(a.question(id,'en').id,next.id);
+ assert.equal(a.read(id).responses[0].text,'Synthetic practice answer');
+ assert.equal(a.resume(id),false,'active sessions are not reset');
+ while(!a.read(id).finished)a.respond(id,{questionId:a.question(id,'en').id,skip:true,locale:'en'});
+ assert.equal(a.summary(id).remaining,0);
+ assert.equal(a.resume(id),false,'completed sessions are not restarted');
+ assert.equal(new Set(a.summary(id).responses.map(r=>r.questionKey)).size,6);
+});
