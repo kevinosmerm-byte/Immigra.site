@@ -10,3 +10,11 @@ citizenship-companion.platform-study-companion {
 }
 html[data-experience="native"] citizenship-companion.platform-study-companion { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
 citizenship-companion.platform-study-companion[hidden] { display: none !important; }
+
+/* Keep the companion below the mobile lesson, clear of answers and sign-up. */
+@media (max-width: 750px) {
+  html[data-experience="web"] #root:has(> main .starter-panel) citizenship-companion.platform-study-companion {
+    position: relative; display: block; inset: auto; z-index: auto;
+    margin: 16px 18px 16px auto;
+  }
+}
