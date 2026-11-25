@@ -16,6 +16,20 @@ const fixture = {
   preferences: { availableStudyMinutes: 12, language: "es" },
 };
 
+function assertEncryptedEnvelope(envelope) {
+  // Random base64 can contain short names by chance. Check the storage contract
+  // instead: no plaintext fields, and a complete authenticated-encryption envelope.
+  assert.deepEqual(Object.keys(envelope).sort(), ["ciphertext", "iv", "tag", "version"]);
+  assert.equal(envelope.version, 1);
+  for (const field of ["ciphertext", "iv", "tag"]) {
+    assert.equal(typeof envelope[field], "string");
+    assert.equal(Buffer.from(envelope[field], "base64").toString("base64"), envelope[field]);
+  }
+  assert.equal(Buffer.from(envelope.iv, "base64").length, 12);
+  assert.equal(Buffer.from(envelope.tag, "base64").length, 16);
+  assert.ok(Buffer.from(envelope.ciphertext, "base64").length > 0);
+}
+
 test("profile allowlist retains confirmed facts, rejects unnecessary identifiers and unconfirmed notice content", () => {
   const safe = sanitizeBrainProfile(fixture);
   assert.equal(safe.userProfile.firstName, "Ana");
@@ -60,7 +74,7 @@ test("encrypted domains use fresh nonces and authenticate ciphertext, account an
   const envelope = encryptProfileDomain(safe.userProfile, "alice", "user", key);
   const another = encryptProfileDomain(safe.userProfile, "alice", "user", key);
   assert.notEqual(envelope.iv, another.iv);
-  assert.doesNotMatch(JSON.stringify(envelope), /Ana|Example|60601/);
+  assertEncryptedEnvelope(envelope);
   assert.deepEqual(decryptProfileDomain(envelope, "alice", "user", key), safe.userProfile);
   assert.throws(() => decryptProfileDomain(envelope, "bob", "user", key), /could not be restored/);
   assert.throws(() => decryptProfileDomain(envelope, "alice", "n400", key), /could not be restored/);
@@ -100,7 +114,18 @@ test("cloud save is one atomic encrypted-domain RPC and account-scoped reads dec
   assert.equal(calls.length, 1);
   assert.equal(calls[0][0], "save_brain_profile");
   assert.equal(calls[0][1].p_user_id, "alice");
-  assert.doesNotMatch(JSON.stringify(calls[0]), /Ana|Example|IOE123/);
+  assert.deepEqual(Object.keys(calls[0][1]).sort(), ["p_case", "p_immigration", "p_n400", "p_user", "p_user_id"]);
+  const safe = sanitizeBrainProfile(fixture);
+  for (const [domain, expected] of Object.entries({
+    user: { userProfile: safe.userProfile, preferences: safe.preferences },
+    immigration: safe.immigrationProfile,
+    n400: safe.n400Profile,
+    case: safe.caseProfile,
+  })) {
+    const envelope = calls[0][1][`p_${domain}`];
+    assertEncryptedEnvelope(envelope);
+    assert.deepEqual(decryptProfileDomain(envelope, "alice", domain, key), expected);
+  }
   assert.deepEqual(await getBrainProfile(database, "alice", key), saved);
   assert.deepEqual(await deleteBrainProfile(database, "alice"), { deleted: true });
   assert.deepEqual(await getBrainProfile(database, "alice", key), { profile: null, updatedAt: null });
