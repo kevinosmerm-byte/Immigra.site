@@ -6,7 +6,7 @@ const home=readFileSync(new URL('../src/ImmigraHome.jsx',import.meta.url),'utf8'
 const main=readFileSync(new URL('../src/main.jsx',import.meta.url),'utf8');
 test('web homepage uses existing navigation and preserves native homepage boundary',()=>{
  assert.match(main,/!isNativeExperience\?<ImmigraHome lang=\{lang\} onNavigate=\{navigate\}/);
- assert.match(home,/onNavigate\(choice.id\)/);
+ assert.match(home,/chooseCategory\(choice.id\)/);
  for(const id of ['citizenship','asylum','residency'])assert.equal(moduleFromHash(moduleHash(id)),id);
 });
 test('homepage offers study and a real sample reader without microphone capture',()=>{

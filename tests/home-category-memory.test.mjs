@@ -6,6 +6,10 @@ import {interviewRoutes,progressRoutes} from '../src/interview-glass-bank.mjs';
 import {moduleFromHash} from '../shared/navigation/routes.mjs';
 const storage=()=>{const entries=new Map();return {getItem:key=>entries.get(key)??null,setItem:(key,value)=>entries.set(key,value),entries};};
 
+test('new visitors start with citizenship cards',()=>{
+ assert.equal(readHomeCategory(storage()),'citizenship');
+});
+
 test('each category survives leaving study and returning home, including rapid repeated choices',()=>{
  const tab=storage();
  for(const category of ['citizenship','residency','asylum','residency','citizenship']){
@@ -14,7 +18,7 @@ test('each category survives leaving study and returning home, including rapid r
   assert.equal(freeCTA,rightStudy);
   assert.equal(freeCTA,category==='asylum'?'asylum/practice':category,'both actions enter the selected module homepage');
   assert.equal(moduleFromHash('#/'+freeCTA),category);
-  // A new Home mount reads the same tab selection, not the initial asylum default.
+  // An explicit module choice survives a Home remount.
   const remounted=readHomeCategory(tab);
   assert.equal(remounted,category);
   assert.equal(homeStudyEntryRoutes[remounted],rightStudy);
@@ -36,15 +40,16 @@ test('invalid category values cannot become navigation paths and blocked storage
  rememberHomeCategory('asylum',tab);
 });
 
-test('Home owns the single selection and header/free/right controls reuse it without starting interviews',()=>{
+test('Home owns the selection and the simplified header preserves account and help navigation',()=>{
  const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
  const home=read('src/ImmigraHome.jsx'),demo=read('src/InterviewGlassDemo.jsx'),header=read('src/WebExperience.jsx');
  assert.match(home,/useState\(readHomeCategory\)/);
  assert.match(home,/category=\{selectedCategory\}/);
  assert.match(home,/onClick=\{\(\)=>focusHomeSection\('ih-study'\)\}/);
- assert.match(demo,/category='asylum'/);
+ assert.match(demo,/category='citizenship'/);
  assert.doesNotMatch(demo,/setCategory|\[category,.*useState/);
  assert.match(demo,/go\(homeStudyEntryRoutes\[category\]\)/);
- assert.match(header,/getElementById\('ih-free-start'\)\?\.click\(\)/);
+ for(const route of ['#/account','#/help','#/settings'])assert.ok(header.includes(`href="${route}"`));
+ assert.doesNotMatch(header,/getElementById\('ih-free-start'\)|website-start/);
  assert.doesNotMatch(home+demo,/getUserMedia|MediaRecorder/);
 });

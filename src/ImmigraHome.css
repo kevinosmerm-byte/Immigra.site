@@ -15,38 +15,33 @@ html[data-experience="web"] body:has(.immigra-home)::before{background:#edf5ff u
 .immigra-home .ih-see-how{border:1px solid #d8e5fa;background:#ffffffa8;color:#0b1426}
 .immigra-home .ih-play-circle{display:grid;place-items:center;width:24px;height:24px;border:2px solid currentColor;border-radius:50%}
 .immigra-home .ih-play-circle svg{width:17px;height:17px}
-.immigra-home .ih-brief-benefits{display:flex;flex-wrap:wrap;gap:14px;list-style:none;margin:0;padding:0;color:#52658c;font-size:12px}
-.immigra-home .ih-brief-benefits li{display:flex;align-items:center;gap:7px}
-.immigra-home .ih-check{display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#009779;color:white;font-size:16px}
 .immigra-home .ih-study-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;scroll-margin-top:110px}
-.immigra-home .ih-study-card{--study-accent:#0061f4;position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;min-width:0;min-height:315px;padding:26px;border:1px solid #ffffff;border-radius:26px;background:#f6fbff;box-shadow:0 10px 25px #6fa1d51a}
+.immigra-home .ih-study-card{--study-accent:#0061f4;position:relative;isolation:isolate;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;min-width:0;min-height:315px;width:100%;margin:0;padding:26px;font:inherit;text-align:left;cursor:pointer;border:1px solid #ffffff;border-radius:26px;background:#f6fbff;box-shadow:0 10px 25px #6fa1d51a}
 .immigra-home .ih-study-card::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,#ffffffee,#ffffff4a),var(--study-image) center/cover no-repeat;opacity:.8}
 .immigra-home .ih-citizenship{--study-image:url('/images/home/citizenship-background.webp')}.immigra-home .ih-asylum{--study-accent:#7825ed;--study-image:url('/images/home/asylum-scene.webp')}.immigra-home .ih-residency{--study-accent:#008a6b;--study-image:url('/images/home/residency-scene.webp')}
 .immigra-home .ih-study-card>img{width:72px;height:72px;object-fit:contain;margin-bottom:15px}
-.immigra-home .ih-study-card h2{font-size:25px;line-height:1.2;margin:0 0 10px;letter-spacing:-.5px;color:#101b32}
-.immigra-home .ih-study-card p{font-size:16px;line-height:1.5;color:#4b6080;margin:0 0 22px;overflow-wrap:anywhere}
-.immigra-home .ih-study-card button{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:18px;width:100%;min-height:52px;border:0;border-radius:15px;padding:12px;background:var(--study-accent);color:#fff;font:inherit;font-size:15px;font-weight:750;line-height:1.4;cursor:pointer;text-align:left}
-.immigra-home .ih-study-card button>span:last-child{font-size:24px}
+.immigra-home .ih-study-title{font-size:25px;font-weight:750;line-height:1.2;margin:0 0 10px;letter-spacing:-.5px;color:#101b32}
+.immigra-home .ih-study-description{font-size:16px;line-height:1.5;color:#4b6080;margin:0 0 22px;overflow-wrap:anywhere}
+.immigra-home .ih-study-action{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:18px;width:100%;min-height:52px;border:0;border-radius:15px;padding:12px;background:var(--study-accent);color:#fff;font:inherit;font-size:15px;font-weight:750;line-height:1.4;cursor:pointer;text-align:left}
+.immigra-home .ih-study-action>span:last-child{font-size:24px}
 .immigra-home .ih-scope-note{max-width:900px;text-align:center;margin:24px auto 0;font-size:13px;line-height:1.6;color:#4b6080}
 .immigra-home :is(button,select):focus-visible,.immigra-home #ih-study:focus-visible{outline:3px solid #1767e4;outline-offset:5px}
 html[data-experience="web"] #root:has(.immigra-home) citizenship-companion.platform-study-companion{position:relative;display:block;inset:auto;z-index:auto;margin:16px 18px 16px auto}
-html[data-experience="web"] #root>.website-header:has(+main .immigra-home){height:auto;min-height:80px;padding:12px 32px}
-html[data-experience="web"] #root>.website-header:has(+main .immigra-home) a[aria-current=page]{background:#eaf3ff;color:#0061ff;border-radius:16px;padding:13px 20px}
 @media(max-width:1100px){.immigra-home .ih-intro{padding-left:0}.immigra-home h1{font-size:clamp(38px,4.7vw,58px);letter-spacing:-2px}.immigra-home .ih-start,.immigra-home .ih-see-how{font-size:14px;padding:13px}.immigra-home .ih-hero-actions{gap:9px}}
 @media(max-width:900px){.immigra-home .ih-hero{grid-template-columns:1fr;gap:12px}.immigra-home .ih-intro{max-width:660px;padding:10px 14px}.immigra-home h1{font-size:clamp(42px,7vw,64px)}.immigra-home .ih-eyebrow{margin-bottom:20px}.immigra-home .ih-study-card{padding:22px}}
-@media(max-width:700px){.immigra-home .ih-study-options{grid-template-columns:1fr}.immigra-home .ih-study-card{min-height:260px}.immigra-home .ih-study-card>img{width:56px;height:56px}.immigra-home .ih-study-card p{max-width:80%}}
-@media(max-width:420px){html[data-experience="web"] #main:has(.immigra-home){padding:0 12px}.immigra-home{padding-top:18px}.immigra-home .ih-intro{padding:8px 5px}.immigra-home h1{font-size:42px}.immigra-home .ih-eyebrow{font-size:9px;letter-spacing:2px}.immigra-home .ih-hero-actions{gap:10px}.immigra-home .ih-start,.immigra-home .ih-see-how{font-size:13px;min-height:52px;padding:12px}.immigra-home .ih-brief-benefits{font-size:11px;gap:9px}}
+@media(max-width:700px){.immigra-home .ih-study-options{grid-template-columns:1fr}.immigra-home .ih-study-card{min-height:260px}.immigra-home .ih-study-card>img{width:56px;height:56px}.immigra-home .ih-study-description{max-width:80%}}
+@media(max-width:420px){html[data-experience="web"] #main:has(.immigra-home){padding:0 12px}.immigra-home{padding-top:18px}.immigra-home .ih-intro{padding:8px 5px}.immigra-home h1{font-size:42px}.immigra-home .ih-eyebrow{font-size:9px;letter-spacing:2px}.immigra-home .ih-hero-actions{gap:10px}.immigra-home .ih-start,.immigra-home .ih-see-how{font-size:13px;min-height:52px;padding:12px}}
 @media(prefers-reduced-motion:reduce){.immigra-home *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 html[data-reduce-motion=true] .immigra-home *{animation:none!important;transition:none!important}
 /* Soft water-light feedback on the three existing module actions; no route changes. */
 .immigra-home .ih-study-card{transition:translate .22s ease,box-shadow .22s ease}
-.immigra-home .ih-study-card button{position:relative;overflow:hidden;isolation:isolate;transition:box-shadow .2s ease,filter .2s ease,translate .15s ease}
-.immigra-home .ih-study-card button::after{content:"";position:absolute;inset:-70%;z-index:-1;pointer-events:none;border-radius:50%;background:radial-gradient(circle,#ffffff80,transparent 58%);opacity:0;scale:.25;transition:scale .4s ease,opacity .35s ease}
-@media(hover:hover){.immigra-home .ih-study-card:hover{translate:0 -4px;box-shadow:0 16px 32px #5c8ab229}.immigra-home .ih-study-card button:hover{filter:brightness(1.06);box-shadow:inset 0 2px 9px #ffffff33,0 8px 18px #375e8b26}}
+.immigra-home .ih-study-action{position:relative;overflow:hidden;isolation:isolate;transition:box-shadow .2s ease,filter .2s ease,translate .15s ease}
+.immigra-home .ih-study-action::after{content:"";position:absolute;inset:-70%;z-index:-1;pointer-events:none;border-radius:50%;background:radial-gradient(circle,#ffffff80,transparent 58%);opacity:0;scale:.25;transition:scale .4s ease,opacity .35s ease}
+@media(hover:hover){.immigra-home .ih-study-card:hover{translate:0 -4px;box-shadow:0 16px 32px #5c8ab229}.immigra-home .ih-study-card:hover .ih-study-action{filter:brightness(1.06);box-shadow:inset 0 2px 9px #ffffff33,0 8px 18px #375e8b26}}
 .immigra-home .ih-study-card:focus-within{box-shadow:0 12px 28px #5c8ab229}
-.immigra-home .ih-study-card button:active{translate:0 1px}.immigra-home .ih-study-card button:active::after{opacity:.7;scale:1}
-@media(prefers-reduced-motion:reduce){.immigra-home .ih-study-card,.immigra-home .ih-study-card:hover,.immigra-home .ih-study-card button:active{translate:none}.immigra-home .ih-study-card button::after{transition:none;scale:1}}
-html[data-reduce-motion=true] .immigra-home .ih-study-card,html[data-reduce-motion=true] .immigra-home .ih-study-card:hover,html[data-reduce-motion=true] .immigra-home .ih-study-card button:active{translate:none}html[data-reduce-motion=true] .immigra-home .ih-study-card button::after{transition:none;scale:1}
+.immigra-home .ih-study-card:active{translate:0 1px}.immigra-home .ih-study-card:active .ih-study-action::after{opacity:.7;scale:1}
+@media(prefers-reduced-motion:reduce){.immigra-home .ih-study-card,.immigra-home .ih-study-card:hover,.immigra-home .ih-study-card:active{translate:none}.immigra-home .ih-study-action::after{transition:none;scale:1}}
+html[data-reduce-motion=true] .immigra-home .ih-study-card,html[data-reduce-motion=true] .immigra-home .ih-study-card:hover,html[data-reduce-motion=true] .immigra-home .ih-study-card:active{translate:none}html[data-reduce-motion=true] .immigra-home .ih-study-action::after{transition:none;scale:1}
 
 .immigra-home .ih-see-how{text-decoration:none}
 .interview-glass-demo .benefit small{display:block;font-size:11px;line-height:1.4;margin-top:5px;font-weight:400}
@@ -60,23 +55,15 @@ html[data-experience="web"] #root:has(>main .immigra-home){
   --home-glass-header:#ffffff66;
   --home-glass-blur:blur(8px) saturate(125%);
 }
-html[data-experience="web"] #root>.website-header:has(+main .immigra-home){
-  background:var(--home-glass-header)!important;color:#18263b;
-  border-bottom:1px solid #ffffffa3;
-  backdrop-filter:var(--home-glass-blur);-webkit-backdrop-filter:var(--home-glass-blur);
-}
-html[data-experience="web"] #root>.website-header:has(+main .immigra-home) :is(.website-actions a,.website-actions button,a[aria-current=page]),
 html[data-experience="web"] #root:has(>main .immigra-home)>footer :is(button,details>summary),
-html[data-experience="web"] .immigra-home :is(.ih-start,.ih-see-how,:where(.ih-study-card) button,.guide-card-button,:where(.interview-glass-demo) .round,:where(.interview-glass-demo) .mic,:where(.interview-glass-demo) .benefit,:where(.study-messages-heading,.reviews-ribbon) button){
+html[data-experience="web"] .immigra-home :is(.ih-start,.ih-see-how,.ih-study-action,.guide-card-button,:where(.interview-glass-demo) .round,:where(.interview-glass-demo) .mic,:where(.interview-glass-demo) .benefit,:where(.study-messages-heading,.reviews-ribbon) button){
   border:1px solid #ffffffad;
   background:var(--home-glass-clear);
   box-shadow:inset 0 1px 1px #ffffffcc,inset 0 -1px 2px #8caed340,0 8px 22px #315b8d20;
   backdrop-filter:var(--home-glass-blur);-webkit-backdrop-filter:var(--home-glass-blur);
 }
-html[data-experience="web"] #root>.website-header:has(+main .immigra-home) .website-actions :is(a,button):not(.website-start){color:#18263b!important}
 html[data-experience="web"] #root:has(>main .immigra-home)>footer :is(button,details>summary){color:#18263b!important}
 html[data-experience="web"] .immigra-home :is(.study-messages-heading,.reviews-ribbon) button{color:#123a63}
-html[data-experience="web"] #root>.website-header:has(+main .immigra-home) .website-actions .website-start,
 html[data-experience="web"] .immigra-home :is(.ih-start,.guide-card-button,.interview-glass-demo .mic){
   background:var(--home-glass-sheen),var(--home-glass-blue);color:var(--home-glass-ink)!important;
   box-shadow:inset 0 1px 1px #ffffffb3,inset 0 -1px 3px #3665a333,0 8px 24px #2855a526;
@@ -84,7 +71,7 @@ html[data-experience="web"] .immigra-home :is(.ih-start,.guide-card-button,.inte
 html[data-experience="web"] .immigra-home .ih-study-card{--home-study-tint:#6ba7ff45;--home-study-ink:#123a63}
 html[data-experience="web"] .immigra-home .ih-asylum{--home-study-tint:#b392f24d;--home-study-ink:#452073}
 html[data-experience="web"] .immigra-home .ih-residency{--home-study-tint:#68c8b845;--home-study-ink:#074d40}
-html[data-experience="web"] .immigra-home .ih-study-card button{background:var(--home-glass-sheen),linear-gradient(var(--home-study-tint),var(--home-study-tint));color:var(--home-study-ink)}
+html[data-experience="web"] .immigra-home .ih-study-action{background:var(--home-glass-sheen),linear-gradient(var(--home-study-tint),var(--home-study-tint));color:var(--home-study-ink)}
 html[data-experience="web"] .immigra-home .ih-see-how:focus-visible{outline:3px solid #1767e4;outline-offset:5px}
 @media(max-width:700px){html[data-experience="web"] body:has(.immigra-home)::before{background-position:24% center}}
 
@@ -96,7 +83,7 @@ html[data-experience="web"][data-reduce-transparency=true] #root:has(>main .immi
   --home-glass-sheen:linear-gradient(transparent,transparent);
   --home-glass-header:#f4f8fc;--home-glass-blur:none;
 }
-html[data-experience="web"][data-reduce-transparency=true] .immigra-home .ih-study-card button{background:var(--study-accent);color:#fff}
+html[data-experience="web"][data-reduce-transparency=true] .immigra-home .ih-study-action{background:var(--study-accent);color:#fff}
 @media(prefers-reduced-transparency:reduce){
   html[data-experience="web"] #root:has(>main .immigra-home){
     --home-glass-clear:linear-gradient(#f4f8fc,#f4f8fc);
@@ -105,7 +92,7 @@ html[data-experience="web"][data-reduce-transparency=true] .immigra-home .ih-stu
     --home-glass-sheen:linear-gradient(transparent,transparent);
     --home-glass-header:#f4f8fc;--home-glass-blur:none;
   }
-  html[data-experience="web"] .immigra-home .ih-study-card button{background:var(--study-accent);color:#fff}
+  html[data-experience="web"] .immigra-home .ih-study-action{background:var(--study-accent);color:#fff}
 }
 @media(forced-colors:active){
   html[data-experience="web"] #root>.website-header:has(+main .immigra-home),

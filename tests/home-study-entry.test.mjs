@@ -5,18 +5,18 @@ import {freeStudyRoutes} from '../src/home-study.mjs';
 import {residencyStudyRoute} from '../modules/residency/src/study-route.mjs';
 import {moduleFromHash} from '../shared/navigation/routes.mjs';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
-test('free hero follows selected category while restored practice cards enter existing modules',()=>{
+test('free hero leads to module choices and their introductory lessons',()=>{
  assert.deepEqual(freeStudyRoutes,{citizenship:'citizenship/civics',asylum:'asylum/full-bank',residency:'residency/study'});
  for(const [module,path] of Object.entries(freeStudyRoutes))assert.equal(moduleFromHash('#/'+path),module);
  const home=read('src/ImmigraHome.jsx');
- assert.match(home,/onNavigate\(choice.id\)/);
+ assert.match(home,/chooseCategory\(choice.id\)/);
  assert.match(home,/onClick=\{\(\)=>focusHomeSection\('ih-study'\)\}/);
  assert.match(home,/category=\{selectedCategory\}/);
- assert.equal((home.match(/onNavigate\(choice.id\)/g)||[]).length,1,'one direct study action per card');
+ assert.equal((home.match(/chooseCategory\(choice.id\)/g)||[]).length,1,'one learning action per card');
  assert.doesNotMatch(home,/InterviewPreview|ih-features|ih-highlights|setTimeout|setInterval|useReducer/);
  assert.match(home,/Prepárate para/);assert.match(home,/your interview/);
  assert.match(home,/AI interviews have separate access requirements/);
- assert.match(home,/aria-label=\{`\$\{t\('Practicar','Practice'\)\} \$\{choice.title\}`\}/);
+ assert.match(home,/aria-label=\{resumeAction\|\|`\$\{t\('Aprender sobre','Learn about'\)\} \$\{choice.title\}`\}/);
 });
 test('free study entry does not start recording, AI evaluation or bypass consent',()=>{
  const home=read('src/ImmigraHome.jsx');

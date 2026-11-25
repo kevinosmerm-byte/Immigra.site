@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {glassQuestions,glassIndex,interviewRoutes,progressRoutes} from '../src/interview-glass-bank.mjs';
 const read=p=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
 const banks={civics:JSON.parse(read('modules/citizenship/src/data/uscis2025Civics.json')),asylum:read('modules/asylum/master-package/03_question_bank/question_bank.jsonl').trim().split(/\r?\n/).map(line=>JSON.parse(line)),residency:JSON.parse(read('modules/residency/data/questions.json'))};
-test('all displayed questions come verbatim from existing bilingual banks',()=>{
+test('the full-bank adapter preserves every existing bilingual question',()=>{
  const civics=glassQuestions('citizenship',banks);assert.equal(civics.length,128);
  civics.forEach((q,i)=>{assert.equal(q.en,banks.civics.questions[i].question);assert.equal(q.es,banks.civics.questions[i].spanish);});
  const asylum=glassQuestions('asylum',banks);assert.equal(asylum.length,banks.asylum.length);asylum.forEach((q,i)=>{assert.equal(q.en,banks.asylum[i].question_en);assert.equal(q.es,banks.asylum[i].question_es);});
@@ -18,9 +18,9 @@ test('navigation is bounded and progress uses actual selected-bank length',()=>{
 test('reader cancels stale results across navigation language visibility and unmount',()=>{
  const source=read('src/InterviewGlassDemo.jsx');assert.match(source,/token!==generation.current/);assert.match(source,/\[category,index,lang\]/);assert.match(source,/return\(\)=>\{generation.current\+\+;void stopAppSpeech/);assert.match(source,/if\(document.hidden\)stop\(\)/);assert.match(source,/requireLanguageVoice:true/);assert.match(source,/setSpeaking\(false\);setError\(!ok\)/);assert.doesNotMatch(source,/setInterval|SpeechRecognition|MediaRecorder|getUserMedia|fetch\(/);
 });
-test('microphone and side controls enter real existing consent or study flows',()=>{
+test('explanation stays local and side controls keep existing consent or study flows',()=>{
  assert.deepEqual(interviewRoutes,{citizenship:'citizenship/practice',asylum:'asylum/practice',residency:'residency'});assert.equal(progressRoutes.residency,'residency/study');
- const source=read('src/InterviewGlassDemo.jsx');assert.match(source,/go\(interviewRoutes\[category\]\)/);assert.match(source,/go\(homeStudyEntryRoutes\[category\]\)/);assert.match(source,/go\(progressRoutes\[category\]\)/);assert.match(source,/microphone does not start/);assert.match(source,/No recording here/);
+ const source=read('src/InterviewGlassDemo.jsx');assert.match(source,/go\(interviewRoutes\[category\]\)/);assert.match(source,/go\(homeStudyEntryRoutes\[category\]\)/);assert.match(source,/go\(progressRoutes\[category\]\)/);assert.match(source,/aria-expanded=\{revealed\}/);assert.match(source,/setRevealed\(false\)/);assert.match(source,/no personal details/);
 });
 test('source HTML glass materials remain three ribbons two panes and original effects',()=>{
  const css=read('src/InterviewGlassDemo.css'),source=read('src/InterviewGlassDemo.jsx');

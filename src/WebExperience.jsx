@@ -1,10 +1,34 @@
-import React from 'react';
+import React,{useEffect,useRef} from 'react';
 import {modules} from './modules.js';
 import {howItWorksVideo} from './home-study.mjs';
 
 export function WebHeader({lang,setLang,page}) {
   const t=(es,en)=>lang==='es'?es:en;
-  return <header className="website-header"><a className="website-brand" href="#/" aria-label={t('IMMIGRA · Inicio','IMMIGRA · Home')}>IMMIGRA</a><nav aria-label={t('Navegación principal','Main navigation')}><a href="#/" aria-current={!page?'page':undefined}>{t('Inicio','Home')}</a>{!page&&<a href={howItWorksVideo} target="_blank" rel="noopener noreferrer">{t('Cómo funciona','How it works')}</a>}<a href="#/account">{t('Planes','Plans')}</a><a href="#/help">{t('Recursos','Resources')}</a></nav><div className="website-actions"><a href="#/account">{t('Mi cuenta','My account')}</a><a href="#/settings" className="website-settings" aria-label={t('Ajustes','Settings')} title={t('Ajustes','Settings')}>⚙</a>{!page&&<button type="button" className="website-start" onClick={()=>document.getElementById('ih-free-start')?.click()}>{t('Comenzar gratis','Start for free')} <span aria-hidden="true">→</span></button>}<button type="button" onClick={()=>setLang(lang==='es'?'en':'es')} aria-label={t('Cambiar a inglés','Switch to Spanish')}>{lang==='es'?'ES':'EN'} <span aria-hidden="true">⌄</span></button></div></header>;
+  const menuRef=useRef(null);
+  const closeMenu=()=>{if(menuRef.current)menuRef.current.open=false;};
+  useEffect(()=>{
+    const dismiss=event=>{if(menuRef.current&&!menuRef.current.contains(event.target))menuRef.current.open=false;};
+    document.addEventListener('pointerdown',dismiss);
+    window.addEventListener('hashchange',closeMenu);
+    return()=>{document.removeEventListener('pointerdown',dismiss);window.removeEventListener('hashchange',closeMenu);};
+  },[]);
+  return <header className="website-header">
+    <a className="website-brand" href="#/" aria-label={t('IMMIGRA · Inicio','IMMIGRA · Home')}>IMMIGRA</a>
+    <div className="website-actions">
+      <details className="website-menu" ref={menuRef} onKeyDown={event=>{if(event.key==='Escape'){closeMenu();menuRef.current?.querySelector('summary')?.focus();}}}>
+        <summary>{t('Menú','Menu')}<span aria-hidden="true">⌄</span></summary>
+        <nav aria-label={t('Navegación principal','Main navigation')} onClick={event=>{if(event.target.closest('a'))closeMenu();}}>
+          <a href="#/" aria-current={!page?'page':undefined}>{t('Inicio','Home')}</a>
+          <a href="#/account">{t('Planes','Plans')}</a>
+          <a href="#/help" aria-current={page==='help'?'page':undefined}>{t('Recursos','Resources')}</a>
+          <a href="#/settings" aria-current={page==='settings'?'page':undefined}>{t('Ajustes','Settings')}</a>
+          <a href={howItWorksVideo} target="_blank" rel="noopener noreferrer">{t('Cómo funciona','How it works')}</a>
+        </nav>
+      </details>
+      <a className="website-account" href="#/account" aria-label={t('Mi cuenta','My account')} aria-current={page==='account'?'page':undefined}>{t('Cuenta','Account')}</a>
+      <button className="website-language" type="button" onClick={()=>{closeMenu();setLang(lang==='es'?'en':'es');}} aria-label={t('Cambiar a inglés','Switch to Spanish')}>{lang==='es'?'ES':'EN'}</button>
+    </div>
+  </header>;
 }
 
 export function WebHome({lang}) {

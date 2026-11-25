@@ -19,7 +19,7 @@ export const homeStudyEntryRoutes=Object.freeze({citizenship:'citizenship',asylu
 
 // Only a validated, non-sensitive module choice is remembered for this tab.
 const categoryKey='immigra.home.study-category';
-let lastCategory='asylum';
+let lastCategory='citizenship';
 const validCategory=value=>Object.hasOwn(freeStudyRoutes,value);
 const tabStorage=()=>{try{return globalThis.sessionStorage;}catch{return null;}};
 export function readHomeCategory(storage=tabStorage()){
